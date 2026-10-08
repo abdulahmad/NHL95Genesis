@@ -63,48 +63,48 @@ Name it in the session that transcribes it. Do not leave a cleanup pass.
 
 ## ROM map
 
-The first unmatched ROM segment is the current segment. NHL95 is 2MB (vs 94's 1MB). Ranges marked with confidence level: **HIGH** = confirmed by analysis, **MEDIUM** = likely based on gaps, **LOW** = estimated from 94 pattern.
+The first unmatched ROM segment is the current segment. NHL95 is 2MB (vs 94's 1MB). Complete tiling with no gaps - see `SEGMENT_MAP_FINAL.md` for details.
 
-**Mapping Status**: Preliminary pass complete. HIGH confidence segments have confirmed orgs. Others need detailed function analysis to determine exact boundaries. See `SEGMENT_AGENT_UPDATE.md` for full analysis.
+**Mapping Status**: Conservative map based on confirmed anchor points. Grouped segments need function analysis to split properly.
 
 | File | Status | Org / Range | Confidence | Note |
 |---|---|---|---|---|
-| main95 | not matched | $0-$6DB (1,756 bytes) | **HIGH** | Start label `Trap3`. Vectors, header, Reset, SegaInit. Confirmed by call graph. |
-| teamdata95 | not matched | $6DC-$9721 (~36KB) | **HIGH** | Teams, palettes, SPAlist/frames. Larger than 94 (28KB) due to more data. Confirmed by gap analysis. |
-| ram95 | skipped | no org (equates only) | N/A | Equates only, no ROM bytes. Skipped by segment queue. RAM names added to `stubinc/ram_addrs.inc` as transcribed. Final consolidation pass after ROM segments complete. |
-| hockey95 | not matched | $9722-? | **HIGH** | Start label `sub_9722` (main game loop). Called from init at $73A. End TBD - find where it transitions to next segment. |
-| menu95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis to find actual boundary. |
-| stats95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
-| replay95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
-| input95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
-| assign95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
-| checks95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
-| video95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
-| penalty95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
-| collide95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
-| display95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
-| setup95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
-| attract95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
-| data95 | not matched | $1A264-$44120 (~164KB) | **MEDIUM** | Large data block. Menus, strings, tables. Gap analysis. |
-| sram95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
-| sound95 | not matched | $4B5C0-$676D7 (~112KB) | **MEDIUM** | Sound samples and streams. Gap before sound driver. |
-| sound_driver95 | not matched | $676D8-$79901 (~72KB) | **HIGH** | Start label `sub_676D8`. 68K sound driver. 86.8% internal call cohesion. Confirmed by call graph. |
-| graphics95 | not matched | $79902-? (large) | **MEDIUM** | Graphics data block. Exact end TBD (extends to ~$F66ED or beyond). Will be incbin. |
-| onetimer95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
-| fourway95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
-| crowd95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
-| optsetup95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
-| cards95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
-| records95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
-| shootout95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
-| scout95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
-| period95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
-| goalie95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
-| title95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
-| graphics2_95 | not matched | ~$FEDA2-$1A72BF (~670KB) | **MEDIUM** | More graphics data. Gap analysis. Will be incbin. |
-| checksum95 | not matched | $1A72C0-$1FFFFF (~360KB) | **MEDIUM** | Validation, checksum, fill. Start label `sub_1A72C0` called from init. |
+| main95 | not matched | $0-$6DB (1,756B) | **HIGH** | Start label `Trap3`. Vectors, header, Reset, SegaInit. |
+| teamdata95 | not matched | $6DC-$9721 (36,934B) | **HIGH** | Teams, palettes, SPAlist. May include frames95. |
+| frames95 | not matched | (in teamdata95?) | **LOW** | Boundary uncertain. May be merged. |
+| ram95 | skipped | no org (equates only) | N/A | Equates only. RAM names added to `stubinc/ram_addrs.inc`. |
+| hockey95 | not matched | $9722-? | **MEDIUM** | Start label `sub_9722`. End TBD. |
+| menu95 | not matched | TBD (~$BE00+) | **LOW** | After hockey95. Boundary TBD. |
+| stats95 | not matched | TBD | **LOW** | Boundary TBD. |
+| replay95 | not matched | TBD | **LOW** | Boundary TBD. |
+| input95 | not matched | TBD | **LOW** | Boundary TBD. |
+| assign95 | not matched | TBD | **LOW** | Boundary TBD. |
+| checks95 | not matched | TBD | **LOW** | Boundary TBD. |
+| video95 | not matched | TBD | **LOW** | Boundary TBD. |
+| penalty95 | not matched | TBD | **LOW** | Boundary TBD. |
+| collide95 | not matched | TBD | **LOW** | Boundary TBD. |
+| display95 | not matched | TBD | **LOW** | Boundary TBD. |
+| setup95 | not matched | TBD | **LOW** | Boundary TBD. |
+| attract95 | not matched | TBD | **LOW** | Boundary TBD. |
+| data95 | not matched | $1A264-$4B5BF (201,052B) | **MEDIUM** | Large data block. May include sram95. |
+| sram95 | not matched | (in data95?) | **LOW** | Boundary uncertain. May be merged. |
+| sound95 | not matched | $4B5C0-$676D7 (117,016B) | **MEDIUM** | Sound samples/streams. Or split into sound_driver95. |
+| sound_driver95 | not matched | $676D8-$79FFF (79,912B) | **HIGH** | Start label `sub_676D8`. 68K sound driver. Distinct from samples. |
+| graphics95 | not matched | $7A000-$1A72BF (~1.06MB) | **MEDIUM** | Graphics data. Will be incbin. May contain late code segments. |
+| onetimer95 | not matched | TBD (in graphics range?) | **LOW** | Boundary TBD. |
+| fourway95 | not matched | TBD | **LOW** | Boundary TBD. |
+| crowd95 | not matched | TBD | **LOW** | Boundary TBD. |
+| optsetup95 | not matched | TBD | **LOW** | Boundary TBD. |
+| cards95 | not matched | TBD | **LOW** | Boundary TBD. |
+| records95 | not matched | TBD | **LOW** | Boundary TBD. |
+| shootout95 | not matched | TBD | **LOW** | Boundary TBD. |
+| scout95 | not matched | TBD | **LOW** | Boundary TBD. |
+| period95 | not matched | TBD | **LOW** | Boundary TBD. |
+| goalie95 | not matched | TBD | **LOW** | Boundary TBD. |
+| title95 | not matched | TBD | **LOW** | Boundary TBD. |
+| checksum95 | not matched | $1A72C0-$1FFFFF (364,352B) | **MEDIUM** | Start label `sub_1A72C0`. Validation, checksum, fill.
 
-**Note**: 95's code section ($9722-$F66ED, ~640KB) shows only 44.2% internal call cohesion vs sound driver's 86.8%. This suggests either heavily intermingled code or different organization than 94. Exact segment boundaries within this range need per-function analysis as transcription proceeds.
+**Confirmed ranges**: main95, teamdata95, data95, sound95/sound_driver95, checksum95. **Uncertain boundaries**: Most middle code segments (menu95 through title95) have TBD boundaries. Conservative groupings in `SEGMENT_MAP_FINAL.md` show ~59KB for menu-input group, ~513KB for checks-title group. Function-level matching needed to split properly. **Strategy**: Transcribe HIGH/MEDIUM confidence segments first; boundaries for LOW segments will emerge during transcription.
 
 ## New in 95
 
