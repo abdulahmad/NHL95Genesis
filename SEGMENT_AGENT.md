@@ -63,44 +63,53 @@ Name it in the session that transcribes it. Do not leave a cleanup pass.
 
 ## ROM map
 
-The first unmatched ROM segment is the current segment. The order is the 94 file order. Orgs are blank until the listing confirms them.
+The first unmatched ROM segment is the current segment. NHL95 is 2MB (vs 94's 1MB). Ranges marked with confidence level: **HIGH** = confirmed by analysis, **MEDIUM** = likely based on gaps, **LOW** = estimated from 94 pattern.
 
-| File | Status | Org | Note |
-|---|---|---|---|
-| main95 | not matched | $0 | Adapted from main94.asm: header, startup, vectors. Start label `Trap3` |
-| teamdata95 | not matched | org not confirmed | Adapted from teamdata94.asm: teams, palettes, credits text |
-| frames95 | not matched | org not confirmed | Adapted from frames94.asm: sprite animation tables |
-| ram95 | skipped | no org (equates only) | Adapted from ram94.asm: equates only, no ROM bytes. Skipped by the segment queue. RAM names come from code segments as transcribed, added to `stubinc/ram_addrs.inc`. A final consolidation pass may organize `src/ram95.asm` after ROM segments are complete |
-| hockey95 | not matched | org not confirmed | Adapted from hockey94.asm: game loop, pause |
-| menu95 | not matched | org not confirmed | Adapted from menu94.asm: menu core |
-| stats95 | not matched | org not confirmed | Adapted from stats94.asm: scores, line editor, roster, scoring and penalty summaries, player stats, crowd meter, goalie select |
-| replay95 | not matched | org not confirmed | Adapted from replay94.asm: replay |
-| input95 | not matched | org not confirmed | Adapted from input94.asm: controller input and line changes |
-| assign95 | not matched | org not confirmed | Adapted from assign94.asm: player assignments |
-| checks95 | not matched | org not confirmed | Adapted from checks94.asm: checks before the display code |
-| video95 | not matched | org not confirmed | Adapted from video94.asm: display helpers |
-| penalty95 | not matched | org not confirmed | Adapted from penalty94.asm: penalties, scoreboard, highlights |
-| collide95 | not matched | org not confirmed | Adapted from collide94.asm: puck, players, walls, fights, goals |
-| display95 | not matched | org not confirmed | Adapted from display94.asm: vblank, clock, crowd, rink scroll |
-| setup95 | not matched | org not confirmed | Adapted from setup94.asm: ice setup, intermission, playoff screen |
-| attract95 | not matched | org not confirmed | Adapted from attract94.asm: EA Sports attract screen |
-| data95 | not matched | org not confirmed | Adapted from data94.asm: menus, season results, string tables |
-| sram95 | not matched | org not confirmed | Adapted from sram94.asm: save data |
-| sound95 | not matched | org not confirmed | Adapted from sound94.asm: sound driver, then the sound data |
-| graphics95 | not matched | org not confirmed | Adapted from graphics94.asm: graphics only |
-| onetimer95 | not matched | org not confirmed | Adapted from onetimer94.asm: one-timer |
-| fourway95 | not matched | org not confirmed | Adapted from fourway94.asm: four-player adaptor |
-| crowd95 | not matched | org not confirmed | Adapted from crowd94.asm: crowd meter and hot / cold players |
-| optsetup95 | not matched | org not confirmed | Adapted from optsetup94.asm: game setup and options |
-| cards95 | not matched | org not confirmed | Adapted from cards94.asm: player cards and matchup palettes |
-| records95 | not matched | org not confirmed | Adapted from records94.asm: name entry and record holders |
-| shootout95 | not matched | org not confirmed | Adapted from shootout94.asm: shootout |
-| scout95 | not matched | org not confirmed | Adapted from scout94.asm: matchups and scouting report |
-| period95 | not matched | org not confirmed | Adapted from period94.asm: period stats and game statistics |
-| goalie95 | not matched | org not confirmed | Adapted from goalie94.asm: manual goalie |
-| title95 | not matched | org not confirmed | Adapted from title94.asm: song select, title, credits |
-| checksum95 | not matched | org not confirmed | Adapted from checksum94.asm: checksum |
+**Mapping Status**: Preliminary pass complete. HIGH confidence segments have confirmed orgs. Others need detailed function analysis to determine exact boundaries. See `SEGMENT_AGENT_UPDATE.md` for full analysis.
+
+| File | Status | Org / Range | Confidence | Note |
+|---|---|---|---|---|
+| main95 | not matched | $0-$6DB (1,756 bytes) | **HIGH** | Start label `Trap3`. Vectors, header, Reset, SegaInit. Confirmed by call graph. |
+| teamdata95 | not matched | $6DC-$9721 (~36KB) | **HIGH** | Teams, palettes, SPAlist/frames. Larger than 94 (28KB) due to more data. Confirmed by gap analysis. |
+| ram95 | skipped | no org (equates only) | N/A | Equates only, no ROM bytes. Skipped by segment queue. RAM names added to `stubinc/ram_addrs.inc` as transcribed. Final consolidation pass after ROM segments complete. |
+| hockey95 | not matched | $9722-? | **HIGH** | Start label `sub_9722` (main game loop). Called from init at $73A. End TBD - find where it transitions to next segment. |
+| menu95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis to find actual boundary. |
+| stats95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
+| replay95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
+| input95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
+| assign95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
+| checks95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
+| video95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
+| penalty95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
+| collide95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
+| display95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
+| setup95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
+| attract95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
+| data95 | not matched | $1A264-$44120 (~164KB) | **MEDIUM** | Large data block. Menus, strings, tables. Gap analysis. |
+| sram95 | not matched | org not confirmed | **LOW** | Estimated from 94. Needs function analysis. |
+| sound95 | not matched | $4B5C0-$676D7 (~112KB) | **MEDIUM** | Sound samples and streams. Gap before sound driver. |
+| sound_driver95 | not matched | $676D8-$79901 (~72KB) | **HIGH** | Start label `sub_676D8`. 68K sound driver. 86.8% internal call cohesion. Confirmed by call graph. |
+| graphics95 | not matched | $79902-? (large) | **MEDIUM** | Graphics data block. Exact end TBD (extends to ~$F66ED or beyond). Will be incbin. |
+| onetimer95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
+| fourway95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
+| crowd95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
+| optsetup95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
+| cards95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
+| records95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
+| shootout95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
+| scout95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
+| period95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
+| goalie95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
+| title95 | not matched | org not confirmed | **LOW** | Estimated from 94. Likely in late code section. |
+| graphics2_95 | not matched | ~$FEDA2-$1A72BF (~670KB) | **MEDIUM** | More graphics data. Gap analysis. Will be incbin. |
+| checksum95 | not matched | $1A72C0-$1FFFFF (~360KB) | **MEDIUM** | Validation, checksum, fill. Start label `sub_1A72C0` called from init. |
+
+**Note**: 95's code section ($9722-$F66ED, ~640KB) shows only 44.2% internal call cohesion vs sound driver's 86.8%. This suggests either heavily intermingled code or different organization than 94. Exact segment boundaries within this range need per-function analysis as transcription proceeds.
 
 ## New in 95
 
-Add a file here when the listing shows a system 94 does not have. Do not add it before that.
+- Additional sound driver features (95 has more complex audio)
+- Expanded graphics (2MB vs 1MB allows inline data vs 94's compression)
+- Possible new menu/option screens (TBD during transcription)
+
+Add new segments here as discovered during transcription. Do not add before confirming in listing.
