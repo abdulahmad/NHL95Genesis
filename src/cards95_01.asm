@@ -33,7 +33,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	move.w	(VisTeam).w,d3
 .0
 	asl.w	#2,d3
-	movea.l	#TeamLogoBitmaps,a0
+	movea.l	#TeamLogoBitmaps,a0	;team logo maps (hockey94_08)
 	movea.l	(a0,d3.w),a0
 	movea.l	a0,a1
 	movea.l	a0,a2

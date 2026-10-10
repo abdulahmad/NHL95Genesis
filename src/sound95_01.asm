@@ -18,12 +18,12 @@ UpdateCwdExcite	;(hockey94). called once per second. Track peak and running tota
 	move.w	(CwdExciteLvl).w,d0
 	cmp.w	(MaxCwdExciteLvl).w,d0
 	bls.w	.0
-	move.w	d0,(MaxCwdExciteLvl).w
+	move.w	d0,(MaxCwdExciteLvl).w	;new peak
 .0
 	ext.l	d0
-	add.l	d0,(SumCwdExciteLvl).w
-	addq.w	#1,(NumCwdExciteLvl).w
-	subq.w	#1,(CwdExciteLvl).w
+	add.l	d0,(SumCwdExciteLvl).w	;running total
+	addq.w	#1,(NumCwdExciteLvl).w	;sample count
+	subq.w	#1,(CwdExciteLvl).w	;decay
 	bpl.w	.1
 	clr.w	(CwdExciteLvl).w
 .1
@@ -65,7 +65,7 @@ CheckPeriodEnd	;(hockey94). Called once per second. 3rd period: choose and play 
 	move.w	(gameclock).w,d0
 	cmp.w	(periodendtime).w,d0
 	bgt.w	.0
-	st	(periodendtime).w
+	st	(periodendtime).w	;high byte $FF: trigger goes negative, fires once
 	move.w	(HomeTeam).w,(HmTeam).w
 	move.w	#5,(SongIndex).w
 	jsr	(ChooseSong).l
@@ -77,7 +77,7 @@ CheckPeriodEnd	;(hockey94). Called once per second. 3rd period: choose and play 
 sfx	;(video94). play sound effect number, one word passed on stack. 95: through SfxTable to a sound driver song (command 4)
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.l	d0
-	move.w	$40(sp),d0
+	move.w	$40(sp),d0	;$40 = 16*4
 	bpl.w	sfxplay
 	movem.l	(sp)+,d0-d7/a0-a6
 	move.l	(sp),2(sp)
@@ -159,7 +159,7 @@ SfxTable	;95 only: sound driver song for sound effects 0-$31 (sfx), $FF = none. 
 song	;(video94). play song number, one word passed on stack. 95: songs 0-3 through StartSong, the rest through sfxplay
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.l	d0
-	move.w	$40(sp),d0
+	move.w	$40(sp),d0	;$40 = 16*4
 	bmi.w	.2
 	cmp.w	#$32,d0
 	blt.w	.0

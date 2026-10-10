@@ -147,7 +147,7 @@ StartGame	;reset game state for a new game, then start the first period. 95 has 
 
 IntermissionStart	;94 setup94 name: the PeriodOver tail. checks95_06 PeriodOver jumps here after forceblack: reset the
 	;clock, restart the sound driver, UpdateScores, IntermissionMenu, then GameOver or StartPer
-	jsr	(ResetClock).l
+	jsr	(ResetClock).l	;hockey94_01
 	move.w	d0,-(sp)
 	move.w	(vcount).w,d0
 .vb
@@ -436,7 +436,7 @@ updateplayers	;this routine calls all collision/animation/assignment code for al
 	cmpi.w	#SPAinjury1,SPA(a3)
 	beq.w	.done
 	cmpi.w	#SPAinjury2,SPA(a3)
-	beq.w	.done
+	beq.w	.done	;branch if d0 is 0
 	jsr	(updatevel).l	;95 only: 94 does this in line
 .done
 	move.w	SCnum(a3),d6	;SCnum
@@ -458,7 +458,7 @@ updateplayers	;this routine calls all collision/animation/assignment code for al
 	move.w	#$1111,(bholdtimer34).w
 .tp2
 	jsr	(updatepadinput).l	;95 only: 94 does the pads in line
-	adda.w	#SCstruct,a3
-	cmpi.w	#$F,SCnum-SCstruct(a3)
-	blt.w	.top
+	adda.w	#SCstruct,a3	;SCstruct size
+	cmpi.w	#$F,SCnum-SCstruct(a3)	;compare Sortobjs-1 to SCnum-SCstruct
+	blt.w	.top	;loop for all Sort objects
 	rts

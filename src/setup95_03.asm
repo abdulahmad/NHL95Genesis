@@ -434,22 +434,22 @@ NextAwayColdPlayer	;crowd94 NextAwayColdPlayer. The same for the away team (away
 GetTeamArena	;scout94 GetTeamArena. a1 = the arena String of team a2
 	movem.l	d0/a0/a2,-(sp)
 	movea.l	a2,a1
-	movea.l	$1E(a1),a1
-	adda.w	4(a1),a1
+	movea.l	$1E(a1),a1	;tmdata
+	adda.w	4(a1),a1	;city
 	adda.w	(a1),a1
 	adda.w	(a1),a1
-	adda.w	(a1),a1
+	adda.w	(a1),a1	;arena
 	movem.l	(sp)+,d0/a0/a2
 	rts
 
 GetTeamNickname	;scout94 GetTeamNickname. a1 = the nickname String of team a2, or HomeTxt / VisitorsTxt when it is empty
 	movem.l	d0/a0/a2,-(sp)
 	movea.l	a2,a1
-	movea.l	$1E(a1),a1
-	adda.w	4(a1),a1
-	adda.w	(a1),a1
-	adda.w	(a1),a1
-	cmpi.w	#2,(a1)
+	movea.l	$1E(a1),a1	;tmdata
+	adda.w	4(a1),a1	;city
+	adda.w	(a1),a1	;abbreviation
+	adda.w	(a1),a1	;nickname
+	cmpi.w	#2,(a1)	;empty String?
 	bne.w	.0
 	movea.l	#HomeTxt,a1
 	cmpa.l	#HmShots,a2

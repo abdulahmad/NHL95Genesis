@@ -21,7 +21,7 @@ CompLine	;(checks94) The computer picks a line for team a2 (a1 = other team): on
 	bpl.w	.0
 	addq.w	#2,d0
 .0
-	move.w	d0,-(sp)
+	move.w	d0,-(sp)	;find pk/pp line
 	bsr.w	getlinee
 	move.w	d0,d1
 	move.w	(sp),d0
@@ -121,7 +121,7 @@ SetupTeamForIntermission	;(penalty94) 93 name. Reset the bench (ResetBench), the
 	movea.w	#(HmShots-M68K_RAM),a2
 	lea	tmsize(a2),a3
 	bsr.w	SetupTeamLine
-	exg	a2,a3
+	exg	a2,a3	;falls in for the other team
 
 SetupTeamLine	;95 only. Team a3 (a2 = other team): ResetTeamEnergy, line 0, and with line changes on the power play line 3
 	;or penalty kill line 5 when the players on ice (tmap) differ
@@ -591,7 +591,7 @@ LineSlotFixTbl	;95 only. CheckTeamLines slot handlers by slot & 7: goalie (the b
 
 EASportsScreen	;(attract94) Called from Begin (main95). Show the EA Sports screen (EASportsMap) until a button, or $50 x 4
 	;frames
-	move.l	#vb2,(vbint).w
+	move.l	#vb2,(vbint).w	;vblank handler
 	bclr	#1,(disflags).w
 	move.w	#5,(Map3col1).w
 	move.w	#$A000,(VmMap2).w
@@ -602,7 +602,7 @@ EASportsScreen	;(attract94) Called from Begin (main95). Show the EA Sports scree
 	move.w	#$F800,(VSPRITES).w
 	move.w	#$FC00,(VSCRLPM).w
 	movea.w	#(palfadenew-M68K_RAM),a0
-	moveq	#$1F,d1
+	moveq	#$1F,d1	;32 longs: all 64 colours black
 .0
 	clr.l	(a0)+
 	dbf	d1,.0
@@ -622,9 +622,9 @@ EASportsScreen	;(attract94) Called from Begin (main95). Show the EA Sports scree
 	move.w	#1,d4
 	moveq	#$F,d5
 	jsr	(dobitmap).l
-	move.w	#$18,(palcount).w
-	move	#$2500,sr
-	move.w	#$50,(RNGseed).w
+	move.w	#$18,(palcount).w	;fade in
+	move	#$2500,sr	;vblank on
+	move.w	#$50,(RNGseed).w	;frame count down in the random seed word
 .1
 	moveq	#4,d0
 	jsr	(waitx).l
@@ -652,28 +652,28 @@ chkatop	;(penalty94) Attack time of possession stat update. Called once a second
 	eori.w	#tmsize,d1
 .1
 	movea.w	#(HmShots-M68K_RAM),a2
-	addq.w	#1,tmATOP(a2,d1.w)
+	addq.w	#1,tmATOP(a2,d1.w)	;attack time
 .2
 	rts
 
 updatePPTeamTime	;(period94) Power play time of the teams, once a second. Called from updatepentime
-	btst	#5,(sflags2).w
+	btst	#5,(sflags2).w	;check if PP
 	beq.w	.1
-	movea.l	#HmShots,a2
-	btst	#6,(sflags2).w
-	beq.w	.0
-	movea.l	#AwShots,a2
+	movea.l	#HmShots,a2	;move home team struct into a2
+	btst	#6,(sflags2).w	;check who's on PP
+	beq.w	.0	;branch if home (team 1)
+	movea.l	#AwShots,a2	;move away team struct into a2
 .0
 	addq.w	#1,$354(a2)
 .1
 	rts
 
 ChkShotStat	;(penalty94) Determine if a shot was taken and add it to the stats (crowd, team, shooter and goalie)
-	btst	#0,(gmode).w
+	btst	#0,(gmode).w	;gmclock: clock stopped
 	bne.w	.10
-	btst	#4,(gmode).w
+	btst	#4,(gmode).w	;gmhl: highlight
 	bne.w	.10
-	bclr	#4,(sflags2).w
+	bclr	#4,(sflags2).w	;sf2shot: shot taken
 	bne.w	.4
 	btst	#0,(sflags4).w
 	beq.w	.10
@@ -686,39 +686,39 @@ ChkShotStat	;(penalty94) Determine if a shot was taken and add it to the stats (
 	move.l	a4,-(sp)
 	movea.l	#ChkCnt,a4
 	adda.w	(ScoreSumbytes).w,a4
-	movea.l	#HmShots,a2
-	btst	#7,2(a4)
+	movea.l	#HmShots,a2	;home team
+	btst	#7,2(a4)	;entry flag: visitors
 	beq.w	.1
 	adda.w	#tmsize,a2
 .1
 	clr.w	d0
-	move.b	3(a4),d0
+	move.b	3(a4),d0	;pnum (roster offset)
 	movea.l	(sp)+,a4
 	movea.w	tmsort(a2),a2
 	move.w	#5,d1
 .2
-	cmp.b	$66(a2),d0
+	cmp.b	$66(a2),d0	;pnum
 	beq.w	.3
 	adda.w	#SCstruct,a2
 	dbf	d1,.2
 	bra.w	.9
 .3
-	move.w	$52(a2),d0
+	move.w	$52(a2),d0	;SCnum
 	bra.w	.5
 .4
 	movem.l	d0-d1/a1-a3,-(sp)
-	addi.w	#$64,(crowdlevel).w
+	addi.w	#$64,(crowdlevel).w	;100
 	addi.w	#$A,(CwdExciteLvl).w
 	move.w	(shotplayer).w,d0
 .5
-	asl.w	#7,d0
+	asl.w	#7,d0	;scsize
 	movea.w	#(SortCords-M68K_RAM),a3
 	adda.w	d0,a3
 	jsr	(loadTeamStruct).l
-	addq.w	#1,(a2)
-	btst	#5,(sflags2).w
+	addq.w	#1,(a2)	;tmshots
+	btst	#5,(sflags2).w	;sf2pwrplay
 	beq.w	.8
-	btst	#6,(sflags2).w
+	btst	#6,(sflags2).w	;sf2pwrtm: 0 home, 1 visitors
 	bne.w	.7
 	btst	#6,pflags(a3)
 	bne.w	.8
@@ -730,7 +730,7 @@ ChkShotStat	;(penalty94) Determine if a shot was taken and add it to the stats (
 	bne.s	.6
 .8
 	move.l	a2,-(sp)
-	move.w	(gsp).w,d0
+	move.w	(gsp).w,d0	;period
 	add.w	d0,d0
 	adda.w	d0,a2
 	addq.w	#1,$34C(a2)

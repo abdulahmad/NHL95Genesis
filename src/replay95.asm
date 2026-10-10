@@ -707,11 +707,11 @@ RestoreReplayFrame	;92 name. a4 = current replay frame address to convert into n
 	beq.w	.chkrevx
 	ori.w	#$FE00,d2
 .chkrevx
-	btst	#4,(sflags4).w
-	beq.w	.p
+	btst	#4,(sflags4).w	;check if reverse angle
+	beq.w	.p	;branch if not
 	neg.w	d2
 .p
-	move.w	d2,(a3)
+	move.w	d2,(a3)	;update Xpos
 	move.l	(a0),d2
 	asr.l	#3,d2
 	asr.w	#6,d2
@@ -719,32 +719,32 @@ RestoreReplayFrame	;92 name. a4 = current replay frame address to convert into n
 	beq.w	.chkrevy
 	ori.w	#$FC00,d2
 .chkrevy
-	btst	#4,(sflags4).w
-	beq.w	.p1
+	btst	#4,(sflags4).w	;check if reverse angle
+	beq.w	.p1	;branch if not
 	neg.w	d2
-	cmp.w	#0,d1
-	bne.w	.p1
-	addq.w	#2,d2
+	cmp.w	#0,d1	;check if last object (puck shadow)
+	bne.w	.p1	;branch if not
+	addq.w	#2,d2	;update puck shadow Xpos
 .p1
-	move.w	d2,Ypos(a3)
+	move.w	d2,Ypos(a3)	;update Ypos
 	move.w	(a0),d2
 	asr.w	#3,d2
 	andi.w	#$7FF,d2
-	btst	#4,(sflags4).w
-	beq.w	.2
+	btst	#4,(sflags4).w	;check if reverse angle
+	beq.w	.2	;branch if not
 	asl.w	#1,d2
 	move.w	(a6,d2.w),d2
 	cmpi.w	#$F,SCnum(a3)
-	bne.w	.0
+	bne.w	.0	;branch if not
 	cmp.w	#$1B3,d2
 	beq.w	.0
 	move.w	#$FC00,Ypos(a3)
 .0
-	cmp.w	#1,d2
-	blt.w	.1
+	cmp.w	#1,d2	;check if frame is before frame 1 (out of range)
+	blt.w	.1	;branch if so
 	cmp.w	#$420,d2
-	bge.w	.1
-	bra.w	.2
+	bge.w	.1	;branch if so
+	bra.w	.2	;branch if valid object frame
 .1
 	move.w	(a0),d2
 	asr.w	#3,d2
@@ -752,9 +752,9 @@ RestoreReplayFrame	;92 name. a4 = current replay frame address to convert into n
 .2
 	move.w	d2,frame(a3)
 	cmp.w	#$3E8,d2
-	blt.w	.3
+	blt.w	.3	;branch if so
 	cmp.w	#$3ED,d2
-	bge.w	.3
+	bge.w	.3	;branch if so
 	btst	#4,(sflags4).w
 	beq.w	.3
 	move.w	#$190,Ypos(a3)
@@ -764,12 +764,12 @@ RestoreReplayFrame	;92 name. a4 = current replay frame address to convert into n
 	andi.w	#$1800,d2
 	andi.w	#$E7FF,attribute(a3)
 	or.w	d2,attribute(a3)
-	btst	#4,(sflags4).w
-	beq.w	.4
+	btst	#4,(sflags4).w	;check if reverse angle replay
+	beq.w	.4	;branch if not
 .4
 	addq.w	#4,a0
 	adda.w	#SCstruct,a3
-	dbf	d1,.top
+	dbf	d1,.top	;loop to next object
 	moveq	#5,d2
 	movea.w	#(SortCords-M68K_RAM),a3
 .loop

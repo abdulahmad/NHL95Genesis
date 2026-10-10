@@ -17,11 +17,11 @@
 
 sroot	;d0 = square root of d0 (long). Small values by odd subtraction, else Newton steps, else a binary search
 	tst.l	d0
-	beq.w	rtss2
-	cmp.l	#$640,d0
+	beq.w	rtss2	;zero^.5 = zero
+	cmp.l	#$640,d0	;#40^2
 	bhi.w	.1
 	move.l	d1,-(sp)
-	moveq	#-1,d1
+	moveq	#-1,d1	;-1
 .0
 	addq.w	#2,d1
 	sub.w	d1,d0
@@ -32,7 +32,7 @@ sroot	;d0 = square root of d0 (long). Small values by odd subtraction, else Newt
 	rts
 .1
 	movem.l	d1-d4,-(sp)
-	moveq	#9,d3
+	moveq	#9,d3	;max number of reps
 	move.w	#$8000,d1
 	cmp.l	#$F00000,d0
 	bhi.w	.4
@@ -161,25 +161,25 @@ randomd0	;d0 = random number 0 to d0-1 (RNGseed * $BB40E62D + 1)
 
 GetHot	;Push long address of structure to get hot spot from; hot spot x/y returned in d0/d1 (Hotlist by frame, flipped with the attribute)
 	movem.l	a0-a1,-(sp)
-	movea.l	$C(sp),a0
-	clr.w	d0
-	clr.w	d1
+	movea.l	$C(sp),a0	;move stored address before sub routine call into a0
+	clr.w	d0	;clear d0
+	clr.w	d1	;clear d1
 	tst.w	6(a0)
 	ble.w	.1
-	movea.l	#Hotlist,a1
+	movea.l	#Hotlist,a1	;move Hotlist address into a1
 	move.w	6(a0),d0
-	add.w	d0,d0
-	move.b	1(a1,d0.w),d1
-	ext.w	d1
+	add.w	d0,d0	;double d0
+	move.b	1(a1,d0.w),d1	;SprStrHot Y byte
+	ext.w	d1	;extend d1
 	move.b	(a1,d0.w),d0
-	ext.w	d0
+	ext.w	d0	;extend d0
 	btst	#3,4(a0)
 	beq.w	.0
-	neg.w	d0
+	neg.w	d0	;negate d0 (flip)
 .0
 	btst	#4,4(a0)
 	bne.w	.1
-	neg.w	d1
+	neg.w	d1	;ngate d1 (x now)
 .1
 	movem.l	(sp)+,a0-a1
 	move.l	(sp)+,(sp)
@@ -372,7 +372,7 @@ print	;print String a1 at printx / printy with the small font (smallfontptr): a 
 	move.w	4(a2,d0.w),d0
 	add.w	(smallfontchars).w,d0
 .3
-	add.w	d2,d0
+	add.w	d2,d0	;for alternate palettes
 	move.w	d0,(a0)
 	addq.w	#1,(printx).w
 .4
@@ -564,7 +564,7 @@ getpde	;get player a3's energy level into d0. Return a2 = his team struct, d1 = 
 	movea.w	#(HmShots-M68K_RAM),a2
 	btst	#6,pflags(a3)
 	beq.w	.0
-	adda.w	#tmsize,a2
+	adda.w	#tmsize,a2	;team is away
 .0
 	move.b	pnum(a3),d1
 	ext.w	d1
@@ -725,7 +725,7 @@ getnameD7	;95 only. getname for player d0 of team number d7
 getname	;(93 getname) a1 = mesarea "NN First Last" for player d0 of team struct a2. 95 reads the number with GetJerseyNumber
 	movem.l	d0-d3/d7-a0/a2-a3,-(sp)
 	move.w	$28(a2),d7
-	bsr.w	getplayername
+	bsr.w	getplayername	;get to start of player name
 getnamebody	;getnameD7 joins here
 	move.l	a0,-(sp)
 	movea.w	#(mesarea-M68K_RAM),a3
@@ -964,39 +964,39 @@ getnamea0	;shared tail of getplayername: GetRosterName, a0 = the name
 	rts
 
 d0toascii	;(93 ConverByteToDigits) converts decimal number in d0 to ascii: two ascii digits of bcd byte d0 to (a1)+, a leading 0 becomes a space ($F0 + '0')
-	move.w	d0,-(sp)
-	lsr.b	#4,d0
+	move.w	d0,-(sp)	;push to stack
+	lsr.b	#4,d0	;divide by 16 (get upper digit in d0)
 	bne.w	.0
-	move.b	#$F0,d0
+	move.b	#$F0,d0	;move $F0 into d0
 .0
-	addi.b	#$30,d0
-	move.b	d0,(a1)+
-	move.w	(sp)+,d0
-	andi.w	#$F,d0
-	addi.b	#$30,d0
-	move.b	d0,(a1)+
+	addi.b	#$30,d0	;'0'   ; add $30 (48 dec) to d0
+	move.b	d0,(a1)+	;move d0 into a1 and increment
+	move.w	(sp)+,d0	;pop d0 from stack
+	andi.w	#$F,d0	;pass bottom 4 bytes of d0 (lower digit in d0)
+	addi.b	#$30,d0	;'0'   ; add $30 (48 dec) to d0
+	move.b	d0,(a1)+	;move d0 into a1 and increment
 	rts
 
 CalcAttrib	;(and comments) 94 only: the overall rating of player d0: his attributes weighted by OvrPlayerWgtList (skaters) or OvrGoalWgtList (goalies), and by
 	;AttribWgtList. Called from getNameandAttrib (stats94) and PrintOverallRating
-	move.l	a6,-(sp)
+	move.l	a6,-(sp)	;push a6 to stack
 	clr.w	(attribsum).w
 	clr.w	(attribcount).w
 	movea.l	#AttribWgtList,a6
-	cmp.l	(PAttribOverallMask).l,d4
+	cmp.l	(PAttribOverallMask).l,d4	;compare long word (1FBA000A) to d4
 	bne.w	.0
 	movea.l	#OvrPlayerWgtList,a6
 .0
-	cmp.l	(GAttribOverallMask).l,d4
+	cmp.l	(GAttribOverallMask).l,d4	;compare long word 130F000A to d4
 	bne.w	.1
 	movea.l	#OvrGoalWgtList,a6
 .1
 	lea	$1A4(a2),a4
-	clr.l	d1
-	move.w	d0,d1
-	asl.w	#4,d1
-	adda.l	d1,a4
-	adda.l	#$10,a4
+	clr.l	d1	;clear d1
+	move.w	d0,d1	;move d0 into d1. d0 is the offset of the player
+	asl.w	#4,d1	;mult d1 by 16
+	adda.l	d1,a4	;add d1 to a4
+	adda.l	#$10,a4	;add 16 dec to a4. Move to start of Hot/Cold for player.
 	movem.l	d7/a1,-(sp)
 	move.w	$28(a2),d7
 	jsr	(GetRosterName).l
@@ -1188,42 +1188,42 @@ PushNumber	;a1 = String of the decimal number d0, built back from PushNumberBuf
 	rts
 
 PushNumberWidth	;93 name. Right-justified number
-	movem.l	d0-d3,-(sp)
+	movem.l	d0-d3,-(sp)	;push to stack
 	movea.w	#(PushWidthBuf+2-M68K_RAM),a1
-	moveq	#1,d2
-	sub.w	d2,d1
+	moveq	#1,d2	;move 1 into d2
+	sub.w	d2,d1	;sub d2 from d1
 	bra.w	.1
 .0
-	mulu.w	#$A,d2
+	mulu.w	#$A,d2	;mult d2 by 10 dec
 .1
 	dbf	d1,.0
-	moveq	#$20,d3
+	moveq	#$20,d3	;' '   ; move 20 into d3
 .2
-	ext.l	d0
-	divu.w	d2,d0
+	ext.l	d0	;sign extend d0
+	divu.w	d2,d0	;divide d2 into d0
 	bne.w	.3
-	cmp.w	#1,d2
+	cmp.w	#1,d2	;compare d2 to 1
 	beq.w	.3
-	move.w	d3,d0
+	move.w	d3,d0	;move d3 into d0
 	bra.w	.4
 .3
-	moveq	#$30,d3
-	add.w	d3,d0
+	moveq	#$30,d3	;'0'   ; move 48 dec into d3
+	add.w	d3,d0	;add d3 to d0
 .4
-	move.b	d0,(a1)+
-	swap	d0
-	divu.w	#$A,d2
+	move.b	d0,(a1)+	;move d0 into a1 and increment a1
+	swap	d0	;swap d0 words
+	divu.w	#$A,d2	;divide d2 by 10 dec
 	bne.s	.2
-	move.l	a1,d0
+	move.l	a1,d0	;move a1 into d0
 	subi.w	#$BC0E,d0
-	btst	#0,d0
+	btst	#0,d0	;test bit 0 of d0
 	beq.w	.5
-	clr.b	(a1)+
-	addq.w	#1,d0
+	clr.b	(a1)+	;clear byte at a1 and increment
+	addq.w	#1,d0	;add 1 to d0
 .5
 	movea.w	#(PushWidthBuf-M68K_RAM),a1
-	move.w	d0,(a1)
-	movem.l	(sp)+,d0-d3
+	move.w	d0,(a1)	;move d0 into a1 address location
+	movem.l	(sp)+,d0-d3	;push from stack
 	rts
 
 PushNumberWidthZero	;95 only. PushNumberWidth with leading zeros: d0 as d1 digits to PushWidthBuf (a String)
@@ -1477,12 +1477,12 @@ DrawTeamLogo	;94 DrawTeamLogo (optsetup94) body: draw logo a0 (GetTeamLogo, d3 =
 
 ResetClock	;gameclock = PerTimeTotal = the period length (GetPeriodTime; $258 in overtime unless OptPlayMode), clock stopped
 	;(gmclock). Called from StartPer (hockey95)
-	bsr.w	GetPeriodTime
-	cmpi.w	#3,(gsp).w
+	bsr.w	GetPeriodTime	;d0 = period length in seconds
+	cmpi.w	#3,(gsp).w	;overtime?
 	blt.w	.0
 	tst.w	(OptPlayMode).w
 	bne.w	.0
-	move.w	#$258,d0
+	move.w	#$258,d0	;OptPlayMode 0 overtime is always 10:00
 .0
 	move.w	d0,(gameclock).w
 	move.w	d0,(PerTimeTotal).w
@@ -1502,7 +1502,7 @@ ClrHor	;No xref. 94 ClrHor (penalty94): revert the graphics back to vertical ice
 	;and the EASN map at their chars, SprSort, and unless paused clear the screen (eraser). 95 no longer prints the scores here
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#7,(sflags).w
-	move.w	#$3E8,(Oldrow).w
+	move.w	#$3E8,(Oldrow).w	;1000
 	move.w	(rinkvrcset).w,d4
 	movea.l	#Rinktilelist+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
@@ -1514,9 +1514,9 @@ ClrHor	;No xref. 94 ClrHor (penalty94): revert the graphics back to vertical ice
 	bne.w	.0
 	bsr.w	printz
 	String	$FF,0,0,0
-	moveq	#$20,d0
-	moveq	#$1C,d1
-	move.w	#$7FF,d2
+	moveq	#$20,d0	;32
+	moveq	#$1C,d1	;28
+	move.w	#$7FF,d2	;blank tile
 	jsr	(eraser).l
 .0
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1690,7 +1690,7 @@ GetPeriodTimeRemaining	;93 name. Return d0 = (gsp << 14 | PerTimeTotal) - gamecl
 	move.w	(gsp).w,d0
 	swap	d0
 	clr.w	d0
-	lsr.l	#2,d0
+	lsr.l	#2,d0	;gsp in bits 14-15
 	or.w	(PerTimeTotal).w,d0
 	sub.w	(gameclock).w,d0
 	rts
@@ -1713,7 +1713,7 @@ PrintScores1	;93 printscores1. Draw scoreboard: the period box (Framer 9 x 5 at 
 	bset	#dfclock,(disflags).w
 	bsr.w	printz
 	String	$BF,1,$18,0
-	move.w	(gsp).w,d0
+	move.w	(gsp).w,d0	;period name
 	movea.l	#PerLabels,a1
 	btst	#1,(gmode2).w
 	beq.w	.1
@@ -1744,7 +1744,7 @@ PrintScores1	;93 printscores1. Draw scoreboard: the period box (Framer 9 x 5 at 
 PrintTeamNameAndScore	;93 name. Print the team name of team a2 at printx/printy, then its score as 2 digits at x $1C. Called twice from PrintScores1
 	movea.l	$1E(a2),a1
 	adda.w	4(a1),a1
-	adda.w	(a1),a1
+	adda.w	(a1),a1	;skip the first string to the team name
 	bsr.w	print
 	move.w	#$1C,(printx).w
 	move.w	$C(a2),d0
@@ -1778,7 +1778,7 @@ chkpk	;No xref. 94 chkpk: with a power play (sflags2 bit 5) chkpk2, else Z set
 
 chkpk2	;Z set when a3's team is on the power play (sflags2 bit 6 against pfteam)
 	movem.l	d0-d1,-(sp)
-	btst	#6,(sflags2).w
+	btst	#6,(sflags2).w	;#sf2pwrtm - 0 for team 1, 1 for team 2
 	move	sr,d0
 	btst	#6,pflags(a3)
 	move	sr,d1
@@ -2001,18 +2001,18 @@ UnpackPicture	;94 only. Unpack a picture a2: count.w, then 3 bytes per row of 8 
 UpdateLineChange	;94 name (periodicevents, once a second). Unless OptLine: bench players (tmpdst -2) of both teams get 9 energy, up to $1000 (.team)
 	tst.w	(OptLine).w
 	bne.w	.3
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(HmShots-M68K_RAM),a2	;team 1
 	bsr.w	.0
-	lea	tmsize(a2),a2
+	lea	tmsize(a2),a2	;team 2 (tmsize)
 .0
-	moveq	#$32,d0
+	moveq	#$32,d0	;(maxros-1)*2
 .1
 	cmpi.w	#$FFFE,tmpdst(a2,d0.w)
 	bne.w	.2
-	addi.w	#9,tmpde(a2,d0.w)
+	addi.w	#9,tmpde(a2,d0.w)	;tmpde: energy +9
 	cmpi.w	#$1000,tmpde(a2,d0.w)
 	blt.w	.2
-	move.w	#$1000,tmpde(a2,d0.w)
+	move.w	#$1000,tmpde(a2,d0.w)	;max energy
 .2
 	subq.w	#2,d0
 	bpl.s	.1
@@ -2205,10 +2205,10 @@ setupice	;set all variables, send non purgeable graphics, build sprite frame lis
 	jsr	(LoadHomeTeamGfx).l
 	move.w	d4,(EASNcset).w
 	jsr	(setupEASNmap).l
-	move.w	d4,(energybarchars).w
+	move.w	d4,(energybarchars).w	;energy bar chars
 	movea.l	#EnergyBarMap+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
-	move.w	d4,(gamesetuptilesetindex).w
+	move.w	d4,(gamesetuptilesetindex).w	;crowd chars
 	movea.l	#CrowdFrameList+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
 	move.w	d4,(spritechars).w
@@ -2256,7 +2256,7 @@ setupice	;set all variables, send non purgeable graphics, build sprite frame lis
 	move.l	a5,(DMAlistend).w
 	jsr	(DoDMAlist).l
 	move.w	(sp)+,(disflags).w
-	move.l	#VBlank,(vbint).w
+	move.l	#VBlank,(vbint).w	;video94_1
 	bclr	#0,(disflags).w
 	bclr	#2,(disflags).w
 	move	#$2300,sr

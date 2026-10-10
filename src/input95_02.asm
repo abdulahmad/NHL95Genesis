@@ -186,7 +186,7 @@ lineinput	;(input94) Process input for line changes: d1 = new button presses (pa
 lcfound	;(input94) Line d2 was picked: store it ($2E), set tmline (getlchoice) and the players (SetPersonel); falls into lcfound2
 	move.w	d2,d0
 	move.w	d2,$2E(a2)
-	bsr.w	getlchoice
+	bsr.w	getlchoice	;translate choice 0-2 into line number 0-6
 	tst.w	d0
 	bmi.w	rtslc
 	bclr	#3,pflags2(a3)
@@ -219,12 +219,12 @@ linebar	;(penalty94) 93 name. Draw the energy bar of line d0 for team a2 at prin
 	move.w	(printa).w,-(sp)
 	move.w	#$8000,(printa).w
 	ext.l	d0
-	divu.w	#$100,d0
+	divu.w	#$100,d0	;4096/16
 	cmp.w	#$F,d0
 	bls.w	.0
 	moveq	#$F,d0
 .0
-	moveq	#$F,d1
+	moveq	#$F,d1	;d1 = bar frame (15 = empty)
 	sub.w	d0,d1
 	clr.w	d0
 	movea.l	#EnergyBarMap,a1

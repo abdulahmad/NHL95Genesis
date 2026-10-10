@@ -348,7 +348,7 @@ attribjmp	;getNameandAttrib column handlers, offsets from attribjmp: status, ene
 
 AttribStatus	;93 name. Player d0's status word at $68(a2) (94 $66): Ice, Bench, Inj. P, Inj. G, or penalty time. 95: an injured player
 	;(status 3) shows his games out from InjuryGamesTbl (GetInjuryGames)
-	add.w	d0,d0
+	add.w	d0,d0	;jump for status
 	move.w	tmpdst(a2,d0.w),d0
 	bpl.w	.3
 	not.w	d0
@@ -409,7 +409,7 @@ InjuryGamesTbl	;95 only. AttribStatus Strings for an injury of 0-9 games
 	String	'Inj.9G  '
 
 AttribEnergy	;93 name. Energy: word $34(a2) (94 $32) / 40, at most 100 (AttribPrintPct)
-	add.w	d0,d0
+	add.w	d0,d0	;jump for energy
 	move.w	tmpde(a2,d0.w),d0
 	ext.l	d0
 	divu.w	#$28,d0
@@ -419,13 +419,13 @@ AttribEnergy	;93 name. Energy: word $34(a2) (94 $32) / 40, at most 100 (AttribPr
 	bra.w	AttribPrintPct
 
 AttribFighting	;93 name. Bit 0 of the nibble is the handedness: drop it, then a rating out of d1 - 1
-	andi.w	#$E,d0
-	subq.w	#1,d1
+	andi.w	#$E,d0	;jump for fighting attrib - ignore bit 0 (remove Handedness)
+	subq.w	#1,d1	;sub 1 from d1
 
 AttribRating	;94 name. d0 * 100 / d1; 95 scales it (ScaleAttrib, 94 AttribAdjust) only when SeasonPlayerOut returns nonzero.
 	;Falls into AttribPrintPct
-	mulu.w	#$64,d0
-	divu.w	d1,d0
+	mulu.w	#$64,d0	;'d'   ; mult by 100 dec
+	divu.w	d1,d0	;divide by d1 (usually 100 dec)
 	movem.l	d0/d7,-(sp)
 	move.w	(screenarg).w,d7
 	move.w	(attribplayer).w,d0
@@ -452,8 +452,8 @@ HandedTextTbl	;94 name. AttribHanded Strings
 	String	'Lefty   '
 
 AttribWeight	;93 name. Weight: 140 + 8 * rating lb
-	asl.w	#3,d0
-	addi.w	#$8C,d0
+	asl.w	#3,d0	;jump for weight - mult by 8
+	addi.w	#$8C,d0	;add 140 lbs (minimum weight)
 	jsr	(PushNumber).l
 	jsr	(printsmall).l
 	jsr	(printz2).l
@@ -572,7 +572,7 @@ PAttribColumns	;(93 PAttribColumns). Skater attribute columns for DisplayPlayerL
 	;long: high word = mask of rating nibbles to average, low word = attribjmp offset (0 status, 2 energy, 4 handed, 6 weight, 8
 	;fighting, $A rating). A negative word ends the list. The same table as 94
 	String	'     Status    ]'
-	dc.w	$0000,$0
+	dc.w	$0000,$0	;status
 
 PAttribOverall	;The Overall entry; PAttribOverallMask is read by video95_03
 	String	'[   Overall    ]'
@@ -580,13 +580,13 @@ PAttribOverall	;The Overall entry; PAttribOverallMask is read by video95_03
 PAttribOverallMask
 	dc.w	$1FBA,$A
 	String	'[   Energy     ]'
-	dc.w	$0000,$2
+	dc.w	$0000,$2	;energy
 	String	'[   Agility    ]'
 	dc.w	$1000,$A
 	String	'[    Speed     ]'
 	dc.w	$0800,$A
 	String	'[   Handed     ]'
-	dc.w	$0040,$4
+	dc.w	$0040,$4	;handed
 	String	'[Off. Awareness]'
 	dc.w	$0400,$A
 	String	'[Def. Awareness]'
@@ -600,7 +600,7 @@ PAttribOverallMask
 	String	'[Stick Handling]'
 	dc.w	$0020,$A
 	String	'[    Weight    ]'
-	dc.w	$2000,$6
+	dc.w	$2000,$6	;weight
 	String	'[  Endurance   ]'
 	dc.w	$0008,$A
 	String	'[Aggressiveness]'
@@ -611,7 +611,7 @@ PAttribOverallMask
 
 GAttribColumns	;(93 GAttribColumns). Goalie attribute columns, same format as PAttribColumns
 	String	'     Status    ]'
-	dc.w	$0000,$0
+	dc.w	$0000,$0	;status
 
 GAttribOverall	;The Overall entry; GAttribOverallMask is read by video95_03
 	String	'[   Overall    ]'
@@ -623,7 +623,7 @@ GAttribOverallMask
 	String	'[    Speed     ]'
 	dc.w	$0800,$A
 	String	'[  Glove Hand  ]'
-	dc.w	$0040,$4
+	dc.w	$0040,$4	;handed
 	String	'[Def. Awareness]'
 	dc.w	$0200,$A
 	String	'[ Puck Control ]'
@@ -637,7 +637,7 @@ GAttribOverallMask
 	String	'[  Glove Left  ]'
 	dc.w	$0001,$A
 	String	'[    Weight     '
-	dc.w	$2000,$6
+	dc.w	$2000,$6	;weight
 	dc.w	-1
 
 PlayerPositionText	;93 name. Position names for the line slots (no xref in IDA)
@@ -653,9 +653,9 @@ GameSetUp	;(94 optsetup94). The game setup screen, rewritten for 95: ReadLineDat
 	;up / down move SelectedPlayerIdx, left / right step setupvalues (WrapOptionUp / Down), start stores them (SetupStart) and sets the
 	;pads (SetPojoyMode, FigureJoy). Called from hockey95
 	jsr	(ReadLineData).l
-	movea.l	#pwddatabuffer,a3
+	movea.l	#pwddatabuffer,a3	;saved playoff state
 	jsr	(ReadPassBits).l
-	move.w	(TmpOptLine2).w,(OptLine).w
+	move.w	(TmpOptLine2).w,(OptLine).w	;undo the start changes of SetupStart (Auto line changes, Shootout)
 	move.w	(TempOptPlayMode).w,(OptPlayMode).w
 	btst	#5,(GameFlags).w
 	beq.w	.0
@@ -683,15 +683,15 @@ GameSetUp	;(94 optsetup94). The game setup screen, rewritten for 95: ReadLineDat
 	jsr	(RandomSetupTeams).l
 	clr.w	(demoflag).w
 .1
-	cmpi.w	#4,(OptPlayMode).w
+	cmpi.w	#4,(OptPlayMode).w	;check if shootout
 	bne.w	.2
 	bra.w	.4
 .2
-	cmpi.w	#2,(OptPlayMode).w
+	cmpi.w	#2,(OptPlayMode).w	;check if new playoffs
 	blt.w	.3
 	bsr.w	.11
 .3
-	cmpi.w	#1,(OptPlayMode).w
+	cmpi.w	#1,(OptPlayMode).w	;check if cont playoffs
 	bne.w	.4
 	bsr.w	.12
 .4
@@ -715,8 +715,8 @@ GameSetUp	;(94 optsetup94). The game setup screen, rewritten for 95: ReadLineDat
 	move.w	(setupshown).w,(VertLineScrolling).w
 	subq.w	#1,(VertLineScrolling).w
 	move.w	#$FFFF,(setupdir).w
-	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	move.w	#$18,(palcount).w	;24
+	bclr	#2,(disflags).w	;dfng: fade in graphics now
 .8
 	bsr.w	FixModeOptions
 	bsr.w	PrintOptions
@@ -748,11 +748,11 @@ GameSetUp	;(94 optsetup94). The game setup screen, rewritten for 95: ReadLineDat
 	beq.w	.14
 	bra.w	.20
 .14
-	btst	#0,d1
+	btst	#0,d1	;ubut: previous line, the same skips
 	beq.w	.15
 	bra.w	.18
 .15
-	btst	#2,d1
+	btst	#2,d1	;lbut
 	beq.w	.16
 	bra.w	.17
 .16
@@ -906,7 +906,7 @@ GameSetUp_2	;(94 optsetup94). Wait up to $E10 frames (94 $5460) for a key on pad
 	beq.w	.9
 	bra.w	.10
 .9
-	jsr	(PlayerCardTimer).l
+	jsr	(PlayerCardTimer).l	;player cards
 	dbf	d6,.0
 .10
 	rts
@@ -1496,8 +1496,8 @@ PrintSetupTextHi	;95 only. The same with the highlight chars (smallfont3chars)
 DefaultMenus	;94 name. Set the default menu choices for the beginning of the game: the 9 option words from
 	;defmenuoptions to OptPlayMode... Sets sflags11 bit 6 and demoflag. Called once from Begin (main95)
 	bset	#6,(sflags11).w
-	st	(demoflag).w
-	movea.l	#OptPlayMode,a0
+	st	(demoflag).w	;no demo has run yet
+	movea.l	#OptPlayMode,a0	;Start of Menu Options in RAM
 	movea.l	#defmenuoptions,a1
 	move.w	#8,d0
 .0
@@ -1663,7 +1663,7 @@ setoptions	;options screen display (IDA comment, 94). Build the game setup scree
 	move.w	#6,(Map2col1).w
 	move.w	#$E000,(VmMap1).w
 	move.w	#6,(Map1col1).w
-	move.w	#0,d0
+	move.w	#0,d0	;fade to color
 	jsr	(setvram).l
 	jsr	(orjoy).l
 	move.w	#1,d4
@@ -2246,7 +2246,7 @@ SetPojoyMode	;94 only (attract94). Set pojoy from the number of players for play
 	moveq	#7,d0
 	tst.w	(FourWayPlay).w
 	beq.w	.0
-	move.w	#$B,d0
+	move.w	#$B,d0	;4 way play
 .0
 	sub.w	(OptNOP).w,d0
 	move.w	d0,(pojoy).w
@@ -2255,7 +2255,7 @@ SetPojoyMode	;94 only (attract94). Set pojoy from the number of players for play
 
 InitializeGameStructures	;93 name. Random team pairs for all 8 gsstruct games, none of them HomeTeam or VisTeam. No caller
 	st	(gamenum).w
-	clr.l	d3
+	clr.l	d3	;d3 = used team bits
 	move.w	(HomeTeam).w,d1
 	bset	d1,d3
 	move.w	(VisTeam).w,d1
@@ -2282,7 +2282,7 @@ ReadPassBits	;93 name. Translate the saved bits at a3 (5 words) to the playoff v
 	moveq	#4,d0
 	lea	$A(a3),a0
 .0
-	move.w	-(a0),-(sp)
+	move.w	-(a0),-(sp)	;SuperDiv destroys the bits
 	dbf	d0,.0
 	moveq	#7,d2
 	movea.w	#(gsstruct+$70-M68K_RAM),a1
@@ -2336,7 +2336,7 @@ ReadPassBits	;93 name. Translate the saved bits at a3 (5 words) to the playoff v
 	moveq	#4,d0
 	lea	(a3),a0
 .6
-	move.w	(sp)+,(a0)+
+	move.w	(sp)+,(a0)+	;put the bits back
 	dbf	d0,.6
 	rts
 
@@ -2347,14 +2347,14 @@ EncodePW	;93 name. After a playoff game compute winners and save the bits if nee
 	beq.w	.1
 	cmpi.w	#4,(OptPlayMode).w
 	beq.w	.1
-	move.w	#1,(OptPlayMode).w
+	move.w	#1,(OptPlayMode).w	;continue playoffs
 	move.w	#1,(TempOptPlayMode).w
 	bsr.w	ResolveGames
 	bsr.w	MakeTree
 	cmpi.w	#4,(gamelevel).w
-	beq.w	.0
+	beq.w	.0	;finished playoffs
 	tst.w	(gamenum).w
-	bmi.w	.0
+	bmi.w	.0	;po team out, same as a win
 	movea.w	#(pwddatabuffer-M68K_RAM),a3
 	bsr.w	WritePassBits
 	jsr	(WriteLineData).l
@@ -2367,11 +2367,11 @@ EncodePW	;93 name. After a playoff game compute winners and save the bits if nee
 	movea.w	#(pwddatabuffer-M68K_RAM),a3
 	bsr.w	ClrPassBits
 	jsr	(WriteLineData).l
-	move.w	#2,(OptPlayMode).w
+	move.w	#2,(OptPlayMode).w	;new playoffs
 	move.w	#2,(TempOptPlayMode).w
 	cmpi.w	#7,(bosgames).w
 	beq.w	.1
-	move.w	#3,(OptPlayMode).w
+	move.w	#3,(OptPlayMode).w	;new playoffs best of 7
 	move.w	#3,(TempOptPlayMode).w
 .1
 	rts
@@ -2394,7 +2394,7 @@ WritePassBits	;93 name. Transfer the game variables to the bits at a3
 	moveq	#8,d1
 	bsr.w	PushBits
 	move.w	(WinBits).w,d0
-	move.w	#$4000,d1
+	move.w	#$4000,d1	;92 1<<14
 	bsr.w	PushBits
 	moveq	#5,d1
 	moveq	#7,d2
@@ -2433,7 +2433,7 @@ SuperAdd	;93 name. 1 long (d0.L) added to the 5 words at a3
 	add.l	d0,-(a0)
 	bra.w	.1
 .0
-	addq.w	#1,-(a0)
+	addq.w	#1,-(a0)	;carry into the next word up
 .1
 	dbcc	d1,.0
 	movem.l	(sp)+,d1/a0
@@ -2506,7 +2506,7 @@ AddPOStats	;(93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to it
 	adda.w	#tmsize,a2
 .0
 	adda.w	#$B6,a2
-	moveq	#$67,d0
+	moveq	#$67,d0	;$68 stats
 	movea.w	#(statsbuffer-M68K_RAM),a1
 .1
 	clr.w	d1
@@ -2526,10 +2526,10 @@ AddPOStats	;(93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to it
 	move.b	(a1,d2.w),d2
 	clr.l	d3
 	bset	d2,d3
-	subq.w	#1,d3
+	subq.w	#1,d3	;d3 = max value
 	cmp.w	d3,d1
 	ble.w	.3
-	move.w	d3,d1
+	move.w	d3,d1	;clamp
 .3
 	not.l	d3
 	move.w	d4,d5
@@ -2539,7 +2539,7 @@ AddPOStats	;(93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to it
 	move.w	d4,d5
 	lsr.w	#4,d5
 	add.w	d5,d5
-	neg.w	d5
+	neg.w	d5	;the stream runs down in words
 	addi.w	#$100,d5
 	and.l	d3,-tmsort(a2,d5.w)
 	or.l	d1,-tmsort(a2,d5.w)
@@ -2623,7 +2623,7 @@ ResolveGames	;93 name. Compute winners and losers for playoff matchups
 	cmpi.w	#4,6(a0)
 	bne.w	.10
 .4
-	cmpi.w	#3,(gamelevel).w
+	cmpi.w	#3,(gamelevel).w	;finish off rest of round games here
 	bge.w	.7
 	bsr.w	GetShifter
 	movea.w	#(gsstruct-M68K_RAM),a0
@@ -2638,7 +2638,7 @@ ResolveGames	;93 name. Compute winners and losers for playoff matchups
 	cmpi.w	#4,6(a0)
 	beq.w	.6
 	addq.w	#1,4(a0)
-	move.l	#$C8,d0
+	move.l	#$C8,d0	;200
 	jsr	(randomd0).l
 	andi.w	#1,d0
 	beq.s	.5
@@ -2652,7 +2652,7 @@ ResolveGames	;93 name. Compute winners and losers for playoff matchups
 	bsr.w	WritePassBits
 	bset	#2,(sflags3).w
 .7
-	clr.w	(bosgames).w
+	clr.w	(bosgames).w	;advance to next round
 	bsr.w	GetShifter
 	movea.w	#(gsstruct-M68K_RAM),a0
 	moveq	#$10,d3
@@ -2678,7 +2678,7 @@ ResolveGames	;93 name. Compute winners and losers for playoff matchups
 .10
 	rts
 .11
-	clr.w	d3
+	clr.w	d3	;solve for no best of 7 playoffs (much simpler)
 .12
 	move.w	$A(a0),d0
 	cmp.w	$C(a0),d0
@@ -2738,38 +2738,38 @@ ContinuePlayoffs	;(93 NewPO). Continue playoffs: read the saved bits (ReadPassBi
 
 NewPO	;(93 SelectRandomPlayoffTree). New playoff tree with Opt1Team (a random
 	;playoffseats row that has it), bosgames 7 and MakeTree for OptPlayMode 2; otherwise bosgames 0, the gsstruct wins cleared, and falls into MakeTree
-	moveq	#$20,d0
+	moveq	#$20,d0	;' '   ; 20 = 32 decimal
 	jsr	(randomd0).l
 .0
-	addq.w	#1,d0
-	andi.w	#$1F,d0
-	asl.w	#4,d0
+	addq.w	#1,d0	;adds 1 to d0 (d0 cannot be 0)
+	andi.w	#$1F,d0	;mask d0 with 1F (31 decimal). Makes sure its 31 or less
+	asl.w	#4,d0	;multiply d0 by 16
 	movea.l	#playoffseats,a0
-	adda.w	d0,a0
-	lsr.w	#4,d0
-	moveq	#$F,d1
-	move.w	(Opt1Team).w,d2
-	cmp.w	#$19,d2
+	adda.w	d0,a0	;use d0 as offset
+	lsr.w	#4,d0	;divide d0 by 16
+	moveq	#$F,d1	;move 15 into d1
+	move.w	(Opt1Team).w,d2	;Team 1 on menu
+	cmp.w	#$19,d2	;compares #NumOfTeams-3 to d2 (25 decimal)
 	bls.w	.1
 	moveq	#$19,d2
 .1
-	cmp.b	(a0)+,d2
+	cmp.b	(a0)+,d2	;compare team at a0+ to d2 (looks at second byte of a0)
 	dbeq	d1,.1
 	bne.s	.0
 	eori.w	#$F,d1
-	move.w	d1,(potreeteam).w
-	move.w	d0,(postarts).w
-	clr.w	(gamelevel).w
-	move.w	#7,(bosgames).w
-	cmpi.w	#2,(OptPlayMode).w
-	beq.w	MakeTree
-	clr.w	(bosgames).w
-	moveq	#7,d0
-	movea.w	#(gsstruct-M68K_RAM),a0
+	move.w	d1,(potreeteam).w	;which team are you on the initial playoff tree
+	move.w	d0,(postarts).w	;0-31 for which playoff tree to use as frame
+	clr.w	(gamelevel).w	;0-3 for the depth into the playoff tree
+	move.w	#7,(bosgames).w	;0-6 game of series or 7 if not in best of seven
+	cmpi.w	#2,(OptPlayMode).w	;play mode on Main Menu
+	beq.w	MakeTree	;jump to make playoff tree if play mode is 2
+	clr.w	(bosgames).w	;best of seven: game 0
+	moveq	#7,d0	;clr games won
+	movea.w	#(gsstruct-M68K_RAM),a0	;Game struct variables start
 .2
-	clr.w	4(a0)
-	clr.w	6(a0)
-	adda.w	#$10,a0
+	clr.w	4(a0)	;gspotwins
+	clr.w	6(a0)	;gspobwins
+	adda.w	#$10,a0	;gssize
 	dbf	d0,.2
 
 MakeTree	;(93 maketree). Make the playoff tree (potree) from playoffseats and WinBits, then FigureJoy
@@ -2779,16 +2779,16 @@ MakeTree	;(93 maketree). Make the playoff tree (potree) from playoffseats and Wi
 	movea.w	#(potree-M68K_RAM),a0
 	movea.l	#playoffseats,a1
 	adda.w	d1,a1
-	move.l	(a1),(a0)
+	move.l	(a1),(a0)	;first round: 16 teams from the tree
 	move.l	4(a1),4(a0)
 	move.l	8(a1),8(a0)
 	move.l	$C(a1),$C(a0)
 	lea	$10(a0),a1
-	moveq	#$E,d2
+	moveq	#$E,d2	;15 winners
 	move.w	(WinBits).w,d0
 .0
 	move.w	d0,d1
-	andi.w	#1,d1
+	andi.w	#1,d1	;winbit picks the top or bottom team of the pair
 	move.b	(a0,d1.w),(a1)+
 	addq.w	#2,a0
 	lsr.w	#1,d0

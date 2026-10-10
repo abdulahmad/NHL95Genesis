@@ -20,7 +20,7 @@ Pausemode	;(hockey94 PauseMode). Game is in pause mode now: fade out, stop the s
 	btst	#sfpz,(sflags).w
 	beq.w	.1
 	btst	#5,(sflags9).w
-	bne.w	.1
+	bne.w	.1	;eq = leave pause
 	jsr	(SoundOff).l
 	bra.w	.1	;95: to the next instruction
 .1

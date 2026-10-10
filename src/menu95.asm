@@ -36,10 +36,10 @@ seta2	;(hockey94). Set a2 to the team struct of the pause pad (menupadnum: cont1
 
 InitMenuState	;93 name. Start a menu: a0 = item list, a1 = screen draw routine; selection and first shown item 0. Falls into
 	;DrawMenuScreen. Called from Pausemode
-	move.l	a0,(menulist).w
-	move.l	a1,(menudraw).w
-	clr.w	(menuitem).w
-	clr.w	(menuitem+2).w
+	move.l	a0,(menulist).w	;item list
+	move.l	a1,(menudraw).w	;draw routine
+	clr.w	(menuitem).w	;selected item
+	clr.w	(menuitem+2).w	;first item shown
 
 DrawMenuScreen	;93 name. Call the draw routine, clear the menu box, print the items (UpdateMenuSelection) and fade in
 	movea.l	(menudraw).w,a0
@@ -56,7 +56,7 @@ RedrawMenu	;95 only, no IDA label. Print the menu items and fade in. Called from
 HandleMenuInput	;93 name. Pause menu pad d1: right / left move between the three tabs (menucursor: INFO, STATS, PAUSE; SetInfoMenuItems ...),
 	;down / up the item, C (bit 5) runs the item routine (seta2 first); ne = stay in the menu (PlayGame sets sflags9 bit 3 to leave). With
 	;sflags9 bit 5 only ShowPenaltyMessages runs
-	btst	#7,d1
+	btst	#7,d1	;sbut
 	bne.w	.11
 	btst	#5,(sflags9).w
 	beq.w	.0
@@ -80,24 +80,24 @@ HandleMenuInput	;93 name. Pause menu pad d1: right / left move between the three
 .3
 	bra.w	.12
 .4
-	btst	#1,d1
+	btst	#1,d1	;dbut
 	beq.w	.5
-	addq.w	#1,(menuitem).w
+	addq.w	#1,(menuitem).w	;next lower item
 	bra.w	UpdateMenuSelection
 .5
-	btst	#0,d1
+	btst	#0,d1	;ubut
 	beq.w	.6
-	subq.w	#1,(menuitem).w
+	subq.w	#1,(menuitem).w	;next higher item
 	bra.w	UpdateMenuSelection
 .6
-	btst	#5,d1
+	btst	#5,d1	;cbut
 	bne.w	.7
 	beq.w	.11
 .7
 	cmpi.l	#ZeroLong,(menulist).w
 	beq.w	.11
 	bsr.w	seta2
-	move.w	(menuitem).w,d0
+	move.w	(menuitem).w,d0	;find the handler of the selected item
 	movea.l	(menulist).w,a0
 	adda.l	(menuitemoffset).w,a0
 	adda.w	(a0),a0
@@ -114,14 +114,14 @@ HandleMenuInput	;93 name. Pause menu pad d1: right / left move between the three
 	bclr	#3,(sflags9).w
 	move.b	(sflags12).w,-(sp)
 	bclr	#0,(sflags12).w
-	jsr	(a0)
+	jsr	(a0)	;the handler of the selected item
 	move.b	(sp)+,(sflags12).w
 	btst	#3,(sflags9).w
 	eori	#4,ccr
 .10
 	rts
 .11
-	eori	#4,ccr
+	eori	#4,ccr	;invert Z
 	rts
 .12
 	tst.w	(menucursor).w
@@ -224,7 +224,7 @@ SetInfoMenuItems	;95 only. menulist = InfoMenus, menuitemoffset $7E in a shootou
 	rts
 
 startpause	;(hockey94). Pause on (sfpz)
-	bset	#0,(sflags).w
+	bset	#0,(sflags).w	;sfpz
 	rts
 
 startpause1	;(hockey94). pause initiated by cont 1 (95: menupadnum = 0 for ReadMenuJoy)
@@ -622,7 +622,7 @@ UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to s
 .0
 	move.w	(menuitem).w,d0
 	bpl.w	.1
-	clr.w	(menuitem).w
+	clr.w	(menuitem).w	;no item above the first
 	clr.w	d0
 .1
 	movea.l	(menulist).w,a0
@@ -633,49 +633,49 @@ UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to s
 .2
 	adda.w	(a0),a0
 	addq.w	#4,a0
-	tst.w	2(a0)
+	tst.w	2(a0)	;negative: the last item
 .3
 	dbmi	d0,.2
 	addq.w	#1,d0
-	sub.w	d0,(menuitem).w
+	sub.w	d0,(menuitem).w	;no item below the last
 	move.w	(menuitem).w,d0
 	cmp.w	(menuitem+2).w,d0
 	bge.w	.4
-	move.w	d0,(menuitem+2).w
+	move.w	d0,(menuitem+2).w	;scroll up
 .4
 	subq.w	#3,d0
 	cmp.w	(menuitem+2).w,d0
 	ble.w	.5
-	move.w	d0,(menuitem+2).w
+	move.w	d0,(menuitem+2).w	;scroll down
 .5
 	bsr.s	SetMenuPrintX
 	move.w	#$D,(printy).w
 	movea.l	(menulist).w,a1
 	adda.l	(menuitemoffset).w,a1
-	jsr	(printsmall).l
+	jsr	(printsmall).l	;the menu title
 	jsr	(printz2).l
 	dc.w	$28	;String: menu box top, rows of blanks
 	dc.b	$F9,$00,$FB,$01,$20,$FB,$FF,$FA,$01,$20,$FB,$FF,$FA,$01,$20,$FB
 	dc.b	$FF,$FA,$01,$20,$FB,$12,$20,$FB,$FF,$FA,$FF,$20,$FB,$FF,$FA,$FF
 	dc.b	$20,$FB,$FF,$FA,$FF,$20
 	adda.w	(a1),a1
-	move.w	(menuitem+2).w,d0
+	move.w	(menuitem+2).w,d0	;skip to the first item shown
 	bra.w	.7
 .6
 	adda.w	(a1),a1
 	addq.w	#4,a1
 .7
 	dbf	d0,.6
-	moveq	#3,d1
+	moveq	#3,d1	;4 rows
 	move.w	#$C,(printy).w
 	bsr.w	SetMenuPrintX
 	move.w	(menuitem+2).w,d0
 	beq.w	.8
-	jsr	(printz2).l
+	jsr	(printz2).l	;more items above
 	String	$FE,0,$F9,0,$FB,1,$FA,1,$7B,$FA,$FF,0	;the up arrow
 .8
 	bsr.w	SetMenuPrintX
-	jsr	(printz2).l
+	jsr	(printz2).l	;start of an item row
 	String	$F9,0,$FB,2,$FA,2
 	move.l	a1,-(sp)
 	movea.l	(menulist).w,a1
@@ -683,19 +683,19 @@ UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to s
 	jsr	(printsmall).l
 	cmp.w	(menuitem).w,d0
 	bne.w	.9
-	jsr	(printsmall).l
+	jsr	(printsmall).l	;the selected item marker
 .9
 	movea.l	(sp)+,a1
-	bsr.w	PrintMenuItem
+	bsr.w	PrintMenuItem	;the item text
 	addq.w	#1,d0
 	addq.w	#4,a1
-	tst.w	2(a1)
+	tst.w	2(a1)	;negative: the last item
 	dbmi	d1,.8
 	bpl.w	.10
 	bsr.w	SetMenuPrintX
 	addq.w	#1,(printy).w
 	move	sr,-(sp)
-	jsr	(printz2).l
+	jsr	(printz2).l	;more items below
 	String	$FE,0,$FB,1
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#1,d0
@@ -719,12 +719,12 @@ PrintMenuItem	;93 name. printsmall item String a1 (advanced past it). y: START G
 	;x: MANUAL GOALIE or AUTO GOALIE by the pad team's goaliemode1 / goaliemode2
 	cmpi.b	#$79,2(a1)
 	beq.w	.0
-	cmpi.b	#$78,2(a1)
+	cmpi.b	#$78,2(a1)	;first char 'x'
 	bne.w	.9
 	move.l	a1,-(sp)
 	movea.l	#.11,a1
 	bsr.w	SetMenuPadSide
-	btst	#1,(sflags).w
+	btst	#1,(sflags).w	;sfpj: the pause pad
 	beq.w	.6
 	tst.w	(goaliemode2).w
 	bra.w	.7
@@ -757,7 +757,7 @@ PrintMenuItem	;93 name. printsmall item String a1 (advanced past it). y: START G
 .8
 	jsr	(printsmall).l
 	movea.l	(sp)+,a1
-	adda.w	(a1),a1
+	adda.w	(a1),a1	;skip the 'x' item text
 	bra.w	.10
 .9
 	jsr	(printsmall).l

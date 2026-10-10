@@ -39,7 +39,7 @@ updateanim	;frame switch control on struct a3. Called from updateplayers (hockey
 	btst	#1,d1	;95: loop to the pair in the flag's high byte
 	bne.w	.again
 	clr.w	d0	;loop from the start
-	clr.w	SPAnum(a3)
+	clr.w	SPAnum(a3)	;clear SPANum
 	bclr	#pfalock,pflags(a3)	;clear animation lock
 	bclr	#pf2aip,pflags2(a3)	;clear animation in progress
 	bclr	#5,$64(a3)	;clear fall down flag

@@ -72,7 +72,7 @@ asswingo	;asstab entry 9. Winger on offense: a random spot in the puck zone (.de
 	cmp.w	temp5(a3),d2	;compare temp5 with d2
 	bne.w	.de3	;branch if different zone
 	btst	#7,(sflags2).w	;95: a new spot every time with sflags2 bit 7
-	bne.w	.de3
+	bne.w	.de3	;branch if different zone
 	move.w	(VDP_CNTR).l,d0	;move frame counter into d0
 	andi.w	#$7F,d0	;pass first 7 bits
 	bne.w	.nodec	;branch if not equal to 0 - this allows random movement in zone while waiting
@@ -501,7 +501,7 @@ assnothing	;assign94 assnothing (moved in): no assignment, just skate (doplayera
 	moveq	#8,d0
 	jmp	(doplayeracc).l
 assfight	;asstab entry $19: an rts (94 assfight and assfwatch are rts only)
-	rts
+	rts	;assfight - possible location where fighting logic used to be
 
 pucknorm	;asstab entry 1. The puck: follow the carrier, icing / offsides checks, a stoppage when it sits still
 	btst	#2,(BA_PS_flags).w	;check if flag is clear (normal play)

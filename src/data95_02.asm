@@ -13,46 +13,46 @@ checkagr	;(collide94) Aggression check: d0 = randomd0((($32 - Agr) / 2) * 13) (9
 	;$28 of the puck; a2 on a breakaway ($64 bit 1) rolls again (8 / 7 / 4 / 3 by his distance from the goal line). 95: d0 = $7F (no
 	;penalty) when sflags9 bit 2 (home checker) / bit 1 (away) is set. The callers call a penalty when d0 is small
 	move.w	#$32,d0
-	sub.b	$73(a3),d0
-	lsr.b	#1,d0
-	mulu.w	#$D,d0
+	sub.b	$73(a3),d0	;Agr(a3) - subtract Agr from d0
+	lsr.b	#1,d0	;divide result by 2
+	mulu.w	#$D,d0	;multiply d0 with 13 decimal
 	btst	#3,pflags(a3)
 	beq.w	.0
-	asl.w	#1,d0
+	asl.w	#1,d0	;multiply by 2
 .0
-	move.w	(a3),d1
-	sub.w	(puckx).w,d1
-	cmp.w	#$28,d1
+	move.w	(a3),d1	;XPos
+	sub.w	(puckx).w,d1	;subtract x pos of puck with X pos of player
+	cmp.w	#$28,d1	;Checking position with respect to puck
 	bgt.w	.1
-	cmp.w	#$FFD8,d1
+	cmp.w	#$FFD8,d1	;checking the inverse position (other side of rink)
 	blt.w	.1
 	move.w	Ypos(a3),d1
 	sub.w	(pucky).w,d1
-	cmp.w	#$28,d1
+	cmp.w	#$28,d1	;same as above
 	bgt.w	.1
-	cmp.w	#$FFD8,d1
+	cmp.w	#$FFD8,d1	;checking the inverse position (other side of rink)
 	blt.w	.1
-	asr.w	#1,d0
+	asr.w	#1,d0	;divide by 2
 .1
 	jsr	(randomd0).l
-	btst	#1,$64(a2)
+	btst	#1,$64(a2)	;Check for player on breakaway
 	beq.w	.4
-	move.w	$14(a2),d1
+	move.w	$14(a2),d1	;Ypos of player being checked
 	bpl.w	.2
-	neg.w	d1
+	neg.w	d1	;flip result (other side of rink)
 .2
 	subi.w	#$10B,d1
-	neg.w	d1
-	move.w	#8,d0
+	neg.w	d1	;flip Y pos
+	move.w	#8,d0	;move 8 into d0. Removes any trace of Agr here
 	cmp.w	#$78,d1
 	bgt.w	.3
-	move.w	#7,d0
+	move.w	#7,d0	;move 7 into d0
 	cmp.w	#$3C,d1
 	bgt.w	.3
-	move.w	#4,d0
+	move.w	#4,d0	;moves 4 into d0
 	cmp.w	#$2D,d1
 	bgt.w	.3
-	move.w	#3,d0
+	move.w	#3,d0	;finally, just move 3 in d0
 .3
 	jsr	(randomd0).l
 .4
@@ -75,7 +75,7 @@ showref	;(display94) Ref window: when sflags2 bit 1 is set add the 8 RefRamMap r
 	movea.w	#(RefRamMap-M68K_RAM),a0
 	movea.w	#(VmMap1-M68K_RAM),a1
 	move.w	2(a1),d2
-	moveq	#2,d0
+	moveq	#2,d0	;refy: Xpos on ice screen
 	btst	#7,(sflags).w
 	beq.w	*+4
 .0
@@ -99,7 +99,7 @@ showref	;(display94) Ref window: when sflags2 bit 1 is set add the 8 RefRamMap r
 	rts
 
 ClearPenaltyBuffer	;(penalty94) IDA: clrPenBuf (94). Clear PenBuf
-	moveq	#$1F,d0
+	moveq	#$1F,d0	;MaxPen-1
 	movea.w	#(PenBuf-M68K_RAM),a0
 .0
 	clr.w	(a0)+
@@ -124,19 +124,19 @@ ClearPenalties	;(title94) Clear the penalties: PBnum, Penaltytimer, Pencntdwn, P
 	rts
 
 clrTmPdst	;(title94) Set the 26 tmpdst words of team a0 to -2 (bench), then -1
-	move.w	#$19,d0
+	move.w	#$19,d0	;19 = 25 decimal (max roster size)
 	adda.w	#$68,a0
 .0
-	move.w	#$FFFE,(a0)+
+	move.w	#$FFFE,(a0)+	;-2 = bench
 	dbf	d0,.0
-	move.w	#$FFFF,(a0)
+	move.w	#$FFFF,(a0)	;-1 = ice
 	rts
 
 puckIChk	;(checks94) Icing check: once the puck is loose (puckc negative) past the goal line ($10B, 94 $108) set iflags bit 0
 	;(ifcgl), unless it went in the crease ($2C either side), which clears bit 2 (ifok)
-	btst	#2,(iflags).w
+	btst	#2,(iflags).w	;#ifok
 	beq.w	.0
-	btst	#0,(iflags).w
+	btst	#0,(iflags).w	;#ifcgl - if crossed goal line
 	bne.w	.0
 	tst.w	(puckc).w
 	bpl.w	.0
@@ -144,7 +144,7 @@ puckIChk	;(checks94) Icing check: once the puck is loose (puckc negative) past t
 	btst	#1,(iflags).w
 	bne.w	.1
 	neg.w	d0
-	cmp.w	(pucky).w,d0
+	cmp.w	(pucky).w,d0	;check other goalline
 	bgt.w	.2
 .0
 	rts
@@ -152,14 +152,14 @@ puckIChk	;(checks94) Icing check: once the puck is loose (puckc negative) past t
 	cmp.w	(pucky).w,d0
 	bgt.s	.0
 .2
-	cmpi.w	#$2C,(puckx).w
+	cmpi.w	#$2C,(puckx).w	;',' ; 2C - edge of crease
 	bgt.w	.3
-	cmpi.w	#$FFD4,(puckx).w
+	cmpi.w	#$FFD4,(puckx).w	;FFD4 - edge of crease
 	blt.w	.3
-	bclr	#2,(iflags).w
+	bclr	#2,(iflags).w	;#ifok cleared
 	rts
 .3
-	bset	#0,(iflags).w
+	bset	#0,(iflags).w	;#ifcgl
 	rts
 
 ChkOffsides	;(checks94) Offsides: clear the flag of a team that is all back onside (.8, 94 ClearOffsidesIfAllPlayers), then when

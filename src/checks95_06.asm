@@ -241,7 +241,7 @@ SetSPA	;(checks94) Set animation d1 for player a3 unless it is already running
 	beq.w	.0
 	clr.w	SPAnum(a3)
 	move.w	d1,SPA(a3)
-	st	SPAcnt(a3)
+	st	SPAcnt(a3)	;restart animation
 .0
 	rts
 
@@ -287,13 +287,13 @@ doplayeracc	;(checks94) Player acceleration toward direction d0 by his speed rat
 	beq.w	.3
 	move.w	#$2564,d1
 .3
-	andi.w	#$F,d0
-	cmp.w	#7,d0
+	andi.w	#$F,d0	;pass first 4 bits of d0
+	cmp.w	#7,d0	;compare to 7
 	ble.w	.7
-	cmp.w	#9,d0
+	cmp.w	#9,d0	;compare to 9
 	bne.w	.4
 	move.w	Xvel(a3),d0
-	or.w	Yvel(a3),d0
+	or.w	Yvel(a3),d0	;OR Yvel with Xvel
 	bne.w	.5
 .4
 	btst	#1,pflags2(a3)
@@ -306,17 +306,17 @@ doplayeracc	;(checks94) Player acceleration toward direction d0 by his speed rat
 .7
 	movem.w	d0-d1,-(sp)
 	move.w	d0,d2
+	move.w	SCnum(a3),d0	;move SCnum into d0
 	move.w	SCnum(a3),d0
-	move.w	SCnum(a3),d0
-	cmp.w	(puckc).w,d0
+	cmp.w	(puckc).w,d0	;check if puckc
 	beq.w	.11
-	move.w	(puckx).w,d0
-	sub.w	(a3),d0
-	move.w	Ypos(a3),d3
-	move.b	(puckvy).w,d1
+	move.w	(puckx).w,d0	;puckx into d0
+	sub.w	(a3),d0	;sub Xpos
+	move.w	Ypos(a3),d3	;Ypos into d3
+	move.b	(puckvy).w,d1	;puckvy into d1
 	ext.w	d1
-	add.w	(pucky).w,d1
-	sub.w	d3,d1
+	add.w	(pucky).w,d1	;add pucky to d1
+	sub.w	d3,d1	;sub Ypos from d1
 	btst	#7,pflags(a3)
 	bne.w	.8
 	neg.w	d0
@@ -347,11 +347,11 @@ doplayeracc	;(checks94) Player acceleration toward direction d0 by his speed rat
 .9
 	btst	#4,pflags(a3)
 	bne.w	.12
-	move.w	Xvel(a3),d0
-	or.w	Yvel(a3),d0
+	move.w	Xvel(a3),d0	;move Xvel into d0
+	or.w	Yvel(a3),d0	;or with Yvel
 	beq.w	.10
-	move.w	Xvel(a3),d0
-	move.w	Yvel(a3),d1
+	move.w	Xvel(a3),d0	;move Xvel into d0
+	move.w	Yvel(a3),d1	;Yvel to d1
 	jsr	(vtoa).l
 	sub.w	(sp),d0
 	addq.w	#1,d0
@@ -368,7 +368,7 @@ doplayeracc	;(checks94) Player acceleration toward direction d0 by his speed rat
 	clr.w	Yvel(a3)
 .12
 	movem.w	(sp)+,d0-d1
-	move.w	facedir(a3),d2
+	move.w	facedir(a3),d2	;facedir into d2
 	sub.w	d2,d0
 	andi.w	#7,d0
 	movea.l	#.23,a0
@@ -408,14 +408,14 @@ doplayeracc	;(checks94) Player acceleration toward direction d0 by his speed rat
 	move.w	d4,d3
 	asr.w	#6,d4
 	sub.w	d4,Yvel(a3)
-	move.w	Xvel(a3),d4
-	muls.w	d4,d4
-	move.w	Yvel(a3),d3
-	muls.w	d3,d3
-	add.l	d4,d3
-	swap	d3
+	move.w	Xvel(a3),d4	;Xvel to d4
+	muls.w	d4,d4	;square d4
+	move.w	Yvel(a3),d3	;Yvel to d3
+	muls.w	d3,d3	;square d3
+	add.l	d4,d3	;add d4 and d3
+	swap	d3	;swap upper and lower words
 	move.w	#$300,d4
-	cmp.w	#$180,d4
+	cmp.w	#$180,d4	;compare to d4
 	bge.w	.17
 	move.w	#$180,d4
 .17
@@ -424,9 +424,9 @@ doplayeracc	;(checks94) Player acceleration toward direction d0 by his speed rat
 	beq.w	.18
 	neg.l	d4
 .18
-	add.l	d4,facedir(a3)
-	andi.w	#7,facedir(a3)
-	move.w	facedir(a3),d2
+	add.l	d4,facedir(a3)	;add d4 to facedir
+	andi.w	#7,facedir(a3)	;pass the first 3 bits to facedir
+	move.w	facedir(a3),d2	;move facedir to d2
 	movem.w	d0,-(sp)
 	move.w	facedir(a3),d0
 	cmp.w	(TempWord1).w,d0
@@ -536,9 +536,9 @@ noturn	;(checks94) doplayeracc: no turn, d2 = facedir
 playeracc	;(checks94) Player acceleration with facing d2 (doplayeracc entry used by the goalie and input code)
 	asl.w	#2,d2
 	lea	dirtab(pc),a0
-	move.w	2(a0,d2.w),d1
+	move.w	2(a0,d2.w),d1	;Y Inc
 	move.w	(a0,d2.w),d0
-	move.w	Wallsin(a3),d2
+	move.w	Wallsin(a3),d2	;check acc dir and dont push wall
 	beq.w	.0
 	eor.w	d0,d2
 	bpl.w	.0
@@ -550,19 +550,19 @@ playeracc	;(checks94) Player acceleration with facing d2 (doplayeracc entry used
 	bmi.w	.1
 	clr.w	d1
 .1
-	clr.w	d2
-	move.b	weight(a3),d2
-	lsr.w	#2,d2
-	neg.w	d2
+	clr.w	d2	;clear d2
+	move.b	weight(a3),d2	;move wgt of player into d2
+	lsr.w	#2,d2	;divide d2 by 2
+	neg.w	d2	;make it negative
 	addi.w	#$60,d2
-	add.b	legstr(a3),d2
-	asr.w	#1,d2
-	muls.w	d2,d0
-	muls.w	d2,d1
-	asr.l	#5,d0
+	add.b	legstr(a3),d2	;add agl (legstr) of player to d2
+	asr.w	#1,d2	;divide by 2
+	muls.w	d2,d0	;x
+	muls.w	d2,d1	;y
+	asr.l	#5,d0	;divide by 32
 	asr.l	#5,d1
-	muls.w	d7,d0
-	muls.w	d7,d1
+	muls.w	d7,d0	;mult d0 with frames elapsed (d7)
+	muls.w	d7,d1	;mult d1 by frames elapsed (d7)
 	tst.w	position(a3)
 	bne.w	.2
 	btst	#3,pflags(a3)
@@ -574,58 +574,58 @@ playeracc	;(checks94) Player acceleration with facing d2 (doplayeracc entry used
 .2
 	add.w	Xvel(a3),d0
 	add.w	Yvel(a3),d1
-	move.w	d0,d2
-	move.w	d1,d3
-	muls.w	d2,d2
-	muls.w	d3,d3
-	add.l	d2,d3
-	movem.w	d0-d1,-(sp)
+	move.w	d0,d2	;move d0 into d2
+	move.w	d1,d3	;move d1 into d3
+	muls.w	d2,d2	;square d2
+	muls.w	d3,d3	;square d3
+	add.l	d2,d3	;add together
+	movem.w	d0-d1,-(sp)	;push d0 and d1 to stack
 	clr.l	d0
 	jsr	(getpde).l
 	btst	#4,(sflags7).w
 	beq.w	.3
-	move.w	#$1000,d0
+	move.w	#$1000,d0	;d0 = energy, move 1000 hex into d0
 .3
-	clr.w	d2
+	clr.w	d2	;clear d2
 	move.b	legspd(a3),d2
-	move.w	d2,(TempRawSpd).w
-	lsr.w	#1,d2
-	mulu.w	d0,d2
-	asl.l	#4,d2
-	swap	d2
-	asl.w	#2,d2
-	andi.w	#$3F,d2
-	lea	MaxSpeed(pc),a2
+	move.w	d2,(TempRawSpd).w	;hold spd value
+	lsr.w	#1,d2	;divide by 2
+	mulu.w	d0,d2	;multiply energy with spd
+	asl.l	#4,d2	;mult by 16
+	swap	d2	;swap d2 words (this math is to adjust for energy. Line Changes off, d2 = Spd value / 2)
+	asl.w	#2,d2	;mult by 4 (No Line changes result from above = Spd value * 2)
+	andi.w	#$3F,d2	;'?'   ; pass first 6 bits. Limits d2 to $3F (63 decimal)
+	lea	MaxSpeed(pc),a2	;move Maxspeed table address into a2
 	move.w	d2,(rosterscroll).w
 	move.l	(a2,d2.w),d2
-	move.l	d2,(TempMaxSpd).w
+	move.l	d2,(TempMaxSpd).w	;hold MaxSpeed value
 	cmpi.w	#$3C,(rosterscroll).w
 	bge.w	.4
-	btst	#0,(TempRawSpd+1).w
+	btst	#0,(TempRawSpd+1).w	;check if TempRawSpd is odd
 	beq.w	.4
 	move.w	(rosterscroll).w,d2
-	addq.w	#4,d2
+	addq.w	#4,d2	;add 4 to d2
 	move.l	(a2,d2.w),d2
-	sub.l	(TempMaxSpd).w,d2
-	asr.l	#1,d2
-	add.l	(TempMaxSpd).w,d2
+	sub.l	(TempMaxSpd).w,d2	;sub TempMaxSpd from d2
+	asr.l	#1,d2	;divide by 2
+	add.l	(TempMaxSpd).w,d2	;add TempMaxSpd to d2 (so halves the difference between the 2 Speed steps)
 .4
-	btst	#6,pflags2(a3)
+	btst	#6,pflags2(a3)	;check if injured during fight
 	beq.w	.5
-	lsr.l	#3,d2
+	lsr.l	#3,d2	;divide d2 by 8
 .5
 	tst.w	position(a3)
 	bne.w	.6
-	move.w	(puckc).w,d0
+	move.w	(puckc).w,d0	;puck carrier SCnum
 	cmp.w	SCnum(a3),d0
 	bne.w	.6
-	asr.l	#1,d2
+	asr.l	#1,d2	;divide d2 by 2
 .6
-	movem.w	(sp)+,d0-d1
-	cmp.l	d2,d3
+	movem.w	(sp)+,d0-d1	;pop from stack
+	cmp.l	d2,d3	;Compare d3 to d2 (max speed check)
 	bhi.w	.7
-	move.w	d0,Xvel(a3)
-	move.w	d1,Yvel(a3)
+	move.w	d0,Xvel(a3)	;move new Xvel into Xvel
+	move.w	d1,Yvel(a3)	;move new Yvel into Yvel
 .7
 	tst.w	(OptLine).w
 	bne.w	.9
@@ -992,8 +992,8 @@ PenGoalStuff	;(penalty94) 93 name. Do this stuff after a goal: a1 = scored on te
 	bset	#0,(sflags9).w
 	addq.w	#1,$24(a1)
 	addq.w	#1,2(a2)
-	bset	#0,(HmShots+tmflags).w
-	bset	#0,(AwShots+tmflags).w
+	bset	#0,(HmShots+tmflags).w	;home tmflags: tmflcc
+	bset	#0,(AwShots+tmflags).w	;visitors tmflags: tmflcc
 .3
 	movem.l	(sp)+,d0-d2/a0
 	rts
@@ -1014,21 +1014,21 @@ DisplayPlayerAttributeMenu	;(data94) 93 name. Goal box: close both line change b
 	bset	#2,(sflags2).w
 .0
 	movea.w	#(HmShots-M68K_RAM),a2
-	jsr	(lcfound2).l
+	jsr	(lcfound2).l	;close lc box
 	adda.w	#tmsize,a2
 	jsr	(lcfound2).l
-	movea.w	#(ChkCnt-M68K_RAM),a4
+	movea.w	#(ChkCnt-M68K_RAM),a4	;+ ScoreSumbytes = last goal entry
 	adda.w	(ScoreSumbytes).w,a4
 	jsr	(printz).l
 	String	$BF,$B,2,0
 	moveq	#$13,d0
-	move.w	#5,d1
+	move.w	#5,d1	;5 rows: no assist
 	tst.b	4(a4)
 	bmi.w	.1
-	addq.w	#2,d1
+	addq.w	#2,d1	;7: one assist
 	tst.b	5(a4)
 	bmi.w	.1
-	addq.w	#1,d1
+	addq.w	#1,d1	;8: two assists
 .1
 	jsr	(Framer).l
 	jsr	(CountGoalies).l
@@ -1045,7 +1045,7 @@ DisplayPlayerAttributeMenu	;(data94) 93 name. Goal box: close both line change b
 	lea	PPGoalBigTxt(pc),a1
 .3
 	clr.w	d0
-	move.b	3(a4),d0
+	move.b	3(a4),d0	;scorer
 	addi.w	#$B6,d0
 	cmpi.b	#3,(a2,d0.w)
 	bne.w	.5
@@ -1055,7 +1055,7 @@ DisplayPlayerAttributeMenu	;(data94) 93 name. Goal box: close both line change b
 	cmp.w	(recwins).w,d1
 	movem.w	(sp)+,d1
 	blt.w	.5
-	adda.w	(a1),a1
+	adda.w	(a1),a1	;HAT TRICK!
 	move.w	d0,-(sp)
 	move.w	$28(a2),d0
 	cmp.w	(HomeTeam).w,d0
@@ -1081,7 +1081,7 @@ DisplayPlayerAttributeMenu	;(data94) 93 name. Goal box: close both line change b
 	jsr	(PrintPlayerGoals).l
 .6
 	clr.w	d0
-	move.b	4(a4),d0
+	move.b	4(a4),d0	;first assist
 	bmi.w	.7
 	bclr	#5,(sflags4).w
 	bne.w	.7
@@ -1093,7 +1093,7 @@ DisplayPlayerAttributeMenu	;(data94) 93 name. Goal box: close both line change b
 	move.w	(sp)+,d0
 	jsr	(PrintPlayerAssists).l
 	clr.w	d0
-	move.b	5(a4),d0
+	move.b	5(a4),d0	;second assist
 	bmi.w	.7
 	jsr	(printz).l
 	String	$BF,$C,8,0
@@ -1367,22 +1367,22 @@ clockcont_0	;(hockey94) The clock ran out in overtime / the game: game over hand
 	movea.w	#(puckx-M68K_RAM),a3
 	moveq	#1,d0
 	jsr	(assinsert).l
-	cmpi.w	#2,(gsp).w
+	cmpi.w	#2,(gsp).w	;periods 1-2 just end the period
 	blt.w	.9
 	moveq	#$1C,d0
 	movea.w	#(SortCords-M68K_RAM),a3
-	cmpi.w	#3,(gamelevel).w
+	cmpi.w	#3,(gamelevel).w	;playoffs?
 	bne.w	.5
 	cmpi.w	#7,(bosgames).w
 	beq.w	.2
-	moveq	#$10,d3
+	moveq	#$10,d3	;gssize
 	mulu.w	(gamenum).w,d3
-	movea.w	#(gsstruct-M68K_RAM),a0
+	movea.w	#(gsstruct-M68K_RAM),a0	;game structs (games stored for playoffs and box scores)
 	adda.w	d3,a0
 	clr.w	d3
-	btst	#0,$E(a0)
+	btst	#0,$E(a0)	;gsftf, gsflags(a0): teams are flipped
 	beq.w	.0
-	eori.w	#2,d3
+	eori.w	#2,d3	;gspobwins-gspotwins
 .0
 	move.w	(HmGoals).w,d1
 	sub.w	(AwGoals).w,d1
@@ -1415,18 +1415,18 @@ clockcont_0	;(hockey94) The clock ran out in overtime / the game: game over hand
 .6
 	tst.w	position(a3)
 	ble.w	.7
-	jsr	(assinsert).l
+	jsr	(assinsert).l	;first skater gets d0, the rest get score
 	moveq	#$1C,d0
 .7
 	adda.w	#SCstruct,a3
 	dbf	d2,.6
 .8
 	jsr	(ClearPenaltyBuffer).l
-	addi.w	#$3E8,(crowdlevel).w
-	bset	#0,(gmode).w
-	bset	#6,(gmode).w
+	addi.w	#$3E8,(crowdlevel).w	;1000
+	bset	#0,(gmode).w	;gmclock: stop clock
+	bset	#6,(gmode).w	;set at end of game
 	jsr	(ClearPenalties).l
-	move.w	#4,d0
+	move.w	#4,d0	;PenEOG
 	jmp	AddPenalty2
 .9
 	btst	#7,(sflags9).w
@@ -1460,9 +1460,9 @@ clockcont	;(hockey94) Clock continue: when the clock is at 0 stop the play (sfx 
 	bne.w	.0
 	tst.w	(gameclock).w
 	bne.w	.0
-	bset	#3,(disflags).w
+	bset	#3,(disflags).w	;dfclock: clock needs update
 	jsr	(play_new_song).l
-	move.w	#4,-(sp)
+	move.w	#4,-(sp)	;horn
 	jsr	(sfx).l
 	bsr.w	LockScroll
 	jmp	clockcont_0

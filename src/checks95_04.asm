@@ -106,7 +106,7 @@ DrawPlayoffSprite	;(title94). The PlayoffSprite sprite at playoffspritex / playo
 
 SetSframe	;(display94). Draw one sprite frame. a0 = framelist, d0/d1 = x/y cords, d2 = frame, d3 = start char,
 	;a6 = Satt pointer, d6 = link counter. 95 builds the attribute word from the frame entry's flags and char
-	cmp.w	#$40,d6
+	cmp.w	#$40,d6	;MaxSprites
 	bge.w	.2
 	movem.l	d0-d5/a0,-(sp)
 	adda.l	4(a0),a0
@@ -114,7 +114,7 @@ SetSframe	;(display94). Draw one sprite frame. a0 = framelist, d0/d1 = x/y cords
 	move.w	2(a0,d2.w),d4
 	sub.w	(a0,d2.w),d4
 	lsr.w	#3,d4
-	subq.w	#1,d4
+	subq.w	#1,d4	;number of sprites in frame
 	adda.w	(a0,d2.w),a0
 .0
 	move.w	2(a0),d2
@@ -133,7 +133,7 @@ SetSframe	;(display94). Draw one sprite frame. a0 = framelist, d0/d1 = x/y cords
 	move.w	6(a0),(a6)
 	add.w	d0,(a6)+
 	addq.w	#1,d6
-	cmp.w	#$40,d6
+	cmp.w	#$40,d6	;MaxSprites
 	beq.w	.1
 	addq.w	#8,a0
 	dbf	d4,.0
@@ -146,48 +146,48 @@ UpdateScores	;(penalty94). Update the ticker score values of the other games (Se
 	bsr.w	GetShifter
 	move.w	d1,(TickerNum).w
 	movea.w	#(gsstruct-M68K_RAM),a0
-	moveq	#$10,d0
+	moveq	#$10,d0	;gssize
 	mulu.w	d1,d0
 	adda.w	d0,a0
 .0
 	cmp.w	(gamenum).w,d1
 	beq.w	.1
-	bclr	#1,$E(a0)
-	btst	#2,$E(a0)
+	bclr	#1,$E(a0)	;gsfhl
+	btst	#2,$E(a0)	;gsfso
 	bne.w	.1
 	bsr.w	SetScore
 .1
-	suba.w	#$10,a0
+	suba.w	#$10,a0	;gssize
 	dbf	d1,.0
 	rts
 
 SetScore	;(penalty94). Add to the score of the game in a0. After period 3 a game within one goal goes to OT (gsper 3)
 	;and asks for a highlight
-	cmpi.w	#4,8(a0)
+	cmpi.w	#4,8(a0)	;gsper
 	bge.w	.2
 	movem.l	d0-d1/a0-a1,-(sp)
 	cmpi.w	#3,8(a0)
 	bne.w	.0
-	move.w	#5,8(a0)
-	move.w	$A(a0),d0
-	sub.w	$C(a0),d0
+	move.w	#5,8(a0)	;final
+	move.w	$A(a0),d0	;gss1
+	sub.w	$C(a0),d0	;gss2
 	cmp.w	#1,d0
 	bgt.w	.1
 	cmp.w	#$FFFF,d0
 	blt.w	.1
-	move.w	#3,8(a0)
-	bset	#1,$E(a0)
+	move.w	#3,8(a0)	;close game: overtime
+	bset	#1,$E(a0)	;gsfhl
 	bra.w	.1
 .0
 	addq.w	#1,8(a0)
-	move.w	(a0),d0
-	move.w	2(a0),d1
+	move.w	(a0),d0	;gst1
+	move.w	2(a0),d1	;gst2
 	bsr.w	.3
-	add.w	d0,$A(a0)
+	add.w	d0,$A(a0)	;gss1
 	move.w	2(a0),d0
 	move.w	(a0),d1
 	bsr.w	.3
-	add.w	d0,$C(a0)
+	add.w	d0,$C(a0)	;gss2
 .1
 	movem.l	(sp)+,d0-d1/a0-a1
 .2
@@ -196,10 +196,10 @@ SetScore	;(penalty94). Add to the score of the game in a0. After period 3 a game
 	asl.w	#2,d0
 	movea.w	#TeamList,a1
 	movea.l	(a1,d0.w),a1
-	adda.w	8(a1),a1
+	adda.w	8(a1),a1	;92 ScoreOdds
 	move.b	(a1),d0
 	andi.w	#$70,d0
-	lsr.w	#1,d0
+	lsr.w	#1,d0	;row * 8
 	lea	sctab(pc),a1
 	move.l	(a1,d0.w),(nibblebuffer).w
 	move.l	4(a1,d0.w),(nibblebuffer+4).w
@@ -215,7 +215,7 @@ SetScore	;(penalty94). Add to the score of the game in a0. After period 3 a game
 	add.l	d1,(nibblebuffer).w
 	move.l	4(a1,d0.w),d1
 	add.l	d1,(nibblebuffer+4).w
-	moveq	#4,d0
+	moveq	#4,d0	;4 weights
 	jmp	WeightedRandomSelect
 
 sctab	;(penalty94). 93 SetScore .sctab. Weights for 0, 1, 2, 3 goals, 8 rows
@@ -478,14 +478,14 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 .2
 	cmpi.w	#$258,(crowdlevel).w
 	bls.w	.3
-	move.w	#$258,(crowdlevel).w
+	move.w	#$258,(crowdlevel).w	;limit crowd level
 .3
 	bset	#3,(disflags).w
 	bclr	#0,(sflags).w
 	bclr	#0,(sflags3).w
-	clr.b	(iflags).w
-	st	(RefCnt).w
-	st	(puckcross2).w
+	clr.b	(iflags).w	;no icing
+	st	(RefCnt).w	;no refs
+	st	(puckcross2).w	;no goalie moves
 	st	(puckcross6).w
 	bclr	#1,(sflags2).w
 	bset	#0,(sflags2).w
@@ -497,7 +497,7 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 	bset	#4,(disflags).w
 .4
 	jsr	(ClrHor).l
-	clr.w	(Vpos).w
+	clr.w	(Vpos).w	;clear h/v pos
 	clr.w	(Hpos).w
 	btst	#7,(sflags9).w
 	beq.w	.8
@@ -517,26 +517,26 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 .8
 	move.w	(fox).w,(puckx).w
 	move.w	(foy).w,(pucky).w
-	st	(puckz).w
+	st	(puckz).w	;no visible puck
 	clr.w	(puckvx).w
 	clr.w	(puckvy).w
 	clr.w	(puckvz).w
 	st	(puckc).w
-	movea.w	#(SortCords+(12*SCstruct)-M68K_RAM),a0
+	movea.w	#(SortCords+(12*SCstruct)-M68K_RAM),a0	;reposition goal nets
 	clr.w	Xvel(a0)
 	clr.w	Yvel(a0)
-	clr.w	(a0)
+	clr.w	(a0)	;Xpos
 	move.w	#$112,Ypos(a0)
-	adda.w	#SCstruct,a0
+	adda.w	#SCstruct,a0	;add SCstruct to move to next goal net
 	clr.w	Xvel(a0)
 	clr.w	Yvel(a0)
 	clr.w	(a0)
 	move.w	#$FEEE,Ypos(a0)
-	movea.w	#(SortCords+((puckscnum+1)*SCstruct)-M68K_RAM),a0
+	movea.w	#(SortCords+((puckscnum+1)*SCstruct)-M68K_RAM),a0	;move to puck shadow SCnum
 	move.w	#$1B3,frame(a0)
 	clr.w	SPA(a0)
 	clr.w	attribute(a0)
-	clr.w	(SortCords+(puckscnum*SCstruct)+attribute).w
+	clr.w	(SortCords+(puckscnum*SCstruct)+attribute).w	;clear puck SCnum attribute
 	bclr	#6,(sflags).w
 	moveq	#$64,d4
 .9
@@ -559,14 +559,14 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 	movea.w	#(SortCords-M68K_RAM),a3
 	moveq	#$B,d2
 .11
-	move.w	#$FF10,(a3)
+	move.w	#$FF10,(a3)	;-240, Xpos
 	clr.w	Ypos(a3)
 	clr.w	frame(a3)
 	move.w	position(a3),d1
 	bmi.w	.20
 	beq.w	.14
 	moveq	#$10,d0
-	cmp.w	#4,d1
+	cmp.w	#4,d1	;find the center (position 4)
 	bne.w	.13
 	movea.w	#(HmShots-M68K_RAM),a2
 	btst	#6,pflags(a3)
@@ -574,10 +574,10 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 	adda.w	#tmsize,a2
 .12
 	clr.w	$18(a2)
-	move.b	pnum(a3),$19(a2)
+	move.b	pnum(a3),$19(a2)	;66(a3) = player offset on roster 19(a2) = player who touches puck
 	bclr	#7,(sflags8).w
-	st	$1A(a2)
-	st	$1C(a2)
+	st	$1A(a2)	;clear last player to touch puck (assist 1)
+	st	$1C(a2)	;clear second last player to touch puck (assist 2)
 	bclr	#3,tmflags(a2)
 	moveq	#$11,d0
 .13
@@ -603,7 +603,7 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 	neg.w	d0
 	neg.w	d1
 .16
-	tst.w	position(a3)
+	tst.w	position(a3)	;check for goalie
 	beq.w	.19
 	cmp.w	#8,d4
 	bgt.w	.18
@@ -621,7 +621,7 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 	add.w	(fox).w,d0
 	add.w	(foy).w,d1
 .19
-	move.w	d0,(a3)
+	move.w	d0,(a3)	;Xpos
 	move.w	d1,Ypos(a3)
 	clr.w	Xvel(a3)
 	clr.w	Yvel(a3)
@@ -631,7 +631,7 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 	neg.w	d1
 	jsr	(vtoa).l
 	move.w	d0,facedir(a3)
-	bclr	#2,pflags2(a3)
+	bclr	#2,pflags2(a3)	;#pf2unav
 	bclr	#5,pflags(a3)
 	move.w	#$B5C,d1
 	jsr	(SetSPA).l
@@ -663,7 +663,7 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 	move.w	#2,temp1(a3)
 	btst	#7,(sflags9).w
 	bne.w	.23
-	move.w	d0,temp1(a3)
+	move.w	d0,temp1(a3)	;time for puck drop
 .23
 	move.w	#$18,(palcount).w
 	movea.l	#fofdata2,a0
@@ -671,15 +671,15 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 	move.w	#$8000,2(a0)
 	move.w	#4,attribute(a0)
 	move.w	#$A800,frame(a0)
-	move.w	#7,8(a0)
+	move.w	#7,8(a0)	;frame of ref
 	move.w	#$8000,VRoffs(a0)
 	btst	#1,(gmode).w
 	bne.w	.24
 	eori.w	#$800,2(a0)
 	eori.w	#$800,frame(a0)
 .24
-	move.w	#$FFFF,(fodir1).w
-	move.w	#$FFFF,(fodir2).w
+	move.w	#$FFFF,(fodir1).w	;-1
+	move.w	#$FFFF,(fodir2).w	;-1
 	jsr	(LeadSong).l
 	bclr	#6,(sflags8).w
 	bne.w	.25
@@ -895,7 +895,7 @@ checkfo	;(display94). Check for faceoff sprites: the 3 fofdata2 entries (frame, 
 	;at fodropx / fodropy in Satt (a6, d6). Called from setvideo
 	btst	#0,(sflags).w
 	bne.w	.7
-	btst	#4,(disflags).w
+	btst	#4,(disflags).w	;face off flag
 	beq.w	.7
 	movea.w	#(fofdata2-M68K_RAM),a3
 	moveq	#2,d0
@@ -930,7 +930,7 @@ checkfo	;(display94). Check for faceoff sprites: the 3 fofdata2 entries (frame, 
 	beq.w	.4
 	addq.w	#3,d2
 .4
-	btst	#3,2(a3)
+	btst	#3,2(a3)	;x flip
 	beq.w	.5
 	subq.w	#3,(a6)
 	move.b	2(a2),d2

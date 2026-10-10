@@ -262,7 +262,7 @@ puckpenshot	;checks94 puckpenshot. Penalty shot / shootout face-off: rink, puck 
 	clr.w	(puckvy).w
 	clr.w	(puckvz).w
 	st	(puckc).w
-	movea.w	#(SortCords+(12*SCstruct)-M68K_RAM),a0
+	movea.w	#(SortCords+(12*SCstruct)-M68K_RAM),a0	;goal net SCstruct
 	clr.w	Xvel(a0)
 	clr.w	Yvel(a0)
 	clr.w	(a0)
@@ -272,7 +272,7 @@ puckpenshot	;checks94 puckpenshot. Penalty shot / shootout face-off: rink, puck 
 	clr.w	Yvel(a0)
 	clr.w	(a0)
 	move.w	#$FEEE,Ypos(a0)
-	movea.w	#(SortCords+((puckscnum+1)*SCstruct)-M68K_RAM),a0
+	movea.w	#(SortCords+((puckscnum+1)*SCstruct)-M68K_RAM),a0	;puck shadow SCstruct
 	move.w	#$1B3,6(a0)
 	clr.w	SPA(a0)
 	clr.w	4(a0)
@@ -292,8 +292,8 @@ puckpenshot	;checks94 puckpenshot. Penalty shot / shootout face-off: rink, puck 
 	bsr.w	SetupPenaltyShot
 	jsr	(resetplstuff).l
 	move.l	a3,-(sp)
-	movea.l	#SortCords+(11*SCstruct),a3
-	move.w	#$B,d2
+	movea.l	#SortCords+(11*SCstruct),a3	;away goalie SCstruct
+	move.w	#$B,d2	;11 = # of player SCstructs
 .3
 	cmp.w	(BA_Sktr_SCnum).w,d2
 	beq.w	.4
@@ -555,7 +555,7 @@ PenaltyShotBox	;data94 PenaltyShotBox. In a shootout PlayoffRoundScreen; else th
 .0
 	movem.l	d0-d2/a0-a4,-(sp)
 	move.w	#$FFFF,d0
-	jsr	(prefmes).l
+	jsr	(prefmes).l	;d0 = -1
 	jsr	(printz).l
 	String	$BF,$3,$2,$0
 	moveq	#$1B,d0
@@ -564,11 +564,11 @@ PenaltyShotBox	;data94 PenaltyShotBox. In a shootout PlayoffRoundScreen; else th
 	lea	PenShotBigTxt(pc),a1
 	jsr	(printbig1).l
 	move.w	(BA_Sktr_SCnum).w,d0
-	asl.w	#7,d0
+	asl.w	#7,d0	;sprite structs are $80 bytes
 	movea.l	#SortCords,a2
 	adda.w	d0,a2
 	clr.w	d0
-	move.b	$66(a2),d0
+	move.b	$66(a2),d0	;roster slot
 	movea.l	#HmShots,a2
 	tst.w	(BA_Team).w
 	beq.w	.1
@@ -603,7 +603,7 @@ PenShotBigTxt	;data94 PenShotBigTxt. PenaltyShotBox big text
 
 PenShotChk	;penalty94 PenShotChk. A breakaway shooter hit: a penalty shot when penalty d0 allows one (PenShotPenalties); d0 = the penalty
 	movem.l	d1-d3/a0,-(sp)
-	btst	#1,$64(a2)
+	btst	#1,$64(a2)	;breakaway
 	beq.w	.0
 	btst	#3,(gmode).w
 	bne.w	.0
@@ -621,7 +621,7 @@ PenShotChk	;penalty94 PenShotChk. A breakaway shooter hit: a penalty shot when p
 	movea.l	#PenShotPenalties,a0
 	move.w	(a0,d0.w),d1
 	bmi.w	.3
-	move.w	$52(a2),d2
+	move.w	$52(a2),d2	;SCnum
 	movem.w	d0-d1,-(sp)
 	move.w	d2,d0
 	jsr	(getBAplayerInfo).l
@@ -631,7 +631,7 @@ PenShotChk	;penalty94 PenShotChk. A breakaway shooter hit: a penalty shot when p
 	bra.s	.0
 .2
 	move.w	d1,(pspenalty).w
-	move.w	d1,d0
+	move.w	d1,d0	;return the penalty shot penalty
 .3
 	movem.l	(sp)+,d1-d3/a0
 	rts
@@ -653,16 +653,16 @@ getBAplayerInfo	;penalty94 getBAplayerInfo. Keep the breakaway shooter, team, go
 	jsr	(getGoalieSCnum).l
 	tst.w	d0
 	bpl.w	.1
-	movem.w	(sp)+,d0
+	movem.w	(sp)+,d0	;no goalie
 	bclr	#3,(BA_PS_flags).w
 	bra.w	.3
 .1
-	move.w	d0,d1
-	move.w	(sp)+,d0
+	move.w	d0,d1	;d1 = goalie's SCnum
+	move.w	(sp)+,d0	;d0 now back to player checked on breakaway SCnum
 	move.w	d0,(BA_Sktr_SCnum).w
 	movea.l	#SortCords,a1
 	move.w	d0,d3
-	asl.w	#7,d3
+	asl.w	#7,d3	;scsize
 	move.w	#0,(BA_Team).w
 	btst	#6,pflags(a1,d3.w)
 	beq.w	.2
@@ -671,7 +671,7 @@ getBAplayerInfo	;penalty94 getBAplayerInfo. Keep the breakaway shooter, team, go
 	move.w	#0,(BA_Skater_Offset).w
 	move.b	pnum(a1,d3.w),(BA_Skater_Offset+1).w
 	move.w	d1,(BA_Goalie_SCnum).w
-	asl.w	#7,d1
+	asl.w	#7,d1	;scsize
 	move.w	#0,(BA_Goalie_Offset).w
 	move.b	pnum(a1,d1.w),(BA_Goalie_Offset+1).w
 	move.w	#0,(BA_Checker_Offset).w
@@ -680,7 +680,7 @@ getBAplayerInfo	;penalty94 getBAplayerInfo. Keep the breakaway shooter, team, go
 	movem.l	(sp)+,d1-d3/a1
 	rts
 .4
-	move.w	#$FFFF,d1
+	move.w	#$FFFF,d1	;N set: no penalty shot
 	bra.s	.3
 
 ShortenMsgTimer	;period94 ShortenMsgTimer. Cap the message timer at 2, unless a second pad is on and a3 is not the puck carrier
@@ -704,43 +704,43 @@ setInjuryType	;collide94 setInjuryType. a2 injured: out for the period ($FFFD) o
 	bset	#2,$63(a2)
 	addi.w	#$12C,(crowdlevel).w
 	addi.w	#$1E,(CwdExciteLvl).w
-	move.w	#$D,-(sp)
+	move.w	#$D,-(sp)	;sound effect
 	jsr	(sfx).l
 	clr.w	$28(a2)
 	clr.w	$2A(a2)
-	move.w	(a2),(xc1).w
+	move.w	(a2),(xc1).w	;move Xpos to scroll center
 	move.w	$14(a2),(yc1).w
 	bset	#6,(sflags).w
-	clr.w	d1
-	movea.w	#(HmShots-M68K_RAM),a0
+	clr.w	d1	;clear d1
+	movea.w	#(HmShots-M68K_RAM),a0	;move Home team Struct to a0
 	btst	#6,$62(a2)
-	beq.w	.0
+	beq.w	.0	;branch if home
 	move.w	#$8000,d1
-	adda.w	#tmsize,a0
+	adda.w	#tmsize,a0	;add $364 to a0 (Away Team Struct start)
 .0
 	move.b	$66(a2),d1
 	move.w	d1,(TempPlOffset).w
-	ext.w	d1
-	add.w	d1,d1
+	ext.w	d1	;sign extend - in this case just makes upper bye of word 00
+	add.w	d1,d1	;add d1 to itself
 	btst	#1,(sflags13).w
 	bne.w	.1
-	exg	a2,a3
-	jsr	(getFgtbyte).l
-	exg	a2,a3
-	tst.w	d0
+	exg	a2,a3	;swap a2 and a3
+	jsr	(getFgtbyte).l	;get the Fgt byte (divided by 4)
+	exg	a2,a3	;swap back
+	tst.w	d0	;check if d0 is zero
 	bne.w	.1
-	bclr	#5,(sflags7).w
+	bclr	#5,(sflags7).w	;clear injury game bit
 	move.w	#$FFFD,tmpdst(a0,d1.w)
 	bra.w	.4
 .1
-	cmp.w	#3,d0
+	cmp.w	#3,d0	;compare d0 to 3 (if H/F was 12, d0 = 3)
 	beq.w	.2
 	bclr	#5,(sflags7).w
 	move.w	#$FFFD,tmpdst(a0,d1.w)
-	jsr	(chkFgtBit1).l
+	jsr	(chkFgtBit1).l	;check Fgt bit 1 of player.
 	beq.w	.4
 .2
-	bset	#5,(sflags7).w
+	bset	#5,(sflags7).w	;set injury game bit
 	move.w	#$FFFC,tmpdst(a0,d1.w)
 	btst	#3,(GameFlags).w
 	beq.w	.4
@@ -882,9 +882,9 @@ GetInjuryGames	;95 only. d0 = the injury games of player d1 of team d7 (save RAM
 	rts
 
 getFgtbyte	;title94 getFgtbyte. d0 = $74(a2) / 4
-	clr.w	d0
-	move.b	$74(a2),d0
-	lsr.w	#2,d0
+	clr.w	d0	;clear d0
+	move.b	$74(a2),d0	;move H/F bit into d0 (this is always even)
+	lsr.w	#2,d0	;shift 2 right (divide by 4)
 	rts
 
 chkFgtBit1	;title94 chkFgtBit1. 95: Z from bit 1 of a random 0-99 (94 tested bit 1 of $74(a2))
@@ -1053,7 +1053,7 @@ updatepwrplay	;penalty94 updatepwrplay. The power play box: the team and the tim
 	move.w	#2,(a3)
 	jsr	(appendz).l
 	String	$BF,$1,$19,$0
-	adda.w	4(a0),a0
+	adda.w	4(a0),a0	;team name
 	adda.w	(a0),a0
 	movea.l	a0,a1
 	jsr	(appstring).l
@@ -1079,14 +1079,14 @@ GetLowestPen	;penalty94 GetLowestPen. a2 = shorthanded team, a3 = team on the po
 	move.b	(a0)+,d2
 	bmi.w	.1
 	move.w	$68(a2,d2.w),d2
-	btst	#$E,d2
+	btst	#$E,d2	;bit 14: coincidental
 	bne.s	.0
 	sub.w	d3,d2
 	add.w	d2,d0
 	move.w	d2,d3
 	bra.s	.0
 .1
-	cmpi.w	#6,$24(a3)
+	cmpi.w	#6,$24(a3)	;tmap: 6 on ice, done
 	beq.w	.3
 	sub.w	d3,d0
 	lea	$9C(a3),a0

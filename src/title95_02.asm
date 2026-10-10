@@ -99,7 +99,7 @@ newTitleScreen	;title94 newTitleScreen. The title screen (TitleScreenImg, TitleI
 	clr.w	(TempWord1).w
 	jsr	(printz).l
 	String	$EF,0,0,0
-	movea.l	#Credits,a1
+	movea.l	#Credits,a1	;start of credits for scrolling
 	jsr	(CreditsPrintRow).l
 	addi.w	#$20,(Vscroll).w
 	move.w	#$104,(clampcounter).w

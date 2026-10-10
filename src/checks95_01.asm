@@ -341,7 +341,7 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	bset	#3,(sflags4).w	;set bit 3
 	move.w	#$1C,-(sp)	;SFX
 	jsr	(sfx).l
-	bra.w	.assstart
+	bra.w	.assstart	;set bit 3
 .0
 	movem.w	d0-d1,-(sp)
 	move.w	(pucky).w,d0	;pucky to d0
@@ -828,7 +828,7 @@ goaliesave	;checks94 goaliesave. 95 first aims the goalie: Xvel from where the p
 	sub.w	Ypos(a3),d1	;sub goalie Ypos from d1
 	jsr	(vtoa).l
 	sub.w	facedir(a3),d0	;sub facedir from d0
-	andi.w	#7,d0
+	andi.w	#7,d0	;pass first 3 bits of d0
 	move.w	d0,d3	;direction to the crossing, for the glove check
 	movem.l	d1-d4,-(sp)	;95: frames until the puck reaches the goalie y
 	move.w	Ypos(a3),d1

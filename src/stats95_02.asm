@@ -12,7 +12,7 @@ updatecrowdf	;hockey94 updatecrowdf. Every game loop, d7 = elapsed frames: the c
 	;95: a frame table instead of the 94 random frame / time pairs
 	cmpi.w	#$15E,(crowdlevel).w
 	blt.w	.0
-	subq.w	#3,(crowdlevel).w
+	subq.w	#3,(crowdlevel).w	;loud crowd calms down faster
 .0
 	sub.w	d7,(crowdlevel).w
 	bpl.w	.1
@@ -49,7 +49,7 @@ CrowdFrameTbl	;95 only. updatecrowdf crowd animation frames, -1 wraps
 
 showcrowd	;display94 showcrowd. Crowd sprites (CrowdFrameList): up to 3 frames per PBnum nibble (ShowCrowdPb), then the crowdframe frame (ShowCrowdFrame);
 	;none in a reverse angle replay (sflags4 bit 4). a6 = sprite table, d6 = link counter
-	btst	#4,(sflags4).w
+	btst	#4,(sflags4).w	;check if reverse angle replay
 	bne.w	rtsShowCrowd
 	movea.l	#CrowdFrameList,a1
 	adda.l	4(a1),a1

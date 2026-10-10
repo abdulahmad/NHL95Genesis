@@ -24,7 +24,7 @@ demoread	;hockey94 demoread. Monitor the pads in demo mode (called every game lo
 	tst.w	(cont4team).w
 	bne.w	rtsdemo
 	jsr	(ReadJoy1).l
-	btst	#7,d1
+	btst	#7,d1	;sbut
 	beq.w	.0
 	jmp	startpause1
 .0

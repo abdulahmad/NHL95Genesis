@@ -2880,7 +2880,7 @@ PeriodStatsScreen	;period94 PeriodStatsScreen: both team logos, goals/shots by p
 	bsr.w	PeriodStatsColumns
 	move.w	#$18,(palcount).w
 .3
-	jsr	(WaitVSyncAndReadInput).l
+	jsr	(WaitVSyncAndReadInput).l	;left (bit 2) goals, right (bit 3) shots, start exits
 	btst	#7,d1
 	bne.w	.6
 	btst	#2,d1
@@ -3042,7 +3042,7 @@ LineEditorMenu	;stats94 LineEditorMenu: slot cursor loop; start exits, C picks a
 	cmp.w	#5,d0
 	bgt.s	.0
 .2
-	lea	LineCursorTable(pc),a0
+	lea	LineCursorTable(pc),a0	;the slot after the move
 	move.b	8(a0,d0.w),(setupvalues+1).w
 	jsr	(DrawAttributeMenu).l
 	bra.s	.0
@@ -3564,16 +3564,16 @@ DisplayPeriodOver
 	movem.l	d0-d5/a0-a4,-(sp)
 	jsr	(printz).l
 	String	$BF,$2,$E,$0
-	moveq	#$1C,d0
+	moveq	#$1C,d0	;framer size
 	moveq	#9,d1
 	jsr	(Framer).l
 	jsr	(printz).l
 	String	$BF,$9,$10,'Stars of the Game',$BF,$3,$F,$0
 	bsr.w	CalculateTeamAttributes
 	move.w	#$12,(printy).w
-	moveq	#2,d2
+	moveq	#2,d2	;3 stars
 .1
-	bsr.w	FindMaxAttributeTEam
+	bsr.w	FindMaxAttributeTEam	;a2 = team, d0 = player
 	move.w	#$1A,(printx).w
 .2
 	addq.w	#1,(printy).w
@@ -3588,7 +3588,7 @@ DisplayPeriodOver
 	move.w	(HmGoals).w,d0
 	sub.w	(AwGoals).w,d0
 	ble.w	.3
-	move.w	#$F,-(sp)
+	move.w	#$F,-(sp)	;song $F: home team won
 	jsr	(song).l
 .3
 	movem.l	(sp)+,d0-d5/a0-a4
@@ -3611,12 +3611,12 @@ FindMaxAttributeTEam
 	clr.l	(a1)
 	move.w	a1,d0
 	subi.w	#$CAF8,d0
-	lsr.w	#2,d0
+	lsr.w	#2,d0	;entry number
 	movea.w	#(HmShots-M68K_RAM),a2
 	cmp.w	#$1A,d0
 	blt.w	.3
 	subi.w	#$1A,d0
-	adda.w	#tmsize,a2
+	adda.w	#tmsize,a2	;26-51: away team (tmsize)
 .3
 	movem.l	(sp)+,d1-d2/a1/a4
 	rts
@@ -3628,20 +3628,20 @@ CalculateTeamAttributes
 	add.w	d2,d5
 	movea.w	#(HmShots-M68K_RAM),a2
 	lea	tmsize(a2),a3
-	bsr.w	CalculateTeamAttributeValues
+	bsr.w	CalculateTeamAttributeValues	;home
 	movea.w	a3,a2
 	lea	-tmsize(a2),a3
-	bsr.w	CalculateTeamAttributeValues
+	bsr.w	CalculateTeamAttributeValues	;away (d3 = away - home score)
 	cmpi.w	#3,(gsp).w
 	bne.w	.1
 	tst.w	d3
 	beq.w	.1
-	movea.w	#(ChkCnt-M68K_RAM),a0
+	movea.w	#(ChkCnt-M68K_RAM),a0	;+ ScoreSumbytes = last goal entry
 	adda.w	(ScoreSumbytes).w,a0
 	clr.w	d0
 	btst	#7,2(a0)
 	beq.w	.0
-	addi.w	#$1A,d0
+	addi.w	#$1A,d0	;away goal: second 26 entries
 .0
 	add.b	3(a0),d0
 	asl.w	#2,d0
@@ -3655,7 +3655,7 @@ CalculateTeamAttributeValues
 	move.w	$C(a2),d3
 	sub.w	$C(a3),d3
 	ext.l	d3
-	moveq	#$19,d4
+	moveq	#$19,d4	;26 slots
 	jsr	(ReadAttributeNibble).l
 	neg.w	d0
 	add.w	d4,d0
@@ -3665,18 +3665,18 @@ CalculateTeamAttributeValues
 	bhi.w	.2
 	clr.w	d1
 	move.b	$B6(a2),d1
-	mulu.w	#$2AF8,d1
+	mulu.w	#$2AF8,d1	;goals * 11000
 	add.l	d1,(a4)
 	clr.w	d1
 	move.b	$D0(a2),d1
-	mulu.w	#$2774,d1
+	mulu.w	#$2774,d1	;assists * 10100
 	add.l	d1,(a4)
 	clr.w	d1
 	move.b	$EA(a2),d1
 	mulu.w	#$A,d1
 	tst.w	d3
 	bne.w	.1
-	mulu.w	#$64,d1
+	mulu.w	#$64,d1	;tied: shots * 1000
 	add.l	d1,(a4)
 	clr.l	d1
 	add.w	$138(a1),d1
@@ -3695,10 +3695,10 @@ CalculateTeamAttributeValues
 	divu.w	d2,d1
 	cmp.w	#4,d1
 	bhi.w	.3
-	addi.l	#$7D00,(a4)
+	addi.l	#$7D00,(a4)	;32000
 	tst.w	d1
 	bne.w	.3
-	addi.l	#$124F8,(a4)
+	addi.l	#$124F8,(a4)	;75000 for a shutout
 .3
 	addq.w	#2,a1
 	addq.w	#1,a2

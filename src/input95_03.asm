@@ -103,9 +103,9 @@ doinput_cbut	;(input94) Global: doinput branches here across the global rtss15. 
 	movea.l	#puckcross,a0
 	move.w	#$10B,d3
 	btst	#7,pflags(a3)
-	beq.w	.8
-	neg.w	d3
-	addq.w	#4,a0
+	beq.w	.8	;branch if bottom net
+	neg.w	d3	;negate d3 (-108 hex)
+	addq.w	#4,a0	;puckcross+4 (for bottom goalie)
 .8
 	jsr	(goaliesave).l
 	movem.l	(sp)+,d0-d7/a0-a6

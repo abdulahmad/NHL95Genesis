@@ -507,7 +507,7 @@ Begin	;cold start, entered from RegionOK. Clear RAM, init sound and menus, go to
 	jsr	(InitSaveRAM).l
 	jsr	(HiScoreScreen).l	;94 calls ReadLineData first
 	jsr	(ReadLineData).l
-	jsr	(DefaultMenus).l
+	jsr	(DefaultMenus).l	;hockey94_09
 	move.w	(OptLine).l,(TmpOptLine2).l
 	move.w	(OptPlayMode).l,(TempOptPlayMode).l
 	jsr	(orjoy).l		;clear any previous button presses
