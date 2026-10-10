@@ -475,7 +475,7 @@ Begin	;cold start, entered from RegionOK. Clear RAM, init sound and menus, go to
 	movea.w	#(Stack-M68K_RAM),sp	;stack pointer to RAM $FDFA (94: $FFFE)
 	movea.w	#(VSCRLPM-M68K_RAM),a0	;clear out ram
 .0	clr.l	(a0)+			;clear RAM $AC00-$DC7F (94: $B000-$DEF3)
-	cmpa.w	#$DC80,a0
+	cmpa.w	#(varend-M68K_RAM),a0
 	blt.s	.0
 	clr.w	(PALflag).l		;clear the PAL flag (IDA: DMA flag)
 	move.w	(VDP_CTRL).l,d0

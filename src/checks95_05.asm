@@ -36,7 +36,7 @@ CompLine	;(checks94) The computer picks a line for team a2 (a1 = other team): on
 	movem.l	(sp)+,d0-d2/a0
 	rts
 .3
-	cmpa.w	#$C288,a2
+	cmpa.w	#(HmShots-M68K_RAM),a2
 	bne.w	.6
 	moveq	#2,d1
 	lea	.5(pc),a0
@@ -152,10 +152,10 @@ ReadTeamSRAM	;95 only, no xref. Read $39 bytes of team d7 (0-$1B) from save RAM 
 	movem.l	(sp)+,d0/d7/a0
 	rts
 
-DefaultLineData	;95 only. Copy the default line sets of the 28 teams (TeamList + 6, 8 x 8 bytes, then $64) to $FFFF3E14.
+DefaultLineData	;95 only. Copy the default line sets of the 28 teams (TeamList + 6, 8 x 8 bytes, then $64) to DefaultLines.
 	;Called from sram95
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#$FFFF3E14,a0
+	movea.l	#DefaultLines,a0
 	movea.l	#TeamList,a3
 	move.w	#$1B,d1
 	clr.w	d7

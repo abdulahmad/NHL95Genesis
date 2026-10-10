@@ -114,11 +114,11 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 .6
 	cmp.w	(vcount).w,d0
 	beq.s	.6
-	cmpa.l	#$FFFFCC42,a5
+	cmpa.l	#pad1user,a5
 	beq.w	.9
-	cmpa.l	#$FFFFCC44,a5
+	cmpa.l	#pad2user,a5
 	beq.w	.8
-	cmpa.l	#$FFFFCC46,a5
+	cmpa.l	#pad3user,a5
 	beq.w	.7
 	jsr	(ReadJoy4).l
 	tst.w	d1

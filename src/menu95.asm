@@ -1185,7 +1185,7 @@ PauseMenus	;(dc.b). The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset
 AbortGame	;95 only. Pause menu ABORT GAME: stop the replay (recbpr), demoflag on, back to Opening2
 	bclr	#4,(sflags).w
 	move.w	#$FFFF,(lastsfx).w
-	move.l	#$FFFF0000,(recbpr).w
+	move.l	#M68K_RAM,(recbpr).w
 	st	(demoflag).w
 	jmp	(Opening2).l
 PlayGame	;95 only. Pause menu PLAY GAME: sflags9 bit 3 ends the pause menu (HandleMenuInput)

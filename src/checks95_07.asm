@@ -1036,7 +1036,7 @@ updatepwrplay	;penalty94 updatepwrplay. The power play box: the team and the tim
 	bset	#5,(sflags2).w
 	bne.w	.4
 	addq.w	#1,4(a3)
-	cmpa.w	#$C288,a3
+	cmpa.w	#(HmShots-M68K_RAM),a3
 	bne.w	.3
 .2
 	bra.w	.4

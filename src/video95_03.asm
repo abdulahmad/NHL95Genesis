@@ -2088,7 +2088,7 @@ WeightedRandomSelect	;93 name. d0 = number of word weights at nibblebuffer: retu
 .2
 	sub.w	-(a1),d0
 	bpl.s	.2
-	suba.w	#$CC24,a1
+	suba.w	#(nibblebuffer-M68K_RAM),a1
 	move.w	a1,d0
 	lsr.w	#1,d0
 	movem.l	(sp)+,d1/a1

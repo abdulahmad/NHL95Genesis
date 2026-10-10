@@ -2989,7 +2989,7 @@ ReleaseLoop	;95 only. ReleasePlayers: input loop
 	move.w	#$1A,d7
 	jsr	(ReadTeamPlayerStats).l
 	movea.l	#StatBuf,a3
-	movea.l	#$FFFF0004,a2
+	movea.l	#M68K_RAM+4,a2
 .10
 	move.w	#4,d6
 .11

@@ -11,6 +11,7 @@ RosterTable	equ	$FFFF1B4C	;95 only. Season rosters ($38 bytes a team, save RAM $
 TradeData	equ	$FFFF2710	;95 only. Trade screen state (list sizes, cursors, chosen counts)
 TradeWork	equ	$FFFF2AF8	;95 only. Trade screen work words
 TradeRoster1	equ	$FFFF3A98	;95 only. Trade screen: HomeTeam roster rows
+DefaultLines	equ	$FFFF3E14	;95 only. The default line sets of the 28 teams, $64 bytes each (DefaultLineData copies them from TeamList)
 CreatedIds	equ	$FFFF4E20	;95 only. Created player ids (ReadCreatedPlayers)
 createdcount	equ	$FFFF55F0	;95 only. Created players read from save RAM (ReadCreatedPlayers)
 CreateListTop	equ	$FFFF55F4	;95 only. Create player list: first row shown
@@ -226,6 +227,7 @@ sflags11	equ	$FFFFBF0C	;95 only. Bit 7 user records count (UserNameEntry: at mos
 sflags12	equ	$FFFFBF0E	;95 only. Bit 7 Opening2 skips the sound restart (set by Opening), bit 6 SortAwardScores lowest first, bit 0 set while IntermissionMenu runs Pausemode
 sflags13	equ	$FFFFBF10	;95 only. Bit 2: the Stanley Cup was won (clockcont_0; GameOver shows StanleyCupScreen)
 cupwinner	equ	$FFFFBF12	;95 only. Team number of the Stanley Cup winner
+LineHoldFlag	equ	$FFFFBF14	;95 only. Per pad (a word each): set when LineHoldTimer runs out (SetLCmode); lineinput clears it
 lastpuckc	equ	$FFFFBF1C	;95 only. The puck carrier CheckNewCarrier saw last
 homegoaliectl	equ	$FFFFBF1E	;95 only. Home goalie control (AssignPads: nonzero = pad does not take the goalie)
 awaygoaliectl	equ	$FFFFBF20	;95 only. Away goalie control
@@ -319,6 +321,7 @@ StandingsOrder	equ	$FFFFCB16	;95 only. StandingsScreen games of the 26 teams
 StandingsBuf	equ	$FFFFCB30	;95 only. StandingsScreen records (ReadStandings, 3 bytes a team)
 StandingsList	equ	$FFFFCB7E	;95 only. StandingsScreen teams of the group, sorted
 nibblebuffer	equ	$FFFFCC24	;94 $FFFFD036. Word weights for WeightedRandomSelect
+gamevarend	equ	$FFFFCC2C	;95 only. End of the RAM StartGame clears from VSCRLPM (94 $FFFFD03E)
 SimFlags	equ	$FFFFCC30	;95 only. Bit 0 save the cup winner, bit 1 a game was simulated (SaveSimGame)
 tradeteam1	equ	$FFFFCC32	;95 only. Trade Players: the first team (word), its 8 byte block
 tradeteam2	equ	$FFFFCC3A	;95 only. Trade Players: the second team
@@ -371,6 +374,7 @@ onetimertargety	equ	$FFFFD01A	;94 $FFFFD416
 onetimerheight	equ	$FFFFD01C	;94 $FFFFD418
 FallYPos	equ	$FFFFD01E	;94 $FFFFD41A. Ypos of the player falling into the boards
 FallXPos	equ	$FFFFD020	;94 $FFFFD41C. Xpos of the player falling into the boards (FallDown)
+LineHoldTimer	equ	$FFFFD022	;95 only. Per pad (a word each): frames A must stay held before doinput starts a line change
 screen6chars1	equ	$FFFFD02A	;95 only. DrawTeamScreen6: the team block chars
 screen6chars2	equ	$FFFFD02C	;95 only. DrawTeamScreen6: the Screen6Tiles1 chars
 screen6chars3	equ	$FFFFD02E	;95 only. DrawTeamScreen6: the Screen6Tiles2 chars
@@ -530,6 +534,7 @@ ChkStickSqP	equ	$FFFFDC76	;95 only. Stick reach squared
 AutoplayDay	equ	$FFFFDC79	;95 only. Play Until A Day: the last day to autoplay, 0 none
 ShotTimer	equ	$FFFFDC7A	;95 only. Set to $1E by doshot, counted down by DoGameFrame
 shotpflags	equ	$FFFFDC7C	;95 only. pflags of the last shooter (doshot)
+varend	equ	$FFFFDC80	;93 name: end of variables, for clearing purposes only. Begin clears from VSCRLPM to here (94 $FFFFDEF4)
 penaltymsgs	equ	$FFFFDC82	;95 only. Queue of penalty messages, a word each (penalty, player), 0 ends (ShowPenaltyMessages)
 Stack	equ	$FFFFFDFA	;94 $FFFFFFFE. Begin's stack pointer; the sound driver RAM (SndDrvRAM) is above it
 SndDrvRAM	equ	$FFFFFDFC	;95 only. Sound driver (sounddrv95) RAM base: word $1234 = driver ready, 0 = busy (SndUpdate does nothing)

@@ -84,7 +84,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	beq.w	.8
 	move.w	(passplayer).w,d0
 	asl.w	#7,d0
-	movea.l	#$FFFFAC62,a3
+	movea.l	#SortCords,a3
 	adda.w	d0,a3
 	tst.w	$34(a3)
 	beq.w	.8
@@ -235,7 +235,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	tst.w	d0
 	bmi.w	rtss7
 	movem.l	d0/a3,-(sp)
-	movea.l	#$FFFFAC62,a3
+	movea.l	#SortCords,a3
 	asl.w	#7,d0
 	adda.w	d0,a3
 	btst	#3,$62(a3)
@@ -267,7 +267,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	movem.l	d7-a0,-(sp)
 	move.w	(lastplayer).w,d7
 	asl.w	#7,d7
-	movea.l	#$FFFFAC62,a0
+	movea.l	#SortCords,a0
 	adda.w	d7,a0
 	tst.w	$34(a0)
 	movem.l	(sp)+,d7-a0
@@ -309,7 +309,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	bra.w	setpassmode
 .43
 	movem.l	a0,-(sp)
-	movea.l	#$FFFFD022,a0
+	movea.l	#LineHoldTimer,a0
 	btst	#6,d1
 	beq.w	.49
 	movem.l	d5-d6/a1-a4,-(sp)
@@ -346,7 +346,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 .50
 	tst.w	(a0,d4.w)
 	bne.w	.51
-	movea.l	#$FFFFBF14,a0
+	movea.l	#LineHoldFlag,a0
 	move.w	#1,(a0,d4.w)
 	movem.l	(sp)+,a0
 	jmp	SetLCmode
@@ -426,7 +426,7 @@ doinput_islocked	;94 global (doinput branches across). B with the player not the
 	tst.w	d0
 	bmi.w	.5
 	asl.w	#7,d0
-	movea.l	#$FFFFAC62,a0
+	movea.l	#SortCords,a0
 	adda.w	d0,a0
 	bset	#6,$64(a0)
 .5
@@ -859,7 +859,7 @@ OneTimerPass	;onetimer94 OneTimerPass (moved in). One-timer pass: puckvz = sqrt(
 	swap	d1
 	divs.w	d0,d1
 	move.w	d1,(puckvy).w
-	movea.l	#$FFFFB362,a3
+	movea.l	#puckx,a3
 	move.w	(puckvz).w,d0
 	jsr	(puckflip).l
 	movem.l	(sp)+,d0-d7/a0-a6

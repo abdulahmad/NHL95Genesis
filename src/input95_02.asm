@@ -75,7 +75,7 @@ SetLCmode2	;(input94) 93 name. a2 = team struct. Draw the line change box (box, 
 
 setlccords	;(input94) Set printx / printy for the line change box of team a2
 	clr.w	d0
-	cmpa.w	#$C288,a2
+	cmpa.w	#(HmShots-M68K_RAM),a2
 	bne.w	.0
 	eori.w	#$16,d0
 .0
@@ -100,7 +100,7 @@ setlccords	;(input94) Set printx / printy for the line change box of team a2
 getlchoice	;(input94) d0 = the line for button d0 of team a2 (getlchoice2)
 	movem.l	d1-d2,-(sp)
 	move.w	$38A(a2),d2
-	cmpa.w	#$C288,a2
+	cmpa.w	#(HmShots-M68K_RAM),a2
 	beq.w	getlchoice2
 	move.w	-$342(a2),d2
 
@@ -129,7 +129,7 @@ getlchoice2	;(input94) The line for choice d0 by the player difference (tmap of 
 
 lineinput	;(input94) Process input for line changes: d1 = new button presses (passmode first with sflags5 bit 3)
 	movem.l	d1-d3/a0,-(sp)
-	movea.l	#$FFFFBF14,a0
+	movea.l	#LineHoldFlag,a0
 	btst	#6,d2
 	bne.w	.0
 	btst	#6,d3
@@ -150,7 +150,7 @@ lineinput	;(input94) Process input for line changes: d1 = new button presses (pa
 	move.w	d2,(rosterteam).w
 	clr.w	d2
 	movem.l	a0,-(sp)
-	movea.l	#$FFFFBF14,a0
+	movea.l	#LineHoldFlag,a0
 	tst.w	(a0,d4.w)
 	movem.l	(sp)+,a0
 	bne.w	.3

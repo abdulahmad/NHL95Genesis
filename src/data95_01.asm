@@ -49,7 +49,7 @@ TeamRosterScreen	;93 name (94 stats94). "Team Roster" screen for team a2: DrawTe
 	jsr	(printz).l
 	String	$BD,$E,1,0
 	clr.w	d0
-	cmpa.w	#$C288,a2
+	cmpa.w	#(HmShots-M68K_RAM),a2
 	beq.w	.1
 	move.w	#$2C,d0
 .1
@@ -127,9 +127,9 @@ TeamRosterScreen	;93 name (94 stats94). "Team Roster" screen for team a2: DrawTe
 	bra.s	.6
 .8
 	lea	$366(a2),a2
-	cmpa.w	#$C5EE,a2
+	cmpa.w	#(AwShots-M68K_RAM),a2
 	beq.w	.0
-	movea.w	#$C288,a2
+	movea.w	#(HmShots-M68K_RAM),a2
 	bra.w	.0
 	rts	;unused
 	clr.w	(PlayerScrollCtr).w	;unused
@@ -2260,7 +2260,7 @@ InitializeGameStructures	;93 name. Random team pairs for all 8 gsstruct games, n
 	bset	d1,d3
 	move.w	(VisTeam).w,d1
 	bset	d1,d3
-	movea.w	#$CA24,a1
+	movea.w	#(gsstruct-M68K_RAM),a1
 	moveq	#7,d2
 .0
 	bsr.w	OptionRNG
@@ -2845,7 +2845,7 @@ ReadLineData	;(94 title94). Read the saved lines from save RAM. Called from Game
 	jsr	(ReadSRAM).l
 	bclr	#4,(sflags).w
 	move.w	#$FFFF,(lastsfx).w
-	move.l	#$FFFF0000,(recbpr).w
+	move.l	#M68K_RAM,(recbpr).w
 	movem.l	(sp)+,d0-d1/a0
 	rts
 
@@ -2858,7 +2858,7 @@ WriteLineData	;(94 title94). Write the lines to save RAM and the checksum
 	jsr	(MakeSRAMChecksum).l
 	bclr	#4,(sflags).w
 	move.w	#$FFFF,(lastsfx).w
-	move.l	#$FFFF0000,(recbpr).w
+	move.l	#M68K_RAM,(recbpr).w
 	movem.l	(sp)+,d0-d1/a0
 rtsLineData	;The shared rts; PlayoffScreen (setup95_02) branches to it
 	rts

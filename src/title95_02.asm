@@ -209,14 +209,14 @@ TitleVBlank	;title94 TitleVBlank. newTitleScreen vblank: the line scroll table a
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#2,(disflags).w
 	bne.w	.1
-	movea.w	#$AC62,a0
+	movea.w	#(SortCords-M68K_RAM),a0
 	move.w	(VSCRLPM).w,d1
 	move.w	#$1C0,d0
 	jsr	(DoDMA).l
 	movea.l	#VDP_DATA,a0
 	move.l	#$40000010,4(a0)
 	move.w	(Vscroll).w,(a0)
-	movea.w	#$BC1E,a0
+	movea.w	#(Satt-M68K_RAM),a0
 	move.w	(Sattsize).w,d0
 	beq.w	.0
 	clr.w	(Sattsize).w
@@ -492,7 +492,7 @@ CupBuildSprites	;95 only. StanleyCupScreen: the sprite list at Satt from the ani
 	clr.w	(cupframe).w
 .0
 	jsr	(AddSpriteFrame).l
-	cmpa.w	#$BC1E,a6
+	cmpa.w	#(Satt-M68K_RAM),a6
 	bne.w	.1
 	clr.l	(a6)+
 	clr.l	(a6)+

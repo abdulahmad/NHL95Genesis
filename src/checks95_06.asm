@@ -815,13 +815,13 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 	beq.w	.15
 	btst	#6,(sflags2).w
 	bne.w	.14
-	cmpa.l	#$FFFFC5EE,a2
+	cmpa.l	#AwShots,a2
 	bne.w	.15
 .13
 	addq.w	#1,$358(a2)
 	bra.w	.15
 .14
-	cmpa.l	#$FFFFC288,a2
+	cmpa.l	#HmShots,a2
 	beq.s	.13
 .15
 	movem.l	d0/a2,-(sp)
@@ -834,7 +834,7 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 	beq.w	.16
 	addq.w	#1,$360(a2)
 .16
-	cmpa.w	#$C288,a2
+	cmpa.w	#(HmShots-M68K_RAM),a2
 	bne.w	.17
 	move.w	(HomeTeam).w,(HmTeam).w
 	move.w	#3,(SongIndex).w
@@ -857,7 +857,7 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 	sub.w	$24(a1),d0
 	move.b	d0,(a0)+
 	addi.w	#$1E,(CwdExciteLvl).w
-	cmpa.w	#$C288,a2
+	cmpa.w	#(HmShots-M68K_RAM),a2
 	beq.w	.19
 	subi.w	#$14,(CwdExciteLvl).w
 	bset	#7,-1(a0)
@@ -1256,7 +1256,7 @@ SetGoaliesCtl	;95 only. Practice Mode: pull the goalies the home / away goalie c
 	movea.l	#SortCords,a0
 	move.w	(homegoaliectl).w,d0
 	bsr.w	.0
-	movea.l	#$FFFFAF62,a0
+	movea.l	#SortCords+(6*SCstruct),a0
 	move.w	(awaygoaliectl).w,d0
 	bsr.w	.0
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1535,7 +1535,7 @@ SetContTeams	;95 only. The controller setup screen: pick the team of each pad (c
 	move.w	#3,d4
 .8
 	movea.l	#cont1team,a0
-	movea.l	#$FFFFBB11,a3
+	movea.l	#TempWord1+1,a3
 .9
 	move.b	(a3),d1
 	btst	#2,d1

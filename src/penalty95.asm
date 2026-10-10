@@ -73,7 +73,7 @@ LeadSong	;(title94) Not in a shootout (gmode2 bit 1) and one team has more playe
 .1
 	bset	#5,(sflags2).w
 	bne.w	LeadSongExit
-	cmpa.w	#$C288,a3
+	cmpa.w	#(HmShots-M68K_RAM),a3
 	bne.w	.3
 	move.w	(HomeTeam).w,(HmTeam).w
 	move.w	#1,(SongIndex).w

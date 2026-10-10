@@ -92,14 +92,14 @@ DrawPlayoffSprite	;(title94). The PlayoffSprite sprite at playoffspritex / playo
 	clr.w	(picturebits).w
 .0
 	jsr	(SetSframe).l
-	cmpa.w	#$BC1E,a6
+	cmpa.w	#(Satt-M68K_RAM),a6
 	bne.w	.1
 	clr.l	(a6)+
 	clr.l	(a6)+
 .1
 	clr.b	-5(a6)
 	move.l	a6,d0
-	subi.l	#$FFFFBC1E,d0
+	subi.l	#Satt,d0
 	lsr.w	#1,d0
 	move.w	d0,(Sattsize).w
 	rts

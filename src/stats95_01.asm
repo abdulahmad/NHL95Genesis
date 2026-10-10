@@ -1340,7 +1340,7 @@ SeasonAttributeMenu	;stats94 DisplayAttributeMenu (3 columns: G, A, Pts). Header
 	add.w	(DispAttribCtr).w,d0
 	jsr	(PrintSmallListItem).l
 	clr.w	(printfontset).w
-	movea.w	#$BC1E,a3
+	movea.w	#(Satt-M68K_RAM),a3
 	clr.l	d6
 	tst.w	(DispAttribCtr).w
 	bpl.w	.2
@@ -1404,7 +1404,7 @@ SeasonAttributeMenu	;stats94 DisplayAttributeMenu (3 columns: G, A, Pts). Header
 	bra.w	SeasonAttribScrollReg
 
 SeasonAttributeEntry	;stats94 DisplayAttributeEntry. Draws list row d3 (rank, name, 3 stat columns or goalie saves/shots/save %)
-	movea.w	#$BC1E,a4
+	movea.w	#(Satt-M68K_RAM),a4
 	adda.w	d3,a4
 	jsr	(printz).l
 	String	$BE,$0,$0,$0
@@ -3063,7 +3063,7 @@ SelectAttributeItem	;stats94 SelectAttributeItem: build the list of players for 
 	move.w	d0,(screentimer).w
 	clr.w	(PlayerScrollCtr).w
 	clr.w	(VertLineScrolling).w
-	movea.w	#$BC1E,a0
+	movea.w	#(Satt-M68K_RAM),a0
 	clr.w	d2
 .1
 	move.b	d1,0(a0,d2.w)
@@ -3134,7 +3134,7 @@ SelectAttributeItem	;stats94 SelectAttributeItem: build the list of players for 
 	jsr	(PrintAttribHeader).l
 	bra.w	.3
 .9
-	movea.w	#$BC1E,a3
+	movea.w	#(Satt-M68K_RAM),a3
 	adda.w	(VertLineScrolling).w,a3
 	move.b	(a3),d0
 	addq.b	#1,d0
@@ -3162,7 +3162,7 @@ PrintAttribHeader	;stats94 PrintAttribHeader: player list column header (PAttrib
 .3
 	jsr	(print).l
 	move.l	(a1),d4
-	movea.w	#$BC1E,a3
+	movea.w	#(Satt-M68K_RAM),a3
 	move.w	(PlayerScrollCtr).w,d2
 	move.w	(screentimer).w,d1
 	sub.w	d2,d1
@@ -3305,7 +3305,7 @@ DrawLineEditorScreen	;stats94 DrawTeamScreen: clear, print the "Line Editor" tit
 	jsr	(printbigz).l
 	String	$BE,$A,$4,'Line  Editor',$BE,$E,$1
 	clr.w	d0
-	cmpa.w	#$C288,a2
+	cmpa.w	#(HmShots-M68K_RAM),a2
 	beq.w	.0
 	move.w	#$2C,d0
 .0

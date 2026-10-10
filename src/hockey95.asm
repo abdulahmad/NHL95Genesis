@@ -40,7 +40,7 @@ Opening2	;Restart the sound (unless coming from Opening), reset the stack and cl
 	movea.w	#(VSCRLPM-M68K_RAM),a0
 .0
 	clr.l	(a0)+
-	cmpa.w	#$CC2C,a0	;clear from VSCRLPM to $FFFFCC2C (94: $FFFFD03E)
+	cmpa.w	#(gamevarend-M68K_RAM),a0	;clear from VSCRLPM to gamevarend (94: $FFFFD03E)
 	blt.s	.0
 	move.b	(sp)+,(sflags11).w
 	andi.b	#$40,(sflags11).w
