@@ -35,9 +35,10 @@
 	include	checks95_02.asm		; $080BEA  Adapted from checks94.asm: checks before the display code
 	include	assign95_02.asm		; $08282E  Adapted from assign94.asm: player assignments
 	include	onetimer95.asm		; $082BD0  Adapted from onetimer94.asm: one-timer
+	include	checks95_08.asm		; $082FC2  Adapted from checks94.asm: assshoot
 	include	checks95_03.asm		; $082FFA  Adapted from checks94.asm: checks before the display code
-	include	collide95_02.asm		; $08369E  Adapted from collide94.asm: puck, players, walls, fights, goals
-	include	input95_01.asm		; $083EC0  Adapted from input94.asm: controller input and line changes
+	include	collide95_02.asm		; $0836AC  Adapted from collide94.asm: puck, players, walls, fights, goals
+	include	input95_01.asm		; $083EB2  Adapted from input94.asm: controller input and line changes
 	include	data95_01.asm		; $084FE6  Adapted from data94.asm: menus, season results, string tables
 	include	setup95_02.asm		; $087BA2  Adapted from setup94.asm: ice setup, intermission, playoff screen
 	include	checks95_04.asm		; $088046  Adapted from checks94.asm: checks before the display code
@@ -45,19 +46,19 @@
 	include	data95_02.asm		; $08996E  Adapted from data94.asm: menus, season results, string tables
 	include	input95_02.asm		; $08A056  Adapted from input94.asm: controller input and line changes
 	include	checks95_05.asm		; $08A3FE  Adapted from checks94.asm: checks before the display code
-	include	input95_03.asm		; $08B748  Adapted from input94.asm: controller input and line changes
+	include	input95_03.asm		; $08B734  Adapted from input94.asm: controller input and line changes
 	include	checks95_06.asm		; $08B9A8  Adapted from checks94.asm: checks before the display code
 	include	replay95.asm		; $08D39A  Adapted from replay94.asm: replay
 	include	season95.asm		; $08DF5A  New in 95: season mode
-	include	period95.asm		; $0920BE  Adapted from period94.asm: period stats and game statistics
+	include	period95.asm		; $0920DE  Adapted from period94.asm: period stats and game statistics
 	include	stats95_01.asm		; $0925AE  Adapted from stats94.asm: scores, line editor, roster, scoring and penalty summaries, player stats, crowd meter, goalie select
 	include	trade95.asm		; $0962EE  New in 95: schedule and trades
 	include	create95.asm		; $097C54  New in 95: create player
 	include	cards95_01.asm		; $09ACE6  Adapted from cards94.asm: player cards and matchup palettes
-	include	records95.asm		; $09B730  Adapted from records94.asm: name entry and record holders
+	include	records95.asm		; $09B6F4  Adapted from records94.asm: name entry and record holders
 	include	cards95_02.asm		; $09C01A  Adapted from cards94.asm: player cards and matchup palettes
 	include	awards95.asm		; $09C6F0  New in 95: end of season awards
-	include	title95_01.asm		; $09D9C0  Adapted from title94.asm: song select, title, credits
+	include	title95_01.asm		; $09DA50  Adapted from title94.asm: song select, title, credits
 	include	shootout95.asm		; $09DD3E  Adapted from shootout94.asm: shootout
 	include	checks95_07.asm		; $09E5F0  Adapted from checks94.asm: checks before the display code
 	include	scout95.asm		; $09F590  Adapted from scout94.asm: matchups and scouting report

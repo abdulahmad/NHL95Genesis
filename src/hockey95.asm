@@ -49,8 +49,8 @@ Opening2	;IDA: loc_9ADA. Restart the sound (unless coming from Opening), reset t
 	beq.w	.1
 	jsr	(PracticeGoalies).l
 .1
-	move.w	#1,(HmGoalieOpt).w
-	move.w	#1,(AwGoalieOpt).w
+	move.w	#1,(HmDefMode).w
+	move.w	#1,(AwDefMode).w
 	jsr	(SeasonMain).l	;95 season mode
 	btst	#2,(sflags10).w	;main menu Trade Players
 	beq.w	.2
@@ -312,7 +312,7 @@ IntermissionMenu	;IDA: sub_9FD2. 95 only. Before the period: at game over (gsp 4
 .0
 	btst	#0,(gmode2).w
 	bne.w	.menu
-	jsr	(AutoLineChange).l
+	jsr	(SetupTeamForIntermission).l
 	moveq	#$F,d0	;Sortobjs-1
 	movea.w	#(SortCords-M68K_RAM),a0
 .1
