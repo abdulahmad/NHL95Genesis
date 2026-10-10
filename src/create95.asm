@@ -2351,10 +2351,10 @@ CrScaleEven	;no IDA label. scale even part of d3 via loc_99E46, keep low bit of 
 	or.w	d2,d3
 	rts
 
-CrScaleTable	;no IDA label. loc_99E46, then d3 = byte lookup in AttribScaleTable+$10[d3]
+CrScaleTable	;no IDA label. loc_99E46, then d3 = byte lookup in StickHandTable+$10[d3]
 	bsr.s	CrScale
 	movem.l	d0/a0,-(sp)
-	movea.l	#AttribScaleTable+$10,a0
+	movea.l	#StickHandTable+$10,a0
 	move.b	d3,d0
 	ext.w	d0
 	move.b	(a0,d0.w),d3

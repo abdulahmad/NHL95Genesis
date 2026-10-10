@@ -1035,7 +1035,7 @@ CalcAttribRating	;IDA: sub_7CF78. 95 only. The rating sum of CalcAttrib: d0 / d1
 	cmp.w	#5,d2
 	bne.w	.3
 	move.l	a0,-(sp)
-	movea.l	#AttribScaleTable,a0
+	movea.l	#StickHandTable,a0
 	move.b	(a0,d3.w),d3
 	movea.l	(sp)+,a0
 .3

@@ -475,7 +475,7 @@ ClampNibble	;IDA: sub_83C88. IDA 94 checkattriblimits. Clamp byte d3 to 0-$1E. C
 
 StickHandTable	;IDA: unk_83C9E. 95 only. setplayer: the stick handling nibble 0-15 to 0-6, before AttributeCalc
 	dc.b	0,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6	;Stk nibble 0-15 to 0-6
-	dc.b	0,1,3,6,9,$C,$F,$FF	;unused
+	dc.b	0,1,3,6,9,$C,$F,$FF	;create95 CrScaleTable (StickHandTable+$10)
 
 BoostAttribute	;IDA: sub_83CB6. 95 only. d3 += ($1E - d3) / 4, kept in $F ... $1E. setplayer runs it on some ratings
 	movem.w	d0,-(sp)

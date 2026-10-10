@@ -47,7 +47,7 @@ ReadJoy4 = $7A50C		;IDA: sub_7A50C. used at $7D744 (video95_02)
 LoadHomeTeamGfx = $7DEA0	;IDA: sub_7DEA0. used at $7D502, $7DD8E (fourway95)
 EASNLogo = $7DF32		;IDA: sub_7DF32. used at $7D7D8 (fourway95)
 setupEASNmap = $7DF6A		;IDA: sub_7DF6A. used at $7D50C, $7DD98 (fourway95)
-AttribScaleTable = $83C9E	;IDA: unk_83C9E. used at $7CFBC. CalcAttribRating, attribute 5 scale (data95_01)
+StickHandTable = $83C9E	;IDA: unk_83C9E. used at $7CFBC. CalcAttrib, attribute 5 (stick handling) scale (collide95_02)
 PAttribOverallMask = $85846	;IDA: dword_85846. used at $7CF26 (data95_01)
 GAttribOverallMask = $859A8	;IDA: dword_859A8. used at $7CF36 (data95_01)
 FindGoalie = $8B974		;IDA: sub_8B974. used at $7D59E, $7D602, $7D668, $7D6CE. 95: d0 = SCnum of the goalie of the team of player d0

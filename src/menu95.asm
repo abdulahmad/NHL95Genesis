@@ -541,7 +541,7 @@ RestoreGameScreen	;IDA: sub_7EBBE. 95 only (in the 94 Pausemode ClrHor place). R
 	move.w	d4,(faceoffvrcset).w
 	movea.l	#FaceoffTiles2+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
-	jsr	(FaceoffScreen).l
+	jsr	(DrawFaceoffWindow).l
 	bra.w	.4
 .1
 	move.w	(ExtraChars).w,d4

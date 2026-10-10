@@ -48,7 +48,7 @@ TimeoutMenu = $7FB94		;no IDA label. used at $7F698, $7F742. Pause menu TIMEOUT 
 PauseScores = $7FC04		;no IDA label. used at $7EAA6. 95: both team scores in big digits on the pause screen (checks95_01)
 SetMenuPadSide = $7FCBA	;IDA: sub_7FCBA. used at $7EF54. 95 only: sflags bit 1 = the team of pad menupadnum is above 1 (checks95_01)
 TeamRosterScreen = $84FE8	;no IDA label. used at $7F39C, $7F41A, $7F46C. Pause menu TEAM ROSTER (data95_01)
-FaceoffScreen = $88E42		;IDA: sub_88E42. used at $7ECB2. 95: the face off screen
+DrawFaceoffWindow = $88E42	;IDA: sub_88E42. used at $7ECB2. 95: the face off window (checks95_04)
 PenaltyNames = $89C2E		;IDA: unk_89C2E. used at $7F17E. Penalty name Strings by penalty number (ShowPenaltyMessages)
 ReplayMode = $8D668		;no IDA label. used at $7F63E, $7F6E8, $7F77C, $7F810, $7F878, $7F90C. Pause menu INSTANT REPLAY
 GameStatisticsScreen = $920DE	;no IDA label. used at $7F4BC, $7F530, $7F5AC. Pause menu GAME STATS
