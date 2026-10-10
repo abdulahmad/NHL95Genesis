@@ -4,7 +4,8 @@
 noise comments  comments strip_noise.py would still change
 raw addresses   in code: RAM ($FFFFxxxx, or a word $8000-$FFFF taken as an address by
                 movea / cmpa / lea / adda / suba), hardware ($A0xxxx-$A1xxxx, $C000xx),
-                save RAM ($20xxxx) and ROM pointers (#$xxxx taken as an address, jsr / jmp $x,
+                save RAM ($20xxxx, or a long immediate equal to a save RAM offset from the
+                SR names in ram95.asm) and ROM pointers (#$xxxx taken as an address, jsr / jmp $x,
                 dc.l $x); plus raw struct displacements $x(a0-a4), reported separately
 generic labels  IDA auto names (loc_, sub_, byte_, word_, unk_, off_, ...) in code, and in comments
 
@@ -23,6 +24,7 @@ ADDROP = r'(?:movea|cmpa|lea|pea|adda|suba)(?:\.[wl])?'
 RAM = re.compile(r'#\$FFFF(?!FF)[0-9A-Fa-f]{4}\b(?<!FFFF0000)|\(\$FF[0-9A-Fa-f]{4}\)'
                  r'|^\s*' + ADDROP + r'\s+#\$[89A-Fa-f][0-9A-Fa-f]{3}\s*,\s*a\d', re.I)
 SRAM = re.compile(r'\$20[0-9A-Fa-f]{4}\b')
+SROFF = re.compile(r'^\s*(?:move|addi?)\.l\s+#\$([0-9A-Fa-f]{3,4})\s*,\s*d\d', re.I)
 STRUCT = re.compile(r'(?<![\w$)])-?\$[0-9A-Fa-f]+\(a[0-4][,)]')
 HW = re.compile(r'\$(?:00)?(?:A0[0-9A-Fa-f]{4}|A1[0-9A-Fa-f]{4}|C000[0-9A-Fa-f]{2})\b', re.I)
 ROMPTR = re.compile(r'^\s*(?:jsr|jmp|lea|pea)\s+\(?\$[0-9A-Fa-f]{3,6}\)?(?:\.[wl])?\s*$'
@@ -34,6 +36,8 @@ def scan(src, listing=False):
     counts = Counter()
     hits = {k: [] for k in ('noise', 'ram', 'hw', 'sram', 'rom', 'struct', 'generic')}
     files = sorted(fn for fn in os.listdir(src) if fn.endswith('.asm'))
+    with open(os.path.join(src, 'ram95.asm'), encoding='latin-1') as f:
+        sroffs = {int(m.group(1), 16) for m in re.finditer(r'^SR\w+\s+equ\s+\$([0-9A-Fa-f]+)', f.read(), re.M)}
     files += [os.path.join('stubinc', fn) for fn in sorted(os.listdir(os.path.join(src, 'stubinc')))]
     for fn in files:
         stub = fn.endswith('_stub.asm')
@@ -60,6 +64,10 @@ def scan(src, listing=False):
                     if n:
                         counts[key] += n
                         hits[key].append(where)
+                m = SROFF.match(code)
+                if m and int(m.group(1), 16) in sroffs:
+                    counts['sram'] += 1
+                    hits['sram'].append(where)
                 if ROMPTR.search(code) and not RAM.search(code) and not HW.search(code) and not SRAM.search(code):
                     counts['rom'] += 1
                     hits['rom'].append(where)

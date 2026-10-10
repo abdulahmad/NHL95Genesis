@@ -589,6 +589,7 @@ SRFreeAgentCount	equ	$5D57	;number of free agents (a byte, read as a word)
 SRTeamBlock2	equ	$5D58	;26 x 10 bytes InitSeasonStats clears (from LeaderValues); no other user found
 SRInjuries	equ	$5E5C	;injury games left, a nibble per player, $17A bytes (SetSeasonInjuries, TickInjuries)
 SRSeasonHeaderSave	equ	$5FD6	;SetupPlayoffs keeps SRSeasonHeader here (RestoreSeasonHeader); +8 is a word it clears
+SRHighlights	equ	$5FD6	;in the season: today's game highlights, 4 bytes a game (GetHighlightSlot, SaveGameHighlights)
 SRPOPairings	equ	$5FE0	;playoff pairings of the rounds (GetRoundPairings, CollectSeriesWinners)
 SRPORound	equ	$6000	;playoff round, low byte (a word)
 SRPODay	equ	$6002	;playoff day, low byte (NextSeasonDay)

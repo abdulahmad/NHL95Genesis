@@ -11,7 +11,7 @@
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-GetHighlightSlot	;95 only. d0 = save RAM offset ($5FD6 + 4 a game) of the highlight slot of HomeTeam's game today, -1 none
+GetHighlightSlot	;95 only. d0 = save RAM offset (SRHighlights + 4 a game) of the highlight slot of HomeTeam's game today, -1 none
 	movem.l	d1-d7/a0-a6,-(sp)
 	clr.w	d1
 	move.b	(SeasonDay).w,d1
@@ -25,7 +25,7 @@ GetHighlightSlot	;95 only. d0 = save RAM offset ($5FD6 + 4 a game) of the highli
 	blt.w	.0
 	sub.w	d5,d1
 .0
-	move.l	#$5FD6,d0
+	move.l	#SRHighlights,d0
 	bra.w	.2
 .1
 	clr.l	d3
@@ -179,7 +179,7 @@ GetRosterName	;95 only. a1 = player record of player d0 of team d7: TeamList out
 	bne.w	.3
 	add.w	d0,d0
 	ext.l	d0
-	addi.l	#$5D22,d0
+	addi.l	#SRFreeAgentList,d0
 	bra.w	.4
 .3
 	move.w	d7,d6
@@ -293,7 +293,7 @@ MoveSavedLines	;95 only. Fix team d7's saved line players (save RAM SRJerseyNums
 	movea.l	#ThreeStars,a0
 	asl.w	#5,d7
 	ext.l	d7
-	addi.l	#$5700,d7
+	addi.l	#SRJerseyNums,d7
 	move.l	d7,d0
 	moveq	#$20,d1
 	movem.l	d0-d1/a0,-(sp)

@@ -265,7 +265,7 @@ ReadDayGames	;95 only. d1 = day, d2 = start day, a2 = buffer: read the day's gam
 	blt.w	.2
 	sub.w	d5,d1
 .2
-	move.l	#$E2A,d0
+	move.l	#SRGameResults,d0
 	bra.w	.4
 .3
 	clr.l	d3
@@ -320,7 +320,7 @@ WriteDayGames	;95 only. Write the results of the games in SeasonTeams back to sa
 	blt.w	.1
 	sub.w	d5,d1
 .1
-	move.l	#$E2A,d0
+	move.l	#SRGameResults,d0
 	bra.w	.3
 .2
 	clr.l	d3
@@ -1103,10 +1103,10 @@ RecordTeamResult	;95 only. Add a win, loss or tie to the team's standings record
 	move.b	1(a0),d2
 .0
 	mulu.w	#3,d2
-	move.l	#$1AF6,d0
+	move.l	#SRStandings,d0
 	btst	#5,(SeasonFlags).w
 	beq.w	.1
-	move.l	#$6173,d0
+	move.l	#SRPOStandings,d0
 .1
 	add.l	d2,d0
 	move.b	2(a0),d3

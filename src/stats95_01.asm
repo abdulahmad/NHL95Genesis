@@ -557,7 +557,7 @@ AddTeamSeasonStats
 	mulu.w	#$A,d0
 	btst	#5,(SeasonDay+1).w
 	beq.w	.0
-	addi.l	#$7D2D,d0
+	addi.l	#SRPOTeamStats,d0
 	bra.w	.1
 .0
 	addi.l	#SRTeamStats,d0
@@ -1049,7 +1049,7 @@ WriteTeamPlayerStats
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReadSeasonTeamRecord	;95 only. Read the season record of team d7 (save RAM SRTeamStats, or $7D2D with SeasonDay bit 5) to a0
+ReadSeasonTeamRecord	;95 only. Read the season record of team d7 (save RAM SRTeamStats, or SRPOTeamStats with SeasonDay bit 5) to a0
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d7,d0
 	mulu.w	#$A,d0
@@ -3528,17 +3528,17 @@ CopyTeamLines	;B in exit menu: copy the loaded line data (a0, 56 bytes) into tea
 	rts
 
 TeamLinesOffset	;d0 = save RAM offset of team a2's saved line ($39 bytes per team; base by GameFlags bit 3 / sflags10 bit 0)
-	move.l	#$4530,d0
+	move.l	#SRLines2,d0
 	btst	#3,(GameFlags).w
 	bne.w	.1
 	btst	#0,(sflags10).w
 	bne.w	.0
 	bra.w	.2
 .0
-	move.l	#$5136,d0
+	move.l	#SRLines4,d0
 	bra.w	.2
 .1
-	move.l	#$4B6C,d0
+	move.l	#SRLines3,d0
 .2
 	moveq	#$39,d1
 	move.w	d1,-(sp)
