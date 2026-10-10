@@ -10,7 +10,7 @@
 ; includes for stubs to replace removed code
 	include	stubinc\ports.inc	;IO_* / VDP_* ports
 	include	stubinc\equals.inc	;VDP status bits
-	include	stubinc\ram_addrs.inc	;RAM names
+	include	ram95.asm		;RAM map
 
 ; External addresses outside $07A02A-$07A761, read from lst/nhl95.bin.
 SoundCmd = $676D8		;sound95_01

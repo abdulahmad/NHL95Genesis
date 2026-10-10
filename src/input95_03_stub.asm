@@ -10,7 +10,7 @@
 ; includes for stubs to replace removed code
 	include	stubinc\ports.inc	;IO_* / VDP_* ports
 	include	stubinc\equals.inc	;VDP status bits
-	include	stubinc\ram_addrs.inc	;RAM names
+	include	ram95.asm		;RAM map
 
 ; External addresses outside $08B734-$08B9A7, read from lst/nhl95.bin.
 SPAlist = $5A34			;frames95

@@ -13,7 +13,7 @@
 ; includes for stubs to replace removed code
 	include	stubinc\ports.inc	;IO_* / VDP_* ports
 	include	stubinc\equals.inc	;VDP status bits
-	include	stubinc\ram_addrs.inc	;RAM names
+	include	ram95.asm		;RAM map
 
 ; Main segment code
 	include	teamdata95.asm

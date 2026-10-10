@@ -10,7 +10,7 @@
 ; includes for stubs to replace removed code
 	include	stubinc\ports.inc	;IO_* / VDP_* ports
 	include	stubinc\equals.inc	;VDP status bits
-	include	stubinc\ram_addrs.inc	;RAM names
+	include	ram95.asm		;RAM map
 
 ; External addresses outside $00A656-$00AF43, read from lst/nhl95.bin: jsr / jmp (x).l and movea.l / movea.w #x carry the address.
 ReadJoy1 = $7A4B0		;video95_02

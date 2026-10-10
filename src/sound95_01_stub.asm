@@ -10,7 +10,7 @@
 ; includes for stubs to replace removed code
 	include	stubinc\ports.inc	;IO_* / VDP_* ports
 	include	stubinc\equals.inc	;VDP status bits
-	include	stubinc\ram_addrs.inc	;RAM names
+	include	ram95.asm		;RAM map
 
 ; External addresses outside $0676D8-$079901, read from lst/nhl95.bin.
 SndDriver = $AF44		;sounddrv95

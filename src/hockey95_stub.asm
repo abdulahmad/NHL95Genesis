@@ -12,7 +12,7 @@
 ; includes for stubs to replace removed code
 	include	stubinc\ports.inc	;IO_* / VDP_* ports
 	include	stubinc\equals.inc	;VDP status bits
-	include	stubinc\ram_addrs.inc	;RAM names
+	include	ram95.asm		;RAM map
 
 ; External addresses outside $009AC8-$00A203, read from lst/nhl95.bin: jsr / jmp (x).l and movea.l / move.l #x carry the address;
 ; bsr.w is the displacement word address + displacement. 94 names where the 95 body is the 94 routine.

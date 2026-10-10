@@ -11,7 +11,7 @@
 ; includes for stubs to replace removed code
 	include	stubinc\ports.inc	;IO_* / VDP_* ports
 	include	stubinc\equals.inc	;VDP status bits
-	include	stubinc\ram_addrs.inc	;RAM names
+	include	ram95.asm		;RAM map
 
 ; External addresses outside $000000-$000771, read from lst/nhl95.bin.
 ; The vector longs carry the address itself; jsr / jmp (x).l carry it too; movea.l #x carries it as the immediate.

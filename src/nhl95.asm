@@ -3,18 +3,17 @@
 ;	The includes are in 95 ROM order, from the fingerprint map tools/segmap95.json (tools/fingerprint_map.py).
 ;	The address on each include line is the mapped lst/nhl95.bin start. It is provisional until the segment matches.
 ;	The org for a segment build goes in its _stub.asm. Do not put an org in a file this list includes: this file sets org 0.
-;	ram95.asm has no bytes. The ports, VDP status bits and RAM names are in stubinc.
+;	ram95.asm (the RAM map), stubinc\ports.inc and stubinc\equals.inc are equates only, so they come first.
 ;
 	include	stubinc\ports.inc	;IO_* / VDP_* ports. Equates only
 	include	stubinc\equals.inc	;VDP status bits. Equates only
-	include	stubinc\ram_addrs.inc	;RAM names. Equates only
+	include	ram95.asm		;RAM map. Equates only
 
 	org	0			;the ROM starts at 0. Without an org SNASM writes a short, misaligned bin (the stubs carry their own org)
 	include	main95.asm		; $000000  Adapted from main94.asm: header, startup, vectors
 	include	teamdata95.asm		; $000772  Adapted from teamdata94.asm: teams, palettes, credits text
 	include	frames95.asm		; $005A34  Adapted from frames94.asm: sprite animation tables
 	include	schedule95.asm		; $008DD8  New in 95: season schedule data
-	include	ram95.asm		;          Adapted from ram94.asm: equates only
 	include	sram95.asm		; $009722  Adapted from sram94.asm: save data
 	include	hockey95.asm		; $009AC8  Adapted from hockey94.asm: game flow: StartGame, StartPer
 	include	display95_01.asm		; $00A204  Adapted from display94.asm: vblank, clock, crowd, rink scroll

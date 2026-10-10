@@ -10,7 +10,7 @@
 ; includes for stubs to replace removed code
 	include	stubinc\ports.inc	;IO_* / VDP_* ports
 	include	stubinc\equals.inc	;VDP status bits
-	include	stubinc\ram_addrs.inc	;RAM names
+	include	ram95.asm		;RAM map
 
 ; External addresses outside $00A204-$00A535, read from lst/nhl95.bin: jsr / jmp (x).l and movea.l #x carry the address.
 updatescroll = $79F64		;display95_02
