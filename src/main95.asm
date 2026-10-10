@@ -452,7 +452,7 @@ RegionOK	;The region is listed: checksum, then the game
 	ENDIF
 	bra.w	Begin
 
-ZeroLong	;$69A. A zero long: the empty palette list / menu list pointer. 94 has the same long at the start of teamdata94 ($30A), before TeamList
+ZeroLong	;A zero long: the empty palette list / menu list pointer. 94 has the same long at $30A, the start of teamdata94
 	dc.l	0
 
 ;exception vectors 2-5. 95 returns; 94 printed the error (AddError, Illinst, ZeroDiv in data94) and hung
