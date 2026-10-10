@@ -13,6 +13,7 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $08D39A-$08DF59, read from lst/nhl95.bin.
+ZeroLong = $69A			;main95
 revframetbl = $8596		;frames95
 setvideo = $A204		;hockey95
 SprSort = $A8E6			;setup95_01

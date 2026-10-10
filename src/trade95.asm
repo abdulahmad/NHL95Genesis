@@ -17,7 +17,7 @@ GetHighlightSlot	;95 only. d0 = save RAM offset ($5FD6 + 4 a game) of the highli
 	move.b	(SeasonDay).w,d1
 	clr.w	d2
 	move.b	(SeasonStartDay).w,d2
-	movea.l	#$8DD8,a6
+	movea.l	#SeasonSchedule,a6
 	clr.w	d5
 	move.b	(a6)+,d5
 	add.w	d2,d1
@@ -1287,7 +1287,7 @@ DrawTradeLogo	;95 only. Draw the team block of team d1
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	moveq	#2,d3
 	moveq	#0,d5

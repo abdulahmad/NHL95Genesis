@@ -1837,7 +1837,7 @@ DrawSetupTeamBlock	;Wrong code in IDA. 95 only. Draw team block d1 (Teamblocksma
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	moveq	#2,d3
 	moveq	#0,d5

@@ -784,7 +784,7 @@ DrawTeamScreen2	;95 only. A DrawTeamScreen (data95_01) for the season / stats sc
 	String	$BD,0,0,0
 	movea.l	(screenarg).w,a1
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	clr.w	d0
 	clr.w	d1
 	move.w	(a1),d2
@@ -873,7 +873,7 @@ DrawTeamScreen3	;95 only. The same with SmallFontMap
 	String	$BD,0,0,0
 	movea.l	(screenarg).w,a1
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	clr.w	d0
 	clr.w	d1
 	move.w	(a1),d2
@@ -967,7 +967,7 @@ DrawTeamScreen4Body	;DrawTeamScreen4 after the screen setup; DrawTeamScreen4NoSe
 	String	$BD,0,0,0
 	movea.l	(screenarg).w,a1
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	clr.w	d0
 	clr.w	d1
 	move.w	(a1),d2
@@ -1055,7 +1055,7 @@ DrawTeamScreen5	;95 only. DrawTeamScreen4 with three small fonts and palette wor
 	String	$BD,0,0,0
 	movea.l	(screenarg).w,a1
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	clr.w	d0
 	clr.w	d1
 	move.w	(a1),d2
@@ -1143,7 +1143,7 @@ DrawTeamScreen6	;95 only. The team blocks (screen6chars1), the bitmap, Screen6Ti
 	String	$BD,0,0,0
 	movea.l	(screenarg).w,a1
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	clr.w	d0
 	clr.w	d1
 	move.w	(a1),d2

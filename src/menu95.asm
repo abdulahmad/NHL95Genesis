@@ -94,7 +94,7 @@ HandleMenuInput	;93 name. Pause menu pad d1: right / left move between the three
 	bne.w	.7
 	beq.w	.11
 .7
-	cmpi.l	#$69A,(menulist).w
+	cmpi.l	#ZeroLong,(menulist).w
 	beq.w	.11
 	bsr.w	seta2
 	move.w	(menuitem).w,d0
@@ -302,7 +302,7 @@ PauseScreenDraw	;95 only. Draw the pause screen (SetupPauseScreen): wait out the
 	move.w	#$16,d3
 	moveq	#1,d4
 	moveq	#0,d5
-	movea.l	#$69A,a2	;a zero long (main95 $69A): no palettes
+	movea.l	#ZeroLong,a2	;a zero long: no palettes
 	jsr	(dobitmap).l
 	jsr	(printz).l
 	String	$BE,0,$19,0
@@ -317,7 +317,7 @@ PauseScreenDraw	;95 only. Draw the pause screen (SetupPauseScreen): wait out the
 	move.w	#3,d3
 	moveq	#1,d4
 	moveq	#0,d5
-	movea.l	#$69A,a2
+	movea.l	#ZeroLong,a2
 	jsr	(dobitmap).l
 	move.w	(sp)+,d4
 	jsr	(printz).l
@@ -346,7 +346,7 @@ PauseScreenDraw	;95 only. Draw the pause screen (SetupPauseScreen): wait out the
 	move.w	#2,d2
 	move.w	#1,d3
 	moveq	#0,d5
-	movea.l	#$69A,a2
+	movea.l	#ZeroLong,a2
 	jsr	(dobitmap).l
 	move.w	(sp)+,d4
 .fonts
@@ -616,7 +616,7 @@ UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to s
 	;selected one in the highlight attribute) with the up / down arrows; no menu (menulist $69A): DrawMenuInfo
 	btst	#5,(sflags9).w
 	bne.w	.11
-	cmpi.l	#$69A,(menulist).w
+	cmpi.l	#ZeroLong,(menulist).w
 	bne.w	.0
 	jmp	(DrawMenuInfo).l
 .0
@@ -988,7 +988,7 @@ DrawTabSelected	;95 only. The selected tab: $D x 2 of PauseBgBitmap from row 1 a
 	move.w	#1,d1
 	move.w	#$D,d2
 	move.w	#2,d3
-	movea.l	#$69A,a2
+	movea.l	#ZeroLong,a2
 	move.w	#1,d4
 	moveq	#0,d5
 	jmp	(dobitmap).l
@@ -1002,7 +1002,7 @@ DrawTab	;95 only. The plain tab: $D x 3 of TabBitmap at printx / printy (chars t
 	move.w	#1,d1
 	move.w	#$D,d2
 	move.w	#3,d3
-	movea.l	#$69A,a2
+	movea.l	#ZeroLong,a2
 	move.w	(tabchars).w,d4
 	moveq	#0,d5
 	jmp	(dobitmap).l

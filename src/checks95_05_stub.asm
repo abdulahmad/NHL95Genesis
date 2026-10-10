@@ -14,6 +14,7 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $08A3FE-$08B733, read from lst/nhl95.bin.
+ZeroLong = $69A			;main95
 TeamList = $772			;teamdata95
 WriteSRAM = $98E6		;sram95
 MakeSRAMChecksum = $9908	;sram95

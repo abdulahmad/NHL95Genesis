@@ -14,6 +14,7 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $08A056-$08A3FD, read from lst/nhl95.bin.
+ZeroLong = $69A			;main95
 dobitmap = $79A3C		;video95_01
 Framer = $7A270			;video95_02
 printz = $7C810			;video95_03

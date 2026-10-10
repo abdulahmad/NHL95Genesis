@@ -253,7 +253,7 @@ DrawPlayoffBracket	;93 name. Draw tree arrow d0 from the arrows map (Arrowsmap) 
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2	;a zero long (main95 $69A): no palettes
+	movea.w	#ZeroLong,a2	;a zero long: no palettes
 	clr.w	d1
 	moveq	#2,d2
 	moveq	#$17,d3
@@ -278,7 +278,7 @@ DrawTeamBlocks	;93 name. Draw team block d1 (team * 2) from Teamblocksmap at pri
 .0
 	movea.l	#Teamblocksmap,a1
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2	;a zero long (main95 $69A): no palettes
+	movea.w	#ZeroLong,a2	;a zero long: no palettes
 	clr.w	d0
 	move.w	(a1),d2
 	moveq	#2,d3

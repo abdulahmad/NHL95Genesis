@@ -2257,7 +2257,7 @@ DrawGameTeams	;95 only. Draw the team names of a game line
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	move.w	2(a1),d3
 	moveq	#0,d5
@@ -2280,7 +2280,7 @@ DrawGameUser	;95 only. Draw the C / H (computer / human) marks of a game line
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	move.w	2(a1),d3
 	moveq	#0,d5
@@ -2325,7 +2325,7 @@ DrawGameResult	;95 only. Draw the result of a game line
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	move.w	2(a1),d3
 	moveq	#0,d5
@@ -2357,7 +2357,7 @@ DrawGameCursor	;95 only. Draw the cursor on the game line
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	moveq	#2,d3
 	moveq	#0,d5
@@ -3378,7 +3378,7 @@ DrawCalendarTeam	;95 only. Draw the CalTeam name
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	moveq	#2,d3
 	moveq	#0,d5
@@ -3398,7 +3398,7 @@ DrawCalendarMonth	;95 only. Draw the CalMonth name
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	moveq	#2,d3
 	moveq	#0,d5
@@ -3419,7 +3419,7 @@ DrawCalendarDay	;95 only. Draw day number d6 at CalX / CalY
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	moveq	#1,d3
 	moveq	#0,d5
@@ -3439,7 +3439,7 @@ DrawCalendarOpponent	;95 only. Draw opponent d0
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	moveq	#1,d3
 	moveq	#0,d5
@@ -3458,7 +3458,7 @@ DrawCalendarResult	;95 only. Draw result d1 (0 loss, 1 win, 2 tie)
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	moveq	#1,d3
 	moveq	#0,d5
@@ -3487,7 +3487,7 @@ CalendarBg	;95 only. Draw the calendar background
 	adda.l	(a2)+,a1
 	clr.w	d0
 	clr.w	d1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	moveq	#$28,d2
 	moveq	#$1C,d3
 	moveq	#0,d5
@@ -3817,7 +3817,7 @@ DrawStandingsLogo	;95 only. Draw team d1's block
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	moveq	#2,d3
 	moveq	#0,d5

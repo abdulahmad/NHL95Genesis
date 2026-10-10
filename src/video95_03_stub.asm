@@ -14,6 +14,7 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $07C512-$07DE9F, read from lst/nhl95.bin.
+ZeroLong = $69A			;main95
 TeamList = $772			;teamdata95
 defaultsprites = $A656		;setup95_01
 SprSort = $A8E6			;setup95_01

@@ -364,7 +364,7 @@ HotColdIcon	;title94 HotColdIcon. The hot or cold icon by player iconplayer of t
 	movea.l	a0,a2
 	adda.l	(a2)+,a0
 	adda.l	(a2)+,a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	clr.w	d0
 	clr.w	d1
 	move.w	(a1),d2

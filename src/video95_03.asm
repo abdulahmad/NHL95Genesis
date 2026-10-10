@@ -461,7 +461,7 @@ PutClockDigit	;95 only. Draw big clock digit d0 (0-9, $A the colon) at printx / 
 	move.w	#0,d1
 	move.w	#2,d2
 	move.w	#3,d3
-	movea.l	#$69A,a2
+	movea.l	#ZeroLong,a2
 	move.w	(clockdigitchars).w,d4
 	moveq	#0,d5
 	jsr	(dobitmap).l

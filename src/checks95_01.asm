@@ -246,7 +246,7 @@ PutScoreDigit	;95 only. The same code as PutClockDigit (video95_03): big digit d
 	move.w	#0,d1
 	move.w	#2,d2
 	move.w	#3,d3
-	movea.l	#$69A,a2
+	movea.l	#ZeroLong,a2
 	move.w	(clockdigitchars).w,d4
 	moveq	#0,d5
 	jsr	(dobitmap).l

@@ -13,6 +13,9 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $0A12AA-$0A1A59, read from lst/nhl95.bin.
+ZeroLong = $69A			;main95
+Z80Program = $BD86		;sounddrv95
+SoundBanks = $D8EC		;sounddrv95
 SoundCmd = $676D8		;sound95_01
 song = $678C2			;sound95_01
 play_new_song = $67938		;sound95_01

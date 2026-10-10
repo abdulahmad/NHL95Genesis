@@ -1587,7 +1587,7 @@ DrawTeamLogo1	;Draw bitmap Teamblocksmap via dobitmap (dobitmap) with tile base 
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	moveq	#2,d3
 	moveq	#0,d5
@@ -1874,7 +1874,7 @@ DrawTeamLogo2	;draw team d0's logo: frame d0*2 of the bitmap set at Teamblocksma
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	moveq	#2,d3
 	moveq	#0,d5
@@ -2756,7 +2756,7 @@ DrawTeamLogo3	;Draw small team logo d1 from Teamblocksmap at word_FFAC40/42 (dob
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	moveq	#2,d3
 	moveq	#0,d5
@@ -3441,7 +3441,7 @@ LineEditorBg	;draw the line editor background bitmap (LineEditorBgMap) on map 2,
 	clr.w	d1
 	move.w	(a1),d2
 	move.w	2(a1),d3
-	movea.l	#$69A,a2
+	movea.l	#ZeroLong,a2
 	moveq	#$F,d5
 	jsr	(dobitmap).l
 	move.w	#$18,(palcount).w
@@ -3463,7 +3463,7 @@ PlayerSelectBg	;draw the player select list background bitmaps (PlayerSelectMap1
 	clr.w	d1
 	move.w	(a1),d2
 	move.w	#$A,d3
-	movea.l	#$69A,a2
+	movea.l	#ZeroLong,a2
 	moveq	#0,d5
 	jsr	(dobitmap).l
 	move.w	(screen6chars3).w,d4
@@ -3478,7 +3478,7 @@ PlayerSelectBg	;draw the player select list background bitmaps (PlayerSelectMap1
 	clr.w	d1
 	move.w	(a1),d2
 	move.w	2(a1),d3
-	movea.l	#$69A,a2
+	movea.l	#ZeroLong,a2
 	moveq	#0,d5
 	jsr	(dobitmap).l
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -4104,7 +4104,7 @@ DrawTeamLogo4	;draw team logo d1 (from Teamblocksmap graphics, palette word_FFBF
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	move.w	(a1),d2
 	moveq	#2,d3
 	moveq	#0,d5

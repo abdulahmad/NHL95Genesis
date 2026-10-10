@@ -538,7 +538,7 @@ ShowReplayIcon
 	move.w	#0,d5
 	movea.l	#ReplayIconMap,a1
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	jmp	dobitmap
 
 EraseReplayIcon
@@ -561,7 +561,7 @@ ShowReplayBanner
 	move.w	#0,d5
 	movea.l	#ReplayMap,a1
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	jmp	dobitmap
 
 EraseReplayBanner

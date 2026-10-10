@@ -37,7 +37,7 @@ EASNLogo	;(penalty94). 93 name. Draw the EASN logo map at x 2, y $19 (94: x 1) o
 	String	$BF,2,$19	;IDA: ori.b / move.b d0,-(a4)
 	movea.l	#EASNmap,a1	;93 EASNmap
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2	;a zero long (main95 $69A): no palettes
+	movea.w	#ZeroLong,a2	;a zero long: no palettes
 	clr.w	d0
 	clr.w	d1
 	move.w	(a1),d2	;width and height from the map header

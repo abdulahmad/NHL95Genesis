@@ -14,6 +14,7 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $08B9A8-$08D399, read from lst/nhl95.bin.
+ZeroLong = $69A			;main95
 Opening2 = $9ADA		;hockey95
 IntermissionStart = $9D18	;hockey95
 sfx = $677AC			;sound95_01

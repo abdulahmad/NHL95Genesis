@@ -113,11 +113,11 @@ newTitleScreen	;title94 newTitleScreen. The title screen (TitleScreenImg, TitleI
 	jsr	(SoundCmd).l
 	move.w	#0,d0
 	move.w	#$1B63,d1
-	movea.l	#$BD86,a0
+	movea.l	#Z80Program,a0
 	jsr	(SoundCmd).l
 	move.w	#6,d0
 	clr.w	d1
-	movea.l	#$D8EC,a0
+	movea.l	#SoundBanks,a0
 	jsr	(SoundCmd).l
 	move.w	#7,d0
 	move.w	#0,d1
@@ -391,11 +391,11 @@ StanleyCupScreen	;95 only. The Stanley Cup screen: the vblank CupVBlank, the cup
 	jsr	(SoundCmd).l
 	move.w	#0,d0
 	move.w	#$1B63,d1
-	movea.l	#$BD86,a0
+	movea.l	#Z80Program,a0
 	jsr	(SoundCmd).l
 	move.w	#6,d0
 	clr.w	d1
-	movea.l	#$D8EC,a0
+	movea.l	#SoundBanks,a0
 	jsr	(SoundCmd).l
 	move.w	#7,d0
 	move.w	#0,d1
@@ -463,7 +463,7 @@ CupDrawTeam	;95 only. StanleyCupScreen: the team block of the winner (cupwinner,
 	add.w	d1,d1
 	movea.l	#Teamblocksmap,a1
 	adda.l	4(a1),a1
-	movea.w	#$69A,a2
+	movea.w	#ZeroLong,a2
 	clr.w	d0
 	move.w	(a1),d2
 	moveq	#2,d3

@@ -14,6 +14,7 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $07F97E-$0807EB, read from lst/nhl95.bin.
+ZeroLong = $69A			;main95
 setc1player = $AD80		;setup95_01
 setc2player = $AD8A		;setup95_01
 sfx = $677AC			;sound95_01

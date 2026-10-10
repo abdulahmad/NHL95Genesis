@@ -14,6 +14,7 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $07E4D6-$07F97D, read from lst/nhl95.bin.
+ZeroLong = $69A			;main95
 Opening2 = $9ADA		;hockey95
 SprSort = $A8E6			;setup95_01
 setplayercolors = $AF1A		;setup95_01
