@@ -648,7 +648,7 @@ $082E88,PuckOnAttackHalf,sub_82E88,,onetimer95
 $082EFE,onetimershot,,,onetimer95
 $082F60,EndOneTimer,sub_82F60,,onetimer95
 $082FB2,CheckOneTimerFacing,,,onetimer95
-$082FC2,assshoot,,,checks95_08
+$082FC2,assshoot,,,checks95_03
 $082FFA,assgoaliectrl,,,checks95_03
 $083152,a2offsides,,,checks95_03
 $0831AC,asseben,,,checks95_03

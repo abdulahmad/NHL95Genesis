@@ -1,14 +1,31 @@
-;	NHL 95 checks95_03. Retail $082FFA-$0836AB (1714 bytes).
-;	94 checks94 assgoaliectrl, a2offsides, assign94 asseben (moved in), the 95 assdefdchase, cards94 setSlotBit (moved in), assign94
-;	assscore and assgoaliebreakwait (moved in), then checks94 ChkGoalies, ReturnGoalies, CPgoalie. 94 assgoaliecpu is in checks95_01.
-;	CPgoalie runs to $0836AB, past the mapped end $08369D (inside CPgoalie): collide95_02 starts at $0836AC.
-;	IDA left most of the range as dc.b; it is code here, read from the retail bytes. IDA code: setSlotBit, ChkGoalies,
-;	ReturnGoalies and CPgoalie.
+;	NHL 95 checks95_03. Retail $082FC2-$0836AB (1770 bytes).
+;	94 checks94 assshoot, assgoaliectrl, a2offsides, assign94 asseben (moved in), the 95 assdefdchase, cards94 setSlotBit (moved
+;	in), assign94 assscore and assgoaliebreakwait (moved in), then checks94 ChkGoalies, ReturnGoalies, CPgoalie. 94 assgoaliecpu is in
+;	checks95_01. CPgoalie runs to $0836AB, past the mapped end $08369D (inside CPgoalie): collide95_02 starts at $0836AC.
+;	IDA left most of the range as dc.b (assshoot too); it is code here, read from the retail bytes. IDA code: setSlotBit,
+;	ChkGoalies, ReturnGoalies and CPgoalie.
 ;	95 changes: the 95 asstab numbers, SPA values and limits (the comments give the 94 values), jsr / jmp .l to the routines 95 moved out
-;	of range, the shared rtsskate (checks95_02) in place of rtss2 / rtss4, the team defense mode (assdefdchase), the scorer's
-;	celebration in assscore.
+;	of range (SetShotMode, ShotMode, ...), the shared rtsskate (checks95_02) in place of rtss2 / rtss4, the team defense mode
+;	(assdefdchase), the scorer's celebration in assscore.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
+
+; assignment for computer shooting
+assshoot	;asstab entry $1A. checks94 assshoot
+	btst	#pfalock,pflags(a3)	;pfalock - animation locked
+	bne.w	rtsskate	;94 rtss2
+	bclr	#pfna,pflags(a3)	;clear pfna
+	beq.w	.nna
+	jmp	(SetShotMode).l	;95 jmp (94 bra)
+.nna
+	btst	#sfssdir,(sflags).w	;#sfssdir
+	beq.w	assexit
+	clr.w	d2
+	sub.w	d7,temp2(a3)
+	bpl.w	.sm	;95: the bra.w ShotMode is now a shared jmp
+	bset	#5,d2	;#cbut
+.sm
+	jmp	(ShotMode).l
 
 assgoaliectrl	;asstab entry $1B (94 $1D). The joystick goalie: a stoppage when he leaves his area, else
 	;checkanim (checks95_01) when out of the screen box. 95: rtsskate in place of rtss2
