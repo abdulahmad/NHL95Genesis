@@ -1873,12 +1873,12 @@ PrintFieldLabel	;print field label: pick skater/goalie label list, highlight if 
 	rts
 
 SkaterLabelLists	;skater attribute-label lists by column
-	dc.l	LabelList1,LabelList2,LabelList3,LabelList4
+	dc.l	SkaterSkillLabels,SkaterShotLabels,PosWeightLabels,HandUniformLabels
 
 GoalieLabelLists	;goalie attribute-label lists by column
-	dc.l	LabelList5,LabelList6,LabelList3,LabelList4
+	dc.l	GoalieSkillLabels,GoalieSaveLabels,PosWeightLabels,HandUniformLabels
 
-LabelList1	;95 only. Field labels of a column
+SkaterSkillLabels	;95 only. Create Player labels, skater column 1: skating and awareness ratings
 	String	$FD,$4,$FC,$A,'Speed',$FD,$13,$0
 	String	$FD,$4,$FC,$C,'Agility',$FD,$13,$0
 	String	$FD,$4,$FC,$E,'Endurance',$FD,$13,$0
@@ -1886,27 +1886,27 @@ LabelList1	;95 only. Field labels of a column
 	String	$FD,$4,$FC,$12,'Def.Awareness',$FD,$13,$0
 	String	$FD,$4,$FC,$14,'Stickhandling',$FD,$13,$0
 
-LabelList2	;95 only. Field labels of a column
+SkaterShotLabels	;95 only. Create Player labels, skater column 2: shooting, passing and checking ratings
 	String	$FD,$16,$FC,$A,'Shot Power',$FD,'$'
 	String	$FD,$16,$FC,$C,'Shot Accuracy',$FD,'$',$0
 	String	$FD,$16,$FC,$E,'Pass Accuracy',$FD,'$',$0
 	String	$FD,$16,$FC,$10,'Aggression',$FD,'$'
 	String	$FD,$16,$FC,$12,'Checking',$FD,'$'
 
-LabelList3	;95 only. Field labels of a column
+PosWeightLabels	;95 only. Create Player labels, column 3 (both): position and weight
 	String	$FD,$16,$FC,$7,'Pos. ',$0
 	String	$FD,$16,$FC,$8,'Wt. '
 
-LabelList4	;95 only. Field labels of a column
+HandUniformLabels	;95 only. Create Player labels, column 4 (both): handedness and uniform number
 	String	$FD,$1E,$FC,$7,'Hand',$FD,'$'
 	String	$FD,$1E,$FC,$8,'Unif.',$FD,'$',$0
 
-LabelList5	;95 only. Field labels of a column
+GoalieSkillLabels	;95 only. Create Player labels, goalie column 1: agility, awareness and puck control
 	String	$FD,$4,$FC,$B,'Agility',$FD,$13,$0
 	String	$FD,$4,$FC,$D,'Def.Awareness',$FD,$13,$0
 	String	$FD,$4,$FC,$F,'Puck Control',$FD,$13
 
-LabelList6	;95 only. Field labels of a column
+GoalieSaveLabels	;95 only. Create Player labels, goalie column 2: stick and glove side ratings
 	String	$FD,$16,$FC,$B,'Stick Right',$FD,'"',$0
 	String	$FD,$16,$FC,$D,'Stick Left',$FD,'"'
 	String	$FD,$16,$FC,$F,'Glove Right',$FD,'"',$0

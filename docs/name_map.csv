@@ -1497,10 +1497,16 @@ $099786,PrintFieldLabel,sub_99786,,create95
 $0997E6,SkaterLabelLists,unk_997E6,,create95
 $0997F6,GoalieLabelLists,unk_997F6,,create95
 $099806,LabelList1,,,create95
+$099806,SkaterSkillLabels,,LabelList1,create95
 $099878,LabelList2,,,create95
+$099878,SkaterShotLabels,,LabelList2,create95
 $0998D8,LabelList3,,,create95
+$0998D8,PosWeightLabels,,LabelList3,create95
+$0998EE,HandUniformLabels,,LabelList4,create95
 $0998EE,LabelList4,,,create95
+$099908,GoalieSkillLabels,,LabelList5,create95
 $099908,LabelList5,,,create95
+$099942,GoalieSaveLabels,,LabelList6,create95
 $099942,LabelList6,,,create95
 $09998E,LastFieldRow,sub_9998E,,create95
 $0999B4,SkaterLastRows,unk_999B4,,create95
