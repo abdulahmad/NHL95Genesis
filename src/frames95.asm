@@ -1827,6 +1827,6 @@ SPAgslambot_table:	;Frames 1044-1049
 ; End of animation list
 
 revframetbl	;94 name (94 kept it at the end of graphics94). One word per sprite frame (1057, frame 0-1056):
-	;the frame for a reverse angle replay. RestoreReplayFrame (replay95, IDA $8DD46) movea.l #revframetbl,a6
+	;the frame for a reverse angle replay. RestoreReplayFrame (replay95_02, IDA $8DD46) movea.l #revframetbl,a6
 	incbin	..\Extracted\NHL95\Graphics\revframetbl.bin
 	even

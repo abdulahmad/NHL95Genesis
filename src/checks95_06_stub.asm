@@ -15,8 +15,8 @@
 
 ; External addresses outside $08B9A8-$08D399, read from lst/nhl95.bin.
 ZeroLong = $69A			;main95
-Opening2 = $9ADA		;hockey95
-IntermissionStart = $9D18	;hockey95
+Opening2 = $9ADA		;hockey95_01
+IntermissionStart = $9D18	;hockey95_01
 sfx = $677AC			;sound95_01
 play_new_song = $67938		;sound95_01
 ChooseSong = $679C4		;sound95_01

@@ -28,7 +28,7 @@ HiScoreScreen = $A16DE		;title95_02
 ReadLineData = $87B30		;data95_01
 DefaultMenus = $866DE		;data95_01
 orjoy = $7A448			;video95_02
-Opening = $9AC8			;hockey95
+Opening = $9AC8			;hockey95_01
 Z80Program = $BD86		;The 95 Z80 sound program (sounddrv95)
 SoundBanks = $D8EC		;The sound data after the Z80 program (sounddrv95)
 

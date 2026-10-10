@@ -150,7 +150,7 @@ SprSort	;sort objects in struct SortObj and set corresponding tables for keeping
 	movem.l	(sp)+,d0-d4/a0-a2
 	rts
 
-updatepadinput	;95 only: the end of 94 updateplayers (replay94 .tp2 on), called from updateplayers (hockey95) with a3 =
+updatepadinput	;95 only: the end of 94 updateplayers (replay94 .tp2 on), called from updateplayers (hockey95_01) with a3 =
 	;object, d6 = SCnum. The pad (1-4) controlling a3 reads its buttons and runs doinput, with d4 = 0 / 2 / 4 / 6 (94 swaps the pad 3 /
 	;4 variables into pads 1 / 2). Then the assignment, collisions and the impact decay
 	cmp.w	(c1playernum).w,d6	;check if cont 1 is puck carrier

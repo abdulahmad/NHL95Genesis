@@ -15,7 +15,7 @@
 	include	frames95.asm		; $005A34  Adapted from frames94.asm: sprite animation tables
 	include	schedule95.asm		; $008DD8  New in 95: season schedule data
 	include	sram95.asm		; $009722  Adapted from sram94.asm: save data
-	include	hockey95.asm		; $009AC8  Adapted from hockey94.asm: game flow: StartGame, StartPer
+	include	hockey95_01.asm		; $009AC8  Adapted from hockey94.asm: game flow: StartGame, StartPer
 	include	display95_01.asm		; $00A204  Adapted from display94.asm: vblank, clock, crowd, rink scroll
 	include	replay95_01.asm		; $00A536  Adapted from replay94.asm: replay
 	include	setup95_01.asm		; $00A656  Adapted from setup94.asm: ice setup, intermission, playoff screen
@@ -47,7 +47,7 @@
 	include	checks95_05.asm		; $08A3FE  Adapted from checks94.asm: checks before the display code
 	include	input95_03.asm		; $08B734  Adapted from input94.asm: controller input and line changes
 	include	checks95_06.asm		; $08B9A8  Adapted from checks94.asm: checks before the display code
-	include	replay95.asm		; $08D39A  Adapted from replay94.asm: replay
+	include	replay95_02.asm		; $08D39A  Adapted from replay94.asm: replay
 	include	season95.asm		; $08DF5A  New in 95: season mode
 	include	period95.asm		; $0920DE  Adapted from period94.asm: period stats and game statistics
 	include	stats95_01.asm		; $0925AE  Adapted from stats94.asm: scores, line editor, roster, scoring and penalty summaries, player stats, crowd meter, goalie select

@@ -3,7 +3,7 @@
 ;	code, with moved in: crowd94 stopna2, penalty94 PenGoalStuff, data94 box / DisplayPlayerAttributeMenu / GoalBigTxt / PPGoalBigTxt,
 ;	title94 PrintPlayerAssists / PrintPlayerGoals / PrintParenNumber, replay94 checkwindow, setup94 PeriodOver / GameOver /
 ;	ExitToOpening, hockey94 clockcont_0 / clockcont; and the 95 controller setup screen (SetContTeams ... ReadAllPads). Each routine
-;	comment names its 94 file or says 95 only. replay95 follows at $08D39A.
+;	comment names its 94 file or says 95 only. replay95_02 follows at $08D39A.
 ;	IDA left SetGoaliesCtl and PeriodOver as dc.b and the last four routines as wrong code; they and the tables are read from the
 ;	retail bytes. IDA hid printz Strings and DecompressGraphicsWithCallback remap bytes as instructions; they are String / dc.b here.
 ;	Local labels are numbered; the IDA local names are not kept.

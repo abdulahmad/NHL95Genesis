@@ -1,6 +1,6 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	replay95 segment stub. Retail $08D39A-$08DF59.
+;	replay95_02 segment stub. Retail $08D39A-$08DF59.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -15,7 +15,7 @@
 ; External addresses outside $08D39A-$08DF59, read from lst/nhl95.bin.
 ZeroLong = $69A			;main95
 revframetbl = $8596		;frames95
-setvideo = $A204		;hockey95
+setvideo = $A204		;display95_01
 SprSort = $A8E6			;setup95_01
 setpads = $AB2A			;setup95_01
 Z80Program = $BD86		;sound95_01
@@ -39,4 +39,4 @@ ReplayMap = $1625F2		;graphics95_01
 ReplayIconMap = $162D18		;graphics95_01
 
 ; Main segment code
-	include	replay95.asm
+	include	replay95_02.asm

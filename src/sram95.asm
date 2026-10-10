@@ -2,7 +2,7 @@
 ;	NHL 95 segment $9722-$9AC7, from lst/nhl95.bin.lst. The battery save RAM: 95 keeps $8000 bytes (94: $2000) on the odd bytes at
 ;	SaveRAM, copies them to M68K_RAM at power on (InitSaveRAM) and protects them with a sum / complement checksum in bytes $7FFE-$7FFF.
 ;	94 InitSaveRAM, SRAMWaitVblank, VBcount, ValidateSRAM, ClearSRAM, WriteSRAM, MakeSRAMChecksum, ReadSRAM, then three routines new in 95
-;	that build the season leader lists from the save RAM stats. Opening (hockey95) follows at $9AC8.
+;	that build the season leader lists from the save RAM stats. Opening (hockey95_01) follows at $9AC8.
 ;	95 addresses RAM with (x).l here where 94 used (x).w, and indexes the save RAM with a long (d0.l). The IDA dc.b at $981E (VBcount)
 ;	and $9972-$9AC7 (the leader list routines, no xref) are written as instructions.
 

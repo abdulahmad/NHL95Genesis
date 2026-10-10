@@ -1165,7 +1165,7 @@ Z80BusRelease	;95 only. Give the bus back to the Z80
 	rts
 	opt	oaq+,osq+,oz+
 
-Z80Program	;The Z80 sound program (main95 Begin and hockey95 Opening2 load it with SndLoadZ80, d1 = $1B63). Starts JP $0600
+Z80Program	;The Z80 sound program (main95 Begin and hockey95_01 Opening2 load it with SndLoadZ80, d1 = $1B63). Starts JP $0600
 	incbin	..\Extracted\NHL95\Sound\z80_snd_drv95.bin
 	nop	;$D8EA. Pad to $D8EC (retail 4E71)
 

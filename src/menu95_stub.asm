@@ -15,7 +15,7 @@
 
 ; External addresses outside $07E4D6-$07F97D, read from lst/nhl95.bin.
 ZeroLong = $69A			;main95
-Opening2 = $9ADA		;hockey95
+Opening2 = $9ADA		;hockey95_01
 SprSort = $A8E6			;setup95_01
 setplayercolors = $AF1A		;setup95_01
 DoFill = $79902			;video95_01

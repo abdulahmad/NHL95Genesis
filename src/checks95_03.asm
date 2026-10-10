@@ -331,7 +331,7 @@ assdefdchase	;95 only. assdefd with the team defense mode at 1 and the other tea
 	rts
 
 setSlotBit	;cards94 setSlotBit (moved in; IDA name and comments). sflags6 bit 5 (the slot) = the puck carrier is in the slot
-	;in front of the goal (blue line $56; 94 $58). Called from DoGameFrame (hockey95)
+	;in front of the goal (blue line $56; 94 $58). Called from DoGameFrame (hockey95_01)
 	bclr	#5,(sflags6).w	;clears Slot Bit
 	tst.w	(puckc).w
 	bmi.w	.ex	;exit if no puckc
@@ -465,7 +465,7 @@ assgoaliebreakwait	;asstab entry $1D (94 $20). assign94 assgoaliebreakwait (move
 	rts
 ; players do nothing until faceoff is over
 
-ChkGoalies	;A computer team down with its goalie in: pull him on a delayed penalty, else CPgoalie. Called from DoGameFrame (hockey95)
+ChkGoalies	;A computer team down with its goalie in: pull him on a delayed penalty, else CPgoalie. Called from DoGameFrame (hockey95_01)
 	btst	#gmclock,(gmode).w	;check if clock running
 	bne.w	rtsskate
 	movea.w	#(HmShots-M68K_RAM),a2

@@ -116,7 +116,7 @@ AutoLineChange	;(checks94) Computer line change on the fly: puck in the player's
 	jsr	(PrintScores1).l
 	jmp	compshoot
 
-SetupTeamForIntermission	;(penalty94) 93 name. Reset the bench (ResetBench), then for each team SetupTeamLine. Called from hockey95
+SetupTeamForIntermission	;(penalty94) 93 name. Reset the bench (ResetBench), then for each team SetupTeamLine. Called from hockey95_01
 	bsr.w	ResetBench
 	movea.w	#(HmShots-M68K_RAM),a2
 	lea	tmsize(a2),a3

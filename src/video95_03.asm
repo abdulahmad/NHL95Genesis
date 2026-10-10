@@ -1476,7 +1476,7 @@ DrawTeamLogo	;94 DrawTeamLogo (optsetup94) body: draw logo a0 (GetTeamLogo, d3 =
 	jmp	(dobitmap).l
 
 ResetClock	;gameclock = PerTimeTotal = the period length (GetPeriodTime; $258 in overtime unless OptPlayMode), clock stopped
-	;(gmclock). Called from StartPer (hockey95)
+	;(gmclock). Called from StartPer (hockey95_01)
 	bsr.w	GetPeriodTime	;d0 = period length in seconds
 	cmpi.w	#3,(gsp).w	;overtime?
 	blt.w	.0

@@ -1,4 +1,4 @@
-;	NHL 95 replay95. Retail $08D39A-$08DF59 (3008 bytes).
+;	NHL 95 replay95_02. Retail $08D39A-$08DF59 (3008 bytes).
 ;	Mapped to replay94 (80%): updatereplay, ReplayMode, ShowReplayIcon / EraseReplayIcon / ShowReplayBanner / EraseReplayBanner,
 ;	suba4, adda4, UpdateCameraPos, RevReplayAdj, RestoreReplayFrame and ClampReplayView. 95 adds chkcheckstart and CanCheckStart
 ;	(the 95 check start tests) ahead of updatereplay, and a sound driver restart at the top of ReplayMode. replay94 checkwindow is in

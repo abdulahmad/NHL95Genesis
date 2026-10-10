@@ -2,7 +2,7 @@
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	hockey95 segment stub. Retail $009AC8-$00A203.
+;	hockey95_01 segment stub. Retail $009AC8-$00A203.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -65,7 +65,7 @@ updatepwrplay = $9F45E		;checks95_07
 checkwindow = $8C900		;checks95_06
 setSlotBit = $833FE		;checks95_03
 SprSort = $A8E6			;setup95_01
-updatereplay = $8D55E		;replay95
+updatereplay = $8D55E		;replay95_02
 setvideo = $A204		;display95_01
 UpdateRecords = $9C01A		;cards95_02
 SetupTeamForIntermission = $8A572	;checks95_05
@@ -87,4 +87,4 @@ SPAboardmidl = $26C8
 SPAboardmidr = $276A
 
 ; Main segment code
-	include	hockey95.asm
+	include	hockey95_01.asm

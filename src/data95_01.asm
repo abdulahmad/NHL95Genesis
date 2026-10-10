@@ -651,7 +651,7 @@ GameSetUp	;(94 optsetup94). The game setup screen, rewritten for 95: ReadLineDat
 	;TempOptPlayMode. In a season (GameFlags bit 5) take the season options (ReadSeasonHeader) and the matchup (StepSeasonTeam).
 	;Then setoptions, and the line cursor loop: FixModeOptions, PrintOptions, the logos or matchup bitmaps, GameSetUp_2 for a key;
 	;up / down move SelectedPlayerIdx, left / right step setupvalues (WrapOptionUp / Down), start stores them (SetupStart) and sets the
-	;pads (SetPojoyMode, FigureJoy). Called from hockey95
+	;pads (SetPojoyMode, FigureJoy). Called from hockey95_01
 	jsr	(ReadLineData).l
 	movea.l	#pwddatabuffer,a3	;saved playoff state
 	jsr	(ReadPassBits).l
@@ -2493,7 +2493,7 @@ GetShifter	;(92 / 93 GetShifter). Returns d1 = number of games - 1, d2 = first b
 	move.l	(sp)+,d0
 	rts
 
-AddPOStats	;(93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to its packed playoff totals. Called from hockey95
+AddPOStats	;(93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to its packed playoff totals. Called from hockey95_01
 	cmpi.w	#1,(OptPlayMode).w
 	blt.w	.4
 	bsr.w	ReadTeamStats

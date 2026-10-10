@@ -13,7 +13,7 @@ FIFO_EMPTY equ 9
 ; ----------------------------------
 ; Structure and flag equates. Empty until the first segment confirms the 95 values.
 
-;the sort object structure (SCstruct = $80 bytes each, from SortCords). 93 / 94 names; hockey95 updateplayers confirms these 95 values
+;the sort object structure (SCstruct = $80 bytes each, from SortCords). 93 / 94 names; hockey95_01 updateplayers confirms these 95 values
 SCstruct equ $80
 puckscnum equ $E	;the puck sort object (SortCords + puckscnum * SCstruct = puckx); the shadow is puckscnum+1
 Xpos equ $0
