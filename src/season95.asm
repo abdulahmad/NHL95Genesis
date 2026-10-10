@@ -588,7 +588,7 @@ SimGameStats	;95 only. Fill the team structs for a simulated game a0 (teams, sco
 	move.w	(VisTeam).w,$28(a2)
 	clr.w	d0
 	move.b	2(a0),d0
-	move.w	d0,$C(a1)
+	move.w	d0,tmscore(a1)
 	move.w	d0,(rosterscroll).w
 	move.w	(HomeTeam).w,d1
 	bsr.w	SimShots
@@ -596,7 +596,7 @@ SimGameStats	;95 only. Fill the team structs for a simulated game a0 (teams, sco
 	bsr.w	SimScorers
 	clr.w	d0
 	move.b	3(a0),d0
-	move.w	d0,$C(a2)
+	move.w	d0,tmscore(a2)
 	move.w	d0,(rosterscroll).w
 	move.w	(VisTeam).w,d1
 	bsr.w	SimShots
@@ -1003,7 +1003,7 @@ SeasonGameOver	;95 only. After a human season game: copy the scores into its Sea
 .2
 	movea.l	#HmShots,a1
 	move.b	$D(a1),2(a0)
-	adda.w	#$366,a1
+	adda.w	#tmsize,a1
 	move.b	$D(a1),3(a0)
 	bset	#1,4(a0)
 	jsr	(RecordPlayoffGame).l

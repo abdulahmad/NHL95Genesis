@@ -216,7 +216,7 @@ wallcollb	;93 name. Check for puck over wall. a3 = object, d0/d1 = cos/sin of th
 	blt.w	wallcoll
 	move.l	a3,-(sp)
 	asr	Yvel(a3)
-	adda.w	#$80,a3
+	adda.w	#SCstruct,a3
 	move.w	#$250A,d1
 	jsr	(SetSPA).l
 	movea.l	(sp)+,a3
@@ -651,7 +651,7 @@ Bcheck	;a2 = player that is B checking (SPA $F38), a3 = player being checked. En
 	beq.w	.0
 	move.w	#$20,d0
 	add.b	$75(a2),d0
-	sub.b	$68(a3),d0
+	sub.b	legstr(a3),d0
 	move.w	SCnum(a3),d1
 	cmp.w	(puckc).w,d1
 	beq.w	.0
@@ -793,7 +793,7 @@ FallDown	;player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	movea.w	#(HmShots-M68K_RAM),a0
 	btst	#pfteam,pflags(a3)
 	beq.w	.1
-	adda.w	#$366,a0
+	adda.w	#tmsize,a0
 .1
 	addq.w	#1,$10(a0)
 	clr.w	d0
@@ -876,8 +876,8 @@ FallDown	;player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	addi.w	#$A,(CwdExciteLvl).w
 	addi.w	#$96,(crowdlevel).w
 	move.w	d1,-(sp)
-	move.b	#0,$40(a3)
-	move.b	#0,$65(a3)
+	move.b	#0,temp1(a3)
+	move.b	#0,glitch(a3)
 	move.w	#$2288,d1
 	jsr	(SetSPA).l
 	clr.w	Xvel(a3)
@@ -1206,7 +1206,7 @@ checkpuckcoll	;look for puck coll with players. a3 = puck. Clears Yvel past the 
 	move.l	a0,-(sp)	;push on stack
 	movea.l	#.cbg,a0
 	clr.w	d0
-	move.b	$68(a2),d0	;move Agl into d0
+	move.b	legstr(a2),d0	;move Agl into d0
 	btst	#1,(sflags8).w	;check if cwd meter broken (always is)
 	bne.w	.boost
 	btst	#6,(sflags7).w	;check if crowd meter currently broken
@@ -1491,9 +1491,9 @@ puckglue	;93 name. Player a2 takes the puck (92 puckstick .glue): faceoff and pa
 	movem.l	d0/a3,-(sp)
 	asl.w	#7,d0
 	movea.l	#SortCords,a3
-	tst.w	$34(a3,d0.w)	;check if goalie
+	tst.w	position(a3,d0.w)	;check if goalie
 	bne.w	.2	;branch if not
-	btst	#pfjoycon,$62(a3,d0.w)	;check if d0 player controlled
+	btst	#pfjoycon,pflags(a3,d0.w)	;check if d0 player controlled
 	beq.w	.2	;branch if not
 	movem.l	(sp)+,d0/a3	;exit if player controlled
 	rts
@@ -1675,9 +1675,9 @@ checkgoal	;look for coll with goal/net. a2 = goal struct, a3 = object, d2/d3 = x
 	st	(puckc).w
 	asl.w	#7,d0
 	movea.w	#(SortCords-M68K_RAM),a0
-	move.b	#8,$5E(a0,d0.w)
+	move.b	#8,nopuck(a0,d0.w)
 	move.w	(pucky).w,d1
-	btst	#7,$62(a0,d0.w)
+	btst	#7,pflags(a0,d0.w)
 	bne.w	.1
 	neg.w	d1
 .1

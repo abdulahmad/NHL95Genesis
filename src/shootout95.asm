@@ -77,23 +77,23 @@ EndShootout	;period94 EndShootout. Shootout over: LockScroll, then the 5 skaters
 .loop
 	movem.w	d2-d3,-(sp)
 	jsr	(setplayer).l
-	move.w	#2,$34(a3)
+	move.w	#2,position(a3)
 	move.w	#$F0,d0
 	tst.w	(Vpos).w
 	bmi.w	.1
 	move.w	#$FF10,d0
 .1
 	add.w	(Vpos).w,d0
-	move.w	d0,$14(a3)
+	move.w	d0,Ypos(a3)
 	move.w	#0,(a3)
 	move.w	#$1C,d0	;assscore
 	jsr	(assinsert).l
-	bclr	#5,$62(a3)
-	bclr	#1,$63(a3)
-	bclr	#2,$62(a3)
+	bclr	#5,pflags(a3)
+	bclr	#1,pflags2(a3)
+	bclr	#2,pflags(a3)
 	movem.w	(sp)+,d2-d3
 .2
-	adda.l	#$80,a3
+	adda.l	#SCstruct,a3
 	dbf	d2,.loop
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -139,7 +139,7 @@ PlayoffRoundScreen	;records94 PlayoffRoundScreen. Shootout round box: "SHOOTOUT 
 	jsr	(printz).l
 	String	$BF,$4,$9,$0
 	movea.l	#HmShots,a1
-	movea.l	$1E(a1),a1
+	movea.l	tmdata(a1),a1
 	adda.w	4(a1),a1
 	jsr	(print).l
 	move.w	#$15,(printx).w
@@ -150,7 +150,7 @@ PlayoffRoundScreen	;records94 PlayoffRoundScreen. Shootout round box: "SHOOTOUT 
 	jsr	(printz).l
 	String	$BF,$4,$A,$0
 	movea.l	#AwShots,a1
-	movea.l	$1E(a1),a1
+	movea.l	tmdata(a1),a1
 	adda.w	4(a1),a1
 	jsr	(print).l
 	move.w	#$15,(printx).w

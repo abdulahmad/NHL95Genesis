@@ -765,7 +765,7 @@ SaveGameHighlights
 .3
 	movem.l	(sp),a2-a3
 	bsr.w	BestGoalieSaves
-	tst.w	$C(a3)
+	tst.w	tmscore(a3)
 	bne.w	.5
 .4
 	move.w	$28(a2),d0
@@ -3616,7 +3616,7 @@ FindMaxAttributeTEam
 	cmp.w	#$1A,d0
 	blt.w	.3
 	subi.w	#$1A,d0
-	adda.w	#$366,a2
+	adda.w	#tmsize,a2
 .3
 	movem.l	(sp)+,d1-d2/a1/a4
 	rts
@@ -3627,10 +3627,10 @@ CalculateTeamAttributes
 	move.w	d0,d5
 	add.w	d2,d5
 	movea.w	#(HmShots-M68K_RAM),a2
-	lea	$366(a2),a3
+	lea	tmsize(a2),a3
 	bsr.w	CalculateTeamAttributeValues
 	movea.w	a3,a2
-	lea	-$366(a2),a3
+	lea	-tmsize(a2),a3
 	bsr.w	CalculateTeamAttributeValues
 	cmpi.w	#3,(gsp).w
 	bne.w	.1

@@ -194,7 +194,7 @@ uppads	;update the 6 pad objects and queue new pad labels (FormatControllerDispl
 	clr.w	Zpos(a0)
 	move.b	$35(a2,d0.w),d1	;position+1
 	asl.w	#8,d1
-	move.b	$6F(a2,d0.w),d1	;rostnum
+	move.b	rostnum(a2,d0.w),d1	;rostnum
 .chg
 	cmp.w	(a1),d1
 	beq.w	.next

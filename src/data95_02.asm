@@ -387,7 +387,7 @@ checkob	;(checks94) Offside watch (gmode bit 5): with a player of the attacking 
 	cmp.w	Ypos(a0),d1
 	bgt.w	.5
 .2
-	adda.w	#$80,a0
+	adda.w	#SCstruct,a0
 	dbf	d0,.1
 .3
 	moveq	#$40,d0
@@ -414,7 +414,7 @@ checkob	;(checks94) Offside watch (gmode bit 5): with a player of the attacking 
 	cmp.w	Ypos(a0),d1
 	blt.s	.5
 .9
-	adda.w	#$80,a0
+	adda.w	#SCstruct,a0
 	dbf	d0,.8
 	bra.s	.3
 

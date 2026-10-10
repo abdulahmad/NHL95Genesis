@@ -183,7 +183,7 @@ rtsScoutText	equ	*	;setup94 rtss2. Shared rts of ScoutTextPlayer / ScoutTextNext
 	beq.w	.25
 	movea.l	#AwShots,a1
 .25
-	movea.l	$1E(a1),a1
+	movea.l	tmdata(a1),a1
 	adda.w	4(a1),a1
 	bra.w	.36
 .26
@@ -192,9 +192,9 @@ rtsScoutText	equ	*	;setup94 rtss2. Shared rts of ScoutTextPlayer / ScoutTextNext
 .27
 	movea.w	#(HmShots-M68K_RAM),a1
 .28
-	move.w	$26(a1),d1
+	move.w	tmgoalie(a1),d1
 .29
-	movea.l	$1E(a1),a1
+	movea.l	tmdata(a1),a1
 	adda.w	(a1),a1
 	bra.w	.31
 .30

@@ -313,9 +313,9 @@ asstab	;Jump table of the player logic assignments (92 / 93 / 94 asstab). 95 kee
 
 doassignment	;95 only. Run the current assignment of player a3 (asslist entry assnum, asstab) with a2 / a1 = its team / the
 	;other team (loadTeamStruct). Called from updateplayers (setup95_01); 94 did this in line there
-	move.w	$36(a3),d0
+	move.w	assnum(a3),d0
 	clr.w	d1
-	move.b	$38(a3,d0.w),d1
+	move.b	asslist(a3,d0.w),d1
 	asl.w	#2,d1
 	movea.l	#asstab,a0
 	movea.l	(a0,d1.w),a0
@@ -325,13 +325,13 @@ doassignment	;95 only. Run the current assignment of player a3 (asslist entry as
 
 ; a3 = goalie
 assgoaliecpu	;asstab entry 6. Also branched to from checks95_02
-	btst	#3,$62(a3)	;is goalie joystick controlled?
+	btst	#3,pflags(a3)	;is goalie joystick controlled?
 	bne.w	assgoaliectrl	;branch if so
 checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to it
 	move.w	(puckx).w,(TmpPuckX).w
 	btst	#0,(sflags4).w	;test bit 0
 	beq.w	.assstart
-	btst	#1,$63(a3)	;check if animation in progress
+	btst	#1,pflags2(a3)	;check if animation in progress
 	bne.w	.assstart	;branch if so
 	btst	#1,(sflags4).w	;test bit 1
 	beq.w	.0	;branch if 0
@@ -345,27 +345,27 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 .0
 	movem.w	d0-d1,-(sp)
 	move.w	(pucky).w,d0	;pucky to d0
-	move.w	$14(a3),d1	;move Ypos to d1
+	move.w	Ypos(a3),d1	;move Ypos to d1
 	eor.w	d1,d0	;XOR d1 to d0
 	movem.w	(sp)+,d0-d1
 	bmi.w	.assstart	;branch if d0 is negative
-	cmpi.w	#0,$54(a3)	;95: by facedir (94: Xpos within $14): face up for 7, 0, 1, down for 3, 4, 5
+	cmpi.w	#0,facedir(a3)	;95: by facedir (94: Xpos within $14): face up for 7, 0, 1, down for 3, 4, 5
 	beq.w	.up
-	cmpi.w	#1,$54(a3)
+	cmpi.w	#1,facedir(a3)
 	beq.w	.up
-	cmpi.w	#7,$54(a3)
+	cmpi.w	#7,facedir(a3)
 	beq.w	.up
-	cmpi.w	#4,$54(a3)
+	cmpi.w	#4,facedir(a3)
 	beq.w	.down
-	cmpi.w	#5,$54(a3)
+	cmpi.w	#5,facedir(a3)
 	beq.w	.down
-	cmpi.w	#3,$54(a3)
+	cmpi.w	#3,facedir(a3)
 	bne.w	.assstart
 .down
-	move.w	#4,$54(a3)
+	move.w	#4,facedir(a3)
 	bra.w	.slam
 .up
-	move.w	#0,$54(a3)
+	move.w	#0,facedir(a3)
 .slam
 	bset	#1,(sflags4).w	;set bit 1
 	bclr	#3,(sflags4).w	;clear bit 3
@@ -379,28 +379,28 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	move.w	#$2B38,d1
 .1
 	jsr	(SetSPA).l
-	bset	#1,$63(a3)	;set anim in progress
+	bset	#1,pflags2(a3)	;set anim in progress
 .assstart
-	btst	#5,$62(a3)	;check if locked in animation
+	btst	#5,pflags(a3)	;check if locked in animation
 	bne.w	rtsskate	;exit if so
 	bsr.w	check4bench
-	bclr	#1,$62(a3)	;clear new assignment
+	bclr	#1,pflags(a3)	;clear new assignment
 	beq.w	.nna	;jump if it was cleared already
-	clr.w	$40(a3)	;clear temp1
-	move.w	#8,$42(a3)	;move 8 into temp2
-	st	$46(a3)	;set temp5 (FFFF)
+	clr.w	temp1(a3)	;clear temp1
+	move.w	#8,temp2(a3)	;move 8 into temp2
+	st	temp4(a3)	;set temp5 (FFFF)
 .nna
 	cmpi.w	#$34,(a3)	;'4' ; compare 34 hex with Xpos
 	bgt.w	.nna2	;branch if greater
 	cmpi.w	#$FFCC,(a3)	;compare -34 hex with Xpos
 	blt.w	.nna2	;branch if less than
-	cmpi.w	#$111,$14(a3)	;compare 111 with Ypos (94 $10E)
+	cmpi.w	#$111,Ypos(a3)	;compare 111 with Ypos (94 $10E)
 	bgt.w	.nna2
-	cmpi.w	#$FEEF,$14(a3)
+	cmpi.w	#$FEEF,Ypos(a3)
 	blt.w	.nna2
-	cmpi.w	#$D5,$14(a3)	;94 $D2
+	cmpi.w	#$D5,Ypos(a3)	;94 $D2
 	bgt.w	.noskate
-	cmpi.w	#$FF2B,$14(a3)
+	cmpi.w	#$FF2B,Ypos(a3)
 	blt.w	.noskate
 .nna2
 	lea	rtsskate(pc),a0	;goalie will skate back to middle position
@@ -410,12 +410,12 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	neg.w	d0
 .2
 	move.w	#$E7,d1	;94 $E4
-	btst	#7,$62(a3)	;check what goal shooting at
+	btst	#7,pflags(a3)	;check what goal shooting at
 	beq.w	skateto	;branch if bottom
 	neg.w	d1
 	bra.w	skateto
 .noskate
-	btst	#1,$63(a3)	;check if anim in progress
+	btst	#1,pflags2(a3)	;check if anim in progress
 	bne.w	rtsskate	;exit if so
 	btst	#0,(sflags4).w	;check bit 0
 	beq.w	.noskate3	;branch if not set (95: the next line either way; 94 set facedir by the alice frame)
@@ -427,15 +427,15 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	btst	#0,(gmode).w	;check if clock
 	bne.w	rtsskate	;exit if clock stopped
 .noskate4
-	tst.w	$48(a3)	;temp5
+	tst.w	temp5(a3)	;temp5
 	bmi.w	.nofo	;branch if minus
-	move.w	$52(a3),d0	;move SCnum to d0
+	move.w	SCnum(a3),d0	;move SCnum to d0
 	cmp.w	(puckc).w,d0	;check if puckc
 	beq.w	.mbfo	;branch if so
-	st	$48(a3)	;set temp5 to FFFF
+	st	temp5(a3)	;set temp5 to FFFF
 	bra.w	.nofo
 .mbfo
-	sub.w	d7,$48(a3)	;subtract frames from temp5
+	sub.w	d7,temp5(a3)	;subtract frames from temp5
 	bpl.w	.nofo	;branch if positive
 	btst	#2,(BA_PS_flags).w	;check if bit 2 set
 	beq.w	.mbfo2	;branch if not
@@ -445,17 +445,17 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	move.l	#8,d0	;PenGhold
 	jsr	(AddPenalty2).l	;blow whistle for FO
 .nofo
-	sub.b	d7,$40(a3)	;sub d7 from temp1
+	sub.b	d7,temp1(a3)	;sub d7 from temp1
 	bpl.w	.nodec	;branch if still positive
-	move.b	$6B(a3),d0	;move aidef into d0 (DfA)
+	move.b	aidef(a3),d0	;move aidef into d0 (DfA)
 	beq.w	.nofo2	;branch if 0
 	btst	#6,(sflags7).w	;check if crowd meter broken
 	beq.w	.nofo2	;branch if not
 	subq.b	#1,d0	;sub from d0
 .nofo2
 	lsr.b	#2,d0	;divide by 4
-	move.b	d0,$40(a3)	;move d0 into temp1
-	btst	#3,$62(a3)	;check if joy controlled
+	move.b	d0,temp1(a3)	;move d0 into temp1
+	btst	#3,pflags(a3)	;check if joy controlled
 	beq.w	.nocontrol	;branch if not
 	btst	#2,$64(a3)	;check bit 2
 	bne.w	.nocontrol	;branch if set
@@ -463,43 +463,43 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	bra.w	assinsert
 .nocontrol
 	move.w	(pucky).w,d0	;move pucky into d0
-	move.w	$14(a3),d1	;move Ypos into d1
+	move.w	Ypos(a3),d1	;move Ypos into d1
 	eor.w	d0,d1	;XOR
 	bpl.w	.3	;branch if positive
 	clr.w	d0
 	move.w	#$F7,d2	;94 $F4
-	btst	#7,$62(a3)	;check which net shooting at
+	btst	#7,pflags(a3)	;check which net shooting at
 	beq.w	.de5	;branch if bottom
 	neg.w	d2
 	bra.w	.de5
 .3
-	subq.w	#1,$46(a3)	;sub 1 from temp4
+	subq.w	#1,temp4(a3)	;sub 1 from temp4
 	bpl.w	.4	;branch if positive
-	move.w	#$FFFF,$46(a3)	;move -1 into temp4
+	move.w	#$FFFF,temp4(a3)	;move -1 into temp4
 .4
-	move.w	$52(a3),d0	;SCnum into d0
+	move.w	SCnum(a3),d0	;SCnum into d0
 	cmp.w	(puckc).w,d0	;check if puckc
 	bne.w	.notpuckc	;branch if not
-	tst.w	$48(a3)	;check temp5
+	tst.w	temp5(a3)	;check temp5
 	bpl.w	.5	;branch if positive
-	move.w	#$5A,$48(a3)	;'Z' ; move 5A into temp5
+	move.w	#$5A,temp5(a3)	;'Z' ; move 5A into temp5
 .5
-	st	$46(a3)	;FFFF into temp4
-	cmpi.w	#$5A,$48(a3)	;'Z' ; compare to temp5
+	st	temp4(a3)	;FFFF into temp4
+	cmpi.w	#$5A,temp5(a3)	;'Z' ; compare to temp5
 	bgt.w	.de1	;branch if greater
 	move.w	(VDP_CNTR).l,d0
 	andi.w	#3,d0	;pass first 2 bits
 	bne.w	.de1	;branch if not 0
 	moveq	#5,d0
 	movea.w	#(SortCords-M68K_RAM),a0
-	btst	#6,$62(a3)	;check home or away
+	btst	#6,pflags(a3)	;check home or away
 	bne.w	.opploop	;branch if away
 	adda.w	#$300,a0
 .opploop
-	btst	#2,$63(a0)	;check if player unavailable
+	btst	#2,pflags2(a0)	;check if player unavailable
 	bne.w	.opploop2	;branch if so
 	move.w	(pucky).w,d1	;pucky into d1
-	sub.w	$14(a0),d1	;sub Ypos a0 from d1
+	sub.w	Ypos(a0),d1	;sub Ypos a0 from d1
 	cmp.w	#$1C,d1	;compare 1C to difference
 	bgt.w	.opploop2	;branch if greater
 	cmp.w	#$FFE4,d1	;compare -1C
@@ -511,13 +511,13 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	cmp.w	#$FFE7,d1	;compare -19 to diff
 	bgt.w	.de1	;branch if greater
 .opploop2
-	adda.w	#$80,a0	;move to next struct
+	adda.w	#SCstruct,a0	;move to next struct
 	dbf	d0,.opploop
 	move.w	#1,(threat).w	;dir of threat on puck handler
 	bsr.w	chk4pass
 	bra.w	.de1
 .notpuckc
-	tst.w	$46(a3)	;check temp4
+	tst.w	temp4(a3)	;check temp4
 	bne.w	.de1	;branch if not 0
 	tst.w	(puckc).w	;check puckc
 	bpl.w	.de1	;branch if there is a puckc
@@ -532,7 +532,7 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	bgt.w	.de1	;branch if past goalline
 	cmp.w	#$FEF5,d1	;check other goalline
 	blt.w	.de1	;branch if past
-	sub.w	$14(a3),d1	;sub Ypos from d1
+	sub.w	Ypos(a3),d1	;sub Ypos from d1
 	cmp.w	#$F,d1	;94 $1E
 	bgt.w	.de1	;branch if greater
 	cmp.w	#$FFF1,d1
@@ -551,24 +551,24 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	movem.w	(sp)+,d0-d1
 	bgt.w	.de1	;branch if greater
 	jsr	(vtoa).l
-	move.w	d0,$54(a3)	;d0 into facedir. Goalie will face puck
-	move.b	#8,$5E(a3)	;move 8 to nopuck collision
+	move.w	d0,facedir(a3)	;d0 into facedir. Goalie will face puck
+	move.b	#8,nopuck(a3)	;move 8 to nopuck collision
 	move.w	#$1D4E,d1	;goalie dive anim (94 $2F4)
 	jsr	(SetSPA).l	;set animation
-	bset	#1,$63(a3)	;set anim in progress
+	bset	#1,pflags2(a3)	;set anim in progress
 	addi.w	#$96,(crowdlevel).w
 	rts
 .de1
 	movea.w	#(puckcross-M68K_RAM),a0	;puckcross = xcord/frames top to bottom for goalies to react to
 	move.w	#$107,d3
-	btst	#7,$62(a3)	;check what net shooting at
+	btst	#7,pflags(a3)	;check what net shooting at
 	beq.w	.8	;branch if bottom
 	addq.w	#4,a0
 	neg.w	d3
 .8
-	cmpi.w	#$107,$14(a3)
+	cmpi.w	#$107,Ypos(a3)
 	bgt.w	.9
-	cmpi.w	#$FEF9,$14(a3)
+	cmpi.w	#$FEF9,Ypos(a3)
 	bgt.w	.10
 .9
 	clr.w	d2
@@ -585,7 +585,7 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 .10
 	tst.w	(puckc).w
 	bmi.w	.11
-	move.w	$52(a3),d0
+	move.w	SCnum(a3),d0
 	cmp.w	(puckc).w,d0
 	beq.w	.11
 	move.l	a0,-(sp)
@@ -683,7 +683,7 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	bgt.w	.20
 	cmpi.w	#$FEF5,(pucky).w
 	blt.w	.20
-	bset	#1,$63(a3)
+	bset	#1,pflags2(a3)
 	bne.w	.20
 	jsr	(goaliesave).l
 .20
@@ -700,16 +700,16 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 .de5
 	move.w	d2,d1
 	movem.w	d0-d1,-(sp)
-	move.b	$28(a3),d0
+	move.b	Xvel(a3),d0
 	ext.w	d0
 	neg.w	d0
 	add.w	(sp)+,d0
 	sub.w	(a3),d0
-	move.b	$2A(a3),d1
+	move.b	Yvel(a3),d1
 	ext.w	d1
 	neg.w	d1
 	add.w	(sp)+,d1
-	sub.w	$14(a3),d1
+	sub.w	Ypos(a3),d1
 	cmp.w	#4,d0
 	bgt.w	.vt
 	cmp.w	#$FFFC,d0
@@ -721,7 +721,7 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	clr.w	d0
 	clr.w	d1
 .vt
-	btst	#3,$62(a3)	;95: half the y step unless joystick controlled
+	btst	#3,pflags(a3)	;95: half the y step unless joystick controlled
 	bne.w	.vt2
 	asr.w	#1,d1
 .vt2
@@ -742,7 +742,7 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	bne.w	.de5
 	movea.w	#(HmShots-M68K_RAM),a1
 	lea	tmsize(a1),a2
-	btst	#6,$62(a3)
+	btst	#6,pflags(a3)
 	beq.w	.23
 	exg	a1,a2
 .23
@@ -756,7 +756,7 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	bgt.w	.de5
 .24
 	tst.w	(puckvy).w
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	beq.w	.25
 	eori	#8,ccr
 .25
@@ -798,7 +798,7 @@ AdjustFacingDirection	;93 name. Turn facedir one step toward direction d0. IDA c
 	andi.w	#4,d0
 	lsr.w	#1,d0
 	subq.w	#1,d0			;d0 = +1/-1
-	btst	#3,$62(a3)		;pfjoycon
+	btst	#3,pflags(a3)		;pfjoycon
 	bne.w	.add
 	btst	d1,#$42			;facing 1 or 6
 	beq.w	.add
@@ -825,13 +825,13 @@ goaliesave	;checks94 goaliesave. 95 first aims the goalie: Xvel from where the p
 	move.w	(a0),d0	;puckcross x frames into d0
 	sub.w	(a3),d0	;sub goalie Xpos from d0
 	move.w	d3,d1	;move goalline into d1
-	sub.w	$14(a3),d1	;sub goalie Ypos from d1
+	sub.w	Ypos(a3),d1	;sub goalie Ypos from d1
 	jsr	(vtoa).l
-	sub.w	$54(a3),d0	;sub facedir from d0
+	sub.w	facedir(a3),d0	;sub facedir from d0
 	andi.w	#7,d0
 	move.w	d0,d3	;direction to the crossing, for the glove check
 	movem.l	d1-d4,-(sp)	;95: frames until the puck reaches the goalie y
-	move.w	$14(a3),d1
+	move.w	Ypos(a3),d1
 	sub.w	(pucky).w,d1
 	ext.l	d1
 	tst.w	(puckvy).w
@@ -854,8 +854,8 @@ goaliesave	;checks94 goaliesave. 95 first aims the goalie: Xvel from where the p
 	ext.l	d3
 	divs.w	d2,d3
 	asl.w	#8,d3
-	move.w	d3,$28(a3)	;Xvel to get there
-	btst	#7,$62(a3)
+	move.w	d3,Xvel(a3)	;Xvel to get there
+	btst	#7,pflags(a3)
 	bne.w	.3
 	neg.w	d1
 .3
@@ -893,9 +893,9 @@ goaliesave	;checks94 goaliesave. 95 first aims the goalie: Xvel from where the p
 	addq.w	#4,d0
 	cmpi.w	#8,2(a0)	;puckcross frames
 	bls.w	.15
-	cmpi.w	#2,$54(a3)
+	cmpi.w	#2,facedir(a3)
 	beq.w	.18
-	cmpi.w	#6,$54(a3)
+	cmpi.w	#6,facedir(a3)
 	beq.w	.18
 	tst.w	(puckc).w
 	bmi.w	.18
@@ -905,28 +905,28 @@ goaliesave	;checks94 goaliesave. 95 first aims the goalie: Xvel from where the p
 .9	;pad stack: slide the goalie 6 toward the middle, d0 by net and hand
 	move.w	d1,-(sp)
 	move.w	#$1000,d1
-	move.w	d1,$28(a3)
+	move.w	d1,Xvel(a3)
 	ori.w	#1,d0
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	bne.w	.10
 	eori.w	#1,d0
 .10
 	move.w	#$FFFA,d1
-	tst.w	$28(a3)
+	tst.w	Xvel(a3)
 	bmi.w	.11
-	neg.w	$28(a3)
+	neg.w	Xvel(a3)
 .11
 	tst.w	(a3)
 	bpl.w	.13
-	tst.w	$28(a3)
+	tst.w	Xvel(a3)
 	bpl.w	.12
-	neg.w	$28(a3)
+	neg.w	Xvel(a3)
 .12
 	move.w	#6,d1
 	eori.w	#1,d0
 .13
 	add.w	d1,(a3)
-	btst	#0,$76(a3)	;check hand of goalie
+	btst	#0,handed(a3)	;check hand of goalie
 	beq.w	.14
 	eori.w	#1,d0
 .14
@@ -962,9 +962,9 @@ goaliesave	;checks94 goaliesave. 95 first aims the goalie: Xvel from where the p
 	cmp.w	#$200C,d1
 	bne.w	.24
 .20
-	tst.w	$54(a3)
+	tst.w	facedir(a3)
 	beq.w	.21
-	cmpi.w	#4,$54(a3)
+	cmpi.w	#4,facedir(a3)
 	bne.w	.24
 .21
 	btst	#3,(sflags).w
@@ -990,12 +990,12 @@ goaliesave	;checks94 goaliesave. 95 first aims the goalie: Xvel from where the p
 .24
 	cmpi.w	#3,(puckz).w	;95: a raised puck facing up or down: stack save $2AE4 / $2B0E by side and hand
 	blt.w	.31
-	cmpi.w	#0,$54(a3)
+	cmpi.w	#0,facedir(a3)
 	beq.w	.25
-	cmpi.w	#4,$54(a3)
+	cmpi.w	#4,facedir(a3)
 	bne.w	.31
 .25
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	beq.w	.29
 	movem.w	d0,-(sp)
 	move.w	(a3),d0
@@ -1007,14 +1007,14 @@ goaliesave	;checks94 goaliesave. 95 first aims the goalie: Xvel from where the p
 	bra.w	.28
 .26
 	move.w	#$2B0E,d1
-	btst	#0,$76(a3)
+	btst	#0,handed(a3)
 	beq.w	.27
 	move.w	#$2AE4,d1
 .27
 	bra.w	.30
 .28
 	move.w	#$2AE4,d1
-	btst	#0,$76(a3)
+	btst	#0,handed(a3)
 	beq.w	.30
 	move.w	#$2B0E,d1
 	bra.w	.30
@@ -1032,13 +1032,13 @@ goaliesave	;checks94 goaliesave. 95 first aims the goalie: Xvel from where the p
 	jsr	(SetSPA).l
 	addi.w	#$96,(crowdlevel).w
 	addi.w	#$A,(CwdExciteLvl).w
-	asr.w	$28(a3)
-	asr.w	$28(a3)
-	asr.w	$2A(a3)
-	asr.w	$2A(a3)
+	asr.w	Xvel(a3)
+	asr.w	Xvel(a3)
+	asr.w	Yvel(a3)
+	asr.w	Yvel(a3)
 	btst	#3,(sflags).w	;95: no Xvel with sflags bit 3
 	beq.w	.32
-	clr.w	$28(a3)
+	clr.w	Xvel(a3)
 .32
 	rts
 

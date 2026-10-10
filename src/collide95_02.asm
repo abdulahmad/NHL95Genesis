@@ -36,9 +36,9 @@ SetPersonel	;(93 setpersonel) Set personnel on team a2 by PlList (SetPlList): pl
 	movea.w	$22(a2),a3
 	moveq	#5,d4
 .1
-	st	$60(a3)
-	st	$61(a3)
-	adda.w	#$80,a3
+	st	newpos(a3)
+	st	newpnum(a3)
+	adda.w	#SCstruct,a3
 	dbf	d4,.1
 	bsr.w	SetPlList
 	moveq	#5,d4
@@ -50,14 +50,14 @@ SetPersonel	;(93 setpersonel) Set personnel on team a2 by PlList (SetPlList): pl
 	subq.w	#1,d5
 	moveq	#5,d3
 	movea.w	$22(a2),a3
-	suba.w	#$80,a3
+	suba.w	#SCstruct,a3
 .3
-	adda.w	#$80,a3
-	cmp.b	$66(a3),d5
+	adda.w	#SCstruct,a3
+	cmp.b	pnum(a3),d5
 	dbeq	d3,.3
 	bne.w	.4
-	move.b	6(a4,d4.w),$60(a3)
-	move.b	d5,$61(a3)
+	move.b	6(a4,d4.w),newpos(a3)
+	move.b	d5,newpnum(a3)
 	clr.b	(a4,d4.w)
 .4
 	dbf	d4,.2
@@ -70,15 +70,15 @@ SetPersonel	;(93 setpersonel) Set personnel on team a2 by PlList (SetPlList): pl
 	subq.w	#1,d5
 	moveq	#5,d3
 	movea.w	$22(a2),a3
-	suba.w	#$80,a3
+	suba.w	#SCstruct,a3
 .6
-	adda.w	#$80,a3
-	tst.b	$61(a3)
+	adda.w	#SCstruct,a3
+	tst.b	newpnum(a3)
 	dbmi	d3,.6
 	bpl.w	.7
 	movea.w	a3,a0
 .7
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	dbpl	d3,.6
 	move.b	6(a4,d4.w),$60(a0)
 	move.b	d5,$61(a0)
@@ -186,13 +186,13 @@ forcepldata	;no skating on/off: force players to correct data (for faceoffs only
 .top
 	move.b	newpos(a3),d0	;newpos = requested next pos of player
 	ext.w	d0
-	tst.w	$34(a3)	;check for goalie
+	tst.w	position(a3)	;check for goalie
 	bne.w	.0
 	tst.w	d0	;is he staying as a goalie?
 	beq.w	.0
-	move.w	$52(a3),-(sp)	;push SCNum to stack
-	move.w	#$F,$52(a3)	;put F into SCNum
-	move.w	(sp)+,$52(a3)	;pop original SCNum back into SCNum
+	move.w	SCnum(a3),-(sp)	;push SCNum to stack
+	move.w	#$F,SCnum(a3)	;put F into SCNum
+	move.w	(sp)+,SCnum(a3)	;pop original SCNum back into SCNum
 .0
 	move.w	d0,position(a3)	;move newpos(d0) into position
 	bmi.w	.next
@@ -259,33 +259,33 @@ GetPlayerCountD7	;95 only. d0 = players on team d7: in a season (sflags11 bit 6 
 setplayer	;Bring player onto the ice and set his attributes. d3 = offset of player on roster, a3 = sortcord of player.
 	;Reads the roster bytes through AttributeCalc (attribute number in TempWord2), adds the PP / PK, home / away and third period bonuses
 	;and clamps them (ClampNibble). 95: the name / jersey number by team number (rosterteam), StickHandTable, BoostAttribute
-	bclr	#6,$63(a3)
+	bclr	#6,pflags2(a3)
 	movea.w	#(HmShots-M68K_RAM),a0
-	btst	#6,$62(a3)
+	btst	#6,pflags(a3)
 	beq.w	.0
-	adda.w	#$366,a0
+	adda.w	#tmsize,a0
 .0
-	move.b	d3,$66(a3)
+	move.b	d3,pnum(a3)
 	moveq	#$16,d0
 	ext.w	d3
 	add.w	d3,d3
-	move.w	$68(a0,d3.w),d1
+	move.w	tmpdst(a0,d3.w),d1
 	bpl.w	.1
 	moveq	#$13,d0
 	cmp.w	#$FFFE,d1
 	bne.w	.2
 .1
 	bsr.w	assinsert
-	bclr	#5,$62(a3)
-	clr.w	$58(a3)
+	bclr	#5,pflags(a3)
+	clr.w	SPA(a3)
 .2
-	move.w	#$FFFF,$68(a0,d3.w)
+	move.w	#$FFFF,tmpdst(a0,d3.w)
 	lsr.w	#1,d3
 	move.w	$28(a0),(rosterteam).w
-	movea.l	$1E(a0),a0
+	movea.l	tmdata(a0),a0
 	adda.w	8(a0),a0
 	clr.l	(PPBonus).w
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	beq.w	.9
 	btst	#5,(sflags2).w
 	beq.w	.4
@@ -303,7 +303,7 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	move.b	2(a0),d0
 	andi.b	#$F,d0
 	neg.b	d0
-	btst	#6,$62(a3)
+	btst	#6,pflags(a3)
 	bne.w	.5
 	move.b	2(a0),d0
 	lsr.b	#4,d0
@@ -320,7 +320,7 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	move.w	(HmShots+tmscore).w,d0
 	sub.w	(AwShots+tmscore).w,d0
 	beq.w	.8
-	btst	#6,$62(a3)
+	btst	#6,pflags(a3)
 	beq.w	.7
 	eori	#8,ccr
 .7
@@ -341,23 +341,23 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	move.w	(rosterteam).w,d7
 	move.w	d3,d0
 	jsr	(GetJerseyNumber).l
-	move.b	(jerseynum).w,$6F(a3)
+	move.b	(jerseynum).w,rostnum(a3)
 	movem.w	(sp)+,d0/d7
 	move.b	1(a0),d3
 	andi.w	#$F0,d3
 	lsr.w	#1,d3
-	move.b	d3,$67(a3)
+	move.b	d3,weight(a3)
 	move.b	1(a0),d3
 	andi.b	#$F,d3
 	move.w	#3,(TempWord2).w
 	jsr	(AttributeCalc).l
-	move.b	d3,$68(a3)
+	move.b	d3,legstr(a3)
 	move.b	2(a0),d3
 	lsr.b	#4,d3
 	move.w	#4,(TempWord2).w
 	jsr	(AttributeCalc).l
 	bsr.w	BoostAttribute
-	move.b	d3,$69(a3)
+	move.b	d3,legspd(a3)
 	move.b	2(a0),d3
 	andi.b	#$F,d3
 	move.w	#5,(TempWord2).w
@@ -371,7 +371,7 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	eori.b	#$F,d3
 	addi.b	#$F,d3
 	lsr.b	#1,d3
-	move.b	d3,$6A(a3)
+	move.b	d3,aioff(a3)
 	move.b	3(a0),d3
 	lsr.b	#4,d3
 	move.w	#6,(TempWord2).w
@@ -382,14 +382,14 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	eori.b	#$F,d3
 	addi.b	#$F,d3
 	lsr.b	#1,d3
-	move.b	d3,$6B(a3)
-	move.b	3(a0),$6C(a3)
-	andi.b	#$F,$6C(a3)
-	move.b	$6C(a3),d3
+	move.b	d3,aidef(a3)
+	move.b	3(a0),shotspd(a3)
+	andi.b	#$F,shotspd(a3)
+	move.b	shotspd(a3),d3
 	move.w	#7,(TempWord2).w
 	jsr	(AttributeCalc).l
 	bsr.w	BoostAttribute
-	move.b	d3,$6C(a3)
+	move.b	d3,shotspd(a3)
 	move.b	4(a0),d3
 	lsr.b	#4,d3
 	move.w	#8,(TempWord2).w
@@ -399,8 +399,8 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	bsr.w	BoostAttribute
 	move.b	d3,$75(a3)
 	bclr	#3,4(a3)
-	move.b	4(a0),$76(a3)
-	andi.b	#1,$76(a3)
+	move.b	4(a0),handed(a3)
+	andi.b	#1,handed(a3)
 	beq.w	.10
 	bset	#3,4(a3)
 .10
@@ -421,7 +421,7 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	add.b	(HmAwBonus).w,d3
 	bsr.w	ClampNibble
 	bsr.w	BoostAttribute
-	move.b	d3,$71(a3)
+	move.b	d3,stickhand(a3)
 	move.b	5(a0),d3
 	andi.b	#$F,d3
 	move.w	#$B,(TempWord2).w
@@ -430,12 +430,12 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	add.b	(PKBonus).w,d3
 	add.b	(HmAwBonus).w,d3
 	bsr.w	ClampNibble
-	move.b	d3,$6D(a3)
+	move.b	d3,shotacc(a3)
 	move.b	6(a0),d3
 	lsr.b	#4,d3
 	move.w	#$C,(TempWord2).w
 	jsr	(AttributeCalc).l
-	move.b	d3,$72(a3)
+	move.b	d3,endurance(a3)
 	move.b	6(a0),d3
 	andi.b	#$F,d3
 	move.w	#$D,(TempWord2).w
@@ -443,7 +443,7 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	add.b	(ThirdPBonus).w,d3
 	add.b	(ThirdPBonus).w,d3
 	bsr.w	ClampNibble
-	move.b	d3,$70(a3)
+	move.b	d3,spodds(a3)
 	move.b	7(a0),d3
 	lsr.b	#4,d3
 	move.w	#$E,(TempWord2).w
@@ -452,7 +452,7 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	add.b	(HmAwBonus).w,d3
 	bsr.w	BoostAttribute
 	bsr.w	ClampNibble
-	move.b	d3,$6E(a3)
+	move.b	d3,passacc(a3)
 	move.b	7(a0),$73(a3)
 	move.b	$73(a3),d3
 	andi.b	#$F,d3
@@ -498,12 +498,12 @@ AttributeCalc	;crowd94 AttributeCalc (moved in; IDA name). Attribute d3 of playe
 	movem.l	d0-d2/a1,-(sp)
 	move.w	(TempWord2).w,d1
 	movea.l	#HmShots,a1
-	btst	#6,$62(a3)
+	btst	#6,pflags(a3)
 	beq.w	.0
-	adda.l	#$366,a1
+	adda.l	#tmsize,a1
 .0
 	clr.w	d1
-	move.b	$66(a3),d1
+	move.b	pnum(a3),d1
 	asl.w	#4,d1
 	adda.l	#$1A4,a1
 	move.b	(a1,d1.w),d1
@@ -529,12 +529,12 @@ AttributeCalc	;crowd94 AttributeCalc (moved in; IDA name). Attribute d3 of playe
 restoreteams	;hockey94 restoreteams (moved in). Put both teams' rosters on the bench (tmap 6, every tmpdst -2)
 	movea.w	#(HmShots-M68K_RAM),a2
 	bsr.w	.0
-	adda.w	#$366,a2
+	adda.w	#tmsize,a2
 .0
-	move.w	#6,$24(a2)
+	move.w	#6,tmap(a2)
 	moveq	#$32,d0
 .1
-	move.w	#$FFFE,$68(a2,d0.w)
+	move.w	#$FFFE,tmpdst(a2,d0.w)
 	subq.w	#2,d0
 	bpl.s	.1
 	rts
@@ -546,27 +546,27 @@ ResetBench	;Remove all players from penalty box / put all players on their own b
 	movea.w	#(HmShots-M68K_RAM),a0
 	bsr.w	.0
 	moveq	#1,d1
-	adda.w	#$366,a0
+	adda.w	#tmsize,a0
 .0
 	moveq	#$32,d0
 .1
 	add.b	d1,(PBnum).w
-	tst.w	$68(a0,d0.w)
+	tst.w	tmpdst(a0,d0.w)
 	ble.w	.2
-	btst	#4,$68(a0,d0.w)
+	btst	#4,tmpdst(a0,d0.w)
 	beq.w	.3
-	move.w	$68(a0,d0.w),d2
+	move.w	tmpdst(a0,d0.w),d2
 	andi.w	#$7FF,d2
 	bne.w	.3
 	sub.b	d1,(PBnum).w
 	bra.w	.3
 .2
 	sub.b	d1,(PBnum).w
-	cmpi.w	#$FFFD,$68(a0,d0.w)
+	cmpi.w	#$FFFD,tmpdst(a0,d0.w)
 	beq.w	.3
-	cmpi.w	#$FFFC,$68(a0,d0.w)
+	cmpi.w	#$FFFC,tmpdst(a0,d0.w)
 	beq.w	.3
-	move.w	#$FFFE,$68(a0,d0.w)
+	move.w	#$FFFE,tmpdst(a0,d0.w)
 .3
 	subq.w	#2,d0
 	bpl.s	.1

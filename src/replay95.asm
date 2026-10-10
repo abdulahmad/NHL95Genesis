@@ -617,7 +617,7 @@ adda4	;Step forward 1 frame (93 adda4). 94 first handles a reverse angle switch 
 	movem.l	a0,-(sp)
 	movea.l	#SortCords+(12*SCstruct),a0
 	move.w	#1,8(a0)
-	adda.w	#$80,a0
+	adda.w	#SCstruct,a0
 	move.w	#1,8(a0)
 	movem.l	(sp)+,a0
 	bsr.w	RevReplayAdj

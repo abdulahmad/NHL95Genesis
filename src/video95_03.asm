@@ -564,18 +564,18 @@ getpde	;get player a3's energy level into d0. Return a2 = his team struct, d1 = 
 	movea.w	#(HmShots-M68K_RAM),a2
 	btst	#6,pflags(a3)
 	beq.w	.0
-	adda.w	#$366,a2
+	adda.w	#tmsize,a2
 .0
 	move.b	pnum(a3),d1
 	ext.w	d1
 	add.w	d1,d1
-	move.w	$34(a2,d1.w),d0
+	move.w	tmpde(a2,d1.w),d0
 	rts
 
 loadTeamStruct	;95 only. a2 = team struct of player a3, a1 = the other team
 	movea.w	#(HmShots-M68K_RAM),a2
 	movea.w	#(HmShots-M68K_RAM),a2
-	lea	$366(a2),a1
+	lea	tmsize(a2),a1
 	btst	#6,pflags(a3)
 	beq.w	.0
 	exg	a1,a2
@@ -590,7 +590,7 @@ ReadGoaliePulled	;(and comments) 94 only: Z clear when the team of a3 pulled its
 	beq.w	.0
 	movea.l	#AwShots,a1
 .0
-	tst.w	$26(a1)
+	tst.w	tmgoalie(a1)
 	movem.l	(sp)+,a1
 	rts
 
@@ -749,7 +749,7 @@ GetTempPlayerNameAttrib	;95 only. GetTempPlayerName with FormatPlayerNameWithAtt
 	move.w	(TempPlOffset).w,d0
 	bpl.w	.0
 	andi.w	#$FF,d0
-	adda.w	#$366,a2
+	adda.w	#tmsize,a2
 .0
 	bsr.w	FormatPlayerNameWithAttrib
 	movem.l	(sp)+,d0/a2
@@ -2003,16 +2003,16 @@ UpdateLineChange	;94 name (periodicevents, once a second). Unless OptLine: bench
 	bne.w	.3
 	movea.w	#(HmShots-M68K_RAM),a2
 	bsr.w	.0
-	lea	$366(a2),a2
+	lea	tmsize(a2),a2
 .0
 	moveq	#$32,d0
 .1
-	cmpi.w	#$FFFE,$68(a2,d0.w)
+	cmpi.w	#$FFFE,tmpdst(a2,d0.w)
 	bne.w	.2
-	addi.w	#9,$34(a2,d0.w)
-	cmpi.w	#$1000,$34(a2,d0.w)
+	addi.w	#9,tmpde(a2,d0.w)
+	cmpi.w	#$1000,tmpde(a2,d0.w)
 	blt.w	.2
-	move.w	#$1000,$34(a2,d0.w)
+	move.w	#$1000,tmpde(a2,d0.w)
 .2
 	subq.w	#2,d0
 	bpl.s	.1
@@ -2224,7 +2224,7 @@ setupice	;set all variables, send non purgeable graphics, build sprite frame lis
 	moveq	#$B,d0
 .0
 	bchg	#7,pflags(a3)
-	adda.w	#$80,a3
+	adda.w	#SCstruct,a3
 	dbf	d0,.0
 .1
 	jsr	(setplayercolors).l

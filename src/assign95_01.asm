@@ -42,9 +42,9 @@ assdefd	;asstab entry 7
 	move.b	d1,temp1(a3)
 	btst	#6,(sflags7).w	;check if crowd meter currently broken
 	beq.w	.noboost	;branch if not
-	tst.b	$40(a3)	;check if temp1 is 0
+	tst.b	temp1(a3)	;check if temp1 is 0
 	beq.w	.noboost	;branch if so
-	subq.b	#1,$40(a3)	;sub 1 from temp1
+	subq.b	#1,temp1(a3)	;sub 1 from temp1
 .noboost
 	move.w	(pucky).w,d1	;move pucky into d1
 	move.w	(puckvy).w,d3	;move puckvy into d3
@@ -174,7 +174,7 @@ rtss21	;Shared rts of assdefd and asswingd
 
 ; player a3 is winger on defense
 asswingd	;asstab entry 8
-	btst	#5,$62(a3)	;check if locked in animation
+	btst	#5,pflags(a3)	;check if locked in animation
 	bne.s	rtss21	;exit if so
 	btst	#0,(gmode).w	;check if clock is running
 	bne.w	assnothing	;assnothing if its stopped
@@ -191,9 +191,9 @@ asswingd	;asstab entry 8
 	move.b	aidef(a3),temp1(a3)	;move DfA into temp1
 	btst	#6,(sflags7).w	;check if crowd meter currently broken
 	beq.w	.noboost	;branch if not
-	tst.b	$40(a3)	;check if temp1 is 0
+	tst.b	temp1(a3)	;check if temp1 is 0
 	beq.w	.noboost	;branch if 0
-	subq.b	#1,$40(a3)	;sub 1 from temp1
+	subq.b	#1,temp1(a3)	;sub 1 from temp1
 .noboost
 	move.w	(puckc).w,d1	;move puckc into d1
 	bmi.w	.nodec	;branch if no puck carrier

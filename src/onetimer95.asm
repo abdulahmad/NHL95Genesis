@@ -12,7 +12,7 @@
 
 assonetimer	;asstab entry $18 (94 $23). 94 IDA name. Player a3 shooting a one-timer: the passer's pad (inputjoy) takes
 	;control of him (setc1player ... setc4player), start the animation (setonetimeranim), then shoot when the puck arrives (EndOneTimer)
-	bclr	#1,$62(a3)	;pfna - clear new assignment
+	bclr	#1,pflags(a3)	;pfna - clear new assignment
 	beq.w	.checkxpos	;branch if not new assignment
 	bset	#3,$64(a3)	;set one timer bit
 	bne.w	.checkxpos	;branch if already set
@@ -22,9 +22,9 @@ assonetimer	;asstab entry $18 (94 $23). 94 IDA name. Player a3 shooting a one-ti
 	clr.w	(onetimerclock).w
 	st	(passplayer).w
 	movem.l	d0-d7/a0-a6,-(sp)
-	move.w	$52(a3),d0	;move a3 SCnum into d0
+	move.w	SCnum(a3),d0	;move a3 SCnum into d0
 	move.w	d0,(onetimerplayer).w	;move d0
-	btst	#3,$62(a3)	;check if joystick controlled
+	btst	#3,pflags(a3)	;check if joystick controlled
 	bne.w	.setanim	;branch if so
 	tst.w	(inputjoy).w	;check input controller (95: the pad number 0 / 2 / 4 / 6 of the passer)
 	bmi.w	.setanim	;branch if minus (no control)
@@ -47,10 +47,10 @@ assonetimer	;asstab entry $18 (94 $23). 94 IDA name. Player a3 shooting a one-ti
 .setanim
 	move.w	d0,-(sp)
 	bsr.w	setonetimeranim	;sets the one timer animation
-	clr.w	$5A(a3)	;clear SPAnum
+	clr.w	SPAnum(a3)	;clear SPAnum
 	jsr	(SetSPA).l
-	bset	#5,$62(a3)	;lock animation
-	bset	#1,$63(a3)	;set anim in progress
+	bset	#5,pflags(a3)	;lock animation
+	bset	#1,pflags2(a3)	;set anim in progress
 	move.w	(sp)+,d0
 	movem.l	(sp)+,d0-d7/a0-a6
 	bra.w	.ex
@@ -73,7 +73,7 @@ assonetimer	;asstab entry $18 (94 $23). 94 IDA name. Player a3 shooting a one-ti
 	bra.w	.cancel
 .chkypos
 	move.w	(pucky).w,d0	;move pucky into d0
-	sub.w	$14(a3),d0	;sub Ypos from d0
+	sub.w	Ypos(a3),d0	;sub Ypos from d0
 	cmp.w	#$3C,d0	;'<'   ; compare diff to 60 pix
 	bgt.w	.chkyvel	;branch if greater than
 	cmp.w	#$FFC4,d0	;check with -60 pix
@@ -94,7 +94,7 @@ assonetimer	;asstab entry $18 (94 $23). 94 IDA name. Player a3 shooting a one-ti
 	btst	#0,(gmode).w	;check if game clock
 	bne.w	.shoot	;branch if clock stopped
 	movem.l	d0-d1,-(sp)	;push to stack
-	cmpi.w	#$10,$5A(a3)	;compare 10 to SPAnum
+	cmpi.w	#$10,SPAnum(a3)	;compare 10 to SPAnum
 	bge.w	.windup	;branch if greater than or equal
 	btst	#2,(onetimerflags).w	;check bit 2
 	bne.w	.windup	;branch if set
@@ -104,7 +104,7 @@ assonetimer	;asstab entry $18 (94 $23). 94 IDA name. Player a3 shooting a one-ti
 	bpl.w	.dy	;branch if positive
 	neg.w	d0	;negate d0
 .dy
-	move.w	$14(a3),d1	;move Ypos into d1
+	move.w	Ypos(a3),d1	;move Ypos into d1
 	move.w	(pucky).w,d2	;move pucky into d2
 	sub.w	d2,d1	;sub d2 from d1
 	bpl.w	.vel	;branch if positive
@@ -136,15 +136,15 @@ assonetimer	;asstab entry $18 (94 $23). 94 IDA name. Player a3 shooting a one-ti
 	divu.w	d2,d0
 	andi.l	#$FFFF,d0
 	divu.w	d1,d0
-	move.w	$5A(a3),d2
+	move.w	SPAnum(a3),d2
 	lsr.w	#2,d2
 	subq.w	#6,d2
 	neg.w	d2
 	asl.w	#2,d2
 	cmp.w	d2,d0
 	bgt.w	.wait
-	neg.w	$5A(a3)
-	addi.w	#$18,$5A(a3)
+	neg.w	SPAnum(a3)
+	addi.w	#$18,SPAnum(a3)
 	bra.w	.chkanim
 .wait
 	add.w	d7,(onetimerclock).w
@@ -153,14 +153,14 @@ assonetimer	;asstab entry $18 (94 $23). 94 IDA name. Player a3 shooting a one-ti
 	bset	#2,(onetimerflags).w
 	btst	#1,(onetimerflags).w
 	bne.w	.chkhold
-	cmpi.w	#$18,$5A(a3)
+	cmpi.w	#$18,SPAnum(a3)
 	bne.w	.chkhold
-	addi.w	#$30,$5C(a3)
+	addi.w	#$30,SPAcnt(a3)
 	bset	#1,(onetimerflags).w
 .chkhold
 	btst	#1,(onetimerflags).w
 	beq.w	.chkshot
-	cmpi.w	#$18,$5A(a3)
+	cmpi.w	#$18,SPAnum(a3)
 	ble.w	.chkshot
 	btst	#0,(onetimerflags).w
 	bne.w	.chkshot
@@ -169,27 +169,27 @@ assonetimer	;asstab entry $18 (94 $23). 94 IDA name. Player a3 shooting a one-ti
 .chkshot
 	btst	#0,(onetimerflags).w
 	beq.w	.chkanim
-	cmpi.w	#$18,$5A(a3)
+	cmpi.w	#$18,SPAnum(a3)
 	bne.w	.chkanim
-	cmpi.w	#1,$5C(a3)
+	cmpi.w	#1,SPAcnt(a3)
 	ble.w	.chkanim
-	move.w	#1,$5C(a3)
+	move.w	#1,SPAcnt(a3)
 .chkanim
-	btst	#1,$63(a3)
+	btst	#1,pflags2(a3)
 	bne.w	.animon
 	movem.l	(sp)+,d0-d1
 	bra.w	.chkdone
 .animon
-	move.w	$5A(a3),d0
+	move.w	SPAnum(a3),d0
 	movem.l	(sp)+,d0-d1
 	btst	#0,(onetimerflags).w
 	beq.w	.nop
-	bclr	#5,$62(a3)
+	bclr	#5,pflags(a3)
 	bra.w	.chkdone
 .nop
 	nop
 .chkdone
-	btst	#1,$63(a3)
+	btst	#1,pflags2(a3)
 	bne.w	.ex
 .shoot
 	jsr	(EndOneTimer).l
@@ -203,11 +203,11 @@ setonetimeranim	;94 IDA name. The one-timer animation: d1 = $150A or $176E (94 $
 	move.w	(a3),d0	;move XPos of a3 into d0
 	neg.w	d0	;negate d0
 	move.w	#$10B,d1	;move top goal line into d1 (94 $108)
-	btst	#7,$62(a3)	;check which goal shooting at
+	btst	#7,pflags(a3)	;check which goal shooting at
 	bne.w	.top	;branch if top
 	neg.w	d1	;negate d1
 .top
-	sub.w	$14(a3),d1	;sub Ypos from d1
+	sub.w	Ypos(a3),d1	;sub Ypos from d1
 	jsr	(vtoa).l
 	jsr	(CheckOneTimerFacing).l	;95: Z from Findhittype
 	movem.w	(sp)+,d0-d1	;pop from stack d0 and d1
@@ -220,7 +220,7 @@ PuckOnAttackHalf	;94 name. d0 = 1 when the puck is on the half of the goal playe
 	;never used). Called from doinput (input95) and asspassrec (checks95_02)
 	movem.w	d0-d1,-(sp)
 	move.w	(pucky).w,d0
-	btst	#7,$62(a3)	;pfgoal - check which goal shooting at
+	btst	#7,pflags(a3)	;pfgoal - check which goal shooting at
 	bne.w	.cont	;branch if top goal
 	neg.w	d0
 .cont
@@ -230,7 +230,7 @@ PuckOnAttackHalf	;94 name. d0 = 1 when the puck is on the half of the goal playe
 	move.w	(passdir).w,d0	;code never used from here up to _0
 	addq.w	#4,d0
 	andi.w	#7,d0
-	move.w	$54(a3),d1
+	move.w	facedir(a3),d1
 	cmp.w	d0,d1
 	bra.w	.plus
 	beq.w	.plus
@@ -264,12 +264,12 @@ onetimershot	;94 IDA name. Do the one-timer shot (doshot), credit the last two p
 	jsr	(doshot).l
 	movem.l	d0/a0,-(sp)
 	movea.l	#HmShots,a0	;Home Stats
-	btst	#6,$62(a3)	;check if home or away
+	btst	#6,pflags(a3)	;check if home or away
 	beq.w	.home	;branch if home
 	lea	tmsize(a0),a0	;add if away
 .home
 	clr.w	d0
-	move.b	$66(a3),d0	;player offset in roster
+	move.b	pnum(a3),d0	;player offset in roster
 	move.w	$1A(a0),$1C(a0)	;move assist 1 player to assist 2
 	move.w	$18(a0),$1A(a0)	;move last player to touch puck to assist 1
 	move.w	d0,$18(a0)	;move d0 into player touching puck
@@ -279,29 +279,29 @@ onetimershot	;94 IDA name. Do the one-timer shot (doshot), credit the last two p
 	addq.w	#1,$35E(a0)	;add to one timer attempt (94 $35C)
 	movem.l	(sp)+,d0/a0
 	bset	#0,(onetimerflags).w	;set bit 0
-	bset	#1,$63(a3)	;set animation in progress (95: no sflags6 bit 1)
+	bset	#1,pflags2(a3)	;set animation in progress (95: no sflags6 bit 1)
 	rts
 
 EndOneTimer	;title94 EndOneTimer (moved in). End a one-timer for a3: bits cleared, onetimerplayer = -1, SetSPA $B5C (94 $50C),
 	;then assexit (goalie) or Setplass. Called from assonetimer and from $8C606 (checks95_06)
 	movem.l	d0/a0,-(sp)
 	bclr	#3,$64(a3)
-	bclr	#5,$62(a3)
-	bclr	#1,$63(a3)
+	bclr	#5,pflags(a3)
+	bclr	#1,pflags2(a3)
 	clr.w	(onetimerflags).w
 	st	(onetimerplayer).w
 	move.w	d1,-(sp)
 	move.w	#$B5C,d1	;95 SPA (94 $50C)
 	jsr	(SetSPA).l
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	bpl.w	.0
 	jsr	(assexit).l
 	bra.w	.1
 .0
 	jsr	(Setplass).l
 .1
-	clr.w	$5A(a3)
-	st	$5C(a3)
+	clr.w	SPAnum(a3)
+	st	SPAcnt(a3)
 	move.w	(sp)+,d1
 	movem.l	(sp)+,d0/a0
 	rts

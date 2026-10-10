@@ -424,11 +424,11 @@ UpdateFaceoffLineChangeTimer	;(checks94). Line change timer d0 (temp1 / temp2 of
 	asl.w	#7,d1
 	movea.w	#(SortCords-M68K_RAM),a0
 	movea.w	#(HmShots-M68K_RAM),a2
-	btst	#6,$62(a0,d1.w)
+	btst	#6,pflags(a0,d1.w)
 	beq.w	.0
 	adda.w	#tmsize,a2
 .0
-	btst	#3,$63(a0,d1.w)
+	btst	#3,pflags2(a0,d1.w)
 	bne.w	.1
 	st	(a3,d0.w)
 	bra.w	SetLCmode2
@@ -672,7 +672,7 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 	move.w	#4,attribute(a0)
 	move.w	#$A800,frame(a0)
 	move.w	#7,8(a0)
-	move.w	#$8000,$A(a0)
+	move.w	#$8000,VRoffs(a0)
 	btst	#1,(gmode).w
 	bne.w	.24
 	eori.w	#$800,2(a0)

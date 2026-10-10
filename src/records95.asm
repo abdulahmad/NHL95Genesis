@@ -161,7 +161,7 @@ PlayoffStatsScreen	;95 only. Pause menu PLAYOFF STATS: the playoff stats (Displa
 	movea.l	#HmShots,a2
 	cmp.w	$28(a2),d0
 	beq.w	.0
-	adda.w	#$366,a2
+	adda.w	#tmsize,a2
 .0
 	moveq	#1,d7
 	jsr	(DisplayAttributeScreen).l

@@ -538,24 +538,24 @@ playeracc	;(checks94) Player acceleration with facing d2 (doplayeracc entry used
 	lea	dirtab(pc),a0
 	move.w	2(a0,d2.w),d1
 	move.w	(a0,d2.w),d0
-	move.w	$50(a3),d2
+	move.w	Wallsin(a3),d2
 	beq.w	.0
 	eor.w	d0,d2
 	bpl.w	.0
 	clr.w	d0
 .0
-	move.w	$4E(a3),d2
+	move.w	Wallcos(a3),d2
 	beq.w	.1
 	eor.w	d1,d2
 	bmi.w	.1
 	clr.w	d1
 .1
 	clr.w	d2
-	move.b	$67(a3),d2
+	move.b	weight(a3),d2
 	lsr.w	#2,d2
 	neg.w	d2
 	addi.w	#$60,d2
-	add.b	$68(a3),d2
+	add.b	legstr(a3),d2
 	asr.w	#1,d2
 	muls.w	d2,d0
 	muls.w	d2,d1
@@ -587,7 +587,7 @@ playeracc	;(checks94) Player acceleration with facing d2 (doplayeracc entry used
 	move.w	#$1000,d0
 .3
 	clr.w	d2
-	move.b	$69(a3),d2
+	move.b	legspd(a3),d2
 	move.w	d2,(TempRawSpd).w
 	lsr.w	#1,d2
 	mulu.w	d0,d2
@@ -636,12 +636,12 @@ playeracc	;(checks94) Player acceleration with facing d2 (doplayeracc entry used
 	subi.w	#$21,d0
 	cmp.w	#$C00,d0
 	blt.w	.8
-	move.b	$72(a3),d2
+	move.b	endurance(a3),d2
 	ext.w	d2
 	lsr.w	#1,d2
 	add.w	d2,d0
 	jsr	(setpde).l
-	btst	#0,$72(a3)
+	btst	#0,endurance(a3)
 	beq.w	.9
 	btst	#0,(vcount+1).w
 	beq.w	.9
@@ -746,7 +746,7 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 	asl.w	#7,d0
 	movea.l	#SortCords,a0
 	adda.w	d0,a0
-	btst	#7,$62(a0)
+	btst	#7,pflags(a0)
 	movem.l	(sp)+,d0/a0
 	bne.w	.1
 	bra.w	.2
@@ -791,8 +791,8 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 	jsr	(LockScroll).l
 	addi.w	#$1F4,(crowdlevel).w
 	movea.w	#(HmShots-M68K_RAM),a2
-	lea	$366(a2),a1
-	tst.w	$14(a3)
+	lea	tmsize(a2),a1
+	tst.w	Ypos(a3)
 	bpl.w	.9
 	exg	a2,a1
 .9
@@ -800,7 +800,7 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 	beq.w	.10
 	exg	a2,a1
 .10
-	addq.w	#1,$C(a2)
+	addq.w	#1,tmscore(a2)
 	btst	#5,(sflags4).w
 	beq.w	.11
 	btst	#0,(gmode2).w
@@ -853,7 +853,7 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 	jsr	(GetPeriodTimeRemaining).l
 	move.w	d0,(a0)+
 	moveq	#2,d0
-	add.w	$24(a2),d0
+	add.w	tmap(a2),d0
 	sub.w	$24(a1),d0
 	move.b	d0,(a0)+
 	addi.w	#$1E,(CwdExciteLvl).w
@@ -910,8 +910,8 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 	bsr.w	AssignTeam
 .25
 	clr.w	(collflag).w
-	clr.w	$28(a3)
-	clr.w	$2A(a3)
+	clr.w	Xvel(a3)
+	clr.w	Yvel(a3)
 	moveq	#6,d0
 	tst.w	(a3)
 	bpl.w	.26
@@ -919,16 +919,16 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 .26
 	move.w	d0,(a3)
 	move.w	#$113,d0
-	tst.w	$14(a3)
+	tst.w	Ypos(a3)
 	bpl.w	.27
 	neg.w	d0
 .27
-	move.w	d0,$14(a3)
-	move.w	#$600,$2C(a3)
-	clr.w	$18(a3)
+	move.w	d0,Ypos(a3)
+	move.w	#$600,Zvel(a3)
+	clr.w	Zpos(a3)
 	st	(puckcross2).w
 	st	(puckcross6).w
-	bset	#2,$62(a3)
+	bset	#2,pflags(a3)
 	move.w	#5,d0
 	jsr	(assreplace).l
 	move.l	a3,-(sp)
@@ -1015,7 +1015,7 @@ DisplayPlayerAttributeMenu	;(data94) 93 name. Goal box: close both line change b
 .0
 	movea.w	#(HmShots-M68K_RAM),a2
 	jsr	(lcfound2).l
-	adda.w	#$366,a2
+	adda.w	#tmsize,a2
 	jsr	(lcfound2).l
 	movea.w	#(ChkCnt-M68K_RAM),a4
 	adda.w	(ScoreSumbytes).w,a4
@@ -1036,7 +1036,7 @@ DisplayPlayerAttributeMenu	;(data94) 93 name. Goal box: close both line change b
 	move.w	(homegoalies).w,(recwins).w
 	btst	#7,2(a4)
 	beq.w	.2
-	adda.w	#$366,a2
+	adda.w	#tmsize,a2
 	move.w	(awaygoalies).w,(recwins).w
 .2
 	lea	GoalBigTxt(pc),a1
@@ -1168,7 +1168,7 @@ checkwindow	;(replay94) Scroll the window one step toward xc1 / yc1 (sflags bit 
 	adda.w	d0,a3
 	move.w	d7,d0
 	add.w	d0,d0
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	beq.w	.0
 	add.w	d0,(yleader).w
 	cmpi.w	#$32,(yleader).w
@@ -1181,9 +1181,9 @@ checkwindow	;(replay94) Scroll the window one step toward xc1 / yc1 (sflags bit 
 	bgt.w	.1
 	move.w	#$FFCE,(yleader).w
 .1
-	move.w	$2A(a3),d2
+	move.w	Yvel(a3),d2
 	asr.w	#7,d2
-	add.w	$14(a3),d2
+	add.w	Ypos(a3),d2
 	add.w	(yleader).w,d2
 	move.w	(a3),d3
 .2
@@ -1267,7 +1267,7 @@ SetGoaliesCtl	;95 only. Practice Mode: pull the goalies the home / away goalie c
 .1
 	move.w	d1,d2
 	asl.w	#7,d2
-	move.w	$34(a0,d2.w),d3
+	move.w	position(a0,d2.w),d3
 	bmi.w	.3
 	move.b	(a1,d3.w),d3
 	andi.w	#$FF,d3
@@ -1277,10 +1277,10 @@ SetGoaliesCtl	;95 only. Practice Mode: pull the goalies the home / away goalie c
 	dbf	d1,.1
 	rts
 .3
-	move.w	#$FFFF,$34(a0,d2.w)
-	bset	#2,$63(a0,d2.w)
-	bset	#2,$62(a0,d2.w)
-	move.w	#$FFFF,$18(a0,d2.w)
+	move.w	#$FFFF,position(a0,d2.w)
+	bset	#2,pflags2(a0,d2.w)
+	bset	#2,pflags(a0,d2.w)
+	move.w	#$FFFF,Zpos(a0,d2.w)
 	movem.l	d0/a3,-(sp)
 	move.w	#$19,d0
 	lea	(a0,d2.w),a3
@@ -1401,7 +1401,7 @@ clockcont_0	;(hockey94) The clock ran out in overtime / the game: game over hand
 .3
 	moveq	#$B,d2
 .4
-	bclr	#3,$62(a3)
+	bclr	#3,pflags(a3)
 	adda.w	#SCstruct,a3
 	dbf	d2,.4
 	movea.w	#(SortCords-M68K_RAM),a3
@@ -1413,7 +1413,7 @@ clockcont_0	;(hockey94) The clock ran out in overtime / the game: game over hand
 	bpl.w	.6
 	adda.w	#$300,a3
 .6
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	ble.w	.7
 	jsr	(assinsert).l
 	moveq	#$1C,d0

@@ -12,15 +12,15 @@
 
 assgoaliectrl	;asstab entry $1B (94 $1D). The joystick goalie: a stoppage when he leaves his area, else
 	;checkanim (checks95_01) when out of the screen box. 95: rtsskate in place of rtss2
-	btst	#3,$62(a3)	;is player joystick controlled?
+	btst	#3,pflags(a3)	;is player joystick controlled?
 	bne.w	.goaliectrl	;branch is so
 	bra.w	assexit
 .goaliectrl
-	btst	#1,$62(a3)	;check if new assignment
+	btst	#1,pflags(a3)	;check if new assignment
 	bne.w	.na	;branch if new assignment
 	movem.w	d0-d1,-(sp)	;push to stack
 	move.w	(a3),d0	;Xpos
-	move.w	$14(a3),d1	;Ypos
+	move.w	Ypos(a3),d1	;Ypos
 	cmp.w	#$AA,d1	;compare $AA to Ypos
 	bgt.w	.cont
 	cmp.w	#$FF56,d1	;check -$AA to Ypos
@@ -58,28 +58,28 @@ assgoaliectrl	;asstab entry $1B (94 $1D). The joystick goalie: a stoppage when h
 	btst	#2,$64(a3)	;check goalie ctrl bit
 	bne.w	checkanim	;branch if set
 .na
-	btst	#5,$62(a3)	;check if anim lock
+	btst	#5,pflags(a3)	;check if anim lock
 	bne.w	rtsskate	;exit if so
 	bsr.w	check4bench
-	bclr	#1,$62(a3)	;clear new assignment bit
+	bclr	#1,pflags(a3)	;clear new assignment bit
 	beq.w	.nna	;branch if already cleared
-	clr.w	$40(a3)	;clear temp1
-	move.w	#8,$42(a3)	;move 8 into temp2
-	st	$46(a3)	;FFFF to temp4
+	clr.w	temp1(a3)	;clear temp1
+	move.w	#8,temp2(a3)	;move 8 into temp2
+	st	temp4(a3)	;FFFF to temp4
 .nna
-	btst	#1,$63(a3)	;check if anim in progress
+	btst	#1,pflags2(a3)	;check if anim in progress
 	bne.w	rtsskate	;exit if so
 	btst	#0,(gmode).w	;check if clock stopped
 	bne.w	rtsskate	;exit if so
-	tst.w	$48(a3)	;test temp5
+	tst.w	temp5(a3)	;test temp5
 	bmi.w	.nofo	;branch if less than 0
-	move.w	$52(a3),d0	;move SCnum into d0
+	move.w	SCnum(a3),d0	;move SCnum into d0
 	cmp.w	(puckc).w,d0	;check if puckc is goalie
 	beq.w	.mbfo	;branch if equal
-	st	$48(a3)	;set temp5 to -1
+	st	temp5(a3)	;set temp5 to -1
 	bra.w	.nofo
 .mbfo
-	sub.w	d7,$48(a3)	;subtract d7(frames elapsed) from temp5
+	sub.w	d7,temp5(a3)	;subtract d7(frames elapsed) from temp5
 	bpl.w	.nofo	;branch if more than 0
 	btst	#2,(BA_PS_flags).w	;check bit 2
 	beq.w	.stoppage	;branch if not set
@@ -89,17 +89,17 @@ assgoaliectrl	;asstab entry $1B (94 $1D). The joystick goalie: a stoppage when h
 	move.l	#8,d0
 	jsr	(AddPenalty2).l
 .nofo
-	sub.b	d7,$40(a3)	;sub d7(frames elapsed) from temp1
+	sub.b	d7,temp1(a3)	;sub d7(frames elapsed) from temp1
 	bpl.w	.ex	;branch if positive
-	move.b	$6B(a3),d0	;DfA into d0
+	move.b	aidef(a3),d0	;DfA into d0
 	beq.w	.3	;branch if value was 0
 	btst	#6,(sflags7).w	;check if crowd meter broken
 	beq.w	.3	;jump if not
 	subq.b	#1,d0	;sub 1 from d0
 .3
 	lsr.b	#2,d0	;divide by 4
-	move.b	d0,$40(a3)	;move d0 into temp1
-	move.w	$52(a3),d0	;move SCnum into d0
+	move.b	d0,temp1(a3)	;move d0 into temp1
+	move.w	SCnum(a3),d0	;move SCnum into d0
 	cmp.w	(puckc).w,d0	;compare puckc to d0
 	beq.w	*+4	;jump to assgoaliecpu if the same
 .ex
@@ -135,7 +135,7 @@ a2offsides	;Offsides on a2 (AddPenalty $10) when his team is offside and the puc
 
 asseben	;asstab entry $13 (94 9). assign94 asseben (moved in; IDA 94 assben). Player a3 should exit the bench area.
 	;95: x $98 (94 $88), facedir 7 (94 2), SPA $1E2A (94 $F6E)
-	btst	#5,$62(a3)
+	btst	#5,pflags(a3)
 	bne.w	.x	;94 rtss4
 	bclr	#1,pflags(a3)
 	beq.w	.1
@@ -323,8 +323,8 @@ setSlotBit	;cards94 setSlotBit (moved in; IDA name and comments). sflags6 bit 5 
 	move.w	(puckc).w,d0	;move puckc SCnum into d0
 	asl.w	#7,d0	;mult by 128 decimal
 	adda.w	d0,a0	;move to start of puckc SCstruct
-	move.w	$14(a0),d0	;Ypos
-	btst	#7,$62(a0)	;pfgoal - which goal shooting at
+	move.w	Ypos(a0),d0	;Ypos
+	btst	#7,pflags(a0)	;pfgoal - which goal shooting at
 	bne.w	.checkpos	;jump if top goal
 	neg.w	d0	;negative d0
 .checkpos
@@ -343,7 +343,7 @@ setSlotBit	;cards94 setSlotBit (moved in; IDA name and comments). sflags6 bit 5 
 assscore	;asstab entry $1C (94 7). assign94 assscore (moved in). Players after a goal: skate to the scoring end,
 	;celebrate. 95: the scorer, still skating fast ($5000 or more), does the celebration SPA $28DE at once; the scorer's pump is one of
 	;two SPAs (.pumps)
-	btst	#5,$62(a3)
+	btst	#5,pflags(a3)
 	bne.w	.x	;94 assfwatch
 	bclr	#1,pflags(a3)
 	beq.w	.nna
@@ -422,7 +422,7 @@ assscore	;asstab entry $1C (94 7). assign94 assscore (moved in). Players after a
 	dc.w	$29B0,$280C,$29B0,$280C
 
 assgoaliebreakwait	;asstab entry $1D (94 $20). assign94 assgoaliebreakwait (moved in)
-	btst	#5,$62(a3)	;check if animation locked
+	btst	#5,pflags(a3)	;check if animation locked
 	bne.w	.exit	;exit if so
 	btst	#2,(BA_PS_flags).w	;check if pen shot
 	bne.w	.1	;branch if so
@@ -431,17 +431,17 @@ assgoaliebreakwait	;asstab entry $1D (94 $20). assign94 assgoaliebreakwait (move
 	nop
 	bra.w	assexit
 .1
-	clr.w	$28(a3)	;clear Xvel
-	clr.w	$2A(a3)	;clear Yvel
+	clr.w	Xvel(a3)	;clear Xvel
+	clr.w	Yvel(a3)	;clear Yvel
 	movem.l	d0/a0,-(sp)	;push d0 and a0 on stack
 	movea.l	#SortCords,a0	;Home SC Sctruct start
 	move.w	(BA_Goalie_SCnum).w,d0	;move Goalie SCNum into d0
 	asl.w	#7,d0	;shift d0 7 bits left
 	adda.w	d0,a0	;add d0 to address a0
-	move.w	#$191,$14(a3)	;move 401 decimal into Ypos
-	btst	#7,$62(a0)	;check if shooting up or down (a0 is goalie being shot on)
+	move.w	#$191,Ypos(a3)	;move 401 decimal into Ypos
+	btst	#7,pflags(a0)	;check if shooting up or down (a0 is goalie being shot on)
 	bne.w	.popstack	;branch if shooting up
-	move.w	#$FE6F,$14(a3)	;move -191 decimal into Ypos (goalie not being shot on)
+	move.w	#$FE6F,Ypos(a3)	;move -191 decimal into Ypos (goalie not being shot on)
 .popstack
 	movem.l	(sp)+,d0/a0
 .exit

@@ -126,7 +126,7 @@ TeamRosterScreen	;93 name (94 stats94). "Team Roster" screen for team a2: DrawTe
 	bsr.w	DisplayPlayerList
 	bra.s	.6
 .8
-	lea	$366(a2),a2
+	lea	tmsize(a2),a2
 	cmpa.w	#(AwShots-M68K_RAM),a2
 	beq.w	.0
 	movea.w	#(HmShots-M68K_RAM),a2
@@ -2503,7 +2503,7 @@ AddPOStats	;(93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to it
 	movea.w	#(HmShots-M68K_RAM),a2
 	cmp.w	$28(a2),d2
 	beq.w	.0
-	adda.w	#$366,a2
+	adda.w	#tmsize,a2
 .0
 	adda.w	#$B6,a2
 	moveq	#$67,d0
@@ -2541,8 +2541,8 @@ AddPOStats	;(93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to it
 	add.w	d5,d5
 	neg.w	d5
 	addi.w	#$100,d5
-	and.l	d3,-$22(a2,d5.w)
-	or.l	d1,-$22(a2,d5.w)
+	and.l	d3,-tmsort(a2,d5.w)
+	or.l	d1,-tmsort(a2,d5.w)
 	add.w	d2,d4
 	dbf	d0,.2
 .4

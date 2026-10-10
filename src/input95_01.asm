@@ -19,7 +19,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	;d4 = pad 0 / 2 / 4 / 6. 95: button A clears pflags2 bit 7 first
 	btst	#6,d1
 	beq.w	.0
-	bclr	#7,$63(a3)
+	bclr	#7,pflags2(a3)
 .0
 	btst	#4,d1
 	beq.w	.1
@@ -68,13 +68,13 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 .7
 	btst	#0,(sflags2).w
 	bne.w	faceoffinput
-	btst	#3,$63(a3)
+	btst	#3,pflags2(a3)
 	bne.w	lineinput
-	btst	#3,$62(a3)
+	btst	#3,pflags(a3)
 	beq.w	rtss7
 	movem.l	d0-d2/a0/a3,-(sp)
 	move.w	(lastplayer).w,d0
-	cmp.w	$52(a3),d0
+	cmp.w	SCnum(a3),d0
 	bne.w	.8
 	tst.w	(passplayer).w
 	bmi.w	.8
@@ -86,9 +86,9 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	asl.w	#7,d0
 	movea.l	#SortCords,a3
 	adda.w	d0,a3
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	beq.w	.8
-	btst	#3,$62(a3)
+	btst	#3,pflags(a3)
 	bne.w	.8
 	btst	#3,$64(a3)
 	bne.w	.8
@@ -101,13 +101,13 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	movem.l	(sp)+,d0-d2/a0/a3
 	btst	#3,$64(a3)
 	bne.w	.9
-	btst	#5,$62(a3)
+	btst	#5,pflags(a3)
 	bne.w	doinput_islocked
 .9
 	move.w	(puckc).w,d5
-	cmp.w	$52(a3),d5
+	cmp.w	SCnum(a3),d5
 	beq.w	.41
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	beq.w	.11
 	btst	#3,$64(a3)
 	beq.w	.10
@@ -117,7 +117,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	beq.w	.11
 	jmp	holdplayer
 .11
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	beq.w	.12
 	btst	#2,(BA_PS_flags).w
 	bne.w	.37
@@ -134,7 +134,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 .14
 	beq.w	.16
 	movem.w	d0,-(sp)
-	move.w	$52(a3),d0
+	move.w	SCnum(a3),d0
 	cmp.w	(puckc).w,d0
 	movem.w	(sp)+,d0
 	beq.w	.16
@@ -238,7 +238,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	movea.l	#SortCords,a3
 	asl.w	#7,d0
 	adda.w	d0,a3
-	btst	#3,$62(a3)
+	btst	#3,pflags(a3)
 	movem.l	(sp)+,d0/a3
 	bne.w	rtss7
 	tst.w	d4
@@ -255,7 +255,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 .36
 	jmp	setc4player
 .37
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	bne.w	.38
 	jmp	doinput_goaliedive
 .38
@@ -269,11 +269,11 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	asl.w	#7,d7
 	movea.l	#SortCords,a0
 	adda.w	d7,a0
-	tst.w	$34(a0)
+	tst.w	position(a0)
 	movem.l	(sp)+,d7-a0
 	beq.w	.39
 	movem.w	d7,-(sp)
-	move.w	$52(a3),d7
+	move.w	SCnum(a3),d7
 	cmp.w	(passplayer).w,d7
 	movem.w	(sp)+,d7
 	bne.w	.39
@@ -290,14 +290,14 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 .39
 	cmp.w	#7,d0
 	bgt.w	.40
-	move.w	d0,$54(a3)
+	move.w	d0,facedir(a3)
 .40
 	jmp	burstchk
 .41
 	bsr.w	checkob
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	bne.w	.42
-	btst	#1,$63(a3)
+	btst	#1,pflags2(a3)
 	bne.w	rtss7
 .42
 	btst	#2,(sflags).w
@@ -315,7 +315,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	movem.l	d5-d6/a1-a4,-(sp)
 	move.w	d3,d5
 	andi.w	#$F,d5
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	bne.w	.44
 	btst	#0,d5
 	beq.w	.46
@@ -356,9 +356,9 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	bne.w	.56
 	btst	#6,d2
 	beq.w	.56
-	bclr	#7,$63(a3)
+	bclr	#7,pflags2(a3)
 	bne.w	.56
-	btst	#3,$63(a3)
+	btst	#3,pflags2(a3)
 	bne.w	.56
 	movem.w	d0,-(sp)
 	move.w	(pucky).w,d0
@@ -368,7 +368,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	cmp.w	#$56,d0
 	blt.w	.55
 	move.w	(pucky).w,d0
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	bne.w	.53
 	neg.w	d0
 .53
@@ -385,7 +385,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	bset	#3,(sflags5).w
 	bra.w	setpassmode
 .56
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	bne.w	.57
 	bra.w	doplayeracc
 .57
@@ -396,7 +396,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 doinput_islocked	;94 global (doinput branches across). B with the player not the carrier: change player (chgplayer) and
 	;set $64 bit 6 of the pad's new player (95: pads 1 to 4)
 	move.w	(puckc).w,d5
-	cmp.w	$52(a3),d5
+	cmp.w	SCnum(a3),d5
 	beq.w	rtss7
 	btst	#4,d1
 	beq.w	rtss7
@@ -442,28 +442,28 @@ faceoffinput	;The faceoff player (assignment $11, 94 $17): store the dpad pull (
 .0
 	rts
 .1
-	move.w	$36(a3),d4
-	cmpi.b	#$11,$38(a3,d4.w)
+	move.w	assnum(a3),d4
+	cmpi.b	#$11,asslist(a3,d4.w)
 	bne.s	.0
 	movea.w	#(fodir1-M68K_RAM),a0
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	beq.w	.2
 	movea.w	#(fodir2-M68K_RAM),a0
 .2
 	move.w	d0,(a0)
-	btst	#1,$63(a3)
+	btst	#1,pflags2(a3)
 	bne.s	.0
 	btst	#4,d1
 	beq.w	.3
 	move.w	#$1B36,d1
-	bset	#1,$63(a3)
+	bset	#1,pflags2(a3)
 	jmp	SetSPA
 .3
 	move.w	#$1B60,d1
 	jmp	SetSPA
 
 setpassmode	;Pass direction mode: passdir = facedir, sflags bit 2 (95 drops the 94 penalty shot part)
-	move.w	$54(a3),(passdir).w
+	move.w	facedir(a3),(passdir).w
 	andi.w	#7,(passdir).w
 	bset	#2,(sflags).w
 
@@ -485,12 +485,12 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	movem.l	d0-d5/a0-a1,-(sp)
 	bclr	#2,(sflags).w
 	st	(puckc).w
-	move.b	#$10,$5E(a3)
+	move.b	#$10,nopuck(a3)
 	btst	#1,(GameFlags).w
 	beq.w	.0
-	move.b	#$18,$5E(a3)
+	move.b	#$18,nopuck(a3)
 .0
-	move.w	$52(a3),(lastplayer).w
+	move.w	SCnum(a3),(lastplayer).w
 	bclr	#3,(sflags5).w
 	beq.w	.2
 	jsr	(OneTimerTarget).l
@@ -503,15 +503,15 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	bra.w	.8
 .2
 	moveq	#8,d0
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	beq.w	.3
-	move.b	$6E(a3),d0
+	move.b	passacc(a3),d0
 .3
 	asl.w	#2,d0
 	asr.w	#1,d0
 	addi.w	#$A0,d0
 	move.w	d0,(passspeed).w
-	btst	#0,$6E(a3)
+	btst	#0,passacc(a3)
 	beq.w	.4
 	asr.w	#4,d0
 	add.w	d0,(passspeed).w
@@ -519,7 +519,7 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	moveq	#$FFFFFFFF,d4
 	moveq	#5,d3
 	movea.w	#(SortCords-M68K_RAM),a1
-	cmpi.w	#6,$52(a3)
+	cmpi.w	#6,SCnum(a3)
 	blt.w	.5
 	adda.w	#$300,a1
 	btst	#2,(BA_PS_flags).w
@@ -527,13 +527,13 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 .5
 	cmpa.l	a1,a3
 	beq.w	.6
-	tst.w	$34(a1)
+	tst.w	position(a1)
 	ble.w	.6
-	btst	#2,$63(a1)
+	btst	#2,pflags2(a1)
 	bne.w	.6
 	move.w	(a1),d0
 	sub.w	(puckx).w,d0
-	move.w	$14(a1),d1
+	move.w	Ypos(a1),d1
 	sub.w	(pucky).w,d1
 	movem.w	d0-d1,-(sp)
 	jsr	(vtoa).l
@@ -554,7 +554,7 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	move.l	d2,d4
 	movea.l	a1,a0
 .6
-	adda.w	#$80,a1
+	adda.w	#SCstruct,a1
 	dbf	d3,.5
 	tst.l	d4
 	bmi.w	.7
@@ -569,13 +569,13 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	moveq	#$A,d2
 	asl.l	d2,d1
 	divs.w	#$B40,d1
-	add.w	$2A(a3),d1
+	add.w	Yvel(a3),d1
 	move.w	d1,(puckvy).w
 	move.w	(a0,d0.w),d1
 	muls.w	(passspeed).w,d1
 	asl.l	d2,d1
 	divs.w	#$B40,d1
-	add.w	$28(a3),d1
+	add.w	Xvel(a3),d1
 	move.w	d1,(puckvx).w
 	move.w	#$1000,d0
 	jsr	(randomd0).l
@@ -590,10 +590,10 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	asr.w	#2,d0
 	move.w	d0,(puckvy).w
 .8
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	bne.w	.11
 	tst.w	(puckvy).w
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	beq.w	.9
 	bmi.w	.10
 	bra.w	.11
@@ -606,7 +606,7 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	move.w	(puckvy).w,d1
 	jsr	(vtoa).l
 	move.w	#$1F9A,d1
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	beq.w	.13
 	move.w	#$1362,d1
 	btst	#1,(GameFlags).w
@@ -621,7 +621,7 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	move.w	#$1498,d1
 .13
 	jsr	(SetSPA).l
-	bset	#5,$62(a3)
+	bset	#5,pflags(a3)
 	moveq	#$C,d0
 	sub.b	(puckvz).w,d0
 	lsr.w	#2,d0
@@ -636,7 +636,7 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	rts
 
 passtoa0	;Pass to player a0
-	btst	#3,$62(a3)
+	btst	#3,pflags(a3)
 	beq.w	.0
 .0
 	jsr	(loadTeamStruct).l
@@ -746,13 +746,13 @@ OneTimerTarget	;onetimer94 OneTimerTarget (moved in). One-timer pass target for 
 	;OneTimerNearTbl / OneTimerFarTbl (skater, near or far from the goal) or OneTimerGoalieTbl
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#2,(sflags6).w
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	bne.w	.0
 	movea.l	#OneTimerGoalieTbl,a0
 	bra.w	.2
 .0
-	move.w	$14(a3),d0
-	btst	#7,$62(a3)
+	move.w	Ypos(a3),d0
+	btst	#7,pflags(a3)
 	bne.w	.1
 	neg.w	d0
 .1
@@ -763,8 +763,8 @@ OneTimerTarget	;onetimer94 OneTimerTarget (moved in). One-timer pass target for 
 	movea.l	#OneTimerFarTbl,a0
 	bclr	#2,(sflags6).w
 .2
-	move.w	$54(a3),d0
-	btst	#7,$62(a3)
+	move.w	facedir(a3),d0
+	btst	#7,pflags(a3)
 	bne.w	.3
 	addq.w	#4,d0
 	andi.w	#7,d0
@@ -774,7 +774,7 @@ OneTimerTarget	;onetimer94 OneTimerTarget (moved in). One-timer pass target for 
 	move.w	2(a0,d0.w),d2
 	cmpa.l	#OneTimerFarTbl,a0
 	bne.w	.6
-	move.w	$14(a3),d0
+	move.w	Ypos(a3),d0
 	bpl.w	.4
 	neg.w	d0
 .4
@@ -788,7 +788,7 @@ OneTimerTarget	;onetimer94 OneTimerTarget (moved in). One-timer pass target for 
 	bgt.w	.6
 	move.w	#$106,d2
 .6
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	bne.w	.7
 	neg.w	d1
 	neg.w	d2
@@ -800,7 +800,7 @@ OneTimerTarget	;onetimer94 OneTimerTarget (moved in). One-timer pass target for 
 	jsr	(randomd0).l
 	add.w	d0,d2
 	move.w	d1,(onetimertargetx).w
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	beq.w	.9
 	sub.w	(a3),d1
 	bmi.w	.8
@@ -893,12 +893,12 @@ SetShotMode	;Initiate a shot by player a3
 	bset	#3,(sflags).w
 	clr.w	d0
 	move.w	#$128,d1
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	bne.w	.1
 	neg.w	d1
 .1
 	sub.w	(a3),d0
-	sub.w	$14(a3),d1
+	sub.w	Ypos(a3),d1
 	jsr	(vtoa).l
 	move.w	#$F,(passspeed).w
 	move.w	#$150A,d1
@@ -920,33 +920,33 @@ SetShotMode	;Initiate a shot by player a3
 	rts
 
 ShotMode	;The shot wind up: aim with the dpad until released
-	cmpi.w	#$1C,$5A(a3)
+	cmpi.w	#$1C,SPAnum(a3)
 	bge.w	prepshot
 	btst	#3,d0
 	bne.w	.0
 	andi.w	#7,d0
 	move.w	d0,(passdir).w
 .0
-	cmpi.w	#$10,$5A(a3)
+	cmpi.w	#$10,SPAnum(a3)
 	bge.w	.3
 	add.w	d7,(passspeed).w
-	cmpi.b	#$14,$6C(a3)
+	cmpi.b	#$14,shotspd(a3)
 	bge.w	.1
-	cmpi.w	#8,$5A(a3)
+	cmpi.w	#8,SPAnum(a3)
 	bgt.w	.2
 .1
 	btst	#5,d2
 	beq.w	.3
 .2
-	neg.w	$5A(a3)
-	addi.w	#$18,$5A(a3)
+	neg.w	SPAnum(a3)
+	addi.w	#$18,SPAnum(a3)
 .3
 	rts
 
 prepshot	;Prepare the shot (shot direction), then doshot
 	bclr	#4,(sflags5).w
 	move.w	#$B,d0
-	btst	#6,$62(a3)
+	btst	#6,pflags(a3)
 	beq.w	.0
 	move.w	#5,d0
 .0
@@ -956,7 +956,7 @@ prepshot	;Prepare the shot (shot direction), then doshot
 	bne.w	.3
 .1
 	move.w	(pucky).w,d0
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	bne.w	.2
 	neg.w	d0
 .2
@@ -977,7 +977,7 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	jmp	.21
 .0
 	move.w	#$1E,(ShotTimer).w
-	move.b	$62(a3),(shotpflags).w
+	move.b	pflags(a3),(shotpflags).w
 	bclr	#4,(gmode2).w
 	btst	#1,$64(a3)
 	beq.w	.1
@@ -985,18 +985,18 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 .1
 	bsr.w	shotdiradj
 	move.w	#5,-(sp)
-	move.w	$52(a3),(shotplayer).w
+	move.w	SCnum(a3),(shotplayer).w
 	bclr	#3,(sflags).w
-	bset	#5,$62(a3)
+	bset	#5,pflags(a3)
 	btst	#3,$64(a3)
 	bne.w	.2
 	move.w	(puckc).w,d0
-	cmp.w	$52(a3),d0
+	cmp.w	SCnum(a3),d0
 	bne.w	.20
 .2
 	move.w	#$18,(sp)
 	bset	#4,(sflags2).w
-	cmpi.w	#$176E,$58(a3)
+	cmpi.w	#$176E,SPA(a3)
 	bne.w	.3
 	move.w	#$14,(sp)
 	move.w	(passspeed).w,d0
@@ -1011,7 +1011,7 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	movem.l	(sp)+,d0-d1
 .4
 	clr.w	d0
-	move.b	$6C(a3),d0
+	move.b	shotspd(a3),d0
 	lsr.b	#1,d0
 	movea.l	a3,a0
 	jsr	(makepde).l
@@ -1020,7 +1020,7 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	mulu.w	#$5249,d0
 	swap	d0
 	move.w	d0,(passspeed).w
-	btst	#0,$6C(a3)
+	btst	#0,shotspd(a3)
 	beq.w	.5
 	asr.w	#4,d0
 	add.w	(passspeed).w,d0
@@ -1033,10 +1033,10 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 .6
 	add.w	d0,(sp)
 	st	(puckc).w
-	move.b	#$10,$5E(a3)
-	move.w	$52(a3),(lastplayer).w
+	move.b	#$10,nopuck(a3)
+	move.w	SCnum(a3),(lastplayer).w
 	move.w	#$10B,d1
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	bne.w	.7
 	neg.w	d1
 .7
@@ -1066,13 +1066,13 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	btst	#0,(gmode2).w
 	bne.w	.14
 	moveq	#$10,d0
-	add.b	$6D(a3),d0
+	add.b	shotacc(a3),d0
 	jsr	(randomd0).l
 	cmp.w	#$E,d0
 	bgt.w	.14
 .9
 	clr.w	d0
-	move.b	$6D(a3),d0
+	move.b	shotacc(a3),d0
 	lsr.w	#1,d0
 	move.b	d0,-(sp)
 	move.w	(passspeed).w,d0
@@ -1120,14 +1120,14 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	divs.w	d3,d2
 	move.w	d2,(puckvy).w
 	move.w	#$8000,d1
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	beq.w	.15
 	clr.w	d1
 .15
 	eor.w	d2,d1
 	bpl.w	.16
 	move.w	#$3810,(puckvy).w
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	bne.w	.16
 	move.w	#$C7F0,(puckvy).w
 .16
@@ -1178,29 +1178,29 @@ shotsets	;Offsets (x, z) for the different shot directions (passdir 0 ... 8)
 shotdiradj	;a3 = shooter. Where to shoot for a computer player or a one timer
 	btst	#3,$64(a3)
 	bne.w	.0
-	btst	#3,$62(a3)
+	btst	#3,pflags(a3)
 	bne.w	.6
 .0
 	moveq	#8,d0
 	moveq	#5,d1
 	movea.w	#(SortCords-SCstruct-M68K_RAM),a0
-	btst	#6,$62(a3)
+	btst	#6,pflags(a3)
 	bne.w	.1
-	adda.w	#$300,a0
+	adda.w	#6*SCstruct,a0
 .1
-	adda.w	#$80,a0
-	tst.w	$34(a0)
+	adda.w	#SCstruct,a0
+	tst.w	position(a0)
 	dbeq	d1,.1
 	bne.w	.4
-	move.b	$28(a0),d0
+	move.b	Xvel(a0),d0
 	ext.w	d0
 	asr.w	#1,d0
 	add.w	(a0),d0
 	sub.w	(puckx).w,d0
-	move.b	$2A(a0),d1
+	move.b	Yvel(a0),d1
 	ext.w	d1
 	asr.w	#1,d1
-	add.w	$14(a0),d1
+	add.w	Ypos(a0),d1
 	sub.w	(pucky).w,d1
 	movem.w	d0-d1,-(sp)
 	muls.w	d0,d0
@@ -1212,7 +1212,7 @@ shotdiradj	;a3 = shooter. Where to shoot for a computer player or a one timer
 	movem.w	(sp)+,d0-d1
 	moveq	#$12,d3
 	move.w	#$10B,d4
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	bne.w	.2
 	neg.w	d4
 .2
@@ -1228,7 +1228,7 @@ shotdiradj	;a3 = shooter. Where to shoot for a computer player or a one timer
 	bgt.w	.4
 	cmp.w	#$FFD4,d4
 	blt.w	.4
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	beq.w	.3
 	neg.w	d4
 .3

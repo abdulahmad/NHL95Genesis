@@ -65,7 +65,7 @@ SetLCmode2	;(input94) 93 name. a2 = team struct. Draw the line change box (box, 
 	subq.w	#1,(printy).w
 .5
 	dbf	d4,.2
-	movea.l	$1E(a2),a1
+	movea.l	tmdata(a2),a1
 	adda.w	4(a1),a1
 	adda.w	(a1),a1
 	addq.w	#2,(printx).w

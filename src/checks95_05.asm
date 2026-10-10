@@ -642,17 +642,17 @@ chkatop	;(penalty94) Attack time of possession stat update. Called once a second
 	move.w	(pucky).w,d0
 	cmp.w	#$56,d0
 	bgt.w	.0
-	move.l	#$366,d1
+	move.l	#tmsize,d1
 	neg.w	d0
 	cmp.w	#$56,d0
 	blt.w	.2
 .0
 	btst	#1,(gmode).w
 	beq.w	.1
-	eori.w	#$366,d1
+	eori.w	#tmsize,d1
 .1
 	movea.w	#(HmShots-M68K_RAM),a2
-	addq.w	#1,$A(a2,d1.w)
+	addq.w	#1,tmATOP(a2,d1.w)
 .2
 	rts
 
@@ -689,17 +689,17 @@ ChkShotStat	;(penalty94) Determine if a shot was taken and add it to the stats (
 	movea.l	#HmShots,a2
 	btst	#7,2(a4)
 	beq.w	.1
-	adda.w	#$366,a2
+	adda.w	#tmsize,a2
 .1
 	clr.w	d0
 	move.b	3(a4),d0
 	movea.l	(sp)+,a4
-	movea.w	$22(a2),a2
+	movea.w	tmsort(a2),a2
 	move.w	#5,d1
 .2
 	cmp.b	$66(a2),d0
 	beq.w	.3
-	adda.w	#$80,a2
+	adda.w	#SCstruct,a2
 	dbf	d1,.2
 	bra.w	.9
 .3

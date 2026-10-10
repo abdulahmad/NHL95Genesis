@@ -26,7 +26,7 @@ limitfo	;(penalty94) Limit the faceoff spot to 5-20 feet from the walls of the r
 	asl.w	#7,d0
 	movea.w	#(SortCords-M68K_RAM),a1
 	move.w	#$56,d1
-	btst	#7,$62(a1,d0.w)
+	btst	#7,pflags(a1,d0.w)
 	bne.w	.2
 	neg.w	d1
 	cmp.w	(foy).w,d1
@@ -119,7 +119,7 @@ Stop4Pen	;(penalty94) a0 = PenaltyNames penalty + 2. Stop the clock, set the fac
 	asl.w	#7,d1
 	adda.w	d1,a3
 	move.w	#$258,d1
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	movea.l	(sp)+,a3
 	beq.w	.0
 	neg.w	d1
@@ -170,7 +170,7 @@ Stop4Pen	;(penalty94) a0 = PenaltyNames penalty + 2. Stop the clock, set the fac
 	clr.w	d1
 	move.b	-1(a0),d1
 	asl.w	#7,d1
-	move.b	$66(a3,d1.w),-1(a1)
+	move.b	pnum(a3,d1.w),-1(a1)
 	cmpi.b	#5,-1(a0)
 	ble.w	.7
 	bset	#7,-1(a1)
@@ -190,7 +190,7 @@ AddPenalty	;(penalty94) Add penalty d0 (PenaltyNames offset) for player a3. Igno
 	beq.w	AddPenalty2
 	tst.w	(OptPen).w
 	beq.s	rtspen
-	btst	#2,$63(a3)
+	btst	#2,pflags2(a3)
 	bne.s	rtspen
 	btst	#5,(gmode).w
 	bne.w	AddPenalty2
@@ -205,7 +205,7 @@ AddPenalty2	;(penalty94) Forced penalties like faceoff and game over. d0 = penal
 	blt.w	.1
 	addi.w	#$C8,(crowdlevel).w
 	move.w	#$C,-(sp)
-	btst	#6,$62(a3)
+	btst	#6,pflags(a3)
 	beq.w	.0
 	addi.w	#$14,(CwdExciteLvl).w
 	move.w	#$B,(sp)
@@ -225,14 +225,14 @@ AddPenalty2	;(penalty94) Forced penalties like faceoff and game over. d0 = penal
 	tst.b	1(a0)
 	beq.w	.5
 	bmi.w	.5
-	btst	#6,$62(a3)
+	btst	#6,pflags(a3)
 	bne.w	.3
 	bset	#1,(sflags9).w
 	bra.w	.4
 .3
 	bset	#2,(sflags9).w
 .4
-	bset	#4,$63(a3)
+	bset	#4,pflags2(a3)
 	beq.w	.5
 	clr.w	(a1)
 .5
@@ -309,7 +309,7 @@ chkprogress	;(penalty94) Control the progress of the ref and the game through pe
 	movea.w	#(puckx-M68K_RAM),a3
 	moveq	#5,d0
 	jsr	(assinsert).l
-	move.w	#$1C20,$40(a3)
+	move.w	#$1C20,temp1(a3)
 	st	(RefStep).w
 	clr.w	(RefCnt).w
 	bsr.w	UpdatePA
@@ -341,7 +341,7 @@ InProgress	;(penalty94) Ref in progress: update the graphics, stats and penalty 
 	asl.w	#7,d1
 	movea.w	#(SortCords-M68K_RAM),a3
 	adda.w	d1,a3
-	tst.w	$34(a3)
+	tst.w	position(a3)
 	movem.l	(sp)+,a3
 	bpl.w	.14
 	clr.w	(a0)
@@ -378,7 +378,7 @@ InProgress	;(penalty94) Ref in progress: update the graphics, stats and penalty 
 	clr.w	d0
 	movea.w	#(HmShots-M68K_RAM),a2
 	lea	tmsize(a2),a1
-	btst	#6,$62(a3)
+	btst	#6,pflags(a3)
 	beq.w	.5
 	bset	#7,-1(a4)
 	move.w	#$8000,d0
@@ -386,7 +386,7 @@ InProgress	;(penalty94) Ref in progress: update the graphics, stats and penalty 
 .5
 	addq.w	#1,6(a2)
 	add.w	d2,8(a2)
-	move.b	$66(a3),d0
+	move.b	pnum(a3),d0
 	move.b	d0,(a4)
 	move.w	d0,(TempPlOffset).w
 	ext.w	d0
@@ -564,11 +564,11 @@ RemovePlayerFromList	;(penalty94) 93 name. Remove the entry before a0 from a pen
 
 releasepl	;(penalty94) 93 name. The player's penalty time is up, so let him out (if appropriate). a2 = team, d0 = player * 2
 	movem.l	d0-d3/a0-a3,-(sp)
-	movea.w	$22(a2),a3
-	suba.w	#$80,a3
+	movea.w	tmsort(a2),a3
+	suba.w	#SCstruct,a3
 .0
-	adda.w	#$80,a3
-	tst.w	$34(a3)
+	adda.w	#SCstruct,a3
+	tst.w	position(a3)
 	bpl.s	.0
 	move.w	d0,d3
 	lsr.w	#1,d3
@@ -577,15 +577,15 @@ releasepl	;(penalty94) 93 name. The player's penalty time is up, so let him out 
 	bset	#0,(HmShots+tmflags).w
 	bset	#0,(AwShots+tmflags).w
 	movea.l	#priolist,a0
-	tst.w	$26(a2)
+	tst.w	tmgoalie(a2)
 	bpl.w	.1
 	addq.w	#1,a0
 .1
-	clr.w	$34(a3)
+	clr.w	position(a3)
 	move.b	(a0,d1.w),$35(a3)
 	jsr	(Setplass).l
 	bsr.w	setplayer
-	bset	#2,$63(a3)
+	bset	#2,pflags2(a3)
 	movem.l	(sp)+,d0-d3/a0-a3
 	rts
 

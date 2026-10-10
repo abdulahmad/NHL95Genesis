@@ -102,13 +102,13 @@ assbench	;asstab entry $12. Player a3 goes to the bench: skate to the bench door
 	ext.w	d0
 	move.w	d0,position(a3)
 	jsr	(Setplass).l
-	st	$61(a3)
-	st	$60(a3)
+	st	newpnum(a3)
+	st	newpos(a3)
 rtss4	;The end of assbench (94 rtss4; 95 branches go to rtsskate)
 	rts
 
 asspenalty	;asstab entry $15. Player a3 goes to the penalty box and hops in, then assdopen
-	btst	#5,$62(a3)
+	btst	#5,pflags(a3)
 	bne.w	rtsskate	;94 rtss4
 	bclr	#1,pflags(a3)
 	beq.w	.nna
@@ -187,10 +187,10 @@ asspenalty	;asstab entry $15. Player a3 goes to the penalty box and hops in, the
 	movea.l	#rtsskate,a0	;94 rtss2
 	bra.w	skateto
 .clrplayer	;take the joystick off player a3 (92 asspenalty .clrplayer, 93 global clrplayer)
-	btst	#3,$62(a3)
+	btst	#3,pflags(a3)
 	beq.w	rtsskate
 	clr.w	d4
-	move.w	$52(a3),d0
+	move.w	SCnum(a3),d0
 	cmp.w	(c1playernum).w,d0
 	beq.w	.chg
 	moveq	#2,d4

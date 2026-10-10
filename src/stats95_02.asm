@@ -291,9 +291,9 @@ DisplayGameStatEntry	;stats94 DisplayGameStatEntry. Goal entry d3: the time, the
 	movea.w	#(HmShots-M68K_RAM),a2
 	btst	#7,2(a0,d3.w)
 	beq.w	.0
-	adda.w	#$366,a2
+	adda.w	#tmsize,a2
 .0
-	movea.l	$1E(a2),a1
+	movea.l	tmdata(a2),a1
 	adda.w	4(a1),a1
 	adda.w	(a1),a1
 	move.w	#$D,(printx).w
@@ -504,9 +504,9 @@ DisplayPenaltyEntry	;stats94 DisplayPenaltyEntry (93 name). PenSum entry d3: tim
 	movea.w	#(HmShots-M68K_RAM),a2
 	btst	#7,2(a0,d3.w)
 	beq.w	.0
-	adda.w	#$366,a2
+	adda.w	#tmsize,a2
 .0
-	movea.l	$1E(a2),a1
+	movea.l	tmdata(a2),a1
 	adda.w	4(a1),a1
 	adda.w	(a1),a1
 	move.w	#$D,(printx).w

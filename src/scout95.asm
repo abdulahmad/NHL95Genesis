@@ -516,7 +516,7 @@ GetMatchupPlayers	;scout94 GetMatchupPlayers. matchuphome / matchupvis = the hom
 	movea.l	#HmShots,a0
 	btst	#6,(sflags11).w
 	beq.w	.1
-	movea.l	$1E(a0),a0
+	movea.l	tmdata(a0),a0
 	adda.w	6(a0),a0
 	bra.w	.2
 .1
@@ -530,7 +530,7 @@ GetMatchupPlayers	;scout94 GetMatchupPlayers. matchuphome / matchupvis = the hom
 	movea.l	#AwShots,a0
 	btst	#6,(sflags11).w
 	beq.w	.3
-	movea.l	$1E(a0),a0
+	movea.l	tmdata(a0),a0
 	adda.w	6(a0),a0
 	bra.w	.4
 .3

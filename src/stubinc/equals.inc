@@ -71,8 +71,13 @@ aioff equ $6A		;offense rating
 aidef equ $6B		;defense rating
 spodds equ $70
 weight equ $67
+legstr equ $68
+legspd equ $69
 shotspd equ $6C
+shotacc equ $6D
+passacc equ $6E
 stickhand equ $71
+endurance equ $72
 handed equ $76		;bit0 set is left handed
 
 ;bit numbers in gmode
@@ -106,6 +111,12 @@ sf2offsig equ 7		;offsides little ref on
 sf3rmplay equ 1		;play mode on for replay (sflags3)
 
 ;team variables (HmShots / AwShots = the home / away team struct). 94 names; setup95_01 confirms these 95 values
+tmshots equ $0		;shots stat (94 names and offsets $0-$A)
+tmPwrGoals equ $2		;power play goals stat
+tmPwrPlays equ $4		;power plays stat
+tmPenalties equ $6		;penalties stat
+tmPenmin equ $8		;penalty min. stat
+tmATOP equ $A		;attack time of possesion stat
 tmscore equ $C		;score
 tmline equ $16		;current line
 tmap equ $24		;active players on ice 4-6
