@@ -3,7 +3,8 @@
 
 noise comments  comments strip_noise.py would still change
 raw addresses   in code: RAM ($FFFFxxxx, or a word $8000-$FFFF taken as an address by
-                movea / cmpa / lea / adda / suba), hardware ($A0xxxx-$A1xxxx, $C000xx),
+                movea / cmpa / lea / adda / suba, or subtracted from a pointer copied
+                to a data register), hardware ($A0xxxx-$A1xxxx, $C000xx),
                 save RAM ($20xxxx, or a long immediate equal to a save RAM offset from the
                 SR names in ram95.asm) and ROM pointers (#$xxxx taken as an address, jsr / jmp $x,
                 dc.l $x); plus raw struct displacements $x(a0-a4), reported separately
@@ -21,6 +22,8 @@ import strip_noise  # noqa: E402
 
 GENERIC = re.compile(r'\b(?:loc|sub|locret|byte|word|dword|unk|off|nullsub|asc|stru)_[0-9A-Fa-f]+\b')
 ADDROP = r'(?:movea|cmpa|lea|pea|adda|suba)(?:\.[wl])?'
+PTRSUB = re.compile(r'^\s*move\.[wl]\s+a\d\s*,\s*(d\d)\s*$')  # a pointer copied to a data register
+PTRDIFF = r'^\s*subi?\.w\s+#\$[89A-Fa-f][0-9A-Fa-f]{3}\s*,\s*%s\b'
 RAM = re.compile(r'#\$FFFF(?!FF)[0-9A-Fa-f]{4}\b(?<!FFFF0000)|\(\$FF[0-9A-Fa-f]{4}\)'
                  r'|^\s*' + ADDROP + r'\s+#\$[89A-Fa-f][0-9A-Fa-f]{3}\s*,\s*a\d', re.I)
 SRAM = re.compile(r'\$20[0-9A-Fa-f]{4}\b')
@@ -42,6 +45,7 @@ def scan(src, listing=False):
     for fn in files:
         stub = fn.endswith('_stub.asm')
         with open(os.path.join(src, fn), encoding='latin-1') as f:
+            prev = None
             for no, line in enumerate(f, 1):
                 where = '%s:%d: %s' % (fn, no, line.rstrip()[:160])
                 if strip_noise.clean_line(line, stub, lambda a, b: None) != line:
@@ -64,6 +68,11 @@ def scan(src, listing=False):
                     if n:
                         counts[key] += n
                         hits[key].append(where)
+                if prev and re.match(PTRDIFF % prev, code, re.I):
+                    counts['ram'] += 1
+                    hits['ram'].append(where)
+                pm = PTRSUB.match(code)
+                prev = pm.group(1) if pm else None
                 m = SROFF.match(code)
                 if m and int(m.group(1), 16) in sroffs:
                     counts['sram'] += 1

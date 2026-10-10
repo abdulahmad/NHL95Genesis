@@ -938,7 +938,7 @@ formatlastbody	;FormatLastNameAlt joins here
 
 FinalizeTextBuffer	;93 name. mesarea length word = a1 - mesarea, with a 0 pad byte when odd. Returns a1 = mesarea. Called from the FormatPlayerName routines
 	move.w	a1,d0
-	subi.w	#$BBAA,d0
+	subi.w	#(mesarea-M68K_RAM),d0
 	btst	#0,d0
 	beq.w	.0
 	clr.b	(a1)+
@@ -1215,7 +1215,7 @@ PushNumberWidth	;93 name. Right-justified number
 	divu.w	#$A,d2	;divide d2 by 10 dec
 	bne.s	.2
 	move.l	a1,d0	;move a1 into d0
-	subi.w	#$BC0E,d0
+	subi.w	#(PushWidthBuf-M68K_RAM),d0
 	btst	#0,d0	;test bit 0 of d0
 	beq.w	.5
 	clr.b	(a1)+	;clear byte at a1 and increment

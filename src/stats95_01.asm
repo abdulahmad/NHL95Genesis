@@ -238,7 +238,7 @@ DisplayAttributeMenu	;stats94 DisplayAttributeMenu (93 name)
 	st	0(a3,d0.w)
 	dbf	d0,.7
 	move.w	a3,d0
-	subi.w	#$BC24,d0
+	subi.w	#(Satt+6-M68K_RAM),d0
 	bpl.w	.8
 	clr.w	d0
 .8
@@ -274,7 +274,7 @@ DisplayAttributeEntry	;stats94 DisplayAttributeEntry (93 name)
 	subq.w	#1,(printy).w
 	move.w	#1,(printx).w
 	move.w	a4,d0
-	subi.w	#$BC1D,d0
+	subi.w	#(Satt-1-M68K_RAM),d0
 	moveq	#2,d1
 	move.w	#$E000,(printa).w
 	jsr	(PushNumberWidth).l
@@ -1384,7 +1384,7 @@ SeasonAttributeMenu	;stats94 DisplayAttributeMenu (3 columns: G, A, Pts). Header
 	st	0(a3,d0.w)
 	dbf	d0,.6
 	move.w	a3,d0
-	subi.w	#$BC24,d0
+	subi.w	#(Satt+6-M68K_RAM),d0
 	bpl.w	.7
 	clr.w	d0
 .7
@@ -1420,7 +1420,7 @@ SeasonAttributeEntry	;stats94 DisplayAttributeEntry. Draws list row d3 (rank, na
 	subq.w	#1,(printy).w
 	move.w	#1,(printx).w
 	move.w	a4,d0
-	subi.w	#$BC1D,d0
+	subi.w	#(Satt-1-M68K_RAM),d0
 	moveq	#2,d1
 	move.w	#$E000,(printa).w
 	jsr	(PushNumberWidth).l
@@ -3598,7 +3598,7 @@ DisplayPeriodOver
 FindMaxAttributeTEam
 	movem.l	d1-d2/a1/a4,-(sp)
 .0
-	movea.w	#(StatBuf-M68K_RAM),a4
+	movea.w	#(ThreeStars-M68K_RAM),a4
 	clr.l	d0
 	moveq	#$33,d2
 .1
@@ -3610,7 +3610,7 @@ FindMaxAttributeTEam
 	dbf	d2,.1
 	clr.l	(a1)
 	move.w	a1,d0
-	subi.w	#$CAF8,d0
+	subi.w	#(ThreeStars-M68K_RAM),d0
 	lsr.w	#2,d0	;entry number
 	movea.w	#(HmShots-M68K_RAM),a2
 	cmp.w	#$1A,d0
@@ -3622,7 +3622,7 @@ FindMaxAttributeTEam
 	rts
 
 CalculateTeamAttributes
-	movea.w	#(StatBuf-M68K_RAM),a4
+	movea.w	#(ThreeStars-M68K_RAM),a4
 	jsr	(GetPeriodTime).l
 	move.w	d0,d5
 	add.w	d2,d5
@@ -3645,7 +3645,7 @@ CalculateTeamAttributes
 .0
 	add.b	3(a0),d0
 	asl.w	#2,d0
-	movea.w	#(StatBuf-M68K_RAM),a0
+	movea.w	#(ThreeStars-M68K_RAM),a0
 	move.l	#$7FFFFFFF,(a0,d0.w)
 .1
 	rts
