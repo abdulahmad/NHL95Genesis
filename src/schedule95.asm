@@ -199,4 +199,5 @@ SeasonSchedule	;$8DD8. IDA: byte_8DD8. move.b (x).l, movea.l #x (sub_8E26A, sub_
 	dc.b	6, 14,2, 16,12, 24,25, 8,18, 22,4, 5,20	;day 190
 	dc.b	6, 15,1, 21,13, 6,11, 19,7, 10,3, 0,23	;day 191
 	dc.b	10, 1,9, 2,24, 14,16, 12,15, 21,18, 8,13, 4,22, 20,25, 5,6, 10,7	;day 192
+SeasonScheduleEnd	;$9721, no IDA label. season95 CountTeamGames stops its scan here (cmpa.l #x,a0)
 	dc.b	$FF	;$9721. Pad to the even address of sub_9722 (94 InitSaveRAM, sram95)

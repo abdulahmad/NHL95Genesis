@@ -144,6 +144,9 @@ StartGame	;reset game state for a new game, then start the first period. 95 has 
 	move.b	#$C8,(VDP_PSG).l
 	move.b	#1,(VDP_PSG).l
 	jsr	(setupice).l
+
+IntermissionStart	;$9D18, no IDA label. 94 setup94 name: the PeriodOver tail. checks95_06 PeriodOver jumps here after forceblack: reset the
+	;clock, restart the sound driver, UpdateScores, IntermissionMenu, then GameOver or StartPer
 	jsr	(ResetClock).l
 	move.w	d0,-(sp)
 	move.w	(vcount).w,d0
