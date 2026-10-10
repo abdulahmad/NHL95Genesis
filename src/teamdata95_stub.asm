@@ -7,7 +7,7 @@
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 ; External addresses outside $000772-$005A33: none. TeamList and the team block offsets point inside the segment.
-; .region code
+; region code
 	org	$772
 
 ; includes for stubs to replace removed code

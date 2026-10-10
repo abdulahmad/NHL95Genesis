@@ -4,7 +4,7 @@
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-; .region code
+; region code
 	org	$1A169A
 
 ; includes for stubs to replace removed code

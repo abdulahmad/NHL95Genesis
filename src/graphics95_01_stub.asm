@@ -4,7 +4,7 @@
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-; .region code
+; region code
 	org	$A1A5A
 
 ; includes for stubs to replace removed code

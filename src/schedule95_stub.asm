@@ -5,7 +5,7 @@
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 ; External addresses outside $008DD8-$009721: none. Every byte is a count or a team number.
-; .region code
+; region code
 	org	$8DD8
 
 ; includes for stubs to replace removed code

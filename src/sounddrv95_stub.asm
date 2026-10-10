@@ -5,7 +5,7 @@
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 ; External addresses outside $00AF44-$0676D7: none. The driver only uses its RAM (ram_addrs.inc), Z80 RAM and the IO ports.
-; .region code
+; region code
 	org	$AF44
 
 ; includes for stubs to replace removed code

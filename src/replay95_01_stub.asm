@@ -4,7 +4,7 @@
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-; .region code
+; region code
 	org	$A536
 
 ; includes for stubs to replace removed code
@@ -13,9 +13,9 @@
 	include	stubinc\ram_addrs.inc	;RAM names
 
 ; External addresses outside $00A536-$00A655 (frames95.asm defines them in the full build).
-SPAlist = $5A34			;movea.l #x at $A54C
-SPAfallback = $109C		;cmpi.w #x at $A614
-SPAinjuryfall = $2454		;cmpi.w #x at $A5DC
+SPAlist = $5A34
+SPAfallback = $109C
+SPAinjuryfall = $2454
 
 ; Main segment code
 	include	replay95_01.asm
