@@ -458,7 +458,7 @@ InitSeasonStats
 .0
 	move.l	d1,(a0)+
 	dbf	d0,.0
-	move.l	#$21A4,d0
+	move.l	#SRGoals,d0
 	move.l	#$1B6C,d1
 	movea.l	#M68K_RAM,a0
 	jsr	(WriteSRAM).l
@@ -468,7 +468,7 @@ InitSeasonStats
 .1
 	move.l	d1,(a0)+
 	dbf	d0,.1
-	move.l	#$5D58,d0
+	move.l	#SRTeamBlock2,d0
 	move.l	#$104,d1
 	movea.l	#LeaderValues,a0
 	jsr	(WriteSRAM).l
@@ -478,7 +478,7 @@ InitSeasonStats
 .2
 	move.b	d1,(a0)+
 	dbf	d0,.2
-	move.l	#$3D10,d0
+	move.l	#SRTeamStats,d0
 	move.l	#$104,d1
 	movea.l	#M68K_RAM,a0
 	jsr	(WriteSRAM).l
@@ -489,7 +489,7 @@ InitSeasonStats
 .3
 	move.b	d1,(a0)+
 	dbf	d0,.3
-	move.l	#$5E5C,d0
+	move.l	#SRInjuries,d0
 	move.l	#$17A,d1
 	movea.l	#M68K_RAM,a0
 	jsr	(WriteSRAM).l
@@ -500,11 +500,11 @@ InitSeasonStats
 
 SaveSimGame
 	movem.l	d0-d7/a0-a6,-(sp)
-	move.w	(HmShots+$28).w,($20FDDC).l
+	move.w	(HmShots+$28).w,(SaveRAM+2*SRCupWinner).l
 	move.w	(HmGoals).w,d7
 	cmp.w	(AwGoals).w,d7
 	bgt.w	.0
-	move.w	(AwShots+$28).w,($20FDDC).l
+	move.w	(AwShots+$28).w,(SaveRAM+2*SRCupWinner).l
 .0
 	bclr	#0,(SimFlags).w
 	move.w	#1,d0
@@ -560,7 +560,7 @@ AddTeamSeasonStats
 	addi.l	#$7D2D,d0
 	bra.w	.1
 .0
-	addi.l	#$3D10,d0
+	addi.l	#SRTeamStats,d0
 .1
 	movea.l	#StatBuf,a0
 	moveq	#$A,d1
@@ -583,10 +583,10 @@ AddTeamSeasonStats
 	rts
 
 AddPlayerSeasonStats
-	move.l	#$21A4,d2
+	move.l	#SRGoals,d2
 	btst	#5,(SeasonDay+1).w
 	beq.w	.0
-	move.l	#$61C1,d2
+	move.l	#SRPOGoals,d2
 .0
 	movem.l	d0/a1,-(sp)
 	bsr.w	ReadStatBlock
@@ -604,10 +604,10 @@ AddPlayerSeasonStats
 	dbf	d7,.1
 	bsr.w	WriteStatBlock
 	movem.l	(sp),d0/a1
-	move.l	#$2720,d2
+	move.l	#SRAssists,d2
 	btst	#5,(SeasonDay+1).w
 	beq.w	.3
-	move.l	#$673D,d2
+	move.l	#SRPOAssists,d2
 .3
 	bsr.w	ReadStatBlock
 .4
@@ -619,10 +619,10 @@ AddPlayerSeasonStats
 	dbf	d7,.4
 	bsr.w	WriteStatBlock
 	movem.l	(sp),d0/a1
-	move.l	#$2C9C,d2
+	move.l	#SRShots,d2
 	btst	#5,(SeasonDay+1).w
 	beq.w	.5
-	move.l	#$6CB9,d2
+	move.l	#SRPOShots,d2
 .5
 	bsr.w	ReadStatBlock
 .6
@@ -641,10 +641,10 @@ AddPlayerSeasonStats
 	movem.l	(sp),d0/a1
 	move.l	a4,-(sp)
 	movea.l	a1,a4
-	move.l	#$3794,d2
+	move.l	#SRPenMin,d2
 	btst	#5,(SeasonDay+1).w
 	beq.w	.8
-	move.l	#$77B1,d2
+	move.l	#SRPOPenMin,d2
 .8
 	bsr.w	ReadStatBlock
 .9
@@ -684,10 +684,10 @@ AddPlayerSeasonStats
 	bsr.w	WriteStatBlock
 	movea.l	(sp)+,a4
 	movem.l	(sp),d0/a1
-	move.l	#$3218,d2
+	move.l	#SRGamesPlayed,d2
 	btst	#5,(SeasonDay+1).w
 	beq.w	.15
-	move.l	#$7235,d2
+	move.l	#SRPOGamesPlayed,d2
 .15
 	bsr.w	ReadStatBlock
 .16
@@ -940,10 +940,10 @@ ReadTeamPlayerStats
 	move.l	d0,-(sp)
 	btst	#5,(SeasonDay+1).w
 	beq.w	.0
-	addi.l	#$61C1,d0
+	addi.l	#SRPOGoals,d0
 	bra.w	.1
 .0
-	addi.l	#$21A4,d0
+	addi.l	#SRGoals,d0
 .1
 	movea.l	#StatBuf,a0
 	moveq	#$34,d1
@@ -951,40 +951,40 @@ ReadTeamPlayerStats
 	move.l	(sp),d0
 	btst	#5,(SeasonDay+1).w
 	beq.w	.2
-	addi.l	#$673D,d0
+	addi.l	#SRPOAssists,d0
 	bra.w	.3
 .2
-	addi.l	#$2720,d0
+	addi.l	#SRAssists,d0
 .3
 	adda.w	#$34,a0
 	jsr	(ReadSRAM).l
 	move.l	(sp),d0
 	btst	#5,(SeasonDay+1).w
 	beq.w	.4
-	addi.l	#$6CB9,d0
+	addi.l	#SRPOShots,d0
 	bra.w	.5
 .4
-	addi.l	#$2C9C,d0
+	addi.l	#SRShots,d0
 .5
 	adda.w	#$34,a0
 	jsr	(ReadSRAM).l
 	move.l	(sp),d0
 	btst	#5,(SeasonDay+1).w
 	beq.w	.6
-	addi.l	#$7235,d0
+	addi.l	#SRPOGamesPlayed,d0
 	bra.w	.7
 .6
-	addi.l	#$3218,d0
+	addi.l	#SRGamesPlayed,d0
 .7
 	adda.w	#$34,a0
 	jsr	(ReadSRAM).l
 	move.l	(sp)+,d0
 	btst	#5,(SeasonDay+1).w
 	beq.w	.8
-	addi.l	#$77B1,d0
+	addi.l	#SRPOPenMin,d0
 	bra.w	.9
 .8
-	addi.l	#$3794,d0
+	addi.l	#SRPenMin,d0
 .9
 	adda.w	#$34,a0
 	jsr	(ReadSRAM).l
@@ -998,10 +998,10 @@ WriteTeamPlayerStats
 	move.l	d0,-(sp)
 	btst	#5,(SeasonDay+1).w
 	beq.w	.0
-	addi.l	#$61C1,d0
+	addi.l	#SRPOGoals,d0
 	bra.w	.1
 .0
-	addi.l	#$21A4,d0
+	addi.l	#SRGoals,d0
 .1
 	movea.l	#StatBuf,a0
 	moveq	#$34,d1
@@ -1009,56 +1009,56 @@ WriteTeamPlayerStats
 	move.l	(sp),d0
 	btst	#5,(SeasonDay+1).w
 	beq.w	.2
-	addi.l	#$673D,d0
+	addi.l	#SRPOAssists,d0
 	bra.w	.3
 .2
-	addi.l	#$2720,d0
+	addi.l	#SRAssists,d0
 .3
 	adda.w	#$34,a0
 	jsr	(WriteSRAM).l
 	move.l	(sp),d0
 	btst	#5,(SeasonDay+1).w
 	beq.w	.4
-	addi.l	#$6CB9,d0
+	addi.l	#SRPOShots,d0
 	bra.w	.5
 .4
-	addi.l	#$2C9C,d0
+	addi.l	#SRShots,d0
 .5
 	adda.w	#$34,a0
 	jsr	(WriteSRAM).l
 	move.l	(sp),d0
 	btst	#5,(SeasonDay+1).w
 	beq.w	.6
-	addi.l	#$7235,d0
+	addi.l	#SRPOGamesPlayed,d0
 	bra.w	.7
 .6
-	addi.l	#$3218,d0
+	addi.l	#SRGamesPlayed,d0
 .7
 	adda.w	#$34,a0
 	jsr	(WriteSRAM).l
 	move.l	(sp)+,d0
 	btst	#5,(SeasonDay+1).w
 	beq.w	.8
-	addi.l	#$77B1,d0
+	addi.l	#SRPOPenMin,d0
 	bra.w	.9
 .8
-	addi.l	#$3794,d0
+	addi.l	#SRPenMin,d0
 .9
 	adda.w	#$34,a0
 	jsr	(WriteSRAM).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReadSeasonTeamRecord	;95 only. Read the season record of team d7 (save RAM $3D10, or $7D2D with SeasonDay bit 5) to a0
+ReadSeasonTeamRecord	;95 only. Read the season record of team d7 (save RAM SRTeamStats, or $7D2D with SeasonDay bit 5) to a0
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d7,d0
 	mulu.w	#$A,d0
 	btst	#5,(SeasonDay+1).w
 	beq.w	.0
-	addi.l	#$7D2D,d0
+	addi.l	#SRPOTeamStats,d0
 	bra.w	.1
 .0
-	addi.l	#$3D10,d0
+	addi.l	#SRTeamStats,d0
 .1
 	moveq	#$A,d1
 	movem.l	d7/a0,-(sp)
@@ -1069,10 +1069,10 @@ ReadSeasonTeamRecord	;95 only. Read the season record of team d7 (save RAM $3D10
 	mulu.w	#3,d0
 	btst	#5,(SeasonDay+1).w
 	beq.w	.2
-	addi.l	#$6173,d0
+	addi.l	#SRPOStandings,d0
 	bra.w	.3
 .2
-	addi.l	#$1AF6,d0
+	addi.l	#SRStandings,d0
 .3
 	moveq	#3,d1
 	jsr	(ReadSRAM).l
@@ -1082,8 +1082,8 @@ ReadSeasonTeamRecord	;95 only. Read the season record of team d7 (save RAM $3D10
 MarkSeasonRosters
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d7
-	movea.l	#$204348,a0
-	movea.l	#$205938,a1
+	movea.l	#SaveRAM+2*SRGoals,a0
+	movea.l	#SaveRAM+2*SRShots,a1
 .0
 	jsr	(ReadAttributeNibbleD7).l
 	subq.w	#1,d0
@@ -2150,7 +2150,7 @@ LeadersPoints	;Points: 2*wins+ties per team, sort descending
 	bra.w	BuildLeadersDone
 
 LeadersGoalsAvg	;Goals Avg: goals*100/games per team, sort descending
-	move.l	#$3D10,d0
+	move.l	#SRTeamStats,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
@@ -2183,7 +2183,7 @@ LeadersGoalsAvg	;Goals Avg: goals*100/games per team, sort descending
 	bra.w	BuildLeadersDone
 
 LeadersGoalsAllowed	;Goals Allowed Avg: goals against*100/games per team, sort ascending
-	move.l	#$3D10,d0
+	move.l	#SRTeamStats,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
@@ -2216,7 +2216,7 @@ LeadersGoalsAllowed	;Goals Allowed Avg: goals against*100/games per team, sort a
 	bra.w	BuildLeadersDone
 
 LeadersField4	;unreferenced: field 4 *100/games per team, sort descending
-	move.l	#$3D10,d0
+	move.l	#SRTeamStats,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
@@ -2249,7 +2249,7 @@ LeadersField4	;unreferenced: field 4 *100/games per team, sort descending
 	bra.w	BuildLeadersDone
 
 LeadersSavePct	;Save Percentage: (shots against - goals against)*100/shots against per team, sort descending
-	move.l	#$3D10,d0
+	move.l	#SRTeamStats,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
@@ -2279,7 +2279,7 @@ LeadersSavePct	;Save Percentage: (shots against - goals against)*100/shots again
 	bra.w	BuildLeadersDone
 
 LeadersShootPct	;Shooting Percentage: goals*100/shots per team, sort descending
-	move.l	#$3D10,d0
+	move.l	#SRTeamStats,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
@@ -2310,7 +2310,7 @@ LeadersShootPct	;Shooting Percentage: goals*100/shots per team, sort descending
 	bra.w	BuildLeadersDone
 
 LeadersShotsAvg	;Shots Avg: shots*100/games per team, sort descending
-	move.l	#$3D10,d0
+	move.l	#SRTeamStats,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
@@ -2343,7 +2343,7 @@ LeadersShotsAvg	;Shots Avg: shots*100/games per team, sort descending
 	bra.w	BuildLeadersDone
 
 LeadersShotsAllowed	;Shots Allowed Avg: shots against*100/games per team, sort ascending
-	move.l	#$3D10,d0
+	move.l	#SRTeamStats,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
@@ -2456,7 +2456,7 @@ PlayerLeaderJumps	;League Leaders: per category (word_FFBB20, from $949B4) handl
 	dc.l	PlayerLeadersGAA
 
 PlayerLeadersGoals	;Category 0: gather with BuildLeaderList (d0 = $21A4, d1 = $548), sort descending
-	move.l	#$21A4,d0
+	move.l	#SRGoals,d0
 	move.l	#$548,d1
 	movea.l	#BuildLeaderList,a5
 	bclr	#1,(BA_PS_flags).w
@@ -2464,7 +2464,7 @@ PlayerLeadersGoals	;Category 0: gather with BuildLeaderList (d0 = $21A4, d1 = $5
 	bra.s	BuildPlayerLeadersDone
 
 PlayerLeadersAssists	;Category 1: gather with BuildLeaderList (d0 = $2720, d1 = $548), sort descending
-	move.l	#$2720,d0
+	move.l	#SRAssists,d0
 	move.l	#$548,d1
 	movea.l	#BuildLeaderList,a5
 	bclr	#1,(BA_PS_flags).w
@@ -2472,7 +2472,7 @@ PlayerLeadersAssists	;Category 1: gather with BuildLeaderList (d0 = $2720, d1 = 
 	bra.s	BuildPlayerLeadersDone
 
 PlayerLeadersPoints	;Category 2: gather with BuildLeaderListSum (d0 = $21A4, d1 = $548), sort descending
-	move.l	#$21A4,d0
+	move.l	#SRGoals,d0
 	move.l	#$548,d1
 	movea.l	#BuildLeaderListSum,a5
 	bclr	#1,(BA_PS_flags).w
@@ -2480,7 +2480,7 @@ PlayerLeadersPoints	;Category 2: gather with BuildLeaderListSum (d0 = $21A4, d1 
 	bra.s	BuildPlayerLeadersDone
 
 PlayerLeadersGAA	;Category 3: gather with BuildLeaderListPct (d0 = $21A4, d1 = $548), sort ascending (bit 1 of byte_FFBEF8 set)
-	move.l	#$21A4,d0
+	move.l	#SRGoals,d0
 	move.l	#$548,d1
 	movea.l	#BuildLeaderListPct,a5
 	bset	#1,(BA_PS_flags).w
@@ -3939,7 +3939,7 @@ PrintStatHighlight	;print a highlight record of type 4: player name + stat line 
 	andi.w	#$FFF,d0
 	move.w	d0,-(sp)
 	mulu.w	#3,d0
-	addi.l	#$1AF6,d0
+	addi.l	#SRStandings,d0
 	movea.l	#StatWork,a0
 	moveq	#3,d1
 	jsr	(ReadSRAM).l

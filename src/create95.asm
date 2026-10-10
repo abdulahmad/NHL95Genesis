@@ -731,7 +731,7 @@ SaveCreateName	;Save entered name to the created-player record (new or existing)
 	tst.w	(a0,d0.w)
 	bmi.w	SaveNameNext
 	movem.l	d1-d3/a1,-(sp)
-	movea.l	#$20BA44,a1
+	movea.l	#SaveRAM+2*SRFreeAgentList,a1
 	move.w	#0,d2
 .0
 	move.w	(a1,d2.w),d3
@@ -755,7 +755,7 @@ SaveCreateName	;Save entered name to the created-player record (new or existing)
 	move.w	d1,(CreateIndex).l
 	asl.w	#5,d1
 	add.w	d1,d1
-	movea.l	#$20B540,a0
+	movea.l	#SaveRAM+2*SRCreatedPlayers,a0
 	adda.w	d1,a0
 	bsr.w	CopyNameWords
 	bra.w	SaveNameOk
@@ -774,7 +774,7 @@ CopyNameWords	;Copy length-prefixed name at FFBB1E into a0 as words
 SaveNameNext	;95 only. SaveCreateName: next name character
 	bsr.w	CheckCreateSlots
 	bmi.w	SaveNameEnd
-	movea.l	#$20B540,a0
+	movea.l	#SaveRAM+2*SRCreatedPlayers,a0
 	clr.w	d6
 	move.w	#$13,d5
 .0
@@ -789,9 +789,9 @@ SaveNameNext	;95 only. SaveCreateName: next name character
 	bra.w	SaveNameEnd
 .2
 	bsr.s	CopyNameWords
-	addq.w	#1,($20BA42).l
-	movea.l	#$20BA44,a0
-	move.w	($20BAAE).l,d0
+	addq.w	#1,(SaveRAM+2*SRCreateCount).l
+	movea.l	#SaveRAM+2*SRFreeAgentList,a0
+	move.w	(SaveRAM+2*SRFreeAgentCount).l,d0
 	cmp.b	#$1A,d0
 	bge.w	SaveNameLoop2
 	clr.w	(CreateWork).l
@@ -806,7 +806,7 @@ SaveNameNext	;95 only. SaveCreateName: next name character
 	andi.w	#$FF,d6
 	move.w	d6,(CreateIndex).l
 	move.b	#$1E,1(a0)
-	addq.w	#1,($20BAAE).l
+	addq.w	#1,(SaveRAM+2*SRFreeAgentCount).l
 
 SaveNameOk	;95 only. SaveCreateName: name valid, store it
 	bra.w	SaveNameFail
@@ -851,13 +851,13 @@ SaveNameRet	;95 only. SaveCreateName: return
 .0
 	rts
 
-ReadCreatedPlayers	;read created players: load $36-byte list from save RAM $5D22, build 18-byte name records at $FFFF0000 and ids at $FFFF4E20, count in word_FF55F0, add an empty slot if room
+ReadCreatedPlayers	;read created players: load $36-byte list from save RAM SRFreeAgentList, build 18-byte name records at $FFFF0000 and ids at $FFFF4E20, count in word_FF55F0, add an empty slot if room
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	(createdcount).l
 .0
 	movea.l	#TradeBuf,a0
 .1
-	move.l	#$5D22,d0
+	move.l	#SRFreeAgentList,d0
 	moveq	#$36,d1
 	jsr	(ReadSRAM).l
 	move.w	#$1A,d6
@@ -887,7 +887,7 @@ ReadCreatedPlayers	;read created players: load $36-byte list from save RAM $5D22
 	dbf	d6,.5
 	cmpi.w	#$14,(createdcount).l
 	bge.w	.8
-	move.w	($20BA42).l,d0
+	move.w	(SaveRAM+2*SRCreateCount).l,d0
 	cmp.b	#$14,d0
 	bge.w	.8
 	move.w	#$11,d0
@@ -1008,7 +1008,7 @@ InitCreateRecord2	;95 only. InitCreateRecord without the bset (NewCreateRecord e
 	clr.l	d0
 	move.w	(CreateIndex).l,d0
 	asl.w	#5,d0
-	addi.l	#$5AA0,d0
+	addi.l	#SRCreatedPlayers,d0
 	moveq	#$20,d1
 	movem.l	d0-d1/a0,-(sp)
 	btst	#2,(sflags8).w
@@ -1123,7 +1123,7 @@ CreateRatingsGfx	;set up the create player screen: VDP setup, decompress graphic
 
 CheckCreateSlots	;check free create slots: d0/flags = -1 (N set) if 20 created players exist, else 1
 	movem.w	d0,-(sp)
-	move.w	($20BA42).l,d0
+	move.w	(SaveRAM+2*SRCreateCount).l,d0
 	cmp.b	#$14,d0
 	blt.w	.0
 	move.w	#$FFFF,d0
@@ -1162,7 +1162,7 @@ DeleteCreatedPlayer	;delete created player #word_FFBB10: remove it from the save
 	move.w	d7,d0
 	asl.w	#5,d0
 	ext.l	d0
-	addi.l	#$5700,d0
+	addi.l	#SRJerseyNums,d0
 	moveq	#$20,d1
 	movem.l	d0-d1/a0,-(sp)
 	jsr	(ReadSRAM).l
@@ -1229,9 +1229,9 @@ DeleteCreatedPlayer	;delete created player #word_FFBB10: remove it from the save
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-GetCreatedId	;return player id word for created entry d0 from table $20BA44 (4-byte entries)
+GetCreatedId	;return player id word for created entry d0 from table SRFreeAgentList (4-byte entries)
 	movem.l	d1-d7/a0-a6,-(sp)
-	movea.l	#$20BA44,a0
+	movea.l	#SaveRAM+2*SRFreeAgentList,a0
 	add.w	d0,d0
 	add.w	d0,d0
 	adda.w	d0,a0
@@ -1244,9 +1244,9 @@ GetCreatedId	;return player id word for created entry d0 from table $20BA44 (4-b
 	movem.l	(sp)+,d1-d7/a0-a6
 	rts
 
-ReadCreateList	;read the $36-byte created player list from save RAM $5D22 into a0
+ReadCreateList	;read the $36-byte created player list from save RAM SRFreeAgentList into a0
 	movem.l	d0-d1,-(sp)
-	move.l	#$5D22,d0
+	move.l	#SRFreeAgentList,d0
 	moveq	#$36,d1
 	jsr	(ReadSRAM).l
 	movem.l	(sp)+,d0-d1
@@ -1254,7 +1254,7 @@ ReadCreateList	;read the $36-byte created player list from save RAM $5D22 into a
 
 WriteCreateList	;calls sub_98E6 with d0=$5D22, d1=$36 (saves d0-d1)
 	movem.l	d0-d1,-(sp)
-	move.l	#$5D22,d0
+	move.l	#SRFreeAgentList,d0
 	moveq	#$36,d1
 	jsr	(WriteSRAM).l
 	movem.l	(sp)+,d0-d1
@@ -2199,10 +2199,10 @@ ClearAttribDeltas	;clear 16-byte attribute buffer at FFC42C
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LoadCreateTemplate	;copy 32-word player template (index word_FF55FE) from $20B540 into byte record FF7538, set word_FF7534 from last byte
+LoadCreateTemplate	;copy 32-word player template (index word_FF55FE) from SRCreatedPlayers into byte record FF7538, set word_FF7534 from last byte
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$1F,d0
-	movea.l	#$20B540,a0
+	movea.l	#SaveRAM+2*SRCreatedPlayers,a0
 	move.w	(CreateIndex).l,d1
 	asl.w	#5,d1
 	add.w	d1,d1
@@ -2240,7 +2240,7 @@ SetPointsPool	;set points pool word_FF7536 to 300 (or 450 if word_FF7534 != 0)
 
 CommitCreatedPlayer	;commit created player: store type bits, add attribute deltas into record via unk_99E06 handlers, save record via sub_98E6 and sub_9908
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#$20BA44,a0
+	movea.l	#SaveRAM+2*SRFreeAgentList,a0
 	move.w	(CreateWork).l,d0
 	asl.w	#2,d0
 	adda.w	d0,a0
@@ -2291,7 +2291,7 @@ CommitCreatedPlayer	;commit created player: store type bits, add attribute delta
 	clr.l	d0
 	move.w	(CreateIndex).l,d0
 	asl.w	#5,d0
-	addi.l	#$5AA0,d0
+	addi.l	#SRCreatedPlayers,d0
 	moveq	#$20,d1
 	jsr	(WriteSRAM).l
 	movea.l	#CreateRecord,a0
@@ -2304,7 +2304,7 @@ CommitCreatedPlayer	;commit created player: store type bits, add attribute delta
 	asl.l	#5,d1
 	add.l	d0,d1
 	add.l	d1,d1
-	movea.l	#$20AE00,a0
+	movea.l	#SaveRAM+2*SRJerseyNums,a0
 	move.w	d6,(a0,d1.l)
 	jsr	(MakeSRAMChecksum).l
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -2417,7 +2417,7 @@ FreeAgentRedraw	;95 only. SignFreeAgents: redraw the lists
 	bsr.w	TestFreeAgents
 	beq.w	FreeAgentsEmpty
 	clr.w	(TradeData+$4).l
-	move.w	($20BAAE).l,d0
+	move.w	(SaveRAM+2*SRFreeAgentCount).l,d0
 	subq.b	#1,d0
 .0
 	andi.w	#$FF,d0
@@ -2471,7 +2471,7 @@ FreeAgentLoop	;95 only. SignFreeAgents: input loop
 	addq.w	#1,(TradeData).l
 	bra.w	FreeAgentLoop
 .4
-	move.w	($20BAAE).l,d0
+	move.w	(SaveRAM+2*SRFreeAgentCount).l,d0
 	andi.w	#$FF,d0
 	subq.w	#1,d0
 	cmp.w	(TradeData+$6).l,d0
@@ -2616,7 +2616,7 @@ FreeAgentArrows	;draw scroll up/down arrows for the list
 .1
 	move.w	(TradeData).l,d1
 	add.w	(TradeData+$4).l,d1
-	move.w	($20BAAE).l,d0
+	move.w	(SaveRAM+2*SRFreeAgentCount).l,d0
 	andi.w	#$FF,d0
 	subq.w	#1,d0
 	cmp.w	d0,d1
@@ -2788,12 +2788,12 @@ FreeAgentMsgText	;Message string list for sub_7CB38
 	String	$F9,3,$FD,6,$FC,$D,'Free agent list is now empty.',0
 	rts
 
-BuildFreeAgentList	;Copy free-agent list at $20BA44 (count in $20BAAE) to work table $FFFF3A98 and index list $FFFF88B8
+BuildFreeAgentList	;Copy the free agent list (SRFreeAgentList, count in SRFreeAgentCount) to work table $FFFF3A98 and index list $FFFF88B8
 	movem.l	d0-d7/a0-a6,-(sp)
-	move.w	($20BAAE).l,d0
+	move.w	(SaveRAM+2*SRFreeAgentCount).l,d0
 	andi.w	#$FF,d0
 	subq.w	#1,d0
-	movea.l	#$20BA44,a0
+	movea.l	#SaveRAM+2*SRFreeAgentList,a0
 	movea.l	#TradeRoster1,a1
 	movea.l	#TradeRoster2,a5
 	clr.w	d6
@@ -2814,9 +2814,9 @@ BuildFreeAgentList	;Copy free-agent list at $20BA44 (count in $20BAAE) to work t
 rtsCreate4	;Empty routine
 	rts
 
-TestFreeAgents	;Test free-agent count byte ($20BAAE+1), flags only, d0 preserved
+TestFreeAgents	;Test free-agent count byte (SRFreeAgentCount+1), flags only, d0 preserved
 	movem.w	d0,-(sp)
-	move.w	($20BAAE).l,d0
+	move.w	(SaveRAM+2*SRFreeAgentCount).l,d0
 	tst.b	d0
 	movem.w	(sp)+,d0
 	rts
@@ -2842,7 +2842,7 @@ ReleasePlayers	;Release Player screen: up/down scroll roster, switch team, relea
 	bclr	#2,(disflags).w
 
 ReleaseRedraw	;95 only. ReleasePlayers: redraw the roster
-	move.w	($20BAAE).l,d0
+	move.w	(SaveRAM+2*SRFreeAgentCount).l,d0
 	andi.w	#$FF,d0
 	cmp.w	#$1A,d0
 	bge.w	FreeAgentsFull
@@ -2963,7 +2963,7 @@ ReleaseLoop	;95 only. ReleasePlayers: input loop
 	move.w	(TradeData+$C).l,(tradeteam1).w
 	move.w	(TradeData+$C).l,(tradeteam2).w
 	jsr	(CheckSavedLines).l
-	movea.l	#$20BA44,a0
+	movea.l	#SaveRAM+2*SRFreeAgentList,a0
 	clr.w	(rosterscroll).w
 .8
 	tst.b	1(a0)
@@ -3013,13 +3013,13 @@ ReleaseLoop	;95 only. ReleasePlayers: input loop
 	dbf	d6,.11
 	jsr	(WriteTeamPlayerStats).l
 	movem.l	(sp)+,d0-d7/a0-a6
-	movea.l	#$20B500,a0
+	movea.l	#SaveRAM+2*SRFreeAgentJerseys,a0
 	move.w	(rosterscroll).w,d0
 	add.w	d0,d0
 	adda.w	d0,a0
 	move.w	(M68K_RAM+2).l,d1
 	move.w	d1,(a0)
-	addq.w	#1,($20BAAE).l
+	addq.w	#1,(SaveRAM+2*SRFreeAgentCount).l
 	jsr	(MakeSRAMChecksum).l
 	jsr	(printz).l
 	String	$BF,$B,9,0

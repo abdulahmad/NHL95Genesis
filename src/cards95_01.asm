@@ -651,7 +651,7 @@ WriteNameRecord	;Clear name slot word_FFD0F6 from every saved record (read sub_9
 	addq.l	#4,d0
 	dbf	d7,.0
 	move.w	#$1B,d7
-	move.l	#$B62,d0
+	move.l	#SRCrowdRecords,d0
 	moveq	#$10,d1
 	movea.l	#ThreeStars,a0
 	move.w	(CreateListRow).w,d6
@@ -694,7 +694,7 @@ WriteNameRecord	;Clear name slot word_FFD0F6 from every saved record (read sub_9
 .11
 	addi.l	#$10,d0
 	dbf	d7,.4
-	move.l	#$D22,d0
+	move.l	#SRTeamRecords,d0
 	move.w	(CreateListRow).w,d3
 	asl.w	#4,d3
 	ext.l	d3

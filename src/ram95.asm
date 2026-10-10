@@ -11,7 +11,6 @@ RosterTable	equ	$FFFF1B4C	;95 only. Season rosters ($38 bytes a team, save RAM $
 TradeData	equ	$FFFF2710	;95 only. Trade screen state (list sizes, cursors, chosen counts)
 TradeWork	equ	$FFFF2AF8	;95 only. Trade screen work words
 TradeRoster1	equ	$FFFF3A98	;95 only. Trade screen: HomeTeam roster rows
-DefaultLines	equ	$FFFF3E14	;95 only. The default line sets of the 28 teams, $64 bytes each (DefaultLineData copies them from TeamList)
 CreatedIds	equ	$FFFF4E20	;95 only. Created player ids (ReadCreatedPlayers)
 createdcount	equ	$FFFF55F0	;95 only. Created players read from save RAM (ReadCreatedPlayers)
 CreateListTop	equ	$FFFF55F4	;95 only. Create player list: first row shown
@@ -554,3 +553,53 @@ SndStreamLoop	equ	$FFFFFF2A	;95 only. Loop offset of the sample, -1 = none
 SndStopSlot	equ	$FFFFFF2C	;95 only. Slot SndStopSeq frees
 SndSeqArg1	equ	$FFFFFF2E	;95 only. SndStartSeq d1 (d2-d4 follow at SndDrvRAM+$134-$138)
 SndBanks	equ	$FFFFFF36	;95 only. 4 sound banks (SndSetBank), -1 = none
+
+;	Save RAM map. The battery save RAM is $8000 bytes on the odd bytes at SaveRAM: byte n is the low byte of the word at
+;	SaveRAM+2*n. InitSaveRAM copies it to M68K_RAM, so byte n is also at M68K_RAM+n. These SR names are byte offsets
+;	(d0 for ReadSRAM / WriteSRAM); code that reads save RAM in place uses SaveRAM+2*name. All 95 only.
+
+SaveRAM	equ	$200000	;the cartridge save RAM (header SRAM range $200001-$20FFFF)
+SRAMSize	equ	$8000	;save RAM bytes
+SRCrowdRecords	equ	$B62	;cards94 CrowdRecordIO block
+SRTeamRecords	equ	$D22	;the team records, $80 bytes (TeamRecordIO, ReadTeamRecords)
+SRNameLog	equ	$DA2	;the name log (NameLogIO)
+SRSeasonHeader	equ	$E22	;the 8 byte season header, SeasonStartDay ... (ReadSeasonHeader, WriteSeasonHeader)
+SRGameResults	equ	$E2A	;the saved game results, 3 bytes a game ($CCC bytes; ReadDayGames)
+SRStandings	equ	$1AF6	;the regular season standings: wins, losses, ties, 3 bytes a team (RecordTeamResult)
+SRGoalTotal	equ	$1B44	;season goal total of the human games, a long, then SeasonGameCount (AddSeasonGoals)
+SRRosters	equ	$1B4C	;the season rosters, $38 bytes a team: 26 roster id words, then the goalie, forward and defense counts at +$34
+SRGoals	equ	$21A4	;regular season player stats, a word per player, $57C bytes each (26 teams of 27): goals (bit 15 set for goalies)
+SRAssists	equ	$2720	;assists
+SRShots	equ	$2C9C	;shots (team struct +$EA)
+SRGamesPlayed	equ	$3218	;games played
+SRPenMin	equ	$3794	;penalty minutes (team struct +$104); goalies: goals against scaled to a full game
+SRTeamStats	equ	$3D10	;regular season team stats, 10 bytes a team (AddTeamSeasonStats, ReadSeasonTeamRecord)
+SRLines	equ	$3E14	;the line sets, $41 bytes a team (LoadTeamLines; DefaultLineData fills the RAM copy)
+SRLines2	equ	$4530	;the other saved line blocks, $39 bytes a team (TeamRecordSRAM)
+SRLines3	equ	$4B6C
+SRLines4	equ	$5136
+SRJerseyNums	equ	$5700	;jersey numbers of the season rosters, $20 bytes a team (GetJerseyNumber)
+SRFreeAgentJerseys	equ	$5A80	;jersey numbers of the free agent slots, the SRJerseyNums row after the 28 teams (ReleasePlayers)
+SRCreatedPlayers	equ	$5AA0	;the created player records (InitCreateRecord, LoadCreateTemplate, CommitCreatedPlayer)
+SRCreateCount	equ	$5D21	;number of created players (a byte, read as a word), after the 20 $20 byte records
+SRFreeAgentList	equ	$5D22	;the free agent list, 2 bytes a slot (bit 7 of the first = empty); ReadCreateList / WriteCreateList move it with SRFreeAgentCount
+SRFreeAgentCount	equ	$5D57	;number of free agents (a byte, read as a word)
+SRTeamBlock2	equ	$5D58	;26 x 10 bytes InitSeasonStats clears (from LeaderValues); no other user found
+SRInjuries	equ	$5E5C	;injury games left, a nibble per player, $17A bytes (SetSeasonInjuries, TickInjuries)
+SRSeasonHeaderSave	equ	$5FD6	;SetupPlayoffs keeps SRSeasonHeader here (RestoreSeasonHeader); +8 is a word it clears
+SRPOPairings	equ	$5FE0	;playoff pairings of the rounds (GetRoundPairings, CollectSeriesWinners)
+SRPORound	equ	$6000	;playoff round, low byte (a word)
+SRPODay	equ	$6002	;playoff day, low byte (NextSeasonDay)
+SRPOSeries	equ	$6004	;the series of the round, $10 bytes each: the two teams, the wins (InitPlayoffSeries)
+SRPOSchedule	equ	$6084	;the playoff schedule (ReadPlayoffSchedule)
+SRPOStandings	equ	$6173	;playoff standings, 3 bytes a team (as SRStandings)
+SRPOGoals	equ	$61C1	;playoff player stats, as the regular season ones: goals
+SRPOAssists	equ	$673D	;playoff assists
+SRPOShots	equ	$6CB9	;playoff shots
+SRPOGamesPlayed	equ	$7235	;playoff games played
+SRPOPenMin	equ	$77B1	;playoff penalty minutes
+SRPOTeamStats	equ	$7D2D	;playoff team stats, 10 bytes a team (as SRTeamStats)
+SRSeasonMark	equ	$7EE6	;SeasonMain: nonzero ($64) while a season game is under way
+SRCupWinner	equ	$7EEE	;team number of the Stanley Cup winner (SaveSimGame, SeasonMain)
+SRLineData	equ	$7EF6	;the saved lines (ReadLineData, WriteLineData)
+SRChecksum	equ	$7FFE	;the checksum complement and sum bytes (MakeSRAMChecksum, ValidateSRAM)

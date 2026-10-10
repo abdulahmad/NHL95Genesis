@@ -522,7 +522,7 @@ GetMatchupPlayers	;scout94 GetMatchupPlayers. matchuphome / matchupvis = the hom
 .1
 	move.w	$28(a0),d0
 	mulu.w	#$82,d0
-	movea.l	#$207C28,a0
+	movea.l	#SaveRAM+2*SRLines,a0
 	adda.l	d0,a0
 .2
 	bsr.w	GetMatchupPlayer
@@ -536,7 +536,7 @@ GetMatchupPlayers	;scout94 GetMatchupPlayers. matchuphome / matchupvis = the hom
 .3
 	move.w	$28(a0),d0
 	mulu.w	#$82,d0
-	movea.l	#$207C28,a0
+	movea.l	#SaveRAM+2*SRLines,a0
 	adda.l	d0,a0
 .4
 	bsr.w	GetMatchupPlayer
@@ -656,13 +656,13 @@ BuildHotColdLists	;crowd94 BuildHotColdLists. The hot / cold player lists of bot
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SortHotColdStarters	;crowd94 SortHotColdStarters. Sum the hot / cold values of the 6 starters of team a0 (save RAM roster $207C28) into TempBuffer (byte pairs: player, sum), then sort them by sum
+SortHotColdStarters	;crowd94 SortHotColdStarters. Sum the hot / cold values of the 6 starters of team a0 (save RAM roster SRLines) into TempBuffer (byte pairs: player, sum), then sort them by sum
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	a0,a2
 	adda.l	#$1A4,a2
 	move.w	$28(a0),d0
 	mulu.w	#$82,d0
-	movea.l	#$207C28,a0
+	movea.l	#SaveRAM+2*SRLines,a0
 	adda.l	d0,a0
 	movea.l	#TempBuffer,a1
 	move.w	#5,d0

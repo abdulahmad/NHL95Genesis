@@ -122,15 +122,15 @@ SkipUserName	;records94 SkipOtherUserName. Step the name log selection (CreateLi
 .2
 	clr.w	d2
 	rts
-WriteNameLog	;cards94 WriteNameLog. Write the user name log ($80 bytes at namelog) to save RAM $DA2 (NameLogIO)
+WriteNameLog	;cards94 WriteNameLog. Write the user name log ($80 bytes at namelog) to save RAM SRNameLog (NameLogIO)
 	bset	#6,(sflags6).w
 	bra.w	NameLogIO
-ReadNameLog	;cards94 ReadNameLog. Read the user name log from save RAM $DA2 to namelog (NameLogIO)
+ReadNameLog	;cards94 ReadNameLog. Read the user name log from save RAM SRNameLog to namelog (NameLogIO)
 	bclr	#6,(sflags6).w
 NameLogIO	;cards94 NameLogIO. Read or write (sflags6 bit 6) the name log
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	#$80,d1
-	move.l	#$DA2,d0
+	move.l	#SRNameLog,d0
 	movea.l	#namelog,a0
 	btst	#6,(sflags6).w
 	beq.w	.0
@@ -529,10 +529,10 @@ CalcWinPercents	;records94 CalcWinPercents. For the 8 user record blocks at Thre
 	movea.l	(sp)+,a1
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-ReadTeamRecords	;records94 ReadTeamRecords. Read the $80 byte records from save RAM $D22 (ReadSRAM) and sort the rows on record
+ReadTeamRecords	;records94 ReadTeamRecords. Read the $80 byte records from save RAM SRTeamRecords (ReadSRAM) and sort the rows on record
 	;byte 0 (recsort1) or, with sflags6 bit 6, byte 4 (recsort2)
 	movem.l	d0-d7/a0-a6,-(sp)
-	move.l	#$D22,d0
+	move.l	#SRTeamRecords,d0
 	move.l	#$80,d1
 	movea.l	#ThreeStars,a0
 	jsr	(ReadSRAM).l
@@ -583,7 +583,7 @@ ReadTeamRecords	;records94 ReadTeamRecords. Read the $80 byte records from save 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 ClearWinRecords	;title94 ClearWinRecords. Clear bytes 8-$B (wins, games) of the 8 ThreeStars records and write the $80 bytes to
-	;save RAM $D22 (WriteSRAM, MakeSRAMChecksum)
+	;save RAM SRTeamRecords (WriteSRAM, MakeSRAMChecksum)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#ThreeStars,a0
 	move.w	#7,d7
@@ -594,7 +594,7 @@ ClearWinRecords	;title94 ClearWinRecords. Clear bytes 8-$B (wins, games) of the 
 	clr.b	$B(a0)
 	adda.w	#$10,a0
 	dbf	d7,.loop
-	move.l	#$D22,d0
+	move.l	#SRTeamRecords,d0
 	move.l	#$80,d1
 	movea.l	#ThreeStars,a0
 	jsr	(WriteSRAM).l

@@ -623,7 +623,7 @@ ReadAttributeNibbleD7	;95 only. d0 = goalies on team d7: from the season data in
 	movem.l	d1-d7/a0,-(sp)
 	move.w	d7,d0
 	mulu.w	#$38,d0
-	addi.l	#$1B80,d0
+	addi.l	#SRRosters+$34,d0
 	moveq	#1,d1
 	movea.l	#SRAMbyte,a0
 	jsr	(ReadSRAM).l
@@ -688,7 +688,7 @@ GetForwards	;95 only. d0 = forwards on team a2: ProcessNibble (team data) with s
 
 ProcessNibbleSeason	;95 only. Shared tail of GetForwards / ProcessNibbleD7: read the save RAM byte for team d0
 	mulu.w	#$38,d0
-	addi.l	#$1B82,d0
+	addi.l	#SRRosters+$36,d0
 	moveq	#1,d1
 	movea.l	#SRAMbyte,a0
 	jsr	(ReadSRAM).l
@@ -2057,13 +2057,13 @@ setpde	;d1 = rostnum of player * 2, a2 = team struct, d0 = new energy level (0 i
 	move.w	d0,$34(a2,d1.w)
 	rts
 
-SeasonPlayerOut	;95 only. Unless sflags11 bit 6: Z set when player d0 of team d7 is out in the season data (save RAM $203698, low 5 bits $1E)
+SeasonPlayerOut	;95 only. Unless sflags11 bit 6: Z set when player d0 of team d7 is out in the season data (save RAM SRRosters, low 5 bits $1E)
 	btst	#6,(sflags11).w
 	bne.w	.0
 	movem.l	d0/d7-a0,-(sp)
 	asl.w	#2,d0
 	ext.l	d0
-	movea.l	#$203698,a0
+	movea.l	#SaveRAM+2*SRRosters,a0
 	mulu.w	#$38,d7
 	add.l	d7,d7
 	add.l	d0,d7

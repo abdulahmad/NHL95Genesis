@@ -152,10 +152,10 @@ ReadTeamSRAM	;95 only, no xref. Read $39 bytes of team d7 (0-$1B) from save RAM 
 	movem.l	(sp)+,d0/d7/a0
 	rts
 
-DefaultLineData	;95 only. Copy the default line sets of the 28 teams (TeamList + 6, 8 x 8 bytes, then $64) to DefaultLines.
+DefaultLineData	;95 only. Copy the default line sets of the 28 teams (TeamList + 6, 8 x 8 bytes, then $64) to M68K_RAM+SRLines, the RAM copy of the save RAM lines.
 	;Called from sram95
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#DefaultLines,a0
+	movea.l	#M68K_RAM+SRLines,a0
 	movea.l	#TeamList,a3
 	move.w	#$1B,d1
 	clr.w	d7
@@ -188,7 +188,7 @@ LoadTeamLines	;95 only. The line sets of team struct a2 ($16C): from save RAM ($
 	tst.w	(ValidSRAM).w
 	bmi.w	.0
 	movem.l	d0-d2,-(sp)
-	move.l	#$3E14,d0
+	move.l	#SRLines,d0
 	move.w	$28(a2),d2
 	mulu.w	#$41,d2
 	add.l	d2,d0
@@ -216,7 +216,7 @@ LoadTeamLines	;95 only. The line sets of team struct a2 ($16C): from save RAM ($
 	tst.w	(ValidSRAM).w
 	bmi.w	.4
 	movem.l	d0-d2,-(sp)
-	move.l	#$3E14,d0
+	move.l	#SRLines,d0
 	move.w	$28(a2),d2
 	mulu.w	#$41,d2
 	add.l	d2,d0

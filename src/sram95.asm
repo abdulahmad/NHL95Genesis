@@ -1,12 +1,12 @@
 ; $009722  Adapted from sram94.asm: save data
 ;	NHL 95 segment $9722-$9AC7, from lst/nhl95.bin.lst. The battery save RAM: 95 keeps $8000 bytes (94: $2000) on the odd bytes at
-;	$200000, copies them to M68K_RAM at power on (InitSaveRAM) and protects them with a sum / complement checksum in bytes $7FFE-$7FFF.
+;	SaveRAM, copies them to M68K_RAM at power on (InitSaveRAM) and protects them with a sum / complement checksum in bytes $7FFE-$7FFF.
 ;	94 InitSaveRAM, SRAMWaitVblank, VBcount, ValidateSRAM, ClearSRAM, WriteSRAM, MakeSRAMChecksum, ReadSRAM, then three routines new in 95
 ;	that build the season leader lists from the save RAM stats. Opening (hockey95) follows at $9AC8.
 ;	95 addresses RAM with (x).l here where 94 used (x).w, and indexes the save RAM with a long (d0.l). The IDA dc.b at $981E (VBcount)
 ;	and $9972-$9AC7 (the leader list routines, no xref) are written as instructions.
 
-InitSaveRAM	;Called from Begin. Copy the $8000 byte save RAM (the odd bytes at $200000) to M68K_RAM and check its checksum
+InitSaveRAM	;Called from Begin. Copy the $8000 byte save RAM (the odd bytes at SaveRAM) to M68K_RAM and check its checksum
 	;(ValidateSRAM; ValidSRAM 0 = good, -1 = bad). A bad save RAM is cleared (ClearSRAM) and read again. Two power-on tests that never return:
 	;Start+A+C held writes and reads back every bit of every byte, writes $12,$34,$56,$78 to bytes 0-3 and flashes the screen green, or red at the
 	;first bad byte; Start+B+C held flashes green if bytes 0-3 are $12345678, else red
@@ -15,7 +15,7 @@ InitSaveRAM	;Called from Begin. Copy the $8000 byte save RAM (the odd bytes at $
 	clr.w	(ValidSRAM).l	;good until checked
 	jsr	(ReadJoy1).l	;get joypad buttons held
 	move.w	d3,d0	;d3 = buttons held
-	movea.l	#$200000,a0	;move SRAM address into a0
+	movea.l	#SaveRAM,a0	;move SRAM address into a0
 	move.w	#$E,d3	;red ($00E), fading by 2 a frame
 	move.w	#2,d4	;move 2 into d4
 	cmp.b	#$E0,d0	;Start+A+C button held down
@@ -23,7 +23,7 @@ InitSaveRAM	;Called from Begin. Copy the $8000 byte save RAM (the odd bytes at $
 	cmp.b	#$B0,d0	;Start+B+C buttons held down
 	beq.w	.setiterator2	;branch if held down
 	moveq	#0,d0	;move 0 into d0
-	move.l	#$8000,d1	;$8000 bytes (94: $2000)
+	move.l	#SRAMSize,d1	;$8000 bytes (94: $2000)
 	movea.l	#M68K_RAM,a0	;start of RAM into a0
 	bsr.w	ReadSRAM	;Writes SRAM to RAM
 	bsr.w	ValidateSRAM
@@ -31,7 +31,7 @@ InitSaveRAM	;Called from Begin. Copy the $8000 byte save RAM (the odd bytes at $
 	bpl.w	.ex
 	bsr.w	ClearSRAM
 	moveq	#0,d0
-	move.l	#$8000,d1
+	move.l	#SRAMSize,d1
 	movea.l	#M68K_RAM,a0
 	bsr.w	ReadSRAM	;Writes SRAM to RAM
 	bsr.w	ValidateSRAM
@@ -50,7 +50,7 @@ InitSaveRAM	;Called from Begin. Copy the $8000 byte save RAM (the odd bytes at $
 	dbf	d0,.setto80
 	adda.w	#2,a0
 	dbf	d2,.SRAMloop
-	movea.l	#$200000,a0
+	movea.l	#SaveRAM,a0
 	move.l	#$120034,(a0)+	;bytes 0-3 = $12,$34,$56,$78 (word writes: the low byte goes to the odd SRAM byte)
 	move.l	#$560078,(a0)+
 	move.w	#$E0,d3	;green ($0E0), fading by $20 a frame
@@ -140,7 +140,7 @@ ClearSRAM	;Clear the $8000 bytes of RAM and save RAM: zero M68K_RAM $0-$7FFF, pu
 	jsr	(ClearCreatedPlayers).l	;95 only
 	jsr	(NullSaveClear).l	;95 only, an rts
 	moveq	#0,d0
-	move.l	#$8000,d1
+	move.l	#SRAMSize,d1
 	movea.l	#M68K_RAM,a0
 	bsr.w	WriteSRAM
 	move.l	#0,d0
@@ -152,9 +152,9 @@ ClearSRAM	;Clear the $8000 bytes of RAM and save RAM: zero M68K_RAM $0-$7FFF, pu
 	rts
 
 WriteSRAM	;Write data from a0 into SaveRAM: d1 = number of bytes, d0 = first save RAM byte (each byte is the odd byte of a word at
-	;$200000 + d0 * 2). Called from ClearSRAM, MakeSRAMChecksum and the save code
+	;SaveRAM + d0 * 2). Called from ClearSRAM, MakeSRAMChecksum and the save code
 	movem.l	d0-d2/a0-a1,-(sp)
-	movea.l	#$200000,a1
+	movea.l	#SaveRAM,a1
 	add.l	d0,d0
 	subq.l	#1,d1
 	clr.w	d2
@@ -172,7 +172,7 @@ MakeSRAMChecksum	;Sum save RAM bytes 0-$7FFD (read in place; 94 read them to M68
 	btst	#7,(GameFlags).l
 	bne.w	.x
 	movem.l	d0-d2/a0-a1,-(sp)
-	movea.l	#$200000,a1
+	movea.l	#SaveRAM,a1
 	move.l	#$7FFD,d1
 	clr.l	d0
 	clr.l	d2
@@ -186,16 +186,16 @@ MakeSRAMChecksum	;Sum save RAM bytes 0-$7FFD (read in place; 94 read them to M68
 	not.w	d0
 	move.b	d0,(a0)
 	moveq	#2,d1
-	move.l	#$7FFE,d0
+	move.l	#SRChecksum,d0
 	bsr.s	WriteSRAM
 	movem.l	(sp)+,d0-d2/a0-a1
 .x
 	rts
 
-ReadSRAM	;move into a0 location and increment: copy d1 save RAM bytes from byte d0 (the odd bytes at $200000 + d0 * 2) to (a0)+.
+ReadSRAM	;move into a0 location and increment: copy d1 save RAM bytes from byte d0 (the odd bytes at SaveRAM + d0 * 2) to (a0)+.
 	;Called from InitSaveRAM and the save code
 	movem.l	d0-d2/a0-a1,-(sp)
-	movea.l	#$200000,a1
+	movea.l	#SaveRAM,a1
 	add.l	d0,d0
 	subq.l	#1,d1
 .loop
@@ -217,7 +217,7 @@ ReadSRAM	;move into a0 location and increment: copy d1 save RAM bytes from byte 
 
 BuildLeaderList	;One stat: list each player whose stat is above 0 (goals $21A4, assists $2720)
 	movem.l	d0-d3/a0-a3,-(sp)
-	movea.l	#$200000,a1
+	movea.l	#SaveRAM,a1
 	add.l	d0,d0	;save RAM byte -> word offset
 	asr.w	#1,d1	;players
 	subq.l	#1,d1
@@ -243,7 +243,7 @@ BuildLeaderList	;One stat: list each player whose stat is above 0 (goals $21A4, 
 BuildLeaderListSum	;Two stats added: the stat at d0 (a negative one counts 0) plus the stat $57C save RAM bytes on
 	;(goals $21A4 + assists $2720 = points). Lists each player whose sum is not 0
 	movem.l	d0-d5/a0-a3,-(sp)
-	movea.l	#$200000,a1
+	movea.l	#SaveRAM,a1
 	move.l	d0,d4
 	addi.l	#$57C,d4	;the second stat
 	add.l	d4,d4
@@ -280,7 +280,7 @@ BuildLeaderListPct	;A ratio: 100 * the stat $2BE0 save RAM bytes after d0 (low 1
 	;listed when the stat word at d0 is negative (bit 15 set), the stat $15F0 bytes after d0 (low 15 bits) is not 0, and the divisor is not 0 and
 	;at least the minimum: (SeasonDay - SeasonStartDay) * 25 / (SeasonLength * 84)
 	movem.l	d0-d7/a0-a3,-(sp)
-	movea.l	#$200000,a1
+	movea.l	#SaveRAM,a1
 	move.l	d0,d4
 	addi.l	#$1074,d4	;the divisor stat
 	add.l	d4,d4

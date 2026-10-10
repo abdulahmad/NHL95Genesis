@@ -130,7 +130,7 @@ DefaultRosters	;95 only. Build the default roster tables for the 28 teams in RAM
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-GetRosterId	;95 only. d0 = roster id word of player d0 of team d7 (season roster in save RAM $1B4C, or d7 << 8 | d0 outside a season)
+GetRosterId	;95 only. d0 = roster id word of player d0 of team d7 (season roster in save RAM SRRosters, or d7 << 8 | d0 outside a season)
 	movem.l	d1/d6-d7/a0,-(sp)
 	btst	#6,(sflags11).w
 	beq.w	.0
@@ -143,7 +143,7 @@ GetRosterId	;95 only. d0 = roster id word of player d0 of team d7 (season roster
 	add.w	d0,d0
 	ext.l	d0
 	add.l	d7,d0
-	addi.l	#$1B4C,d0
+	addi.l	#SRRosters,d0
 	moveq	#2,d1
 	movea.l	#SRAMbyte,a0
 	jsr	(ReadSRAM).l
@@ -152,7 +152,7 @@ GetRosterId	;95 only. d0 = roster id word of player d0 of team d7 (season roster
 	movem.l	(sp)+,d1/d6-d7/a0
 	rts
 
-GetCreatedName	;95 only. a1 = player record of roster id d0 (created players from save RAM $5AA0)
+GetCreatedName	;95 only. a1 = player record of roster id d0 (created players from save RAM SRCreatedPlayers)
 	movem.l	d0-d1/d5-d7/a0,-(sp)
 	bra.w	GetRosterNameTail
 	rts
@@ -187,7 +187,7 @@ GetRosterName	;95 only. a1 = player record of player d0 of team d7: TeamList out
 	add.w	d0,d0
 	ext.l	d0
 	add.l	d7,d0
-	addi.l	#$1B4C,d0
+	addi.l	#SRRosters,d0
 .4
 	moveq	#2,d1
 	movea.l	#SRAMbyte,a0
@@ -203,7 +203,7 @@ GetRosterNameTail	;95 only. GetCreatedName / GetRosterName: a1 = the player reco
 	andi.w	#$FF,d0
 	asl.w	#5,d0
 	ext.l	d0
-	addi.l	#$5AA0,d0
+	addi.l	#SRCreatedPlayers,d0
 	moveq	#$20,d1
 	movea.l	#CreatedPlayerBuf+$2,a0
 	jsr	(ReadSRAM).l
@@ -229,21 +229,21 @@ GetRosterNameTail	;95 only. GetCreatedName / GetRosterName: a1 = the player reco
 	movem.l	(sp)+,d0-d1/d5-d7/a0
 	rts
 
-ReadTeamRoster	;95 only. Read team d7's $38 byte season roster from save RAM $1B4C into a0
+ReadTeamRoster	;95 only. Read team d7's $38 byte season roster from save RAM SRRosters into a0
 	movem.l	d0-d1,-(sp)
 	move.w	d7,d0
 	mulu.w	#$38,d0
-	addi.l	#$1B4C,d0
+	addi.l	#SRRosters,d0
 	moveq	#$38,d1
 	jsr	(ReadSRAM).l
 	movem.l	(sp)+,d0-d1
 	rts
 
-WriteTeamRoster	;95 only. Write team d7's $38 byte season roster to save RAM $1B4C and update the checksum
+WriteTeamRoster	;95 only. Write team d7's $38 byte season roster to save RAM SRRosters and update the checksum
 	movem.l	d0-d1,-(sp)
 	move.w	d7,d0
 	mulu.w	#$38,d0
-	addi.l	#$1B4C,d0
+	addi.l	#SRRosters,d0
 	moveq	#$38,d1
 	jsr	(WriteSRAM).l
 	jsr	(MakeSRAMChecksum).l
@@ -276,7 +276,7 @@ GetJerseyNumber	;95 only. jerseynum = the jersey number byte of player d0 of tea
 	ext.l	d1
 	ext.l	d0
 	add.l	d1,d0
-	addi.l	#$5700,d0
+	addi.l	#SRJerseyNums,d0
 	moveq	#1,d1
 	movea.l	#CreatedPlayerBuf,a0
 	clr.b	(a0)+
@@ -285,7 +285,7 @@ GetJerseyNumber	;95 only. jerseynum = the jersey number byte of player d0 of tea
 	movem.l	(sp)+,d0-d1/a0
 	rts
 
-MoveSavedLines	;95 only. Fix team d7's saved line players (save RAM $5700) after player d0 left
+MoveSavedLines	;95 only. Fix team d7's saved line players (save RAM SRJerseyNums) after player d0 left
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d0,d2
 	jsr	(GetPlayerCountD7).l
@@ -490,7 +490,7 @@ MoveTradedPlayer	;95 only. Insert traded player TempWord1 of team TradeFromTeam 
 	move.w	d7,d0
 	asl.w	#5,d0
 	ext.l	d0
-	addi.l	#$5700,d0
+	addi.l	#SRJerseyNums,d0
 	moveq	#$20,d1
 	movem.l	d0-d1/a0,-(sp)
 	jsr	(ReadSRAM).l
@@ -613,10 +613,10 @@ FixSavedLine	;95 only. Fix saved line block d6 (TeamRecordSRAM) of team TradeFro
 	rts
 
 TeamRecordSRAM	;95 only. Save RAM blocks of the saved team lines (offset, size a team)
-	dc.l	$3E14,$41
-	dc.l	$4530,$39
-	dc.l	$4B6C,$39
-	dc.l	$5136,$39
+	dc.l	SRLines,$41
+	dc.l	SRLines2,$39
+	dc.l	SRLines3,$39
+	dc.l	SRLines4,$39
 
 RemoveTradedPlayer	;95 only. Remove the traded player from his old team: roster, stats, saved lines and line slots
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -683,7 +683,7 @@ RemoveTradedPlayer	;95 only. Remove the traded player from his old team: roster,
 	move.w	d7,d0
 	asl.w	#5,d0
 	ext.l	d0
-	addi.l	#$5700,d0
+	addi.l	#SRJerseyNums,d0
 	moveq	#$20,d1
 	movem.l	d0-d1/a0,-(sp)
 	jsr	(ReadSRAM).l

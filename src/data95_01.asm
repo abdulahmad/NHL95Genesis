@@ -2098,7 +2098,7 @@ PlayerCardTimer	;94 only. Player cards, called each frame from GameSetUp_2 while
 	move.w	(homepicchars).w,d4
 	move.w	d0,d1
 	move.w	(featuredplayer).w,d0
-	movea.l	#$207C28,a0
+	movea.l	#SaveRAM+2*SRLines,a0
 	move.w	d7,-(sp)
 	move.w	d1,d7
 	mulu.w	#$82,d7
@@ -2840,7 +2840,7 @@ CheckPlayoffsStarted	;95 only. ContinuePlayoffs, then d0 = gamelevel | bosgames 
 ReadLineData	;(94 title94). Read the saved lines from save RAM. Called from GameSetUp and main95
 	movem.l	d0-d1/a0,-(sp)
 	move.l	#$100,d1
-	move.l	#$7EF6,d0
+	move.l	#SRLineData,d0
 	movea.l	#databuffer,a0
 	jsr	(ReadSRAM).l
 	bclr	#4,(sflags).w
@@ -2852,7 +2852,7 @@ ReadLineData	;(94 title94). Read the saved lines from save RAM. Called from Game
 WriteLineData	;(94 title94). Write the lines to save RAM and the checksum
 	movem.l	d0-d1/a0,-(sp)
 	move.l	#$100,d1
-	move.l	#$7EF6,d0
+	move.l	#SRLineData,d0
 	movea.l	#databuffer,a0
 	jsr	(WriteSRAM).l
 	jsr	(MakeSRAMChecksum).l

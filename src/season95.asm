@@ -94,10 +94,10 @@ SeasonMain	;95 only. Season mode flow, called from the main flow when GameFlags 
 	;SeasonAwards, Opening2)
 	btst	#3,(GameFlags).w
 	beq.w	.13
-	move.w	($20FDCC).l,d0
+	move.w	(SaveRAM+2*SRSeasonMark).l,d0
 	tst.b	d0
 	beq.w	.0
-	clr.w	($20FDCC).l
+	clr.w	(SaveRAM+2*SRSeasonMark).l
 	jsr	(MakeSRAMChecksum).l
 	bra.w	.8
 .0
@@ -107,7 +107,7 @@ SeasonMain	;95 only. Season mode flow, called from the main flow when GameFlags 
 	beq.w	.1
 	jsr	(SeasonSetup).l
 	jsr	(ClearSeasonData).l
-	clr.w	($20FDCC).l
+	clr.w	(SaveRAM+2*SRSeasonMark).l
 	jsr	(MakeSRAMChecksum).l
 	bsr.w	PickSeasonStartDay
 .1
@@ -145,10 +145,10 @@ SeasonMain	;95 only. Season mode flow, called from the main flow when GameFlags 
 	clr.w	(optbgchars+$40).w
 	bset	#0,(sflags11).w
 	bset	#5,(sflags12).w
-	move.w	#$64,($20FDCC).l
+	move.w	#$64,(SaveRAM+2*SRSeasonMark).l
 	jsr	(MakeSRAMChecksum).l
 	jsr	(SeasonOptions).l
-	clr.w	($20FDCC).l
+	clr.w	(SaveRAM+2*SRSeasonMark).l
 	jsr	(MakeSRAMChecksum).l
 	bclr	#5,(sflags12).w
 	bclr	#0,(sflags11).w
@@ -185,7 +185,7 @@ SeasonMain	;95 only. Season mode flow, called from the main flow when GameFlags 
 	bclr	#1,(sflags11).w
 	btst	#0,(SimFlags).w
 	beq.w	.12
-	move.w	($20FDDC).l,(cupwinner).w
+	move.w	(SaveRAM+2*SRCupWinner).l,(cupwinner).w
 	andi.w	#$FF,(cupwinner).w
 	jsr	(StanleyCupScreen).l
 .12
@@ -194,19 +194,19 @@ SeasonMain	;95 only. Season mode flow, called from the main flow when GameFlags 
 .13
 	rts
 
-ReadSeasonHeader	;95 only. Read the 8 byte season header (SeasonStartDay ...) from save RAM $E22
+ReadSeasonHeader	;95 only. Read the 8 byte season header (SeasonStartDay ...) from save RAM SRSeasonHeader
 	movem.l	d0-d7/a0-a6,-(sp)
 	moveq	#8,d1
-	move.l	#$E22,d0
+	move.l	#SRSeasonHeader,d0
 	movea.l	#SeasonStartDay,a0
 	jsr	(ReadSRAM).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-WriteSeasonHeader	;95 only. Write the 8 byte season header to save RAM $E22 and update the checksum
+WriteSeasonHeader	;95 only. Write the 8 byte season header to save RAM SRSeasonHeader and update the checksum
 	movem.l	d0-d7/a0-a6,-(sp)
 	moveq	#8,d1
-	move.l	#$E22,d0
+	move.l	#SRSeasonHeader,d0
 	movea.l	#SeasonStartDay,a0
 	jsr	(WriteSRAM).l
 	jsr	(MakeSRAMChecksum).l
@@ -450,17 +450,17 @@ NextSeasonDay	;95 only. SeasonDay + 1; at SeasonLength set SeasonFlags bit 3 (re
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#7,(GameFlags).w
 	addq.b	#1,(SeasonDay).w
-	move.l	($20C004).l,d0
+	move.l	(SaveRAM+2*SRPODay).l,d0
 	addq.b	#1,d0
-	move.l	d0,($20C004).l
+	move.l	d0,(SaveRAM+2*SRPODay).l
 	jsr	(WriteSeasonHeader).l
 	jsr	(PlayoffRoundDone).l
 	bne.w	.4
-	move.l	($20C000).l,d0
+	move.l	(SaveRAM+2*SRPORound).l,d0
 	cmp.b	#3,d0
 	bge.w	.3
 	addq.b	#1,d0
-	move.l	d0,($20C000).l
+	move.l	d0,(SaveRAM+2*SRPORound).l
 	jsr	(NextPlayoffRound).l
 	bra.w	.4
 .3
@@ -1020,10 +1020,10 @@ SeasonGameOver	;95 only. After a human season game: copy the scores into its Sea
 .4
 	rts
 
-AddSeasonGoals	;95 only. Add the game's goals to the season goal total (save RAM $1B44) and count the game
+AddSeasonGoals	;95 only. Add the game's goals to the season goal total (save RAM SRGoalTotal) and count the game
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a0,-(sp)
-	move.l	#$1B44,d0
+	move.l	#SRGoalTotal,d0
 	moveq	#6,d1
 	movea.l	#SeasonGoalSum,a0
 	jsr	(ReadSRAM).l
@@ -1033,7 +1033,7 @@ AddSeasonGoals	;95 only. Add the game's goals to the season goal total (save RAM
 	add.b	3(a0),d0
 	add.l	d0,(SeasonGoalSum).w
 	addq.w	#1,(SeasonGameCount).w
-	move.l	#$1B44,d0
+	move.l	#SRGoalTotal,d0
 	moveq	#6,d1
 	movea.l	#SeasonGoalSum,a0
 	jsr	(WriteSRAM).l
@@ -1049,7 +1049,7 @@ ClearSeasonData	;95 only. Clear the season results and standings in save RAM for
 .0
 	move.b	d1,(a0)+
 	dbf	d0,.0
-	move.l	#$E2A,d0
+	move.l	#SRGameResults,d0
 	move.l	#$CCC,d1
 	lea	(M68K_RAM).l,a0
 	jsr	(WriteSRAM).l
@@ -1059,13 +1059,13 @@ ClearSeasonData	;95 only. Clear the season results and standings in save RAM for
 .1
 	move.b	d1,(a0)+
 	dbf	d0,.1
-	move.l	#$1AF6,d0
+	move.l	#SRStandings,d0
 	moveq	#$4E,d1
 	lea	(M68K_RAM).l,a0
 	jsr	(WriteSRAM).l
 	move.l	#$24,(M68K_RAM).l
 	move.w	#5,(M68K_RAM+4).l
-	move.l	#$1B44,d0
+	move.l	#SRGoalTotal,d0
 	moveq	#6,d1
 	lea	(M68K_RAM).l,a0
 	jsr	(WriteSRAM).l
@@ -1076,7 +1076,7 @@ ClearSeasonData	;95 only. Clear the season results and standings in save RAM for
 .2
 	move.l	d0,(a0)+
 	dbf	d1,.2
-	move.l	#$5FD6,d0
+	move.l	#SRSeasonHeaderSave,d0
 	move.l	#$1110,d1
 	lea	(M68K_RAM).l,a0
 	jsr	(WriteSRAM).l
@@ -1299,10 +1299,10 @@ CountTeamGames	;95 only. d1 = number of season games of team d0
 
 ReadStandings	;95 only. Read the 26 teams' standings records (3 bytes: wins, losses, ties) into a0
 	movem.l	d0-d7/a0-a6,-(sp)
-	move.l	#$1AF6,d0
+	move.l	#SRStandings,d0
 	btst	#5,(SeasonFlags).w
 	beq.w	.0
-	move.l	#$6173,d0
+	move.l	#SRPOStandings,d0
 .0
 	moveq	#3,d1
 	mulu.w	#$1A,d1
@@ -1426,7 +1426,7 @@ ScaleSimScore	;95 only. Scale the score to the average goals of the human games 
 	move.w	#1,(TempWord2).w
 .0
 	move.l	a0,-(sp)
-	move.l	#$1B44,d0
+	move.l	#SRGoalTotal,d0
 	moveq	#6,d1
 	movea.l	#SeasonGoalSum,a0
 	jsr	(ReadSRAM).l

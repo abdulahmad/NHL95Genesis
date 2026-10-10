@@ -230,7 +230,7 @@ GetPlayerCountD7	;95 only. d0 = players on team d7: in a season (sflags11 bit 6 
 	movem.l	d1-d7/a0,-(sp)
 	move.w	d7,d0
 	mulu.w	#$38,d0
-	addi.l	#$1B80,d0
+	addi.l	#SRRosters+$34,d0
 	moveq	#3,d1
 	movea.l	#SRAMbyte,a0
 	jsr	(ReadSRAM).l

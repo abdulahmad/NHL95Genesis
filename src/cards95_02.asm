@@ -344,7 +344,7 @@ TeamRecordIO	;cards94 TeamRecordIO. The team record block: read or write (sflags
 	movem.l	d0-d1/a0-a1,-(sp)
 	move.l	d1,d0
 	asl.w	#4,d0
-	addi.l	#$D22,d0
+	addi.l	#SRTeamRecords,d0
 	moveq	#$10,d1
 	btst	#6,(sflags6).w
 	beq.w	.0
@@ -364,7 +364,7 @@ CrowdRecordIO	;cards94 CrowdRecordIO. The crowd record block: read or write (sfl
 	movem.l	d0-d1/a0-a1,-(sp)
 	move.l	d1,d0
 	asl.w	#4,d0
-	addi.l	#$B62,d0
+	addi.l	#SRCrowdRecords,d0
 	moveq	#$10,d1
 	btst	#6,(sflags6).w
 	beq.w	.0

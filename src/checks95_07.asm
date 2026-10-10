@@ -2,7 +2,7 @@
 ;	Mapped to checks94 (75%): puckshootout, SelectPenaltyShotSkater, puckpenshot, UpdatePenaltyShotEnd, EndPenaltyShotPlay; moved in:
 ;	SetupPenaltyShot (collide94), PenaltyShotBox / PenShotBigTxt (data94), PenShotChk / getBAplayerInfo (penalty94), ShortenMsgTimer
 ;	(period94), setInjuryType (collide94), getFgtbyte / chkFgtBit1 (title94), updatepwrplay / GetLowestPen (penalty94); 95 only: the season
-;	injuries (SetSeasonInjuries ... DeleteInjurySlot, save RAM $20BCB8), CheckInjury and ClearPowerPlay.
+;	injuries (SetSeasonInjuries ... DeleteInjurySlot, save RAM SRInjuries), CheckInjury and ClearPowerPlay.
 ;	IDA left puckshootout ... UpdatePenaltyShotEnd ($09E5F0-$09ECE5) and SetupPenaltyShot as dc.b; they are transcribed from the retail
 ;	bytes. IDA hid the printz / printbigz / appendz Strings as instructions.
 ;	Local labels are numbered; the IDA local names are not kept.
@@ -777,9 +777,9 @@ setInjuryType	;collide94 setInjuryType. a2 injured: out for the period ($FFFD) o
 	move.w	(sp)+,d0
 	rts
 
-SetSeasonInjuries	;95 only. The players of team a2 with injury games left (save RAM $20BCB8) are out ($FFFC)
+SetSeasonInjuries	;95 only. The players of team a2 with injury games left (save RAM SRInjuries) are out ($FFFC)
 	movem.l	d0-d3/a0/a2,-(sp)
-	movea.l	#$20BCB8,a0
+	movea.l	#SaveRAM+2*SRInjuries,a0
 	move.w	$28(a2),d0
 	mulu.w	#$1C,d0
 	adda.l	d0,a0
@@ -815,8 +815,8 @@ TickTeamInjuries	;95 only. A game played: one injury game off for teams d0 and d
 	movem.l	(sp)+,d2-d4/a0
 	rts
 
-TickInjuries	;95 only. One game off every injury of team d0 (save RAM $20BCB8, a nibble per player)
-	movea.l	#$20BCB8,a0
+TickInjuries	;95 only. One game off every injury of team d0 (save RAM SRInjuries, a nibble per player)
+	movea.l	#SaveRAM+2*SRInjuries,a0
 	mulu.w	#$1C,d0
 	adda.l	d0,a0
 	move.w	#$C,d2
@@ -839,12 +839,12 @@ TickInjuries	;95 only. One game off every injury of team d0 (save RAM $20BCB8, a
 	dbf	d2,.0
 	rts
 
-SetInjuryGames	;95 only. Injury games d0 for player d1 of team d7 (save RAM $20BCB8); sflags12 bit 1 and injurygames
+SetInjuryGames	;95 only. Injury games d0 for player d1 of team d7 (save RAM SRInjuries); sflags12 bit 1 and injurygames
 	movem.l	d0-d7/a0-a7,-(sp)
 	bset	#1,(sflags12).w
 	move.w	d0,(injurygames).w
 	mulu.w	#$1C,d7
-	movea.l	#$20BCB8,a0
+	movea.l	#SaveRAM+2*SRInjuries,a0
 	adda.l	d7,a0
 	move.w	d1,d2
 	lsr.w	#1,d2
@@ -864,9 +864,9 @@ SetInjuryGames	;95 only. Injury games d0 for player d1 of team d7 (save RAM $20B
 	movem.l	(sp)+,d0-d7/a0-a7
 	rts
 
-GetInjuryGames	;95 only. d0 = the injury games of player d1 of team d7 (save RAM $20BCB8)
+GetInjuryGames	;95 only. d0 = the injury games of player d1 of team d7 (save RAM SRInjuries)
 	movem.l	d1-d7/a0,-(sp)
-	movea.l	#$20BCB8,a0
+	movea.l	#SaveRAM+2*SRInjuries,a0
 	mulu.w	#$1C,d7
 	adda.l	d7,a0
 	move.w	d1,d2
@@ -950,7 +950,7 @@ CheckInjury	;95 only. The injury message when its timer runs out: "Injury to:" t
 
 InsertInjurySlot	;95 only. Open an injury slot at player d1 of team d7 (the later nibbles up one); a player traded in
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#$20BCB8,a0
+	movea.l	#SaveRAM+2*SRInjuries,a0
 	mulu.w	#$1C,d7
 	adda.l	d7,a0
 	adda.l	#$18,a0
@@ -982,7 +982,7 @@ InsertInjurySlot	;95 only. Open an injury slot at player d1 of team d7 (the late
 
 DeleteInjurySlot	;95 only. Remove the injury slot of player d1 of team d7 (the later nibbles down one); a player traded out
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#$20BCB8,a0
+	movea.l	#SaveRAM+2*SRInjuries,a0
 	mulu.w	#$1C,d7
 	adda.l	d7,a0
 	move.w	#$D,d2

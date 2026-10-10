@@ -647,7 +647,7 @@ GetPlayerPicture	;cards94 DrawPlayerPicture. 95: only the picture: a0 = the pict
 	subq.w	#1,d0
 	bra.w	.1
 .0
-	movea.l	#$207C28,a0
+	movea.l	#SaveRAM+2*SRLines,a0
 	move.w	d1,d7
 	mulu.w	#$82,d1
 	adda.l	d1,a0

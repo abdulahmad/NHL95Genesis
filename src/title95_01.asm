@@ -27,7 +27,7 @@ ShootoutInit	;shootout94 ClearShootout. Clear the player structs (SortCords) and
 	clr.w	(shootoutteam).w
 	rts
 InitShooters	;shootout94 InitShooters. The 6 starters of the home (shootoutteam 0) or away team (save RAM roster
-	;$207C28, $82 bytes a team) as the shooter list below homeshootnum / shootoutteam
+	;SRLines, $82 bytes a team) as the shooter list below homeshootnum / shootoutteam
 	movea.l	#homeshootnum,a0
 	move.w	(HomeTeam).w,d0
 	tst.w	(shootoutteam).w
@@ -35,7 +35,7 @@ InitShooters	;shootout94 InitShooters. The 6 starters of the home (shootoutteam 
 	move.w	(VisTeam).w,d0
 	movea.l	#shootoutteam,a0
 .0
-	movea.l	#$207C28,a1
+	movea.l	#SaveRAM+2*SRLines,a1
 	mulu.w	#$82,d0
 	adda.l	d0,a1
 	move.w	#5,d0

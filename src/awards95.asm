@@ -709,7 +709,7 @@ SelkeScore	;95 only. Score: forwards (d2 up to GetDefenseStartD7) with 10 goals 
 	jsr	(GetAwardGoals).l
 	movem.l	d4,-(sp)
 	movem.l	d7/a0,-(sp)
-	movea.l	#$2035EC,a0
+	movea.l	#SaveRAM+2*SRStandings,a0
 	mulu.w	#6,d7
 	clr.w	d4
 	move.b	1(a0,d7.w),d4
@@ -763,7 +763,7 @@ JenningsScore	;95 only. Score: goalies who played half the games or more, 100 * 
 	cmp.w	d0,d6
 	bge.w	AwardNotQualified
 	movem.l	d7/a0,-(sp)
-	movea.l	#$2035EC,a0
+	movea.l	#SaveRAM+2*SRStandings,a0
 	mulu.w	#6,d7
 	clr.w	d4
 	move.b	1(a0,d7.w),d4
@@ -808,7 +808,7 @@ VezinaScore	;95 only. Score: goalies who played a quarter of the games or more, 
 	cmp.w	d0,d6
 	bge.w	AwardNotQualified
 	movem.l	d7/a0,-(sp)
-	movea.l	#$2035EC,a0
+	movea.l	#SaveRAM+2*SRStandings,a0
 	mulu.w	#6,d7
 	clr.w	d4
 	move.b	1(a0,d7.w),d4
@@ -847,13 +847,13 @@ NorrisScore	;95 only. Score: defensemen, 100 * (6 - min(penalty minutes per game
 	move.w	d7,d0
 	mulu.w	#$A,d0
 	add.w	d0,d0
-	movea.l	#$20FA5E,a0
+	movea.l	#SaveRAM+2*(SRPOTeamStats+2),a0
 	adda.w	d0,a0
 	move.b	1(a0),d5
 	lsl.w	#8,d5
 	move.b	3(a0),d5
 	movem.l	d7/a0,-(sp)
-	movea.l	#$2035EC,a0
+	movea.l	#SaveRAM+2*SRStandings,a0
 	mulu.w	#6,d7
 	clr.w	d6
 	move.b	1(a0,d7.w),d6
@@ -871,7 +871,7 @@ NorrisScore	;95 only. Score: defensemen, 100 * (6 - min(penalty minutes per game
 	subq.w	#6,d5
 	neg.w	d5
 	mulu.w	#$64,d5
-	movea.l	#$204348,a0
+	movea.l	#SaveRAM+2*SRGoals,a0
 	move.w	d1,d0
 	asl.w	#2,d0
 	move.b	1(a0,d0.w),d6
@@ -879,7 +879,7 @@ NorrisScore	;95 only. Score: defensemen, 100 * (6 - min(penalty minutes per game
 	move.b	3(a0,d0.w),d6
 	mulu.w	#$A,d6
 	add.w	d6,d5
-	movea.l	#$204E40,a0
+	movea.l	#SaveRAM+2*SRAssists,a0
 	move.w	d1,d0
 	asl.w	#2,d0
 	move.b	1(a0,d0.w),d6
@@ -923,25 +923,25 @@ AwardNotQualified	;95 only. Score exit: does not qualify (d5 = -1)
 	move.w	#-1,d5
 	rts
 
-GetGoalieAwardStats	;95 only. d5 / d6 = the goalie stat words of player d1 (save RAM $206F28 / $206430)
-	movea.l	#$206F28,a0
+GetGoalieAwardStats	;95 only. d5 / d6 = the goalie stat words of player d1 (save RAM SRPenMin / SRGamesPlayed)
+	movea.l	#SaveRAM+2*SRPenMin,a0
 	move.w	d1,d0
 	asl.w	#2,d0
 	move.b	1(a0,d0.w),d5
 	lsl.w	#8,d5
 	move.b	3(a0,d0.w),d5
-	movea.l	#$206430,a0
+	movea.l	#SaveRAM+2*SRGamesPlayed,a0
 	move.b	1(a0,d0.w),d6
 	lsl.w	#8,d6
 	move.b	3(a0,d0.w),d6
 	andi.l	#$7FFF,d6
 	rts
 
-GetAwardGoals	;95 only. d5 = goals of player d1 (save RAM $204348, the playoff $20C382 with sflags11 bit 3)
-	movea.l	#$204348,a0
+GetAwardGoals	;95 only. d5 = goals of player d1 (save RAM SRGoals, the playoff SRPOGoals with sflags11 bit 3)
+	movea.l	#SaveRAM+2*SRGoals,a0
 	btst	#3,(sflags11).w
 	beq.w	.0
-	movea.l	#$20C382,a0
+	movea.l	#SaveRAM+2*SRPOGoals,a0
 .0
 	move.w	d1,d0
 	asl.w	#2,d0
@@ -951,18 +951,18 @@ GetAwardGoals	;95 only. d5 = goals of player d1 (save RAM $204348, the playoff $
 	andi.w	#$7FFF,d5
 	rts
 
-GetAwardAssists	;95 only. d6 = assists of player d0 / 4 (save RAM $204E40, the playoff $20CE7A with sflags11 bit 3; the ROM has lsr.w #8, not lsl)
-	movea.l	#$204E40,a0
+GetAwardAssists	;95 only. d6 = assists of player d0 / 4 (save RAM SRAssists, the playoff SRPOAssists with sflags11 bit 3; the ROM has lsr.w #8, not lsl)
+	movea.l	#SaveRAM+2*SRAssists,a0
 	btst	#3,(sflags11).w
 	beq.w	.0
-	movea.l	#$20CE7A,a0
+	movea.l	#SaveRAM+2*SRPOAssists,a0
 .0
 	move.b	1(a0,d0.w),d6
 	lsr.w	#8,d6
 	move.b	3(a0,d0.w),d6
 	rts
 
-InitPlayoffs	;95 only. Seed the playoffs: the two conferences (ConferenceTeams1 / 2) sorted by points (SortSeeds), 1 v 8 ... 4 v 5 to save RAM $20BFC0 (SeedPairings)
+InitPlayoffs	;95 only. Seed the playoffs: the two conferences (ConferenceTeams1 / 2) sorted by points (SortSeeds), 1 v 8 ... 4 v 5 to save RAM SRPOPairings (SeedPairings)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$B,d0
 	movea.l	#AwardIds,a0
@@ -981,7 +981,7 @@ InitPlayoffs	;95 only. Seed the playoffs: the two conferences (ConferenceTeams1 
 	move.w	#$E,(SeedCount).w
 	movea.l	#AwardIds+$14,a0
 	bsr.w	SortSeeds
-	movea.l	#$20BFC0,a0
+	movea.l	#SaveRAM+2*SRPOPairings,a0
 	movea.l	#AwardIds,a1
 	movea.l	#AwardIds+$14,a2
 	bsr.w	SeedPairings
@@ -1083,16 +1083,16 @@ ConferenceTeams1	;95 only. The 12 teams of the first conference
 ConferenceTeams2	;95 only. The 14 teams of the second conference
 	dc.b	1,2,9,$B,$F,$11,$12,8,$C,$D,$E,$10,$15,$18
 
-SetupPlayoffs	;95 only. Start the playoffs: save the season header ($20BFAC), reset it for the playoffs (SeasonFlags bit 5), clear the playoff stats, round 1 (NextPlayoffRound)
+SetupPlayoffs	;95 only. Start the playoffs: save the season header (SRSeasonHeaderSave), reset it for the playoffs (SeasonFlags bit 5), clear the playoff stats, round 1 (NextPlayoffRound)
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#$201C44,a0
-	movea.l	#$20BFAC,a1
+	movea.l	#SaveRAM+2*SRSeasonHeader,a0
+	movea.l	#SaveRAM+2*SRSeasonHeaderSave,a1
 	move.w	#8,d0
 	subq.w	#1,d0
 .0
 	move.w	(a0)+,(a1)+
 	dbf	d0,.0
-	movea.l	#$201C44,a0
+	movea.l	#SaveRAM+2*SRSeasonHeader,a0
 	clr.w	(a0)
 	move.w	#1,d0
 	btst	#1,(SeasonDay+1).w
@@ -1104,32 +1104,32 @@ SetupPlayoffs	;95 only. Start the playoffs: save the season header ($20BFAC), re
 	jsr	(ReadSeasonHeader).l
 	bset	#5,(SeasonDay+1).w
 	jsr	(WriteSeasonHeader).l
-	movea.l	#$201C54,a0
+	movea.l	#SaveRAM+2*SRGameResults,a0
 	move.w	#$CCC,d0
 	subq.w	#1,d0
 .2
 	clr.w	(a0)+
 	dbf	d0,.2
-	movea.l	#$20C2E6,a0
+	movea.l	#SaveRAM+2*SRPOStandings,a0
 	move.w	#$4E,d0
 	subq.w	#1,d0
 .3
 	clr.w	(a0)+
 	dbf	d0,.3
-	movea.l	#$20C382,a0
+	movea.l	#SaveRAM+2*SRPOGoals,a0
 	move.w	#$1B6C,d0
 	subq.w	#1,d0
 .4
 	clr.w	(a0)+
 	dbf	d0,.4
-	movea.l	#$20FA5A,a0
+	movea.l	#SaveRAM+2*SRPOTeamStats,a0
 	move.w	#$104,d0
 	subq.w	#1,d0
 .5
 	clr.w	(a0)+
 	dbf	d0,.5
-	clr.l	($20BFBC).l
-	move.l	#0,($20C000).l
+	clr.l	(SaveRAM+2*(SRSeasonHeaderSave+8)).l
+	move.l	#0,(SaveRAM+2*SRPORound).l
 	bsr.w	NextPlayoffRound
 	jsr	(MakeSRAMChecksum).l
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1137,8 +1137,8 @@ SetupPlayoffs	;95 only. Start the playoffs: save the season header ($20BFAC), re
 
 RestoreSeasonHeader	;95 only. Put back the season header saved by SetupPlayoffs (ReadSeasonHeader). Nothing calls it
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#$201C44,a0
-	movea.l	#$20BFAC,a1
+	movea.l	#SaveRAM+2*SRSeasonHeader,a0
+	movea.l	#SaveRAM+2*SRSeasonHeaderSave,a1
 	move.w	#8,d0
 	subq.w	#1,d0
 .0
@@ -1151,8 +1151,8 @@ RestoreSeasonHeader	;95 only. Put back the season header saved by SetupPlayoffs 
 
 NextPlayoffRound	;95 only. Next playoff round: the winners of the last round (CollectSeriesWinners), the series (InitPlayoffSeries) and the games (PlayoffRoundDone)
 	movem.l	d0-d7/a0-a6,-(sp)
-	clr.l	($20C004).l
-	move.l	($20C000).l,d0
+	clr.l	(SaveRAM+2*SRPODay).l
+	move.l	(SaveRAM+2*SRPORound).l,d0
 	tst.b	d0
 	beq.w	.0
 	bsr.w	CollectSeriesWinners
@@ -1162,10 +1162,10 @@ NextPlayoffRound	;95 only. Next playoff round: the winners of the last round (Co
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-InitPlayoffSeries	;95 only. The series of the round at save RAM $20C008 ($20 bytes each: the two teams, wins cleared)
+InitPlayoffSeries	;95 only. The series of the round at save RAM SRPOSeries ($20 bytes each: the two teams, wins cleared)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	GetRoundPairings
-	movea.l	#$20C008,a0
+	movea.l	#SaveRAM+2*SRPOSeries,a0
 	bsr.w	SeriesInRound
 	move.w	d0,d5
 	subq.w	#1,d5
@@ -1189,7 +1189,7 @@ InitPlayoffSeries	;95 only. The series of the round at save RAM $20C008 ($20 byt
 
 PlayoffRoundDone	;95 only. The games of day SeasonDay: the series of the round not yet won (4 wins, 1 without SeasonFlags bit 1); d0 = the count (0 = round over)
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#$20C10A,a0
+	movea.l	#SaveRAM+2*(SRPOSchedule+1),a0
 	clr.w	d0
 	move.b	(SeasonDay).w,d0
 	bra.w	.1
@@ -1206,7 +1206,7 @@ PlayoffRoundDone	;95 only. The games of day SeasonDay: the series of the round n
 	addq.w	#2,a2
 	bsr.w	SeriesInRound
 	subq.w	#1,d0
-	movea.l	#$20C010,a4
+	movea.l	#SaveRAM+2*(SRPOSeries+4),a4
 .2
 	move.w	2(a4),d1
 	move.b	#4,d6
@@ -1242,7 +1242,7 @@ PlayoffRoundDone	;95 only. The games of day SeasonDay: the series of the round n
 SeriesInRound	;95 only. d0 = the series in the round (SeriesCountTbl)
 	movem.l	a3,-(sp)
 	movea.l	#SeriesCountTbl,a3
-	move.w	($20C002).l,d0
+	move.w	(SaveRAM+2*(SRPORound+1)).l,d0
 	andi.w	#$FF,d0
 	add.w	d0,d0
 	move.w	(a3,d0.w),d0
@@ -1252,10 +1252,10 @@ SeriesInRound	;95 only. d0 = the series in the round (SeriesCountTbl)
 SeriesCountTbl	;95 only. Series per round
 	dc.w	8,4,2,1
 
-GetRoundPairings	;95 only. a1 = the pairings of the round in save RAM $20BFC0 (RoundPairOffsets)
+GetRoundPairings	;95 only. a1 = the pairings of the round in save RAM SRPOPairings (RoundPairOffsets)
 	movem.l	d0/a0,-(sp)
-	movea.l	#$20BFC0,a1
-	move.w	($20C002).l,d0
+	movea.l	#SaveRAM+2*SRPOPairings,a1
+	move.w	(SaveRAM+2*(SRPORound+1)).l,d0
 	andi.w	#$FF,d0
 	movea.l	#RoundPairOffsets,a0
 	move.b	(a0,d0.w),d0
@@ -1267,9 +1267,9 @@ GetRoundPairings	;95 only. a1 = the pairings of the round in save RAM $20BFC0 (R
 RoundPairOffsets	;95 only. GetRoundPairings offset of each round
 	dc.b	0,$20,$30,$38,$3C,$FF
 
-ReadPlayoffSchedule	;95 only. PlayoffSchedule = the low bytes of the $EF words at save RAM $20C108
+ReadPlayoffSchedule	;95 only. PlayoffSchedule = the low bytes of the $EF words at save RAM SRPOSchedule
 	movem.l	d4-d5/a5-a6,-(sp)
-	movea.l	#$20C108,a5
+	movea.l	#SaveRAM+2*SRPOSchedule,a5
 	move.w	#$EF,d4
 	subq.w	#1,d4
 	movea.l	#picturebuf,a6
@@ -1286,7 +1286,7 @@ RecordPlayoffGame	;95 only. In the playoffs (SeasonFlags bit 5): add the game a0
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	move.b	(a0),d0
-	movea.l	#$20C008,a1
+	movea.l	#SaveRAM+2*SRPOSeries,a1
 .0
 	move.l	(a1),d1
 	cmp.b	d0,d1
@@ -1321,8 +1321,8 @@ RecordPlayoffGame	;95 only. In the playoffs (SeasonFlags bit 5): add the game a0
 
 CollectSeriesWinners	;95 only. The winners of the round series to the next round pairings (RoundSeriesOffsets, RoundSeriesCounts)
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#$20BFC0,a0
-	move.l	($20C000).l,d0
+	movea.l	#SaveRAM+2*SRPOPairings,a0
+	move.l	(SaveRAM+2*SRPORound).l,d0
 	andi.w	#$FF,d0
 	move.w	d0,-(sp)
 	add.w	d0,d0
@@ -1335,7 +1335,7 @@ CollectSeriesWinners	;95 only. The winners of the round series to the next round
 	move.w	d0,d1
 	asr.w	#1,d1
 	subq.w	#1,d1
-	movea.l	#$20C008,a1
+	movea.l	#SaveRAM+2*SRPOSeries,a1
 .0
 	move.l	(a1),d2
 	move.l	8(a1),d3
@@ -1371,27 +1371,27 @@ PlayoffTreeScreen	;95 only. Playoff tree: the series (gsstruct), bosgames, gamel
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#7,d0
 	movea.l	#gsstruct,a0
-	movea.l	#$20C008,a1
+	movea.l	#SaveRAM+2*SRPOSeries,a1
 	move.w	#$40,d1
 .0
 	move.l	(a1)+,d2
 	andi.w	#$FF,d2
 	move.w	d2,(a0)+
 	dbf	d1,.0
-	move.l	($20C004).l,d0
+	move.l	(SaveRAM+2*SRPODay).l,d0
 	andi.w	#$FF,d0
 	move.w	d0,(bosgames).w
 	btst	#1,(SeasonDay+1).w
 	bne.w	.1
 	move.w	#7,(bosgames).w
 .1
-	move.l	($20C000).l,d0
+	move.l	(SaveRAM+2*SRPORound).l,d0
 	andi.w	#$FF,d0
 	move.w	d0,(gamelevel).w
 	bset	#2,(sflags11).w
 	move.w	#$20,d0
 	subq.w	#1,d0
-	movea.l	#$20BFC0,a0
+	movea.l	#SaveRAM+2*SRPOPairings,a0
 	movea.l	#potree,a1
 .2
 	move.w	(a0)+,d1
