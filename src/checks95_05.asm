@@ -181,7 +181,7 @@ DefaultLineData	;95 only. Copy the default line sets of the 28 teams (TeamList +
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LoadTeamLines	;95 only. The line sets of team struct a2 ($16C): from save RAM ($3E14 + team * $41) when there is save RAM and
+LoadTeamLines	;95 only. The line sets of team struct a2 ($16C): from save RAM (SRLines + team * $41) when there is save RAM and
 	;line changes are on, else from the team data. Jumped to from setup95_01
 	tst.w	(OptLine).w
 	beq.w	.3

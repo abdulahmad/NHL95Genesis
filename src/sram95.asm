@@ -167,7 +167,7 @@ WriteSRAM	;Write data from a0 into SaveRAM: d1 = number of bytes, d0 = first sav
 	rts
 
 MakeSRAMChecksum	;Sum save RAM bytes 0-$7FFD (read in place; 94 read them to M68K_RAM first), put the sum in SRAMChecksum+1 and
-	;its complement in SRAMChecksum, and write those two bytes to save RAM bytes $7FFE-$7FFF. Skipped while GameFlags bit 7 is set (a batch of
+	;its complement in SRAMChecksum, and write those two bytes to save RAM SRChecksum. Skipped while GameFlags bit 7 is set (a batch of
 	;save RAM writes in progress). Called from ClearSRAM and the save code (ReadLineData, the season code ...)
 	btst	#7,(GameFlags).l
 	bne.w	.x

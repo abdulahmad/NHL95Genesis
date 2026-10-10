@@ -380,7 +380,7 @@ checkcx	;d4 = obj. # * 2 for possible collision so check x range and distance fo
 	;a goalie weighs $DC, and no momentum when either player has pflags2 bit 5 after the checks)
 	movem.l	d0-d7/a0-a3,-(sp)
 	asl.w	#6,d4	;6 = scsize-1
-	movea.l	#SortCords,a2	;B04A = Start of player structs (SortCords)
+	movea.l	#SortCords,a2	;start of the player structs
 	adda.w	d4,a2	;add d4 to a2. a2 now address of SCStruct-1
 	btst	#pfnc,pflags(a2)	;test pfnc pflags = no collision mode
 	bne.w	.7
@@ -1861,9 +1861,9 @@ wallcollduringcheck	;(cards94). during a check, a skater a2 (not a goalie) near 
 	move.w	(a2),d2	;Xpos of checking player
 	move.w	Ypos(a2),d3
 	move.w	radiusx(a2),(wcradiusx).w
-	addi.w	#$17,(wcradiusx).l	;add $17 to BD22
+	addi.w	#$17,(wcradiusx).l	;add $17 to wcradiusx
 	move.w	radiusy(a2),(wcradiusy).w
-	addi.w	#$17,(wcradiusy).l	;add $17 to BD24
+	addi.w	#$17,(wcradiusy).l	;add $17 to wcradiusy
 	movem.l	a0-a6,-(sp)
 	exg	a2,a3	;swap a2 and a3
 	jsr	(checkcornercoll94).l
@@ -1877,9 +1877,9 @@ checkcornercoll94	;(crowd94). Corner circles and side walls for object a3 at d2 
 	;cornercollb94. 95: end boards $128
 	bclr	#4,$64(a3)	;clears bit 4 in pflags3 (not used in 92)
 	move.w	#$98,d4
-	sub.w	(wcradiusx).w,d4	;BD22 = wcradiusx
+	sub.w	(wcradiusx).w,d4
 	move.w	#$128,d5
-	sub.w	(wcradiusy).w,d5	;BD24 = wcradiusy
+	sub.w	(wcradiusy).w,d5
 	movem.w	d2-d5,-(sp)
 	neg.w	d4
 	neg.w	d5

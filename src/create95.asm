@@ -532,7 +532,7 @@ GridLetterPos	;Set print position for letter grid cell d5 (6 per row), d0/d1 = f
 	moveq	#3,d1
 	rts
 
-DrawCreateList	;Draw list of up to 6 player names starting at player FF55F4
+DrawCreateList	;Draw list of up to 6 player names starting at player CreateListTop
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(NameEntryLen).w,-(sp)
 	move.w	(CreateListRow).w,-(sp)
@@ -600,7 +600,7 @@ ListMarkersOff	;95 only. Blanks that erase the row markers
 	String	' ',$0;blanks (erase arrows)
 	String	' ',$0
 
-CountNameLength	;Count name length of name buffer FFD0E0 into FFD0F4
+CountNameLength	;Count name length of name buffer NameEntryBuf into NameEntryLen
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$11,d3
 	movea.l	#NameEntryBuf,a0
@@ -690,7 +690,7 @@ NameEntryFramer	;cards94 NameEntryFramer. Framer with the name entry frame chars
 	move.w	(sp)+,(framercset).w
 	rts
 
-GetCreateName	;Copy player name (FFD0F6-1)*18 from FFFF0000 to a1, 0->-, length to FFD0F4 (like 94 GetLogName)
+GetCreateName	;Copy player name (CreateListRow-1)*18 from M68K_RAM to a1, 0->-, length to NameEntryLen (like 94 GetLogName)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#M68K_RAM,a0
 	move.w	(CreateListRow).w,d2
@@ -760,7 +760,7 @@ SaveCreateName	;Save entered name to the created-player record (new or existing)
 	bsr.w	CopyNameWords
 	bra.w	SaveNameOk
 
-CopyNameWords	;Copy length-prefixed name at FFBB1E into a0 as words
+CopyNameWords	;Copy length-prefixed name at TempBuffer into a0 as words
 	movea.l	#StatWork,a1
 	move.w	(a1),d0
 	subq.w	#1,d0
@@ -851,7 +851,7 @@ SaveNameRet	;95 only. SaveCreateName: return
 .0
 	rts
 
-ReadCreatedPlayers	;read created players: load $36-byte list from save RAM SRFreeAgentList, build 18-byte name records at $FFFF0000 and ids at $FFFF4E20, count in createdcount, add an empty slot if room
+ReadCreatedPlayers	;read created players: load $36-byte list from save RAM SRFreeAgentList, build 18-byte name records at M68K_RAM and ids at CreatedIds, count in createdcount, add an empty slot if room
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	(createdcount).l
 .0
@@ -900,7 +900,7 @@ ReadCreatedPlayers	;read created players: load $36-byte list from save RAM SRFre
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-BuildEnteredName	;build the entered name (from $FFFFD0E0, spaces/dashes dropped, space after first name) as a length-word string at TempBuffer and check it
+BuildEnteredName	;build the entered name (from NameEntryBuf, spaces/dashes dropped, space after first name) as a length-word string at TempBuffer and check it
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#linemarkbuf+2,a0
 	movea.l	#NameEntryBuf,a1
@@ -999,7 +999,7 @@ NewCreateRecord	;same as InitCreateRecord but with bit 2 of sflags8 set (skips t
 	bset	#2,(sflags8).w
 	bra.w	InitCreateRecord2
 
-InitCreateRecord	;read 32-byte create record #CreateIndex from save RAM ($5AA0) to $FFFF7538, put an 8-byte tail on it by flag $1F, write it back
+InitCreateRecord	;read 32-byte create record #CreateIndex from save RAM (SRCreatedPlayers) to CreateRecord, put an 8-byte tail on it by flag $1F, write it back
 	bclr	#2,(sflags8).w
 
 InitCreateRecord2	;95 only. InitCreateRecord without the bset (NewCreateRecord enters here)
@@ -1134,7 +1134,7 @@ CheckCreateSlots	;check free create slots: d0/flags = -1 (N set) if 20 created p
 	movem.w	(sp)+,d0
 	rts
 
-ClearCreatedPlayers	;clear the created players list at $FFFF5D22 (26 x $8000 + 0 terminator)
+ClearCreatedPlayers	;clear the created players list at CreatedList (26 x $8000 + 0 terminator)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#CreatedList,a0
 	move.w	#$19,d6
@@ -1435,7 +1435,7 @@ ModifyRatings	;Create Player "Modify Ratings" screen: load graphics/text, then j
 	bset	#6,(setupcardflags).w
 	jmp	Opening2
 
-PrintCreateName	;prints Name First:/Last: from name buffer $FFFF753A (split at the space) via string buffer $FFFFBBAA
+PrintCreateName	;prints Name First:/Last: from CreateRecord+2 (split at the space) via mesarea
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BF,$4,$6,'Name',$BF,$4,$7,'First:',$BF,$4,$8,'Last:'
@@ -2189,7 +2189,7 @@ EditAttrib18	;attribute handler
 EditNone	;no-op handler
 	rts
 
-ClearAttribDeltas	;clear 16-byte attribute buffer at FFC42C
+ClearAttribDeltas	;clear 16-byte attribute buffer AttribDeltas
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#AttribDeltas,a0
 	move.w	#3,d0
@@ -2199,7 +2199,7 @@ ClearAttribDeltas	;clear 16-byte attribute buffer at FFC42C
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LoadCreateTemplate	;copy 32-word player template (index CreateIndex) from SRCreatedPlayers into byte record FF7538, set CreateType from last byte
+LoadCreateTemplate	;copy 32-word player template (index CreateIndex) from SRCreatedPlayers into byte record CreateRecord, set CreateType from last byte
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$1F,d0
 	movea.l	#SaveRAM+2*SRCreatedPlayers,a0
@@ -2788,7 +2788,7 @@ FreeAgentMsgText	;Message string list for PrintSmallListItem
 	String	$F9,3,$FD,6,$FC,$D,'Free agent list is now empty.',0
 	rts
 
-BuildFreeAgentList	;Copy the free agent list (SRFreeAgentList, count in SRFreeAgentCount) to work table $FFFF3A98 and index list $FFFF88B8
+BuildFreeAgentList	;Copy the free agent list (SRFreeAgentList, count in SRFreeAgentCount) to work table TradeRoster1 and index list TradeRoster2
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(SaveRAM+2*SRFreeAgentCount).l,d0
 	andi.w	#$FF,d0

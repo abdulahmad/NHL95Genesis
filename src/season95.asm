@@ -1094,7 +1094,7 @@ RecordGameResult	;95 only. RecordTeamResult for the home and the away team, then
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-RecordTeamResult	;95 only. Add a win, loss or tie to the team's standings record in save RAM ($1AF6, playoffs $6173; 3 bytes a team)
+RecordTeamResult	;95 only. Add a win, loss or tie to the team's standings record in save RAM (SRStandings, playoffs SRPOStandings; 3 bytes a team)
 	movem.l	a0,-(sp)
 	clr.w	d2
 	move.b	(a0),d2

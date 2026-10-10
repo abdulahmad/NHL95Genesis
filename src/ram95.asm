@@ -7,7 +7,7 @@ AwardIds	equ	$FFFF0000	;95 only. SeasonAwards: the candidate ids (players, or te
 M68K_RAM	equ	$FFFF0000
 AwardScores	equ	$FFFF0548	;95 only. SeasonAwards: the candidate scores (ScanAllPlayers, SortAwardScores)
 TradeBuf	equ	$FFFF1388	;95 only. Trade: work buffer
-RosterTable	equ	$FFFF1B4C	;95 only. Season rosters ($38 bytes a team, save RAM $1B4C): roster ids, then the goalie, forward and defense counts
+RosterTable	equ	$FFFF1B4C	;95 only. Season rosters ($38 bytes a team, save RAM SRRosters): roster ids, then the goalie, forward and defense counts
 TradeData	equ	$FFFF2710	;95 only. Trade screen state (list sizes, cursors, chosen counts)
 TradeWork	equ	$FFFF2AF8	;95 only. Trade screen work words
 TradeRoster1	equ	$FFFF3A98	;95 only. Trade screen: HomeTeam roster rows
@@ -18,7 +18,7 @@ CreateListSel	equ	$FFFF55F8	;95 only. Create player list: selected row
 CreateWork	equ	$FFFF55FC	;95 only. Create player: name work count
 CreateIndex	equ	$FFFF55FE	;95 only. Create player: the record being edited
 RosterRatings	equ	$FFFF5700	;95 only. Default roster ratings ($20 bytes a team, DefaultRosters)
-CreatedList	equ	$FFFF5D22	;95 only. Created player list ($36 bytes, save RAM $5D22)
+CreatedList	equ	$FFFF5D22	;95 only. Created player list ($36 bytes, save RAM SRFreeAgentList)
 CreateCursorX	equ	$FFFF7530	;95 only. Modify Ratings cursor column
 CreateCursorY	equ	$FFFF7532	;95 only. Modify Ratings cursor row
 CreateType	equ	$FFFF7534	;95 only. Created player type: 0 goalie, else skater
@@ -156,7 +156,7 @@ rosterscroll	equ	$FFFFBB1A	;95 only. First player row shown by DisplayPlayerList
 TempLegSpd	equ	$FFFFBB1C	;94 $FFFFBF1E. A scratch word: leg speed (doplayeracc); assdefo keeps the furthest y of the other forwards here
 linemarkbuf	equ	$FFFFBB1E	;95 only. PrintPlayerLines String: the lines a player is on
 recuser1	equ	$FFFFBB1E	;95 only. UpdateRecords: a user (name log entry) word (GetTeamUser, GetPadUser). Shares linemarkbuf
-SeasonGoalSum	equ	$FFFFBB1E	;95 only. Season goal total of the human games (a long; save RAM $1B44 with SeasonGameCount). Shares linemarkbuf
+SeasonGoalSum	equ	$FFFFBB1E	;95 only. Season goal total of the human games (a long; save RAM SRGoalTotal with SeasonGameCount). Shares linemarkbuf
 StatWork	equ	$FFFFBB1E	;95 only. Scratch of the season stat screens (League Leaders: +0 mode, +2 category, +4 top row, +6 bottom row, +8 rows, +$A last row, +$C count; SaveGameHighlights, PrintStatHighlight). Shares linemarkbuf
 TempBuffer	equ	$FFFFBB1E	;94 $FFFFBF20. 40 byte scratch buffer (hot / cold sum byte pairs, Strings). Shares linemarkbuf
 recuser2	equ	$FFFFBB20	;95 only. UpdatePlayerRecords: the other team's user word (GetPadUser)
@@ -520,7 +520,7 @@ optbgchars	equ	$FFFFDC38	;95 only. SeasonOptionsGfx: the wait box chars
 ValidSRAM	equ	$FFFFDC3A	;94 $FFFFD458. 0 = save RAM checksum good, -1 = bad
 CreatedPlayerBuf	equ	$FFFFDC3C	;95 only. Created player record read from save RAM (GetCreatedName reads it at +2)
 jerseynum	equ	$FFFFDC3D	;95 only. Jersey number byte from GetJerseyNumber
-SRAMChecksum	equ	$FFFFDC5E	;95 only. The complement and sum bytes MakeSRAMChecksum writes to save RAM bytes $7FFE-$7FFF
+SRAMChecksum	equ	$FFFFDC5E	;95 only. The complement and sum bytes MakeSRAMChecksum writes to save RAM SRChecksum
 HmDefMode	equ	$FFFFDC62	;95 only. Home team defense mode: at 1 (Opening2 sets it) assdefd chases the carrier (assdefdchase) and asswingd covers (assign95_01)
 AwDefMode	equ	$FFFFDC64	;95 only. Away team defense mode, as HmDefMode
 turnstep	equ	$FFFFDC66	;95 only. doplayeracc: the turn step for the facing change

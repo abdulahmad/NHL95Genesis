@@ -617,7 +617,7 @@ ReadAttributeNibble	;93 name. d0 = goalies on team a2 (ReadAttributeNibbleD7 wit
 	movem.l	(sp)+,d7-a0
 	rts
 
-ReadAttributeNibbleD7	;95 only. d0 = goalies on team d7: from the season data in save RAM ($1B80 + team * $38), or with sflags11 bit 6 from the team data nibbles
+ReadAttributeNibbleD7	;95 only. d0 = goalies on team d7: from the season data in save RAM (SRRosters+$34 + team * $38), or with sflags11 bit 6 from the team data nibbles
 	btst	#6,(sflags11).w
 	bne.w	.0
 	movem.l	d1-d7/a0,-(sp)
@@ -675,7 +675,7 @@ GetDefenseStart	;94 GetDefenseStart: d0 = goalies + forwards of team a2, the ros
 	movem.l	(sp)+,a0
 	rts
 
-ProcessNibbleD7	;95 only. d0 = forwards on team d7 from the season data (save RAM $1B82 + team * $38)
+ProcessNibbleD7	;95 only. d0 = forwards on team d7 from the season data (save RAM SRRosters+$36 + team * $38)
 	movem.l	d1-d7/a0,-(sp)
 	move.w	d7,d0
 	bra.w	ProcessNibbleSeason

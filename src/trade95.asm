@@ -329,7 +329,7 @@ MoveSavedLines	;95 only. Fix team d7's saved line players (save RAM SRJerseyNums
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ExecuteTrade	;95 only. Do the trade: sort the chosen players of both teams (TradeList at $FFCC32 / $FFCC3A), move each to the other team (MoveTradedPlayer) and close the gaps (RemoveTradedPlayer)
+ExecuteTrade	;95 only. Do the trade: sort the chosen players of both teams (tradeteam1 / tradeteam2), move each to the other team (MoveTradedPlayer) and close the gaps (RemoveTradedPlayer)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#tradeteam1,a0
 	bsr.w	SortTradePlayers
@@ -1022,7 +1022,7 @@ TradeDone	;95 only. After a trade: rebuild both teams' trade lists (BuildTradeLi
 	bsr.w	BuildTradeList
 	jmp	EvaluateTrade
 
-TradeExit	;95 only. Leave the trade screen: set byte $FFD036 bit 6 and go to Opening2
+TradeExit	;95 only. Leave the trade screen: set setupcardflags bit 6 and go to Opening2
 	bset	#6,(setupcardflags).w
 	jmp	Opening2
 

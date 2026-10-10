@@ -518,7 +518,7 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 .4
 	moveq	#$FFFFFFFF,d4
 	moveq	#5,d3	;Set total number of players (6 total, set to 5)
-	movea.w	#(SortCords-M68K_RAM),a1	;B04A - Start of Home Players on Ice Arrays
+	movea.w	#(SortCords-M68K_RAM),a1	;start of the home players on ice
 	cmpi.w	#6,SCnum(a3)	;compares 6 to offset 52 from a3 (current player with puck) to check if player is away team or home team
 	blt.w	.5
 	adda.w	#$300,a1
@@ -1226,7 +1226,7 @@ shotdiradj	;a3 = shooter. Where to shoot for a computer player or a one timer
 	clr.w	d0	;clear d0
 	cmp.w	#$2C,d4	;','   ; 2C - right X edge of crease
 	bgt.w	.4
-	cmp.w	#$FFD4,d4	;FFD4 - left X edge of crease
+	cmp.w	#$FFD4,d4	;-$2C, the left X edge of the crease
 	blt.w	.4
 	btst	#7,pflags(a3)
 	beq.w	.3

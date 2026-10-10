@@ -154,7 +154,7 @@ puckIChk	;(checks94) Icing check: once the puck is loose (puckc negative) past t
 .2
 	cmpi.w	#$2C,(puckx).w	;',' ; 2C - edge of crease
 	bgt.w	.3
-	cmpi.w	#$FFD4,(puckx).w	;FFD4 - edge of crease
+	cmpi.w	#$FFD4,(puckx).w	;-$2C, the edge of the crease
 	blt.w	.3
 	bclr	#2,(iflags).w	;#ifok cleared
 	rts

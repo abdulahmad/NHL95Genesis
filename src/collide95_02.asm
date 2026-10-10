@@ -349,18 +349,18 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	move.b	d3,weight(a3)	;store in player struct
 	move.b	1(a0),d3	;move Wgt/Agl byte to d3
 	andi.b	#$F,d3	;mask Agl nibble
-	move.w	#3,(TempWord2).w	;move 3 into BF14
+	move.w	#3,(TempWord2).w	;TempWord2 = 3
 	jsr	(AttributeCalc).l	;attribute math and add hot/cold
 	move.b	d3,legstr(a3)	;move Agl byte to player struct
 	move.b	2(a0),d3	;load Spd/OfA byte to d3
 	lsr.b	#4,d3	;remove OfA nibble by shifting 4 bits right, moving Spd into lower nibble
-	move.w	#4,(TempWord2).w	;move 4 into BF14
+	move.w	#4,(TempWord2).w	;TempWord2 = 4
 	jsr	(AttributeCalc).l
 	bsr.w	BoostAttribute
 	move.b	d3,legspd(a3)	;move Spd byte into player struct
 	move.b	2(a0),d3	;move Spd/OfA byte to d3
 	andi.b	#$F,d3
-	move.w	#5,(TempWord2).w	;move 5 into BF14
+	move.w	#5,(TempWord2).w	;TempWord2 = 5
 	jsr	(AttributeCalc).l
 	add.b	(PPBonus).w,d3	;add Bonsuses to OfA
 	add.b	(PKBonus).w,d3
@@ -496,7 +496,7 @@ BoostAttribute	;95 only. d3 += ($1E - d3) / 4, kept in $F ... $1E. setplayer run
 AttributeCalc	;crowd94 AttributeCalc (moved in; IDA name). Attribute d3 of player a3 * 5 plus his hot / cold value / 3,
 	;limited to 0 ... $1E
 	movem.l	d0-d2/a1,-(sp)
-	move.w	(TempWord2).w,d1	;BF14 goes to d1
+	move.w	(TempWord2).w,d1
 	movea.l	#HmShots,a1	;Start of Home Team struct
 	btst	#6,pflags(a3)
 	beq.w	.0

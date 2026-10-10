@@ -15,7 +15,7 @@
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-InitialSP = $FFFFF6	;reset vector 0. 93 / 94 name, 24-bit form of $FFFFFFF6. Begin moves the stack to Stack (ram_addrs.inc)
+InitialSP = $FFFFF6	;reset vector 0. 93 / 94 name, 24-bit form of $FFFFFFF6. Begin moves the stack to Stack (ram95)
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
