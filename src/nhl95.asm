@@ -2,13 +2,14 @@
 ;	Top level of the full NHL 95 ROM build (build95.bat, npm run build:retail). The listing is output\nhl95 .lst.
 ;	The includes are in 95 ROM order, from the fingerprint map tools/segmap95.json (tools/fingerprint_map.py).
 ;	The address on each include line is the mapped lst/nhl95.bin start. It is provisional until the segment matches.
-;	The org for a segment build goes in its _stub.asm. Do not put an org in a file this list includes.
+;	The org for a segment build goes in its _stub.asm. Do not put an org in a file this list includes: this file sets org 0.
 ;	ram95.asm has no bytes. The ports, VDP status bits and RAM names are in stubinc.
 ;
 	include	stubinc\ports.inc	;IO_* / VDP_* ports. Equates only
 	include	stubinc\equals.inc	;VDP status bits. Equates only
 	include	stubinc\ram_addrs.inc	;RAM names. Equates only
 
+	org	0			;the ROM starts at 0. Without an org SNASM writes a short, misaligned bin (the stubs carry their own org)
 	include	main95.asm		; $000000  Adapted from main94.asm: header, startup, vectors
 	include	teamdata95.asm		; $000772  Adapted from teamdata94.asm: teams, palettes, credits text
 	include	frames95.asm		; $005A34  Adapted from frames94.asm: sprite animation tables

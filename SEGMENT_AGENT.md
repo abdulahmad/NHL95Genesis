@@ -4,7 +4,7 @@ This file is the queue. Do not rewrite it as a whole file. Edit the current row 
 
 ## Current segment
 
-None. Every ROM map row is matched. The full build (`nhl95.asm`) still reports 5 undefined symbols: names that other files use for addresses inside matched segments that have no label there yet (AttribScaleTable $83C9E, FaceoffScreen $88E42, IntermissionStart $9D18, SeasonScheduleEnd $9721).
+None. Every ROM map row is matched, and the full build (`npm run build:retail`) matches `lst/nhl95.bin` byte for byte (SHA-1 09e87b076aa4cd6f057a1d65bb50fd889b509b44). A name another file uses for an address inside a segment must be a label in that segment (IntermissionStart $9D18 in hockey95, SeasonScheduleEnd $9721 in schedule95, StickHandTable $83C9E in collide95_02, DrawFaceoffWindow $88E42 in checks95_04); the stub equates only cover the segment build.
 
 RAM (`ram95`) is not a queue segment. It has no ROM bytes, so there is nothing to byte-verify, and the queue moves past its row. That does not put RAM off limits. RAM names come from the code segments as they are transcribed, not from a separate first pass: add each one to `src/stubinc/ram_addrs.inc`, which the stubs include. `src/ram95.asm` is the RAM map those names are consolidated into, and you may add to it whenever it fits. When the stubs are removed, the RAM definitions end up in `src/ram95.asm`. The full build includes both files and a stub includes only `ram_addrs.inc`, so define each name in one file, and keep a name a stub uses in `ram_addrs.inc` until the stubs are removed.
 
@@ -25,7 +25,7 @@ Provisional until the listing confirms it. NHL 95 is the 1994-95 season, still 2
 
 ## Build
 
-`buildseg.bat <name>` assembles `src/<name>_stub.asm`. The stub carries the org. A file included by `nhl95.asm` has no org.
+`buildseg.bat <name>` assembles `src/<name>_stub.asm`. The stub carries the org. A file included by `nhl95.asm` has no org; `nhl95.asm` itself sets `org 0` (without it SNASM writes a short, misaligned bin).
 
 `npm run seg:<name>` runs buildseg, then `fixopcodes.js` on `output/<name> .lst` and `output/<name>.bin`, then `verifySegment.js`. The assembler listing name has a space before `.lst`.
 
