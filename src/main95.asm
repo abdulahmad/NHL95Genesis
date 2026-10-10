@@ -1,5 +1,5 @@
 ;	NHL 95 main segment. Retail $000000-$000771 (1906 bytes), from the IDA listing lst/nhl95.bin.lst.
-;	Vectors, cartridge header and SegaInit as in main94.asm. 95 then adds a region lock (CHECK_VDP to RegionHang), keeps the
+;	Vectors, cartridge header and SegaInit as in main94.asm. 95 then adds a region lock (CHECK_VDP to .regionHang), keeps the
 ;	checksum call, and holds Begin itself (94 Begin is in hockey94). TeamList (teamdata95) starts at $772.
 	include	macros\genesis.mac
 
@@ -253,7 +253,7 @@ CHECK_VDP	;Hot start lands here. Match the console region to the CountryCode let
 	lea	RegionLetters(pc),a0
 	move.b	(a0,d0.w),d0		;region letter J / U / E, 0 for Japan PAL
 	tst.b	d0
-	beq.w	RegionHang		;Japan PAL: hang with a blank screen
+	beq.w	.regionHang		;Japan PAL: hang with a blank screen
 	lea	(CountryCode).l,a0
 	move.w	#$F,d1			;16 country code letters
 .find
@@ -332,8 +332,8 @@ CHECK_VDP	;Hot start lands here. Match the console region to the CountryCode let
 	move.b	(a0)+,d0
 	addq.w	#1,d1
 	bsr.w	RegionPrint
-RegionHang	;Wrong region (or Japan PAL): hang
-	bra.s	RegionHang
+.regionHang	;Wrong region (or Japan PAL): hang
+	bra.s	.regionHang
 
 RegionPrint	;Print the 0 terminated text at a0 on plane A ($C000), row d1, column d0. Tile = character - $20
 	move.b	d1,d2

@@ -140,7 +140,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	beq.s	.5
 .10
 	btst	#7,d1
-	bne.w	NameEntryExit
+	bne.w	.nameEntryExit
 	tst.w	(NameEntryMode).w
 	bne.w	.11
 	move.w	#1,d0
@@ -267,7 +267,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	move.b	d0,(a0,d4.w)
 	bra.w	.3
 
-NameEntryExit	;NameEntryScreen exit (restore and return)
+.nameEntryExit	;NameEntryScreen exit (restore and return)
 	bsr.w	StoreUserName
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts

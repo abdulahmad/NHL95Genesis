@@ -1124,9 +1124,9 @@ SeasonPlayersScreen	;Run the season stats screen, then jump to ExitAttributeScre
 	bsr.w	SeasonAttributeScreen
 	jmp	(ExitAttributeScreen2).l
 
-SeasonPlayersRedraw	;Wait for vblank, reset scroll, clear the window/scroll VDP areas, draw the team screen (DrawTeamScreen4NoSetup) and enter the stats screen draw
+.seasonPlayersRedraw	;Wait for vblank, reset scroll, clear the window/scroll VDP areas, draw the team screen (DrawTeamScreen4NoSetup) and enter the stats screen draw
 	btst	#0,(disflags).w
-	bne.s	SeasonPlayersRedraw
+	bne.s	.seasonPlayersRedraw
 	clr.w	(Hscroll).w
 	clr.w	(Vscroll).w
 	jsr	(SetScroll2).l
@@ -2493,22 +2493,22 @@ GatherAndSort	;Call a5 to fill values at $FFFFA1AA / players at $FFFF9C60 (count
 	movea.l	#LeaderPlayers,a3
 	jsr	(a5)
 	move.w	(StatWork+$C).w,d3
-	beq.w	rtsSortValues
+	beq.w	.rtsSortValues
 	subq.w	#1,d3
 	clr.w	d4
 	movea.l	#LeaderValues,a1
 	movea.l	#LeaderPlayers,a0
 	btst	#1,(BA_PS_flags).w
-	bne.w	SortValuesUp
+	bne.w	.sortValuesUp
 
-SortValuesDown	;Descending pass: swap neighbours where the next value is larger, repeat until no swap
+.sortValuesDown	;Descending pass: swap neighbours where the next value is larger, repeat until no swap
 	clr.w	d0
 	clr.w	(TempWord1).w
 	move.w	(StatWork+$C).w,d2
-	beq.w	rtsSortValues
+	beq.w	.rtsSortValues
 	subq.w	#2,d2
-	beq.w	rtsSortValues
-	bmi.w	rtsSortValues
+	beq.w	.rtsSortValues
+	bmi.w	.rtsSortValues
 .0
 	move.w	0(a1,d0.w),d5
 	move.w	2(a1,d0.w),d6
@@ -2527,24 +2527,24 @@ SortValuesDown	;Descending pass: swap neighbours where the next value is larger,
 	addq.w	#2,d0
 	dbf	d2,.0
 	tst.w	(TempWord1).w
-	bne.s	SortValuesDown
+	bne.s	.sortValuesDown
 
-rtsSortValues
+.rtsSortValues
 	rts
 
-SortValuesUp	;Ascending pass: swap neighbours where the next value is smaller, repeat until no swap
+.sortValuesUp	;Ascending pass: swap neighbours where the next value is smaller, repeat until no swap
 	clr.w	d0
 	clr.w	(TempWord1).w
 	move.w	(StatWork+$C).w,d2
-	beq.s	rtsSortValues
+	beq.s	.rtsSortValues
 	subq.w	#2,d2
-	beq.s	rtsSortValues
-	bmi.s	rtsSortValues
-.0
+	beq.s	.rtsSortValues
+	bmi.s	.rtsSortValues
+.2
 	move.w	0(a1,d0.w),d5
 	move.w	2(a1,d0.w),d6
 	cmp.w	d5,d6
-	bge.w	.1
+	bge.w	.3
 	st	(TempWord1).w
 	move.w	0(a1,d0.w),-(sp)
 	move.w	2(a1,d0.w),-(sp)
@@ -2554,11 +2554,11 @@ SortValuesUp	;Ascending pass: swap neighbours where the next value is smaller, r
 	move.w	2(a0,d0.w),-(sp)
 	move.w	(sp)+,0(a0,d0.w)
 	move.w	(sp)+,2(a0,d0.w)
-.1
+.3
 	addq.w	#2,d0
-	dbf	d2,.0
+	dbf	d2,.2
 	tst.w	(TempWord1).w
-	bne.s	SortValuesUp
+	bne.s	.sortValuesUp
 	rts
 
 DrawLeaderRows	;Draw the leader rows (StatWork+8 rows from StatWork+4): when StatWork is set use the sorted list (DrawPlayerLeaderRows), else rank, team logo (DrawTeamLogo3), and the category value (LeaderPrintJumps) from the RAM tables in LeaderTables

@@ -88,7 +88,7 @@ CreatePlayer	;Create Player screen entry: load graphics, draw title, init player
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
 
-CreatePlayerRedraw	;(re)draw "Create Player" title and player list
+.createPlayerRedraw	;(re)draw "Create Player" title and player list
 	jsr	(printbigz).l
 	String	$BF,7,2,'Create Player'
 	bsr.w	ReadCreatedPlayers
@@ -127,14 +127,14 @@ CreatePlayerRedraw	;(re)draw "Create Player" title and player list
 	move.w	#1,(NameEntryMode).w
 	bsr.w	NameEntry
 	clr.w	d0
-	bra.w	NameCursorMove
+	bra.w	.nameCursorMove
 
-CreatePlayerLoop	;main input loop: list mode scrolls players, edit mode moves name/char cursors
+.createPlayerLoop	;main input loop: list mode scrolls players, edit mode moves name/char cursors
 	bsr.w	CountNameLength
 	jsr	(printz).l
 	String	$BF,5,$12,0
 	tst.w	(NameEntryMode).w
-	beq.w	.0
+	beq.w	.4
 	jsr	(printz).l
 	String	$BF,9,5,0
 	move.w	(CreateListRow).w,d0
@@ -142,90 +142,90 @@ CreatePlayerLoop	;main input loop: list mode scrolls players, edit mode moves na
 	add.w	d0,(printy).w
 	movea.l	#NameEntryBuf,a1
 	bsr.w	PrintEditName
-.0
+.4
 	bsr.w	MoveListMarkers
-.1
+.5
 	move.w	(vcount).w,d0
-.2
+.6
 	cmp.w	(vcount).w,d0
-	beq.s	.2
+	beq.s	.6
 	jsr	(ReadJoy1).l
 	tst.w	d1
-	beq.s	.1
+	beq.s	.5
 	tst.w	(NameEntryMode).w
-	bne.w	.3
+	bne.w	.7
 	move.w	#1,d0
 	btst	#7,d1
-	bne.w	CreatePlayerExit
+	bne.w	.createPlayerExit
 	btst	#1,d1
-	bne.w	CreateListMove
+	bne.w	.createListMove
 	move.w	#$FFFF,d0
 	btst	#0,d1
-	bne.w	CreateListMove
+	bne.w	.createListMove
 	btst	#4,d1
-	beq.w	CreatePlayerLoop
+	beq.w	.createPlayerLoop
 	clr.w	d4
 	clr.w	d5
 	bsr.w	NameEntry
 	clr.w	d0
-	bra.w	CreateListMove
-.3
+	bra.w	.createListMove
+.7
 	moveq	#$FFFFFFFF,d0
 	btst	#7,d1
-	bne.w	CreateNameDone
+	bne.w	.createNameDone
 	btst	#6,d1
-	bne.w	NameCursorMove
+	bne.w	.nameCursorMove
 	neg.w	d0
 	btst	#5,d1
-	bne.w	NameCursorMove
+	bne.w	.nameCursorMove
 	btst	#3,d1
-	bne.w	GridCursorMove
+	bne.w	.gridCursorMove
 	neg.w	d0
 	btst	#2,d1
-	bne.w	GridCursorMove
+	bne.w	.gridCursorMove
 	moveq	#6,d0
 	btst	#1,d1
-	bne.w	GridCursorMove
+	bne.w	.gridCursorMove
 	neg.w	d0
 	btst	#0,d1
-	bne.w	GridCursorMove
+	bne.w	.gridCursorMove
 	btst	#4,d1
-	beq.w	CreatePlayerLoop
+	beq.w	.createPlayerLoop
 	bsr.w	NameEntry
-	bra.w	CreatePlayerLoop
+	bra.w	.createPlayerLoop
 
-CreateListMove	;move player-list selection by d0 and scroll the list window
+.createListMove	;move player-list selection by d0 and scroll the list window
 	add.w	d0,(CreateListRow).w
 	move.w	(CreateListRow).w,d1
 	cmp.w	(createdcount).l,d1
-	ble.w	.0
+	ble.w	.8
 	sub.w	d0,(CreateListRow).w
-.0
+.8
 	tst.w	(CreateListRow).w
-	bne.w	.1
+	bne.w	.9
 	sub.w	d0,(CreateListRow).w
-.1
+.9
 	move.w	(CreateListRow).w,d0
 	subq.w	#1,d0
 	cmp.w	(CreateListTop).l,d0
-	bge.w	.2
+	bge.w	.10
 	subq.w	#1,(CreateListTop).l
 	subq.w	#1,(CreateListSel).l
 	bsr.w	DrawCreateList
-.2
+.10
 	cmp.w	(CreateListSel).l,d0
-	ble.w	.3
+	ble.w	.11
 	addq.w	#1,(CreateListTop).l
 	addq.w	#1,(CreateListSel).l
 	bsr.w	DrawCreateList
-.3
+.11
 	movea.l	#NameEntryBuf,a1
 	bsr.w	GetCreateName
 	tst.w	(NameEntryMode).w
-	bne.w	.4
+	bne.w	.12
 	jsr	(NameListHelp).l
-	bra.w	CreatePlayerLoop
-.4
+	bra.w	.createPlayerLoop
+.12
 	jsr	(printz).l
 	String	$BF,4,$13,0
 	add.w	d4,(printx).w
@@ -244,27 +244,27 @@ CreateListMove	;move player-list selection by d0 and scroll the list window
 	bsr.w	FixFirstLetter
 	move.w	d4,d0
 	neg.w	d0
-	bra.w	NameCursorMove
+	bra.w	.nameCursorMove
 
-NameCursorMove	;move name cursor (d4, 0-$11) by d0
+.nameCursorMove	;move name cursor (d4, 0-$11) by d0
 	add.w	d4,d0
 	cmp.w	#$11,d0
-	bhi.w	CreatePlayerLoop
+	bhi.w	.createPlayerLoop
 	move.w	d0,d4
 	bsr.w	rtsCreate2
 	movea.l	#NameEntryBuf,a0
 	clr.w	d0
 	cmpi.b	#$2D,(a0,d4.w)
-	beq.w	GridCursorMove
+	beq.w	.gridCursorMove
 	move.b	(a0,d4.w),d0
 	ext.w	d0
 	bsr.w	FindGridLetter
 	sub.w	d5,d0
 
-GridCursorMove	;move character-grid cursor (d5, 0-$1D) by d0 and write char into name buffer
+.gridCursorMove	;move character-grid cursor (d5, 0-$1D) by d0 and write char into name buffer
 	add.w	d5,d0
 	cmp.w	#$1D,d0
-	bhi.w	CreatePlayerLoop
+	bhi.w	.createPlayerLoop
 	move.w	d0,-(sp)
 	bsr.w	GridLetterPos
 	moveq	#1,d2
@@ -281,9 +281,9 @@ GridCursorMove	;move character-grid cursor (d5, 0-$1D) by d0 and write char into
 	move.w	(printx).w,-(sp)
 	move.w	(printy).w,-(sp)
 	tst.w	(NameEntryMode).w
-	beq.w	.0
+	beq.w	.13
 	jsr	(NameEntryFramer).l
-.0
+.13
 	move.w	(sp)+,(printy).w
 	addq.w	#1,(printy).w
 	move.w	(sp)+,(printx).w
@@ -293,24 +293,24 @@ GridCursorMove	;move character-grid cursor (d5, 0-$1D) by d0 and write char into
 	movea.l	#CreateLetterGrid,a1
 	move.b	(a1,d5.w),d0
 	move.b	d0,(a0,d4.w)
-	bra.w	CreatePlayerLoop
+	bra.w	.createPlayerLoop
 
-CreateNameDone	;Start in edit mode: validate name, save player and continue, else clear and redraw
+.createNameDone	;Start in edit mode: validate name, save player and continue, else clear and redraw
 	bsr.w	SaveCreateName
-	bmi.w	.0
+	bmi.w	.14
 	bsr.w	InitCreateRecord
 	jsr	(MakeSRAMChecksum).l
 	jmp	(ModifyRatings).l
-.0
+.14
 	jsr	(printz).l
 	String	$FF,0,0,0
 	moveq	#$28,d0
 	moveq	#$1C,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
-	bra.w	CreatePlayerRedraw
+	bra.w	.createPlayerRedraw
 
-CreatePlayerExit	;Start in list mode: leave create-player screen back to main flow
+.createPlayerExit	;Start in list mode: leave create-player screen back to main flow
 	movem.l	(sp)+,d0-d7/a0-a6
 	bset	#6,(setupcardflags).w
 	jmp	(Opening2).l
@@ -2769,9 +2769,9 @@ FreeAgentExit	;Exit free-agent screen: set bit 6 of setupcardflags, jump to Open
 
 FreeAgentsEmpty	;"Free agent list is now empty." message box, wait for a key, then exit
 	clr.w	d0
-	bra.w	FreeAgentMessage
+	bra.w	.freeAgentMessage
 
-FreeAgentMessage	;Show message box (string list FreeAgentMsgText, index d0), wait for key, exit via FreeAgentExit
+.freeAgentMessage	;Show message box (string list FreeAgentMsgText, index d0), wait for key, exit via FreeAgentExit
 	move.w	d0,-(sp)
 	jsr	(printz).l
 	String	$BF,5,$A,0
@@ -3220,9 +3220,9 @@ ReleaseExit	;Exit Release Player screen: set bit 6 of setupcardflags, jump to Op
 
 FreeAgentsFull	;"Free agent list is full." message box, wait for key, then exit
 	clr.w	d0
-	bra.w	ReleaseMessage
+	bra.w	.releaseMessage
 
-ReleaseMessage	;Show message box (string list ReleaseMsgText, index d0), wait for key, exit via ReleaseExit
+.releaseMessage	;Show message box (string list ReleaseMsgText, index d0), wait for key, exit via ReleaseExit
 	move.w	d0,-(sp)
 	jsr	(printz).l
 	String	$BF,5,$A,0
