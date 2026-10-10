@@ -221,7 +221,8 @@ holdplayer	;Jumped to from doinput
 .0
 	jsr	(chkcheckstart).l	;95 only
 	jmp	(SetSPA).l
-Acheck
+Acheck	;(input94) Hold check for a3 on player a0 (the CPU jumps in here): SPAHold (stick in the air) or SPAhook by Ypos of a3 - a0
+	;and the goal a3 shoots at (pfgoal); SPAhook with no impact
 	bset	#pfalock,pflags(a3)	;lock animation
 	move.w	#SPAhook,d1	;move anim into d1 - normal hold check
 	tst.w	impact(a3)	;check if impact = 0
@@ -242,7 +243,7 @@ burstchk	;95 only: no burst while the animation is locked. Jumped to from doinpu
 	btst	#pfalock,pflags(a3)
 	beq.w	burst
 	rts
-burst
+burst	;(input94) C button speed burst: take $CC energy unless OptLine is set, add a facedir push to Xvel / Yvel and set SPAburst.
 	jsr	(getpde).l	;get players energy
 	tst.w	(OptLine).w
 	bne.w	.0
@@ -481,19 +482,19 @@ setc1player	;Jumped to from doinput
 	bsr.s	setcplayer
 	move.w	(sp)+,d4
 	rts
-setc2player
+setc2player	;Give pad 2 player d0 (setcplayer, d4 = 2). 94 setc2player did it inline
 	move.w	d4,-(sp)
 	move.w	#2,d4
 	bsr.s	setcplayer
 	move.w	(sp)+,d4
 	rts
-setc3player
+setc3player	;95 only. Give pad 3 player d0 (setcplayer, d4 = 4)
 	move.w	d4,-(sp)
 	move.w	#4,d4
 	bsr.s	setcplayer
 	move.w	(sp)+,d4
 	rts
-setc4player
+setc4player	;95 only. Give pad 4 player d0 (setcplayer, d4 = 6)
 	move.w	d4,-(sp)
 	move.w	#6,d4
 	bsr.s	setcplayer

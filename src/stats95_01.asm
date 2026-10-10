@@ -14,7 +14,7 @@
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-rtsStatTables
+rtsStatTables	;rts (period94 rtsStatTables)
 	rts
 
 PlayerStatsScreen	;stats94 PlayerStatsScreen (93 name). Pause menu PLAYER STATS: DisplayAttributeScreen with d7 = 0 (this game)
@@ -147,7 +147,7 @@ SetAttribScrollReg	;stats94 SetAttribScrollReg (93 name). VSRAM = VertLineScroll
 	move.w	d0,(a0)
 	move.w	(sp)+,(disflags).w
 
-rtsAttrib
+rtsAttrib	;rts (shared exit of the DisplayAttribute routines)
 	rts
 
 DisplayAttributeLineUp	;stats94 DisplayAttributeLineUp (93 name)
@@ -450,7 +450,8 @@ ScrollArrowTbl2	;stats94 ScrollArrowTbl2 (93 name). None, up, down, both
 	String	' ',$FB,$FF,$FA,$E,'}',$F9,0
 	String	'{',$FB,$FF,$FA,$E,'}',$F9,0
 
-InitSeasonStats
+InitSeasonStats	;95 only. New season: clear the player stat blocks (SRGoals on, $1B6C bytes), SRTeamBlock2, SRTeamStats and SRInjuries in save RAM,
+	;then MarkSeasonRosters
 	movem.l	d0-d7/a0-a6,-(sp)
 	lea	(M68K_RAM).l,a0
 	move.w	#$6DC,d0
@@ -498,7 +499,8 @@ InitSeasonStats
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SaveSimGame
+SaveSimGame	;95 only. Save a finished season game: the cup winner, SimFlags bit 0 when a user team won, player stats, highlights, both team
+	;records and the injury ticks
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(HmShots+$28).w,(SaveRAM+2*SRCupWinner).l
 	move.w	(HmGoals).w,d7
@@ -553,7 +555,8 @@ SaveSimGame
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-AddTeamSeasonStats
+AddTeamSeasonStats	;95 only. Add the game totals of team a1 (a2 = other team) to team d0's record in SRTeamStats (SRPOTeamStats in the playoffs,
+	;SeasonDay bit 5)
 	mulu.w	#$A,d0
 	btst	#5,(SeasonDay+1).w
 	beq.w	.0
@@ -582,7 +585,8 @@ AddTeamSeasonStats
 	jsr	(MakeSRAMChecksum).l
 	rts
 
-AddPlayerSeasonStats
+AddPlayerSeasonStats	;95 only. Add the goals, assists, shots, penalty minutes and games played of team d0 (game stats a1) to its save RAM stat blocks;
+	;bit 15 marks the players dressed (d6 = last one)
 	move.l	#SRGoals,d2
 	btst	#5,(SeasonDay+1).w
 	beq.w	.0
@@ -706,7 +710,8 @@ AddPlayerSeasonStats
 	jsr	(MakeSRAMChecksum).l
 	rts
 
-ReadStatBlock
+ReadStatBlock	;95 only. Read the $34 byte stat block of team d0 at save RAM d2 to StatBuf; saves the address for WriteStatBlock. Returns d0 = 0,
+	;d7 = $19
 	mulu.w	#$34,d0
 	add.l	d2,d0
 	movea.l	#StatBuf,a0
@@ -719,11 +724,12 @@ ReadStatBlock
 	move.w	#$19,d7
 	rts
 
-WriteStatBlock
+WriteStatBlock	;95 only. Write StatBuf back where ReadStatBlock read it
 	movem.l	(a5)+,d0-d1/a0
 	jmp	WriteSRAM
 
-SaveGameHighlights
+SaveGameHighlights	;95 only. Pick today's highlight of HomeTeam's game (most goals, best goalie, most assists, the type in the top 3 bits) and save it
+	;at GetHighlightSlot. Skipped with SeasonDay bit 3
 	btst	#3,(SeasonDay+1).w
 	bne.w	rtsHighlight
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -823,7 +829,7 @@ SaveGameHighlights
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-BestGoalieSaves
+BestGoalieSaves	;95 only. d2 / d3 = the most saves (shots against - goals against) and its roster slot in team a2
 	movem.l	d4-d6/a2-a3,-(sp)
 	jsr	(ReadAttributeNibble).l
 	clr.w	d2
@@ -850,7 +856,7 @@ BestGoalieSaves
 	movem.l	(sp)+,d4-d6/a2-a3
 	rts
 
-MostAssists
+MostAssists	;95 only. d2 / d3 = the most assists and its roster slot among the skaters of team a2
 	jsr	(ReadAttributeNibble).l
 	move.w	#$1A,d1
 	sub.w	d0,d1
@@ -870,7 +876,7 @@ MostAssists
 	movea.l	(sp)+,a2
 	rts
 
-MostGoals
+MostGoals	;95 only. d2 / d3 = the most goals and its roster slot among the skaters of team a2
 	jsr	(ReadAttributeNibble).l
 	move.w	#$1A,d1
 	sub.w	d0,d1
@@ -890,7 +896,8 @@ MostGoals
 	movea.l	(sp)+,a2
 	rts
 
-AddHighlight
+AddHighlight	;95 only. Make highlight d0 (type bits + team*$1A + slot) a roster id and keep it at (a0) / value d2 unless (a0) already holds one
+	;(CompareHighlight)
 	move.w	d3,-(sp)
 	movem.l	d7,-(sp)
 	move.w	d0,d7
@@ -918,7 +925,7 @@ AddHighlight
 	move.w	(sp)+,d3
 	rts
 
-CompareHighlight
+CompareHighlight	;95 only. Compare highlight d0 with the one in d1; d3 = 1 and Z clear when d1 is empty
 	move.w	d1,d3
 	andi.w	#$E000,d3
 	beq.w	.0
@@ -930,10 +937,11 @@ CompareHighlight
 .0
 	move.w	#1,d3
 
-rtsHighlight
+rtsHighlight	;rts (SaveGameHighlights in the playoffs)
 	rts
 
-ReadTeamPlayerStats
+ReadTeamPlayerStats	;95 only. Read the five stat blocks (goals, assists, shots, games played, penalty minutes) of team d7 to a0, $34 bytes each;
+	;playoff blocks with SeasonDay bit 5
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d7,d0
 	mulu.w	#$34,d0
@@ -991,7 +999,7 @@ ReadTeamPlayerStats
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-WriteTeamPlayerStats
+WriteTeamPlayerStats	;95 only. Write the five stat blocks of team d7 from a0 (as ReadTeamPlayerStats)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d7,d0
 	mulu.w	#$34,d0
@@ -1079,7 +1087,7 @@ ReadSeasonTeamRecord	;95 only. Read the season record of team d7 (save RAM SRTea
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-MarkSeasonRosters
+MarkSeasonRosters	;95 only. Set bit 15 of every player's goals and shots words in save RAM, for all $1A teams (all on the roster)
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d7
 	movea.l	#SaveRAM+2*SRGoals,a0
@@ -1169,7 +1177,7 @@ SeasonAttributeScreen	;stats94 DisplayAttributeScreen (season version). d7 = tea
 	move.l	#PlayerStatsBgMap,(screenarg).l
 	jsr	(DrawTeamScreen4).l
 
-SeasonAttributeDraw
+SeasonAttributeDraw	;95 only. Draw the season player stats screen for team d7 (SeasonAttributeScreen continues here)
 	jsr	(printz).l
 	String	$BD,$0,$6,$0
 	movea.l	#PlayerStatsTitleMap,a0
@@ -1296,7 +1304,7 @@ SeasonAttribScrollReg	;stats94 SetAttribScrollReg. VSRAM = VertLineScrolling - $
 	move.w	d0,(a0)
 	move.w	(sp)+,(disflags).w
 
-rtsSeasonAttrib
+rtsSeasonAttrib	;rts (shared exit of the SeasonAttribute routines)
 	rts
 
 SeasonAttribLineUp	;stats94 DisplayAttributeLineUp
@@ -1609,11 +1617,11 @@ SeasonTeamStats	;95 season TEAM STATS screen (sflags11 bit 3 = playoff "Playoff 
 	jsr	(setvram).l
 	bra.w	SeasonTeamStatsRun
 
-SeasonTeamsScreen
+SeasonTeamsScreen	;95 only. Pause / season menu Season Team Stats (Playoff Teams): SeasonTeamStatsRun, then ExitAttributeScreen2
 	bsr.w	SeasonTeamStatsRun
 	jmp	(ExitAttributeScreen2).l
 
-SeasonTeamStatsRun
+SeasonTeamStatsRun	;95 only. Season (or playoff, sflags11 bit 3) team stats screen: team records from ReadSeasonTeamRecord, A / B switch teams
 	move.b	(SeasonDay+1).w,-(sp)
 	btst	#3,(sflags11).w
 	bne.w	.0
@@ -2375,7 +2383,7 @@ LeadersShotsAllowed	;Shots Allowed Avg: shots against*100/games per team, sort a
 	bsr.w	SortLeadersUp
 	bra.w	BuildLeadersDone
 
-BuildLeadersDone
+BuildLeadersDone	;95 only. Shared exit of the team leader builders
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -2445,7 +2453,7 @@ BuildPlayerLeaders	;League Leaders: individual mode, dispatch on category BB20 t
 	movea.l	0(a0,d0.w),a0
 	jmp	(a0)
 
-BuildPlayerLeadersDone
+BuildPlayerLeadersDone	;95 only. Shared exit of the player leader builders
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -2735,7 +2743,7 @@ DrawPlayerLeaderRows	;Sorted list rows: rank, player name (team $772 table, d7 =
 	blt.w	.0
 	bra.w	rtsLeaderRows
 
-rtsLeaderRows
+rtsLeaderRows	;rts (DrawLeaderRows)
 	rts
 
 LeaderTables	;RAM tables (team order) per category for DrawLeaderRows
@@ -3000,7 +3008,7 @@ LineEditorRedraw	;stats94 LineEditorRedraw: clear and redraw the whole editor (a
 	jsr	(LineEditorBg).l
 	jsr	(seta2).l
 
-LineEditorReturn
+LineEditorReturn	;95 only. Line editor: back from the exit menu (load, copy or save lines): clear the screen and redraw the lines
 	jsr	(printz2).l
 	String	$FF,$2,$FD,$0,$FC,$0
 	moveq	#$28,d0
@@ -3547,7 +3555,9 @@ TeamLinesOffset	;d0 = save RAM offset of team a2's saved line ($39 bytes per tea
 	move.w	(sp)+,d1
 	rts
 
-DisplayPeriodOver
+DisplayPeriodOver	;(data94; 93 name) End of game Stars of the Game box. Called from UpdatePA while RefPen is the game over penalty. Waits for RefCnt
+	;<= $40 and runs once (gmode bit 7); then disflags bit 3 and a vblank. Frames the box, draws a bitmap, then the three best star
+	;scores (FindMaxAttributeTEam). 95: not with sflags9 bit 7
 	cmpi.w	#$40,(RefCnt).w
 	bgt.w	.4
 	bset	#7,(gmode).w
@@ -3595,7 +3605,8 @@ DisplayPeriodOver
 .4
 	rts
 
-FindMaxAttributeTEam
+FindMaxAttributeTEam	;(data94; 93 name) Take the highest of the 52 star scores at ThreeStars (26 per team, home first) and clear it. Returns d0 = player
+	;slot, a2 = its team struct
 	movem.l	d1-d2/a1/a4,-(sp)
 .0
 	movea.w	#(ThreeStars-M68K_RAM),a4
@@ -3621,7 +3632,8 @@ FindMaxAttributeTEam
 	movem.l	(sp)+,d1-d2/a1/a4
 	rts
 
-CalculateTeamAttributes
+CalculateTeamAttributes	;(data94; 93 name) Star score for every roster slot of both teams to ThreeStars (26 longs per team, home first). d5 = GetPeriodTime
+	;+ d2, the goalie ice time needed. If gsp is 3 and the score is not tied, the scorer of the last goal gets $7FFFFFFF
 	movea.w	#(ThreeStars-M68K_RAM),a4
 	jsr	(GetPeriodTime).l
 	move.w	d0,d5
@@ -3650,7 +3662,9 @@ CalculateTeamAttributes
 .1
 	rts
 
-CalculateTeamAttributeValues
+CalculateTeamAttributeValues	;(data94; 93 name) Star scores of team a2 (a3 = other team) to (a4)+, one long per roster slot. Each starts at the goal difference.
+	;Skaters: goals*11000 + assists*10100 + shots*10, or in a tied game shots*1000 + frames on ice. Goalies on ice at least d5 with
+	;shots against: +32000 if goals against*100/shots <= 4, +75000 more for a shutout. 95: the team stat arrays are 2 bytes on
 	movea.w	a2,a1
 	move.w	$C(a2),d3
 	sub.w	$C(a3),d3

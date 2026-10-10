@@ -231,7 +231,7 @@ updatereplay	;Called every frame to save replay events, d7 = elapsed frames. 95 
 	move.w	(sp)+,d0
 	move.w	(Hpos).w,(a0)+
 	move.w	(Vpos).w,(a0)+
-rtss8
+rtss8	;rts (replay94 rtss8; 93 rtss2)
 	rts
 
 ReplayMode	;Instant replay play-back control and display code (94 ReplayMode). Called from the pause menu.
@@ -526,7 +526,7 @@ ReplayMode	;Instant replay play-back control and display code (94 ReplayMode). C
 	move.w	#$18,(palcount).w
 	rts
 
-ShowReplayIcon
+ShowReplayIcon	;(replay94) Show the replay icon and start the $F0 frame replayicontimer timer. 95: the icon is $A x 5 at 0,0 from ReplayIconChars
 	move.w	#$F0,(replayicontimer).w
 	jsr	(printz).l
 	String	$BD,2,2,0
@@ -541,7 +541,7 @@ ShowReplayIcon
 	movea.w	#ZeroLong,a2
 	jmp	dobitmap
 
-EraseReplayIcon
+EraseReplayIcon	;(replay94) Erase the $A x 5 replay icon (replayicontimer ran out)
 	jsr	(printz).l
 	String	$BD,2,2,0
 	move.w	#$A,d0
@@ -549,7 +549,7 @@ EraseReplayIcon
 	move.w	#$7FF,d2
 	jmp	eraser
 
-ShowReplayBanner
+ShowReplayBanner	;(replay94) Show the replay banner at 0,0 and stop the replayicontimer timer. 95: $A x 6 from ExtraChars
 	st	(replayicontimer).w
 	jsr	(printz).l
 	String	$BD,2,2,0
@@ -564,7 +564,7 @@ ShowReplayBanner
 	movea.w	#ZeroLong,a2
 	jmp	dobitmap
 
-EraseReplayBanner
+EraseReplayBanner	;(replay94) Erase the $A x 6 area ShowReplayBanner drew
 	jsr	(printz).l
 	String	$BD,2,2,0
 	move.w	#$A,d0
