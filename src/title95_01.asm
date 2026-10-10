@@ -86,17 +86,17 @@ ShootoutPaths	;title94 ShootoutPaths. The 7 shootout skate paths (NextPathPoint)
 	dc.l	ShootoutPath7
 ShootoutPath1	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
 	dc.w	$10,$E2,$10,$D0,$8020,5
-ShootoutPath2	;ShootoutPaths path
+ShootoutPath2	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
 	dc.w	$FFC9,$A0,$FFFF,$C8,$FFE0,$D0,$8020,5
-ShootoutPath3	;ShootoutPaths path
+ShootoutPath3	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
 	dc.w	$FFB0,$40,$1A,$BC,$8020,5
-ShootoutPath4	;ShootoutPaths path
+ShootoutPath4	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
 	dc.w	$FFCE,$58,$14,$D0,$802C,5
-ShootoutPath5	;ShootoutPaths path
+ShootoutPath5	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
 	dc.w	$FFCE,8,$20,$D0,$8028,6
-ShootoutPath6	;ShootoutPaths path
+ShootoutPath6	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
 	dc.w	$1C,$F4,8,$E0,$8020,6
-ShootoutPath7	;ShootoutPaths path
+ShootoutPath7	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
 	dc.w	$FFE6,$F8,0,$E0,$8020,2
 NextPathPoint	;title94 NextPathPoint. Next point of shootout path sopath (sopathpoint): sopathx / sopathy = x (turned by bit 0
 	;of $76(a3)) / y; at the end ($80) sflags7 bit 3, sopathend and sopathdir (passdir)

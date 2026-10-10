@@ -215,7 +215,7 @@ ReadSRAM	;move into a0 location and increment: copy d1 save RAM bytes from byte 
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-BuildLeaderList	;One stat: list each player whose stat is above 0 (goals $21A4, assists $2720)
+BuildLeaderList	;95 only. One stat: list each player whose stat is above 0 (goals SRGoals, assists SRAssists)
 	movem.l	d0-d3/a0-a3,-(sp)
 	movea.l	#SaveRAM,a1
 	add.l	d0,d0	;save RAM byte -> word offset
@@ -240,8 +240,8 @@ BuildLeaderList	;One stat: list each player whose stat is above 0 (goals $21A4, 
 	movem.l	(sp)+,d0-d3/a0-a3
 	rts
 
-BuildLeaderListSum	;Two stats added: the stat at d0 (a negative one counts 0) plus the stat $57C save RAM bytes on
-	;(goals $21A4 + assists $2720 = points). Lists each player whose sum is not 0
+BuildLeaderListSum	;95 only. Two stats added: the stat at d0 (a negative one counts 0) plus the stat $57C save RAM bytes on
+	;(goals SRGoals + assists SRAssists = points). Lists each player whose sum is not 0
 	movem.l	d0-d5/a0-a3,-(sp)
 	movea.l	#SaveRAM,a1
 	move.l	d0,d4
@@ -276,7 +276,7 @@ BuildLeaderListSum	;Two stats added: the stat at d0 (a negative one counts 0) pl
 	movem.l	(sp)+,d0-d5/a0-a3
 	rts
 
-BuildLeaderListPct	;A ratio: 100 * the stat $2BE0 save RAM bytes after d0 (low 15 bits) / the stat $1074 bytes after d0. A player is
+BuildLeaderListPct	;95 only. A ratio: 100 * the stat $2BE0 save RAM bytes after d0 (low 15 bits) / the stat $1074 bytes after d0. A player is
 	;listed when the stat word at d0 is negative (bit 15 set), the stat $15F0 bytes after d0 (low 15 bits) is not 0, and the divisor is not 0 and
 	;at least the minimum: (SeasonDay - SeasonStartDay) * 25 / (SeasonLength * 84)
 	movem.l	d0-d7/a0-a3,-(sp)

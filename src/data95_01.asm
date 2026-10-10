@@ -2837,7 +2837,8 @@ CheckPlayoffsStarted	;95 only. ContinuePlayoffs, then d0 = gamelevel | bosgames 
 	or.w	(bosgames).w,d0
 	rts
 
-ReadLineData	;(94 title94). Read the saved lines from save RAM. Called from GameSetUp and main95
+ReadLineData	;(title94) Read the $100 bytes at save RAM SRLineData (94 $1EF6) to databuffer (ReadSRAM); sflags bit 4 cleared,
+	;lastsfx = -1, recbpr = M68K_RAM. Called from GameSetUp and Begin
 	movem.l	d0-d1/a0,-(sp)
 	move.l	#$100,d1
 	move.l	#SRLineData,d0
@@ -2849,7 +2850,7 @@ ReadLineData	;(94 title94). Read the saved lines from save RAM. Called from Game
 	movem.l	(sp)+,d0-d1/a0
 	rts
 
-WriteLineData	;(94 title94). Write the lines to save RAM and the checksum
+WriteLineData	;(title94) Write databuffer back to save RAM SRLineData (WriteSRAM, MakeSRAMChecksum); as ReadLineData after
 	movem.l	d0-d1/a0,-(sp)
 	move.l	#$100,d1
 	move.l	#SRLineData,d0

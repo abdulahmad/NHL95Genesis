@@ -419,7 +419,8 @@ CheckPenaltyScroll	;stats94 CheckPenaltyScroll. As CheckGameStatScroll for the p
 	cmp.w	(SelectedPlayerIdx).w,d0
 	bgt.w	rtsPenaltyScroll
 
-UpdatePenaltyScroll	;stats94 UpdatePenaltyScroll. As UpdateGameStatScroll for the penalty summary
+UpdatePenaltyScroll	;(stats94; 93 name) Penalty summary: set VertLineScrolling = d0, stop on an entry boundary (24 lines), draw the
+	;entry coming into view, VSRAM = VertLineScrolling - $50
 	move.w	(VertLineScrolling).w,d1
 	move.w	d0,(VertLineScrolling).w
 	ext.l	d0

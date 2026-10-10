@@ -88,7 +88,7 @@ SndDriver	;95 sound driver entry (SoundCmd, sound95_01). d0 = command 0-$F, bran
 	ori	#1,ccr
 	rts
 
-SndLoadZ80	;Command 0: copy the Z80 program a0 (d1 bytes; it must start with JP $00xx) to Z80 RAM, reset the Z80, wait
+SndLoadZ80	;95 only. Command 0: copy the Z80 program a0 (d1 bytes; it must start with JP $00xx) to Z80 RAM, reset the Z80, wait
 	;for it to set Z80_RAM+$4F, clear the song slots and notes, and turn the driver on. Carry set and d0 = 6 for a bad program
 	movem.l	d1/a0-a2,-(sp)
 	move	sr,-(sp)
@@ -164,7 +164,7 @@ SndLoadZ80	;Command 0: copy the Z80 program a0 (d1 bytes; it must start with JP 
 	movem.l	(sp)+,d1/a0-a2
 	rts
 
-SndUpdate	;Command 1, once a frame: note timers (SndUpdateNotes), sample streaming (SndStreamZ80), then step the 8 song
+SndUpdate	;95 only. Command 1, once a frame: note timers (SndUpdateNotes), sample streaming (SndStreamZ80), then step the 8 song
 	;slots: wait out each slot's delay, then send its events ($9x note on, $Bx controller, $Cx program, $Ex pitch bend) to the Z80 until the
 	;next delay. Controller $75 loops the song; status $FF ends it
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -380,7 +380,7 @@ SndUpdate	;Command 1, once a frame: note timers (SndUpdateNotes), sample streami
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SndStartSeq	;Command 4: play song d1 (bank item type 3) in the first free slot, with d2-d4 (d4 = tempo). Carry set for no
+SndStartSeq	;95 only. Command 4: play song d1 (bank item type 3) in the first free slot, with d2-d4 (d4 = tempo). Carry set for no
 	;free slot (d0 = 7) or no such song
 	movem.l	d1-d4/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
@@ -438,7 +438,7 @@ SndStartSeq	;Command 4: play song d1 (bank item type 3) in the first free slot, 
 	movem.l	(sp)+,d1-d4/a0-a1
 	rts
 
-SndStopSeq	;Command 5: stop the slot playing song id d1 and release its notes. Carry set and d0 = 3 when none plays it
+SndStopSeq	;95 only. Command 5: stop the slot playing song id d1 and release its notes. Carry set and d0 = 3 when none plays it
 	movem.l	d1-d2/a0,-(sp)
 	lea	(SndSeqId).l,a0
 	clr.w	d0
@@ -468,7 +468,7 @@ SndStopSeq	;Command 5: stop the slot playing song id d1 and release its notes. C
 	movem.l	(sp)+,d1-d2/a0
 	rts
 
-SndPutZ80Cmd	;Queue the 4 byte Z80 command d0 (Z80_RAM+$D + 4 * count, count at +$C, waits while +$B is busy). d0 = -1 when it is full
+SndPutZ80Cmd	;95 only. Queue the 4 byte Z80 command d0 (Z80_RAM+$D + 4 * count, count at +$C, waits while +$B is busy). d0 = -1 when it is full
 	movem.l	d1/a0,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	0(a0),-(sp)
@@ -512,7 +512,7 @@ SndPutZ80Cmd	;Queue the 4 byte Z80 command d0 (Z80_RAM+$D + 4 * count, count at 
 	movem.l	(sp)+,d1/a0
 	rts
 
-SndUploadBlock	;Copy d1 bytes from a0 to free Z80 RAM as block d0 (the 42 six byte entries at Z80_RAM+$100). Carry set: no room
+SndUploadBlock	;95 only. Copy d1 bytes from a0 to free Z80 RAM as block d0 (the 42 six byte entries at Z80_RAM+$100). Carry set: no room
 	;(d0 = 4), already there (d0 = 3) or no free entry (d0 = 7)
 	movem.l	d1-d2/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a1
@@ -593,7 +593,7 @@ SndUploadBlock	;Copy d1 bytes from a0 to free Z80 RAM as block d0 (the 42 six by
 	movem.l	(sp)+,d1-d2/a0-a1
 	rts
 
-SndReadBlock	;Command $B: copy Z80 block d1 to a0. Carry set and d0 = 3 when there is no such block
+SndReadBlock	;95 only. Command $B: copy Z80 block d1 to a0. Carry set and d0 = 3 when there is no such block
 	movem.l	d1-d3/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a1
 	move.w	(a1),-(sp)
@@ -636,7 +636,7 @@ SndReadBlock	;Command $B: copy Z80 block d1 to a0. Carry set and d0 = 3 when the
 	movem.l	(sp)+,d1-d3/a0-a1
 	rts
 
-SndWriteBlock	;Command $C: copy a0 over Z80 block d1. Carry set and d0 = 3 when there is no such block
+SndWriteBlock	;95 only. Command $C: copy a0 over Z80 block d1. Carry set and d0 = 3 when there is no such block
 	movem.l	d1-d3/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a1
 	move.w	(a1),-(sp)
@@ -679,7 +679,7 @@ SndWriteBlock	;Command $C: copy a0 over Z80 block d1. Carry set and d0 = 3 when 
 	movem.l	(sp)+,d1-d3/a0-a1
 	rts
 
-SndPauseZ80	;Command $D: Z80_RAM+$50 = $FF (pause)
+SndPauseZ80	;95 only. Command $D: Z80_RAM+$50 = $FF (pause)
 	move.l	a0,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	(a0),-(sp)
@@ -698,7 +698,7 @@ SndPauseZ80	;Command $D: Z80_RAM+$50 = $FF (pause)
 	movea.l	(sp)+,a0
 	rts
 
-SndResumeZ80	;Command $E: Z80_RAM+$50 = 0 (resume)
+SndResumeZ80	;95 only. Command $E: Z80_RAM+$50 = 0 (resume)
 	move.l	a0,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	(a0),-(sp)
@@ -717,7 +717,7 @@ SndResumeZ80	;Command $E: Z80_RAM+$50 = 0 (resume)
 	movea.l	(sp)+,a0
 	rts
 
-SndStopAll	;Command $F (SoundOff): free every song slot, send Z80 command $FF and clear the notes
+SndStopAll	;95 only. Command $F (SoundOff): free every song slot, send Z80 command $FF and clear the notes
 	movem.l	d0/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	(a0),-(sp)
@@ -734,7 +734,7 @@ SndStopAll	;Command $F (SoundOff): free every song slot, send Z80 command $FF an
 	movem.l	(sp)+,d0/a0-a1
 	rts
 
-SndClearNotes	;No notes: SndNoteCount 0, SndNotes all -1
+SndClearNotes	;95 only. No notes: SndNoteCount 0, SndNotes all -1
 	movem.l	d0-d1/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	0(a0),-(sp)
@@ -750,7 +750,7 @@ SndClearNotes	;No notes: SndNoteCount 0, SndNotes all -1
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
 
-SndReleaseNotes	;Set the timer of every note of slot d0 to 1 (released next frame)
+SndReleaseNotes	;95 only. Set the timer of every note of slot d0 to 1 (released next frame)
 	movem.l	d0-d2/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	0(a0),-(sp)
@@ -775,7 +775,7 @@ SndReleaseNotes	;Set the timer of every note of slot d0 to 1 (released next fram
 	movem.l	(sp)+,d0-d2/a0-a1
 	rts
 
-SndAddNote	;Add note d0 (timer word, then the note) to SndNotes
+SndAddNote	;95 only. Add note d0 (timer word, then the note) to SndNotes
 	movem.l	d0-d1/a0,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	SndNoteCount-SndDrvRAM(a0),d1
@@ -787,7 +787,7 @@ SndAddNote	;Add note d0 (timer word, then the note) to SndNotes
 	movem.l	(sp)+,d0-d1/a0
 	rts
 
-SndUpdateNotes	;Count down the note timers; at 0 send the note off ($8x) and remove the note
+SndUpdateNotes	;95 only. Count down the note timers; at 0 send the note off ($8x) and remove the note
 	movem.l	d0-d1/a0-a2,-(sp)
 	lea	(SndDrvRAM).l,a2
 	cmpi.w	#0,SndNoteCount-SndDrvRAM(a2)
@@ -826,7 +826,7 @@ SndUpdateNotes	;Count down the note timers; at 0 send the note off ($8x) and rem
 	movem.l	(sp)+,d0-d1/a0-a2
 	rts
 
-SndStreamZ80	;Answer the Z80's sample request (Z80_RAM+$4D: 1 start sample Z80_RAM+$4E, 2 / 3 next 256 bytes) by copying
+SndStreamZ80	;95 only. Answer the Z80's sample request (Z80_RAM+$4D: 1 start sample Z80_RAM+$4E, 2 / 3 next 256 bytes) by copying
 	;from the sample (bank item type 1) to the Z80 buffer, looping or ending it
 	movem.l	d1-d2/a0,-(sp)
 	bsr.w	Z80BusRequest
@@ -921,7 +921,7 @@ SndStreamZ80	;Answer the Z80's sample request (Z80_RAM+$4D: 1 start sample Z80_R
 	movem.l	(sp)+,d1-d2/a0
 	rts
 
-SndFindBankItem	;Find bank item type d0, id d1 in the 4 banks (SndBanks): a0 = its data, d0 = its size. Carry set and d0 = 3 when
+SndFindBankItem	;95 only. Find bank item type d0, id d1 in the 4 banks (SndBanks): a0 = its data, d0 = its size. Carry set and d0 = 3 when
 	;there is none
 	movem.l	d1-d4/a1-a2,-(sp)
 	lea	(SndBanks).l,a1
@@ -968,7 +968,7 @@ SndFindBankItem	;Find bank item type d0, id d1 in the 4 banks (SndBanks): a0 = i
 	movem.l	(sp)+,d1-d4/a1-a2
 	rts
 
-SndSetBank	;Command 6: bank d1 (0-3) is at a0; tell the Z80 too (Z80_RAM+$51). Carry set and d0 = 3 for d1 above 3
+SndSetBank	;95 only. Command 6: bank d1 (0-3) is at a0; tell the Z80 too (Z80_RAM+$51). Carry set and d0 = 3 for d1 above 3
 	movem.l	d1/a1-a2,-(sp)
 	cmpi.w	#4,d1
 	bcs.s	.0
@@ -999,7 +999,7 @@ SndSetBank	;Command 6: bank d1 (0-3) is at a0; tell the Z80 too (Z80_RAM+$51). C
 	movem.l	(sp)+,d1/a1-a2
 	rts
 
-SndLoadList	;Command 7: upload the patches (types 0 and 4) of load list d1 (bank item type $B, pairs ended by $FF) to the Z80
+SndLoadList	;95 only. Command 7: upload the patches (types 0 and 4) of load list d1 (bank item type $B, pairs ended by $FF) to the Z80
 	movem.l	d1/a0-a1,-(sp)
 	move.w	#$B,d0
 	bsr.w	SndFindBankItem
@@ -1034,7 +1034,7 @@ SndLoadList	;Command 7: upload the patches (types 0 and 4) of load list d1 (bank
 	movem.l	(sp)+,d1/a0-a1
 	rts
 
-SndFreeBlocks	;Command 8: free the Z80 blocks of list a0 (word pairs ended by -1) and move the blocks after them down
+SndFreeBlocks	;95 only. Command 8: free the Z80 blocks of list a0 (word pairs ended by -1) and move the blocks after them down
 	movem.l	d1-d3/a0-a2,-(sp)
 	lea	(SndDrvRAM).l,a1
 	move.w	(a1),-(sp)
@@ -1123,7 +1123,7 @@ SndFreeBlocks	;Command 8: free the Z80 blocks of list a0 (word pairs ended by -1
 	movem.l	(sp)+,d1-d3/a0-a2
 	rts
 
-SndResetBlocks	;Command 9: free all Z80 blocks (Z80_RAM+$100 all $FF, free pointer back to the start at Z80_RAM+3)
+SndResetBlocks	;95 only. Command 9: free all Z80 blocks (Z80_RAM+$100 all $FF, free pointer back to the start at Z80_RAM+3)
 	movem.l	a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	(a0),-(sp)
@@ -1145,7 +1145,7 @@ SndResetBlocks	;Command 9: free all Z80 blocks (Z80_RAM+$100 all $FF, free point
 	movem.l	(sp)+,a0-a1
 	rts
 
-SndSendZ80	;Command $A: queue Z80 command d1 with interrupts off
+SndSendZ80	;95 only. Command $A: queue Z80 command d1 with interrupts off
 	move	sr,-(sp)
 	move	#$2700,sr
 	move.l	d1,d0
@@ -1153,14 +1153,14 @@ SndSendZ80	;Command $A: queue Z80 command d1 with interrupts off
 	move	(sp)+,sr
 	rts
 
-Z80BusRequest	;Stop the Z80 and wait for the bus
+Z80BusRequest	;95 only. Stop the Z80 and wait for the bus
 	move.w	#$100,(IO_Z80BUS).l
 .0
 	btst	#8,(IO_Z80BUS).l
 	bne.s	.0
 	rts
 
-Z80BusRelease	;Give the bus back to the Z80
+Z80BusRelease	;95 only. Give the bus back to the Z80
 	move.w	#0,(IO_Z80BUS).l
 	rts
 	opt	oaq+,osq+,oz+
