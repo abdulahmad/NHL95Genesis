@@ -10,7 +10,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-ManualGoalieMenu	;no IDA label (IDA dc.b). goalie94 ManualGoalieMenu. Pause menu MANUAL GOALIE / AUTO GOALIE: with OptNOP set, toggle goaliemode2
+ManualGoalieMenu	;goalie94 ManualGoalieMenu. Pause menu MANUAL GOALIE / AUTO GOALIE: with OptNOP set, toggle goaliemode2
 	;when the team of the menu pad is above 1 (SetMenuPadSide, sflags bit 1), else goaliemode1, and redraw the items (RedrawMenu; 94 matched
 	;cont1team / cont2team instead). In a penalty shot or shootout (gmode2 bit 0, BA_PS_flags bit 2) the pad then takes player 0 / 6 or
 	;5 / $B by its mode, when BA_Sktr_SCnum is on its side (setc1player / setc2player)
@@ -77,7 +77,7 @@ ManualGoalieMenu	;no IDA label (IDA dc.b). goalie94 ManualGoalieMenu. Pause menu
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SelectGoalieMenu	;no IDA label (IDA dc.b). stats94 SelectGoalieMenu. Pause menu CHANGE GOALIE: pick team a2's goalie (or no goalie) from a list
+SelectGoalieMenu	;stats94 SelectGoalieMenu. Pause menu CHANGE GOALIE: pick team a2's goalie (or no goalie) from a list
 	;(DisplayPlayerSelectMenu) with up / down, C or start; sets tmgoalie and SetPersonel. 95 clears the menu box first (ClearMenuBox) and
 	;redraws the menu after (RedrawMenu), where 94 drew a frame (Framer)
 	move.w	(menuitem).w,-(sp)
@@ -130,7 +130,7 @@ SelectGoalieMenu	;no IDA label (IDA dc.b). stats94 SelectGoalieMenu. Pause menu 
 	jsr	(RedrawMenu).l
 	rts
 
-DisplayPlayerSelectMenu	;no IDA label (IDA dc.b). stats94 DisplayPlayerSelectMenu. Draw the goalie list at row $E, x $C, row menuitem in
+DisplayPlayerSelectMenu	;stats94 DisplayPlayerSelectMenu. Draw the goalie list at row $E, x $C, row menuitem in
 	;font set 2: "no goalie", then each goalie by name (95: GetTempPlayerNameAttrib for TempPlOffset, -1 for the away team; 94 printed
 	;the roster name and the two digit number)
 	move.w	#$E,(printy).w
@@ -168,7 +168,7 @@ DisplayPlayerSelectMenu	;no IDA label (IDA dc.b). stats94 DisplayPlayerSelectMen
 	dbf	d1,.0
 	rts
 
-TimeoutMenu	;no IDA label (IDA dc.b). stats94 TimeoutMenu. Pause menu TIMEOUT for team a2: drop the item (menuitemoffset $23A: the pause
+TimeoutMenu	;stats94 TimeoutMenu. Pause menu TIMEOUT for team a2: drop the item (menuitemoffset $23A: the pause
 	;list without TIMEOUT; 94 set menulist to PauseText2), set tmflags bit 2 (timeout used), print TIMEOUT and the team name centred at
 	;y $14 in the cleared menu box, rest both teams (RestoreTeamEnergy), wait $78 frames (waitx), redraw the menu
 	subq.w	#1,(menuitem).w
@@ -194,7 +194,7 @@ TimeoutMenu	;no IDA label (IDA dc.b). stats94 TimeoutMenu. Pause menu TIMEOUT fo
 	bsr.w	ClearMenuBox
 	jmp	(RedrawMenu).l
 
-PauseScores	;no IDA label (IDA dc.b). 95 only. The two scores in big digits on the pause screen (PutScoreDigit): home at printz position
+PauseScores	;95 only. The two scores in big digits on the pause screen (PutScoreDigit): home at printz position
 	;$1E, 6, away at 6, 6; no tens digit under 10. Called from PauseScreenDraw (menu95)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
@@ -234,7 +234,7 @@ PauseScores	;no IDA label (IDA dc.b). 95 only. The two scores in big digits on t
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PutScoreDigit	;no IDA label (IDA dc.b). 95 only. The same code as PutClockDigit (video95_03): big digit d0 at printx / printy from
+PutScoreDigit	;95 only. The same code as PutClockDigit (video95_03): big digit d0 at printx / printy from
 	;ClockDigitsBitmap (dobitmap, chars clockdigitchars), then printx + 2
 	movem.w	d0-d7,-(sp)
 	movea.l	#ClockDigitsBitmap,a0
@@ -254,7 +254,7 @@ PutScoreDigit	;no IDA label (IDA dc.b). 95 only. The same code as PutClockDigit 
 	movem.w	(sp)+,d0-d7
 	rts
 
-SetMenuPadSide	;IDA: sub_7FCBA. 95 only. sflags bit 1 set when the team of pad menupadnum (padteams) is above 1, else cleared. Called from
+SetMenuPadSide	;95 only. sflags bit 1 set when the team of pad menupadnum (padteams) is above 1, else cleared. Called from
 	;ManualGoalieMenu and PrintMenuItem (menu95)
 	movem.l	d0/a0-a1,-(sp)
 	movea.l	#padteams,a0
@@ -271,10 +271,10 @@ SetMenuPadSide	;IDA: sub_7FCBA. 95 only. sflags bit 1 set when the team of pad m
 .1
 	rts
 
-padteams	;IDA: unk_7FCEC. 95 only. The team word of each pad (SetMenuPadSide)
+padteams	;95 only. The team word of each pad (SetMenuPadSide)
 	dc.l	cont1team,cont2team,cont3team,cont4team
 
-asstab	;IDA: unk_7FCFC. Jump table of the player logic assignments (92 / 93 / 94 asstab). 95 keeps it here, in a new order: the
+asstab	;Jump table of the player logic assignments (92 / 93 / 94 asstab). 95 keeps it here, in a new order: the
 	;assignment numbers in asslist and in assinsert d0 are 95 numbers. The comment gives the 95 number, then the 94 one
 	dc.l	rtss2		;0 (94 0)
 	dc.l	pucknorm	;1 (94 $18)
@@ -311,7 +311,7 @@ asstab	;IDA: unk_7FCFC. Jump table of the player logic assignments (92 / 93 / 94
 	dc.l	puckpenshot	;$20 (94 $1F)
 	dc.l	assbreakaway	;$21 (94 $22)
 
-doassignment	;IDA: sub_7FD84. 95 only. Run the current assignment of player a3 (asslist entry assnum, asstab) with a2 / a1 = its team / the
+doassignment	;95 only. Run the current assignment of player a3 (asslist entry assnum, asstab) with a2 / a1 = its team / the
 	;other team (loadTeamStruct). Called from updateplayers (setup95_01); 94 did this in line there
 	move.w	$36(a3),d0
 	clr.w	d1
@@ -324,10 +324,10 @@ doassignment	;IDA: sub_7FD84. 95 only. Run the current assignment of player a3 (
 	rts
 
 ; a3 = goalie
-assgoaliecpu	;no IDA label (IDA dc.b), asstab entry 6. Also branched to from checks95_02
+assgoaliecpu	;asstab entry 6. Also branched to from checks95_02
 	btst	#3,$62(a3)	;is goalie joystick controlled?
 	bne.w	assgoaliectrl	;branch if so
-checkanim	;no IDA label. A local of assgoaliecpu in 94; global here: assgoaliectrl branches to it
+checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to it
 	move.w	(puckx).w,(TmpPuckX).w
 	btst	#0,(sflags4).w	;test bit 0
 	beq.w	.assstart
@@ -773,7 +773,7 @@ checkanim	;no IDA label. A local of assgoaliecpu in 94; global here: assgoaliect
 	blt.w	.de5
 	moveq	#$14,d0	;assignment assgoalietopuck (94 $F)
 	bra.w	assinsert
-ClampYPosition	;no IDA label (IDA dc.b). 93 name. d1 = y clamped to +-$106 (94 $103), minus goal line d3. d0 = 0 if a3 has the puck
+ClampYPosition	;93 name. d1 = y clamped to +-$106 (94 $103), minus goal line d3. d0 = 0 if a3 has the puck
 	move.w	(puckc).w,d2
 	cmp.w	SCnum(a3),d2
 	bne.w	.0
@@ -789,7 +789,7 @@ ClampYPosition	;no IDA label (IDA dc.b). 93 name. d1 = y clamped to +-$106 (94 $
 .2
 	sub.w	d3,d1
 	rts
-AdjustFacingDirection	;IDA: sub_80426. 93 name. Turn facedir one step toward direction d0. IDA cannot show btst Dn,#imm, so it lost the
+AdjustFacingDirection	;93 name. Turn facedir one step toward direction d0. IDA cannot show btst Dn,#imm, so it lost the
 	;three btst lines and the .t / .set targets; written from the retail bytes as 93. Also called from checks95_06
 	move.w	facedir(a3),d1		;facedir
 	sub.w	d1,d0
@@ -819,7 +819,7 @@ AdjustFacingDirection	;IDA: sub_80426. 93 name. Turn facedir one step toward dir
 ; a3 = goalie
 ; a0 = puckcross
 ; d3 = goalline of goalie
-goaliesave	;IDA: sub_80478. checks94 goaliesave. 95 first aims the goalie: Xvel from where the puck crosses his y (puckvx / puckvy), and the
+goaliesave	;checks94 goaliesave. 95 first aims the goalie: Xvel from where the puck crosses his y (puckvx / puckvy), and the
 	;save side from that, then picks the save from saveanim as 94; 95 adds the dive saves (a top shelf shot with sflags bit 3) and the
 	;stack saves ($2AE4 / $2B0E by side and hand when puckz is 3 or more). Also called from checks95_06
 	move.w	(a0),d0	;puckcross x frames into d0
@@ -1042,12 +1042,12 @@ goaliesave	;IDA: sub_80478. checks94 goaliesave. 95 first aims the goalie: Xvel 
 .32
 	rts
 
-saveanim	;IDA: unk_80742. 94 _saveanim (93 GoalieSaveList): SPA per save type, 95 SPA values (10 words; 94: blocker, glove, pad stack right /
+saveanim	;94 _saveanim (93 GoalieSaveList): SPA per save type, 95 SPA values (10 words; 94: blocker, glove, pad stack right /
 	;left, kick, butterfly, high shoulder right / left, stick right / left)
 	dc.w	$1C86,$1CB8,$205E,$200C,$1CEA,$1D1C,$1C86,$1CB8,$1CEA,$1D1C
 
 ; assignment to have goalie skate to the puck when it is loose
-assgoalietopuck	;no IDA label (IDA dc.b), asstab entry $14. The same as 94
+assgoalietopuck	;asstab entry $14. The same as 94
 	btst	#3,pflags(a3)
 	bne.w	assexit	;exit if joystick controlled
 	btst	#0,(gmode).w

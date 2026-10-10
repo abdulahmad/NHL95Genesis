@@ -6,7 +6,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-SoundCmd	;IDA: sub_676D8. Send command d0 to the 95 sound driver (SndDriver, sounddrv95). Called from Begin, Opening2, StartGame ...
+SoundCmd	;Send command d0 to the 95 sound driver (SndDriver, sounddrv95). Called from Begin, Opening2, StartGame ...
 	jsr	(SndDriver).l
 	bcc.w	.0
 	nop
@@ -14,7 +14,7 @@ SoundCmd	;IDA: sub_676D8. Send command d0 to the 95 sound driver (SndDriver, sou
 .0
 	rts
 
-UpdateCwdExcite	;IDA: sub_676E8 (hockey94). called once per second. Track peak and running total of crowd excitement, then decay the level by 1
+UpdateCwdExcite	;(hockey94). called once per second. Track peak and running total of crowd excitement, then decay the level by 1
 	move.w	(CwdExciteLvl).w,d0
 	cmp.w	(MaxCwdExciteLvl).w,d0
 	bls.w	.0
@@ -29,7 +29,7 @@ UpdateCwdExcite	;IDA: sub_676E8 (hockey94). called once per second. Track peak a
 .1
 	rts
 
-updatesound	;IDA: sub_67710 (display94). move the crowd noise volume (psg noise channel, asv) toward crowdlevel. Called from DoGameFrame
+updatesound	;(display94). move the crowd noise volume (psg noise channel, asv) toward crowdlevel. Called from DoGameFrame
 	move.w	(crowdlevel).w,d0
 	asl.w	#3,d0
 	addi.w	#$400,d0
@@ -57,7 +57,7 @@ updatesound	;IDA: sub_67710 (display94). move the crowd noise volume (psg noise 
 	move.b	d0,(VDP_PSG).l
 	rts
 
-CheckPeriodEnd	;IDA: sub_6776A (hockey94). Called once per second. 3rd period: choose and play a song once at the random trigger time set by ResetClock
+CheckPeriodEnd	;(hockey94). Called once per second. 3rd period: choose and play a song once at the random trigger time set by ResetClock
 	cmpi.w	#2,(gsp).w
 	bne.w	.0
 	btst	#4,(gmode).w
@@ -74,7 +74,7 @@ CheckPeriodEnd	;IDA: sub_6776A (hockey94). Called once per second. 3rd period: c
 .0
 	rts
 
-sfx	;IDA: sub_677AC (video94). play sound effect number, one word passed on stack. 95: through SfxTable to a sound driver song (command 4)
+sfx	;(video94). play sound effect number, one word passed on stack. 95: through SfxTable to a sound driver song (command 4)
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.l	d0
 	move.w	$40(sp),d0
@@ -84,7 +84,7 @@ sfx	;IDA: sub_677AC (video94). play sound effect number, one word passed on stac
 	addq.w	#2,sp
 	rts
 
-sfxplay	;IDA: loc_677C6. 95 only: play sound d0 ($32-$55 are songs, PlayingSong; below, SfxTable). Sound $2D / $2E: a nop. song branches here
+sfxplay	;95 only: play sound d0 ($32-$55 are songs, PlayingSong; below, SfxTable). Sound $2D / $2E: a nop. song branches here
 	cmp.w	#$2E,d0
 	beq.w	.0
 	cmp.w	#$2D,d0
@@ -147,7 +147,7 @@ sfxplay	;IDA: loc_677C6. 95 only: play sound d0 ($32-$55 are songs, PlayingSong;
 	addq.w	#2,sp
 	rts
 
-SfxTable	;IDA: unk_67890. 95 only: sound driver song for sound effects 0-$31 (sfx), $FF = none. $26 first stops the songs above $31
+SfxTable	;95 only: sound driver song for sound effects 0-$31 (sfx), $FF = none. $26 first stops the songs above $31
 	dc.b	$26,$1C,$1D,$17,$16,$FF,$09,$25	;sounds $00-$07
 	dc.b	$04,$FF,$FF,$10,$1E,$13,$20,$0E	;sounds $08-$0F
 	dc.b	$0B,$0B,$0B,$0B,$08,$08,$08,$08	;sounds $10-$17
@@ -156,7 +156,7 @@ SfxTable	;IDA: unk_67890. 95 only: sound driver song for sound effects 0-$31 (sf
 	dc.b	$18,$18,$18,$18,$11,$1A,$1A,$FF	;sounds $28-$2F
 	dc.b	$FF,$FF	;sounds $30-$31
 
-song	;IDA: sub_678C2 (video94). play song number, one word passed on stack. 95: songs 0-3 through StartSong, the rest through sfxplay
+song	;(video94). play song number, one word passed on stack. 95: songs 0-3 through StartSong, the rest through sfxplay
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.l	d0
 	move.w	$40(sp),d0
@@ -179,7 +179,7 @@ song	;IDA: sub_678C2 (video94). play song number, one word passed on stack. 95: 
 	addq.w	#2,sp
 	rts
 
-StartSong	;IDA: sub_67908. 95 only: stop the song (play_new_song), then song d0 (command 4, tempo $100)
+StartSong	;95 only: stop the song (play_new_song), then song d0 (command 4, tempo $100)
 	tst.w	d0
 	bmi.w	rtsfx
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -194,7 +194,7 @@ StartSong	;IDA: sub_67908. 95 only: stop the song (play_new_song), then song d0 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-play_new_song	;IDA: sub_67938. 93 name. Stop the song in progress (PlayingSong, sound driver command 5)
+play_new_song	;93 name. Stop the song in progress (PlayingSong, sound driver command 5)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#5,d0
 	move.w	(PlayingSong).w,d1
@@ -206,7 +206,7 @@ play_new_song	;IDA: sub_67938. 93 name. Stop the song in progress (PlayingSong, 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-play_new_song2	;$6795E. IDA dc.b, no xref. 95 only: a copy of play_new_song that skips the saving when no song plays
+play_new_song2	;No xref. 95 only: a copy of play_new_song that skips the saving when no song plays
 	tst.w	(PlayingSong).w
 	bmi.w	.0	;no song playing
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -219,7 +219,7 @@ play_new_song2	;$6795E. IDA dc.b, no xref. 95 only: a copy of play_new_song that
 .0
 	rts
 
-KillCrowd	;IDA: sub_67988 (display94). silence the crowd noise (psg)
+KillCrowd	;(display94). silence the crowd noise (psg)
 	move.b	#$E7,(VDP_PSG).l
 	move.b	#$DF,(VDP_PSG).l
 	move.b	#$C8,(VDP_PSG).l
@@ -227,14 +227,14 @@ KillCrowd	;IDA: sub_67988 (display94). silence the crowd noise (psg)
 	move.b	#$FF,(VDP_PSG).l
 	rts
 
-SoundOff	;IDA: sub_679B2. 95 only (94 p_turnoff): sound driver command $F, every song off
+SoundOff	;95 only (94 p_turnoff): sound driver command $F, every song off
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$F,d0
 	bsr.w	SoundCmd
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ChooseSong	;IDA: sub_679C4 (title94). SongNum = byte SongIndex of the 6 song bytes of team HmTeam (TeamSongs), or one of the 8 of RandomSongs
+ChooseSong	;(title94). SongNum = byte SongIndex of the 6 song bytes of team HmTeam (TeamSongs), or one of the 8 of RandomSongs
 	;at random when 0; $FFFF with gmode bit 4
 	movem.l	d0-d1/a0-a1,-(sp)
 	btst	#4,(gmode).w
@@ -261,7 +261,7 @@ ChooseSong	;IDA: sub_679C4 (title94). SongNum = byte SongIndex of the 6 song byt
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
 
-TeamSongs	;IDA: unk_67A20 (title94). 6 song bytes per team (TeamList order), by SongIndex. 0 = a RandomSongs song
+TeamSongs	;(title94). 6 song bytes per team (TeamList order), by SongIndex. 0 = a RandomSongs song
 	dc.b	$3A,$40,$49,$54,$46,$00	;0 ANH
 	dc.b	$51,$42,$40,$00,$46,$51	;1 BOS
 	dc.b	$33,$32,$32,$33,$46,$00	;2 BUF
@@ -290,7 +290,7 @@ TeamSongs	;IDA: unk_67A20 (title94). 6 song bytes per team (TeamList order), by 
 	dc.b	$32,$3F,$55,$00,$46,$00	;25 WPG
 	dc.b	$51,$42,$32,$00,$46,$00	;26 ASE
 	dc.b	$51,$42,$32,$00,$46,$00	;27 ASW
-RandomSongs	;IDA: unk_67AC8 (title94). 8 songs ChooseSong picks from at random
+RandomSongs	;(title94). 8 songs ChooseSong picks from at random
 	dc.b	$33,$3D,$3E,$41,$33,$47,$4E,$4F
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -601,7 +601,7 @@ UpdateChannelFrequencyAndVolume	;93 name. Set the frequency of channel struct a2
 	dc.w	$F361,$F443,$F525,$F608,$F6EC,$F7D0,$F8B6,$F99C,$FA83,$FB6B
 	dc.w	$FC54,$FD3E,$FE28,$FF13,$FF13
 SetChannelVolume	;94 only. Set the volume of channel struct a2: note volume (+2) * the voice volume (voice table +4) / 128. FM: attenuation from
-	;.veltab (volume / 8); PCM: Z80 RAM $83 (Z80_RAM+$83, at least 3). Called from handle_command_10 and handle_command_30
+	;veltab (volume / 8); PCM: Z80 RAM $83 (Z80_RAM+$83, at least 3). Called from handle_command_10 and handle_command_30
 	movem.l	d0,-(sp)
 	clr.w	d0
 	move.b	2(a2),d0
@@ -668,7 +668,7 @@ handle_command_60	;93 name. Event $6x: set the pitch bend of channel +1 bits 3-0
 	addq.w	#8,a2
 	dbf	d0,.loop
 	rts
-handle_command_30	;IDA dc.b. 94 only: event $3x, controller +2 = +3 on channel +1 bits 3-0 of track d7. Only controller 7
+handle_command_30	;94 only: event $3x, controller +2 = +3 on channel +1 bits 3-0 of track d7. Only controller 7
 	;(volume) is used: set the voice volume (voice table +5) and update the volume of every channel with that key (SetChannelVolume)
 	cmpi.b	#7,2(a0)
 	beq.w	.0
@@ -694,7 +694,7 @@ handle_command_30	;IDA dc.b. 94 only: event $3x, controller +2 = +3 on channel +
 	rts
 handle_command_skip	;93 name. Events $2x, $5x and $7x: ignored
 	rts
-p_initialZ80	;IDA: Z80_LoadROM. 92 name (initialization). Free all slots, load the Z80 program (Z80_Program_Code, $295 bytes) into Z80 RAM, build 29
+p_initialZ80	;92 name (initialization). Free all slots, load the Z80 program (Z80_Program_Code, $295 bytes) into Z80 RAM, build 29
 	;tables of 256 bytes below Z80 RAM $2000 (Z80_RAM+$2000; (x - $80) * 8 / n + $80 for n = 8-$24), then reset and start the Z80. Called from Begin
 	movem.l	d0-d2/a0-a2,-(sp)
 	bsr.w	ClearAllTrackAndSFXSlots
@@ -735,11 +735,11 @@ p_initialZ80	;IDA: Z80_LoadROM. 92 name (initialization). Free all slots, load t
 	clr.b	(music_needs_z80_update).w
 	movem.l	(sp)+,d0-d2/a0-a2
 	rts
-ClearAllTrackAndSFXSlots	;$682A8. 93 name. 95 cuts it down to PlayingSong = -1 (94 freed the 8 track slots and reset the 6 channel structs)
+ClearAllTrackAndSFXSlots	;93 name. 95 cuts it down to PlayingSong = -1 (94 freed the 8 track slots and reset the 6 channel structs)
 	move.w	#$FFFF,(PlayingSong).w
 	rts
 
-newcheck	;IDA: sub_682B0 (collide94). start a new check sound: one of 4 sounds $1C-$1F, never the last one again. Called from checkcx and FallDown
+newcheck	;(collide94). start a new check sound: one of 4 sounds $1C-$1F, never the last one again. Called from checkcx and FallDown
 	move.l	d0,-(sp)
 	moveq	#3,d0
 	jsr	(randomd0).l	;94: bsr.w

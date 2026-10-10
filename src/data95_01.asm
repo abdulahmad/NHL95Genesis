@@ -15,7 +15,7 @@
 
 	rts	;unused (the byte after compshoot)
 
-TeamRosterScreen	;IDA: sub_84FE8. 93 name (94 stats94). "Team Roster" screen for team a2: DrawTeamScreen, then the player list (DisplayPlayerList)
+TeamRosterScreen	;93 name (94 stats94). "Team Roster" screen for team a2: DrawTeamScreen, then the player list (DisplayPlayerList)
 	;with page (SelectedPlayerIdx: goalies, offense, defense; C), column (DispAttribCtr: left / right) and row scroll (rosterscroll: up / down).
 	;B goes to the other team; start exits (ExitAttributeScreen2). 95 rewrote the 94 scrolling screen. Called from the menu95 item lists
 	moveq	#0,d0
@@ -135,7 +135,7 @@ TeamRosterScreen	;IDA: sub_84FE8. 93 name (94 stats94). "Team Roster" screen for
 	clr.w	(PlayerScrollCtr).w	;unused
 	rts
 
-DisplayPlayerList	;IDA: sub_851E0. 93 name (94 stats94). Draw roster page SelectedPlayerIdx: the title (PlayerStatMenuTxt), the scroll marks, the column header
+DisplayPlayerList	;93 name (94 stats94). Draw roster page SelectedPlayerIdx: the title (PlayerStatMenuTxt), the scroll marks, the column header
 	;(PAttribColumns, or GAttribColumns for goalies) and up to 5 rows from rosterscroll: getNameandAttrib, then the lines the player
 	;is on (PrintPlayerLines); the first row is highlighted
 	jsr	(printz2).l
@@ -238,7 +238,7 @@ DisplayPlayerList	;IDA: sub_851E0. 93 name (94 stats94). Draw roster page Select
 	dbf	d1,.10
 	rts
 
-PrintPlayerLines	;IDA: sub_8535E. 95 only. Print at printx the lines player d0 of team a2 is on (FindPlayerLine for the 7 line slots at $16C(a2)...):
+PrintPlayerLines	;95 only. Print at printx the lines player d0 of team a2 is on (FindPlayerLine for the 7 line slots at $16C(a2)...):
 	;linemarkbuf "123 12 12", a ^ where he is not on that line
 	movem.l	d1/a1,-(sp)
 	movea.l	#linemarkbuf,a1
@@ -308,16 +308,16 @@ PrintPlayerLines	;IDA: sub_8535E. 95 only. Print at printx the lines player d0 o
 	String	'G'
 	String	'G'
 
-PlayerStatMenuTxt	;IDA: unk_85438. 93 name. Roster page titles (SkipStrings by SelectedPlayerIdx). The four String 'G' before it (93 GoalieRowText) are not read
+PlayerStatMenuTxt	;93 name. Roster page titles (SkipStrings by SelectedPlayerIdx). The four String 'G' before it (93 GoalieRowText) are not read
 	String	'    Goalies     '
 	String	'    Offense     '
 	String	'    Defense     '
 
-ExitAttributeScreen2	;IDA: loc_8546E. 94 stats94 name. TeamRosterScreen start: forceblack and back to the menu (DrawMenuScreen, menu95)
+ExitAttributeScreen2	;94 stats94 name. TeamRosterScreen start: forceblack and back to the menu (DrawMenuScreen, menu95)
 	jsr	(forceblack).l
 	jmp	DrawMenuScreen
 
-getNameandAttrib	;IDA: sub_8547A (93 GetNameandAttrib). Print player d0's name, then at x $21 (94 $1E) the column d4 picks (attribjmp; above 2
+getNameandAttrib	;(93 GetNameandAttrib). Print player d0's name, then at x $21 (94 $1E) the column d4 picks (attribjmp; above 2
 	;a rating through CalcAttrib, the jump offset in the low word). 95 keeps the team and player in screenarg / attribplayer
 	movem.l	d0-d4/a0-a1/a4-a5,-(sp)
 	move.w	$28(a2),(screenarg).w
@@ -338,7 +338,7 @@ getNameandAttrib	;IDA: sub_8547A (93 GetNameandAttrib). Print player d0's name, 
 	movem.l	(sp)+,d0-d4/a0-a1/a4-a5
 	rts
 
-attribjmp	;IDA: off_854BE. getNameandAttrib column handlers, offsets from attribjmp: status, energy, handed, weight, fighting, rating
+attribjmp	;getNameandAttrib column handlers, offsets from attribjmp: status, energy, handed, weight, fighting, rating
 	dc.w	AttribStatus-attribjmp
 	dc.w	AttribEnergy-attribjmp
 	dc.w	AttribHanded-attribjmp
@@ -346,7 +346,7 @@ attribjmp	;IDA: off_854BE. getNameandAttrib column handlers, offsets from attrib
 	dc.w	AttribFighting-attribjmp
 	dc.w	AttribRating-attribjmp
 
-AttribStatus	;IDA: loc_854CA. 93 name. Player d0's status word at $68(a2) (94 $66): Ice, Bench, Inj. P, Inj. G, or penalty time. 95: an injured player
+AttribStatus	;93 name. Player d0's status word at $68(a2) (94 $66): Ice, Bench, Inj. P, Inj. G, or penalty time. 95: an injured player
 	;(status 3) shows his games out from InjuryGamesTbl (GetInjuryGames)
 	add.w	d0,d0
 	move.w	tmpdst(a2,d0.w),d0
@@ -388,7 +388,7 @@ AttribStatus	;IDA: loc_854CA. 93 name. Player d0's status word at $68(a2) (94 $6
 	lea	StatusTextTbl(pc),a1
 	jmp	PrintSmallListItem
 
-StatusTextTbl	;IDA: unk_8554C. 93 name. AttribStatus Strings (94 'Injury P' / 'Injury G')
+StatusTextTbl	;93 name. AttribStatus Strings (94 'Injury P' / 'Injury G')
 	String	'Ice     '
 	String	'Bench   '
 	String	'Inj. P  '
@@ -396,7 +396,7 @@ StatusTextTbl	;IDA: unk_8554C. 93 name. AttribStatus Strings (94 'Injury P' / 'I
 	String	'    '
 	String	' C  '
 
-InjuryGamesTbl	;IDA: unk_85580. 95 only. AttribStatus Strings for an injury of 0-9 games
+InjuryGamesTbl	;95 only. AttribStatus Strings for an injury of 0-9 games
 	String	'Inj. G  '
 	String	'Inj.1G  '
 	String	'Inj.2G  '
@@ -408,7 +408,7 @@ InjuryGamesTbl	;IDA: unk_85580. 95 only. AttribStatus Strings for an injury of 0
 	String	'Inj.8G  '
 	String	'Inj.9G  '
 
-AttribEnergy	;IDA: loc_855E4. 93 name. Energy: word $34(a2) (94 $32) / 40, at most 100 (AttribPrintPct)
+AttribEnergy	;93 name. Energy: word $34(a2) (94 $32) / 40, at most 100 (AttribPrintPct)
 	add.w	d0,d0
 	move.w	tmpde(a2,d0.w),d0
 	ext.l	d0
@@ -418,11 +418,11 @@ AttribEnergy	;IDA: loc_855E4. 93 name. Energy: word $34(a2) (94 $32) / 40, at mo
 	moveq	#$64,d0
 	bra.w	AttribPrintPct
 
-AttribFighting	;IDA: loc_855FE. 93 name. Bit 0 of the nibble is the handedness: drop it, then a rating out of d1 - 1
+AttribFighting	;93 name. Bit 0 of the nibble is the handedness: drop it, then a rating out of d1 - 1
 	andi.w	#$E,d0
 	subq.w	#1,d1
 
-AttribRating	;IDA: loc_85604. IDA: DispAttribValue (94). d0 * 100 / d1; 95 scales it (ScaleAttrib, 94 AttribAdjust) only when SeasonPlayerOut returns nonzero.
+AttribRating	;94 name. d0 * 100 / d1; 95 scales it (ScaleAttrib, 94 AttribAdjust) only when SeasonPlayerOut returns nonzero.
 	;Falls into AttribPrintPct
 	mulu.w	#$64,d0
 	divu.w	d1,d0
@@ -434,7 +434,7 @@ AttribRating	;IDA: loc_85604. IDA: DispAttribValue (94). d0 * 100 / d1; 95 scale
 	beq.w	AttribPrintPct
 	jsr	(ScaleAttrib).l
 
-AttribPrintPct	;IDA: loc_8562A. 93 name. Print d0 4 wide, then 4 blanks
+AttribPrintPct	;93 name. Print d0 4 wide, then 4 blanks
 	moveq	#4,d1
 	jsr	(PushNumberWidth).l
 	jsr	(printsmall).l
@@ -442,16 +442,16 @@ AttribPrintPct	;IDA: loc_8562A. 93 name. Print d0 4 wide, then 4 blanks
 	String	'    '
 	rts
 
-AttribHanded	;IDA: loc_85646. 93 name. Bit 0 of the sum: Righty / Lefty (HandedTextTbl)
+AttribHanded	;93 name. Bit 0 of the sum: Righty / Lefty (HandedTextTbl)
 	andi.w	#1,d0
 	lea	HandedTextTbl(pc),a1
 	jmp	PrintSmallListItem
 
-HandedTextTbl	;IDA: unk_85654. IDA: Handedlist (94). AttribHanded Strings
+HandedTextTbl	;94 name. AttribHanded Strings
 	String	'Righty  '
 	String	'Lefty   '
 
-AttribWeight	;IDA: loc_85668. 93 name. Weight: 140 + 8 * rating lb
+AttribWeight	;93 name. Weight: 140 + 8 * rating lb
 	asl.w	#3,d0
 	addi.w	#$8C,d0
 	jsr	(PushNumber).l
@@ -460,7 +460,7 @@ AttribWeight	;IDA: loc_85668. 93 name. Weight: 140 + 8 * rating lb
 	String	' lb  '
 	rts
 
-DrawTeamScreen	;IDA: sub_8568A. 93 name (94 stats94). Roster screen background: wait for the dma (disflags bit 0), clear the scroll, set the window plane
+DrawTeamScreen	;93 name (94 stats94). Roster screen background: wait for the dma (disflags bit 0), clear the scroll, set the window plane
 	;registers, the roster bitmap (RosterBitmap) on map 2 and map 1, the RosterFont tiles (LoadRosterFont, then two remaps at
 	;smallfont2chars / smallfont3chars), clear map 1 and fade in. d0 / d1 = first row / row count of the bitmap
 	movem.l	d0-d1/a2,-(sp)
@@ -536,7 +536,7 @@ DrawTeamScreen	;IDA: sub_8568A. 93 name (94 stats94). Roster screen background: 
 	movem.l	(sp)+,d0-d1/a2
 	rts
 
-FindPlayerLine	;IDA: sub_857CC. 95 only. Find player d0 (0 based) in the 6 slots of line a3: d1 = the line (counted by 8 bytes), -1 not found
+FindPlayerLine	;95 only. Find player d0 (0 based) in the 6 slots of line a3: d1 = the line (counted by 8 bytes), -1 not found
 	movem.l	d0/d2-d3/a3,-(sp)
 	move.w	#8,d2
 	clr.w	d3
@@ -560,7 +560,7 @@ FindPlayerLine	;IDA: sub_857CC. 95 only. Find player d0 (0 based) in the 6 slots
 	movem.l	(sp)+,d0/d2-d3/a3
 	rts
 
-LoadRosterFont	;IDA: sub_85804. 95 only. Load the small font tiles (smallfontptr + 8) at char d4 with the remap below; d4 = next char
+LoadRosterFont	;95 only. Load the small font tiles (smallfontptr + 8) at char d4 with the remap below; d4 = next char
 	move.w	d4,(smallfontchars).w
 	movea.l	(smallfontptr).w,a2
 	addq.w	#8,a2
@@ -568,16 +568,16 @@ LoadRosterFont	;IDA: sub_85804. 95 only. Load the small font tiles (smallfontptr
 	dc.b	$04,$83,$45,$67,$89,$AB,$CD,$EF
 	rts
 
-PAttribColumns	;IDA: unk_8581E (93 PAttribColumns). Skater attribute columns for DisplayPlayerList and getNameandAttrib. String header, then a
+PAttribColumns	;(93 PAttribColumns). Skater attribute columns for DisplayPlayerList and getNameandAttrib. String header, then a
 	;long: high word = mask of rating nibbles to average, low word = attribjmp offset (0 status, 2 energy, 4 handed, 6 weight, 8
 	;fighting, $A rating). A negative word ends the list. The same table as 94
 	String	'     Status    ]'
 	dc.w	$0000,$0
 
-PAttribOverall	;IDA: unk_85834. The Overall entry; PAttribOverallMask is read by video95_03
+PAttribOverall	;The Overall entry; PAttribOverallMask is read by video95_03
 	String	'[   Overall    ]'
 
-PAttribOverallMask	;IDA: dword_85846
+PAttribOverallMask
 	dc.w	$1FBA,$A
 	String	'[   Energy     ]'
 	dc.w	$0000,$2
@@ -609,14 +609,14 @@ PAttribOverallMask	;IDA: dword_85846
 	dc.w	$0080,$A
 	dc.w	-1
 
-GAttribColumns	;IDA: unk_85980 (93 GAttribColumns). Goalie attribute columns, same format as PAttribColumns
+GAttribColumns	;(93 GAttribColumns). Goalie attribute columns, same format as PAttribColumns
 	String	'     Status    ]'
 	dc.w	$0000,$0
 
-GAttribOverall	;IDA: unk_85996. The Overall entry; GAttribOverallMask is read by video95_03
+GAttribOverall	;The Overall entry; GAttribOverallMask is read by video95_03
 	String	'[   Overall    ]'
 
-GAttribOverallMask	;IDA: dword_859A8
+GAttribOverallMask
 	dc.w	$130F,$A
 	String	'[   Agility    ]'
 	dc.w	$1000,$A
@@ -640,14 +640,14 @@ GAttribOverallMask	;IDA: dword_859A8
 	dc.w	$2000,$6
 	dc.w	-1
 
-PlayerPositionText	;IDA: unk_85A8A. 93 name. Position names for the line slots (no xref in IDA)
+PlayerPositionText	;93 name. Position names for the line slots (no xref in IDA)
 	String	'LD'
 	String	'RD'
 	String	'LW'
 	String	'C'
 	String	'RW'
 
-GameSetUp	;IDA: sub_85A9E (94 optsetup94). The game setup screen, rewritten for 95: ReadLineData, ReadPassBits, the options from TmpOptLine2 /
+GameSetUp	;(94 optsetup94). The game setup screen, rewritten for 95: ReadLineData, ReadPassBits, the options from TmpOptLine2 /
 	;TempOptPlayMode. In a season (GameFlags bit 5) take the season options (ReadSeasonHeader) and the matchup (StepSeasonTeam).
 	;Then setoptions, and the line cursor loop: FixModeOptions, PrintOptions, the logos or matchup bitmaps, GameSetUp_2 for a key;
 	;up / down move SelectedPlayerIdx, left / right step setupvalues (WrapOptionUp / Down), start stores them (SetupStart) and sets the
@@ -835,7 +835,7 @@ GameSetUp	;IDA: sub_85A9E (94 optsetup94). The game setup screen, rewritten for 
 	jsr	(SetPojoyMode).l
 	jmp	FigureJoy
 
-GameSetUp_2	;IDA: sub_85D8C (94 optsetup94). Wait up to $E10 frames (94 $5460) for a key on pad 1 / 2 (pads 3 / 4 with FourWayPlay):
+GameSetUp_2	;(94 optsetup94). Wait up to $E10 frames (94 $5460) for a key on pad 1 / 2 (pads 3 / 4 with FourWayPlay):
 	;d1 = new keys, 0 when time ran out. C held repeats faster (setupcardflags bit 5). Runs PlayerCardTimer each frame
 	move.l	#$E10,d6
 .0
@@ -911,11 +911,11 @@ GameSetUp_2	;IDA: sub_85D8C (94 optsetup94). Wait up to $E10 frames (94 $5460) f
 .10
 	rts
 
-OptionLimits	;IDA: unk_85EAA. 93 setoptions .pslim. Number of values of each setup line (mode, team 1, team 2, length, goalies, user records, penalties,
+OptionLimits	;93 setoptions .pslim. Number of values of each setup line (mode, team 1, team 2, length, goalies, user records, penalties,
 	;line changes)
 	dc.w	$D1C,$1C03,$202,$303
 
-WrapOptionUp	;IDA: sub_85EB2. 93 setoptions .iilimit, the up half: setupvalues(d0) past OptionLimits(d0) goes to 0
+WrapOptionUp	;93 setoptions .iilimit, the up half: setupvalues(d0) past OptionLimits(d0) goes to 0
 	movea.l	#OptionLimits,a1
 	clr.w	d2
 	move.b	(a1,d0.w),d2
@@ -925,7 +925,7 @@ WrapOptionUp	;IDA: sub_85EB2. 93 setoptions .iilimit, the up half: setupvalues(d
 .0
 	rts
 
-WrapOptionDown	;IDA: sub_85ECC. The down half: a negative setupvalues(d0) goes to OptionLimits(d0) - 1
+WrapOptionDown	;The down half: a negative setupvalues(d0) goes to OptionLimits(d0) - 1
 	tst.b	(a0,d0.w)
 	bpl.w	.0
 	movea.l	#OptionLimits,a1
@@ -935,7 +935,7 @@ WrapOptionDown	;IDA: sub_85ECC. The down half: a negative setupvalues(d0) goes t
 .0
 	rts
 
-MoveMenuFrame	;IDA: sub_85EE6. 93 setoptions .nms. Keep SelectedPlayerIdx inside DispAttribCtr ... VertLineScrolling; in a season (GameFlags bit 5) line 0 is skipped
+MoveMenuFrame	;93 setoptions .nms. Keep SelectedPlayerIdx inside DispAttribCtr ... VertLineScrolling; in a season (GameFlags bit 5) line 0 is skipped
 	move.w	(SelectedPlayerIdx).w,d0
 	sub.w	(DispAttribCtr).w,d0
 	bpl.w	.0
@@ -958,7 +958,7 @@ MoveMenuFrame	;IDA: sub_85EE6. 93 setoptions .nms. Keep SelectedPlayerIdx inside
 .2
 	rts
 
-FixModeOptions	;IDA: sub_85F2E. 94 only (rewritten). Set setuplines / setupshown for the mode in setupvalues (Trade, Create, Sign, Release and Shootout
+FixModeOptions	;94 only (rewritten). Set setuplines / setupshown for the mode in setupvalues (Trade, Create, Sign, Release and Shootout
 	;show fewer lines), keep the two teams 0-$19 and different in Trade Players, skip the modes save RAM or the season do not allow
 	;(ValidSRAM, ReadSeasonHeader, CheckCreateSlots, ReadCreatedPlayers), step a season matchup (StepSeasonTeam) and start new /
 	;continue playoffs (NewPO, ContinuePlayoffs) when line 1 changes
@@ -1255,7 +1255,7 @@ FixModeOptions	;IDA: sub_85F2E. 94 only (rewritten). Set setuplines / setupshown
 .47
 	rts
 
-EraseCardText	;IDA: sub_86360. 95 only. Erase the card text areas: 5 rows at $FF,8,3 and 1 row at $FF,9,9 with GetBlankChar
+EraseCardText	;95 only. Erase the card text areas: 5 rows at $FF,8,3 and 1 row at $FF,9,9 with GetBlankChar
 	movem.l	d0-d2/a0,-(sp)
 	move.w	#$18,d0
 	move.w	#5,d1
@@ -1272,7 +1272,7 @@ EraseCardText	;IDA: sub_86360. 95 only. Erase the card text areas: 5 rows at $FF
 	movem.l	(sp)+,d0-d2/a0
 	rts
 
-PrintOptions	;IDA: sub_863A6. 93 setoptions .ps (94 PrintOptions). Print the option names (PrintOptionName) and values (GameSetUp_4) of lines
+PrintOptions	;93 setoptions .ps (94 PrintOptions). Print the option names (PrintOptionName) and values (GameSetUp_4) of lines
 	;DispAttribCtr ... VertLineScrolling from row $B, then the scroll marks at x 2: '{' when lines are above, '}' when more follow
 	bsr.w	MoveMenuFrame
 	move.w	(DispAttribCtr).w,d0
@@ -1316,16 +1316,16 @@ PrintOptions	;IDA: sub_863A6. 93 setoptions .ps (94 PrintOptions). Print the opt
 	bsr.w	PrintSetupText
 	rts
 
-ScrollDownTxt	;IDA: unk_86454. 94 names. Scroll marks for PrintOptions
+ScrollDownTxt	;94 names. Scroll marks for PrintOptions
 	String	'}'
 
-ScrollClearTxt	;IDA: unk_86458
+ScrollClearTxt
 	String	' '
 
-ScrollUpTxt	;IDA: unk_8645C
+ScrollUpTxt
 	String	'{'
 
-GameSetUp_4	;IDA: sub_86460 (93 setoptions .psd). Print the value of setup line d0 at printx (OptionValueOffsets / the value Strings);
+GameSetUp_4	;(93 setoptions .psd). Print the value of setup line d0 at printx (OptionValueOffsets / the value Strings);
 	;teams 1 / 2 go to the team name (TeamList city, IslandersTxt / RangersTxt for teams $D / $E), lines not shown print
 	;BlankValueTxt, Shootout prints N/A for the length. The cursor line is highlighted (PrintSetupTextHi)
 	movem.l	d0-d2/a0-a1,-(sp)
@@ -1406,19 +1406,19 @@ GameSetUp_4	;IDA: sub_86460 (93 setoptions .psd). Print the value of setup line 
 .13
 	bra.w	.4
 
-IslandersTxt	;IDA: unk_86578. Full names for the two New York teams (TeamList has only the city)
+IslandersTxt	;Full names for the two New York teams (TeamList has only the city)
 	String	'New York Islanders'
 
-RangersTxt	;IDA: unk_8658C
+RangersTxt
 	String	'New York Rangers  '
 
-BlankValueTxt	;IDA: unk_865A0. A blank value
+BlankValueTxt	;A blank value
 	String	'                    '
 
-NATxt	;IDA: unk_865B6. Not read in 95 (GameSetUp_4 has its own N/A String)
+NATxt	;Not read in 95 (GameSetUp_4 has its own N/A String)
 	String	'N/A                 '
 
-PrintOptionName	;IDA: sub_865CC. 94 PrintOptionNames, one line. Print option name d0 (OptionNames) at printx; lines not shown print BlankNameTxt
+PrintOptionName	;94 PrintOptionNames, one line. Print option name d0 (OptionNames) at printx; lines not shown print BlankNameTxt
 	movem.l	d0/a1,-(sp)
 	move.w	d0,-(sp)
 	movea.l	#OptionNames,a1
@@ -1458,10 +1458,10 @@ PrintOptionName	;IDA: sub_865CC. 94 PrintOptionNames, one line. Print option nam
 	movem.l	(sp)+,d0/a1
 	rts
 
-BlankNameTxt	;IDA: unk_86646. A blank option name
+BlankNameTxt	;A blank option name
 	String	'              '
 
-PrintSetupText	;IDA: sub_86656. 95 only. Print String a1 at printx / printy with the SetupFont chars at smallfont2chars
+PrintSetupText	;95 only. Print String a1 at printx / printy with the SetupFont chars at smallfont2chars
 	move.w	(smallfontchars).w,-(sp)
 	movem.l	a1,-(sp)
 	move.l	#SetupFont,(smallfontptr).l
@@ -1477,7 +1477,7 @@ PrintSetupText	;IDA: sub_86656. 95 only. Print String a1 at printx / printy with
 	move.w	(sp)+,(smallfontchars).w
 	rts
 
-PrintSetupTextHi	;IDA: sub_8669A. 95 only. The same with the highlight chars (smallfont3chars)
+PrintSetupTextHi	;95 only. The same with the highlight chars (smallfont3chars)
 	move.w	(smallfontchars).w,-(sp)
 	movem.l	a1,-(sp)
 	move.l	#SetupFont,(smallfontptr).l
@@ -1493,7 +1493,7 @@ PrintSetupTextHi	;IDA: sub_8669A. 95 only. The same with the highlight chars (sm
 	move.w	(sp)+,(smallfontchars).w
 	rts
 
-DefaultMenus	;IDA: sub_866DE. IDA: LoadDefMenuOptions (94). Set the default menu choices for the beginning of the game: the 9 option words from
+DefaultMenus	;94 name. Set the default menu choices for the beginning of the game: the 9 option words from
 	;defmenuoptions to OptPlayMode... Sets sflags11 bit 6 and demoflag. Called once from Begin (main95)
 	bset	#6,(sflags11).w
 	st	(demoflag).w
@@ -1505,12 +1505,12 @@ DefaultMenus	;IDA: sub_866DE. IDA: LoadDefMenuOptions (94). Set the default menu
 	dbf	d0,.0
 	rts
 
-defmenuoptions	;IDA: unk_86700 (93 DefaultMenus .defom). Mode 0, players 0, teams $E and $17, length 1, goalies 0, user records 1, penalties 0,
+defmenuoptions	;(93 DefaultMenus .defom). Mode 0, players 0, teams $E and $17, length 1, goalies 0, user records 1, penalties 0,
 	;line changes 1
 	dc.w	$0,$0,$E,$17,$1,$0,$1,$0
 	dc.w	$1
 
-GetSetupValues	;IDA: sub_86712. 95 only. setupvalues from the options: line 0 from ModeToSetupMode(OptPlayMode); in Regular Game (sflags11 bit 6) all 8
+GetSetupValues	;95 only. setupvalues from the options: line 0 from ModeToSetupMode(OptPlayMode); in Regular Game (sflags11 bit 6) all 8
 	;from Opt1Team ... OptLine
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(OptPlayMode).w,d0
@@ -1531,10 +1531,10 @@ GetSetupValues	;IDA: sub_86712. 95 only. setupvalues from the options: line 0 fr
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ModeToSetupMode	;IDA: unk_8676A. OptPlayMode 0-4 to the setup mode list (OptionValueOffsets line 0)
+ModeToSetupMode	;OptPlayMode 0-4 to the setup mode list (OptionValueOffsets line 0)
 	dc.w	$5,$304,$CFF
 
-SetupStart	;IDA: sub_86770. 93 setoptions .ex (94 SetupStart). Store setupvalues in the options: OptPlayMode (SetupModeToMode), the mode flags
+SetupStart	;93 setoptions .ex (94 SetupStart). Store setupvalues in the options: OptPlayMode (SetupModeToMode), the mode flags
 	;(sflags10 bits 2 / 4-6 Trade / Create / Sign / Release, gmode2 bit 0 Shootout, sflags11 bit 6 Regular Game, sflags9 bit 7
 	;Practice, GameFlags bits 3 / 4 season), the teams, then the other options; line changes 2 (Auto) sets sflags7 bit 4.
 	;Playoff modes set sflags10 bit 0
@@ -1644,10 +1644,10 @@ SetupStart	;IDA: sub_86770. 93 setoptions .ex (94 SetupStart). Store setupvalues
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SetupModeToMode	;IDA: unk_86938. Setup mode 0-$C to OptPlayMode ($FF ends)
+SetupModeToMode	;Setup mode 0-$C to OptPlayMode ($FF ends)
 	dc.w	$0,$2,$301,$0,$0,$0,$4FF
 
-setoptions	;IDA: sub_86946. options screen display (IDA comment, 94). Build the game setup screen: vbint VBlank_SetOptions, the vram map, the team
+setoptions	;options screen display (IDA comment, 94). Build the game setup screen: vbint VBlank_SetOptions, the vram map, the team
 	;bitmap tiles (LoadSetupTiles), the SetupFont tiles at smallfont2chars / smallfont3chars, then the SetupBgMap1 / SetupBgMap2
 	;bitmaps on maps 1 and 2
 	move.l	#VBlank_SetOptions,(vbint).w
@@ -1709,13 +1709,13 @@ setoptions	;IDA: sub_86946. options screen display (IDA comment, 94). Build the 
 	jsr	(dobitmap).l
 	rts
 
-LoadSetupTiles	;IDA: sub_86A48. IDA dc.b and code (94). Load the TeamBitmaps+8 tiles from char d4 (2)
+LoadSetupTiles	;Data and code (94). Load the TeamBitmaps+8 tiles from char d4 (2)
 	moveq	#2,d4
 	movea.l	#TeamBitmaps+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
 	rts
 
-FigureJoy	;IDA: sub_86A58 (92 / 93 FigureJoy). Set cont1team ... cont4team. In the playoffs (not Shootout, gmode2 bit 0) find this
+FigureJoy	;(92 / 93 FigureJoy). Set cont1team ... cont4team. In the playoffs (not Shootout, gmode2 bit 0) find this
 	;round's game of the po team and set the teams and pads from .9 (94 .pojoylist; .10 with FourWayPlay); otherwise from
 	;NOPJoyTbl by OptNOP. 95 has no InitializeGameStructures call here. Called from MakeTree and GameSetUp
 	movem.l	d0-d3/a0-a1,-(sp)
@@ -1811,11 +1811,11 @@ FigureJoy	;IDA: sub_86A58 (92 / 93 FigureJoy). Set cont1team ... cont4team. In t
 	movem.l	(sp)+,d0-d3/a0-a1
 	rts
 
-NOPJoyTbl	;IDA: unk_86BCC. IDA: _noplist (94 FigureJoy .noplist). cont1team, cont2team by OptNOP
+NOPJoyTbl	;(94 FigureJoy .noplist) cont1team, cont2team by OptNOP
 	dc.w	$0,$0,$1,$0,$2,$0,$1,$1
 	dc.w	$1,$2,$1,$2,$1,$2
 
-OptionNames	;IDA: unk_86BE8. Option names (93 setoptions .text); 95 adds no Players line
+OptionNames	;Option names (93 setoptions .text); 95 adds no Players line
 	String	'Play Mode    '
 	String	'Team 1       '
 	String	'Team 2       '
@@ -1825,7 +1825,7 @@ OptionNames	;IDA: unk_86BE8. Option names (93 setoptions .text); 95 adds no Play
 	String	'Penalties    '
 	String	'Line Changes '
 
-OptionValueOffsets	;IDA: unk_86C68. Offsets of each option's value Strings from OptionValueOffsets (93 setoptions .pl): mode, the two teams (not read), length,
+OptionValueOffsets	;Offsets of each option's value Strings from OptionValueOffsets (93 setoptions .pl): mode, the two teams (not read), length,
 	;goalies, user records, penalties, line changes. 95 has 13 modes
 	dc.w	$10,$1F0,$1F0,$12A,$182,$1F0,$1AE,$21C
 	String	'Game With Trades    '
@@ -1856,7 +1856,7 @@ OptionValueOffsets	;IDA: unk_86C68. Offsets of each option's value Strings from 
 	String	'Off                 '
 	String	'Auto                '
 
-DrawMatchupBitmaps	;IDA: sub_86EC6. 94 only (attract94). For the modes after Practice draw the VisTeam bitmap at $DF,8,1 and the HomeTeam bitmap at
+DrawMatchupBitmaps	;94 only (attract94). For the modes after Practice draw the VisTeam bitmap at $DF,8,1 and the HomeTeam bitmap at
 	;$CF,$15,1 (DrawTeamBitmap) with their TeamLogoPalettes colors
 	movem.l	d0-d7/a0-a2,-(sp)
 	cmpi.b	#2,(setupvalues).w
@@ -1895,7 +1895,7 @@ DrawMatchupBitmaps	;IDA: sub_86EC6. 94 only (attract94). For the modes after Pra
 	movem.l	(sp)+,d0-d7/a0-a2
 	rts
 
-DrawTeamBitmap	;IDA: sub_86F66. 94 only (attract94). dobitmap entry d1 of TeamBitmaps (d4 from the caller)
+DrawTeamBitmap	;94 only (attract94). dobitmap entry d1 of TeamBitmaps (d4 from the caller)
 	clr.w	d0
 	asl.w	#1,d1
 	movea.l	#TeamBitmaps,a0
@@ -1908,7 +1908,7 @@ DrawTeamBitmap	;IDA: sub_86F66. 94 only (attract94). dobitmap entry d1 of TeamBi
 	moveq	#0,d5
 	jmp	dobitmap
 
-UpdateSetupLogos	;IDA: sub_86F88. 95 only. When a team changed (setuphome / setupvis against setupvalues 1 / 2) erase the card text (EraseCardText),
+UpdateSetupLogos	;95 only. When a team changed (setuphome / setupvis against setupvalues 1 / 2) erase the card text (EraseCardText),
 	;restart carddelay and draw the changed team's block (DrawHomeBlock / DrawVisBlock)
 	bclr	#6,(setupcardflags).w
 	bne.w	.0
@@ -1964,7 +1964,7 @@ UpdateSetupLogos	;IDA: sub_86F88. 95 only. When a team changed (setuphome / setu
 .7
 	rts
 
-DrawHomeBlock	;IDA: sub_87054. 94 only (rewritten). Erase the right logo (setupcardflags bit 3 was set) and draw logo logoteam at x $21
+DrawHomeBlock	;94 only (rewritten). Erase the right logo (setupcardflags bit 3 was set) and draw logo logoteam at x $21
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#2,(setupcardflags).w
 	bclr	#3,(setupcardflags).w
@@ -1982,7 +1982,7 @@ DrawHomeBlock	;IDA: sub_87054. 94 only (rewritten). Erase the right logo (setupc
 	move.w	#$21,(printx).w
 	bra.w	DrawSetupLogo
 
-DrawVisBlock	;IDA: sub_8709E. 94 only (rewritten). Erase the left logo (setupcardflags bit 2 was set) and draw logo logoteam at x 1
+DrawVisBlock	;94 only (rewritten). Erase the left logo (setupcardflags bit 2 was set) and draw logo logoteam at x 1
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#3,(setupcardflags).w
 	bclr	#2,(setupcardflags).w
@@ -1999,7 +1999,7 @@ DrawVisBlock	;IDA: sub_8709E. 94 only (rewritten). Erase the left logo (setupcar
 	String	$CF,$0,$0,$0
 	move.w	#1,(printx).w
 
-DrawSetupLogo	;IDA: loc_870E4. 94 optsetup94 DrawTeamLogo. Draw the logo of team logoteam (TeamLogoBitmaps) at printx, 6 x 6, palette TeamLogoPalettes
+DrawSetupLogo	;94 optsetup94 DrawTeamLogo. Draw the logo of team logoteam (TeamLogoBitmaps) at printx, 6 x 6, palette TeamLogoPalettes
 	;+ team * $20 - $20 (bit 2: home) or - $40. Branched to from DrawHomeBlock; the name DrawTeamLogo is video95_03's
 	move.w	#1,(printy).w
 	move.w	(homepicchars).w,d4
@@ -2043,7 +2043,7 @@ DrawSetupLogo	;IDA: loc_870E4. 94 optsetup94 DrawTeamLogo. Draw the logo of team
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PlayerCardTimer	;IDA: sub_87174. 94 only. Player cards, called each frame from GameSetUp_2 while carddelay has run out: every cardtimer frames switch
+PlayerCardTimer	;94 only. Player cards, called each frame from GameSetUp_2 while carddelay has run out: every cardtimer frames switch
 	;sides (setupcardflags bit 1), erase the card (GetBlankChar) and draw the next of 6 featured players of HomeTeam / VisTeam:
 	;the picture (GetPlayerPicture, NoPlayerPicture) unpacked to picturebuf and drawn, then the name (GetRosterName) and number
 	cmpi.w	#1,(setupshown).w
@@ -2182,18 +2182,18 @@ PlayerCardTimer	;IDA: sub_87174. 94 only. Player cards, called each frame from G
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ResetCardTimer	;IDA: sub_8737A. 94 only. Card timer cardtimer = $2D, featuredplayer 0, setupcardflags bit 1 clear
+ResetCardTimer	;94 only. Card timer cardtimer = $2D, featuredplayer 0, setupcardflags bit 1 clear
 	move.w	#$2D,(cardtimer).w
 	clr.w	(featuredplayer).w
 	bclr	#1,(setupcardflags).w
 	rts
 
-GetBlankChar	;IDA: sub_8738C. 95 only. d2 = the blank char of the setup font (recwins + $C)
+GetBlankChar	;95 only. d2 = the blank char of the setup font (recwins + $C)
 	move.w	(recwins).w,d2
 	addi.w	#$C,d2
 	rts
 
-EraseCard	;IDA: sub_87396. 94 only. Erase both card areas (6 x 6 at x $21 and x 1), then the card text (EraseCardText)
+EraseCard	;94 only. Erase both card areas (6 x 6 at x $21 and x 1), then the card text (EraseCardText)
 	jsr	(printz).l
 	String	$FF,$0,$0,$0
 	move.w	#$21,(printx).w
@@ -2211,7 +2211,7 @@ EraseCard	;IDA: sub_87396. 94 only. Erase both card areas (6 x 6 at x $21 and x 
 	jsr	(EraseCardText).l
 	rts
 
-ClearLogoPalettes	;IDA: sub_873E2. 95 only. Clear the two logo palette longs and set palcount
+ClearLogoPalettes	;95 only. Clear the two logo palette longs and set palcount
 	move.l	#0,(palfadenew+$62).w
 	clr.w	(palfadenew+$6A).w
 	move.l	#0,(palfadenew+$42).w
@@ -2219,7 +2219,7 @@ ClearLogoPalettes	;IDA: sub_873E2. 95 only. Clear the two logo palette longs and
 	move.w	#$64,(palcount).w
 	rts
 
-StepSeasonTeam	;IDA: sub_87402. 95 only. Step the season matchup (setupdir 2: PrevSeasonTeam, else NextSeasonTeam) until one is found; setupvalues
+StepSeasonTeam	;95 only. Step the season matchup (setupdir 2: PrevSeasonTeam, else NextSeasonTeam) until one is found; setupvalues
 	;1 / 2 = its two teams from SeasonTeams
 	cmpi.w	#2,(setupdir).w
 	beq.w	.0
@@ -2238,7 +2238,7 @@ StepSeasonTeam	;IDA: sub_87402. 95 only. Step the season matchup (setupdir 2: Pr
 	movea.l	(sp)+,a1
 	rts
 
-SetPojoyMode	;IDA: sub_8743C. 94 only (attract94). Set pojoy from the number of players for play modes 2 and 3 (7, or $B with FourWayPlay, - OptNOP)
+SetPojoyMode	;94 only (attract94). Set pojoy from the number of players for play modes 2 and 3 (7, or $B with FourWayPlay, - OptNOP)
 	cmpi.w	#2,(OptPlayMode).w
 	blt.w	.1
 	cmpi.w	#4,(OptPlayMode).w
@@ -2253,7 +2253,7 @@ SetPojoyMode	;IDA: sub_8743C. 94 only (attract94). Set pojoy from the number of 
 .1
 	rts
 
-InitializeGameStructures	;IDA: sub_87468. 93 name. Random team pairs for all 8 gsstruct games, none of them HomeTeam or VisTeam. IDA dc.b. No caller
+InitializeGameStructures	;93 name. Random team pairs for all 8 gsstruct games, none of them HomeTeam or VisTeam. No caller
 	st	(gamenum).w
 	clr.l	d3
 	move.w	(HomeTeam).w,d1
@@ -2271,14 +2271,14 @@ InitializeGameStructures	;IDA: sub_87468. 93 name. Random team pairs for all 8 g
 	dbf	d2,.0
 	rts
 
-OptionRNG	;IDA: sub_87498 (93 GetRandomUnusedTeam). d0 = a random team 0-25 not yet set in d3, and set its bit
+OptionRNG	;(93 GetRandomUnusedTeam). d0 = a random team 0-25 not yet set in d3, and set its bit
 	moveq	#$1A,d0
 	jsr	(randomd0).l
 	bset	d0,d3
 	bne.s	OptionRNG
 	rts
 
-ReadPassBits	;IDA: sub_874A6. 93 name. Translate the saved bits at a3 (5 words) to the playoff variables; the 5 words are kept
+ReadPassBits	;93 name. Translate the saved bits at a3 (5 words) to the playoff variables; the 5 words are kept
 	moveq	#4,d0
 	lea	$A(a3),a0
 .0
@@ -2340,7 +2340,7 @@ ReadPassBits	;IDA: sub_874A6. 93 name. Translate the saved bits at a3 (5 words) 
 	dbf	d0,.6
 	rts
 
-EncodePW	;IDA: sub_8756E. 93 name. After a playoff game compute winners and save the bits if needed
+EncodePW	;93 name. After a playoff game compute winners and save the bits if needed
 	tst.w	(OptNOP).w
 	beq.w	.1
 	tst.w	(OptPlayMode).w
@@ -2376,7 +2376,7 @@ EncodePW	;IDA: sub_8756E. 93 name. After a playoff game compute winners and save
 .1
 	rts
 
-WritePassBits	;IDA: sub_87604. 93 name. Transfer the game variables to the bits at a3
+WritePassBits	;93 name. Transfer the game variables to the bits at a3
 	bsr.w	ClrPassBits
 	move.w	(postarts).w,d0
 	moveq	#$20,d1
@@ -2408,7 +2408,7 @@ WritePassBits	;IDA: sub_87604. 93 name. Transfer the game variables to the bits 
 	dbf	d2,.0
 	rts
 
-PushBits	;IDA: sub_87668. 93 name. bits = bits * d1 + d0. d1 = range 2^1-2^15, d0 = data
+PushBits	;93 name. bits = bits * d1 + d0. d1 = range 2^1-2^15, d0 = data
 	movem.l	d0-d1,-(sp)
 	exg	d0,d1
 	bsr.w	SuperMult
@@ -2418,7 +2418,7 @@ PushBits	;IDA: sub_87668. 93 name. bits = bits * d1 + d0. d1 = range 2^1-2^15, d
 	movem.l	(sp)+,d0-d1
 	rts
 
-ClrPassBits	;IDA: sub_87680. 93 name. Clear the 5 words of bits at a3
+ClrPassBits	;93 name. Clear the 5 words of bits at a3
 	movea.w	a3,a0
 	moveq	#4,d0
 .0
@@ -2426,7 +2426,7 @@ ClrPassBits	;IDA: sub_87680. 93 name. Clear the 5 words of bits at a3
 	dbf	d0,.0
 	rts
 
-SuperAdd	;IDA: sub_8768C. 93 name. 1 long (d0.L) added to the 5 words at a3
+SuperAdd	;93 name. 1 long (d0.L) added to the 5 words at a3
 	movem.l	d1/a0,-(sp)
 	lea	$A(a3),a0
 	moveq	#3,d1
@@ -2439,7 +2439,7 @@ SuperAdd	;IDA: sub_8768C. 93 name. 1 long (d0.L) added to the 5 words at a3
 	movem.l	(sp)+,d1/a0
 	rts
 
-SuperMult	;IDA: sub_876A8. 93 name. 1 word (d0) multiplied by the 5 words at a3
+SuperMult	;93 name. 1 word (d0) multiplied by the 5 words at a3
 	movem.l	d1-d4/a0,-(sp)
 	movea.w	a3,a0
 	moveq	#4,d4
@@ -2465,7 +2465,7 @@ SuperMult	;IDA: sub_876A8. 93 name. 1 word (d0) multiplied by the 5 words at a3
 	movem.l	(sp)+,d1-d4/a0
 	rts
 
-SuperDiv	;IDA: sub_876DE. 93 name. 5 words at a3 divided by 1 word (d0); d0 = remainder on exit
+SuperDiv	;93 name. 5 words at a3 divided by 1 word (d0); d0 = remainder on exit
 	movem.l	d1-d2/a0,-(sp)
 	movea.w	a3,a0
 	moveq	#4,d1
@@ -2480,7 +2480,7 @@ SuperDiv	;IDA: sub_876DE. 93 name. 5 words at a3 divided by 1 word (d0); d0 = re
 	movem.l	(sp)+,d1-d2/a0
 	rts
 
-GetShifter	;IDA: sub_876FC (92 / 93 GetShifter). Returns d1 = number of games - 1, d2 = first bit of WinBits
+GetShifter	;(92 / 93 GetShifter). Returns d1 = number of games - 1, d2 = first bit of WinBits
 	move.l	d0,-(sp)
 	moveq	#-$10,d2
 	moveq	#$10,d1
@@ -2493,7 +2493,7 @@ GetShifter	;IDA: sub_876FC (92 / 93 GetShifter). Returns d1 = number of games - 
 	move.l	(sp)+,d0
 	rts
 
-AddPOStats	;IDA: sub_87714 (93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to its packed playoff totals. Called from hockey95
+AddPOStats	;(93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to its packed playoff totals. Called from hockey95
 	cmpi.w	#1,(OptPlayMode).w
 	blt.w	.4
 	bsr.w	ReadTeamStats
@@ -2548,10 +2548,10 @@ AddPOStats	;IDA: sub_87714 (93 DisplayTeamStatsForPlayoffs). Add the po team's g
 .4
 	rts
 
-BitWidthTable	;IDA: unk_877A8. 93 name. Playoff stat bit widths, indexed by stat number & 3
+BitWidthTable	;93 name. Playoff stat bit widths, indexed by stat number & 3
 	dc.w	$C0E,$A0A
 
-ReadTeamStats	;IDA: sub_877AC. 93 name. Unpack the playoff stat totals from the bit stream into statsbuffer words
+ReadTeamStats	;93 name. Unpack the playoff stat totals from the bit stream into statsbuffer words
 	movea.w	#(statsbuffer-M68K_RAM),a0
 	movea.l	#BitWidthTable,a1
 	movea.w	#(outputbuffer-M68K_RAM),a2
@@ -2579,7 +2579,7 @@ ReadTeamStats	;IDA: sub_877AC. 93 name. Unpack the playoff stat totals from the 
 	dbf	d0,.0
 	rts
 
-ResolveGames	;IDA: sub_877F2. 93 name. Compute winners and losers for playoff matchups
+ResolveGames	;93 name. Compute winners and losers for playoff matchups
 	move.w	(gamenum).w,d0
 	mulu.w	#$10,d0
 	movea.w	#(gsstruct-M68K_RAM),a0
@@ -2700,7 +2700,7 @@ ResolveGames	;IDA: sub_877F2. 93 name. Compute winners and losers for playoff ma
 	addq.w	#1,(gamelevel).w
 	rts
 
-ContinuePlayoffs	;IDA: sub_8797C (93 NewPO). Continue playoffs: read the saved bits (ReadPassBits from pwddatabuffer); after the first
+ContinuePlayoffs	;(93 NewPO). Continue playoffs: read the saved bits (ReadPassBits from pwddatabuffer); after the first
 	;game rebuild the tree (MakeTree) and set OptNOP = 7 (or $B with FourWayPlay) - pojoy, pojoy moved to the 95 values
 	movem.l	d0-d7/a0-a3,-(sp)
 	movea.w	#(pwddatabuffer-M68K_RAM),a3
@@ -2736,7 +2736,7 @@ ContinuePlayoffs	;IDA: sub_8797C (93 NewPO). Continue playoffs: read the saved b
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-NewPO	;IDA: sub_879F2 (93 SelectRandomPlayoffTree). New playoff tree with Opt1Team (a random
+NewPO	;(93 SelectRandomPlayoffTree). New playoff tree with Opt1Team (a random
 	;playoffseats row that has it), bosgames 7 and MakeTree for OptPlayMode 2; otherwise bosgames 0, the gsstruct wins cleared, and falls into MakeTree
 	moveq	#$20,d0
 	jsr	(randomd0).l
@@ -2772,7 +2772,7 @@ NewPO	;IDA: sub_879F2 (93 SelectRandomPlayoffTree). New playoff tree with Opt1Te
 	adda.w	#$10,a0
 	dbf	d0,.2
 
-MakeTree	;IDA: sub_87A5E (93 maketree). Make the playoff tree (potree) from playoffseats and WinBits, then FigureJoy
+MakeTree	;(93 maketree). Make the playoff tree (potree) from playoffseats and WinBits, then FigureJoy
 	movem.l	d0-d4/a0-a3,-(sp)
 	move.w	(postarts).w,d1
 	asl.w	#4,d1
@@ -2813,7 +2813,7 @@ MakeTree	;IDA: sub_87A5E (93 maketree). Make the playoff tree (potree) from play
 	movem.l	(sp)+,d0-d4/a0-a3
 	rts
 
-SetTreeGameTeams	;IDA: sub_87AE2. 95 only (94 MakeTree inline). Put the two teams at a0 in game a1: flipped (gsstruct flags bit 0) except for
+SetTreeGameTeams	;95 only (94 MakeTree inline). Put the two teams at a0 in game a1: flipped (gsstruct flags bit 0) except for
 	;bosgames 2, 3 and 5
 	cmpi.w	#2,(bosgames).w
 	beq.w	.0
@@ -2831,13 +2831,13 @@ SetTreeGameTeams	;IDA: sub_87AE2. 95 only (94 MakeTree inline). Put the two team
 	move.b	(a0)+,3(a1)
 	rts
 
-CheckPlayoffsStarted	;IDA: sub_87B20. 95 only. ContinuePlayoffs, then d0 = gamelevel | bosgames (0 = no game played yet). Called from FixModeOptions
+CheckPlayoffsStarted	;95 only. ContinuePlayoffs, then d0 = gamelevel | bosgames (0 = no game played yet). Called from FixModeOptions
 	jsr	(ContinuePlayoffs).l
 	move.w	(gamelevel).w,d0
 	or.w	(bosgames).w,d0
 	rts
 
-ReadLineData	;IDA: sub_87B30 (94 title94). Read the saved lines from save RAM. Called from GameSetUp and main95
+ReadLineData	;(94 title94). Read the saved lines from save RAM. Called from GameSetUp and main95
 	movem.l	d0-d1/a0,-(sp)
 	move.l	#$100,d1
 	move.l	#$7EF6,d0
@@ -2849,7 +2849,7 @@ ReadLineData	;IDA: sub_87B30 (94 title94). Read the saved lines from save RAM. C
 	movem.l	(sp)+,d0-d1/a0
 	rts
 
-WriteLineData	;IDA: sub_87B66 (94 title94). Write the lines to save RAM and the checksum
+WriteLineData	;(94 title94). Write the lines to save RAM and the checksum
 	movem.l	d0-d1/a0,-(sp)
 	move.l	#$100,d1
 	move.l	#$7EF6,d0

@@ -14,7 +14,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-asswingo	;no IDA label (IDA dc.b), asstab entry 9. Winger on offense: a random spot in the puck zone (.dedata). 95: a new spot each time with sflags2 bit 7, and then y at most $4C, else $1E further up
+asswingo	;asstab entry 9. Winger on offense: a random spot in the puck zone (.dedata). 95: a new spot each time with sflags2 bit 7, and then y at most $4C, else $1E further up
 	btst	#pfalock,pflags(a3)	;check if locked in animation
 	bne.w	rtss21	;exit if so
 	btst	#gmclock,(gmode).w	;check game clock
@@ -130,12 +130,12 @@ asswingo	;no IDA label (IDA dc.b), asstab entry 9. Winger on offense: a random s
 .0
 	lea	EvadePC(pc),a0	;add EvadePC as aux routine
 	bra.w	skateto	;skate to d0/d1 position
-rtss11	;no IDA label. Shared rts of asswingo / asscenterd
+rtss11	;Shared rts of asswingo / asscenterd
 	rts
 ; player a3 is center on defense
 ; d7 = elapsed frames
 
-asscenterd	;no IDA label (IDA dc.b), asstab entry $A. Center on defense. 95: with the team defense mode at 1 and a carrier, .cover
+asscenterd	;asstab entry $A. Center on defense. 95: with the team defense mode at 1 and a carrier, .cover
 	btst	#5,$62(a3)	;pfalock - locked animation
 	bne.s	rtss11	;exit if locked
 	btst	#0,(gmode).w	;gmclock - check if clock is running
@@ -256,7 +256,7 @@ asscenterd	;no IDA label (IDA dc.b), asstab entry $A. Center on defense. 95: wit
 .cl2
 	rts
 
-asscentero	;no IDA label (IDA dc.b), asstab entry $B. Center on offense: a random spot in the puck zone
+asscentero	;asstab entry $B. Center on offense: a random spot in the puck zone
 	btst	#5,pflags(a3)	;pfalock
 	bne.w	rtss11	;exit if anim locked
 	btst	#0,(gmode).w	;#gmclock
@@ -356,7 +356,7 @@ asscentero	;no IDA label (IDA dc.b), asstab entry $B. Center on offense: a rando
 ; joypad controlled goalie control
 ; a3 = goalie
 
-assdefo	;no IDA label (IDA dc.b), asstab entry $C. assign94 assdefo (moved in). Defenseman on offense. 95: back to assdefd at once when the other team has the puck (or nobody), no blue line test; holds no deeper than the other forwards (.lim), and at -$C0 when the other goalie has the puck (PuckcIsGoalie)
+assdefo	;asstab entry $C. assign94 assdefo (moved in). Defenseman on offense. 95: back to assdefd at once when the other team has the puck (or nobody), no blue line test; holds no deeper than the other forwards (.lim), and at -$C0 when the other goalie has the puck (PuckcIsGoalie)
 	bclr	#7,$64(a3)	;95: assdefdchase sets it
 	btst	#5,$62(a3)
 	bne.w	rtsskate
@@ -493,17 +493,17 @@ assdefo	;no IDA label (IDA dc.b), asstab entry $C. assign94 assdefo (moved in). 
 	rts
 ; player a3 is defensive player on defense
 
-assnothing	;no IDA label (IDA dc.b). assign94 assnothing (moved in): no assignment, just skate (doplayeracc 8)
+assnothing	;assign94 assnothing (moved in): no assignment, just skate (doplayeracc 8)
 	btst	#5,$62(a3)	;#pfalock
 	bne.w	rtss21
 	btst	#3,$62(a3)	;#pfjoycon
 	bne.w	rtss21
 	moveq	#8,d0
 	jmp	(doplayeracc).l
-assfight	;no IDA label. asstab entry $19: an rts (94 assfight and assfwatch are rts only)
+assfight	;asstab entry $19: an rts (94 assfight and assfwatch are rts only)
 	rts
 
-pucknorm	;no IDA label (IDA dc.b), asstab entry 1. The puck: follow the carrier, icing / offsides checks, a stoppage when it sits still
+pucknorm	;asstab entry 1. The puck: follow the carrier, icing / offsides checks, a stoppage when it sits still
 	btst	#2,(BA_PS_flags).w	;check if flag is clear (normal play)
 	beq.w	.normalplay
 	jsr	(UpdatePenaltyShotEnd).l
@@ -570,7 +570,7 @@ pucknorm	;no IDA label (IDA dc.b), asstab entry 1. The puck: follow the carrier,
 .coll
 	jmp	(checkpuckcoll).l
 
-puckunflip	;no IDA label (IDA dc.b), asstab entry 5. Stop the spinning puck
+puckunflip	;asstab entry 5. Stop the spinning puck
 	cmpi.w	#8,SPAnum(a3)
 	blt.w	.k
 	cmpi.w	#$18,SPAnum(a3)
@@ -584,7 +584,7 @@ puckunflip	;no IDA label (IDA dc.b), asstab entry 5. Stop the spinning puck
 ; start puck spinning
 ; a3 = puck
 
-puckflip	;IDA: sub_81336. Flip the puck (95 SPA $12C0)
+puckflip	;Flip the puck (95 SPA $12C0)
 	andi.w	#1,d0
 	eor.w	d0,facedir(a3)	;facedir
 	andi.w	#3,facedir(a3)
@@ -594,7 +594,7 @@ puckflip	;IDA: sub_81336. Flip the puck (95 SPA $12C0)
 
 ; assignment for puck shadow
 ; a3 = puck shadow
-puckshadow	;no IDA label (IDA dc.b), asstab entry 2. The puck shadow, a siren on goals (95: no horizontal mode)
+puckshadow	;asstab entry 2. The puck shadow, a siren on goals (95: no horizontal mode)
 	cmpi.w	#$1B3,frame(a3)	;#SPFpuck, frame (94 $18A)
 	bne.w	.siren	;shadow turns into siren on goals
 	move.w	Xpos-SCstruct(a3),(a3)	;Xpos-SCstruct, Xpos
@@ -617,7 +617,7 @@ puckshadow	;no IDA label (IDA dc.b), asstab entry 2. The puck shadow, a siren on
 .s0
 	rts
 
-findpc	;no IDA label (IDA dc.b). Where and when the puck crosses each goal line (puckcross). 95: 4 frames earlier
+findpc	;Where and when the puck crosses each goal line (puckcross). 95: 4 frames earlier
 	movem.l	d0-d4/a1-a2,-(sp)
 	movea.w	#(puckcross-M68K_RAM),a1
 	move.w	#$98,d1	;sideline (94 $88) - distance from center to side boards
@@ -671,7 +671,7 @@ findpc	;no IDA label (IDA dc.b). Where and when the puck crosses each goal line 
 	addq.w	#4,a1	;add 4 to puckcross (to move to the other goal line)
 	rts
 
-a2touchpuck	;no IDA label (IDA dc.b). Player a2 touched the puck: last touch, scorer / assist slots, offsides, icing. 95: no icing in Practice Mode
+a2touchpuck	;Player a2 touched the puck: last touch, scorer / assist slots, offsides, icing. 95: no icing in Practice Mode
 	move.w	(a2),(ltx).w	;move Xpos to last touch X
 	move.w	Ypos(a2),(lty).w	;move Ypos to last touch Y
 	move.w	SCnum(a2),(ltplayer).w	;move SCnum to last touch player
@@ -747,7 +747,7 @@ a2touchpuck	;no IDA label (IDA dc.b). Player a2 touched the puck: last touch, sc
 .x
 	rts
 
-Setplass	;IDA: sub_81540. collide94 Setplass (moved in). Set player a3's first assignment by position (95 numbers). 94: set players (a3) initial assignment from .alist by position
+Setplass	;collide94 Setplass (moved in). Set player a3's first assignment by position (95 numbers). 94: set players (a3) initial assignment from .alist by position
 	move.w	position(a3),d0
 	bmi.w	.x
 	lea	.alist(pc),a0
@@ -765,17 +765,17 @@ Setplass	;IDA: sub_81540. collide94 Setplass (moved in). Set player a3's first a
 	dc.b	$A	;95: asscenterd
 	dc.b	$FF
 
-assexit	;IDA: sub_8155E. Exit the current assignment of player a3
+assexit	;Exit the current assignment of player a3
 	addq.w	#1,assnum(a3)	;add 1 to current assignment index
 	andi.w	#7,assnum(a3)	;mask passing first 3 bits
 	bset	#pfna,pflags(a3)	;signal next assignment
 	rts
 ; insert new assignment on player a3
-assinsert	;IDA: sub_81570. Insert assignment d0 on player a3
+assinsert	;Insert assignment d0 on player a3
 	subq.w	#1,$36(a3)	;$36 = assnum
 	andi.w	#7,$36(a3)
 ; replace current assignment on player a3
-assreplace	;IDA: sub_8157A. Replace the current assignment of player a3 with d0
+assreplace	;Replace the current assignment of player a3 with d0
 	move.l	d1,-(sp)	;push on stack
 	move.w	assnum(a3),d1	;$36 = assnum
 	move.b	d0,asslist(a3,d1.w)	;replace current assignment with d0 on asslist
@@ -784,7 +784,7 @@ assreplace	;IDA: sub_8157A. Replace the current assignment of player a3 with d0
 	rts
 ; d0/d1 are x/y distances which are converted into direction 0-7 and returned in d0
 
-EvadePC	;no IDA label (IDA dc.b). skateto extra routine: steer around the puck carrier
+EvadePC	;skateto extra routine: steer around the puck carrier
 	tst.w	(puckc).w
 	bmi.w	.ex	;no puck carrier
 	move.b	Xvel(a3),d2	;Xvel
@@ -832,7 +832,7 @@ EvadePC	;no IDA label (IDA dc.b). skateto extra routine: steer around the puck c
 rtsskateto	;95: skateto's exit
 	rts
 
-skateto	;no IDA label (IDA dc.b). Skate a3 to d0 / d1, a0 = extra routine. 95: nothing while locked in an animation
+skateto	;Skate a3 to d0 / d1, a0 = extra routine. 95: nothing while locked in an animation
 	btst	#5,pflags(a3)	;95: nothing while locked in an animation
 	bne.s	rtsskateto
 	sub.b	d7,temp2(a3)	;sub d7 from temp2
@@ -894,7 +894,7 @@ skateto	;no IDA label (IDA dc.b). Skate a3 to d0 / d1, a0 = extra routine. 95: n
 	move.b	temp2+1(a3),d0	;temp2+1
 	jmp	(doplayeracc).l
 
-check4check	;no IDA label (IDA dc.b). Check an opponent in front of a3. 95: a joystick player starts the check animation (CanCheckStart, SPAcheckstart); sflags10 bit 7 always looks; burstchk / Acheck
+check4check	;Check an opponent in front of a3. 95: a joystick player starts the check animation (CanCheckStart, SPAcheckstart); sflags10 bit 7 always looks; burstchk / Acheck
 	tst.w	$34(a3)	;check if goalie
 	bne.w	.player	;branch if not
 	rts
@@ -976,7 +976,7 @@ check4check	;no IDA label (IDA dc.b). Check an opponent in front of a3. 95: a jo
 .x
 	rts
 
-check4check2	;no IDA label (IDA dc.b). 95 only. check4check with a puck y test before the check (burstchk) or Acheck
+check4check2	;95 only. check4check with a puck y test before the check (burstchk) or Acheck
 	;(or $A beyond it), else on vcount bit 8. Called from assdefdchase (checks95_03)
 	tst.w	$34(a3)	;check if goalie
 	bne.w	.player	;branch if not
@@ -1075,7 +1075,7 @@ check4check2	;no IDA label (IDA dc.b). 95 only. check4check with a puck y test b
 .x
 	rts
 
-asspassrec	;no IDA label (IDA dc.b), asstab entry $D. Catch a pass; a one timer (assonetimer) for a computer player in the zone
+asspassrec	;asstab entry $D. Catch a pass; a one timer (assonetimer) for a computer player in the zone
 	btst	#pfalock,pflags(a3)	;pfalock - animation lock
 	bne.w	rtss6	;exit if locked
 	btst	#gmclock,(gmode).w	;gmclock - check if clock running
@@ -1140,7 +1140,7 @@ asspassrec	;no IDA label (IDA dc.b), asstab entry $D. Catch a pass; a one timer 
 .exit
 	bclr	#pfdoff,pflags(a3)
 	jmp	(assexit).l
-SkateToTempTarget	;no IDA label (IDA dc.b). Skate to temp3 / temp4
+SkateToTempTarget	;Skate to temp3 / temp4
 	move.w	$44(a3),d0		;temp3
 	move.w	$46(a3),d1		;temp4
 	lea	rtss6(pc),a0
@@ -1150,7 +1150,7 @@ rtss6	;the SkateToTempTarget exit, also asspassrec's and assdefo's (94 rtss6 is 
 rtsskate	;95: a second rts. assgoaliecpu, AdjustFacingDirection, assdefo and others branch here
 	rts
 
-assbreakaway	;no IDA label (IDA dc.b), asstab entry $21. Breakaway; falls into assnearest
+assbreakaway	;asstab entry $21. Breakaway; falls into assnearest
 	move.w	$52(a3),d0	;Move SCnum into d0
 	cmp.w	(puckc).w,d0	;compare puck carrier SCnum with d0
 	beq.w	.puckc	;branch if puck carrier
@@ -1163,7 +1163,7 @@ assbreakaway	;no IDA label (IDA dc.b), asstab entry $21. Breakaway; falls into a
 	jsr	(breakaway).l
 	bmi.s	.notpuckc
 
-assnearest	;no IDA label (IDA dc.b), asstab entry $E. The player nearest the puck without it. 95: skates at the future puck spot, no crowd meter boost
+assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates at the future puck spot, no crowd meter boost
 	bclr	#2,(sflags5).w
 	bne.w	.chkpuck
 	bclr	#1,$64(a3)	;clear breakaway bit
@@ -1435,7 +1435,7 @@ assnearest	;no IDA label (IDA dc.b), asstab entry $E. The player nearest the puc
 .topuck
 	bsr.w	skatetopuck
 
-skatetopuckinit	;no IDA label (IDA dc.b). d0 / d1 = puck x / y half a step ahead
+skatetopuckinit	;d0 / d1 = puck x / y half a step ahead
 	move.b	(puckvx).w,d0
 	asr.b	#1,d0
 	ext.w	d0
@@ -1446,7 +1446,7 @@ skatetopuckinit	;no IDA label (IDA dc.b). d0 / d1 = puck x / y half a step ahead
 	add.w	(pucky).w,d1
 	rts
 
-skatetopuck	;no IDA label (IDA dc.b). Skate a3 to the puck; a sweep check (Sweepcheck) close up. assgoalietopuck (checks95_01) enters here
+skatetopuck	;Skate a3 to the puck; a sweep check (Sweepcheck) close up. assgoalietopuck (checks95_01) enters here
 	bsr.s	skatetopuckinit
 	sub.b	d7,temp2(a3)	;temp2
 	bpl.w	.ex
@@ -1497,7 +1497,7 @@ skatetopuck	;no IDA label (IDA dc.b). Skate a3 to the puck; a sweep check (Sweep
 .sweep
 	jmp	(Sweepcheck).l
 
-avdgoal	;no IDA label (IDA dc.b). Do not skate through the goal: correct d0 / d1. 95 goal line $101 (94 $FE)
+avdgoal	;Do not skate through the goal: correct d0 / d1. 95 goal line $101 (94 $FE)
 	clr.w	(deltax).w
 	clr.w	(deltay).w
 	tst.w	position(a3)	;goalie? If so, quit
@@ -1512,18 +1512,18 @@ avdgoal	;no IDA label (IDA dc.b). Do not skate through the goal: correct d0 / d1
 	sub.w	d0,d3
 	divs.w	d3,d2
 	add.w	Ypos(a3),d2	;Ypos
-	cmp.w	#$124,d2	;.gl+.yr (95 .gl $101; 94 $FE)
+	cmp.w	#$124,d2	;gl+.yr (95 .gl $101; 94 $FE)
 	bgt.w	.chbar
-	cmp.w	#$DE,d2	;.gl-.yr
+	cmp.w	#$DE,d2	;gl-.yr
 	blt.w	.lower
-	move.w	#$147,d3	;.gl+.yr+.ye
-	cmp.w	#$101,d2	;.gl
+	move.w	#$147,d3	;gl+.yr+.ye
+	cmp.w	#$101,d2	;gl
 	bgt.w	.2
 	blt.w	.1
-	cmpi.w	#$101,Ypos(a3)	;.gl, Ypos
+	cmpi.w	#$101,Ypos(a3)	;gl, Ypos
 	bgt.w	.2
 .1
-	move.w	#$BB,d3	;.gl-.yr-.ye
+	move.w	#$BB,d3	;gl-.yr-.ye
 .2
 	sub.w	d2,d3
 	move.w	d3,(deltay).w
@@ -1584,7 +1584,7 @@ avdgoal	;no IDA label (IDA dc.b). Do not skate through the goal: correct d0 / d1
 	move.w	d3,(deltax).w
 	rts
 
-breakaway	;no IDA label (IDA dc.b). Breakaway for the carrier
+breakaway	;Breakaway for the carrier
 	bset	#2,(sflags5).w
 	bclr	#1,$62(a3)	;pfna - clear new assignment
 	beq.w	.nna	;jump if no new assignment
@@ -1612,7 +1612,7 @@ breakaway	;no IDA label (IDA dc.b). Breakaway for the carrier
 .yvel0
 	move.w	#$FFFF,d1
 	bra.s	.exit
-BreakawayOffsidesFlagSet	;no IDA label (IDA dc.b). 94 name: the breakaway / offsides flags of a3 ($64 bits 1 and 0)
+BreakawayOffsidesFlagSet	;94 name: the breakaway / offsides flags of a3 ($64 bits 1 and 0)
 	btst	#1,$62(a3)	;check for new assignment
 	beq.w	.loadYpos	;branch if no new assignment
 	bclr	#0,$64(a3)	;clear player offsides flag
@@ -1676,7 +1676,7 @@ BreakawayOffsidesFlagSet	;no IDA label (IDA dc.b). 94 name: the breakaway / offs
 	dbf	d0,.checkYpos
 	bra.s	.setBAbit
 
-chkpuckc	;no IDA label (IDA dc.b), asstab entry $1E. Breakaway carrier check, then asspuckc
+chkpuckc	;asstab entry $1E. Breakaway carrier check, then asspuckc
 	btst	#0,(gmode2).w
 	bne.w	.0
 	btst	#2,(BA_PS_flags).w
@@ -1688,7 +1688,7 @@ chkpuckc	;no IDA label (IDA dc.b), asstab entry $1E. Breakaway carrier check, th
 	move.w	#$F,d0	;asspuckc (94 $10)
 	bsr.w	assreplace
 
-asspuckc	;no IDA label (IDA dc.b), asstab entry $F. The puck carrier. 95: a penalty shot SPA while a message is up, Practice Mode breakaways
+asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a message is up, Practice Mode breakaways
 	bclr	#2,(sflags5).w
 	bne.w	.0
 	bclr	#1,$64(a3)
@@ -1901,7 +1901,7 @@ asspuckc	;no IDA label (IDA dc.b), asstab entry $F. The puck carrier. 95: a pena
 	dc.w	$1E
 	dc.w	$E9	;94 $E6
 
-chk4shot	;no IDA label (IDA dc.b). Shoot or clear the puck; compshoot is in input95_01. 95: the breakaway deke always in Practice Mode
+chk4shot	;Shoot or clear the puck; compshoot is in input95_01. 95: the breakaway deke always in Practice Mode
 	jsr	(chkpk).l
 	bne.w	.pkill	;killing penalty
 	tst.w	(threat).w
@@ -2037,7 +2037,7 @@ chk4shot	;no IDA label (IDA dc.b). Shoot or clear the puck; compshoot is in inpu
 	bne.w	rtsskate
 	jmp	(compshoot).l
 
-chk4pass	;no IDA label (IDA dc.b). Pass to a free teammate (dopass)
+chk4pass	;Pass to a free teammate (dopass)
 	tst.w	(threat).w
 	bne.w	.dp0
 	moveq	#$10,d0
@@ -2136,7 +2136,7 @@ chk4pass	;no IDA label (IDA dc.b). Pass to a free teammate (dopass)
 	addq.w	#4,sp
 	bra.w	assexit
 
-check4bench	;no IDA label (IDA dc.b). input94 check4bench (moved in): go to the bench for a line change, or take the new position
+check4bench	;input94 check4bench (moved in): go to the bench for a line change, or take the new position
 	btst	#2,(BA_PS_flags).w
 	bne.w	rtsskate
 	btst	#3,$62(a3)

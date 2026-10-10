@@ -10,7 +10,7 @@
 ;	cmp encoding after assembly.
 
 ; player a3 is defensive player on defense
-assdefd	;no IDA label (IDA dc.b), asstab entry 7
+assdefd	;asstab entry 7
 	btst	#5,pflags(a3)	;check if locked in animiation
 	bne.w	rtss21	;exit if so (94 rtss6)
 	btst	#0,(gmode).w	;check if clock running
@@ -169,11 +169,11 @@ assdefd	;no IDA label (IDA dc.b), asstab entry 7
 	movea.l	#EvadePC,a0	;EvadePC to a0
 	bsr.w	skateto
 	bra.w	check4check
-rtss21	;no IDA label. Shared rts of assdefd and asswingd
+rtss21	;Shared rts of assdefd and asswingd
 	rts
 
 ; player a3 is winger on defense
-asswingd	;no IDA label (IDA dc.b), asstab entry 8
+asswingd	;asstab entry 8
 	btst	#5,$62(a3)	;check if locked in animation
 	bne.s	rtss21	;exit if so
 	btst	#0,(gmode).w	;check if clock is running

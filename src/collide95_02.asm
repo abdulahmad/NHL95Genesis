@@ -13,7 +13,7 @@
 ;	cmp encoding after assembly.
 
 
-PuckcIsGoalie	;no IDA label (IDA dc.b). 95 only. Z set (eq) when the puck carrier is a goalie (a minus puckc returns ne). Called from assdefo
+PuckcIsGoalie	;95 only. Z set (eq) when the puck carrier is a goalie (a minus puckc returns ne). Called from assdefo
 	;(checks95_02)
 	movem.l	d0/a0,-(sp)
 	move.w	(puckc).w,d0
@@ -26,7 +26,7 @@ PuckcIsGoalie	;no IDA label (IDA dc.b). 95 only. Z set (eq) when the puck carrie
 	movem.l	(sp)+,d0/a0
 	rts
 
-SetPersonel	;IDA: sub_836CC. IDA name (93 setpersonel). Set personnel on team a2 by PlList (SetPlList): players already on the ice stay,
+SetPersonel	;(93 setpersonel) Set personnel on team a2 by PlList (SetPlList): players already on the ice stay,
 	;the others take the free sort objects. 95: SetSeasonInjuries first with GameFlags bit 3
 	movem.l	d0-d5/a0-a4,-(sp)
 	btst	#3,(GameFlags).w
@@ -88,7 +88,7 @@ SetPersonel	;IDA: sub_836CC. IDA name (93 setpersonel). Set personnel on team a2
 	movem.l	(sp)+,d0-d5/a0-a4
 	rts
 
-SetPlList	;IDA: sub_83786. Create PlList of players who we want on the ice now. a2 = team struct. Takes the current line (tmline) by
+SetPlList	;Create PlList of players who we want on the ice now. a2 = team struct. Takes the current line (tmline) by
 	;priolist; an unavailable player is replaced from sublist (TryAddPlayerToList), else by roster order (GetPlayerCount)
 	movea.w	#(PlList-M68K_RAM),a4
 	clr.l	(a4)
@@ -156,7 +156,7 @@ SetPlList	;IDA: sub_83786. Create PlList of players who we want on the ice now. 
 	beq.s	.8
 	bra.s	.6
 
-TryAddPlayerToList	;IDA: sub_83846. IDA 94 findAvailablePlayer. d0 = player number (1 based), d4 = PlList slot. Put d0 in the slot if he is on
+TryAddPlayerToList	;94 name. d0 = player number (1 based), d4 = PlList slot. Put d0 in the slot if he is on
 	;the bench and not in PlList yet (eq when taken)
 	move.w	d0,d1
 	subq.w	#1,d0
@@ -178,7 +178,7 @@ TryAddPlayerToList	;IDA: sub_83846. IDA 94 findAvailablePlayer. d0 = player numb
 	clr.w	d1
 	rts
 
-forcepldata	;no IDA label (IDA dc.b). no skating on/off: force players to correct data (for faceoffs only). a2 = team struct. 95: no
+forcepldata	;no skating on/off: force players to correct data (for faceoffs only). a2 = team struct. 95: no
 	;Set4WayPlayerStub call (its SCnum push / pop stays)
 	movem.l	d0-d4/a0-a3,-(sp)
 	movea.w	tmsort(a2),a3	;22 offset of team struct is tmsort (address of first sort obj)
@@ -216,14 +216,14 @@ forcepldata	;no IDA label (IDA dc.b). no skating on/off: force players to correc
 	movem.l	(sp)+,d0-d4/a0-a3
 	rts
 
-GetPlayerCount	;IDA: sub_838F2. stats94 GetPlayerCount (moved in). d0 = players on team a2. 95: by team number ($28 of the team struct, GetPlayerCountD7)
+GetPlayerCount	;stats94 GetPlayerCount (moved in). d0 = players on team a2. 95: by team number ($28 of the team struct, GetPlayerCountD7)
 	movem.l	d7-a0,-(sp)
 	move.w	$28(a2),d7
 	bsr.w	GetPlayerCountD7
 	movem.l	(sp)+,d7-a0
 	rts
 
-GetPlayerCountD7	;IDA: sub_83904. 95 only. d0 = players on team d7: in a season (sflags11 bit 6 clear) the sum of three save RAM bytes
+GetPlayerCountD7	;95 only. d0 = players on team d7: in a season (sflags11 bit 6 clear) the sum of three save RAM bytes
 	;(ReadSRAM at $1B80 + $38 * team), else from the roster in TeamList (records until a length word of 2)
 	btst	#6,(sflags11).w
 	bne.w	.0
@@ -256,7 +256,7 @@ GetPlayerCountD7	;IDA: sub_83904. 95 only. d0 = players on team d7: in a season 
 	movem.l	(sp)+,d7-a0
 	rts
 
-setplayer	;IDA: sub_83960. Bring player onto the ice and set his attributes. d3 = offset of player on roster, a3 = sortcord of player.
+setplayer	;Bring player onto the ice and set his attributes. d3 = offset of player on roster, a3 = sortcord of player.
 	;Reads the roster bytes through AttributeCalc (attribute number in TempWord2), adds the PP / PK, home / away and third period bonuses
 	;and clamps them (ClampNibble). 95: the name / jersey number by team number (rosterteam), StickHandTable, BoostAttribute
 	bclr	#6,$63(a3)
@@ -462,7 +462,7 @@ setplayer	;IDA: sub_83960. Bring player onto the ice and set his attributes. d3 
 	andi.b	#$F,$73(a3)
 	rts
 
-ClampNibble	;IDA: sub_83C88. IDA 94 checkattriblimits. Clamp byte d3 to 0-$1E. Called by setplayer
+ClampNibble	;94 name. Clamp byte d3 to 0-$1E. Called by setplayer
 	tst.b	d3
 	bpl.w	.0
 	clr.w	d3
@@ -473,11 +473,11 @@ ClampNibble	;IDA: sub_83C88. IDA 94 checkattriblimits. Clamp byte d3 to 0-$1E. C
 .1
 	rts
 
-StickHandTable	;IDA: unk_83C9E. 95 only. setplayer: the stick handling nibble 0-15 to 0-6, before AttributeCalc
+StickHandTable	;95 only. setplayer: the stick handling nibble 0-15 to 0-6, before AttributeCalc
 	dc.b	0,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6	;Stk nibble 0-15 to 0-6
 	dc.b	0,1,3,6,9,$C,$F,$FF	;create95 CrScaleTable (StickHandTable+$10)
 
-BoostAttribute	;IDA: sub_83CB6. 95 only. d3 += ($1E - d3) / 4, kept in $F ... $1E. setplayer runs it on some ratings
+BoostAttribute	;95 only. d3 += ($1E - d3) / 4, kept in $F ... $1E. setplayer runs it on some ratings
 	movem.w	d0,-(sp)
 	move.b	#$1E,d0
 	sub.b	d3,d0
@@ -493,7 +493,7 @@ BoostAttribute	;IDA: sub_83CB6. 95 only. d3 += ($1E - d3) / 4, kept in $F ... $1
 	movem.w	(sp)+,d0
 	rts
 
-AttributeCalc	;IDA: sub_83CDE. crowd94 AttributeCalc (moved in; IDA name). Attribute d3 of player a3 * 5 plus his hot / cold value / 3,
+AttributeCalc	;crowd94 AttributeCalc (moved in; IDA name). Attribute d3 of player a3 * 5 plus his hot / cold value / 3,
 	;limited to 0 ... $1E
 	movem.l	d0-d2/a1,-(sp)
 	move.w	(TempWord2).w,d1
@@ -526,7 +526,7 @@ AttributeCalc	;IDA: sub_83CDE. crowd94 AttributeCalc (moved in; IDA name). Attri
 	movem.l	(sp)+,d0-d2/a1
 	rts
 
-restoreteams	;IDA: sub_83D3E. hockey94 restoreteams (moved in). Put both teams' rosters on the bench (tmap 6, every tmpdst -2)
+restoreteams	;hockey94 restoreteams (moved in). Put both teams' rosters on the bench (tmap 6, every tmpdst -2)
 	movea.w	#(HmShots-M68K_RAM),a2
 	bsr.w	.0
 	adda.w	#$366,a2
@@ -539,7 +539,7 @@ restoreteams	;IDA: sub_83D3E. hockey94 restoreteams (moved in). Put both teams' 
 	bpl.s	.1
 	rts
 
-ResetBench	;IDA: sub_83D5E. Remove all players from penalty box / put all players on their own bench (not the injured, -3 / -4). Counts the
+ResetBench	;Remove all players from penalty box / put all players on their own bench (not the injured, -3 / -4). Counts the
 	;players left in the box in PBnum (home in the high nibble)
 	clr.b	(PBnum).w
 	moveq	#$10,d1
@@ -572,7 +572,7 @@ ResetBench	;IDA: sub_83D5E. Remove all players from penalty box / put all player
 	bpl.s	.1
 	rts
 
-resetplstuff	;no IDA label (IDA dc.b). setup94 resetplstuff (moved in). Reset team variables and players on both teams. 95 SPA $B5C
+resetplstuff	;setup94 resetplstuff (moved in). Reset team variables and players on both teams. 95 SPA $B5C
 	;(94 $50C)
 	movem.l	d0-d2/a0-a3,-(sp)
 	movea.w	#(HmShots-M68K_RAM),a2
@@ -599,11 +599,11 @@ resetplstuff	;no IDA label (IDA dc.b). setup94 resetplstuff (moved in). Reset te
 	dbf	d2,.loop
 	rts
 
-priolist	;IDA: unk_83E16. data94 priolist (moved in). Positions in order of importance. Used by SetPlList
+priolist	;data94 priolist (moved in). Positions in order of importance. Used by SetPlList
 	dc.b	0,1,2,4,3,5,6
 	dc.b	$FF	;pad
 
-sublist	;IDA: unk_83E1E. data94 sublist (moved in). Substitution lists by position (goalie, LD, RD, LW, C, RW, extra attacker), word
+sublist	;data94 sublist (moved in). Substitution lists by position (goalie, LD, RD, LW, C, RW, extra attacker), word
 	;offsets from sublist. Used by SetPlList
 	dc.w	.defl-sublist		;goalie
 	dc.w	.defl-sublist
@@ -627,12 +627,12 @@ sublist	;IDA: unk_83E1E. data94 sublist (moved in). Substitution lists by positi
 	dc.b	0+5,8+5,16+5,24+5,32+5,40+5,48+5
 	dc.b	-1
 
-Create_HotCold_Table	;IDA: sub_83E88. crowd94 Create_HotCold_Table (moved in; IDA name). Fill the hot / cold table at $1A4 of team struct a0 (94
+Create_HotCold_Table	;crowd94 Create_HotCold_Table (moved in; IDA name). Fill the hot / cold table at $1A4 of team struct a0 (94
 	;$1A2) with 416 random values
 	movem.l	d0-d7,-(sp)
 	move.w	#$19F,d1
 
-HotColdLoop	;IDA: loc_83E90. IDA name. The Create_HotCold_Table loop
+HotColdLoop	;The Create_HotCold_Table loop
 	move.w	#9,d0
 	jsr	(randomd0s).l
 	move.l	a0,-(sp)

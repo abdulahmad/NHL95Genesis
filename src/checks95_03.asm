@@ -10,7 +10,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-assgoaliectrl	;no IDA label (IDA dc.b), asstab entry $1B (94 $1D). The joystick goalie: a stoppage when he leaves his area, else
+assgoaliectrl	;asstab entry $1B (94 $1D). The joystick goalie: a stoppage when he leaves his area, else
 	;checkanim (checks95_01) when out of the screen box. 95: rtsskate in place of rtss2
 	btst	#3,$62(a3)	;is player joystick controlled?
 	bne.w	.goaliectrl	;branch is so
@@ -106,7 +106,7 @@ assgoaliectrl	;no IDA label (IDA dc.b), asstab entry $1B (94 $1D). The joystick 
 	rts
 ; a3 = goalie
 
-a2offsides	;no IDA label (IDA dc.b). Offsides on a2 (AddPenalty $10) when his team is offside and the puck is past the blue line ($6A;
+a2offsides	;Offsides on a2 (AddPenalty $10) when his team is offside and the puck is past the blue line ($6A;
 	;94 $68). Called from a2touchpuck (checks95_02)
 	btst	#gmoffs,(gmode).w
 	beq.w	.x
@@ -133,7 +133,7 @@ a2offsides	;no IDA label (IDA dc.b). Offsides on a2 (AddPenalty $10) when his te
 .x
 	rts
 
-asseben	;no IDA label (IDA dc.b), asstab entry $13 (94 9). assign94 asseben (moved in; IDA 94 assben). Player a3 should exit the bench area.
+asseben	;asstab entry $13 (94 9). assign94 asseben (moved in; IDA 94 assben). Player a3 should exit the bench area.
 	;95: x $98 (94 $88), facedir 7 (94 2), SPA $1E2A (94 $F6E)
 	btst	#5,$62(a3)
 	bne.w	.x	;94 rtss4
@@ -165,7 +165,7 @@ asseben	;no IDA label (IDA dc.b), asstab entry $13 (94 9). assign94 asseben (mov
 .x
 	rts
 
-assdefdchase	;no IDA label (IDA dc.b). 95 only. assdefd with the team defense mode at 1 and the other team on the puck: set $64 bit 7
+assdefdchase	;95 only. assdefd with the team defense mode at 1 and the other team on the puck: set $64 bit 7
 	;(assnearest takes that). Within $1E of the puck with the carrier in the slot (sflags6 bit 5): skate at the carrier (or the loose
 	;puck) half a step ahead. Puck in the defensive zone: the right defenseman takes the slot ($D9 out), the left one the middle between
 	;the puck and the goal line. Else hold $26 off the middle at $C8 from the puck toward his goal, no deeper than the other forwards
@@ -313,7 +313,7 @@ assdefdchase	;no IDA label (IDA dc.b). 95 only. assdefd with the team defense mo
 	move.w	(sp)+,d2
 	rts
 
-setSlotBit	;IDA: sub_833FE. cards94 setSlotBit (moved in; IDA name and comments). sflags6 bit 5 (the slot) = the puck carrier is in the slot
+setSlotBit	;cards94 setSlotBit (moved in; IDA name and comments). sflags6 bit 5 (the slot) = the puck carrier is in the slot
 	;in front of the goal (blue line $56; 94 $58). Called from DoGameFrame (hockey95)
 	bclr	#5,(sflags6).w	;clears Slot Bit
 	tst.w	(puckc).w
@@ -340,7 +340,7 @@ setSlotBit	;IDA: sub_833FE. cards94 setSlotBit (moved in; IDA name and comments)
 .ex
 	rts
 
-assscore	;no IDA label (IDA dc.b), asstab entry $1C (94 7). assign94 assscore (moved in). Players after a goal: skate to the scoring end,
+assscore	;asstab entry $1C (94 7). assign94 assscore (moved in). Players after a goal: skate to the scoring end,
 	;celebrate. 95: the scorer, still skating fast ($5000 or more), does the celebration SPA $28DE at once; the scorer's pump is one of
 	;two SPAs (.pumps)
 	btst	#5,$62(a3)
@@ -421,7 +421,7 @@ assscore	;no IDA label (IDA dc.b), asstab entry $1C (94 7). assign94 assscore (m
 .pumps	;95 SPAs
 	dc.w	$29B0,$280C,$29B0,$280C
 
-assgoaliebreakwait	;no IDA label (IDA dc.b), asstab entry $1D (94 $20). assign94 assgoaliebreakwait (moved in)
+assgoaliebreakwait	;asstab entry $1D (94 $20). assign94 assgoaliebreakwait (moved in)
 	btst	#5,$62(a3)	;check if animation locked
 	bne.w	.exit	;exit if so
 	btst	#2,(BA_PS_flags).w	;check if pen shot
@@ -448,7 +448,7 @@ assgoaliebreakwait	;no IDA label (IDA dc.b), asstab entry $1D (94 $20). assign94
 	rts
 ; players do nothing until faceoff is over
 
-ChkGoalies	;IDA: sub_835C6. A computer team down with its goalie in: pull him on a delayed penalty, else CPgoalie. Called from DoGameFrame (hockey95)
+ChkGoalies	;A computer team down with its goalie in: pull him on a delayed penalty, else CPgoalie. Called from DoGameFrame (hockey95)
 	btst	#gmclock,(gmode).w	;check if clock running
 	bne.w	rtsskate
 	movea.w	#(HmShots-M68K_RAM),a2
@@ -481,7 +481,7 @@ ChkGoalies	;IDA: sub_835C6. A computer team down with its goalie in: pull him on
 	move.w	(pucky).w,d1
 	bra.w	CPgoalie
 
-ReturnGoalies	;no IDA label (inside sub_835E2). If the computer pulled its goalie, see if it should return him (CPgoalie on foy)
+ReturnGoalies	;If the computer pulled its goalie, see if it should return him (CPgoalie on foy)
 	movea.w	#(HmShots-M68K_RAM),a2
 	lea	tmsize(a2),a1
 	moveq	#1,d0
@@ -498,7 +498,7 @@ ReturnGoalies	;no IDA label (inside sub_835E2). If the computer pulled its goali
 	beq.w	rtsskate	;exit if team is joy controlled
 	move.w	(foy).w,d1
 
-CPgoalie	;IDA: loc_83662. See if the computer should pull its goalie: third period, behind by 2, a minute left, the faceoff in the other
+CPgoalie	;See if the computer should pull its goalie: third period, behind by 2, a minute left, the faceoff in the other
 	;zone (d1 = faceoff y). IDA loc_8369E (.0) is the label collide95_02 was mapped to; the routine ends at $0836AB
 	cmpi.w	#2,(gsp).w	;check if 3rd period
 	bne.w	rtsskate	;exit if not

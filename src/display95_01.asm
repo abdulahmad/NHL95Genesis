@@ -3,7 +3,7 @@
 ;	RenderSmallFontChar and ButtonLabelCharTable (display94). updateanim (replay94) follows at $A536 (replay95_01).
 ;	95 has 6 pad objects and no glove object (94: 7 with glovestruct), and keeps the pad nibbles in one long (PadControlBits).
 
-setvideo	;IDA: sub_A204. this is not vblank code but sets up ram for vblank transfers. Called once per game frame (DoGameFrame, Pausemode, ...).
+setvideo	;this is not vblank code but sets up ram for vblank transfers. Called once per game frame (DoGameFrame, Pausemode, ...).
 	;95 has no showzam, AddArenaAnimSprite or Crowd_Noise here, and no clock while paused
 	movem.l	d0-d7/a0-a6,-(sp)
 .p
@@ -38,7 +38,7 @@ setvideo	;IDA: sub_A204. this is not vblank code but sets up ram for vblank tran
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-setsortcords	;IDA: sub_A27C. setup sort cord graphics: addframe for the 16 objects in OOlist order. a5 = dmalist, a6 = sprite attribute table,
+setsortcords	;setup sort cord graphics: addframe for the 16 objects in OOlist order. a5 = dmalist, a6 = sprite attribute table,
 	;d6 = link counter
 	movea.w	#(OOlist-M68K_RAM),a4	;move OOlist into a4
 	move.w	#$F,d0	;sortobj-1 (15 dec)
@@ -50,10 +50,10 @@ setsortcords	;IDA: sub_A27C. setup sort cord graphics: addframe for the 16 objec
 	adda.w	d1,a3	;add offset to next struct
 	jsr	(addframe).l
 	dbf	d0,.top	;loop until done
-rtssdisp	;IDA: locret_A29A. checksso .ca branches here (94: rtss2)
+rtssdisp	;checksso .ca branches here (94: rtss2)
 	rts
 
-checksso	;IDA: sub_A29C. do graphics for sso structure: arrows for the players when they are off screen. Called from setvideo. a5 = dma list,
+checksso	;do graphics for sso structure: arrows for the players when they are off screen. Called from setvideo. a5 = dma list,
 	;a6 = sprite table, d6 = link counter. Returns on the horizontal rink. Pads 3 and 4 when cont3team / cont4team. Falls into .ca for the last one
 	btst	#sfhor,(sflags).w
 	bne.w	.x
@@ -76,7 +76,7 @@ checksso	;IDA: sub_A29C. do graphics for sso structure: arrows for the players w
 	movea.w	#(Joy4Struct-M68K_RAM),a0
 	adda.w	#$14,a3
 	move.w	#$76,d3
-.ca	;IDA: sub_A2F2 (93 .ca). a0 = object, a3 = sso, d3 = first arrow frame. In a shootout, with sflags2 bit 3 or in a penalty shot, no arrow
+.ca	;(93 .ca). a0 = object, a3 = sso, d3 = first arrow frame. In a shootout, with sflags2 bit 3 or in a penalty shot, no arrow
 	;for a player beyond x $B6 (94: $A6). 95 has no horizontal rink case here
 	tst.w	Zpos(a0)
 	bmi.w	.x	;not on the ice
@@ -106,7 +106,7 @@ checksso	;IDA: sub_A29C. do graphics for sso structure: arrows for the players w
 	sub.w	(Hpos).w,d0
 	sub.w	(Vpos).w,d1
 	clr.w	d2
-	cmp.w	#$74,d0	;.xoff = 116
+	cmp.w	#$74,d0	;xoff = 116
 	blt.w	.8
 	bset	#3,d2
 .8
@@ -114,7 +114,7 @@ checksso	;IDA: sub_A29C. do graphics for sso structure: arrows for the players w
 	bgt.w	.1
 	bset	#2,d2
 .1
-	cmp.w	#$64,d1	;.yoff = 100
+	cmp.w	#$64,d1	;yoff = 100
 	blt.w	.9
 	bset	#0,d2
 .9
@@ -145,7 +145,7 @@ checksso	;IDA: sub_A29C. do graphics for sso structure: arrows for the players w
 	move.w	d3,frame(a3)
 	move.w	6(a1,d2.w),attribute(a3)
 	jmp	(addframe2).l	;94: bra.w
-.tab	;$A3C4. 93 .tab. x spot, y spot, frame add, attribute per direction
+.tab	;93 .tab. x spot, y spot, frame add, attribute per direction
 	dc.w	0,$64,0,$0000
 	dc.w	$74,$64,1,$0000
 	dc.w	$74,0,2,$0000
@@ -155,7 +155,7 @@ checksso	;IDA: sub_A29C. do graphics for sso structure: arrows for the players w
 	dc.w	-$74,0,2,$0800
 	dc.w	-$74,$64,1,$0800
 
-setffo	;IDA: sub_A404. draw the 6 objects tied to icerink scrolling (the pads; 94: 7 with the gloves), moving each by its x offset. Called from setvideo
+setffo	;draw the 6 objects tied to icerink scrolling (the pads; 94: 7 with the gloves), moving each by its x offset. Called from setvideo
 	bsr.w	uppads
 	move.w	#5,d0	;ffo obj -1 (94: 6)
 	movea.w	#(pads-M68K_RAM),a3	;move start of struct into a3
@@ -172,7 +172,7 @@ setffo	;IDA: sub_A404. draw the 6 objects tied to icerink scrolling (the pads; 9
 	dbf	d0,.top
 	rts
 
-uppads	;IDA: sub_A434. update the 6 pad objects and queue new pad labels (FormatControllerDisplay). The pad players come from the
+uppads	;update the 6 pad objects and queue new pad labels (FormatControllerDisplay). The pad players come from the
 	;PadControlBits nibbles ($E = no change, $F = none). 95 has no glove object and takes all 6 nibbles from one long (94: PadControlBits34 too)
 	move.w	#5,d4
 	movea.w	#(pads-M68K_RAM),a0
@@ -207,7 +207,7 @@ uppads	;IDA: sub_A434. update the 6 pad objects and queue new pad labels (Format
 	dbf	d4,.nibble
 	rts
 
-FormatControllerDisplay	;IDA: sub_A49A. 93 name. Queue the 3 character label of a pad object. d1 = label code: bits 7-4 and 3-0 are digits ($F =
+FormatControllerDisplay	;93 name. Queue the 3 character label of a pad object. d1 = label code: bits 7-4 and 3-0 are digits ($F =
 	;blank), bits 10-8 index ButtonLabelCharTable (none while sflags7 bit 7 is set). a0 = pad object, a5 = dma list. Falls into
 	;RenderSmallFontChar for the last char
 	lea	ButtonLabelCharTable(pc),a4
@@ -244,7 +244,7 @@ FormatControllerDisplay	;IDA: sub_A49A. 93 name. Queue the 3 character label of 
 	move.b	(a4,d2.w),d2
 	moveq	#2,d0
 
-RenderSmallFontChar	;IDA: sub_A4FE. 93 name. Dma one small font tile (SmallFontMap) to the object's chars. d2 = ascii char, d0 = char slot,
+RenderSmallFontChar	;93 name. Dma one small font tile (SmallFontMap) to the object's chars. d2 = ascii char, d0 = char slot,
 	;a0 = object (VRchar), a5 = dma list
 	movea.l	#SmallFontMap,a3
 	adda.l	4(a3),a3
@@ -261,5 +261,5 @@ RenderSmallFontChar	;IDA: sub_A4FE. 93 name. Dma one small font tile (SmallFontM
 	move.w	d0,(a5)+
 	rts
 
-ButtonLabelCharTable	;IDA: unk_A52E. 93 name. Third label character by bits 10-8 of the label code
+ButtonLabelCharTable	;93 name. Third label character by bits 10-8 of the label code
 	dc.b	' DDLCRX',$FF	;pad byte $FF as 94

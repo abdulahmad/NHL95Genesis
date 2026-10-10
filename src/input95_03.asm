@@ -8,7 +8,7 @@
 ;	cmp encoding after assembly.
 
 
-doinput_cbut	;IDA: loc_8B734. (input94) Global: doinput branches here across the global rtss15. Button C (bit 5): new press: face the puck
+doinput_cbut	;(input94) Global: doinput branches here across the global rtss15. Button C (bit 5): new press: face the puck
 	;(vtoa) and go on below; held: hold the SPA frame (SPAcnt $A) at the end of a frame list (SPAlist)
 	btst	#5,d1
 	bne.w	.2
@@ -111,7 +111,7 @@ doinput_cbut	;IDA: loc_8B734. (input94) Global: doinput branches here across the
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ClampTargetY	;IDA: sub_8B890. (input94) Clamp target y d1 to $106 / $FEFA (94 $103 / $FEFD), then d1 - d3; d0 = 0 for the puck carrier.
+ClampTargetY	;(input94) Clamp target y d1 to $106 / $FEFA (94 $103 / $FEFD), then d1 - d3; d0 = 0 for the puck carrier.
 	;10 SPA offsets follow
 	move.w	(puckc).w,d2
 	cmp.w	SCnum(a3),d2
@@ -132,7 +132,7 @@ ClampTargetY	;IDA: sub_8B890. (input94) Clamp target y d1 to $106 / $FEFA (94 $1
 	;SPAgstickl, then SPAgglover, SPAgglovel, SPAgstickr, SPAgstickl where 94 has SPAghighr, SPAghighl, SPAgstick2r, SPAgstick2l
 	dc.w	$1C86,$1CB8,$205E,$200C,$1CEA,$1D1C,$1C86,$1CB8,$1CEA,$1D1C
 
-doinput_chkanim	;IDA: loc_8B8CE. (input94) Global: doinput branches here across ClampTargetY. Animation in progress (pflags2 bit 1): rts. A
+doinput_chkanim	;(input94) Global: doinput branches here across ClampTargetY. Animation in progress (pflags2 bit 1): rts. A
 	;goalie (position 0) is held inside x $24 / y $E7 of his net (BA_PS_flags bit 1), then playeracc with TempWord1
 	btst	#1,pflags2(a3)
 	beq.w	.0
@@ -178,7 +178,7 @@ doinput_chkanim	;IDA: loc_8B8CE. (input94) Global: doinput branches here across 
 	move.w	(TempWord1).w,d0
 	jmp	doplayeracc
 
-FindGoalie	;IDA: sub_8B974. (input94 getGoalieSCnum) 95: d0 = SCnum of the goalie of the team of player d0 (the first position 0 going down
+FindGoalie	;(input94 getGoalieSCnum) 95: d0 = SCnum of the goalie of the team of player d0 (the first position 0 going down
 	;from player d0), -1 none
 	movem.l	d1/a0,-(sp)
 	movea.l	#SortCords,a0

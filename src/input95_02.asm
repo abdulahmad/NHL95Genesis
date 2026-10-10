@@ -8,7 +8,7 @@
 ;	cmp encoding after assembly.
 
 
-SetLCmode	;IDA: loc_8A056 (input94) Open the line change box for team of player a3 (loadTeamStruct): not with line changes off (OptLine) or
+SetLCmode	;(input94) Open the line change box for team of player a3 (loadTeamStruct): not with line changes off (OptLine) or
 	;sflags7 bit 4, once (tmflags bit 1); sets pflags2 bit 3 (line change mode) and falls into SetLCmode2
 	tst.w	(OptLine).w
 	bne.w	rtslc
@@ -24,7 +24,7 @@ SetLCmode	;IDA: loc_8A056 (input94) Open the line change box for team of player 
 	bclr	#3,(sflags).w
 	bset	#3,pflags2(a3)
 
-SetLCmode2	;IDA: sub_8A094 (input94) 93 name. a2 = team struct. Draw the line change box (box, Framer) with the line names (linelist) and their
+SetLCmode2	;(input94) 93 name. a2 = team struct. Draw the line change box (box, Framer) with the line names (linelist) and their
 	;energy bars (linebar)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	setlccords
@@ -73,7 +73,7 @@ SetLCmode2	;IDA: sub_8A094 (input94) 93 name. a2 = team struct. Draw the line ch
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-setlccords	;IDA: sub_8A13A (input94) Set printx / printy for the line change box of team a2
+setlccords	;(input94) Set printx / printy for the line change box of team a2
 	clr.w	d0
 	cmpa.w	#$C288,a2
 	bne.w	.0
@@ -97,14 +97,14 @@ setlccords	;IDA: sub_8A13A (input94) Set printx / printy for the line change box
 	moveq	#9,d0
 	rts
 
-getlchoice	;IDA: sub_8A17E (input94) d0 = the line for button d0 of team a2 (getlchoice2)
+getlchoice	;(input94) d0 = the line for button d0 of team a2 (getlchoice2)
 	movem.l	d1-d2,-(sp)
 	move.w	$38A(a2),d2
 	cmpa.w	#$C288,a2
 	beq.w	getlchoice2
 	move.w	-$342(a2),d2
 
-getlchoice2	;IDA: loc_8A192 (input94) The line for choice d0 by the player difference (tmap of the two teams) and the current line (tmline); .tab
+getlchoice2	;(input94) The line for choice d0 by the player difference (tmap of the two teams) and the current line (tmline); .tab
 	sub.w	tmap(a2),d2
 	beq.w	.0
 	addi.w	#$15,d0
@@ -127,7 +127,7 @@ getlchoice2	;IDA: loc_8A192 (input94) The line for choice d0 by the player diffe
 	dc.b	$FF,4,3,$FF,3,4,$FF,3,4,$FF,5,6,$FF,5,6,$FF
 	dc.b	5,6,$FF,5,6,$FF,5,6,$FF,5,6,$FF,6,5,$FF,$FF
 
-lineinput	;IDA: loc_8A202 (input94) Process input for line changes: d1 = new button presses (passmode first with sflags5 bit 3)
+lineinput	;(input94) Process input for line changes: d1 = new button presses (passmode first with sflags5 bit 3)
 	movem.l	d1-d3/a0,-(sp)
 	movea.l	#$FFFFBF14,a0
 	btst	#6,d2
@@ -183,7 +183,7 @@ lineinput	;IDA: loc_8A202 (input94) Process input for line changes: d1 = new but
 .6
 	rts
 
-lcfound	;IDA: loc_8A2CA (input94) Line d2 was picked: store it ($2E), set tmline (getlchoice) and the players (SetPersonel); falls into lcfound2
+lcfound	;(input94) Line d2 was picked: store it ($2E), set tmline (getlchoice) and the players (SetPersonel); falls into lcfound2
 	move.w	d2,d0
 	move.w	d2,$2E(a2)
 	bsr.w	getlchoice
@@ -196,7 +196,7 @@ lcfound	;IDA: loc_8A2CA (input94) Line d2 was picked: store it ($2E), set tmline
 	move.w	d0,tmline(a2)
 	jsr	(SetPersonel).l
 
-lcfound2	;IDA: sub_8A2FC (input94) Erase the line change box (eraser) and redraw the scores (PrintScores1)
+lcfound2	;(input94) Erase the line change box (eraser) and redraw the scores (PrintScores1)
 	btst	#7,(sflags).w
 	bne.w	rtslc
 	bsr.w	setlccords
@@ -210,10 +210,10 @@ lcfound2	;IDA: sub_8A2FC (input94) Erase the line change box (eraser) and redraw
 	jsr	(eraser).l
 	jmp	PrintScores1
 
-rtslc	;IDA: locret_8A330. The shared rts of the line change routines (94 rtss2)
+rtslc	;The shared rts of the line change routines (94 rtss2)
 	rts
 
-linebar	;IDA: sub_8A332 (penalty94) 93 name. Draw the energy bar of line d0 for team a2 at printx / printy (EnergyBarMap, 16 steps)
+linebar	;(penalty94) 93 name. Draw the energy bar of line d0 for team a2 at printx / printy (EnergyBarMap, 16 steps)
 	movem.l	d0-d5/a0-a2,-(sp)
 	bsr.w	getlinee
 	move.w	(printa).w,-(sp)
@@ -239,7 +239,7 @@ linebar	;IDA: sub_8A332 (penalty94) 93 name. Draw the energy bar of line d0 for 
 	movem.l	(sp)+,d0-d5/a0-a2
 	rts
 
-getlinee	;IDA: sub_8A382 (penalty94) d0 = line number, a2 = team struct. Return d0 = energy level of this line
+getlinee	;(penalty94) d0 = line number, a2 = team struct. Return d0 = energy level of this line
 	movem.l	d1-d5/a0-a3,-(sp)
 	lea	$16C(a2),a1
 	asl.w	#3,d0
@@ -264,7 +264,7 @@ getlinee	;IDA: sub_8A382 (penalty94) d0 = line number, a2 = team struct. Return 
 	movem.l	(sp)+,d1-d5/a0-a3
 	rts
 
-AvgCline	;IDA dc.b (penalty94) 93 name. Return d0 = average energy of the current line on team a2
+AvgCline	;(penalty94) 93 name. Return d0 = average energy of the current line on team a2
 	movem.l	d1-d3/a0,-(sp)
 	clr.l	d0
 	clr.w	d1

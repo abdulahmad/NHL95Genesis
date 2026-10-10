@@ -10,7 +10,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-assonetimer	;no IDA label (IDA dc.b), asstab entry $18 (94 $23). 94 IDA name. Player a3 shooting a one-timer: the passer's pad (inputjoy) takes
+assonetimer	;asstab entry $18 (94 $23). 94 IDA name. Player a3 shooting a one-timer: the passer's pad (inputjoy) takes
 	;control of him (setc1player ... setc4player), start the animation (setonetimeranim), then shoot when the puck arrives (EndOneTimer)
 	bclr	#1,$62(a3)	;pfna - clear new assignment
 	beq.w	.checkxpos	;branch if not new assignment
@@ -196,7 +196,7 @@ assonetimer	;no IDA label (IDA dc.b), asstab entry $18 (94 $23). 94 IDA name. Pl
 .ex
 	rts
 
-setonetimeranim	;no IDA label (IDA dc.b). 94 IDA name. The one-timer animation: d1 = $150A or $176E (94 $7FC / $92E) from the angle to the goal
+setonetimeranim	;94 IDA name. The one-timer animation: d1 = $150A or $176E (94 $7FC / $92E) from the angle to the goal
 	;(vtoa, CheckOneTimerFacing)
 	move.w	#$150A,d1	;95 SPA (94 $7FC)
 	movem.w	d0-d1,-(sp)	;push to stack d0 and d1
@@ -216,7 +216,7 @@ setonetimeranim	;no IDA label (IDA dc.b). 94 IDA name. The one-timer animation: 
 .ex
 	rts
 
-PuckOnAttackHalf	;IDA: sub_82E88. 94 name. d0 = 1 when the puck is on the half of the goal player a3 shoots at, else 0 (the code after the bra is
+PuckOnAttackHalf	;94 name. d0 = 1 when the puck is on the half of the goal player a3 shoots at, else 0 (the code after the bra is
 	;never used). Called from doinput (input95) and asspassrec (checks95_02)
 	movem.w	d0-d1,-(sp)
 	move.w	(pucky).w,d0
@@ -258,7 +258,7 @@ PuckOnAttackHalf	;IDA: sub_82E88. 94 name. d0 = 1 when the puck is on the half o
 	movem.w	(sp)+,d0-d1
 	rts
 
-onetimershot	;no IDA label (IDA dc.b). 94 IDA name. Do the one-timer shot (doshot), credit the last two passers as the assists, add to crowdlevel /
+onetimershot	;94 IDA name. Do the one-timer shot (doshot), credit the last two passers as the assists, add to crowdlevel /
 	;CwdExciteLvl and to the one-timer attempts ($35E of the team struct; 94 $35C). Called from puckstick (collide95_01)
 	move.w	#4,(passdir).w
 	jsr	(doshot).l
@@ -282,7 +282,7 @@ onetimershot	;no IDA label (IDA dc.b). 94 IDA name. Do the one-timer shot (dosho
 	bset	#1,$63(a3)	;set animation in progress (95: no sflags6 bit 1)
 	rts
 
-EndOneTimer	;IDA: sub_82F60. title94 EndOneTimer (moved in). End a one-timer for a3: bits cleared, onetimerplayer = -1, SetSPA $B5C (94 $50C),
+EndOneTimer	;title94 EndOneTimer (moved in). End a one-timer for a3: bits cleared, onetimerplayer = -1, SetSPA $B5C (94 $50C),
 	;then assexit (goalie) or Setplass. Called from assonetimer and from $8C606 (checks95_06)
 	movem.l	d0/a0,-(sp)
 	bclr	#3,$64(a3)
@@ -306,7 +306,7 @@ EndOneTimer	;IDA: sub_82F60. title94 EndOneTimer (moved in). End a one-timer for
 	movem.l	(sp)+,d0/a0
 	rts
 
-CheckOneTimerFacing	;no IDA label (IDA dc.b). 94 name. 95: Findhittype (input95_01) on direction d0 (the angle to the goal), d0 kept. The Z flag
+CheckOneTimerFacing	;94 name. 95: Findhittype (input95_01) on direction d0 (the angle to the goal), d0 kept. The Z flag
 	;picks the one-timer animation in setonetimeranim (94 did nothing here)
 	movem.w	d0,-(sp)
 	jsr	(Findhittype).l

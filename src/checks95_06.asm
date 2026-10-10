@@ -11,7 +11,7 @@
 ;	cmp encoding after assembly.
 
 
-GoalieReadySPA	;IDA: sub_8B9A8. 95 only. d1 = the goalie ready SPA: $1B7A near the puck (within $56 in y) or in a shootout, else $1C54
+GoalieReadySPA	;95 only. d1 = the goalie ready SPA: $1B7A near the puck (within $56 in y) or in a shootout, else $1C54
 	move.w	d0,-(sp)
 	move.w	#$1C54,d1
 	btst	#0,(gmode).w
@@ -29,35 +29,35 @@ GoalieReadySPA	;IDA: sub_8B9A8. 95 only. d1 = the goalie ready SPA: $1B7A near t
 	move.w	(sp)+,d0
 	rts
 
-dirtab	;IDA: unk_8B9D6. (checks94) X / Y acc speed for each direction 0-7. 95 runspeed $F0 ($A9 = runspeed / sqrt(2); 94 $C8 / $8D)
+dirtab	;(checks94) X / Y acc speed for each direction 0-7. 95 runspeed $F0 ($A9 = runspeed / sqrt(2); 94 $C8 / $8D)
 	dc.w	0,$F0,$A9,$A9,$F0,0,$A9,$FF57
 	dc.w	0,$FF10,$FF57,$FF57,$FF10,0,$FF57,$A9
 	dc.w	0,0
 
-dirtab2	;no IDA label. 95 only: the same with runspeed $E4 / $A1
+dirtab2	;95 only: the same with runspeed $E4 / $A1
 	dc.w	0,$E4,$A1,$A1,$E4,0,$A1,$FF5F
 	dc.w	0,$FF1C,$FF5F,$FF5F,$FF1C,0,$FF5F,$A1
 	dc.w	0,0
 
-MaxSpeed	;IDA: unk_8BA1E. (checks94) Max speed values for each rating level 0-$F: ((n+20)*325)^2 (94 275)
-	dc.l	((0+20)*325)*((0+20)*325);$0284AF10
-	dc.l	((1+20)*325)*((1+20)*325);$02C6C391
-	dc.l	((2+20)*325)*((2+20)*325);$030C1144
-	dc.l	((3+20)*325)*((3+20)*325);$03549829
-	dc.l	((4+20)*325)*((4+20)*325);$03A05840
-	dc.l	((5+20)*325)*((5+20)*325);$03EF5189
-	dc.l	((6+20)*325)*((6+20)*325);$04418404
-	dc.l	((7+20)*325)*((7+20)*325);$0496EFB1
-	dc.l	((8+20)*325)*((8+20)*325);$04EF9490
-	dc.l	((9+20)*325)*((9+20)*325);$054B72A1
-	dc.l	((10+20)*325)*((10+20)*325);$05AA89E4
-	dc.l	((11+20)*325)*((11+20)*325);$060CDA59
-	dc.l	((12+20)*325)*((12+20)*325);$06726400
-	dc.l	((13+20)*325)*((13+20)*325);$06DB26D9
-	dc.l	((14+20)*325)*((14+20)*325);$074722E4
-	dc.l	((15+20)*325)*((15+20)*325);$07B65821
+MaxSpeed	;(checks94) Max speed values for each rating level 0-$F: ((n+20)*325)^2 (94 275)
+	dc.l	((0+20)*325)*((0+20)*325)
+	dc.l	((1+20)*325)*((1+20)*325)
+	dc.l	((2+20)*325)*((2+20)*325)
+	dc.l	((3+20)*325)*((3+20)*325)
+	dc.l	((4+20)*325)*((4+20)*325)
+	dc.l	((5+20)*325)*((5+20)*325)
+	dc.l	((6+20)*325)*((6+20)*325)
+	dc.l	((7+20)*325)*((7+20)*325)
+	dc.l	((8+20)*325)*((8+20)*325)
+	dc.l	((9+20)*325)*((9+20)*325)
+	dc.l	((10+20)*325)*((10+20)*325)
+	dc.l	((11+20)*325)*((11+20)*325)
+	dc.l	((12+20)*325)*((12+20)*325)
+	dc.l	((13+20)*325)*((13+20)*325)
+	dc.l	((14+20)*325)*((14+20)*325)
+	dc.l	((15+20)*325)*((15+20)*325)
 
-dostop	;IDA: loc_8BA5E. (checks94) Stop player a3: under $1000 speed in x and y the velocities are cleared, else slowed
+dostop	;(checks94) Stop player a3: under $1000 speed in x and y the velocities are cleared, else slowed
 	cmpi.w	#$1000,Xvel(a3)
 	bgt.w	.0
 	cmpi.w	#$F000,Xvel(a3)
@@ -112,7 +112,7 @@ dostop	;IDA: loc_8BA5E. (checks94) Stop player a3: under $1000 speed in x and y 
 .6
 	bsr.w	SetSPA
 
-stopna	;IDA: sub_8BB1A. (checks94) Slow player a3 by $96 in x and y toward 0, no animation change
+stopna	;(checks94) Slow player a3 by $96 in x and y toward 0, no animation change
 	tst.w	Xvel(a3)
 	beq.w	.1
 	bpl.w	.0
@@ -137,7 +137,7 @@ stopna	;IDA: sub_8BB1A. (checks94) Slow player a3 by $96 in x and y toward 0, no
 .3
 	rts
 
-updatevel	;IDA: sub_8BB6C. 95 only. The velocity update 94 updateplayers does in line
+updatevel	;95 only. The velocity update 94 updateplayers does in line
 	cmpi.w	#$E,SCnum(a3)
 	bne.w	.1
 	cmpi.w	#$150,Ypos(a3)
@@ -236,7 +236,7 @@ updatevel	;IDA: sub_8BB6C. 95 only. The velocity update 94 updateplayers does in
 .12
 	rts
 
-SetSPA	;IDA: sub_8BC9A. (checks94) Set animation d1 for player a3 unless it is already running
+SetSPA	;(checks94) Set animation d1 for player a3 unless it is already running
 	cmp.w	SPA(a3),d1
 	beq.w	.0
 	clr.w	SPAnum(a3)
@@ -245,7 +245,7 @@ SetSPA	;IDA: sub_8BC9A. (checks94) Set animation d1 for player a3 unless it is a
 .0
 	rts
 
-stopna2	;IDA: sub_8BCB0. (crowd94) Stop, keeping the animation (goalies)
+stopna2	;(crowd94) Stop, keeping the animation (goalies)
 	tst.w	Xvel(a3)
 	bpl.w	.0
 	addi.w	#$7D0,Xvel(a3)
@@ -268,7 +268,7 @@ stopna2	;IDA: sub_8BCB0. (crowd94) Stop, keeping the animation (goalies)
 .3
 	rts
 
-doplayeracc	;IDA: loc_8BCFA. (checks94) Player acceleration toward direction d0 by his speed rating (dirtab, MaxSpeed, TempRawSpd / TempMaxSpd),
+doplayeracc	;(checks94) Player acceleration toward direction d0 by his speed rating (dirtab, MaxSpeed, TempRawSpd / TempMaxSpd),
 	;with the turning (turnstep) and the skating animations
 	tst.w	position(a3)
 	bne.w	.0
@@ -462,7 +462,7 @@ doplayeracc	;IDA: loc_8BCFA. (checks94) Player acceleration toward direction d0 
 	dc.w	0,$10,$10,$10,0,$FFF0,$FFF0,$FFF0
 	rts;unused
 
-noturn0	;IDA: loc_8BF92. (checks94) doplayeracc: no turn
+noturn0	;(checks94) doplayeracc: no turn
 	moveq	#2,d4
 	btst	#4,pflags(a3)
 	beq.w	.0
@@ -528,12 +528,12 @@ noturn0	;IDA: loc_8BF92. (checks94) doplayeracc: no turn
 	bne.w	noturn
 	bsr.w	SetSPA
 
-noturn	;IDA: loc_8C078. (checks94) doplayeracc: no turn, d2 = facedir
+noturn	;(checks94) doplayeracc: no turn, d2 = facedir
 	btst	#4,pflags(a3)
 	beq.w	playeracc
 	eori.w	#4,d2
 
-playeracc	;IDA: loc_8C086. (checks94) Player acceleration with facing d2 (doplayeracc entry used by the goalie and input code)
+playeracc	;(checks94) Player acceleration with facing d2 (doplayeracc entry used by the goalie and input code)
 	asl.w	#2,d2
 	lea	dirtab(pc),a0
 	move.w	2(a0,d2.w),d1
@@ -651,7 +651,7 @@ playeracc	;IDA: loc_8C086. (checks94) Player acceleration with facing d2 (doplay
 .9
 	rts
 
-PlaceBoardFall	;IDA: sub_8C1FA. 95 only. Board fall animations (SPA $26C8, $276A, $220E ...): place player a3 against the boards
+PlaceBoardFall	;95 only. Board fall animations (SPA $26C8, $276A, $220E ...): place player a3 against the boards
 	cmpi.w	#$26C8,SPA(a3)
 	beq.w	.12
 	cmpi.w	#$276A,SPA(a3)
@@ -735,7 +735,7 @@ PlaceBoardFall	;IDA: sub_8C1FA. 95 only. Board fall animations (SPA $26C8, $276A
 .14
 	rts
 
-Goal	;IDA: loc_8C304. (checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohomegoals / soawaygoals), EndPenaltyShotPlay, the
+Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohomegoals / soawaygoals), EndPenaltyShotPlay, the
 	;score summary (ScoreSum), the assignments of both teams (AssignTeam), PenGoalStuff
 	btst	#2,(BA_PS_flags).w
 	beq.w	.6
@@ -941,7 +941,7 @@ Goal	;IDA: loc_8C304. (checks94 checkgoal .goal) A goal: the shootout count (sho
 	movea.l	(sp)+,a3
 	rts
 
-AssignTeam	;IDA: sub_8C5DC. 95 only. Give assignment d0 to every player of team a2 on the ice (assinsert)
+AssignTeam	;95 only. Give assignment d0 to every player of team a2 on the ice (assinsert)
 	move.l	a3,-(sp)
 	movea.w	tmsort(a2),a3
 	moveq	#5,d3
@@ -961,10 +961,10 @@ AssignTeam	;IDA: sub_8C5DC. 95 only. Give assignment d0 to every player of team 
 	dbf	d3,.0
 	movea.l	(sp)+,a3
 
-rtsgoal	;IDA: locret_8C61C. The shared rts of Goal and AssignTeam
+rtsgoal	;The shared rts of Goal and AssignTeam
 	rts
 
-PenGoalStuff	;IDA: sub_8C61E. (penalty94) 93 name. Do this stuff after a goal: a1 = scored on team, a2 = scoring team. Clears PenBuf, lets the
+PenGoalStuff	;(penalty94) 93 name. Do this stuff after a goal: a1 = scored on team, a2 = scoring team. Clears PenBuf, lets the
 	;first penalized player of the scored on team out (RemovePlayerFromList), erases the message box (box)
 	movem.l	d0-d2/a0,-(sp)
 	cmpi.w	#3,(gsp).w
@@ -998,7 +998,7 @@ PenGoalStuff	;IDA: sub_8C61E. (penalty94) 93 name. Do this stuff after a goal: a
 	movem.l	(sp)+,d0-d2/a0
 	rts
 
-box	;IDA: sub_8C694. (data94) Fill a $13 x 8 rectangle at printz position $FF,$B,2 with char $7FF (eraser)
+box	;(data94) Fill a $13 x 8 rectangle at printz position $FF,$B,2 with char $7FF (eraser)
 	jsr	(printz).l
 	String	$FF,$B,2,0
 	moveq	#$13,d0
@@ -1006,7 +1006,7 @@ box	;IDA: sub_8C694. (data94) Fill a $13 x 8 rectangle at printz position $FF,$B
 	move.l	#$7FF,d2
 	jmp	eraser
 
-DisplayPlayerAttributeMenu	;IDA: loc_8C6B0. (data94) 93 name. Goal box: close both line change boxes (lcfound2), then the scorer and the assists from
+DisplayPlayerAttributeMenu	;(data94) 93 name. Goal box: close both line change boxes (lcfound2), then the scorer and the assists from
 	;ScoreSum (PrintPlayerGoals / PrintPlayerAssists), the goalie counts (CountGoalies)
 	movem.l	d0-d2/a0-a4,-(sp)
 	btst	#2,(BA_PS_flags).w
@@ -1107,28 +1107,28 @@ DisplayPlayerAttributeMenu	;IDA: loc_8C6B0. (data94) 93 name. Goal box: close bo
 	movem.l	(sp)+,d0-d2/a0-a4
 	rts
 
-GoalBigTxt	;IDA: unk_8C83A. (data94) printbig Strings for DisplayPlayerAttributeMenu: GOAL!, then HAT TRICK!
+GoalBigTxt	;(data94) printbig Strings for DisplayPlayerAttributeMenu: GOAL!, then HAT TRICK!
 	String	$BF,$F,3,'GOAL!',$BF,$C,5
 	String	$BF,$C,3,'HAT TRICK!',$BF,$C,5
 
-PPGoalBigTxt	;IDA: unk_8C85A. (data94) The same after a power play: PP GOAL!, then HAT TRICK!
+PPGoalBigTxt	;(data94) The same after a power play: PP GOAL!, then HAT TRICK!
 	String	$BF,$D,3,'PP GOAL!',$BF,$C,5
 	String	$BF,$C,3,'HAT TRICK!',$BF,$C,5
 
-PrintPlayerAssists	;IDA: sub_8C87C. (title94) Print " (" and the assists of player d0 of team a2 (PrintParenNumber)
+PrintPlayerAssists	;(title94) Print " (" and the assists of player d0 of team a2 (PrintParenNumber)
 	movem.l	d0/a2,-(sp)
 	jsr	(printz).l
 	String	' ('
 	adda.w	#$D0,a2
 	bra.w	PrintParenNumber
 
-PrintPlayerGoals	;IDA: sub_8C892. (title94) Print " (" and the goals of player d0 of team a2
+PrintPlayerGoals	;(title94) Print " (" and the goals of player d0 of team a2
 	movem.l	d0/a2,-(sp)
 	jsr	(printz).l
 	String	' ('
 	adda.w	#$B6,a2
 
-PrintParenNumber	;IDA: loc_8C8A4. (title94) Print the number at d0 of a2 (1 to 3 digits) and ")"
+PrintParenNumber	;(title94) Print the number at d0 of a2 (1 to 3 digits) and ")"
 	move.b	(a2,d0.w),d0
 	ext.w	d0
 	move.w	#1,d1
@@ -1148,13 +1148,13 @@ PrintParenNumber	;IDA: loc_8C8A4. (title94) Print the number at d0 of a2 (1 to 3
 	movem.l	(sp)+,d0/a2
 	rts
 
-LockScroll	;IDA: sub_8C8EC. 95 only. xc1 / yc1 = Hpos / Vpos, sfslock
+LockScroll	;95 only. xc1 / yc1 = Hpos / Vpos, sfslock
 	move.w	(Vpos).w,(yc1).w
 	move.w	(Hpos).w,(xc1).w
 	bset	#6,(sflags).w
 	rts
 
-checkwindow	;IDA: sub_8C900. (replay94) Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the puck
+checkwindow	;(replay94) Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the puck
 	movem.l	d0-d3/a3,-(sp)
 	move.w	(yc1).w,d2
 	move.w	(xc1).w,d3
@@ -1250,7 +1250,7 @@ checkwindow	;IDA: sub_8C900. (replay94) Scroll the window one step toward xc1 / 
 	movem.l	(sp)+,d0-d3/a3
 	rts
 
-SetGoaliesCtl	;IDA dc.b. 95 only. Practice Mode: pull the goalies the home / away goalie control (homegoaliectl / awaygoaliectl)
+SetGoaliesCtl	;95 only. Practice Mode: pull the goalies the home / away goalie control (homegoaliectl / awaygoaliectl)
 	;does not allow (GoalieCtlLimits by position): position -1, assignment $19
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SortCords,a0
@@ -1288,10 +1288,10 @@ SetGoaliesCtl	;IDA dc.b. 95 only. Practice Mode: pull the goalies the home / awa
 	movem.l	(sp)+,d0/a3
 	bra.s	.2
 
-GoalieCtlLimits	;IDA: unk_8CAB8. 95 only. Goalie control value needed per position
+GoalieCtlLimits	;95 only. Goalie control value needed per position
 	dc.b	0,4,5,2,1,3
 
-GetGoalieCtl	;IDA: sub_8CABE. 95 only. Test the goalie control of team d0 (1 home, else away)
+GetGoalieCtl	;95 only. Test the goalie control of team d0 (1 home, else away)
 	movem.l	a0,-(sp)
 	movea.l	#homegoaliectl,a0
 	cmp.w	#1,d0
@@ -1302,7 +1302,7 @@ GetGoalieCtl	;IDA: sub_8CABE. 95 only. Test the goalie control of team d0 (1 hom
 	movem.l	(sp)+,a0
 	rts
 
-PracticeGoalies	;IDA: sub_8CADE. 95 only. Practice Mode goalie setup (GetGoalieCtl)
+PracticeGoalies	;95 only. Practice Mode goalie setup (GetGoalieCtl)
 	movem.l	d0-d1,-(sp)
 	cmpi.w	#1,(cont1team).w
 	beq.w	.0
@@ -1335,7 +1335,7 @@ PracticeGoalies	;IDA: sub_8CADE. 95 only. Practice Mode goalie setup (GetGoalieC
 	movem.l	(sp)+,d0-d1
 	rts
 
-PeriodOver	;IDA dc.b. (setup94) What to do if the period is over: next period, overtime or game over (gsp 4); Practice Mode
+PeriodOver	;(setup94) What to do if the period is over: next period, overtime or game over (gsp 4); Practice Mode
 	;(sflags9 bit 7) ends the game; a season game with season flag bit 5 plays on in overtime. Then forceblack and IntermissionStart
 	btst	#7,(sflags9).w
 	bne.w	.2
@@ -1363,7 +1363,7 @@ PeriodOver	;IDA dc.b. (setup94) What to do if the period is over: next period, o
 	jsr	(forceblack).l
 	jmp	IntermissionStart
 
-clockcont_0	;IDA: loc_8CBC2. (hockey94) The clock ran out in overtime / the game: game over handling, the Stanley Cup (sflags13 bit 2, cupwinner)
+clockcont_0	;(hockey94) The clock ran out in overtime / the game: game over handling, the Stanley Cup (sflags13 bit 2, cupwinner)
 	movea.w	#(puckx-M68K_RAM),a3
 	moveq	#1,d0
 	jsr	(assinsert).l
@@ -1444,7 +1444,7 @@ clockcont_0	;IDA: loc_8CBC2. (hockey94) The clock ran out in overtime / the game
 	move.w	#2,d0
 	jmp	AddPenalty2
 
-GameOver	;IDA: loc_8CCE6. (setup94) EncodePW, the Stanley Cup screen (sflags13 bit 2), SeasonGameOver, then ExitToOpening
+GameOver	;(setup94) EncodePW, the Stanley Cup screen (sflags13 bit 2), SeasonGameOver, then ExitToOpening
 	jsr	(EncodePW).l
 	btst	#2,(sflags13).w
 	beq.w	.0
@@ -1452,10 +1452,10 @@ GameOver	;IDA: loc_8CCE6. (setup94) EncodePW, the Stanley Cup screen (sflags13 b
 .0
 	jsr	(SeasonGameOver).l
 
-ExitToOpening	;IDA: loc_8CD02. (setup94) jmp to the opening
+ExitToOpening	;(setup94) jmp to the opening
 	jmp	Opening2
 
-clockcont	;IDA: sub_8CD08. (hockey94) Clock continue: when the clock is at 0 stop the play (sfx 4) and go to clockcont_0
+clockcont	;(hockey94) Clock continue: when the clock is at 0 stop the play (sfx 4) and go to clockcont_0
 	btst	#0,(gmode).w
 	bne.w	.0
 	tst.w	(gameclock).w
@@ -1469,7 +1469,7 @@ clockcont	;IDA: sub_8CD08. (hockey94) Clock continue: when the clock is at 0 sto
 .0
 	rts
 
-SetContTeams	;IDA: sub_8CD3C. 95 only. The controller setup screen: pick the team of each pad (cont1team ... cont4team) and the Practice Mode
+SetContTeams	;95 only. The controller setup screen: pick the team of each pad (cont1team ... cont4team) and the Practice Mode
 	;players and goalies
 	tst.w	(demoflag).w
 	bmi.w	.1
@@ -1586,13 +1586,13 @@ SetContTeams	;IDA: sub_8CD3C. 95 only. The controller setup screen: pick the tea
 .16
 	rts
 
-ContTeamOrder1	;IDA: unk_8CED4. 95 only. Pad team order tables for SetContTeams
+ContTeamOrder1	;95 only. Pad team order tables for SetContTeams
 	dc.b	2,0,2,$FF
 
-ContTeamOrder2	;IDA: unk_8CED8
+ContTeamOrder2
 	dc.b	1,1,0,$FF
 
-PrintPracticeGoalies	;IDA: sub_8CEDC. 95 only. Set homegoaliectl / awaygoaliectl from PracticeGoalieTbl and print them
+PrintPracticeGoalies	;95 only. Set homegoaliectl / awaygoaliectl from PracticeGoalieTbl and print them
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#PracticeGoalieTbl,a0
 	move.w	(setupvalues+2).w,d0
@@ -1611,7 +1611,7 @@ PrintPracticeGoalies	;IDA: sub_8CEDC. 95 only. Set homegoaliectl / awaygoaliectl
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintGoalieCount	;IDA: sub_8CF28. 95 only. Print GoalieCountTxt string d0 (PrintSetupStr)
+PrintGoalieCount	;95 only. Print GoalieCountTxt string d0 (PrintSetupStr)
 	movea.l	#GoalieCountTxt,a1
 	bra.w	.1
 .0
@@ -1620,15 +1620,15 @@ PrintGoalieCount	;IDA: sub_8CF28. 95 only. Print GoalieCountTxt string d0 (Print
 	dbf	d0,.0
 	bra.w	PrintSetupStr
 
-GoalieCountTxt	;IDA: unk_8CF3C. 95 only. "0", "1", "2"
+GoalieCountTxt	;95 only. "0", "1", "2"
 	String	'0'
 	String	'1'
 	String	'2'
 
-PracticeGoalieTbl	;IDA: unk_8CF48. 95 only. Home / away goalie control by Practice Mode setting
+PracticeGoalieTbl	;95 only. Home / away goalie control by Practice Mode setting
 	dc.b	1,0,0,1,2,0,0,2,1,2,2,1,1,1,2,2
 
-DrawPadSetup	;IDA: sub_8CF58. 95 only. Draw the pads, their icons (DrawPadIcon) and the cursor (DrawPadCursor)
+DrawPadSetup	;95 only. Draw the pads, their icons (DrawPadIcon) and the cursor (DrawPadCursor)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$A,(printy).w
 	move.w	#1,d4
@@ -1669,7 +1669,7 @@ DrawPadSetup	;IDA: sub_8CF58. 95 only. Draw the pads, their icons (DrawPadIcon) 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawPadIcon	;IDA: sub_8CFF2. 95 only. Draw pad icon d7 (PadIconMaps at PadIconChars)
+DrawPadIcon	;95 only. Draw pad icon d7 (PadIconMaps at PadIconChars)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#PadIconMaps,a0
 	asl.w	#2,d7
@@ -1690,13 +1690,13 @@ DrawPadIcon	;IDA: sub_8CFF2. 95 only. Draw pad icon d7 (PadIconMaps at PadIconCh
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PadIconMaps	;IDA: unk_8D02C. 95 only. Pad icon bitmaps, then (PadIconChars) the RAM words with their chars
+PadIconMaps	;95 only. Pad icon bitmaps, then (PadIconChars) the RAM words with their chars
 	dc.l	PadIconMap1,PadIconMap2,PadIconMap3,PadIconMap4
 
-PadIconChars	;IDA: unk_8D03C
+PadIconChars
 	dc.l	padiconchars1,padiconchars2,padiconchars3,padiconchars4
 
-DrawPadCursor	;IDA: sub_8D04C. 95 only. Draw the pad cursor (PadCursorMap, padcursorchars) beside printx / printy
+DrawPadCursor	;95 only. Draw the pad cursor (PadCursorMap, padcursorchars) beside printx / printy
 	move.w	(printx).w,-(sp)
 	move.w	(printy).w,-(sp)
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1719,10 +1719,10 @@ DrawPadCursor	;IDA: sub_8D04C. 95 only. Draw the pad cursor (PadCursorMap, padcu
 	move.w	(sp)+,(printx).w
 	rts
 
-BlankLineTxt	;IDA: unk_8D090. 95 only. A blank line
+BlankLineTxt	;95 only. A blank line
 	String	$FD,$0,'                                        '
 
-PrintPracticeTitle	;IDA: sub_8D0BC. 95 only. Practice Mode: print PracticePlayersTxt, highlighted (PrintSetupStrHi) when setupvalues is 0
+PrintPracticeTitle	;95 only. Practice Mode: print PracticePlayersTxt, highlighted (PrintSetupStrHi) when setupvalues is 0
 	btst	#7,(sflags9).w
 	beq.w	.1
 	movea.l	#PracticePlayersTxt,a1
@@ -1735,10 +1735,10 @@ PrintPracticeTitle	;IDA: sub_8D0BC. 95 only. Practice Mode: print PracticePlayer
 .1
 	rts
 
-PracticePlayersTxt	;IDA: unk_8D0E2. 95 only
+PracticePlayersTxt	;95 only
 	String	$FD,$C,$FC,$16,'PRACTICE PLAYERS',$FD,$19,$FC,$17,'No. of Players',$FD,$2,'No. of Players'
 
-ControllerSetupScreen	;IDA: sub_8D11A. 95 only. Build the controller setup screen: vram, fonts, the team blocks and pad tiles, the backgrounds and
+ControllerSetupScreen	;95 only. Build the controller setup screen: vram, fonts, the team blocks and pad tiles, the backgrounds and
 	;"Controller SetUp" (printbigz); the team blocks of VisTeam / HomeTeam (DrawSetupTeamBlock)
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr

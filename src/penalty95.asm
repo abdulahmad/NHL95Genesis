@@ -9,7 +9,7 @@
 ;	cmp encoding after assembly.
 
 
-limitfo	;IDA: sub_88F06 (penalty94) Limit the faceoff spot to 5-20 feet from the walls of the rink, for every player in PenBuf (.1 is 93 .lf, IDA sub_88F1E).
+limitfo	;(penalty94) Limit the faceoff spot to 5-20 feet from the walls of the rink, for every player in PenBuf (.1 is 93 .lf, IDA sub_88F1E).
 	;95: the blue line is $56 (94 $58)
 	movem.l	d0-d1/a0-a1,-(sp)
 	movea.w	#(PenBuf-M68K_RAM),a0
@@ -47,7 +47,7 @@ limitfo	;IDA: sub_88F06 (penalty94) Limit the faceoff spot to 5-20 feet from the
 .5
 	rts
 
-LeadSong	;IDA dc.b (title94) Not in a shootout (gmode2 bit 1) and one team has more players on ice (tmap): once (sflags2 bit 5) ChooseSong
+LeadSong	;(title94) Not in a shootout (gmode2 bit 1) and one team has more players on ice (tmap): once (sflags2 bit 5) ChooseSong
 	;with SongIndex 1 (home) or 4, and sflags8 bit 6; sflags2 bit 6 keeps which team. sflags2 is put back on exit. Called from puckfaceoff2
 	movem.l	d0/a0-a3,-(sp)
 	move.w	(sflags2).w,-(sp)
@@ -87,16 +87,16 @@ LeadSong	;IDA dc.b (title94) Not in a shootout (gmode2 bit 1) and one team has m
 	jsr	(ChooseSong).l
 	bra.s	.2
 
-ClearLeadSong	;IDA dc.b (title94) Clear sflags2 bit 5
+ClearLeadSong	;(title94) Clear sflags2 bit 5
 	bclr	#5,(sflags2).w
 	rts
 
-LeadSongExit	;IDA dc.b (title94) LeadSong exit
+LeadSongExit	;(title94) LeadSong exit
 	move.w	(sp)+,(sflags2).w
 	movem.l	(sp)+,d0/a0-a3
 	rts
 
-Stop4Pen	;IDA: sub_8901C (penalty94) a0 = PenaltyNames penalty + 2. Stop the clock, set the faceoff spot from the penalty type, blow the whistle
+Stop4Pen	;(penalty94) a0 = PenaltyNames penalty + 2. Stop the clock, set the faceoff spot from the penalty type, blow the whistle
 	;and start the ref (SetPA)
 	bset	#0,(gmode).w
 	bne.w	.5
@@ -180,10 +180,10 @@ Stop4Pen	;IDA: sub_8901C (penalty94) a0 = PenaltyNames penalty + 2. Stop the clo
 	move.w	#$A,d0
 	bra.w	SetPA
 
-rtspen	;IDA: locret_8913E. The shared rts of the penalty routines (94 rtss2)
+rtspen	;The shared rts of the penalty routines (94 rtss2)
 	rts
 
-AddPenalty	;IDA: sub_89140 (penalty94) Add penalty d0 (PenaltyNames offset) for player a3. Ignored while the clock is stopped
+AddPenalty	;(penalty94) Add penalty d0 (PenaltyNames offset) for player a3. Ignored while the clock is stopped
 	btst	#0,(gmode).w
 	bne.s	rtspen
 	cmp.w	#$C,d0
@@ -197,7 +197,7 @@ AddPenalty	;IDA: sub_89140 (penalty94) Add penalty d0 (PenaltyNames offset) for 
 	cmp.w	#$10,d0
 	beq.s	rtspen
 
-AddPenalty2	;IDA: sub_8916E (penalty94) Forced penalties like faceoff and game over. d0 = penalty number, a3 = player
+AddPenalty2	;(penalty94) Forced penalties like faceoff and game over. d0 = penalty number, a3 = player
 	btst	#7,(sflags).w
 	bne.s	rtspen
 	movem.l	d1/a0-a1,-(sp)
@@ -239,13 +239,13 @@ AddPenalty2	;IDA: sub_8916E (penalty94) Forced penalties like faceoff and game o
 	movem.l	(sp)+,d1/a0-a1
 	rts
 
-PenaltyManager	;IDA: sub_891FE (penalty94) Called periodically. d7 = elapsed time since last call: checkfornewpen, chkprogress, updatepentime, UpdatePA
+PenaltyManager	;(penalty94) Called periodically. d7 = elapsed time since last call: checkfornewpen, chkprogress, updatepentime, UpdatePA
 	bsr.w	updatepentime
 	bsr.w	checkfornewpen
 	bsr.w	chkprogress
 	bra.w	UpdatePA
 
-chkprogress	;IDA: sub_8920E (penalty94) Control the progress of the ref and the game through penalty events. While BA_PS_flags bit 2 is set run
+chkprogress	;(penalty94) Control the progress of the ref and the game through penalty events. While BA_PS_flags bit 2 is set run
 	;PenaltyShotBox (bit 7) or the msgtimer count down and erase the message area
 	btst	#2,(BA_PS_flags).w
 	beq.w	.3
@@ -319,7 +319,7 @@ chkprogress	;IDA: sub_8920E (penalty94) Control the progress of the ref and the 
 	move.w	#$18,(palcount).w
 	rts
 
-InProgress	;IDA: loc_89332 (penalty94) Ref in progress: update the graphics, stats and penalty information
+InProgress	;(penalty94) Ref in progress: update the graphics, stats and penalty information
 	tst.w	(RefCnt).w
 	bpl.w	rtspen
 	tst.w	(RefStep).w
@@ -462,7 +462,7 @@ InProgress	;IDA: loc_89332 (penalty94) Ref in progress: update the graphics, sta
 	movem.l	(sp)+,d0/a0-a3
 	rts
 
-coinsearch	;IDA: sub_89514 (penalty94) 93 IDA name. a2 = team. Count the players kept off the ice by penalties (coincidental penalties)
+coinsearch	;(penalty94) 93 IDA name. a2 = team. Count the players kept off the ice by penalties (coincidental penalties)
 	moveq	#6,d1
 	moveq	#$32,d0
 .0
@@ -482,7 +482,7 @@ coinsearch	;IDA: sub_89514 (penalty94) 93 IDA name. a2 = team. Count the players
 	move.w	d1,tmap(a2)
 	rts
 
-updatepentime	;IDA: sub_8954E (penalty94) Update the time remaining on all penalized players, once a second (Penaltytimer); sets sflags3 bit 6 on that
+updatepentime	;(penalty94) Update the time remaining on all penalized players, once a second (Penaltytimer); sets sflags3 bit 6 on that
 	;tick. chkatop, updatePPTeamTime, then ProcessPenaltyList for both teams
 	bclr	#6,(sflags3).w
 	btst	#0,(gmode).w
@@ -497,7 +497,7 @@ updatepentime	;IDA: sub_8954E (penalty94) Update the time remaining on all penal
 	bsr.w	ProcessPenaltyList
 	adda.w	#tmsize,a2
 
-ProcessPenaltyList	;IDA: sub_8958A (penalty94) 93 name. a2 = team. Walk the penalty box list ($9C, 94 $9A): the first two players without a coincidental
+ProcessPenaltyList	;(penalty94) 93 name. a2 = team. Walk the penalty box list ($9C, 94 $9A): the first two players without a coincidental
 	;penalty count down one second and the rest wait. Beeps when the first served time gets to 5 or less and releases the player at 0
 	lea	$9C(a2),a0
 	movea.w	#(mesarea-M68K_RAM),a1
@@ -552,7 +552,7 @@ ProcessPenaltyList	;IDA: sub_8958A (penalty94) 93 name. a2 = team. Walk the pena
 .8
 	clr.w	tmpdst(a2,d0.w)
 
-RemovePlayerFromList	;IDA: sub_8962C (penalty94) 93 name. Remove the entry before a0 from a penalty box list by shifting the rest down. Return a0 =
+RemovePlayerFromList	;(penalty94) 93 name. Remove the entry before a0 from a penalty box list by shifting the rest down. Return a0 =
 	;removed slot
 	moveq	#$FFFFFFFF,d2
 .0
@@ -562,7 +562,7 @@ RemovePlayerFromList	;IDA: sub_8962C (penalty94) 93 name. Remove the entry befor
 	subq.w	#1,a0
 	rts
 
-releasepl	;IDA: sub_8963C (penalty94) 93 name. The player's penalty time is up, so let him out (if appropriate). a2 = team, d0 = player * 2
+releasepl	;(penalty94) 93 name. The player's penalty time is up, so let him out (if appropriate). a2 = team, d0 = player * 2
 	movem.l	d0-d3/a0-a3,-(sp)
 	movea.w	$22(a2),a3
 	suba.w	#$80,a3
@@ -589,7 +589,7 @@ releasepl	;IDA: sub_8963C (penalty94) 93 name. The player's penalty time is up, 
 	movem.l	(sp)+,d0-d3/a0-a3
 	rts
 
-checkfornewpen	;IDA: sub_8969A (penalty94) Look for a new penalty (entered through AddPenalty / AddPenalty2)
+checkfornewpen	;(penalty94) Look for a new penalty (entered through AddPenalty / AddPenalty2)
 	btst	#7,(sflags).w
 	bne.w	rtspen
 	movea.w	#(PenBuf-M68K_RAM),a0
@@ -635,7 +635,7 @@ checkfornewpen	;IDA: sub_8969A (penalty94) Look for a new penalty (entered throu
 	bsr.w	SetPA
 	bra.s	.0
 
-UpdatePA	;IDA: sub_89728 (penalty94) Animate the ref in the ref window (RefCnt, SetPA2); game over (RefPen 4): DisplayPeriodOver; penmsgtimer
+UpdatePA	;(penalty94) Animate the ref in the ref window (RefCnt, SetPA2); game over (RefPen 4): DisplayPeriodOver; penmsgtimer
 	tst.w	(RefCnt).w
 	bmi.w	rtspen
 	sub.w	d7,(RefCnt).w
@@ -651,7 +651,7 @@ UpdatePA	;IDA: sub_89728 (penalty94) Animate the ref in the ref window (RefCnt, 
 	move.w	#$7FFF,(penmsgtimer).w
 	rts
 
-SetPA	;IDA: sub_8975E (penalty94) Start ref animation d0 (penalty number); from $2E up ignored. prefmes, goal ($E): DisplayPlayerAttributeMenu,
+SetPA	;(penalty94) Start ref animation d0 (penalty number); from $2E up ignored. prefmes, goal ($E): DisplayPlayerAttributeMenu,
 	;Shootout: ShootoutWonBy. Falls into SetPA2
 	move.w	d0,(RefPen).w
 	cmp.w	#$2E,d0
@@ -675,7 +675,7 @@ SetPA	;IDA: sub_8975E (penalty94) Start ref animation d0 (penalty number); from 
 	beq.w	SetPA2
 	move.w	#$3C,(penmsgtimer).w
 
-SetPA2	;IDA: sub_897B2 (penalty94) IDA: setPA2 (94). Update the ref animation: next frame / delay pair from the PenaltyNames animation
+SetPA2	;(penalty94) IDA: setPA2 (94). Update the ref animation: next frame / delay pair from the PenaltyNames animation
 	movem.l	d0-d2/a0-a1,-(sp)
 	moveq	#$40,d0
 	tst.w	(RefStep).w
@@ -712,7 +712,7 @@ SetPA2	;IDA: sub_897B2 (penalty94) IDA: setPA2 (94). Update the ref animation: n
 	movem.l	(sp)+,d0-d2/a0-a1
 	rts
 
-PushRef	;IDA: sub_89820 (penalty94) Tell vblank what to display: ref frame d0 (RefTiles, RefTilesHor in the horizontal rink) into RefRamMap; $40
+PushRef	;(penalty94) Tell vblank what to display: ref frame d0 (RefTiles, RefTilesHor in the horizontal rink) into RefRamMap; $40
 	;clears the window
 	movem.l	d0-d2/a0-a1,-(sp)
 	cmp.w	#$40,d0
@@ -752,7 +752,7 @@ PushRef	;IDA: sub_89820 (penalty94) Tell vblank what to display: ref frame d0 (R
 	movem.l	(sp)+,d0-d2/a0-a1
 	rts
 
-prefmes	;IDA: sub_89898 (penalty94) Print the message for penalty d0 (negative clears it) under the ref
+prefmes	;(penalty94) Print the message for penalty d0 (negative clears it) under the ref
 	movem.l	d0-d2/a1,-(sp)
 	btst	#7,(sflags).w
 	bne.w	.3
@@ -805,7 +805,7 @@ prefmes	;IDA: sub_89898 (penalty94) Print the message for penalty d0 (negative c
 	movem.l	(sp)+,d0-d2/a1
 	rts
 
-PrintPenaltyMessagesString	;IDA dc.b (penalty94) 93 name. Blank the horizontal mode penalty message line (22 spaces at x 5, y $B). IDA dc.b, no xref
+PrintPenaltyMessagesString	;(penalty94) 93 name. Blank the horizontal mode penalty message line (22 spaces at x 5, y $B). IDA dc.b, no xref
 	jsr	(printz).l
 	String	$BF,5,$B,'                      '
 	rts

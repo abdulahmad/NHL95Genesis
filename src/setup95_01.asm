@@ -6,7 +6,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-defaultsprites	;IDA: sub_A656. allocate vram and assign char area for graphic structures. d4 = char area for data. Sets up the sso (4) and
+defaultsprites	;allocate vram and assign char area for graphic structures. d4 = char area for data. Sets up the sso (4) and
 	;ffo (6; 94: 7 with the gloves) objects from .listsso / .listffo, then defaultsprites2. Called from setupice
 	movea.l	#.listsso,a2
 	movea.w	#(sso-M68K_RAM),a3
@@ -36,12 +36,12 @@ defaultsprites	;IDA: sub_A656. allocate vram and assign char area for graphic st
 	adda.w	#$1C,a3	;#ffosize
 	dbf	d0,.ffotop
 	bra.w	defaultsprites2
-.listsso	;$A6BA. xcord,ycord,frame,attribute,vram char size
+.listsso	;xcord,ycord,frame,attribute,vram char size
 	dc.w	0,0,0,0,9
 	dc.w	0,0,0,0,9
 	dc.w	0,0,0,0,9
 	dc.w	0,0,0,0,9
-.listffo	;$A6E2. xcord,ycord,zpos,frame,attribute,vram char size
+.listffo	;xcord,ycord,zpos,frame,attribute,vram char size
 	dc.w	0,0,$FFFF,$71,0,7	;puck poss. star
 	dc.w	0,0,$FFFF,$6F,0,7	;joypad 1 star
 	dc.w	0,0,$FFFF,$70,0,7	;joypad 2 star
@@ -49,7 +49,7 @@ defaultsprites	;IDA: sub_A656. allocate vram and assign char area for graphic st
 	dc.w	0,0,$FFFF,$7A,0,7	;joypad 4 star
 	dc.w	0,0,$FFFF,$72,$8000,7	;replay cursor
 
-defaultsprites2	;IDA: loc_A72A. objects which are tied to screen scrolling and have velocity: the 16 SortCords objects from .list (players,
+defaultsprites2	;objects which are tied to screen scrolling and have velocity: the 16 SortCords objects from .list (players,
 	;puck, puck shadow, goal nets ...), the OOlist and OOlistpos; then SprSort. 95 clears $78 bytes of each (94: $80) and faces the
 	;away team down
 	clr.w	d6
@@ -92,7 +92,7 @@ defaultsprites2	;IDA: loc_A72A. objects which are tied to screen scrolling and h
 	cmp.w	#$10,d6
 	bne.s	.0
 	bra.w	SprSort
-.list	;$A7A6. xcord,ycord,zcord,frame,att,crsize,radx,rady,asslist,pflags
+.list	;xcord,ycord,zcord,frame,att,crsize,radx,rady,asslist,pflags
 	dc.w	0,$FFC4,0,$41,0,$14,8,4,0,$80	;SCnum 0 (home skaters)
 	dc.w	$32,$FFF6,0,$41,0,$14,8,4,0,$80	;SCnum 1
 	dc.w	0,$FFF1,0,$41,0,$14,8,4,0,$80	;SCnum 2
@@ -110,7 +110,7 @@ defaultsprites2	;IDA: loc_A72A. objects which are tied to screen scrolling and h
 	dc.w	0,0,0,$1B4,0,1,5,5,1,1	;SCnum 14 (puck)
 	dc.w	0,0,0,$1B3,0,$18,3,3,2,4	;SCnum 15 (puck shadow)
 
-SprSort	;IDA: sub_A8E6. sort objects in struct SortObj and set corresponding tables for keeping them sorted later (Ylist, OOlist,
+SprSort	;sort objects in struct SortObj and set corresponding tables for keeping them sorted later (Ylist, OOlist,
 	;OOlistpos). 95 has no horizontal rink case
 	movem.l	d0-d4/a0-a2,-(sp)
 	movea.l	#OOlistpos,a2
@@ -150,7 +150,7 @@ SprSort	;IDA: sub_A8E6. sort objects in struct SortObj and set corresponding tab
 	movem.l	(sp)+,d0-d4/a0-a2
 	rts
 
-updatepadinput	;IDA: sub_A95C. 95 only: the end of 94 updateplayers (replay94 .tp2 on), called from updateplayers (hockey95) with a3 =
+updatepadinput	;95 only: the end of 94 updateplayers (replay94 .tp2 on), called from updateplayers (hockey95) with a3 =
 	;object, d6 = SCnum. The pad (1-4) controlling a3 reads its buttons and runs doinput, with d4 = 0 / 2 / 4 / 6 (94 swaps the pad 3 /
 	;4 variables into pads 1 / 2). Then the assignment, collisions and the impact decay
 	cmp.w	(c1playernum).w,d6	;check if cont 1 is puck carrier
@@ -208,7 +208,7 @@ updatepadinput	;IDA: sub_A95C. 95 only: the end of 94 updateplayers (replay94 .t
 ;
 ; a3 = holder
 ; a0 = player being held
-holdplayer	;IDA: loc_AA18. Jumped to from doinput
+holdplayer	;Jumped to from doinput
 	bset	#pfalock,pflags(a3)	;lock animation
 	move.w	#SPAhook,d1	;move anim into d1 - normal hold check
 	tst.w	impact(a3)	;check if impact = 0
@@ -221,7 +221,7 @@ holdplayer	;IDA: loc_AA18. Jumped to from doinput
 .0
 	jsr	(chkcheckstart).l	;95 only
 	jmp	(SetSPA).l
-Acheck	;IDA: loc_AA46
+Acheck
 	bset	#pfalock,pflags(a3)	;lock animation
 	move.w	#SPAhook,d1	;move anim into d1 - normal hold check
 	tst.w	impact(a3)	;check if impact = 0
@@ -238,11 +238,11 @@ Acheck	;IDA: loc_AA46
 	jmp	(SetSPA).l
 
 ; c button press check/speed
-burstchk	;IDA: loc_AA7A. 95 only: no burst while the animation is locked. Jumped to from doinput
+burstchk	;95 only: no burst while the animation is locked. Jumped to from doinput
 	btst	#pfalock,pflags(a3)
 	beq.w	burst
 	rts
-burst	;IDA: loc_AA86
+burst
 	jsr	(getpde).l	;get players energy
 	tst.w	(OptLine).w
 	bne.w	.0
@@ -289,7 +289,7 @@ burst	;IDA: loc_AA86
 	move.w	#SPAburst,d1
 	jmp	(SetSPA).l
 
-setpads	;IDA: sub_AB2A. Put SCnum of a3 in the d4 nibble of PadControlBits (93 name); d4 = -2 puck carrier, 0 / 2 / 4 / 6 pads.
+setpads	;Put SCnum of a3 in the d4 nibble of PadControlBits (93 name); d4 = -2 puck carrier, 0 / 2 / 4 / 6 pads.
 	;95: a long (94: a word)
 	movem.l	d0-d1,-(sp)
 	moveq	#2,d0
@@ -305,7 +305,7 @@ setpads	;IDA: sub_AB2A. Put SCnum of a3 in the d4 nibble of PadControlBits (93 n
 	movem.l	(sp)+,d0-d1
 	rts
 
-chgplayer	;IDA: sub_AB4E (title94). the pad d4 takes the nearest free skater to where the puck is going (not a goalie, not locked or
+chgplayer	;(title94). the pad d4 takes the nearest free skater to where the puck is going (not a goalie, not locked or
 	;unavailable; in a penalty shot / shootout only BA_Sktr_SCnum or BA_Goalie_SCnum), or sweep checks when it is the same one. 95:
 	;with no skater found and no player on the pad, a second pass that also takes the goalie. Jumped to from doinput
 	btst	#6,(sflags5).w	;Check bit 6
@@ -393,7 +393,7 @@ chgplayer	;IDA: sub_AB4E (title94). the pad d4 takes the nearest free skater to 
 	move.w	d6,d0	;d0 now is new player
 	jmp	(setcplayer).l	;94: setc1player / setc2player
 .ex
-	movem.l	(sp)+,d0-d6/a0-a1	;IDA dc.b
+	movem.l	(sp)+,d0-d6/a0-a1
 .exit	;94 exit
 	rts
 .pass2	;95 only: as .top, but a goalie (position 0) may be taken
@@ -463,7 +463,7 @@ chgplayer	;IDA: sub_AB4E (title94). the pad d4 takes the nearest free skater to 
 .swpchk	;94 swpchk. Sweepcheck
 	jmp	(Sweepcheck).l
 
-setcplayer	;IDA: sub_AD5A. 95 only: give pad d4 (0 / 2 / 4 / 6) player d0 (94 setc1player / setc2player): restorepl the old one, then
+setcplayer	;95 only: give pad d4 (0 / 2 / 4 / 6) player d0 (94 setc1player / setc2player): restorepl the old one, then
 	;c1playernum + d4 = d0. Jumped to from chgplayer
 	movem.l	d0/a0-a1,-(sp)
 	movea.l	#c1playernum,a0
@@ -475,32 +475,32 @@ setcplayer	;IDA: sub_AD5A. 95 only: give pad d4 (0 / 2 / 4 / 6) player d0 (94 se
 .x
 	movem.l	(sp)+,d0/a0-a1
 	rts
-setc1player	;IDA: loc_AD80. Jumped to from doinput
+setc1player	;Jumped to from doinput
 	move.w	d4,-(sp)
 	clr.w	d4
 	bsr.s	setcplayer
 	move.w	(sp)+,d4
 	rts
-setc2player	;IDA: loc_AD8A
+setc2player
 	move.w	d4,-(sp)
 	move.w	#2,d4
 	bsr.s	setcplayer
 	move.w	(sp)+,d4
 	rts
-setc3player	;IDA: loc_AD96
+setc3player
 	move.w	d4,-(sp)
 	move.w	#4,d4
 	bsr.s	setcplayer
 	move.w	(sp)+,d4
 	rts
-setc4player	;IDA: loc_ADA2
+setc4player
 	move.w	d4,-(sp)
 	move.w	#6,d4
 	bsr.s	setcplayer
 	move.w	(sp)+,d4
 	rts
 
-restorepl	;IDA: sub_ADAE (input94; 93 restorepl). d1 = old player (back to the computer), d0 = new player (joystick controlled)
+restorepl	;(input94; 93 restorepl). d1 = old player (back to the computer), d0 = new player (joystick controlled)
 	movem.l	a0,-(sp)
 	movea.l	#SortCords,a0
 	tst.w	d1
@@ -547,7 +547,7 @@ restorepl	;IDA: sub_ADAE (input94; 93 restorepl). d1 = old player (back to the c
 	movem.l	(sp)+,a0
 	rts
 
-clearTeamStats	;IDA: sub_AE48. clear both team structs (2 x tmsize) but keep the first $1A0 bytes of each hot / cold table (HmShots+$1A4 /
+clearTeamStats	;clear both team structs (2 x tmsize) but keep the first $1A0 bytes of each hot / cold table (HmShots+$1A4 /
 	;AwShots+$1A4, saved to homehotcoldsave / awayhotcoldsave and back) and HmShots+tmgoalie / AwShots+tmgoalie. Falls into setteams
 	move.w	(HmShots+tmgoalie).w,-(sp)
 	move.w	(AwShots+tmgoalie).w,-(sp)
@@ -600,7 +600,7 @@ setteams	;93 name. Use hometeam/visteam to set team structures (InitTeamSructure
 	movem.l	(sp)+,d0/a0-a2
 	rts
 
-InitTeamSructure	;IDA: sub_AF04. 93 name. Set up team struct a2 for team d0: store the team number at $28 and the team data address
+InitTeamSructure	;93 name. Set up team struct a2 for team d0: store the team number at $28 and the team data address
 	;(TeamList) at $1E (tmdata), then LoadTeamLines (95; 94 copied the line sets here)
 	move.w	d0,$28(a2)
 	movea.w	#TeamList,a0
@@ -608,14 +608,14 @@ InitTeamSructure	;IDA: sub_AF04. 93 name. Set up team struct a2 for team d0: sto
 	move.l	(a0,d0.w),tmdata(a2)
 	jmp	(LoadTeamLines).l
 
-setplayercolors	;IDA: sub_AF1A (94 IDA: SetTeamColors). Copy in correct color data for each team: .team for the home team, then falls in for
+setplayercolors	;(94 IDA: SetTeamColors). Copy in correct color data for each team: .team for the home team, then falls in for
 	;the visitors. Called from setupice and others
 	clr.w	d1
 	movea.w	#(HmShots-M68K_RAM),a0
 	bsr.w	.team
 	moveq	#$20,d1
 	adda.w	#tmsize,a0
-.team	;IDA: sub_AF2A. a0 = team struct, d1 = palette offset ($20 for the visitors)
+.team	;a0 = team struct, d1 = palette offset ($20 for the visitors)
 	movea.l	tmdata(a0),a2
 	adda.w	2(a2),a2	;Palettedata
 	adda.w	d1,a2

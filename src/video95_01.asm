@@ -11,7 +11,7 @@
 ; d0 = bytes to fill
 ; d1 = vram address
 ; d2 = data to fill with
-DoFill	;IDA: sub_79902. Called from menu95, video95_03. 95 writes the long straight to the vdp (94 went through dmaram)
+DoFill	;Called from menu95, video95_03. 95 writes the long straight to the vdp (94 went through dmaram)
 	movem.l	d3/a1,-(sp)
 	movea.l	#VDP_DATA,a1
 	andi.l	#$FFFF,d1
@@ -32,7 +32,7 @@ DoFill	;IDA: sub_79902. Called from menu95, video95_03. 95 writes the long strai
 	rts
 
 ; d0 = color to fade to
-setvram	;IDA: sub_79936. Fade every colour to d0, then fall into setVram_0
+setvram	;Fade every colour to d0, then fall into setVram_0
 	movea.w	#(palfadenew-M68K_RAM),a0
 	moveq	#$3F,d1
 .0
@@ -40,7 +40,7 @@ setvram	;IDA: sub_79936. Fade every colour to d0, then fall into setVram_0
 	dbf	d1,.0
 	move.w	#$18,(palcount).w
 	bsr.w	forcefade
-setVram_0	;IDA: sub_7994C. 93 name: second half of 92 setVram (no fade): clear vram and set the VDP registers from disflags, Map1col,
+setVram_0	;93 name: second half of 92 setVram (no fade): clear vram and set the VDP registers from disflags, Map1col,
 	;VmMap1-3, VSPRITES and VSCRLPM. Falls in from setvram, called from checks95_05, menu95, title95_02
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -100,7 +100,7 @@ setVram_0	;IDA: sub_7994C. 93 name: second half of 92 setVram (no fade): clear v
 ; set video port to address d0
 ; d0 = vram address
 ; returns a0 = Vdata!!!
-Vmaddr	;IDA: sub_79A22
+Vmaddr
 	movea.l	#VDP_DATA,a0
 	asl.l	#2,d0
 	lsr.w	#2,d0
@@ -110,7 +110,7 @@ Vmaddr	;IDA: sub_79A22
 	move.l	d0,4(a0)
 	rts
 
-dobitmap	;IDA: sub_79A3C. Copy the palettes flagged in d5 to palfadenew, then write the map at a1 to the screen at printx / printy.
+dobitmap	;Copy the palettes flagged in d5 to palfadenew, then write the map at a1 to the screen at printx / printy.
 	;Called from most screens. 95 steps the palettes with adda.w and always ends in DoDMA_clearCallbackPointer (94 skipped it when sflags6 bit 0)
 	move.w	(printy).w,-(sp)
 	move.w	(disflags).w,-(sp)
@@ -158,9 +158,9 @@ dobitmap	;IDA: sub_79A3C. Copy the palettes flagged in d5 to palfadenew, then wr
 	move.w	(sp)+,(printy).w
 	rts
 
-DoDMA_clearCallbackPointer	;IDA: sub_79AC0. 93 name. Clear callbackPtr, fall into DecompressGraphics
+DoDMA_clearCallbackPointer	;93 name. Clear callbackPtr, fall into DecompressGraphics
 	clr.l	(callbackPtr).w
-DecompressGraphics	;IDA: sub_79AC4. 93 name. a2 = graphics data, d4 = start char. Called from video95_02. 95 has no decompressor:
+DecompressGraphics	;93 name. a2 = graphics data, d4 = start char. Called from video95_02. 95 has no decompressor:
 	;a packed block (size bit 15 set) only moves d4 past its chars
 	movem.l	d0-d1/a0-a6,-(sp)
 	movea.l	a2,a0
@@ -183,21 +183,21 @@ DecompressGraphics	;IDA: sub_79AC4. 93 name. a2 = graphics data, d4 = start char
 	movem.l	(sp)+,d0-d1/a0-a6
 	rts
 
-DoDMApro	;IDA: loc_79AFE. DoDMA protected from vblank (dfng set)
+DoDMApro	;DoDMA protected from vblank (dfng set)
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
 	bsr.w	DoDMA
 	move.w	(sp)+,(disflags).w
 	rts
 
-WaitDMA	;IDA: sub_79B12. Wait for the vdp dma busy bit to clear
+WaitDMA	;Wait for the vdp dma busy bit to clear
 	move.w	(VDP_CTRL).l,-(sp)
 	btst	#1,1(sp)
 	addq.w	#2,sp
 	bne.s	WaitDMA
 	rts
 
-forcefade	;IDA: sub_79B24. Run the palette fade to the end: vbint = vb2 (fades only), interrupts on, wait for palcount to go negative
+forcefade	;Run the palette fade to the end: vbint = vb2 (fades only), interrupts on, wait for palcount to go negative
 	move	sr,-(sp)
 	move.l	(vbint).w,-(sp)
 	move.w	(disflags).w,-(sp)
@@ -214,7 +214,7 @@ forcefade	;IDA: sub_79B24. Run the palette fade to the end: vbint = vb2 (fades o
 
 ; fade from current color in color ram to color held in palfadenew
 ; this should be called during vblank because palette changes punch holes in video
-cramfade	;$79B54. IDA dc.b, no xref in the listing
+cramfade	;No xref in the listing
 	tst.w	(palcount).w
 	bmi.w	rtss2
 	cmpi.w	#$64,(palcount).w
@@ -267,7 +267,7 @@ cramfade	;$79B54. IDA dc.b, no xref in the listing
 	bne.s	.top
 	rts
 
-CopyPaletteToCRAM	;IDA: sub_79BE2. 93 name. Copy all 64 palfadenew colours to colour ram (dfng set), then palcount = -1. Called from
+CopyPaletteToCRAM	;93 name. Copy all 64 palfadenew colours to colour ram (dfng set), then palcount = -1. Called from
 	;cramfade and checks95_05. 95 writes cram straight (94 waited for the dma and the Z80 bus)
 	movem.l	d0/a0-a1,-(sp)
 	move.w	(disflags).w,-(sp)
@@ -284,7 +284,7 @@ CopyPaletteToCRAM	;IDA: sub_79BE2. 93 name. Copy all 64 palfadenew colours to co
 	movem.l	(sp)+,d0/a0-a1
 	rts
 
-xyVmMap	;IDA: sub_79C18. Set the vdp write address to printx, printy in the map at VmMap1 + printm
+xyVmMap	;Set the vdp write address to printx, printy in the map at VmMap1 + printm
 	movem.l	d0-d2,-(sp)
 	move.w	(printx).w,d0
 	move.w	(printy).w,d1
@@ -299,7 +299,7 @@ xyVmMap	;IDA: sub_79C18. Set the vdp write address to printx, printy in the map 
 	movem.l	(sp)+,d0-d2
 	rts
 
-remap	;IDA: loc_79C42. Write d0 chars at a0 to vram d1, each pixel through the colour map at a1. Reached from DecompressGraphics
+remap	;Write d0 chars at a0 to vram d1, each pixel through the colour map at a1. Reached from DecompressGraphics
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
 	movem.l	d0-d4/a0-a2,-(sp)
@@ -331,7 +331,7 @@ remap	;IDA: loc_79C42. Write d0 chars at a0 to vram d1, each pixel through the c
 	move.w	(sp)+,(disflags).w
 	rts
 
-DumpSprites	;$79C94. IDA dc.b. 93 name (display94). Transfer (by dma) scroll stuff, sprite table, vram data in dmalist. IDA dc.b, no xref in the listing.
+DumpSprites	;93 name (display94). Transfer (by dma) scroll stuff, sprite table, vram data in dmalist. No xref in the listing.
 	;Falls into DumpSprites2
 	bsr.w	SetScroll2
 DumpSprites2	;93 name (display94). Transfer sprite table, then the dma list. Falls into DoDMAlist
@@ -339,7 +339,7 @@ DumpSprites2	;93 name (display94). Transfer sprite table, then the dma list. Fal
 	move.w	(Sattsize).w,d0	;93 Sattsize: words
 	move.w	(VSPRITES).w,d1
 	bsr.w	DoDMA
-DoDMAlist	;IDA: sub_79CA8 (display94). Transfer data from dmalist. Also called from video95_03
+DoDMAlist	;(display94). Transfer data from dmalist. Also called from video95_03
 	movea.l	(DMAlistend).w,a6
 	cmpa.l	#DMAList,a6
 	beq.w	rtss2	;list empty
@@ -350,11 +350,11 @@ DoDMAlist	;IDA: sub_79CA8 (display94). Transfer data from dmalist. Also called f
 	bsr.w	DoDMA
 	cmpa.l	#DMAList,a6
 	bne.s	.0
-rtss2	;IDA: locret_79CC8. Shared rts (93 rtss; 94 kept it in collide94), branched to from cramfade, collide95_01, display95_02, setup95_02,
+rtss2	;Shared rts (93 rtss; 94 kept it in collide94), branched to from cramfade, collide95_01, display95_02, setup95_02,
 	;video95_03, and movea.l #x in data95_01
 	rts
 
-SetScroll2	;IDA: sub_79CCA. 93 name (display94); 93 IDA DoScroller. Write Hscroll / Vscroll to the vdp. Called from DumpSprites, checks95
+SetScroll2	;93 name (display94); 93 IDA DoScroller. Write Hscroll / Vscroll to the vdp. Called from DumpSprites, checks95
 	move.w	(VSCRLPM).w,d0
 	addq.w	#2,d0
 	bsr.w	Vmaddr
@@ -367,7 +367,7 @@ SetScroll2	;IDA: sub_79CCA. 93 name (display94); 93 IDA DoScroller. Write Hscrol
 ; d0 = words to transfer
 ; d1 = destination vram address
 ; a0 = source address
-DoDMA	;IDA: sub_79CE6. 95 drops the 94 Z80 bus request, the sr save and the last word fix for a source in RAM
+DoDMA	;95 drops the 94 Z80 bus request, the sr save and the last word fix for a source in RAM
 	movem.l	d2/a1,-(sp)
 	move.w	d0,d2
 	add.w	d2,d2
@@ -384,7 +384,7 @@ DoDMA	;IDA: sub_79CE6. 95 drops the 94 Z80 bus request, the sr save and the last
 	adda.w	d0,a0
 	move.w	d2,d0
 	bra.w	.nd
-.dd	;IDA: sub_79D10 (only DoDMA calls it)
+.dd	;(only DoDMA calls it)
 	movem.l	d2/a1,-(sp)
 .nd
 	lea	(VDP_CTRL).l,a1

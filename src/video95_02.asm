@@ -4,13 +4,13 @@
 ;	AddFramer, the 95 AddFramer2; moved in: hockey94 VBjsr, display94 VBlank, sound94 p_music_vblank (95: pads, then SoundCmd 1),
 ;	display94 vb2 and IRQ7, attract94 VBlank_SetOptions; then orjoy, the 95 orjoy4way, nodiag, ReadJoy1-4, ReadJoy, jdtab, sound94
 ;	ReadJoyData ... ResetZ80Bus (95 pauses the sound driver around the pad reads), then the 95 ReadMenuJoy. collide95_01 follows at $7A762.
-;	IDA dc.b written as instructions: forceblack2 ... AddSmallFont ($7A054-$7A263), AddFramer ($7A2EC), VBlank, vb2, VBlank_SetOptions,
+;	written as instructions: forceblack2 ... AddSmallFont ($7A054-$7A263), AddFramer ($7A2EC), VBlank, vb2, VBlank_SetOptions,
 ;	ReadJoyData ... ResetZ80Bus ($7A55A-$7A6A9).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
 ; fade all colors to black but don't upset palfadenew
-forceblack	;IDA: sub_7A02A. Called from most screens
+forceblack	;Called from most screens
 	movem.l	d0/a0,-(sp)
 	movea.w	#(palfadenew-M68K_RAM),a0
 	moveq	#$1F,d0
@@ -27,7 +27,7 @@ forceblack	;IDA: sub_7A02A. Called from most screens
 	movem.l	(sp)+,d0/a0
 	rts
 
-forceblack2	;$7A054. IDA dc.b, no xref. forceblack with palcount $64 (one step, CopyPaletteToCRAM)
+forceblack2	;No xref. forceblack with palcount $64 (one step, CopyPaletteToCRAM)
 	movem.l	d0/a0,-(sp)
 	movea.w	#(palfadenew-M68K_RAM),a0
 	moveq	#$1F,d0
@@ -44,7 +44,7 @@ forceblack2	;$7A054. IDA dc.b, no xref. forceblack with palcount $64 (one step, 
 	movem.l	(sp)+,d0/a0
 	rts
 
-DecompressBytecode	;$7A07E. IDA dc.b, no caller in 95 (DecompressGraphics skips packed blocks). 93 name. Unpack a0 into the 256 byte ring buffer
+DecompressBytecode	;No caller in 95 (DecompressGraphics skips packed blocks). 93 name. Unpack a0 into the 256 byte ring buffer
 	;at ThreeStars (93 DispAttribCtr)
 	movea.w	#(ThreeStars-M68K_RAM),a1
 	movea.w	#(ThreeStars-M68K_RAM),a3
@@ -240,20 +240,20 @@ FlushOutputBuffer	;93 name. Write the full ring buffer to vram
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
 
-AddSmallFont	;$7A256. IDA dc.b. 93 name. Jumped to from ReAddSmallFont (video95_03). 95 loads the map at the address in smallfontptr (94: SmallFontMap)
+AddSmallFont	;93 name. Jumped to from ReAddSmallFont (video95_03). 95 loads the map at the address in smallfontptr (94: SmallFontMap)
 	move.w	d4,(smallfontchars).w
 	movea.l	(smallfontptr).w,a2
 	addq.w	#8,a2
 	bra.w	DoDMA_clearCallbackPointer
 
-DecompressGraphicsWithCallback	;IDA: sub_7A264. 93 name. DecompressGraphics, then return 8 bytes past the call (callback data)
+DecompressGraphicsWithCallback	;93 name. DecompressGraphics, then return 8 bytes past the call (callback data)
 	move.l	(sp),(callbackPtr).w
 	bsr.w	DecompressGraphics
 	addq.l	#8,(sp)
 	rts
 
 ; use print x/y/m to set vram address
-Framer	;IDA: sub_7A270. Draw a d0 x d1 frame at printx / printy from the framer map. 95 takes the map from framermapptr (94: framermap)
+Framer	;Draw a d0 x d1 frame at printx / printy from the framer map. 95 takes the map from framermapptr (94: framermap)
 	movem.l	d0-d4/a0-a1,-(sp)
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -277,7 +277,7 @@ Framer	;IDA: sub_7A270. Draw a d0 x d1 frame at printx / printy from the framer 
 	move.w	(sp)+,(disflags).w
 	movem.l	(sp)+,d0-d4/a0-a1
 	rts
-.tbline	;IDA: sub_7A2BC
+.tbline
 	bsr.w	xyVmMap
 	addq.w	#1,(printy).w
 	bsr.w	.setter
@@ -291,13 +291,13 @@ Framer	;IDA: sub_7A270. Draw a d0 x d1 frame at printx / printy from the framer 
 	bsr.w	.setter
 	addq.w	#2,d4
 	rts
-.setter	;IDA: sub_7A2E2
+.setter
 	move.w	(a1,d4.w),d3
 	add.w	d2,d3
 	move.w	d3,(a0)
 	rts
 
-AddFramer	;$7A2EC. IDA dc.b. 93 name. Jumped to from ReAddFramer (video95_03). Load the framer tiles at char d4 through DecompressGraphicsWithCallback with the remap table
+AddFramer	;93 name. Jumped to from ReAddFramer (video95_03). Load the framer tiles at char d4 through DecompressGraphicsWithCallback with the remap table
 	;after the jsr (colour 7 to 1); 95 also stores the map address in framermapptr
 	movea.l	#Framermap+8,a2
 	move.w	d4,(framercset).w
@@ -306,18 +306,18 @@ AddFramer	;$7A2EC. IDA dc.b. 93 name. Jumped to from ReAddFramer (video95_03). L
 	dc.b	$01,$23,$45,$61,$89,$AB,$CD,$EF	;remap table: colour n to n, except 7 to 1
 	rts
 
-AddFramer2	;IDA: sub_7A310. 95 only. AddFramer for the second framer map, no remap
+AddFramer2	;95 only. AddFramer for the second framer map, no remap
 	movea.l	#Framermap2+8,a2
 	move.l	#Framermap2,(framermapptr).l
 	move.w	d4,(framercset).w
 	jsr	(DoDMA_clearCallbackPointer).l
 	rts
 
-VBjsr	;IDA: VBLANK (hockey94). Vertical blank interrupt (vector $78), jumps through the vbint RAM vector
+VBjsr	;(hockey94) Vertical blank interrupt (vector $78), jumps through the vbint RAM vector
 	move.l	(vbint).w,-(sp)	;push handler address
 	rts	;and "return" into it
 
-VBlank	;$7A332. IDA dc.b (display94). 93 name; 93 IDA VBlank_org. Main vblank code for game play (vbint target). DumpSprites when dfok is set,
+VBlank	;(display94). 93 name; 93 IDA VBlank_org. Main vblank code for game play (vbint target). DumpSprites when dfok is set,
 	;cramfade, then the game clock. gmode2 bit 2 keeps the clock running after the whistle, and with gmode2 bit 1 (penalty shot /
 	;shootout) shootoutclock counts down instead (shootoutjiffy jiffies, not while gmode2 bit 7 is set)
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -366,14 +366,14 @@ VBlank	;$7A332. IDA dc.b (display94). 93 name; 93 IDA VBlank_org. Main vblank co
 	subq.w	#1,(shootoutclock).w
 	bra.s	.c
 
-p_music_vblank	;$7A3E6. 92 name (sound94). Read the pads (ReadJoyData), then SoundCmd 1: the 95 sound driver's vblank update. Called from the
+p_music_vblank	;92 name (sound94). Read the pads (ReadJoyData), then SoundCmd 1: the 95 sound driver's vblank update. Called from the
 	;vblank handlers
 	bsr.w	ReadJoyData
 	move.w	#1,d0
 	jsr	(SoundCmd).l
 	rts
 
-vb2	;$7A3F6. IDA dc.b (display94). 93 name. Vblank used for palfades only, no dmas (vbint target). No rte here: falls into IRQ7
+vb2	;(display94). 93 name. Vblank used for palfades only, no dmas (vbint target). No rte here: falls into IRQ7
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w
 	bne.w	.nograph
@@ -385,7 +385,7 @@ vb2	;$7A3F6. IDA dc.b (display94). 93 name. Vblank used for palfades only, no dm
 IRQ7	;rte only. vb2 falls in; the vector table ($60, $64, ...) points here
 	rte
 
-VBlank_SetOptions	;$7A418. IDA dc.b (attract94; 93 hockey93_08 name). vbint handler stored by the menus: 92 vb2 (cramfade unless dfng), plus
+VBlank_SetOptions	;(attract94; 93 hockey93_08 name). vbint handler stored by the menus: 92 vb2 (cramfade unless dfng), plus
 	;DumpSprites2 when dfok is set
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w
@@ -402,14 +402,14 @@ VBlank_SetOptions	;$7A418. IDA dc.b (attract94; 93 hockey93_08 name). vbint hand
 	rte
 
 ; return d1 = new button presses
-orjoy	;IDA: sub_7A448. Pads 1 and 2 (95: no four way case here, see orjoy4way)
+orjoy	;Pads 1 and 2 (95: no four way case here, see orjoy4way)
 	bsr.w	ReadJoy1
 	move.w	d1,-(sp)
 	bsr.w	ReadJoy2
 	or.w	(sp)+,d1
 	rts
 
-orjoy4way	;IDA: loc_7A456. 95 only. orjoy for pads 1-4 (3 and 4 with FourWayPlay), d1 new presses and d3 held buttons of all pads.
+orjoy4way	;95 only. orjoy for pads 1-4 (3 and 4 with FourWayPlay), d1 new presses and d3 held buttons of all pads.
 	;Jumped to from ReadMenuJoy
 	bsr.w	ReadJoy1
 	move.w	d1,-(sp)
@@ -433,7 +433,7 @@ orjoy4way	;IDA: loc_7A456. 95 only. orjoy for pads 1-4 (3 and 4 with FourWayPlay
 	rts
 
 ; eliminate diagonal direction presses on d0
-nodiag	;IDA: sub_7A488
+nodiag
 	movem.l	d0/d4-d5,-(sp)
 	moveq	#3,d4
 	move.w	d3,d0
@@ -455,7 +455,7 @@ nodiag	;IDA: sub_7A488
 ; d1 = new presses (all 8 bits)
 ; d2 = changed buttons (all 8)
 ; d3 = current held buttons (all 8)
-ReadJoy1	;IDA: sub_7A4B0
+ReadJoy1
 	move.b	(pad4way1).w,d0
 	bsr.w	ReadJoy
 	move.w	(lj1).w,d2
@@ -465,7 +465,7 @@ ReadJoy1	;IDA: sub_7A4B0
 	and.w	d2,d1
 	rts
 ; Read controller 2
-ReadJoy2	;IDA: sub_7A4C8
+ReadJoy2
 	move.b	(pad4way2).w,d0
 	bsr.w	ReadJoy
 	move.w	(lj2).w,d2
@@ -474,7 +474,7 @@ ReadJoy2	;IDA: sub_7A4C8
 	eor.w	d1,d2
 	and.w	d2,d1
 	rts
-ReadJoy3	;IDA: sub_7A4E0. 95: nothing pressed (NoJoy) without FourWayPlay
+ReadJoy3	;95: nothing pressed (NoJoy) without FourWayPlay
 	tst.w	(FourWayPlay).w
 	beq.w	NoJoy
 	move.b	(pad4way3).w,d0
@@ -485,13 +485,13 @@ ReadJoy3	;IDA: sub_7A4E0. 95: nothing pressed (NoJoy) without FourWayPlay
 	eor.w	d1,d2
 	and.w	d2,d1
 	rts
-NoJoy	;IDA: loc_7A500. 95 only. No buttons, direction 8 (none)
+NoJoy	;95 only. No buttons, direction 8 (none)
 	clr.w	d1
 	clr.w	d2
 	clr.w	d3
 	move.w	#8,d0
 	rts
-ReadJoy4	;IDA: sub_7A50C. 95: NoJoy without FourWayPlay
+ReadJoy4	;95: NoJoy without FourWayPlay
 	tst.w	(FourWayPlay).w
 	beq.s	NoJoy
 	move.b	(pad4way4).w,d0
@@ -502,7 +502,7 @@ ReadJoy4	;IDA: sub_7A50C. 95: NoJoy without FourWayPlay
 	eor.w	d1,d2
 	and.w	d2,d1
 	rts
-ReadJoy	;IDA: sub_7A52A. d0 = pad byte: buttons to the high nibble, direction 0-8 (jdtab) in the low nibble, d1 = the buttons
+ReadJoy	;d0 = pad byte: buttons to the high nibble, direction 0-8 (jdtab) in the low nibble, d1 = the buttons
 	not.b	d0
 	clr.w	d1
 	move.b	d0,d1
@@ -518,7 +518,7 @@ jdtab	dc.b	8
 	;convert button l,r,d,u into directions 0-7,8
 	dc.b	0,4,8,6,7,5,8,2,1,3,8,8,8,8,8
 
-ReadJoyData	;$7A55A. IDA dc.b (sound94). Read the pads every vblank (p_music_vblank). With FourWayPlay, pads 1-4 through the 4 way adaptor
+ReadJoyData	;(sound94). Read the pads every vblank (p_music_vblank). With FourWayPlay, pads 1-4 through the 4 way adaptor
 	;(ReadPad4Way1 ... ReadPad4Way4) to pad4way1-pad4way4, else pads 1 and 2 (ReadPad1, ReadPad2)
 	movem.l	d1/a0,-(sp)
 	tst.w	(FourWayPlay).w
@@ -621,7 +621,7 @@ ResetZ80Bus	;Reset the Z80 and wait for its bus. No caller in 95
 	bne.s	.loop
 	rts
 
-ReadMenuJoy	;IDA: sub_7A6AA. 95 only. Read the menu pad: with sflags12 bit 0 clear, pad menupadnum (ReadJoy1-4). Else, with no pad on a team,
+ReadMenuJoy	;95 only. Read the menu pad: with sflags12 bit 0 clear, pad menupadnum (ReadJoy1-4). Else, with no pad on a team,
 	;all pads (orjoy4way); otherwise the first pad on a team that has buttons down becomes menupadnum
 	btst	#0,(sflags12).w
 	bne.w	.any

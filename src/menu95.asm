@@ -4,12 +4,12 @@
 ;	PauseScreenDraw and its penalty boxes, RestoreGameScreen (after the pause), menu94 SetMenuPrintX / UpdateMenuSelection / PrintMenuItem,
 ;	the 95 info page, penalty messages and tabs, then the item lists (InfoMenus, StatsMenus, PauseMenus) and their AbortGame / PlayGame.
 ;	checks95_01 (94 ManualGoalieMenu) follows at $7F97E.
-;	IDA dc.b written as instructions: PauseScreenDraw ($7E816-$7EAC7), ListPenaltyBox, MenuInfoList ... PrintLines, a second rts ($7F366),
+;	written as instructions: PauseScreenDraw ($7E816-$7EAC7), ListPenaltyBox, MenuInfoList ... PrintLines, a second rts ($7F366),
 ;	the item lists and AbortGame / PlayGame ($7F368-$7F97D). IDA hid the printz / printz2 Strings as instructions; they are String here (the
 ;	40 byte menu box String as dc.w / dc.b, the String macro takes 15 values).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
-seta2	;IDA: sub_7E4D6 (hockey94). Set a2 to the team struct of the pause pad (menupadnum: cont1team ... cont4team). Called from Pausemode and
+seta2	;(hockey94). Set a2 to the team struct of the pause pad (menupadnum: cont1team ... cont4team). Called from Pausemode and
 	;HandleMenuInput
 	movea.l	#HmShots,a2
 	tst.w	(menupadnum).w
@@ -34,14 +34,14 @@ seta2	;IDA: sub_7E4D6 (hockey94). Set a2 to the team struct of the pause pad (me
 .4
 	rts
 
-InitMenuState	;IDA: sub_7E526. 93 name. Start a menu: a0 = item list, a1 = screen draw routine; selection and first shown item 0. Falls into
+InitMenuState	;93 name. Start a menu: a0 = item list, a1 = screen draw routine; selection and first shown item 0. Falls into
 	;DrawMenuScreen. Called from Pausemode
 	move.l	a0,(menulist).w
 	move.l	a1,(menudraw).w
 	clr.w	(menuitem).w
 	clr.w	(menuitem+2).w
 
-DrawMenuScreen	;IDA: loc_7E536. 93 name. Call the draw routine, clear the menu box, print the items (UpdateMenuSelection) and fade in
+DrawMenuScreen	;93 name. Call the draw routine, clear the menu box, print the items (UpdateMenuSelection) and fade in
 	movea.l	(menudraw).w,a0
 	jsr	(a0)
 	bsr.w	ClearMenuBox
@@ -53,7 +53,7 @@ RedrawMenu	;95 only, no IDA label. Print the menu items and fade in. Called from
 	move.w	#$18,(palcount).w
 	rts
 
-HandleMenuInput	;IDA: sub_7E560. 93 name. Pause menu pad d1: right / left move between the three tabs (menucursor: INFO, STATS, PAUSE; SetInfoMenuItems ...),
+HandleMenuInput	;93 name. Pause menu pad d1: right / left move between the three tabs (menucursor: INFO, STATS, PAUSE; SetInfoMenuItems ...),
 	;down / up the item, C (bit 5) runs the item routine (seta2 first); ne = stay in the menu (PlayGame sets sflags9 bit 3 to leave). With
 	;sflags9 bit 5 only ShowPenaltyMessages runs
 	btst	#7,d1
@@ -157,7 +157,7 @@ HandleMenuInput	;IDA: sub_7E560. 93 name. Pause menu pad d1: right / left move b
 .15
 	rts
 
-SetPauseMenuItems	;IDA: sub_7E6CA. 95 only. menulist = PauseMenus, menuitemoffset by mode: tmflags bit 2 (no timeout left) $23A, shootout $2CE,
+SetPauseMenuItems	;95 only. menulist = PauseMenus, menuitemoffset by mode: tmflags bit 2 (no timeout left) $23A, shootout $2CE,
 	;Practice Mode $13E ($1D2 when paused), game over with GameFlags bit 3 $AA
 	clr.l	(menuitemoffset).w
 	move.l	#PauseMenus,(menulist).l
@@ -184,7 +184,7 @@ SetPauseMenuItems	;IDA: sub_7E6CA. 95 only. menulist = PauseMenus, menuitemoffse
 .3
 	rts
 
-SetStatsMenuItems	;IDA: sub_7E748. 95 only. menulist = StatsMenus, menuitemoffset by mode: GameFlags bit 3 $F0, sflags10 bit 0 $74, shootout or Practice
+SetStatsMenuItems	;95 only. menulist = StatsMenus, menuitemoffset by mode: GameFlags bit 3 $F0, sflags10 bit 0 $74, shootout or Practice
 	;Mode $66
 	clr.l	(menuitemoffset).w
 	btst	#3,(GameFlags).w
@@ -209,7 +209,7 @@ SetStatsMenuItems	;IDA: sub_7E748. 95 only. menulist = StatsMenus, menuitemoffse
 	move.l	#StatsMenus,(menulist).l
 	rts
 
-SetInfoMenuItems	;IDA: sub_7E7B4. 95 only. menulist = InfoMenus, menuitemoffset $7E in a shootout, $D0 in Practice Mode
+SetInfoMenuItems	;95 only. menulist = InfoMenus, menuitemoffset $7E in a shootout, $D0 in Practice Mode
 	clr.l	(menuitemoffset).w
 	move.l	#InfoMenus,(menulist).l
 	btst	#0,(gmode2).w
@@ -223,27 +223,27 @@ SetInfoMenuItems	;IDA: sub_7E7B4. 95 only. menulist = InfoMenus, menuitemoffset 
 .1
 	rts
 
-startpause	;IDA: loc_7E7F0 (hockey94). Pause on (sfpz)
+startpause	;(hockey94). Pause on (sfpz)
 	bset	#0,(sflags).w
 	rts
 
-startpause1	;IDA: loc_7E7F8 (hockey94). pause initiated by cont 1 (95: menupadnum = 0 for ReadMenuJoy)
+startpause1	;(hockey94). pause initiated by cont 1 (95: menupadnum = 0 for ReadMenuJoy)
 	clr.w	(menupadnum).w
 	bra.s	startpause
 
-startpause2	;IDA: loc_7E7FE. pause initiated by cont 2
+startpause2	;pause initiated by cont 2
 	move.w	#1,(menupadnum).w
 	bra.s	startpause
 
-startpause3	;IDA: loc_7E806 (hockey94). pause initiated by cont 3 (4 way play)
+startpause3	;(hockey94). pause initiated by cont 3 (4 way play)
 	move.w	#2,(menupadnum).w
 	bra.s	startpause
 
-startpause4	;IDA: loc_7E80E. pause initiated by cont 4 (4 way play)
+startpause4	;pause initiated by cont 4 (4 way play)
 	move.w	#3,(menupadnum).w
 	bra.s	startpause
 
-PauseScreenDraw	;$7E816. IDA dc.b. 95 only. Draw the pause screen (SetupPauseScreen): wait out the dma, plane B off, window 3 rows, clear the rink map,
+PauseScreenDraw	;95 only. Draw the pause screen (SetupPauseScreen): wait out the dma, plane B off, window 3 rows, clear the rink map,
 	;the pause background (PauseBgBitmap at 0, 0 / 0, 3 / 0, $19), the period number (not in a shootout or overtime), load the pause fonts,
 	;clock digits and tab tiles, the team blocks of both teams, the three tabs (the one of menulist selected), showclock, the penalty boxes
 	;(ShowPenaltyBoxes) and fade in
@@ -405,7 +405,7 @@ PauseScreenDraw	;$7E816. IDA dc.b. 95 only. Draw the pause screen (SetupPauseScr
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ShowPenaltyBoxes	;IDA: sub_7EAC8. 95 only. The pause screen penalty boxes: home at $1F, $E, away at 2, $E (ShowPenaltyBox)
+ShowPenaltyBoxes	;95 only. The pause screen penalty boxes: home at $1F, $E, away at 2, $E (ShowPenaltyBox)
 	movem.l	d0-d7/a0-a3,-(sp)
 	jsr	(printz).l
 	String	$BE,$1F,$E,0
@@ -418,7 +418,7 @@ ShowPenaltyBoxes	;IDA: sub_7EAC8. 95 only. The pause screen penalty boxes: home 
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-ShowPenaltyBox	;IDA: sub_7EAFE. 95 only. The players in the penalty box list of team a2 ($9C, -1 ends; with sflags9 bit 5 less the impact count),
+ShowPenaltyBox	;95 only. The players in the penalty box list of team a2 ($9C, -1 ends; with sflags9 bit 5 less the impact count),
 	;ShowPenaltyBoxPlayer each
 	lea	$9C(a2),a0
 	clr.w	d7
@@ -442,7 +442,7 @@ ShowPenaltyBox	;IDA: sub_7EAFE. 95 only. The players in the penalty box list of 
 	bsr.w	ShowPenaltyBoxPlayer
 	bra.s	.3
 
-ListPenaltyBox	;$7EB34. IDA dc.b, no xref. 95 only. ShowPenaltyBox without the count: every player in the box list of team a2
+ListPenaltyBox	;No xref. 95 only. ShowPenaltyBox without the count: every player in the box list of team a2
 	lea	$9C(a2),a0
 .0
 	clr.w	d0
@@ -455,7 +455,7 @@ ListPenaltyBox	;$7EB34. IDA dc.b, no xref. 95 only. ShowPenaltyBox without the c
 	bmi.w	rtsmenu
 	bra.s	.0
 
-ShowPenaltyBoxPlayer	;IDA: sub_7EB50. 95 only. Print player d0 / 2 + 1 of team a2: jersey number and penalty time left (tmpdst), one line down, up to
+ShowPenaltyBoxPlayer	;95 only. Print player d0 / 2 + 1 of team a2: jersey number and penalty time left (tmpdst), one line down, up to
 	;printy $13
 	move.w	d7,-(sp)
 	cmpi.w	#$13,(printy).w
@@ -487,10 +487,10 @@ ShowPenaltyBoxPlayer	;IDA: sub_7EB50. 95 only. Print player d0 / 2 + 1 of team a
 .0
 	move.w	(sp)+,d7
 
-rtsmenu	;IDA: locret_7EBBC. An rts branched to from ShowPenaltyBox and ListPenaltyBox
+rtsmenu	;An rts branched to from ShowPenaltyBox and ListPenaltyBox
 	rts
 
-RestoreGameScreen	;IDA: sub_7EBBE. 95 only (in the 94 Pausemode ClrHor place). Rebuild the game screen after the pause screen: the vdp maps, palettes,
+RestoreGameScreen	;95 only (in the 94 Pausemode ClrHor place). Rebuild the game screen after the pause screen: the vdp maps, palettes,
 	;vram, framer, fonts, energy bar, crowd and EASN tiles, the face off screen (disflags bit 4) or the ref tiles, the rink tiles and home team
 	;graphics, then PrintScores1. Called from Pausemode (hockey95_02)
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -582,7 +582,7 @@ RestoreGameScreen	;IDA: sub_7EBBE. 95 only (in the 94 Pausemode ClrHor place). R
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ClearOldFrames	;IDA: sub_7ED5A. 95 only. oldframe = -1 for the 16 sort objects, the 4 sso and the 6 pads, so addframe2 sends their tiles again
+ClearOldFrames	;95 only. oldframe = -1 for the 16 sort objects, the 4 sso and the 6 pads, so addframe2 sends their tiles again
 	movem.l	d0-d1/a0-a3,-(sp)
 	movea.l	#SortCords,a0
 	move.w	#$80,d0
@@ -608,11 +608,11 @@ ClearOldFrames	;IDA: sub_7ED5A. 95 only. oldframe = -1 for the 16 sort objects, 
 	movem.l	(sp)+,d0-d1/a0-a3
 	rts
 
-SetMenuPrintX	;IDA: sub_7EDAC. 93 name. printx = $A (95; 94 4)
+SetMenuPrintX	;93 name. printx = $A (95; 94 4)
 	move.w	#$A,(printx).w
 	rts
 
-UpdateMenuSelection	;IDA: sub_7EDB4. 93 name. Clamp menuitem to the list, scroll menuitem+2 to show it, and print 4 items from printy $C (the
+UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to show it, and print 4 items from printy $C (the
 	;selected one in the highlight attribute) with the up / down arrows; no menu (menulist $69A): DrawMenuInfo
 	btst	#5,(sflags9).w
 	bne.w	.11
@@ -715,7 +715,7 @@ UpdateMenuSelection	;IDA: sub_7EDB4. 93 name. Clamp menuitem to the list, scroll
 .11
 	rts
 
-PrintMenuItem	;IDA: sub_7EF38. 93 name. printsmall item String a1 (advanced past it). y: START GAME, RESUME GAME or EXIT GAME by gsp and sfpz;
+PrintMenuItem	;93 name. printsmall item String a1 (advanced past it). y: START GAME, RESUME GAME or EXIT GAME by gsp and sfpz;
 	;x: MANUAL GOALIE or AUTO GOALIE by the pad team's goaliemode1 / goaliemode2
 	cmpi.b	#$79,2(a1)
 	beq.w	.0
@@ -768,7 +768,7 @@ PrintMenuItem	;IDA: sub_7EF38. 93 name. printsmall item String a1 (advanced past
 .12
 	String	'  AUTO GOALIE   '
 
-ClearMenuBox	;IDA: sub_7F020. 95 only. eraser $12 x $C at $B, $B
+ClearMenuBox	;95 only. eraser $12 x $C at $B, $B
 	jsr	(printz2).l
 	String	$FE,4,$FD,$B,$FC,$B
 	moveq	#$12,d0
@@ -776,7 +776,7 @@ ClearMenuBox	;IDA: sub_7F020. 95 only. eraser $12 x $C at $B, $B
 	move.w	#$7FF,d2
 	jmp	(eraser).l
 
-DrawMenuInfo	;IDA: loc_7F03C. 95 only. With no menu list: clear the box and run draw routine menuitem of MenuInfoList (wrapping at 0)
+DrawMenuInfo	;95 only. With no menu list: clear the box and run draw routine menuitem of MenuInfoList (wrapping at 0)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(ClearMenuBox).l
 	btst	#5,(sflags9).w
@@ -801,9 +801,9 @@ DrawMenuInfo	;IDA: loc_7F03C. 95 only. With no menu list: clear the box and run 
 	andi	#$FB,ccr
 	rts
 
-MenuInfoList	;IDA: unk_7F086 (dc.b). 95 only. The info page draw routines for DrawMenuInfo (0 ends)
+MenuInfoList	;(dc.b). 95 only. The info page draw routines for DrawMenuInfo (0 ends)
 	dc.l	PauseInfo,0
-PauseInfo	;$7F08E. IDA dc.b. 95 only. The info page: a bitmap at $11, $B (a0 is whatever printz left: the vdp data port) and
+PauseInfo	;95 only. The info page: a bitmap at $11, $B (a0 is whatever printz left: the vdp data port) and
 	;PauseInfoText (PrintLines)
 	jsr	(printz).l
 	String	$BE,$11,$B,0
@@ -821,12 +821,12 @@ PauseInfo	;$7F08E. IDA dc.b. 95 only. The info page: a bitmap at $11, $B (a0 is 
 	movea.l	#PauseInfoText,a1
 	jsr	(PrintLines).l
 	rts
-PauseInfoText	;$7F0C8. The info page text (a placeholder in retail)
+PauseInfoText	;The info page text (a placeholder in retail)
 	String	$BE,$B,$12,'Lots of good text:'
 	String	$BE,$B,$14,'stats and other'
 	String	$BE,$B,$16,'stuff.'
 	String	$FF,0
-PrintLines	;$7F104. IDA dc.b. 95 only. print the Strings at a1 up to a $FF String
+PrintLines	;95 only. print the Strings at a1 up to a $FF String
 	cmpi.b	#$FF,2(a1)
 	beq.w	.x
 	jsr	(print).l
@@ -834,7 +834,7 @@ PrintLines	;$7F104. IDA dc.b. 95 only. print the Strings at a1 up to a $FF Strin
 .x
 	rts
 
-ShowPenaltyMessages	;IDA: sub_7F118. 95 only. Every $78 frames show the next queued penalty (penaltymsgs): its name (PenaltyNames) and the player
+ShowPenaltyMessages	;95 only. Every $78 frames show the next queued penalty (penaltymsgs): its name (PenaltyNames) and the player
 	;(FormatPlayerNameWithAttrib) centred at $14, $F / $11, and take him off the penalty box count. d1 = 1 when the queue is empty
 	movem.l	d0-d6/a0-a3,-(sp)
 	subq.w	#1,(menutimer).w
@@ -919,7 +919,7 @@ ShowPenaltyMessages	;IDA: sub_7F118. 95 only. Every $78 frames show the next que
 	movem.l	(sp)+,d0-d6/a0-a3
 	rts
 
-SelectInfoTab	;IDA: sub_7F248. 95 only. Draw the INFO tab selected (x 1), the others plain
+SelectInfoTab	;95 only. Draw the INFO tab selected (x 1), the others plain
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	ClearStatsTab
 	bsr.w	ClearPauseTab
@@ -930,7 +930,7 @@ SelectInfoTab	;IDA: sub_7F248. 95 only. Draw the INFO tab selected (x 1), the ot
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ClearInfoTab	;IDA: sub_7F26E. 95 only. Draw the INFO tab plain
+ClearInfoTab	;95 only. Draw the INFO tab plain
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BE,1,1,0
@@ -939,7 +939,7 @@ ClearInfoTab	;IDA: sub_7F26E. 95 only. Draw the INFO tab plain
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SelectStatsTab	;IDA: sub_7F28C. 95 only. Draw the STATS tab selected (x $E), the others plain
+SelectStatsTab	;95 only. Draw the STATS tab selected (x $E), the others plain
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.s	ClearInfoTab
 	bsr.w	ClearPauseTab
@@ -950,7 +950,7 @@ SelectStatsTab	;IDA: sub_7F28C. 95 only. Draw the STATS tab selected (x $E), the
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ClearStatsTab	;IDA: sub_7F2B0. 95 only. Draw the STATS tab plain
+ClearStatsTab	;95 only. Draw the STATS tab plain
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BE,$E,1,0
@@ -959,7 +959,7 @@ ClearStatsTab	;IDA: sub_7F2B0. 95 only. Draw the STATS tab plain
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SelectPauseTab	;IDA: sub_7F2CE. 95 only. Draw the PAUSE tab selected (x $1B), the others plain
+SelectPauseTab	;95 only. Draw the PAUSE tab selected (x $1B), the others plain
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.s	ClearStatsTab
 	bsr.s	ClearInfoTab
@@ -970,7 +970,7 @@ SelectPauseTab	;IDA: sub_7F2CE. 95 only. Draw the PAUSE tab selected (x $1B), th
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ClearPauseTab	;IDA: sub_7F2F0. 95 only. Draw the PAUSE tab plain
+ClearPauseTab	;95 only. Draw the PAUSE tab plain
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BE,$1B,1,0
@@ -979,7 +979,7 @@ ClearPauseTab	;IDA: sub_7F2F0. 95 only. Draw the PAUSE tab plain
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawTabSelected	;IDA: sub_7F30E. 95 only. The selected tab: $D x 2 of PauseBgBitmap from row 1 at printx / printy
+DrawTabSelected	;95 only. The selected tab: $D x 2 of PauseBgBitmap from row 1 at printx / printy
 	movea.l	#PauseBgBitmap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -993,7 +993,7 @@ DrawTabSelected	;IDA: sub_7F30E. 95 only. The selected tab: $D x 2 of PauseBgBit
 	moveq	#0,d5
 	jmp	(dobitmap).l
 
-DrawTab	;IDA: sub_7F33A. 95 only. The plain tab: $D x 3 of TabBitmap at printx / printy (chars tabchars)
+DrawTab	;95 only. The plain tab: $D x 3 of TabBitmap at printx / printy (chars tabchars)
 	movea.l	#TabBitmap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1008,7 +1008,7 @@ DrawTab	;IDA: sub_7F33A. 95 only. The plain tab: $D x 3 of TabBitmap at printx /
 	jmp	(dobitmap).l
 	rts	;$7F366. IDA dc.b: a second rts, no xref
 
-InfoMenus	;IDA: unk_7F368 (dc.b). The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0, $7E, $D0): a String header, then items of a
+InfoMenus	;(dc.b). The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0, $7E, $D0): a String header, then items of a
 	;String and a routine (y = the play / resume item, x = the manual goalie toggle; PrintMenuItem), ended by a $FF String
 	String	$FE,0,$F9,0
 	String	$FE,0,$F9,1
@@ -1043,7 +1043,7 @@ InfoMenus	;IDA: unk_7F368 (dc.b). The pause INFO tab lists (SetInfoMenuItems: me
 	String	' RECORD HOLDERS '
 	dc.l	RecordHoldersScreen
 	String	$FF,0
-StatsMenus	;IDA: unk_7F48A (dc.b). The pause STATS tab lists (SetStatsMenuItems: menuitemoffset 0, $66, $74, $F0)
+StatsMenus	;(dc.b). The pause STATS tab lists (SetStatsMenuItems: menuitemoffset 0, $66, $74, $F0)
 	String	$FE,0
 	String	$FE,0,$F9,1
 	String	'y  PLAY GAME    '
@@ -1089,7 +1089,7 @@ StatsMenus	;IDA: unk_7F48A (dc.b). The pause STATS tab lists (SetStatsMenuItems:
 	String	'  SEASON TEAMS  '
 	dc.l	SeasonTeamsScreen
 	String	$FF,0
-PauseMenus	;IDA: unk_7F60C (dc.b). The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0, $AA, $13E, $1D2, $23A, $2CE)
+PauseMenus	;(dc.b). The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0, $AA, $13E, $1D2, $23A, $2CE)
 	String	$FE,0
 	String	$FE,0,$F9,1
 	String	'y   PLAY GAME   '
@@ -1182,12 +1182,12 @@ PauseMenus	;IDA: unk_7F60C (dc.b). The pause PAUSE tab lists (SetPauseMenuItems:
 	dc.l	AbortGame
 	String	$FF,0
 
-AbortGame	;$7F958. IDA dc.b. 95 only. Pause menu ABORT GAME: stop the replay (recbpr), demoflag on, back to Opening2
+AbortGame	;95 only. Pause menu ABORT GAME: stop the replay (recbpr), demoflag on, back to Opening2
 	bclr	#4,(sflags).w
 	move.w	#$FFFF,(lastsfx).w
 	move.l	#$FFFF0000,(recbpr).w
 	st	(demoflag).w
 	jmp	(Opening2).l
-PlayGame	;$7F976. IDA dc.b. 95 only. Pause menu PLAY GAME: sflags9 bit 3 ends the pause menu (HandleMenuInput)
+PlayGame	;95 only. Pause menu PLAY GAME: sflags9 bit 3 ends the pause menu (HandleMenuInput)
 	bset	#3,(sflags9).w
 	rts

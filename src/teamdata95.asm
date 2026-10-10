@@ -3,7 +3,7 @@
 ;	two all star teams, in the 94 TeamList order. Not here: the dc.l 0 94 kept before TeamList (main95, $69A) and Credits /
 ;	CreditsList (credits95, $1A6C28).
 
-TeamList	;$772 (94 $30E). IDA: no label. Team number = index (ANH 0 ... WPG 25, ASE 26, ASW 27), the 94 order
+TeamList	;(94 $30E). IDA: no label. Team number = index (ANH 0 ... WPG 25, ASE 26, ASW 27), the 94 order
 	dc.l	Anaheim	;0 ANH
 	dc.l	Boston	;1 BOS
 	dc.l	Buffalo	;2 BUF
@@ -44,7 +44,7 @@ ScoreOdds	=	10
 ;------------------------
 ; Team block: 6 offset words (the equates above), .pad home and visitor palettes (16 colours each, incbin <team>h95.pal / <team>v95.pal
 ; from extractAssets95.js; every 95 palette differs from 94), .sr, .sodds, .ls 8 lines of 8 player numbers (1 = first .pld entry),
-; .pld players ended by an empty String, then 4 Strings: city, abbreviation, nickname, arena. Same layout as 94.
+; pld players ended by an empty String, then 4 Strings: city, abbreviation, nickname, arena. Same layout as 94.
 ; Blocks are in ROM order (ASE and ASW first), not TeamList order. 94 put FLA and ANH last; 95 sorts them in by name,
 ; and Dallas sits between LA and MTL where 94 had Minnesota. WPG comes before WSH.
 ;------------------------
@@ -1708,7 +1708,7 @@ Washington	;WSH, $5556 (94 $4DFC)
 .ar	;arena
 	String	'US Air Arena'
 
-playoffseats	;$5834 (94 $5576). 93 / 94 name. movea.l #$5834 in the playoff tree setup (IDA loc_879FA, sub_87A5E). 32 rows of 16 team numbers, as 94
+playoffseats	;(94 $5576). 93 / 94 name. movea.l #$5834 in the playoff tree setup (IDA loc_879FA, sub_87A5E). 32 rows of 16 team numbers, as 94
 	dc.b	19,22,10,6, 23,5,3,4, 1,14,11,12, 17,16,2,8
 	dc.b	7,25,19,6, 10,22,23,4, 18,13,9,21, 15,14,1,12
 	dc.b	3,5,0,25, 7,20,19,5, 1,13,11,15, 17,24,2,12

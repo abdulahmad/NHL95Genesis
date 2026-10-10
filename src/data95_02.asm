@@ -9,7 +9,7 @@
 ;	cmp encoding after assembly.
 
 
-checkagr	;IDA: sub_8996E (collide94) Aggression check: d0 = randomd0((($32 - Agr) / 2) * 13) (94 $28), doubled for a pad player, halved within
+checkagr	;(collide94) Aggression check: d0 = randomd0((($32 - Agr) / 2) * 13) (94 $28), doubled for a pad player, halved within
 	;$28 of the puck; a2 on a breakaway ($64 bit 1) rolls again (8 / 7 / 4 / 3 by his distance from the goal line). 95: d0 = $7F (no
 	;penalty) when sflags9 bit 2 (home checker) / bit 1 (away) is set. The callers call a penalty when d0 is small
 	move.w	#$32,d0
@@ -69,7 +69,7 @@ checkagr	;IDA: sub_8996E (collide94) Aggression check: d0 = randomd0((($32 - Agr
 .7
 	rts
 
-showref	;IDA: sub_89A2E (display94) Ref window: when sflags2 bit 1 is set add the 8 RefRamMap rows to the dma list at a5 (VmMap1)
+showref	;(display94) Ref window: when sflags2 bit 1 is set add the 8 RefRamMap rows to the dma list at a5 (VmMap1)
 	bclr	#1,(sflags2).w
 	beq.w	rtspen
 	movea.w	#(RefRamMap-M68K_RAM),a0
@@ -98,7 +98,7 @@ showref	;IDA: sub_89A2E (display94) Ref window: when sflags2 bit 1 is set add th
 	dbf	d2,.2
 	rts
 
-ClearPenaltyBuffer	;IDA: sub_89A7C (penalty94) IDA: clrPenBuf (94). Clear PenBuf
+ClearPenaltyBuffer	;(penalty94) IDA: clrPenBuf (94). Clear PenBuf
 	moveq	#$1F,d0
 	movea.w	#(PenBuf-M68K_RAM),a0
 .0
@@ -106,7 +106,7 @@ ClearPenaltyBuffer	;IDA: sub_89A7C (penalty94) IDA: clrPenBuf (94). Clear PenBuf
 	dbf	d0,.0
 	rts
 
-ClearPenalties	;IDA: sub_89A8A (title94) Clear the penalties: PBnum, Penaltytimer, Pencntdwn, PenBuf and both teams' penalty slots (clrTmPdst)
+ClearPenalties	;(title94) Clear the penalties: PBnum, Penaltytimer, Pencntdwn, PenBuf and both teams' penalty slots (clrTmPdst)
 	movem.l	d0/a0,-(sp)
 	clr.w	(PBnum).w
 	clr.w	(Penaltytimer).w
@@ -123,7 +123,7 @@ ClearPenalties	;IDA: sub_89A8A (title94) Clear the penalties: PBnum, Penaltytime
 	movem.l	(sp)+,d0/a0
 	rts
 
-clrTmPdst	;IDA: sub_89AC4 (title94) Set the 26 tmpdst words of team a0 to -2 (bench), then -1
+clrTmPdst	;(title94) Set the 26 tmpdst words of team a0 to -2 (bench), then -1
 	move.w	#$19,d0
 	adda.w	#$68,a0
 .0
@@ -132,7 +132,7 @@ clrTmPdst	;IDA: sub_89AC4 (title94) Set the 26 tmpdst words of team a0 to -2 (be
 	move.w	#$FFFF,(a0)
 	rts
 
-puckIChk	;IDA dc.b (checks94) Icing check: once the puck is loose (puckc negative) past the goal line ($10B, 94 $108) set iflags bit 0
+puckIChk	;(checks94) Icing check: once the puck is loose (puckc negative) past the goal line ($10B, 94 $108) set iflags bit 0
 	;(ifcgl), unless it went in the crease ($2C either side), which clears bit 2 (ifok)
 	btst	#2,(iflags).w
 	beq.w	.0
@@ -162,7 +162,7 @@ puckIChk	;IDA dc.b (checks94) Icing check: once the puck is loose (puckc negativ
 	bset	#0,(iflags).w
 	rts
 
-ChkOffsides	;IDA dc.b (checks94) Offsides: clear the flag of a team that is all back onside (.8, 94 ClearOffsidesIfAllPlayers), then when
+ChkOffsides	;(checks94) Offsides: clear the flag of a team that is all back onside (.8, 94 ClearOffsidesIfAllPlayers), then when
 	;puck a3 crosses a blue line ($52, 94 $54) set tmflags bit 4 of the team with a player ahead of it
 	btst	#5,(gmode).w
 	beq.w	.3
@@ -241,7 +241,7 @@ ChkOffsides	;IDA dc.b (checks94) Offsides: clear the flag of a team that is all 
 	bclr	#4,tmflags(a2)
 	rts
 
-PenaltyNames	;IDA: unk_89C2E (data94) 92 Penaltylist, 94 PenaltyList. Penalty number = word offset into this table; the same entries as 94.
+PenaltyNames	;(data94) 92 Penaltylist, 94 PenaltyList. Penalty number = word offset into this table; the same entries as 94.
 	;Used by AddPenalty, SetPA2, prefmes, PenaltyShotBox
 	dc.w	$0000
 	dc.w	.eop-PenaltyNames;$2 period over
@@ -362,7 +362,7 @@ PenaltyNames	;IDA: unk_89C2E (data94) 92 Penaltylist, 94 PenaltyList. Penalty nu
 	String	'Fight Instigator'
 	dc.w	$0004,$0D01,$0E01,$0D01,$0E01,$0D01,$0E01,$0D01,$0E01,-$0101
 
-checkob	;IDA: sub_89F5C (checks94) Offside watch (gmode bit 5): with a player of the attacking side past the blue line ($5A) ahead of the puck
+checkob	;(checks94) Offside watch (gmode bit 5): with a player of the attacking side past the blue line ($5A) ahead of the puck
 	;the ref raises his arm (PushRef 6, sflags2 bit 7), back to $40 when they are onside
 	btst	#5,(gmode).w
 	beq.w	rtspen
@@ -418,11 +418,11 @@ checkob	;IDA: sub_89F5C (checks94) Offside watch (gmode bit 5): with a player of
 	dbf	d0,.8
 	bra.s	.3
 
-PenShotPenalties	;IDA: unk_89FFC (data94) The penalty shot penalty number for penalty number d0 (word offset), -1 none. Used by PenShotChk
+PenShotPenalties	;(data94) The penalty shot penalty number for penalty number d0 (word offset), -1 none. Used by PenShotChk
 	dc.w	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,$38,$3C
 	dc.w	$36,$3A,$2E,$30,$34,-1,-1,-1,-1,-1,-1,-1
 
-linelist	;IDA: unk_8A02C (data94) IDA: FaceOffsprites (94). Text list for the line choices. Used by SetLCmode2 and DrawFaceoffWindow
+linelist	;(data94) IDA: FaceOffsprites (94). Text list for the line choices. Used by SetLCmode2 and DrawFaceoffWindow
 	String	'Sc1'
 	String	'Sc2'
 	String	'Chk'

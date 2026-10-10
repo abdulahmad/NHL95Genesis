@@ -4,7 +4,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-Pausemode	;IDA: sub_7E36C (hockey94 PauseMode). Game is in pause mode now: fade out, stop the sound (unless sflags9 bit 5), run the pause menu
+Pausemode	;(hockey94 PauseMode). Game is in pause mode now: fade out, stop the sound (unless sflags9 bit 5), run the pause menu
 	;(SetPauseMenuItems, InitMenuState, HandleMenuInput) until it ends or, with no pad on a team, $708 frames pass without a button; then reload
 	;the sound driver (SoundCmd 9, 0 Z80Program, 6 SoundBanks, 7) and restore the screen (RestoreGameScreen, setvideo) and fade in. Called from DoGameFrame
 	move.w	(smallfontchars).w,-(sp)
@@ -89,7 +89,7 @@ Pausemode	;IDA: sub_7E36C (hockey94 PauseMode). Game is in pause mode now: fade 
 	move.w	(sp)+,(smallfontchars).w
 	rts
 
-SetupPauseScreen	;IDA: unk_7E4C8 (dc.b). Draw routine for the pause menu (92 Pausemode .pall / .top): PauseScreenDraw, then KillCrowd
+SetupPauseScreen	;(dc.b). Draw routine for the pause menu (92 Pausemode .pall / .top): PauseScreenDraw, then KillCrowd
 	jsr	(PauseScreenDraw).l
 	jsr	(KillCrowd).l
 	rts

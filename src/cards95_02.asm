@@ -9,7 +9,7 @@
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-UpdateRecords	;IDA: sub_9C01A. cards94 UpdateRecords. With save RAM (ValidSRAM) and user records on (OptUserRec 0), update the player records
+UpdateRecords	;cards94 UpdateRecords. With save RAM (ValidSRAM) and user records on (OptUserRec 0), update the player records
 	;(UpdatePlayerRecords), with sflags11 bit 7 the crowd records of both teams (UpdateCrowdRecord), then the team record of each pad
 	;(UpdateUserRecord), then the save RAM checksum
 	tst.w	(ValidSRAM).w
@@ -88,7 +88,7 @@ UpdateRecords	;IDA: sub_9C01A. cards94 UpdateRecords. With save RAM (ValidSRAM) 
 	movem.l	(sp)+,d0-d7/a0-a6
 .x
 	rts
-UpdateTeamRecord	;IDA: loc_9C14C. cards94 UpdateTeamRecord. Add the game of team a1 (against a2) to team record block d1 (games, wins, ties);
+UpdateTeamRecord	;cards94 UpdateTeamRecord. Add the game of team a1 (against a2) to team record block d1 (games, wins, ties);
 	;with sflags11 bit 7 keep the biggest win and loss margins with users d3 / d4 and team d2 (WriteTeamRecord)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	ReadTeamRecord
@@ -158,7 +158,7 @@ UpdateTeamRecord	;IDA: loc_9C14C. cards94 UpdateTeamRecord. Add the game of team
 	bsr.w	WriteTeamRecord
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-UpdateCrowdRecord	;IDA: sub_9C226. cards94 UpdateCrowdRecord. Crowd record block d1 of team a1: the most goals, the biggest period lead and (home
+UpdateCrowdRecord	;cards94 UpdateCrowdRecord. Crowd record block d1 of team a1: the most goals, the biggest period lead and (home
 	;team) the crowd peak (CrowdPeak), with users d4 / d5 and opponent d2 (clrCrowdRAM, WriteCrowdRecord)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	clrCrowdRAM
@@ -212,7 +212,7 @@ UpdateCrowdRecord	;IDA: sub_9C226. cards94 UpdateCrowdRecord. Crowd record block
 .x
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-UpdatePlayerRecords	;IDA: sub_9C2CC. cards94 UpdatePlayerRecords. For the 26 players of team a2, keep each new best (goals, or saves for the
+UpdatePlayerRecords	;cards94 UpdatePlayerRecords. For the 26 players of team a2, keep each new best (goals, or saves for the
 	;goalies) in his player record with opponent d6 and, with sflags11 bit 7, the users of both teams (GetPadUser)
 	clr.l	d0
 	move.w	#$19,d2
@@ -264,7 +264,7 @@ UpdatePlayerRecords	;IDA: sub_9C2CC. cards94 UpdatePlayerRecords. For the 26 pla
 	addq.w	#1,d0
 	dbf	d2,.loop
 	rts
-GetPadUser	;IDA: sub_9C36E. 95 only. (a4) = the name log entry (pad1user ... pad4user) of the first pad on team d0, or 0
+GetPadUser	;95 only. (a4) = the name log entry (pad1user ... pad4user) of the first pad on team d0, or 0
 	clr.w	(a4)
 	cmp.w	(cont1team).w,d0
 	bne.w	.0
@@ -286,7 +286,7 @@ GetPadUser	;IDA: sub_9C36E. 95 only. (a4) = the name log entry (pad1user ... pad
 	move.w	(pad4user).w,(a4)
 .x
 	rts
-UpdateUserRecord	;IDA: sub_9C3A8. 95 only. Team record block d1 (a pad's name log entry) for the pad's team d0 (UpdateTeamRecord); for a pad
+UpdateUserRecord	;95 only. Team record block d1 (a pad's name log entry) for the pad's team d0 (UpdateTeamRecord); for a pad
 	;with no team, the team no pad plays (none when both have pads)
 	tst.w	d0
 	bne.w	.2
@@ -338,9 +338,9 @@ UpdateUserRecord	;IDA: sub_9C3A8. 95 only. Team record block d1 (a pad's name lo
 	bra.w	UpdateTeamRecord
 .x
 	rts
-ReadTeamRecord	;IDA: sub_9C464. cards94 ReadTeamRecord. Read the 16 byte team record block d1 ($D22 + d1 * 16) to a0 (TeamRecordIO)
+ReadTeamRecord	;cards94 ReadTeamRecord. Read the 16 byte team record block d1 ($D22 + d1 * 16) to a0 (TeamRecordIO)
 	bclr	#6,(sflags6).w
-TeamRecordIO	;IDA: loc_9C46A. cards94 TeamRecordIO. The team record block: read or write (sflags6 bit 6)
+TeamRecordIO	;cards94 TeamRecordIO. The team record block: read or write (sflags6 bit 6)
 	movem.l	d0-d1/a0-a1,-(sp)
 	move.l	d1,d0
 	asl.w	#4,d0
@@ -355,12 +355,12 @@ TeamRecordIO	;IDA: loc_9C46A. cards94 TeamRecordIO. The team record block: read 
 .x
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
-WriteTeamRecord	;IDA: sub_9C49A. cards94 WriteTeamRecord. Write the team record block (TeamRecordIO)
+WriteTeamRecord	;cards94 WriteTeamRecord. Write the team record block (TeamRecordIO)
 	bset	#6,(sflags6).w
 	bra.s	TeamRecordIO
-clrCrowdRAM	;IDA: sub_9C4A2. cards94 clrCrowdRAM (IDA name). Read the 16 byte crowd record block of team d1 ($B62 + d1 * 16) to a0 (CrowdRecordIO)
+clrCrowdRAM	;cards94 clrCrowdRAM (IDA name). Read the 16 byte crowd record block of team d1 ($B62 + d1 * 16) to a0 (CrowdRecordIO)
 	bclr	#6,(sflags6).w
-CrowdRecordIO	;IDA: loc_9C4A8. cards94 CrowdRecordIO. The crowd record block: read or write (sflags6 bit 6)
+CrowdRecordIO	;cards94 CrowdRecordIO. The crowd record block: read or write (sflags6 bit 6)
 	movem.l	d0-d1/a0-a1,-(sp)
 	move.l	d1,d0
 	asl.w	#4,d0
@@ -375,12 +375,12 @@ CrowdRecordIO	;IDA: loc_9C4A8. cards94 CrowdRecordIO. The crowd record block: re
 .x
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
-WriteCrowdRecord	;IDA: sub_9C4D8. cards94 WriteCrowdRecord. Write the crowd record block (CrowdRecordIO)
+WriteCrowdRecord	;cards94 WriteCrowdRecord. Write the crowd record block (CrowdRecordIO)
 	bset	#6,(sflags6).w
 	bra.s	CrowdRecordIO
-ReadPlayerRecord	;IDA: sub_9C4E0. cards94 ReadPlayerRecord. Read the 4 byte player record d0 of team d1 (PlayerRecordOffsets) from save RAM to a0
+ReadPlayerRecord	;cards94 ReadPlayerRecord. Read the 4 byte player record d0 of team d1 (PlayerRecordOffsets) from save RAM to a0
 	bclr	#6,(sflags6).w
-PlayerRecordIO	;IDA: loc_9C4E6. cards94 PlayerRecordIO. The player record: read or write (sflags6 bit 6)
+PlayerRecordIO	;cards94 PlayerRecordIO. The player record: read or write (sflags6 bit 6)
 	movem.l	d0-d1/a0-a1,-(sp)
 	asl.l	#2,d0
 	addq.l	#2,d0
@@ -400,14 +400,14 @@ PlayerRecordIO	;IDA: loc_9C4E6. cards94 PlayerRecordIO. The player record: read 
 .x
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
-WritePlayerRecord	;IDA: sub_9C522. cards94 WritePlayerRecord. Write the 4 byte player record (PlayerRecordIO)
+WritePlayerRecord	;cards94 WritePlayerRecord. Write the 4 byte player record (PlayerRecordIO)
 	bset	#6,(sflags6).w
 	bra.s	PlayerRecordIO
-PlayerRecordOffsets	;IDA: unk_9C52A. cards94 PlayerRecordOffsets. The first player record of each team (26 per team), ReadPlayerRecord
+PlayerRecordOffsets	;cards94 PlayerRecordOffsets. The first player record of each team (26 per team), ReadPlayerRecord
 	dc.w	0,$1A,$34,$4E,$68,$82,$9C,$B6,$D0,$EA,$104,$11E,$138,$152
 	dc.w	$16C,$186,$1A0,$1BA,$1D4,$1EE,$208,$222,$23C,$256,$270,$28A,$2A4,$2BE
 	dc.w	$2D8
-CountGoalies	;IDA: sub_9C564. cards94 CountGoalies. homegoalies / awaygoalies = goalies of the home / away team (ReadAttributeNibble)
+CountGoalies	;cards94 CountGoalies. homegoalies / awaygoalies = goalies of the home / away team (ReadAttributeNibble)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#HmShots,a2
 	jsr	(ReadAttributeNibble).l
@@ -417,7 +417,7 @@ CountGoalies	;IDA: sub_9C564. cards94 CountGoalies. homegoalies / awaygoalies = 
 	move.w	d0,(awaygoalies).w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-CountPlayers	;IDA: sub_9C58E. cards94 CountPlayers. homeplayers / awayplayers = players of the home / away team (GetPlayerCount)
+CountPlayers	;cards94 CountPlayers. homeplayers / awayplayers = players of the home / away team (GetPlayerCount)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#HmShots,a2
 	jsr	(GetPlayerCount).l
@@ -427,7 +427,7 @@ CountPlayers	;IDA: sub_9C58E. cards94 CountPlayers. homeplayers / awayplayers = 
 	move.w	d0,(awayplayers).w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-SetupScreen	;no IDA label. stats94 SetupScreen (93 name). Common start of the stats screens: blank, scroll 0, 40 cell mode, the framer, the
+SetupScreen	;stats94 SetupScreen (93 name). Common start of the stats screens: blank, scroll 0, 40 cell mode, the framer, the
 	;background bitmap (ControllerBgMap), the small fonts (three remaps) and the big font
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l

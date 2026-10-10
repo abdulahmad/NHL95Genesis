@@ -2,7 +2,7 @@
 ;	Mapped to checksum94 (100%): ValidationRoutine, the last code in the ROM. The $FF fill $1A7310-$1FFFFF follows (nhl95.asm dcb.b after
 ;	this include). The same code as 94 with the 95 long count and sum.
 
-ValidationRoutine	;IDA: sub_1A72C0. checksum94 ValidationRoutine (92 / 93 Calc_Checksum). Called once at power on from main95 ($690). Adds every ROM
+ValidationRoutine	;checksum94 ValidationRoutine (92 / 93 Calc_Checksum). Called once at power on from main95 ($690). Adds every ROM
 	;long from 0 up to this routine, skipping the header long at $18C. Returns if the sum is right, else turns the screen red and hangs.
 	;Uses d0-d1/a0/a4
 	moveq	#0,d0			;sum

@@ -10,7 +10,7 @@
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-CreateScreenGfx	;IDA: sub_97C54. set up VDP planes and load create-player graphics/palettes
+CreateScreenGfx	;set up VDP planes and load create-player graphics/palettes
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
 	bclr	#0,(disflags).w
@@ -74,7 +74,7 @@ CreateScreenGfx	;IDA: sub_97C54. set up VDP planes and load create-player graphi
 	move.w	d4,(StatWork+$3C).w
 	rts
 
-CreatePlayer	;IDA: loc_97D9A. Create Player screen entry: load graphics, draw title, init player list and name editor
+CreatePlayer	;Create Player screen entry: load graphics, draw title, init player list and name editor
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#1,(BA_PS_flags).w
 	bsr.w	CreateRatingsGfx
@@ -88,7 +88,7 @@ CreatePlayer	;IDA: loc_97D9A. Create Player screen entry: load graphics, draw ti
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
 
-CreatePlayerRedraw	;IDA: loc_97DDC. (re)draw "Create Player" title and player list
+CreatePlayerRedraw	;(re)draw "Create Player" title and player list
 	jsr	(printbigz).l
 	String	$BF,7,2,'Create Player'
 	bsr.w	ReadCreatedPlayers
@@ -129,7 +129,7 @@ CreatePlayerRedraw	;IDA: loc_97DDC. (re)draw "Create Player" title and player li
 	clr.w	d0
 	bra.w	NameCursorMove
 
-CreatePlayerLoop	;IDA: loc_97E7A. main input loop: list mode scrolls players, edit mode moves name/char cursors
+CreatePlayerLoop	;main input loop: list mode scrolls players, edit mode moves name/char cursors
 	bsr.w	CountNameLength
 	jsr	(printz).l
 	String	$BF,5,$12,0
@@ -194,7 +194,7 @@ CreatePlayerLoop	;IDA: loc_97E7A. main input loop: list mode scrolls players, ed
 	bsr.w	NameEntry
 	bra.w	CreatePlayerLoop
 
-CreateListMove	;IDA: loc_97F5E. move player-list selection by d0 and scroll the list window
+CreateListMove	;move player-list selection by d0 and scroll the list window
 	add.w	d0,(CreateListRow).w
 	move.w	(CreateListRow).w,d1
 	cmp.w	(createdcount).l,d1
@@ -246,7 +246,7 @@ CreateListMove	;IDA: loc_97F5E. move player-list selection by d0 and scroll the 
 	neg.w	d0
 	bra.w	NameCursorMove
 
-NameCursorMove	;IDA: loc_98026. move name cursor (d4, 0-$11) by d0
+NameCursorMove	;move name cursor (d4, 0-$11) by d0
 	add.w	d4,d0
 	cmp.w	#$11,d0
 	bhi.w	CreatePlayerLoop
@@ -261,7 +261,7 @@ NameCursorMove	;IDA: loc_98026. move name cursor (d4, 0-$11) by d0
 	bsr.w	FindGridLetter
 	sub.w	d5,d0
 
-GridCursorMove	;IDA: loc_98054. move character-grid cursor (d5, 0-$1D) by d0 and write char into name buffer
+GridCursorMove	;move character-grid cursor (d5, 0-$1D) by d0 and write char into name buffer
 	add.w	d5,d0
 	cmp.w	#$1D,d0
 	bhi.w	CreatePlayerLoop
@@ -295,7 +295,7 @@ GridCursorMove	;IDA: loc_98054. move character-grid cursor (d5, 0-$1D) by d0 and
 	move.b	d0,(a0,d4.w)
 	bra.w	CreatePlayerLoop
 
-CreateNameDone	;IDA: loc_980D0. Start in edit mode: validate name, save player and continue, else clear and redraw
+CreateNameDone	;Start in edit mode: validate name, save player and continue, else clear and redraw
 	bsr.w	SaveCreateName
 	bmi.w	.0
 	bsr.w	InitCreateRecord
@@ -310,12 +310,12 @@ CreateNameDone	;IDA: loc_980D0. Start in edit mode: validate name, save player a
 	jsr	(eraser).l
 	bra.w	CreatePlayerRedraw
 
-CreatePlayerExit	;IDA: loc_98106. Start in list mode: leave create-player screen back to main flow
+CreatePlayerExit	;Start in list mode: leave create-player screen back to main flow
 	movem.l	(sp)+,d0-d7/a0-a6
 	bset	#6,(setupcardflags).w
 	jmp	(Opening2).l
 
-NameEntry	;IDA: sub_98116. Create Player name entry: toggle grid/edit mode, draw letter grid + help text, or the name list + arrow help
+NameEntry	;Create Player name entry: toggle grid/edit mode, draw letter grid + help text, or the name list + arrow help
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BF,$0,$D,$0
@@ -388,12 +388,12 @@ NameEntry	;IDA: sub_98116. Create Player name entry: toggle grid/edit mode, draw
 	jsr	(printz2).l
 	String	$F9,$2
 
-NameEntryDone	;IDA: loc_982AA. 95 only. NameEntry: return
+NameEntryDone	;95 only. NameEntry: return
 	movem.l	(sp)+,d0-d7/a0-a6
 .0
 	rts
 
-NameEntryBg	;IDA: sub_982B0. Draw name entry background graphic (unk_1834F4) at the printz position
+NameEntryBg	;Draw name entry background graphic (unk_1834F4) at the printz position
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(spritechars).w,d4
 	jsr	(printz).l
@@ -402,7 +402,7 @@ NameEntryBg	;IDA: sub_982B0. Draw name entry background graphic (unk_1834F4) at 
 	movea.l	#NameEntryBgMap,a0
 	movea.l	a0,a1
 
-NameEntryBgTail	;IDA: sub_982CC. (IDA label, mid-routine of sub_982B0) map draw tail
+NameEntryBgTail	;(IDA label, mid-routine of sub_982B0) map draw tail
 	movea.l	a0,a2
 	adda.l	(a2)+,a0
 	adda.l	(a2)+,a1
@@ -415,7 +415,7 @@ NameEntryBgTail	;IDA: sub_982CC. (IDA label, mid-routine of sub_982B0) map draw 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-NameListMode	;IDA: loc_982E8. 95 only. NameEntry: name list mode (list and arrow help)
+NameListMode	;95 only. NameEntry: name list mode (list and arrow help)
 	movea.l	#NameEntryBuf,a1
 	bsr.w	GetCreateName
 	move.w	#0,(printx).w
@@ -433,7 +433,7 @@ NameListMode	;IDA: loc_982E8. 95 only. NameEntry: name list mode (list and arrow
 	bsr.w	NameListHelp
 	bra.s	NameEntryDone
 
-NameListHelp	;IDA: sub_9832A. Print help text for name list mode (D-Pad up/down / START exit / B edit)
+NameListHelp	;Print help text for name list mode (D-Pad up/down / START exit / B edit)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz2).l
 	String	$F9,$2
@@ -469,7 +469,7 @@ NameListHelp	;IDA: sub_9832A. Print help text for name list mode (D-Pad up/down 
 .1
 	rts
 
-FixFirstLetter	;IDA: sub_9840A. Normalize first letter of name buffer to a letter grid char (unknown -> A)
+FixFirstLetter	;Normalize first letter of name buffer to a letter grid char (unknown -> A)
 	movem.l	d0-d4/a0-a6,-(sp)
 	move.b	(NameEntryBuf).w,d0
 	bsr.w	FindGridLetter
@@ -486,7 +486,7 @@ FixFirstLetter	;IDA: sub_9840A. Normalize first letter of name buffer to a lette
 	movem.l	(sp)+,d0-d4/a0-a6
 	rts
 
-FindGridLetter	;IDA: sub_98438. Find char d0 in letter grid table, return index in d0 ($1E if not found)
+FindGridLetter	;Find char d0 in letter grid table, return index in d0 ($1E if not found)
 	movem.l	d1-d3/a0-a6,-(sp)
 	movea.l	#CreateLetterGrid,a0
 	move.b	d0,d1
@@ -503,10 +503,10 @@ FindGridLetter	;IDA: sub_98438. Find char d0 in letter grid table, return index 
 	movem.l	(sp)+,d1-d3/a0-a6
 	rts
 
-rtsCreate2	;IDA: nullsub_2. Empty return
+rtsCreate2	;Empty return
 	rts
 
-PrintGridLetter	;IDA: sub_98464. If grid mode, print letter d5 of the grid table (cursor letter)
+PrintGridLetter	;If grid mode, print letter d5 of the grid table (cursor letter)
 	tst.w	(NameEntryMode).w
 	beq.s	rtsCreate2
 	movea.l	#StatBuf,a1
@@ -517,7 +517,7 @@ PrintGridLetter	;IDA: sub_98464. If grid mode, print letter d5 of the grid table
 	move.b	d0,2(a1)
 	jmp	(print).l
 
-GridLetterPos	;IDA: sub_9848E. Set print position for letter grid cell d5 (6 per row), d0/d1 = frame size
+GridLetterPos	;Set print position for letter grid cell d5 (6 per row), d0/d1 = frame size
 	jsr	(printz).l
 	String	$BF,$9,$E,$0
 	move.w	d5,d0
@@ -532,7 +532,7 @@ GridLetterPos	;IDA: sub_9848E. Set print position for letter grid cell d5 (6 per
 	moveq	#3,d1
 	rts
 
-DrawCreateList	;IDA: sub_984B6. Draw list of up to 6 player names starting at player FF55F4
+DrawCreateList	;Draw list of up to 6 player names starting at player FF55F4
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(NameEntryLen).w,-(sp)
 	move.w	(CreateListRow).w,-(sp)
@@ -560,7 +560,7 @@ DrawCreateList	;IDA: sub_984B6. Draw list of up to 6 player names starting at pl
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-MoveListMarkers	;IDA: sub_98520. Move selection arrows to the current list row if it changed
+MoveListMarkers	;Move selection arrows to the current list row if it changed
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(CreateListRow).w,d0
 	cmp.w	(CreateListOldRow).w,d0
@@ -573,7 +573,7 @@ MoveListMarkers	;IDA: sub_98520. Move selection arrows to the current list row i
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintListMarkers	;IDA: sub_9854A. Print the 2 strings at a1 on old list row (left and x=$1C), then old row = current
+PrintListMarkers	;Print the 2 strings at a1 on old list row (left and x=$1C), then old row = current
 	tst.w	(CreateListOldRow).w
 	beq.w	.0
 	jsr	(printz).l
@@ -592,15 +592,15 @@ PrintListMarkers	;IDA: sub_9854A. Print the 2 strings at a1 on old list row (lef
 	move.w	(CreateListRow).w,(CreateListOldRow).w
 	rts
 
-ListMarkers	;IDA: unk_9858E. 95 only. Row markers ] and [
+ListMarkers	;95 only. Row markers ] and [
 	String	']',$0;row marker chars (left of name, at x=$1C)
 	String	'[',$0
 
-ListMarkersOff	;IDA: unk_98596. 95 only. Blanks that erase the row markers
+ListMarkersOff	;95 only. Blanks that erase the row markers
 	String	' ',$0;blanks (erase arrows)
 	String	' ',$0
 
-CountNameLength	;IDA: sub_9859E. Count name length of name buffer FFD0E0 into FFD0F4
+CountNameLength	;Count name length of name buffer FFD0E0 into FFD0F4
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$11,d3
 	movea.l	#NameEntryBuf,a0
@@ -620,7 +620,7 @@ CountNameLength	;IDA: sub_9859E. Count name length of name buffer FFD0E0 into FF
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintEditName	;IDA: sub_985D2. Print 18-char name from a1 with - padding, highlight cursor char d4 in grid mode
+PrintEditName	;Print 18-char name from a1 with - padding, highlight cursor char d4 in grid mode
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(NameEntryLen).w,-(sp)
 	move.w	#$12,(NameEntryLen).w
@@ -680,17 +680,17 @@ PrintEditName	;IDA: sub_985D2. Print 18-char name from a1 with - padding, highli
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CreateLetterGrid	;IDA: unk_98696. 95 only. Name entry letter grid (6 per row), $FF end
+CreateLetterGrid	;95 only. Name entry letter grid (6 per row), $FF end
 	dc.b	'ABCDEFGHIJKLMNOPQRSTUVWXYZ.12 -',$FF;letter grid characters (5 rows of 6)
 
-NameEntryFramer	;IDA: sub_986B6. cards94 NameEntryFramer. Framer with the name entry frame charset (nameframechars)
+NameEntryFramer	;cards94 NameEntryFramer. Framer with the name entry frame charset (nameframechars)
 	move.w	(framercset).w,-(sp)
 	move.w	(nameframechars).w,(framercset).w
 	jsr	(Framer).l
 	move.w	(sp)+,(framercset).w
 	rts
 
-GetCreateName	;IDA: sub_986CC. Copy player name (FFD0F6-1)*18 from FFFF0000 to a1, 0->-, length to FFD0F4 (like 94 GetLogName)
+GetCreateName	;Copy player name (FFD0F6-1)*18 from FFFF0000 to a1, 0->-, length to FFD0F4 (like 94 GetLogName)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#M68K_RAM,a0
 	move.w	(CreateListRow).w,d2
@@ -720,7 +720,7 @@ GetCreateName	;IDA: sub_986CC. Copy player name (FFD0F6-1)*18 from FFFF0000 to a
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SaveCreateName	;IDA: sub_98722. Save entered name to the created-player record (new or existing); invalid name -> message; d0=0 ok/-1
+SaveCreateName	;Save entered name to the created-player record (new or existing); invalid name -> message; d0=0 ok/-1
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	BuildEnteredName
 	bmi.w	InvalidName
@@ -760,7 +760,7 @@ SaveCreateName	;IDA: sub_98722. Save entered name to the created-player record (
 	bsr.w	CopyNameWords
 	bra.w	SaveNameOk
 
-CopyNameWords	;IDA: sub_987A6. Copy length-prefixed name at FFBB1E into a0 as words
+CopyNameWords	;Copy length-prefixed name at FFBB1E into a0 as words
 	movea.l	#StatWork,a1
 	move.w	(a1),d0
 	subq.w	#1,d0
@@ -771,7 +771,7 @@ CopyNameWords	;IDA: sub_987A6. Copy length-prefixed name at FFBB1E into a0 as wo
 	dbf	d0,.0
 	rts
 
-SaveNameNext	;IDA: loc_987BC. 95 only. SaveCreateName: next name character
+SaveNameNext	;95 only. SaveCreateName: next name character
 	bsr.w	CheckCreateSlots
 	bmi.w	SaveNameEnd
 	movea.l	#$20B540,a0
@@ -808,16 +808,16 @@ SaveNameNext	;IDA: loc_987BC. 95 only. SaveCreateName: next name character
 	move.b	#$1E,1(a0)
 	addq.w	#1,($20BAAE).l
 
-SaveNameOk	;IDA: loc_9883E. 95 only. SaveCreateName: name valid, store it
+SaveNameOk	;95 only. SaveCreateName: name valid, store it
 	bra.w	SaveNameFail
 
-SaveNameLoop2	;IDA: loc_98842. 95 only. SaveCreateName: copy loop
+SaveNameLoop2	;95 only. SaveCreateName: copy loop
 	bra.w	InvalidNameWait
 
-SaveNameEnd	;IDA: loc_98846. 95 only. SaveCreateName: done, d0 = 0
+SaveNameEnd	;95 only. SaveCreateName: done, d0 = 0
 	bra.w	InvalidNameWait
 
-InvalidName	;IDA: loc_9884A. 95 only. SaveCreateName: "Invalid Name. Make sure player has both a first and last name." box
+InvalidName	;95 only. SaveCreateName: "Invalid Name. Make sure player has both a first and last name." box
 	jsr	(printz).l
 	String	$BF,$5,$5,$0
 	move.w	#$1E,d0
@@ -837,21 +837,21 @@ InvalidName	;IDA: loc_9884A. 95 only. SaveCreateName: "Invalid Name. Make sure p
 	tst.w	d1
 	beq.s	.0
 
-InvalidNameWait	;IDA: loc_988CA. 95 only. SaveCreateName: wait for a key, close the box
+InvalidNameWait	;95 only. SaveCreateName: wait for a key, close the box
 	jsr	(printz2).l
 	String	$F9,$0
 	move.w	#$FFFF,d0
 	bra.w	SaveNameRet
 
-SaveNameFail	;IDA: loc_988DC. 95 only. SaveCreateName: d0 = -1
+SaveNameFail	;95 only. SaveCreateName: d0 = -1
 	clr.w	d0
 
-SaveNameRet	;IDA: loc_988DE. 95 only. SaveCreateName: return
+SaveNameRet	;95 only. SaveCreateName: return
 	movem.l	(sp)+,d0-d7/a0-a6
 .0
 	rts
 
-ReadCreatedPlayers	;IDA: sub_988E4. read created players: load $36-byte list from save RAM $5D22, build 18-byte name records at $FFFF0000 and ids at $FFFF4E20, count in word_FF55F0, add an empty slot if room
+ReadCreatedPlayers	;read created players: load $36-byte list from save RAM $5D22, build 18-byte name records at $FFFF0000 and ids at $FFFF4E20, count in word_FF55F0, add an empty slot if room
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	(createdcount).l
 .0
@@ -900,7 +900,7 @@ ReadCreatedPlayers	;IDA: sub_988E4. read created players: load $36-byte list fro
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-BuildEnteredName	;IDA: sub_9898A. build the entered name (from $FFFFD0E0, spaces/dashes dropped, space after first name) as a length-word string at dword_FFBB1E and check it
+BuildEnteredName	;build the entered name (from $FFFFD0E0, spaces/dashes dropped, space after first name) as a length-word string at dword_FFBB1E and check it
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#linemarkbuf+2,a0
 	movea.l	#NameEntryBuf,a1
@@ -959,7 +959,7 @@ BuildEnteredName	;IDA: sub_9898A. build the entered name (from $FFFFD0E0, spaces
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-FormatNameRecord	;IDA: sub_98A2C. format name string at a1 into an 18-byte record at a2: first name padded to 8 and last name to 10 with dashes
+FormatNameRecord	;format name string at a1 into an 18-byte record at a2: first name padded to 8 and last name to 10 with dashes
 	movem.l	d0-d7/a1-a2,-(sp)
 	move.w	(a1)+,d7
 	subq.w	#3,d7
@@ -995,14 +995,14 @@ FormatNameRecord	;IDA: sub_98A2C. format name string at a1 into an 18-byte recor
 	movem.l	(sp)+,d0-d7/a1-a2
 	rts
 
-NewCreateRecord	;no IDA label. same as sub_98A88 but with bit 2 of byte_FFBF04 set (skips the read)
+NewCreateRecord	;same as sub_98A88 but with bit 2 of byte_FFBF04 set (skips the read)
 	bset	#2,(sflags8).w
 	bra.w	InitCreateRecord2
 
-InitCreateRecord	;IDA: sub_98A88. read 32-byte create record #word_FF55FE from save RAM ($5AA0) to $FFFF7538, put an 8-byte tail on it by flag $1F, write it back
+InitCreateRecord	;read 32-byte create record #word_FF55FE from save RAM ($5AA0) to $FFFF7538, put an 8-byte tail on it by flag $1F, write it back
 	bclr	#2,(sflags8).w
 
-InitCreateRecord2	;no IDA label. 95 only. InitCreateRecord without the bset (NewCreateRecord enters here)
+InitCreateRecord2	;95 only. InitCreateRecord without the bset (NewCreateRecord enters here)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#CreateRecord,a0
 	clr.l	d0
@@ -1030,7 +1030,7 @@ InitCreateRecord2	;no IDA label. 95 only. InitCreateRecord without the bset (New
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CreateRecordTail1	;IDA: unk_98AEE. 95 only. 8 byte record tail (record byte $1F clear)
+CreateRecordTail1	;95 only. 8 byte record tail (record byte $1F clear)
 	dc.b	$20
 	dc.b	$82
 	dc.b	$22
@@ -1040,7 +1040,7 @@ CreateRecordTail1	;IDA: unk_98AEE. 95 only. 8 byte record tail (record byte $1F 
 	dc.b	$22
 	dc.b	$22
 
-CreateRecordTail2	;IDA: unk_98AF6. 95 only. 8 byte record tail (record byte $1F set)
+CreateRecordTail2	;95 only. 8 byte record tail (record byte $1F set)
 	dc.b	$20
 	dc.b	$82
 	dc.b	$22
@@ -1050,7 +1050,7 @@ CreateRecordTail2	;IDA: unk_98AF6. 95 only. 8 byte record tail (record byte $1F 
 	dc.b	$22
 	dc.b	$22
 
-CreateRatingsGfx	;IDA: sub_98AFE. set up the create player screen: VDP setup, decompress graphics, print, draw background map
+CreateRatingsGfx	;set up the create player screen: VDP setup, decompress graphics, print, draw background map
 	move	#$2700,sr
 	move.w	#2,d4
 	move.l	#VBlank_SetOptions,(vbint).w
@@ -1121,7 +1121,7 @@ CreateRatingsGfx	;IDA: sub_98AFE. set up the create player screen: VDP setup, de
 	jsr	(dobitmap).l
 	rts
 
-CheckCreateSlots	;IDA: sub_98C64. check free create slots: d0/flags = -1 (N set) if 20 created players exist, else 1
+CheckCreateSlots	;check free create slots: d0/flags = -1 (N set) if 20 created players exist, else 1
 	movem.w	d0,-(sp)
 	move.w	($20BA42).l,d0
 	cmp.b	#$14,d0
@@ -1134,7 +1134,7 @@ CheckCreateSlots	;IDA: sub_98C64. check free create slots: d0/flags = -1 (N set)
 	movem.w	(sp)+,d0
 	rts
 
-ClearCreatedPlayers	;IDA: sub_98C88. clear the created players list at $FFFF5D22 (26 x $8000 + 0 terminator)
+ClearCreatedPlayers	;clear the created players list at $FFFF5D22 (26 x $8000 + 0 terminator)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#CreatedList,a0
 	move.w	#$19,d6
@@ -1145,7 +1145,7 @@ ClearCreatedPlayers	;IDA: sub_98C88. clear the created players list at $FFFF5D22
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DeleteCreatedPlayer	;IDA: sub_98CA8. delete created player #word_FFBB10: remove it from the save RAM records, roster list and team lines
+DeleteCreatedPlayer	;delete created player #word_FFBB10: remove it from the save RAM records, roster list and team lines
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$1C,d7
 	bset	#7,(GameFlags).w
@@ -1229,7 +1229,7 @@ DeleteCreatedPlayer	;IDA: sub_98CA8. delete created player #word_FFBB10: remove 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-GetCreatedId	;IDA: sub_98DD4. return player id word for created entry d0 from table $20BA44 (4-byte entries)
+GetCreatedId	;return player id word for created entry d0 from table $20BA44 (4-byte entries)
 	movem.l	d1-d7/a0-a6,-(sp)
 	movea.l	#$20BA44,a0
 	add.w	d0,d0
@@ -1244,7 +1244,7 @@ GetCreatedId	;IDA: sub_98DD4. return player id word for created entry d0 from ta
 	movem.l	(sp)+,d1-d7/a0-a6
 	rts
 
-ReadCreateList	;IDA: sub_98DFC. read the $36-byte created player list from save RAM $5D22 into a0
+ReadCreateList	;read the $36-byte created player list from save RAM $5D22 into a0
 	movem.l	d0-d1,-(sp)
 	move.l	#$5D22,d0
 	moveq	#$36,d1
@@ -1252,7 +1252,7 @@ ReadCreateList	;IDA: sub_98DFC. read the $36-byte created player list from save 
 	movem.l	(sp)+,d0-d1
 	rts
 
-WriteCreateList	;IDA: sub_98E14. calls sub_98E6 with d0=$5D22, d1=$36 (saves d0-d1)
+WriteCreateList	;calls sub_98E6 with d0=$5D22, d1=$36 (saves d0-d1)
 	movem.l	d0-d1,-(sp)
 	move.l	#$5D22,d0
 	moveq	#$36,d1
@@ -1260,7 +1260,7 @@ WriteCreateList	;IDA: sub_98E14. calls sub_98E6 with d0=$5D22, d1=$36 (saves d0-
 	movem.l	(sp)+,d0-d1
 	rts
 
-ModifyRatings	;IDA: loc_98E2C. Create Player "Modify Ratings" screen: load graphics/text, then joypad loop (up/down/left/right pick rating, A/B change it, START done)
+ModifyRatings	;Create Player "Modify Ratings" screen: load graphics/text, then joypad loop (up/down/left/right pick rating, A/B change it, START done)
 	move	#$2700,sr
 	move.w	#2,d4
 	move.l	#VBlank_SetOptions,(vbint).w
@@ -1435,7 +1435,7 @@ ModifyRatings	;IDA: loc_98E2C. Create Player "Modify Ratings" screen: load graph
 	bset	#6,(setupcardflags).w
 	jmp	Opening2
 
-PrintCreateName	;IDA: sub_99160. prints Name First:/Last: from name buffer $FFFF753A (split at the space) via string buffer $FFFFBBAA
+PrintCreateName	;prints Name First:/Last: from name buffer $FFFF753A (split at the space) via string buffer $FFFFBBAA
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BF,$4,$6,'Name',$BF,$4,$7,'First:',$BF,$4,$8,'Last:'
@@ -1481,7 +1481,7 @@ PrintCreateName	;IDA: sub_99160. prints Name First:/Last: from name buffer $FFFF
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawRatings	;IDA: sub_99224. redraws every rating cell (4 columns x rows from sub_9998E, each via sub_99774), then Max Unallocated Points
+DrawRatings	;redraws every rating cell (4 columns x rows from sub_9998E, each via sub_99774), then Max Unallocated Points
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d6
 	clr.w	d7
@@ -1501,10 +1501,10 @@ DrawRatings	;IDA: sub_99224. redraws every rating cell (4 columns x rows from su
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-rtsCreate3	;IDA: nullsub_3. empty stub (called from sub_99224)
+rtsCreate3	;empty stub (called from sub_99224)
 	rts
 
-PrintOverallRating	;no IDA label. unreferenced: prints OVERALL RTG. (player overall from sub_7CF78, *100/d1)
+PrintOverallRating	;unreferenced: prints OVERALL RTG. (player overall from sub_7CF78, *100/d1)
 	jsr	(printz2).l
 	String	$F9,$0,$FD,$4,$FC,$16,'OVERALL RTG.',$FD,$13
 	movea.l	#CreateRecord,a0
@@ -1526,7 +1526,7 @@ PrintOverallRating	;no IDA label. unreferenced: prints OVERALL RTG. (player over
 	jsr	(printsmall).l
 	rts
 
-PrintUnallocated	;IDA: sub_992C0. prints "Maximum Unallocated Points" and its value word_FF7536
+PrintUnallocated	;prints "Maximum Unallocated Points" and its value word_FF7536
 	jsr	(printz2).l
 	String	$F9,$0,$FD,$4,$FC,$17,'Maximum Unallocated Points',$FD,'"'
 	move.w	(CreatePoints).l,d0
@@ -1535,7 +1535,7 @@ PrintUnallocated	;IDA: sub_992C0. prints "Maximum Unallocated Points" and its va
 	jsr	(printsmall).l
 	rts
 
-DrawRatingValue	;IDA: sub_99302. calls the cell routine for column d6 / row d7 from table unk_996FC (unk_9970C if word_FF7534=0), a2 = player record
+DrawRatingValue	;calls the cell routine for column d6 / row d7 from table unk_996FC (unk_9970C if word_FF7534=0), a2 = player record
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SkaterFieldTbls,a0
 	tst.w	(CreateType).l
@@ -1554,7 +1554,7 @@ DrawRatingValue	;IDA: sub_99302. calls the cell routine for column d6 / row d7 f
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-FieldValue0	;no IDA label. 95 only. Field value: draw the cursor and print a rating (PAttribOverallMask+$42)
+FieldValue0	;95 only. Field value: draw the cursor and print a rating (PAttribOverallMask+$42)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$42).l,d4
@@ -1564,14 +1564,14 @@ FieldValue0	;no IDA label. 95 only. Field value: draw the cursor and print a rat
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldPrintSetup	;no IDA label. set print target a4/a0 (record+8) and number-print table a6 for a field value
+FieldPrintSetup	;set print target a4/a0 (record+8) and number-print table a6 for a field value
 	movea.l	#FieldTextBuf,a4
 	movea.l	a2,a0
 	addq.w	#8,a0
 	movea.l	#AttribWgtList,a6
 	rts
 
-FieldValue1	;no IDA label. field: draw cursor, print rating from record via dword_85872
+FieldValue1	;field: draw cursor, print rating from record via dword_85872
 	bsr.w	FieldHighlight
 	bsr.s	FieldPrintSetup
 	move.l	(PAttribOverallMask+$2C).l,d4
@@ -1581,7 +1581,7 @@ FieldValue1	;no IDA label. field: draw cursor, print rating from record via dwor
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue2	;no IDA label. field: draw cursor, print rating from record via dword_8594E
+FieldValue2	;field: draw cursor, print rating from record via dword_8594E
 	bsr.w	FieldHighlight
 	bsr.s	FieldPrintSetup
 	move.l	(PAttribOverallMask+$108).l,d4
@@ -1591,7 +1591,7 @@ FieldValue2	;no IDA label. field: draw cursor, print rating from record via dwor
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue3	;no IDA label. field: draw cursor, print rating from record via dword_858B4
+FieldValue3	;field: draw cursor, print rating from record via dword_858B4
 	bsr.w	FieldHighlight
 	bsr.s	FieldPrintSetup
 	move.l	(PAttribOverallMask+$6E).l,d4
@@ -1601,7 +1601,7 @@ FieldValue3	;no IDA label. field: draw cursor, print rating from record via dwor
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue4	;no IDA label. field: draw cursor, print rating from record via dword_858CA
+FieldValue4	;field: draw cursor, print rating from record via dword_858CA
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$84).l,d4
@@ -1611,7 +1611,7 @@ FieldValue4	;no IDA label. field: draw cursor, print rating from record via dwor
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue5	;no IDA label. field: draw cursor, print rating from record via dword_85922
+FieldValue5	;field: draw cursor, print rating from record via dword_85922
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$DC).l,d4
@@ -1621,7 +1621,7 @@ FieldValue5	;no IDA label. field: draw cursor, print rating from record via dwor
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldWeight	;no IDA label. field Wt.: print weight = value*8+140 (via dword_85938)
+FieldWeight	;field Wt.: print weight = value*8+140 (via dword_85938)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$F2).l,d4
@@ -1633,7 +1633,7 @@ FieldWeight	;no IDA label. field Wt.: print weight = value*8+140 (via dword_8593
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue6	;no IDA label. field: draw cursor, print rating from record via dword_858E0
+FieldValue6	;field: draw cursor, print rating from record via dword_858E0
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$9A).l,d4
@@ -1643,7 +1643,7 @@ FieldValue6	;no IDA label. field: draw cursor, print rating from record via dwor
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue7	;no IDA label. field: draw cursor, print rating from record via dword_858F6
+FieldValue7	;field: draw cursor, print rating from record via dword_858F6
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$B0).l,d4
@@ -1653,7 +1653,7 @@ FieldValue7	;no IDA label. field: draw cursor, print rating from record via dwor
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue8	;no IDA label. field: draw cursor, print rating from record via dword_8590C
+FieldValue8	;field: draw cursor, print rating from record via dword_8590C
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$C6).l,d4
@@ -1663,7 +1663,7 @@ FieldValue8	;no IDA label. field: draw cursor, print rating from record via dwor
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue9	;no IDA label. field: draw cursor, print rating from record via dword_85964
+FieldValue9	;field: draw cursor, print rating from record via dword_85964
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$11E).l,d4
@@ -1673,7 +1673,7 @@ FieldValue9	;no IDA label. field: draw cursor, print rating from record via dwor
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue10	;no IDA label. field: draw cursor, print rating from record via dword_8597A
+FieldValue10	;field: draw cursor, print rating from record via dword_8597A
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$134).l,d4
@@ -1683,15 +1683,15 @@ FieldValue10	;no IDA label. field: draw cursor, print rating from record via dwo
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldBlank1	;no IDA label. field with no value: draw cursor only (unreferenced)
+FieldBlank1	;field with no value: draw cursor only (unreferenced)
 	bsr.w	FieldHighlight
 	bra.w	FieldDone
 
-FieldBlank2	;no IDA label. field with no value: draw cursor only (unreferenced)
+FieldBlank2	;field with no value: draw cursor only (unreferenced)
 	bsr.w	FieldHighlight
 	bra.w	FieldDone
 
-FieldJersey	;no IDA label. field Unif.: print BCD jersey byte at (a2) as decimal
+FieldJersey	;field Unif.: print BCD jersey byte at (a2) as decimal
 	bsr.w	FieldHighlight
 	clr.w	d4
 	move.b	(a2),d4
@@ -1705,7 +1705,7 @@ FieldJersey	;no IDA label. field Unif.: print BCD jersey byte at (a2) as decimal
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue11	;no IDA label. field: draw cursor, print rating from record via dword_859BE
+FieldValue11	;field: draw cursor, print rating from record via dword_859BE
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$16).l,d4
@@ -1715,7 +1715,7 @@ FieldValue11	;no IDA label. field: draw cursor, print rating from record via dwo
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue12	;no IDA label. field: draw cursor, print rating from record via dword_85A00
+FieldValue12	;field: draw cursor, print rating from record via dword_85A00
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$58).l,d4
@@ -1725,7 +1725,7 @@ FieldValue12	;no IDA label. field: draw cursor, print rating from record via dwo
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue13	;no IDA label. field: draw cursor, print rating from record via dword_85A16
+FieldValue13	;field: draw cursor, print rating from record via dword_85A16
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$6E).l,d4
@@ -1735,7 +1735,7 @@ FieldValue13	;no IDA label. field: draw cursor, print rating from record via dwo
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue14	;no IDA label. field: draw cursor, print rating from record via dword_85A2C
+FieldValue14	;field: draw cursor, print rating from record via dword_85A2C
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$84).l,d4
@@ -1745,7 +1745,7 @@ FieldValue14	;no IDA label. field: draw cursor, print rating from record via dwo
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue15	;no IDA label. field: draw cursor, print rating from record via dword_85A42
+FieldValue15	;field: draw cursor, print rating from record via dword_85A42
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$9A).l,d4
@@ -1755,7 +1755,7 @@ FieldValue15	;no IDA label. field: draw cursor, print rating from record via dwo
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue16	;no IDA label. field: draw cursor, print rating from record via dword_85A58
+FieldValue16	;field: draw cursor, print rating from record via dword_85A58
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$B0).l,d4
@@ -1765,7 +1765,7 @@ FieldValue16	;no IDA label. field: draw cursor, print rating from record via dwo
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue17	;no IDA label. field: draw cursor, print rating from record via dword_85A6E
+FieldValue17	;field: draw cursor, print rating from record via dword_85A6E
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$C6).l,d4
@@ -1775,7 +1775,7 @@ FieldValue17	;no IDA label. field: draw cursor, print rating from record via dwo
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldHand	;no IDA label. field Hand: print R/L from bit 0 of record byte 4
+FieldHand	;field Hand: print R/L from bit 0 of record byte 4
 	bsr.w	FieldHighlight
 	move.b	4(a2),d0
 	andi.w	#1,d0
@@ -1783,27 +1783,27 @@ FieldHand	;no IDA label. field Hand: print R/L from bit 0 of record byte 4
 	jsr	(PrintSmallListItem).l
 	bra.w	FieldDone
 
-HandText	;no IDA label. 95 only. R, L
+HandText	;95 only. R, L
 	String	'R',0
 	String	'L',0
 
-FieldPos	;no IDA label. field Pos.: print G/F/D indexed by word_FF7534
+FieldPos	;field Pos.: print G/F/D indexed by word_FF7534
 	bsr.w	FieldHighlight
 	move.w	(CreateType).l,d0
 	movea.l	#PosText,a1
 	jsr	(PrintSmallListItem).l
 
-FieldDone	;no IDA label. common field exit: reset text color (printz2 $F9,0)
+FieldDone	;common field exit: reset text color (printz2 $F9,0)
 	jsr	(printz2).l
 	String	$F9,0
 	rts
 
-PosText	;no IDA label. 95 only. G, F, D
+PosText	;95 only. G, F, D
 	String	'G',0
 	String	'F',0
 	String	'D',0
 
-FieldHighlight	;no IDA label. set normal text color, highlight if (d6,d7) is the cursor (word_FF7530/2)
+FieldHighlight	;set normal text color, highlight if (d6,d7) is the cursor (word_FF7530/2)
 	jsr	(printz2).l
 	String	$F9,0
 	cmp.w	(CreateCursorX).l,d6
@@ -1815,38 +1815,38 @@ FieldHighlight	;no IDA label. set normal text color, highlight if (d6,d7) is the
 .0
 	rts
 
-SkaterFieldTbls	;IDA: unk_996FC. skater field-routine tables by column
+SkaterFieldTbls	;skater field-routine tables by column
 	dc.l	FieldTbl1,FieldTbl2,FieldTbl3,FieldTbl4
 
-GoalieFieldTbls	;IDA: unk_9970C. goalie field-routine tables by column
+GoalieFieldTbls	;goalie field-routine tables by column
 	dc.l	FieldTbl5,FieldTbl6,FieldTbl3,FieldTbl4
 
-FieldTbl1	;no IDA label. 95 only. Field routines of a column
+FieldTbl1	;95 only. Field routines of a column
 	dc.l	FieldValue0,FieldValue1,FieldValue2,FieldValue3,FieldValue4,FieldValue5
 
-FieldTbl2	;no IDA label. 95 only. Field routines of a column
+FieldTbl2	;95 only. Field routines of a column
 	dc.l	FieldValue6,FieldValue7,FieldValue8,FieldValue9,FieldValue10
 
-FieldTbl3	;no IDA label. 95 only. Field routines of a column
+FieldTbl3	;95 only. Field routines of a column
 	dc.l	FieldPos,FieldWeight
 
-FieldTbl4	;no IDA label. 95 only. Field routines of a column
+FieldTbl4	;95 only. Field routines of a column
 	dc.l	FieldHand,FieldJersey
 
-FieldTbl5	;no IDA label. 95 only. Field routines of a column
+FieldTbl5	;95 only. Field routines of a column
 	dc.l	FieldValue11,FieldValue12,FieldValue13
 
-FieldTbl6	;no IDA label. 95 only. Field routines of a column
+FieldTbl6	;95 only. Field routines of a column
 	dc.l	FieldValue14,FieldValue15,FieldValue16,FieldValue17
 
-DrawField	;IDA: sub_99774. draw one Create Player field (d6=column,d7=row): label then value, all regs saved
+DrawField	;draw one Create Player field (d6=column,d7=row): label then value, all regs saved
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	PrintFieldLabel
 	bsr.w	DrawRatingValue
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintFieldLabel	;IDA: sub_99786. print field label: pick skater/goalie label list, highlight if cursor, print entry d7
+PrintFieldLabel	;print field label: pick skater/goalie label list, highlight if cursor, print entry d7
 	movem.l	d0-d1/a0-a1,-(sp)
 	movea.l	#SkaterLabelLists,a1
 	tst.w	(CreateType).l
@@ -1872,13 +1872,13 @@ PrintFieldLabel	;IDA: sub_99786. print field label: pick skater/goalie label lis
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
 
-SkaterLabelLists	;IDA: unk_997E6. skater attribute-label lists by column
+SkaterLabelLists	;skater attribute-label lists by column
 	dc.l	LabelList1,LabelList2,LabelList3,LabelList4
 
-GoalieLabelLists	;IDA: unk_997F6. goalie attribute-label lists by column
+GoalieLabelLists	;goalie attribute-label lists by column
 	dc.l	LabelList5,LabelList6,LabelList3,LabelList4
 
-LabelList1	;no IDA label. 95 only. Field labels of a column
+LabelList1	;95 only. Field labels of a column
 	String	$FD,$4,$FC,$A,'Speed',$FD,$13,$0
 	String	$FD,$4,$FC,$C,'Agility',$FD,$13,$0
 	String	$FD,$4,$FC,$E,'Endurance',$FD,$13,$0
@@ -1886,33 +1886,33 @@ LabelList1	;no IDA label. 95 only. Field labels of a column
 	String	$FD,$4,$FC,$12,'Def.Awareness',$FD,$13,$0
 	String	$FD,$4,$FC,$14,'Stickhandling',$FD,$13,$0
 
-LabelList2	;no IDA label. 95 only. Field labels of a column
+LabelList2	;95 only. Field labels of a column
 	String	$FD,$16,$FC,$A,'Shot Power',$FD,'$'
 	String	$FD,$16,$FC,$C,'Shot Accuracy',$FD,'$',$0
 	String	$FD,$16,$FC,$E,'Pass Accuracy',$FD,'$',$0
 	String	$FD,$16,$FC,$10,'Aggression',$FD,'$'
 	String	$FD,$16,$FC,$12,'Checking',$FD,'$'
 
-LabelList3	;no IDA label. 95 only. Field labels of a column
+LabelList3	;95 only. Field labels of a column
 	String	$FD,$16,$FC,$7,'Pos. ',$0
 	String	$FD,$16,$FC,$8,'Wt. '
 
-LabelList4	;no IDA label. 95 only. Field labels of a column
+LabelList4	;95 only. Field labels of a column
 	String	$FD,$1E,$FC,$7,'Hand',$FD,'$'
 	String	$FD,$1E,$FC,$8,'Unif.',$FD,'$',$0
 
-LabelList5	;no IDA label. 95 only. Field labels of a column
+LabelList5	;95 only. Field labels of a column
 	String	$FD,$4,$FC,$B,'Agility',$FD,$13,$0
 	String	$FD,$4,$FC,$D,'Def.Awareness',$FD,$13,$0
 	String	$FD,$4,$FC,$F,'Puck Control',$FD,$13
 
-LabelList6	;no IDA label. 95 only. Field labels of a column
+LabelList6	;95 only. Field labels of a column
 	String	$FD,$16,$FC,$B,'Stick Right',$FD,'"',$0
 	String	$FD,$16,$FC,$D,'Stick Left',$FD,'"'
 	String	$FD,$16,$FC,$F,'Glove Right',$FD,'"',$0
 	String	$FD,$16,$FC,$11,'Glove Left',$FD,'"'
 
-LastFieldRow	;IDA: sub_9998E. d4 = last row index for column d6 (skater or goalie table)
+LastFieldRow	;d4 = last row index for column d6 (skater or goalie table)
 	movem.l	d6/a0,-(sp)
 	movea.l	#SkaterLastRows,a0
 	tst.w	(CreateType).l
@@ -1924,13 +1924,13 @@ LastFieldRow	;IDA: sub_9998E. d4 = last row index for column d6 (skater or goali
 	movem.l	(sp)+,d6/a0
 	rts
 
-SkaterLastRows	;IDA: unk_999B4. skater last row index per column
+SkaterLastRows	;skater last row index per column
 	dc.w	5,4,1,1
 
-GoalieLastRows	;IDA: unk_999BC. goalie last row index per column
+GoalieLastRows	;goalie last row index per column
 	dc.w	2,3,1,1
 
-EditField	;IDA: sub_999C4. dispatch create-player edit: call handler [word_FF7530][word_FF7532] from table chosen by word_FF7534
+EditField	;dispatch create-player edit: call handler [word_FF7530][word_FF7532] from table chosen by word_FF7534
 	movea.l	#SkaterEditTbl,a0
 	tst.w	(CreateType).l
 	beq.w	.0
@@ -1945,38 +1945,38 @@ EditField	;IDA: sub_999C4. dispatch create-player edit: call handler [word_FF753
 	jsr	(a0)
 	rts
 
-SkaterEditTbl	;IDA: unk_999F6. create-player menu handler table (word_FF7534 == 0): rows by word_FF7530
+SkaterEditTbl	;create-player menu handler table (word_FF7534 == 0): rows by word_FF7530
 	dc.l	EditRow1
 	dc.l	EditRow2
 	dc.l	EditRow3
 	dc.l	EditRow4
 
-EditRow1	;no IDA label. row 0 handlers by word_FF7532
+EditRow1	;row 0 handlers by word_FF7532
 	dc.l	EditAttrib1
 	dc.l	EditAttrib2
 	dc.l	EditAttrib3
 
-EditRow2	;no IDA label. row 1 handlers
+EditRow2	;row 1 handlers
 	dc.l	EditAttrib4
 	dc.l	EditAttrib5
 	dc.l	EditAttrib6
 	dc.l	EditAttrib7
 
-EditRow3	;no IDA label. row 2 handlers (shared)
+EditRow3	;row 2 handlers (shared)
 	dc.l	EditPlayerType
 	dc.l	EditNibble
 
-EditRow4	;no IDA label. row 3 handlers (shared)
+EditRow4	;row 3 handlers (shared)
 	dc.l	EditHand
 	dc.l	EditJersey
 
-GoalieEditTbl	;IDA: unk_99A32. handler table (word_FF7534 != 0)
+GoalieEditTbl	;handler table (word_FF7534 != 0)
 	dc.l	EditRow5
 	dc.l	EditRow6
 	dc.l	EditRow3
 	dc.l	EditRow4
 
-EditRow5	;no IDA label. row 0 handlers
+EditRow5	;row 0 handlers
 	dc.l	EditAttrib8
 	dc.l	EditAttrib9
 	dc.l	EditAttrib10
@@ -1984,7 +1984,7 @@ EditRow5	;no IDA label. row 0 handlers
 	dc.l	EditAttrib12
 	dc.l	EditAttrib13
 
-EditRow6	;no IDA label. row 1 handlers
+EditRow6	;row 1 handlers
 	dc.l	EditAttrib14
 	dc.l	EditAttrib15
 	dc.l	EditAttrib16
@@ -1992,7 +1992,7 @@ EditRow6	;no IDA label. row 1 handlers
 	dc.l	EditAttrib18
 	dc.l	EditNone
 
-EditPlayerType	;no IDA label. toggle player type (word_FF7534) by d0, clamp 0..2, reset attribute record when changed
+EditPlayerType	;toggle player type (word_FF7534) by d0, clamp 0..2, reset attribute record when changed
 	add.w	(CreateType).l,d0
 	bpl.w	.0
 	move.w	#2,d0
@@ -2022,10 +2022,10 @@ EditPlayerType	;no IDA label. toggle player type (word_FF7534) by d0, clamp 0..2
 	move.b	d0,$1F(a0)
 	rts
 
-EditAttrib1	;no IDA label. attribute handler: d4 = bit mask record, then common adjust
+EditAttrib1	;attribute handler: d4 = bit mask record, then common adjust
 	move.l	(GAttribOverallMask+$16).l,d4
 
-AdjustAttrib	;no IDA label. adjust attribute selected by d4 bit by d0, paying from points pool word_FF7536
+AdjustAttrib	;adjust attribute selected by d4 bit by d0, paying from points pool word_FF7536
 	move.w	(CreatePoints).l,d1
 	move.w	d1,(TempPlOffset).w
 	move.w	d0,d2
@@ -2055,18 +2055,18 @@ AdjustAttrib	;no IDA label. adjust attribute selected by d4 bit by d0, paying fr
 .3
 	move.w	(TempPlOffset).w,(CreatePoints).l
 
-rtsAdjustAttrib	;no IDA label. 95 only. rts of AdjustAttrib
+rtsAdjustAttrib	;95 only. rts of AdjustAttrib
 	rts
 
-EditAttrib2	;no IDA label. attribute handler
+EditAttrib2	;attribute handler
 	move.l	(GAttribOverallMask+$58).l,d4
 	bra.s	AdjustAttrib
 
-EditAttrib3	;no IDA label. attribute handler
+EditAttrib3	;attribute handler
 	move.l	(GAttribOverallMask+$6E).l,d4
 	bra.s	AdjustAttrib
 
-EditNibble	;no IDA label. adjust high nibble of record byte 1 by d0 (0..15)
+EditNibble	;adjust high nibble of record byte 1 by d0 (0..15)
 	movea.l	#CreateRecord,a0
 	adda.w	(a0),a0
 	clr.w	d1
@@ -2084,29 +2084,29 @@ EditNibble	;no IDA label. adjust high nibble of record byte 1 by d0 (0..15)
 	move.b	d0,1(a0)
 	rts
 
-EditAttrib4	;no IDA label. attribute handler
+EditAttrib4	;attribute handler
 	move.l	(GAttribOverallMask+$84).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib5	;no IDA label. attribute handler
+EditAttrib5	;attribute handler
 	move.l	(GAttribOverallMask+$9A).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib6	;no IDA label. attribute handler
+EditAttrib6	;attribute handler
 	move.l	(GAttribOverallMask+$B0).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib7	;no IDA label. attribute handler
+EditAttrib7	;attribute handler
 	move.l	(GAttribOverallMask+$C6).l,d4
 	bra.w	AdjustAttrib
 
-EditHand	;no IDA label. toggle bit 0 of record byte 4 (probably handedness)
+EditHand	;toggle bit 0 of record byte 4 (probably handedness)
 	movea.l	#CreateRecord,a0
 	adda.w	(a0),a0
 	eori.b	#1,4(a0)
 	rts
 
-EditJersey	;no IDA label. adjust BCD jersey number in record byte 0 by d0, wrap 1..99
+EditJersey	;adjust BCD jersey number in record byte 0 by d0, wrap 1..99
 	movea.l	#CreateRecord,a0
 	adda.w	(a0),a0
 	clr.w	d1
@@ -2142,54 +2142,54 @@ EditJersey	;no IDA label. adjust BCD jersey number in record byte 0 by d0, wrap 
 	move.b	d1,(a0)
 	rts
 
-EditAttrib8	;no IDA label. attribute handler
+EditAttrib8	;attribute handler
 	move.l	(PAttribOverallMask+$42).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib9	;no IDA label. attribute handler
+EditAttrib9	;attribute handler
 	move.l	(PAttribOverallMask+$2C).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib10	;no IDA label. attribute handler
+EditAttrib10	;attribute handler
 	move.l	(PAttribOverallMask+$108).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib11	;no IDA label. attribute handler
+EditAttrib11	;attribute handler
 	move.l	(PAttribOverallMask+$6E).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib12	;no IDA label. attribute handler
+EditAttrib12	;attribute handler
 	move.l	(PAttribOverallMask+$84).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib13	;no IDA label. attribute handler
+EditAttrib13	;attribute handler
 	move.l	(PAttribOverallMask+$DC).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib14	;no IDA label. attribute handler
+EditAttrib14	;attribute handler
 	move.l	(PAttribOverallMask+$9A).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib15	;no IDA label. attribute handler
+EditAttrib15	;attribute handler
 	move.l	(PAttribOverallMask+$B0).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib16	;no IDA label. attribute handler
+EditAttrib16	;attribute handler
 	move.l	(PAttribOverallMask+$C6).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib17	;no IDA label. attribute handler
+EditAttrib17	;attribute handler
 	move.l	(PAttribOverallMask+$11E).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib18	;no IDA label. attribute handler
+EditAttrib18	;attribute handler
 	move.l	(PAttribOverallMask+$134).l,d4
 	bra.w	AdjustAttrib
 
-EditNone	;no IDA label. no-op handler
+EditNone	;no-op handler
 	rts
 
-ClearAttribDeltas	;IDA: sub_99C7A. clear 16-byte attribute buffer at FFC42C
+ClearAttribDeltas	;clear 16-byte attribute buffer at FFC42C
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#AttribDeltas,a0
 	move.w	#3,d0
@@ -2199,7 +2199,7 @@ ClearAttribDeltas	;IDA: sub_99C7A. clear 16-byte attribute buffer at FFC42C
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LoadCreateTemplate	;IDA: sub_99C94. copy 32-word player template (index word_FF55FE) from $20B540 into byte record FF7538, set word_FF7534 from last byte
+LoadCreateTemplate	;copy 32-word player template (index word_FF55FE) from $20B540 into byte record FF7538, set word_FF7534 from last byte
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$1F,d0
 	movea.l	#$20B540,a0
@@ -2217,7 +2217,7 @@ LoadCreateTemplate	;IDA: sub_99C94. copy 32-word player template (index word_FF5
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ClearCreateArea	;no IDA label. print control string ($BF,0,5,0) then call sub_7C8CC with d0=$28,d1=$14,d2=$7FF (clear/draw a text area)
+ClearCreateArea	;print control string ($BF,0,5,0) then call sub_7C8CC with d0=$28,d1=$14,d2=$7FF (clear/draw a text area)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BF,0,5,0
@@ -2228,7 +2228,7 @@ ClearCreateArea	;no IDA label. print control string ($BF,0,5,0) then call sub_7C
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SetPointsPool	;IDA: sub_99CF8. set points pool word_FF7536 to 300 (or 450 if word_FF7534 != 0)
+SetPointsPool	;set points pool word_FF7536 to 300 (or 450 if word_FF7534 != 0)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$12C,(CreatePoints).l
 	tst.w	(CreateType).l
@@ -2238,7 +2238,7 @@ SetPointsPool	;IDA: sub_99CF8. set points pool word_FF7536 to 300 (or 450 if wor
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CommitCreatedPlayer	;IDA: sub_99D1C. commit created player: store type bits, add attribute deltas into record via unk_99E06 handlers, save record via sub_98E6 and sub_9908
+CommitCreatedPlayer	;commit created player: store type bits, add attribute deltas into record via unk_99E06 handlers, save record via sub_98E6 and sub_9908
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#$20BA44,a0
 	move.w	(CreateWork).l,d0
@@ -2310,7 +2310,7 @@ CommitCreatedPlayer	;IDA: sub_99D1C. commit created player: store type bits, add
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CommitAttribJumps	;IDA: unk_99E06. jump table indexed by mode (16 entries)
+CommitAttribJumps	;jump table indexed by mode (16 entries)
 	dc.l	CommitNone1
 	dc.l	CommitNone1
 	dc.l	CommitNone2
@@ -2328,19 +2328,19 @@ CommitAttribJumps	;IDA: unk_99E06. jump table indexed by mode (16 entries)
 	dc.l	CrScale
 	dc.l	CrScale
 
-CrScale	;no IDA label. d3 += d2/14 (signed)
+CrScale	;d3 += d2/14 (signed)
 	ext.l	d2
 	divs.w	#$E,d2
 	add.w	d2,d3
 	rts
 
-CommitNone1	;no IDA label. no-op
+CommitNone1	;no-op
 	rts
 
-CommitNone2	;no IDA label. no-op
+CommitNone2	;no-op
 	rts
 
-CrScaleEven	;no IDA label. scale even part of d3 via loc_99E46, keep low bit of d3
+CrScaleEven	;scale even part of d3 via loc_99E46, keep low bit of d3
 	move.w	d3,-(sp)
 	andi.w	#$FE,d3
 	jsr	(CrScale).l
@@ -2351,7 +2351,7 @@ CrScaleEven	;no IDA label. scale even part of d3 via loc_99E46, keep low bit of 
 	or.w	d2,d3
 	rts
 
-CrScaleTable	;no IDA label. loc_99E46, then d3 = byte lookup in StickHandTable+$10[d3]
+CrScaleTable	;loc_99E46, then d3 = byte lookup in StickHandTable+$10[d3]
 	bsr.s	CrScale
 	movem.l	d0/a0,-(sp)
 	movea.l	#StickHandTable+$10,a0
@@ -2362,7 +2362,7 @@ CrScaleTable	;no IDA label. loc_99E46, then d3 = byte lookup in StickHandTable+$
 	movem.l	(sp)+,d0/a0
 	rts
 
-SignFreeAgents	;IDA: loc_99E8C. Sign Free Agents screen: draw, input loop
+SignFreeAgents	;Sign Free Agents screen: draw, input loop
 	jsr	(forceblack).l
 	jsr	(TradeGfx).l
 	jsr	(printz).l
@@ -2412,7 +2412,7 @@ SignFreeAgents	;IDA: loc_99E8C. Sign Free Agents screen: draw, input loop
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
 
-FreeAgentRedraw	;IDA: loc_99F7E. 95 only. SignFreeAgents: redraw the lists
+FreeAgentRedraw	;95 only. SignFreeAgents: redraw the lists
 	jsr	(MarkSeasonRosters).l
 	bsr.w	TestFreeAgents
 	beq.w	FreeAgentsEmpty
@@ -2434,7 +2434,7 @@ FreeAgentRedraw	;IDA: loc_99F7E. 95 only. SignFreeAgents: redraw the lists
 	bsr.w	rtsCreate4
 	move.w	#$FFFF,(setupdir).w
 
-FreeAgentLoop	;IDA: loc_99FC4. 95 only. SignFreeAgents: input loop
+FreeAgentLoop	;95 only. SignFreeAgents: input loop
 	bsr.w	FreeAgentTeamBlock
 	bsr.w	DrawFreeAgents
 	bsr.w	FreeAgentArrows
@@ -2572,27 +2572,27 @@ FreeAgentLoop	;IDA: loc_99FC4. 95 only. SignFreeAgents: input loop
 .9
 	bra.w	.0
 
-PositionCountFns	;IDA: unk_9A1FC. per-position rating routines
+PositionCountFns	;per-position rating routines
 	dc.l	ReadAttributeNibbleD7
 	dc.l	GetDefenseStartD7
 	dc.l	GetPlayerCountD7
 
-PositionMaxChecks	;IDA: unk_9A208. per-position check routines
+PositionMaxChecks	;per-position check routines
 	dc.l	CheckMaxGoalies
 	dc.l	CheckMaxForwards
 	dc.l	CheckMaxDefense
 
-CheckMaxGoalies	;no IDA label. compare sub_7CB60 result with 3
+CheckMaxGoalies	;compare sub_7CB60 result with 3
 	jsr	(ReadAttributeNibbleD7).l
 	cmp.w	#3,d0
 	rts
 
-CheckMaxForwards	;no IDA label. compare sub_7CC08 result with $F
+CheckMaxForwards	;compare sub_7CC08 result with $F
 	jsr	(ProcessNibbleD7).l
 	cmp.w	#$F,d0
 	rts
 
-CheckMaxDefense	;no IDA label. compare sub_83904 - sub_7CBB6 with $F
+CheckMaxDefense	;compare sub_83904 - sub_7CBB6 with $F
 	jsr	(GetDefenseStartD7).l
 	move.w	d0,-(sp)
 	jsr	(GetPlayerCountD7).l
@@ -2600,7 +2600,7 @@ CheckMaxDefense	;no IDA label. compare sub_83904 - sub_7CBB6 with $F
 	cmp.w	#$F,d0
 	rts
 
-FreeAgentArrows	;IDA: sub_9A242. draw scroll up/down arrows for the list
+FreeAgentArrows	;draw scroll up/down arrows for the list
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz2).l
 	String	$F9,$1
@@ -2633,7 +2633,7 @@ FreeAgentArrows	;IDA: sub_9A242. draw scroll up/down arrows for the list
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-FreeAgentViolation	;IDA: loc_9A2CE. show VIOLATION OF ROSTER RULES message, wait, erase
+FreeAgentViolation	;show VIOLATION OF ROSTER RULES message, wait, erase
 	jsr	(printz).l
 	String	$BF,$5,$A,$0
 	move.w	#$1F,d0
@@ -2654,7 +2654,7 @@ FreeAgentViolation	;IDA: loc_9A2CE. show VIOLATION OF ROSTER RULES message, wait
 	String	$F9,$0
 	bra.w	FreeAgentLoop
 
-FreeAgentTeamBlock	;IDA: sub_9A34C. draw team header (sub_9757C) for team word_FF271C
+FreeAgentTeamBlock	;draw team header (sub_9757C) for team word_FF271C
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(TradeData+$C).l,d1
 	jsr	(printz).l
@@ -2663,7 +2663,7 @@ FreeAgentTeamBlock	;IDA: sub_9A34C. draw team header (sub_9757C) for team word_F
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawFreeAgents	;IDA: sub_9A36E. draw visible free agent rows (pos, name, rating)
+DrawFreeAgents	;draw visible free agent rows (pos, name, rating)
 	move.w	(TradeData).l,d5
 	movea.l	#TradeData+$4,a5
 	movea.l	#TradeRoster1,a4
@@ -2734,12 +2734,12 @@ DrawFreeAgents	;IDA: sub_9A36E. draw visible free agent rows (pos, name, rating)
 	ble.w	.0
 	rts
 
-PositionLetters3	;IDA: unk_9A4B0. position letters G/F/D
+PositionLetters3	;position letters G/F/D
 	String	'G',0
 	String	'F',0
 	String	'D',0
 
-ReadFreeAgentPads	;IDA: sub_9A4BC. Wait for a joypad press (polls both pads via sub_7A4B0/sub_7A4C8 + sub_7A762 each frame); d1 = buttons
+ReadFreeAgentPads	;Wait for a joypad press (polls both pads via sub_7A4B0/sub_7A4C8 + sub_7A762 each frame); d1 = buttons
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6
@@ -2763,15 +2763,15 @@ ReadFreeAgentPads	;IDA: sub_9A4BC. Wait for a joypad press (polls both pads via 
 .3
 	rts
 
-FreeAgentExit	;IDA: loc_9A508. Exit free-agent screen: set bit 6 of byte_FFD036, jump to loc_9ADA
+FreeAgentExit	;Exit free-agent screen: set bit 6 of byte_FFD036, jump to loc_9ADA
 	bset	#6,(setupcardflags).w
 	jmp	Opening2
 
-FreeAgentsEmpty	;IDA: loc_9A514. "Free agent list is now empty." message box, wait for a key, then exit
+FreeAgentsEmpty	;"Free agent list is now empty." message box, wait for a key, then exit
 	clr.w	d0
 	bra.w	FreeAgentMessage
 
-FreeAgentMessage	;IDA: loc_9A51A. Show message box (string list unk_9A54A, index d0), wait for key, exit via loc_9A508
+FreeAgentMessage	;Show message box (string list unk_9A54A, index d0), wait for key, exit via loc_9A508
 	move.w	d0,-(sp)
 	jsr	(printz).l
 	String	$BF,5,$A,0
@@ -2784,11 +2784,11 @@ FreeAgentMessage	;IDA: loc_9A51A. Show message box (string list unk_9A54A, index
 	bsr.w	ReadFreeAgentPads
 	bra.s	FreeAgentExit
 
-FreeAgentMsgText	;IDA: unk_9A54A. Message string list for sub_7CB38
+FreeAgentMsgText	;Message string list for sub_7CB38
 	String	$F9,3,$FD,6,$FC,$D,'Free agent list is now empty.',0
 	rts
 
-BuildFreeAgentList	;IDA: sub_9A572. Copy free-agent list at $20BA44 (count in $20BAAE) to work table $FFFF3A98 and index list $FFFF88B8
+BuildFreeAgentList	;Copy free-agent list at $20BA44 (count in $20BAAE) to work table $FFFF3A98 and index list $FFFF88B8
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	($20BAAE).l,d0
 	andi.w	#$FF,d0
@@ -2811,17 +2811,17 @@ BuildFreeAgentList	;IDA: sub_9A572. Copy free-agent list at $20BA44 (count in $2
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-rtsCreate4	;IDA: nullsub_4. Empty routine
+rtsCreate4	;Empty routine
 	rts
 
-TestFreeAgents	;IDA: sub_9A5B6. Test free-agent count byte ($20BAAE+1), flags only, d0 preserved
+TestFreeAgents	;Test free-agent count byte ($20BAAE+1), flags only, d0 preserved
 	movem.w	d0,-(sp)
 	move.w	($20BAAE).l,d0
 	tst.b	d0
 	movem.w	(sp)+,d0
 	rts
 
-ReleasePlayers	;IDA: loc_9A5C8. Release Player screen: up/down scroll roster, switch team, release highlighted player to the free-agent list (exits if list full)
+ReleasePlayers	;Release Player screen: up/down scroll roster, switch team, release highlighted player to the free-agent list (exits if list full)
 	jsr	(forceblack).l
 	jsr	(TradeGfx).l
 	jsr	(printbigz).l
@@ -2841,7 +2841,7 @@ ReleasePlayers	;IDA: loc_9A5C8. Release Player screen: up/down scroll roster, sw
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
 
-ReleaseRedraw	;IDA: loc_9A682. 95 only. ReleasePlayers: redraw the roster
+ReleaseRedraw	;95 only. ReleasePlayers: redraw the roster
 	move.w	($20BAAE).l,d0
 	andi.w	#$FF,d0
 	cmp.w	#$1A,d0
@@ -2864,7 +2864,7 @@ ReleaseRedraw	;IDA: loc_9A682. 95 only. ReleasePlayers: redraw the roster
 	bsr.w	rtsCreate5
 	move.w	#$FFFF,(setupdir).w
 
-ReleaseLoop	;IDA: loc_9A6E2. 95 only. ReleasePlayers: input loop
+ReleaseLoop	;95 only. ReleasePlayers: input loop
 	bsr.w	ReleaseTeamBlock
 	bsr.w	DrawReleaseRoster
 	bsr.w	ReleaseArrows
@@ -3036,20 +3036,20 @@ ReleaseLoop	;IDA: loc_9A6E2. 95 only. ReleasePlayers: input loop
 	bra.w	.0
 	dc.l	ReadAttributeNibbleD7,GetDefenseStartD7,GetPlayerCountD7;unused pointers
 
-PositionMinChecks	;IDA: unk_9A99A. Roster-minimum check per position code (0 G, 1 F, 2 D); Z set = cannot release
+PositionMinChecks	;Roster-minimum check per position code (0 G, 1 F, 2 D); Z set = cannot release
 	dc.l	CheckMinGoalies,CheckMinForwards,CheckMinDefense
 
-CheckMinGoalies	;no IDA label. Position 0 (G): count from sub_7CB60, Z if == 2
+CheckMinGoalies	;Position 0 (G): count from sub_7CB60, Z if == 2
 	jsr	(ReadAttributeNibbleD7).l
 	cmp.w	#2,d0
 	rts
 
-CheckMinForwards	;no IDA label. Position 1 (F): count from sub_7CC08, Z if == 9
+CheckMinForwards	;Position 1 (F): count from sub_7CC08, Z if == 9
 	jsr	(ProcessNibbleD7).l
 	cmp.w	#9,d0
 	rts
 
-CheckMinDefense	;no IDA label. Position 2 (D): sub_83904 roster size minus sub_7CBB6 count, Z if == 6
+CheckMinDefense	;Position 2 (D): sub_83904 roster size minus sub_7CBB6 count, Z if == 6
 	jsr	(GetDefenseStartD7).l
 	move.w	d0,-(sp)
 	jsr	(GetPlayerCountD7).l
@@ -3057,7 +3057,7 @@ CheckMinDefense	;no IDA label. Position 2 (D): sub_83904 roster size minus sub_7
 	cmp.w	#6,d0
 	rts
 
-ReleaseArrows	;IDA: sub_9A9D4. Draw scroll arrows ({ above / } below) beside the roster list
+ReleaseArrows	;Draw scroll arrows ({ above / } below) beside the roster list
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz2).l
 	String	$F9,1
@@ -3090,7 +3090,7 @@ ReleaseArrows	;IDA: sub_9A9D4. Draw scroll arrows ({ above / } below) beside the
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReleaseViolation	;IDA: loc_9AA62. "VIOLATION OF ROSTER RULES" message box, wait for key, close it, back to the screen loop
+ReleaseViolation	;"VIOLATION OF ROSTER RULES" message box, wait for key, close it, back to the screen loop
 	jsr	(printz).l
 	String	$BF,5,$A,0
 	move.w	#$1E,d0
@@ -3111,7 +3111,7 @@ ReleaseViolation	;IDA: loc_9AA62. "VIOLATION OF ROSTER RULES" message box, wait 
 	String	$F9,0
 	bra.w	ReleaseLoop
 
-ReleaseTeamBlock	;IDA: sub_9AAE0. Print team block for team word_FF271C (sub_9757C)
+ReleaseTeamBlock	;Print team block for team word_FF271C (sub_9757C)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(TradeData+$C).l,d1
 	jsr	(printz).l
@@ -3120,7 +3120,7 @@ ReleaseTeamBlock	;IDA: sub_9AAE0. Print team block for team word_FF271C (sub_975
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawReleaseRoster	;IDA: sub_9AB02. Draw the visible roster rows (pos letter, name, rating) with highlight on cursor row
+DrawReleaseRoster	;Draw the visible roster rows (pos letter, name, rating) with highlight on cursor row
 	move.w	(TradeData).l,d5
 	movea.l	#TradeData+$4,a5
 	movea.l	#TradeRoster1,a4
@@ -3171,12 +3171,12 @@ DrawReleaseRoster	;IDA: sub_9AB02. Draw the visible roster rows (pos letter, nam
 	ble.w	.0
 	rts
 
-PositionLetters4	;IDA: unk_9ABF6. Position letter strings G/F/D for sub_7CB38
+PositionLetters4	;Position letter strings G/F/D for sub_7CB38
 	String	'G',0
 	String	'F',0
 	String	'D',0
 
-ReadReleasePads	;IDA: sub_9AC02. Wait for a joypad press on any of up to 4 pads (4-way play if word_FFCC4A); d1 = buttons
+ReadReleasePads	;Wait for a joypad press on any of up to 4 pads (4-way play if word_FFCC4A); d1 = buttons
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6
@@ -3214,15 +3214,15 @@ ReadReleasePads	;IDA: sub_9AC02. Wait for a joypad press on any of up to 4 pads 
 .5
 	rts
 
-ReleaseExit	;IDA: loc_9AC82. Exit Release Player screen: set bit 6 of byte_FFD036, jump to loc_9ADA
+ReleaseExit	;Exit Release Player screen: set bit 6 of byte_FFD036, jump to loc_9ADA
 	bset	#6,(setupcardflags).w
 	jmp	Opening2
 
-FreeAgentsFull	;IDA: loc_9AC8E. "Free agent list is full." message box, wait for key, then exit
+FreeAgentsFull	;"Free agent list is full." message box, wait for key, then exit
 	clr.w	d0
 	bra.w	ReleaseMessage
 
-ReleaseMessage	;IDA: loc_9AC94. Show message box (string list unk_9ACC4, index d0), wait for key, exit via loc_9AC82
+ReleaseMessage	;Show message box (string list unk_9ACC4, index d0), wait for key, exit via loc_9AC82
 	move.w	d0,-(sp)
 	jsr	(printz).l
 	String	$BF,5,$A,0
@@ -3235,8 +3235,8 @@ ReleaseMessage	;IDA: loc_9AC94. Show message box (string list unk_9ACC4, index d
 	bsr.w	ReadReleasePads
 	bra.s	ReleaseExit
 
-ReleaseMsgText	;IDA: unk_9ACC4. Message string list for sub_7CB38
+ReleaseMsgText	;Message string list for sub_7CB38
 	String	$F9,3,$FD,6,$FC,$D,'Free agent list is full.'
 
-rtsCreate5	;IDA: nullsub_5. Empty routine
+rtsCreate5	;Empty routine
 	rts

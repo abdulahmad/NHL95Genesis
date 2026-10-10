@@ -2,7 +2,7 @@
 ;	Mapped to title94 (100%): TeamLogoPalettes, one 32 byte palette per team in TeamList order. 25 are the same bytes as the 94 files
 ;	and keep their 94 names; DAL, ASE and ASW differ and are the 94 stem with 95 added.
 
-TeamLogoPalettes	;IDA: unk_1A169A. title94 TeamLogoPalettes. Team logo palettes, 16 colors per team (DrawMatchupLogo, NameEntryScreen, DrawTeamBitmap)
+TeamLogoPalettes	;title94 TeamLogoPalettes. Team logo palettes, 16 colors per team (DrawMatchupLogo, NameEntryScreen, DrawTeamBitmap)
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalANHA.pal	;ANH, 94 file, same bytes
 	incbin	..\Extracted\NHL95\Graphics\Pals\TeamLogoPalBOS.pal	;BOS, 94 file, same bytes
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalBUFA.pal	;BUF, 94 file, same bytes

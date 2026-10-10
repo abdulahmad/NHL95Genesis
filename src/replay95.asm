@@ -9,7 +9,7 @@
 ;	cmp encoding after assembly.
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
-chkcheckstart	;IDA: sub_8D39A. 95 only. Called with d1 = SPAhook for a player a3 about to check: d1 becomes
+chkcheckstart	;95 only. Called with d1 = SPAhook for a player a3 about to check: d1 becomes
 	;SPAcheckstart ($1E6C) when the puck carrier (shot dir mode set) or the last shooter (ShotTimer running)
 	;is on the other team
 	btst	#sfssdir,(sflags).w
@@ -66,7 +66,7 @@ chkcheckstart	;IDA: sub_8D39A. 95 only. Called with d1 = SPAhook for a player a3
 .rts
 	rts
 
-CanCheckStart	;IDA: sub_8D452. 95 only. ne when joystick player a3 may start a check: pfalock clear, sflags sfssdir
+CanCheckStart	;95 only. ne when joystick player a3 may start a check: pfalock clear, sflags sfssdir
 	;set and GameFlags bit 2 clear (cleared while sfssdir is clear), a3 at y $56 or more toward the goal it shoots
 	;at, the puck carrier on the other team, the direction (vtoa) from a3 to the puck the same as from the goal at
 	;y $10B to the puck, a3 on the puck's side of x 0 and within y $B2 of it, and a3 facing that direction or one
@@ -149,7 +149,7 @@ CanCheckStart	;IDA: sub_8D452. 95 only. ne when joystick player a3 may start a c
 	movem.l	(sp)+,d0-d3/a0-a2
 	rts
 
-updatereplay	;IDA: sub_8D55E. Called every frame to save replay events, d7 = elapsed frames. 95 packs x in 9 bits
+updatereplay	;Called every frame to save replay events, d7 = elapsed frames. 95 packs x in 9 bits
 	;and frame in 11 bits, and saves both pad words
 	btst	#gmhl,(gmode).w	;check if highlight
 	bne.w	rtss8	;exit if so
@@ -231,7 +231,7 @@ updatereplay	;IDA: sub_8D55E. Called every frame to save replay events, d7 = ela
 	move.w	(sp)+,d0
 	move.w	(Hpos).w,(a0)+
 	move.w	(Vpos).w,(a0)+
-rtss8	;IDA: locret_8D666
+rtss8
 	rts
 
 ReplayMode	;Instant replay play-back control and display code (94 ReplayMode). Called from the pause menu.
@@ -693,7 +693,7 @@ RevReplayAdj	;94 only. Set sflags4 bit 7 for a reverse angle replay, then fall i
 	bset	#7,(sflags4).w;set bit 7
 	; a4 = current replay frame address to convert into normal coordinates
 
-RestoreReplayFrame	;IDA: SetRCords (92 name). a4 = current replay frame address to convert into normal cordinates (92
+RestoreReplayFrame	;92 name. a4 = current replay frame address to convert into normal cordinates (92
 	;SetRCords), then the other replay variables (92 nonshift). 94 flips x/y and frames for the reverse angle
 	movem.l	d0-d2/a0/a6,-(sp)
 	movea.l	#revframetbl,a6

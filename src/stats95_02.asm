@@ -8,7 +8,7 @@
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-updatecrowdf	;IDA: sub_A0B3E. hockey94 updatecrowdf. Every game loop, d7 = elapsed frames: the crowd level falls (faster when loud); every $10 frames the next crowd frame of CrowdFrameTbl (crowdtblidx) in crowdframe.
+updatecrowdf	;hockey94 updatecrowdf. Every game loop, d7 = elapsed frames: the crowd level falls (faster when loud); every $10 frames the next crowd frame of CrowdFrameTbl (crowdtblidx) in crowdframe.
 	;95: a frame table instead of the 94 random frame / time pairs
 	cmpi.w	#$15E,(crowdlevel).w
 	blt.w	.0
@@ -38,7 +38,7 @@ updatecrowdf	;IDA: sub_A0B3E. hockey94 updatecrowdf. Every game loop, d7 = elaps
 .3
 	rts
 
-CrowdFrameTbl	;IDA: unk_A0B96. 95 only. updatecrowdf crowd animation frames, -1 wraps
+CrowdFrameTbl	;95 only. updatecrowdf crowd animation frames, -1 wraps
 	dc.b	1,2,3,4,5,6,5,6,5,9,$A,4,3,4,3,4
 	dc.b	5,4,3,4,5,6,7,8,9,$A,$B,$C,9,$A,8,7
 	dc.b	6,5,4,$C,9,$A,5,6,7,8,1,2,3,4,5,6
@@ -47,7 +47,7 @@ CrowdFrameTbl	;IDA: unk_A0B96. 95 only. updatecrowdf crowd animation frames, -1 
 	dc.b	4,5,4,3,2,3,4,5,4,5,$B,$C,6,7,8,9
 	dc.b	$FF,$FF
 
-showcrowd	;IDA: sub_A0BF8. display94 showcrowd. Crowd sprites (CrowdFrameList): up to 3 frames per PBnum nibble (ShowCrowdPb), then the crowdframe frame (ShowCrowdFrame);
+showcrowd	;display94 showcrowd. Crowd sprites (CrowdFrameList): up to 3 frames per PBnum nibble (ShowCrowdPb), then the crowdframe frame (ShowCrowdFrame);
 	;none in a reverse angle replay (sflags4 bit 4). a6 = sprite table, d6 = link counter
 	btst	#4,(sflags4).w
 	bne.w	rtsShowCrowd
@@ -66,7 +66,7 @@ showcrowd	;IDA: sub_A0BF8. display94 showcrowd. Crowd sprites (CrowdFrameList): 
 	move.b	(crowdframe+1).w,d0
 	bra.w	ShowCrowdFrame
 
-ShowCrowdPb	;IDA: sub_A0C34. display94 showcrowd .pb. d2 = the count (PBnum nibble, at most 3), d3 = the first frame (ShowCrowdFrame)
+ShowCrowdPb	;display94 showcrowd .pb. d2 = the count (PBnum nibble, at most 3), d3 = the first frame (ShowCrowdFrame)
 	andi.w	#$F,d2
 	cmp.w	#3,d2
 	bls.w	.0
@@ -81,7 +81,7 @@ ShowCrowdPb	;IDA: sub_A0C34. display94 showcrowd .pb. d2 = the count (PBnum nibb
 	dbf	d2,.1
 	rts
 
-ShowCrowdFrame	;IDA: sub_A0C54. display94 showcrowd .sc. Crowd frame d0 (0 = none): its sprites in view as sprite table entries at a6 (at most $40)
+ShowCrowdFrame	;display94 showcrowd .sc. Crowd frame d0 (0 = none): its sprites in view as sprite table entries at a6 (at most $40)
 	ext.w	d0
 	beq.w	rtsShowCrowd
 	cmp.w	#$40,d6
@@ -148,10 +148,10 @@ ShowCrowdFrame	;IDA: sub_A0C54. display94 showcrowd .sc. Crowd frame d0 (0 = non
 .3
 	movem.l	(sp)+,d0-d5
 
-rtsShowCrowd	;IDA: locret_A0D18. display94. Shared rts of showcrowd
+rtsShowCrowd	;display94. Shared rts of showcrowd
 	rts
 
-ScoringSummaryScreen	;no IDA label. stats94 ScoringSummaryScreen (93 name). "Scoring Summary": one 4 row entry per goal (6 bytes each from ScoreSum), scrolled with up / down, start exits
+ScoringSummaryScreen	;stats94 ScoringSummaryScreen (93 name). "Scoring Summary": one 4 row entry per goal (6 bytes each from ScoreSum), scrolled with up / down, start exits
 	moveq	#9,d0
 	moveq	#$19,d1
 	move.l	#ControllerBgMap,(screenarg).l
@@ -203,7 +203,7 @@ ScoringSummaryScreen	;no IDA label. stats94 ScoringSummaryScreen (93 name). "Sco
 	bsr.w	CheckGameStatScroll
 	bra.s	.2
 
-CheckGameStatScroll	;no IDA label. stats94 CheckGameStatScroll. Add the scroll speed (PlayerScrollCtr) to the scroll position (VertLineScrolling) within 0 ... SelectedPlayerIdx, then UpdateGameStatScroll
+CheckGameStatScroll	;stats94 CheckGameStatScroll. Add the scroll speed (PlayerScrollCtr) to the scroll position (VertLineScrolling) within 0 ... SelectedPlayerIdx, then UpdateGameStatScroll
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsGameStatScroll
 	add.w	(VertLineScrolling).w,d0
@@ -211,7 +211,7 @@ CheckGameStatScroll	;no IDA label. stats94 CheckGameStatScroll. Add the scroll s
 	cmp.w	(SelectedPlayerIdx).w,d0
 	bgt.w	rtsGameStatScroll
 
-UpdateGameStatScroll	;no IDA label. stats94 UpdateGameStatScroll. Scroll to d0: on an entry boundary the arrows (DrawScrollArrowsPenalty) and stop; the entry coming into view; VSRAM = position - $50
+UpdateGameStatScroll	;stats94 UpdateGameStatScroll. Scroll to d0: on an entry boundary the arrows (DrawScrollArrowsPenalty) and stop; the entry coming into view; VSRAM = position - $50
 	move.w	(VertLineScrolling).w,d1
 	move.w	d0,(VertLineScrolling).w
 	ext.l	d0
@@ -244,7 +244,7 @@ UpdateGameStatScroll	;no IDA label. stats94 UpdateGameStatScroll. Scroll to d0: 
 	move.w	(sp)+,(disflags).w
 	rts
 
-DisplayGameStatLineUp	;no IDA label. stats94 DisplayGameStatLineUp. The goal entry in the high word of d0 at the top of the window
+DisplayGameStatLineUp	;stats94 DisplayGameStatLineUp. The goal entry in the high word of d0 at the top of the window
 	move.l	d0,-(sp)
 	swap	d0
 	moveq	#6,d3
@@ -260,7 +260,7 @@ DisplayGameStatLineUp	;no IDA label. stats94 DisplayGameStatLineUp. The goal ent
 	move.l	(sp)+,d0
 	rts
 
-DisplayGameStatLineDown	;no IDA label. stats94 DisplayGameStatLineDown. Goal entry + 4 at the bottom of the window
+DisplayGameStatLineDown	;stats94 DisplayGameStatLineDown. Goal entry + 4 at the bottom of the window
 	move.l	d0,-(sp)
 	swap	d0
 	addq.w	#4,d0
@@ -277,7 +277,7 @@ DisplayGameStatLineDown	;no IDA label. stats94 DisplayGameStatLineDown. Goal ent
 	move.l	(sp)+,d0
 	rts
 
-DisplayGameStatEntry	;no IDA label. stats94 DisplayGameStatEntry. Goal entry d3: the time, the team, the goal type (GoalTypeTbl), the scorer and the assists (PrintPeriodTime)
+DisplayGameStatEntry	;stats94 DisplayGameStatEntry. Goal entry d3: the time, the team, the goal type (GoalTypeTbl), the scorer and the assists (PrintPeriodTime)
 	move.w	(printy).w,-(sp)
 	moveq	#$28,d0
 	moveq	#4,d1
@@ -316,7 +316,7 @@ DisplayGameStatEntry	;no IDA label. stats94 DisplayGameStatEntry. Goal entry d3:
 	clr.w	(printfontset).w
 	rts
 
-PrintPeriodTime	;no IDA label. stats94 PrintPeriodTime (93 name). Print player d0 (byte, negative = none) and go down a row
+PrintPeriodTime	;stats94 PrintPeriodTime (93 name). Print player d0 (byte, negative = none) and go down a row
 	ext.w	d0
 	bmi.w	.0
 	jsr	(FormatPlayerNameWithAttrib).l
@@ -324,17 +324,17 @@ PrintPeriodTime	;no IDA label. stats94 PrintPeriodTime (93 name). Print player d
 .0
 	addq.w	#1,(printy).w
 
-rtsGameStatScroll	;no IDA label. stats94. Shared rts of CheckGameStatScroll
+rtsGameStatScroll	;stats94. Shared rts of CheckGameStatScroll
 	rts
 
-GoalTypeTbl	;no IDA label. stats94 GoalTypeTbl (93 name). ScoreSum byte 2 & $7F: SH2, SH, even, PP, PP2
+GoalTypeTbl	;stats94 GoalTypeTbl (93 name). ScoreSum byte 2 & $7F: SH2, SH, even, PP, PP2
 	String	'SH2'
 	String	'SH'
 	String	' '
 	String	'PP'
 	String	'PP2'
 
-DrawScrollArrowsPenalty	;no IDA label. stats94 DrawScrollArrowsPenalty (93 name). Summary screen up / down arrows (ScrollArrowTbl). Saves d0-d1/a1
+DrawScrollArrowsPenalty	;stats94 DrawScrollArrowsPenalty (93 name). Summary screen up / down arrows (ScrollArrowTbl). Saves d0-d1/a1
 	movem.l	d0-d1/a1,-(sp)
 	jsr	(printz2).l
 	String	$F8,$4,$3,$1,$9,$F9,$1,$0
@@ -353,13 +353,13 @@ DrawScrollArrowsPenalty	;no IDA label. stats94 DrawScrollArrowsPenalty (93 name)
 	movem.l	(sp)+,d0-d1/a1
 	rts
 
-ScrollArrowTbl	;no IDA label. stats94 ScrollArrowTbl (93 name). None, up, down, both
+ScrollArrowTbl	;stats94 ScrollArrowTbl (93 name). None, up, down, both
 	String	' ',$FB,$FF,$FA,$10,' ',$F9,$0
 	String	'{',$FB,$FF,$FA,$10,' ',$F9,$0
 	String	' ',$FB,$FF,$FA,$10,'}',$F9,$0
 	String	'{',$FB,$FF,$FA,$10,'}',$F9,$0
 
-PenaltySummaryScreen	;no IDA label. stats94 PenaltySummaryScreen (93 name). "Penalties": one 3 row entry per penalty (4 bytes each from PenSum, PenSumLength), scrolled with up / down, start exits
+PenaltySummaryScreen	;stats94 PenaltySummaryScreen (93 name). "Penalties": one 3 row entry per penalty (4 bytes each from PenSum, PenSumLength), scrolled with up / down, start exits
 	moveq	#9,d0
 	moveq	#$19,d1
 	move.l	#ControllerBgMap,(screenarg).l
@@ -411,7 +411,7 @@ PenaltySummaryScreen	;no IDA label. stats94 PenaltySummaryScreen (93 name). "Pen
 	bsr.w	CheckPenaltyScroll
 	bra.s	.2
 
-CheckPenaltyScroll	;no IDA label. stats94 CheckPenaltyScroll. As CheckGameStatScroll for the penalty summary
+CheckPenaltyScroll	;stats94 CheckPenaltyScroll. As CheckGameStatScroll for the penalty summary
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsPenaltyScroll
 	add.w	(VertLineScrolling).w,d0
@@ -419,7 +419,7 @@ CheckPenaltyScroll	;no IDA label. stats94 CheckPenaltyScroll. As CheckGameStatSc
 	cmp.w	(SelectedPlayerIdx).w,d0
 	bgt.w	rtsPenaltyScroll
 
-UpdatePenaltyScroll	;no IDA label. stats94 UpdatePenaltyScroll. As UpdateGameStatScroll for the penalty summary
+UpdatePenaltyScroll	;stats94 UpdatePenaltyScroll. As UpdateGameStatScroll for the penalty summary
 	move.w	(VertLineScrolling).w,d1
 	move.w	d0,(VertLineScrolling).w
 	ext.l	d0
@@ -454,10 +454,10 @@ UpdatePenaltyScroll	;no IDA label. stats94 UpdatePenaltyScroll. As UpdateGameSta
 	move.w	d0,(a0)
 	move.w	(sp)+,(disflags).w
 
-rtsPenaltyScroll	;no IDA label. stats94. Shared rts of CheckPenaltyScroll
+rtsPenaltyScroll	;stats94. Shared rts of CheckPenaltyScroll
 	rts
 
-DisplayPenaltyLineUp	;no IDA label. stats94 DisplayPenaltyLineUp. The penalty entry in the high word of d0 at the top of the window
+DisplayPenaltyLineUp	;stats94 DisplayPenaltyLineUp. The penalty entry in the high word of d0 at the top of the window
 	move.l	d0,-(sp)
 	swap	d0
 	move.w	d0,d3
@@ -473,7 +473,7 @@ DisplayPenaltyLineUp	;no IDA label. stats94 DisplayPenaltyLineUp. The penalty en
 	move.l	(sp)+,d0
 	rts
 
-DisplayPenaltyLineDown	;no IDA label. stats94 DisplayPenaltyLineDown. Penalty entry + 5 at the bottom of the window
+DisplayPenaltyLineDown	;stats94 DisplayPenaltyLineDown. Penalty entry + 5 at the bottom of the window
 	move.l	d0,-(sp)
 	swap	d0
 	addq.w	#5,d0
@@ -490,7 +490,7 @@ DisplayPenaltyLineDown	;no IDA label. stats94 DisplayPenaltyLineDown. Penalty en
 	move.l	(sp)+,d0
 	rts
 
-DisplayPenaltyEntry	;no IDA label. stats94 DisplayPenaltyEntry (93 name). PenSum entry d3: time, team (bit 7 of byte 2 = away), minutes and name from PenaltyNames, player (byte 3)
+DisplayPenaltyEntry	;stats94 DisplayPenaltyEntry (93 name). PenSum entry d3: time, team (bit 7 of byte 2 = away), minutes and name from PenaltyNames, player (byte 3)
 	move.w	(printy).w,-(sp)
 	moveq	#$28,d0
 	moveq	#3,d1

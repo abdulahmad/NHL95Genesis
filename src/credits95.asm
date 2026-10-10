@@ -4,13 +4,13 @@
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-Credits	;no IDA label. 94 / 93 Credits. Title screen scroller: the copyright and trademark lines
+Credits	;94 / 93 Credits. Title screen scroller: the copyright and trademark lines
 	String	'$ 1994 Electronic Arts'
 	String	'Licensed by'
 	String	'Sega Enterprises, Ltd.'
 	String	-1
 
-CreditsList	;no IDA label. 94 / 93 CreditsList. The credits after the copyright lines
+CreditsList	;94 / 93 CreditsList. The credits after the copyright lines
 	String	'NHL and NHL logo are'
 	String	'registered trademarks of the'
 	String	'National Hockey League.'

@@ -11,7 +11,7 @@
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-UserNameEntry	;IDA: sub_9B6F4. With user records on (OptUserRec 0): the name entry (NameEntryScreen) for each pad in use (records94 UserNameEntry),
+UserNameEntry	;With user records on (OptUserRec 0): the name entry (NameEntryScreen) for each pad in use (records94 UserNameEntry),
 	;then sflags11 bit 7 when no team has more than one pad
 	bclr	#7,(sflags11).w
 	tst.w	(OptUserRec).w
@@ -62,7 +62,7 @@ UserNameEntry	;IDA: sub_9B6F4. With user records on (OptUserRec 0): the name ent
 	bclr	#7,(sflags11).w
 .x
 	rts
-CountTeamPads	;IDA: sub_9B7BE. 95 only. d2 = the number of pads (cont1team ... cont4team) on team d0 (1 home, 2 away)
+CountTeamPads	;95 only. d2 = the number of pads (cont1team ... cont4team) on team d0 (1 home, 2 away)
 	clr.w	d2
 	cmp.w	(cont1team).w,d0
 	bne.w	.0
@@ -81,7 +81,7 @@ CountTeamPads	;IDA: sub_9B7BE. 95 only. d2 = the number of pads (cont1team ... c
 	addq.w	#1,d2
 .x
 	rts
-NameInUse	;IDA: sub_9B7EA. 95 only. Step the name log selection (CreateListRow) past the names the other pads (pad1user ... pad4user, not a5) picked,
+NameInUse	;95 only. Step the name log selection (CreateListRow) past the names the other pads (pad1user ... pad4user, not a5) picked,
 	;in direction d0; Z set (d2 0) when it moved
 	movem.l	d1-d2/a0,-(sp)
 	move.w	#1,d2
@@ -96,7 +96,7 @@ NameInUse	;IDA: sub_9B7EA. 95 only. Step the name log selection (CreateListRow) 
 	tst.w	d2
 	movem.l	(sp)+,d1-d2/a0
 	rts
-SkipPadName	;IDA: sub_9B822. 95 only. When pad slot a0 is not a5 and holds the selected name (CreateListRow), step past it (SkipUserName)
+SkipPadName	;95 only. When pad slot a0 is not a5 and holds the selected name (CreateListRow), step past it (SkipUserName)
 	cmpa.l	a5,a0
 	beq.w	.x
 	move.w	(a0),d1
@@ -105,7 +105,7 @@ SkipPadName	;IDA: sub_9B822. 95 only. When pad slot a0 is not a5 and holds the s
 	bsr.w	SkipUserName
 .x
 	rts
-SkipUserName	;IDA: sub_9B838. records94 SkipOtherUserName. Step the name log selection (CreateListRow) by 1 in direction d0, wrapping 1-7; d2 = 0
+SkipUserName	;records94 SkipOtherUserName. Step the name log selection (CreateListRow) by 1 in direction d0, wrapping 1-7; d2 = 0
 	move.w	#1,d1
 	tst.w	d0
 	bpl.w	.0
@@ -122,12 +122,12 @@ SkipUserName	;IDA: sub_9B838. records94 SkipOtherUserName. Step the name log sel
 .2
 	clr.w	d2
 	rts
-WriteNameLog	;IDA: sub_9B86C. cards94 WriteNameLog. Write the user name log ($80 bytes at namelog) to save RAM $DA2 (NameLogIO)
+WriteNameLog	;cards94 WriteNameLog. Write the user name log ($80 bytes at namelog) to save RAM $DA2 (NameLogIO)
 	bset	#6,(sflags6).w
 	bra.w	NameLogIO
-ReadNameLog	;IDA: sub_9B876. cards94 ReadNameLog. Read the user name log from save RAM $DA2 to namelog (NameLogIO)
+ReadNameLog	;cards94 ReadNameLog. Read the user name log from save RAM $DA2 to namelog (NameLogIO)
 	bclr	#6,(sflags6).w
-NameLogIO	;IDA: loc_9B87C. cards94 NameLogIO. Read or write (sflags6 bit 6) the name log
+NameLogIO	;cards94 NameLogIO. Read or write (sflags6 bit 6) the name log
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	#$80,d1
 	move.l	#$DA2,d0
@@ -141,7 +141,7 @@ NameLogIO	;IDA: loc_9B87C. cards94 NameLogIO. Read or write (sflags6 bit 6) the 
 .x
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-ClearNameHelp	;IDA: sub_9B8B2. 95 only. Name entry: erase the help text area ($16 x 8 at 24,17)
+ClearNameHelp	;95 only. Name entry: erase the help text area ($16 x 8 at 24,17)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BF,$18,$11,$0
@@ -151,7 +151,7 @@ ClearNameHelp	;IDA: sub_9B8B2. 95 only. Name entry: erase the help text area ($1
 	jsr	(eraser).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-PlayoffStatsScreen	;no IDA label. 95 only. Pause menu PLAYOFF STATS: the playoff stats (DisplayAttributeScreen, d7 1) of the team in the playoff
+PlayoffStatsScreen	;95 only. Pause menu PLAYOFF STATS: the playoff stats (DisplayAttributeScreen, d7 1) of the team in the playoff
 	;tree slot potreeteam (home or away team struct)
 	movem.l	a2,-(sp)
 	jsr	(ReadTeamStats).l
@@ -167,7 +167,7 @@ PlayoffStatsScreen	;no IDA label. 95 only. Pause menu PLAYOFF STATS: the playoff
 	jsr	(DisplayAttributeScreen).l
 	movem.l	(sp)+,a2
 	rts
-RecordHoldersScreen	;no IDA label. records94 RecordHoldersScreen. Pause menu RECORD HOLDERS: the save RAM records (PrintRecordTitles ... ReadTeamRecords);
+RecordHoldersScreen	;records94 RecordHoldersScreen. Pause menu RECORD HOLDERS: the save RAM records (PrintRecordTitles ... ReadTeamRecords);
 	;page TempWord1 (left / right), A+C on the win page clears the win records (ClearWinRecords)
 	bsr.w	ReadNameLog
 	clr.w	(TempWord1).w
@@ -230,11 +230,11 @@ RecordHoldersScreen	;no IDA label. records94 RecordHoldersScreen. Pause menu REC
 	bsr.w	PrintRecordPage
 	bra.w	.loop
 	rts	;never reached
-PrintRecordPage	;no IDA label. records94 PrintRecordPage. Record Holders: print page TempWord1 (0: PrintWinRecords, else PrintPlayerRecords)
+PrintRecordPage	;records94 PrintRecordPage. Record Holders: print page TempWord1 (0: PrintWinRecords, else PrintPlayerRecords)
 	tst.w	(TempWord1).w
 	beq.w	PrintWinRecords
 	bra.w	PrintPlayerRecords
-PrintRecordTitles	;no IDA label. records94 PrintRecordTitles. Record Holders: the titles of page TempWord1 (WinRecTitles, GoalRecTitles, SaveRecTitles)
+PrintRecordTitles	;records94 PrintRecordTitles. Record Holders: the titles of page TempWord1 (WinRecTitles, GoalRecTitles, SaveRecTitles)
 	movea.l	#WinRecTitles,a1
 	tst.w	(TempWord1).w
 	beq.w	.0
@@ -245,22 +245,22 @@ PrintRecordTitles	;no IDA label. records94 PrintRecordTitles. Record Holders: th
 .0
 	jsr	(printsmall).l
 	rts
-WinRecTitles	;no IDA label. records94 WinRecTitles. PrintRecordTitles String, page 0
+WinRecTitles	;records94 WinRecTitles. PrintRecordTitles String, page 0
 	dc.w	$52	;String length
 	dc.b	$F8,$4,$3,$10,$8,$F9,$1,'   Win %   Win-Loss-Tie'
 	dc.b	$FD,$4,$FC,$19,'Use A+C to clear ALL win records',$FD,$10,$FC
 	dc.b	$1A,'  More ]',$F9,$0
-GoalRecTitles	;no IDA label. records94 GoalRecTitles. PrintRecordTitles String, page 1
+GoalRecTitles	;records94 GoalRecTitles. PrintRecordTitles String, page 1
 	dc.w	$50	;String length
 	dc.b	$F8,$4,$3,$12,$8,$F9,$1,'Goals       Teams    '
 	dc.b	$FD,$4,$FC,$19,'    TEAM MUST WIN TO QUALIFY    ',$FD,$10,$FC
 	dc.b	$1A,'[ More ]',$F9,$0
-SaveRecTitles	;no IDA label. records94 SaveRecTitles. PrintRecordTitles String, page 2
+SaveRecTitles	;records94 SaveRecTitles. PrintRecordTitles String, page 2
 	dc.w	$50	;String length
 	dc.b	$F8,$4,$3,$12,$8,$F9,$1,'Saves       Teams    '
 	dc.b	$FD,$4,$FC,$19,'    TEAM MUST WIN TO QUALIFY    ',$FD,$10,$FC
 	dc.b	$1A,'[ More  ',$F9,$0
-PrintWinRecords	;no IDA label. records94 PrintWinRecords. Record Holders page 0: name (PrintRecordName), win %, wins, losses, ties of the 7 rows
+PrintWinRecords	;records94 PrintWinRecords. Record Holders page 0: name (PrintRecordName), win %, wins, losses, ties of the 7 rows
 	;in winsort order
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz2).l
@@ -325,7 +325,7 @@ PrintWinRecords	;no IDA label. records94 PrintWinRecords. Record Holders page 0:
 	dbf	d7,.loop
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-ClearRecordArea	;no IDA label. records94 ClearRecordArea. Record Holders: erase the record rows ($28 x $12), keeping printx / printy / printm
+ClearRecordArea	;records94 ClearRecordArea. Record Holders: erase the record rows ($28 x $12), keeping printx / printy / printm
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(printx).w,-(sp)
 	move.w	(printy).w,-(sp)
@@ -341,7 +341,7 @@ ClearRecordArea	;no IDA label. records94 ClearRecordArea. Record Holders: erase 
 	move.w	(sp)+,(printx).w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-PrintPlayerRecords	;no IDA label. records94 PrintPlayerRecords. Record Holders pages 1 (goals, recsort1) and 2 (saves, recsort2): name, value,
+PrintPlayerRecords	;records94 PrintPlayerRecords. Record Holders pages 1 (goals, recsort1) and 2 (saves, recsort2): name, value,
 	;"by TEAM vs. TEAM" of the 7 rows
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz2).l
@@ -418,13 +418,13 @@ PrintPlayerRecords	;no IDA label. records94 PrintPlayerRecords. Record Holders p
 	dbf	d7,.loop
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-RecBlankTxt	;no IDA label. records94 RecParenTxt. A blank record row (38 spaces)
+RecBlankTxt	;records94 RecParenTxt. A blank record row (38 spaces)
 	String	'                                      '
-RecHolderByTxt	;no IDA label. records94 RecHolderByTxt. PrintPlayerRecords "by "
+RecHolderByTxt	;records94 RecHolderByTxt. PrintPlayerRecords "by "
 	String	'by ',$0
-RecHolderVsTxt	;no IDA label. records94 RecHolderVsTxt. PrintPlayerRecords " vs. "
+RecHolderVsTxt	;records94 RecHolderVsTxt. PrintPlayerRecords " vs. "
 	String	' vs. ',$0
-PrintRecordName	;no IDA label. records94 PrintRecordName. Record Holders: print the row number ("1. ") at d7 and the user name (AppendUserName) of
+PrintRecordName	;records94 PrintRecordName. Record Holders: print the row number ("1. ") at d7 and the user name (AppendUserName) of
 	;the record row before a0
 	move.w	d7,-(sp)
 	neg.w	d7
@@ -444,7 +444,7 @@ PrintRecordName	;no IDA label. records94 PrintRecordName. Record Holders: print 
 	bclr	#7,(sflags6).w
 	jsr	(AppendUserName).l
 	jmp	(printsmall).l
-CalcWinPercents	;no IDA label. records94 CalcWinPercents. For the 8 user record blocks at ThreeStars: the win % (winpcts), games (wingames) and ties
+CalcWinPercents	;records94 CalcWinPercents. For the 8 user record blocks at ThreeStars: the win % (winpcts), games (wingames) and ties
 	;(winties), then sort the rows (winsort)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#ThreeStars,a0
@@ -529,7 +529,7 @@ CalcWinPercents	;no IDA label. records94 CalcWinPercents. For the 8 user record 
 	movea.l	(sp)+,a1
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-ReadTeamRecords	;no IDA label. records94 ReadTeamRecords. Read the $80 byte records from save RAM $D22 (ReadSRAM) and sort the rows on record
+ReadTeamRecords	;records94 ReadTeamRecords. Read the $80 byte records from save RAM $D22 (ReadSRAM) and sort the rows on record
 	;byte 0 (recsort1) or, with sflags6 bit 6, byte 4 (recsort2)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	#$D22,d0
@@ -582,7 +582,7 @@ ReadTeamRecords	;no IDA label. records94 ReadTeamRecords. Read the $80 byte reco
 	movea.l	(sp)+,a1
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-ClearWinRecords	;no IDA label. title94 ClearWinRecords. Clear bytes 8-$B (wins, games) of the 8 ThreeStars records and write the $80 bytes to
+ClearWinRecords	;title94 ClearWinRecords. Clear bytes 8-$B (wins, games) of the 8 ThreeStars records and write the $80 bytes to
 	;save RAM $D22 (WriteSRAM, MakeSRAMChecksum)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#ThreeStars,a0

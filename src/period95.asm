@@ -11,7 +11,7 @@
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-GameStatisticsScreen	;no IDA label. period94 GameStatisticsScreen (93 name). Pause menu GAME STATS: both teams' totals
+GameStatisticsScreen	;period94 GameStatisticsScreen (93 name). Pause menu GAME STATS: both teams' totals
 	;(DisplayTeamStatsScreen). There are more rows than the screen: up / down scroll them (matchupvis the most, $70 or $30 without
 	;penalties, OptPen), start exits (ExitAttributeScreen2). 95 draws the screen with DrawTeamScreen2 (ControllerBgMap)
 	moveq	#9,d0
@@ -50,7 +50,7 @@ GameStatisticsScreen	;no IDA label. period94 GameStatisticsScreen (93 name). Pau
 	bsr.w	StatScrollStep
 	bsr.w	PrintStatScrollArrows
 	bra.s	.loop
-StatScrollStep	;IDA: sub_9217E. GameStatisticsScreen .4 in 94: one scroll step of PlayerScrollCtr, within 0 ... matchupvis
+StatScrollStep	;GameStatisticsScreen .4 in 94: one scroll step of PlayerScrollCtr, within 0 ... matchupvis
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsStatTables
 	add.w	(VertLineScrolling).w,d0
@@ -74,7 +74,7 @@ StatScrollStep	;IDA: sub_9217E. GameStatisticsScreen .4 in 94: one scroll step o
 	cmp.w	#2,d0
 	bne.w	SetStatScroll
 	bsr.w	StatScrollRowEnd
-SetStatScroll	;IDA: sub_921CE. period94 SetStatScroll. Plane A vertical scroll (VSRAM 0) = VertLineScrolling - $50, with disflags bit 2
+SetStatScroll	;period94 SetStatScroll. Plane A vertical scroll (VSRAM 0) = VertLineScrolling - $50, with disflags bit 2
 	;set while it writes
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
@@ -85,18 +85,18 @@ SetStatScroll	;IDA: sub_921CE. period94 SetStatScroll. Plane A vertical scroll (
 	move.w	d0,(a0)
 	move.w	(sp)+,(disflags).w
 	rts
-StatScrollRow	;IDA: sub_921F6. period94 StatScrollRow. d3 = VertLineScrolling / 16
+StatScrollRow	;period94 StatScrollRow. d3 = VertLineScrolling / 16
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	bra.w	rtsStatScroll
-StatScrollRowEnd	;IDA: sub_92200. period94 StatScrollRowEnd. d3 = VertLineScrolling / 16 + 6
+StatScrollRowEnd	;period94 StatScrollRowEnd. d3 = VertLineScrolling / 16 + 6
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	addq.w	#6,d3
 	bra.w	rtsStatScroll
-rtsStatScroll	;IDA: locret_9220C. rts of StatScrollRow / StatScrollRowEnd
+rtsStatScroll	;rts of StatScrollRow / StatScrollRowEnd
 	rts
-PrintStatScrollArrows	;IDA: loc_9220E. period94 PrintStatScrollArrows. Scroll arrows (printz2): up ($7B) when VertLineScrolling > 0, down
+PrintStatScrollArrows	;period94 PrintStatScrollArrows. Scroll arrows (printz2): up ($7B) when VertLineScrolling > 0, down
 	;($7D) when it is below matchupvis
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz2).l
@@ -124,7 +124,7 @@ PrintStatScrollArrows	;IDA: loc_9220E. period94 PrintStatScrollArrows. Scroll ar
 	String	$F9,0
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-DisplayTeamStatsScreen	;IDA: sub_92288. period94 DisplayTeamStatsScreen (93 name). Team blocks (PutTeamBlock), then each TeamStatTextTbl row
+DisplayTeamStatsScreen	;period94 DisplayTeamStatsScreen (93 name). Team blocks (PutTeamBlock), then each TeamStatTextTbl row
 	;(TeamStatTextTblNoPen when penalties are off, OptPen) centred, with the home value at x $22 and the visitors' at x 9 (FormatStatValue);
 	;SetStatScroll first
 	jsr	(printz).l
@@ -162,7 +162,7 @@ DisplayTeamStatsScreen	;IDA: sub_92288. period94 DisplayTeamStatsScreen (93 name
 	addq.w	#2,(printy).w
 	dbf	d6,.loop
 	rts
-FormatStatValue	;IDA: sub_92318. period94 FormatStatValue (93 name). Print TeamStatTextTbl entry a0 for team a2 centred at printx: the
+FormatStatValue	;period94 FormatStatValue (93 name). Print TeamStatTextTbl entry a0 for team a2 centred at printx: the
 	;value (offsets $A and $354 are times, PushTime), "/second" if any, " (pct%)" for passing; offset $FFFF is the shooting percentage
 	;(goals $C * 100 / shots 0), printed with a "%"
 	movea.w	#(mesarea-M68K_RAM),a3
@@ -232,7 +232,7 @@ FormatStatValue	;IDA: sub_92318. period94 FormatStatValue (93 name). Print TeamS
 	jmp	PushNumber
 .8
 	jmp	PushTime
-TeamStatTextTbl	;IDA: unk_9240E. period94 TeamStatTextTbl (93 name). Label, then the team struct stat offset and the second offset ($FFFF
+TeamStatTextTbl	;period94 TeamStatTextTbl (93 name). Label, then the team struct stat offset and the second offset ($FFFF
 	;none). 15 rows; the offsets from $354 are 2 more than 94 (95 team struct)
 	dc.w	$0008
 	dc.b	'Score',0
@@ -279,7 +279,7 @@ TeamStatTextTbl	;IDA: unk_9240E. period94 TeamStatTextTbl (93 name). Label, then
 	dc.w	$000A
 	dc.b	'Passing',0
 	dc.w	$14,$12
-TeamStatTextTblNoPen	;IDA: unk_924FC. period94 TeamStatTextTblNoPen. The rows without the power play ones, used when penalties are off.
+TeamStatTextTblNoPen	;period94 TeamStatTextTblNoPen. The rows without the power play ones, used when penalties are off.
 	;11 rows
 	dc.w	$0008
 	dc.b	'Score',0

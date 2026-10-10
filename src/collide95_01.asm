@@ -4,12 +4,12 @@
 ;	checkinglist2, Bcheck, holdcheck, the 95 Sweepcheck), FallDown, checkpuckcoll, puckstick, puckglue, puckbody, rtspuck (the 94 rtss2 place),
 ;	deflect, checkpuckcoll_sfx, checkgoal (the 94 .goal code is elsewhere: Goal), checkgoalp, CheckBump, cards94 wallcollduringcheck, crowd94
 ;	checkcornercoll94 / cornercollb94, puckgoalie, checkint, the 95 DropPuck. video95_03 (94 sroot) follows at $7C512.
-;	IDA dc.b written as instructions: WaitVSyncAndReadInput, a second rts after checkwallcoll ($7A976), checkpuckcoll ... checkpuckcoll_sfx
+;	written as instructions: WaitVSyncAndReadInput, a second rts after checkwallcoll ($7A976), checkpuckcoll ... checkpuckcoll_sfx
 ;	($7B51A-$7BD8B) and puckgoalie ($7C154-$7C3FB).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 ;	Sort struct (SortCords, $80 each): $40 temp1, $64 bit 3 one-timer, bit 4 wall collision, bit 5 fell, $68 Agl, $73 aggres, $74 Fgt, $75 Chk.
-ProcessInputWithRepeat	;IDA: sub_7A762 (video94). 93 name. nodiag, then key repeat on d1-d3. 95: first repeat after $19 frames, then every 4 (every $14 with sflags12
+ProcessInputWithRepeat	;(video94). 93 name. nodiag, then key repeat on d1-d3. 95: first repeat after $19 frames, then every 4 (every $14 with sflags12
 	;bit 0)
 	bsr.w	nodiag
 	tst.w	d3
@@ -30,7 +30,7 @@ ProcessInputWithRepeat	;IDA: sub_7A762 (video94). 93 name. nodiag, then key repe
 .2
 	rts
 
-WaitVSyncAndReadInput	;$7A79C. IDA dc.b (stats94). Wait for the next vblank, read the menu pad (ReadMenuJoy, nodiag) until a new button press
+WaitVSyncAndReadInput	;(stats94). Wait for the next vblank, read the menu pad (ReadMenuJoy, nodiag) until a new button press
 	move.w	(vcount).w,d1
 .0
 	cmp.w	(vcount).w,d1
@@ -41,7 +41,7 @@ WaitVSyncAndReadInput	;$7A79C. IDA dc.b (stats94). Wait for the next vblank, rea
 	beq.s	WaitVSyncAndReadInput
 	rts
 
-checkcoll	;IDA: sub_7A7B4. d2 = new x coord, d3 = new y coord, a3 = struct of object. Check wall collision (around the hot spot and the end of the
+checkcoll	;d2 = new x coord, d3 = new y coord, a3 = struct of object. Check wall collision (around the hot spot and the end of the
 	;stick) and player collisions, then move a3 in the OOlist sort order by its y. If a player collision set collflag, restore the old x/y instead.
 	;Called from updateplayers. 95 has no horizontal rink case
 	clr.w	(collflag).w
@@ -115,7 +115,7 @@ checkcoll	;IDA: sub_7A7B4. d2 = new x coord, d3 = new y coord, a3 = struct of ob
 	move.w	OldYpos(a3),Ypos(a3)
 	rts
 
-checkwallcoll	;IDA: sub_7A8A2. 93 name. d2/d3 = x/y to test, a3 = object, wcradiusx/wcradiusy = radius. Check the corner circles, the goals (checkgoal
+checkwallcoll	;93 name. d2/d3 = x/y to test, a3 = object, wcradiusx/wcradiusy = radius. Check the corner circles, the goals (checkgoal
 	;with a2 = SortCords+(13*SCstruct) top, SortCords+(12*SCstruct) bottom) and then the side and end boards. Calls wallcollb on a hit, with
 	;d0/d1 = cos/sin of the wall. 95 rink: sideline $98, end boards $138, corner radius $4C (94: $88, $12A, $40)
 	bclr	#4,$64(a3)
@@ -194,7 +194,7 @@ checkwallcoll	;IDA: sub_7A8A2. 93 name. d2/d3 = x/y to test, a3 = object, wcradi
 	rts
 	rts	;$7A976. IDA dc.b: a second rts, no xref
 
-wallcollb	;IDA: sub_7A978. 93 name. Check for puck over wall. a3 = object, d0/d1 = cos/sin of the wall. Not the puck: wallcoll. 95: Zpos above $15
+wallcollb	;93 name. Check for puck over wall. a3 = object, d0/d1 = cos/sin of the wall. Not the puck: wallcoll. 95: Zpos above $15
 	;locks the scroll (LockScroll) and goes out of play; above $12 only at x $28-$2A behind the goal line ($110) with Yvel >= $FA0 (SPA $250A on the
 	;next struct, sfx $E, crowd). Out of play: sfslock, pfnc, and while the clock runs penalty 6 (PenOOP) for ltplayer
 	cmpi.w	#$E,SCnum(a3)
@@ -245,7 +245,7 @@ wallcollb	;IDA: sub_7A978. 93 name. Check for puck over wall. a3 = object, d0/d1
 .3
 	rts
 
-wallcoll	;IDA: sub_7AA36. d0 = cosine, d1 = sine of angle of incidence with wall, a3 = object. Bounce a3 off the wall: the puck loses speed, flips
+wallcoll	;d0 = cosine, d1 = sine of angle of incidence with wall, a3 = object. Bounce a3 off the wall: the puck loses speed, flips
 	;and plays sfx $28-$2B; a player sets the wall collision bit (unless sflags6 bit 4) and plays SFXplayerwall on a hard hit
 	move.w	d0,Wallcos(a3)
 	move.w	d1,Wallsin(a3)
@@ -335,7 +335,7 @@ wallcoll	;IDA: sub_7AA36. d0 = cosine, d1 = sine of angle of incidence with wall
 	movem.l	(sp)+,d2-d3
 	rts
 
-checkplcoll	;IDA: sub_7AB44. check collision with other players. d2/d3 = x/y cords, a3 = struct. Walk up and down the OOlist from a3 and call
+checkplcoll	;check collision with other players. d2/d3 = x/y cords, a3 = struct. Walk up and down the OOlist from a3 and call
 	;checkcx for each object within $10 in y (92 collrad*2). Called from checkcoll
 	btst	#5,pflags2(a3)
 	bne.w	.3
@@ -375,7 +375,7 @@ checkplcoll	;IDA: sub_7AB44. check collision with other players. d2/d3 = x/y cor
 .3
 	rts
 
-checkcx	;IDA: sub_7ABB8. d4 = obj. # * 2 for possible collision so check x range and distance for collision. d2 = x, d5 = delta y, a3 = moving
+checkcx	;d4 = obj. # * 2 for possible collision so check x range and distance for collision. d2 = x, d5 = delta y, a3 = moving
 	;object. Opposing players add impact and run newcheck, checkint and checkcheck; then momentum moves from a3 to a2 (95: no elasticity term,
 	;a goalie weighs $DC, and no momentum when either player has pflags2 bit 5 after the checks)
 	movem.l	d0-d7/a0-a3,-(sp)
@@ -508,7 +508,7 @@ checkcx	;IDA: sub_7ABB8. d4 = obj. # * 2 for possible collision so check x range
 	addq.w	#4,sp
 	bra.s	.7
 
-checkcheck	;IDA: sub_7AD50. player is in contact: look for various contact events. Runs CCStart for a3 on a2, then for a2 on a3. d4 = impact.
+checkcheck	;player is in contact: look for various contact events. Runs CCStart for a3 on a2, then for a2 on a3. d4 = impact.
 	;Called from checkcx
 	movem.l	d0-d4/a0-a3,-(sp)
 	bsr.w	CCStart
@@ -517,7 +517,7 @@ checkcheck	;IDA: sub_7AD50. player is in contact: look for various contact event
 	movem.l	(sp)+,d0-d4/a0-a3
 	rts
 
-CCStart	;IDA: sub_7AD64. Player a3 is checking player a2. Holds (95 SPA $E10, $E74) go to holdcheck, SPA $F38 (94 SPAsweepchk) to Bcheck;
+CCStart	;Player a3 is checking player a2. Holds (95 SPA $E10, $E74) go to holdcheck, SPA $F38 (94 SPAsweepchk) to Bcheck;
 	;otherwise only a3 in SPA $11AE (94 SPAburst) checks. Sets a3's check anim from checkinglist (95: 1 in 5 from checkinglist2 when the two
 	;face each other); a big enough hit on a skater makes a2 fall, with a charging ($16 / $18) or roughing ($1A / $1C) roll from checkagr
 	cmpi.w	#$E10,SPA(a2)
@@ -632,13 +632,13 @@ CCStart	;IDA: sub_7AD64. Player a3 is checking player a2. Holds (95 SPA $E10, $E
 .7
 	rts
 
-checkinglist	;IDA: unk_7AF06. Check anim by direction from a3 to a2, SPA offsets
+checkinglist	;Check anim by direction from a3 to a2, SPA offsets
 	dc.w	$DAC,$DDE,$DDE,$DDE,$DDE,$DAC,$DAC,$DAC
 
-checkinglist2	;IDA: unk_7AF16. 95 only. Check anims for two players facing each other
+checkinglist2	;95 only. Check anims for two players facing each other
 	dc.w	$2530,$254A,$254A,$254A,$254A,$2530,$2530,$2530
 
-Bcheck	;IDA: loc_7AF26. a2 = player that is B checking (SPA $F38), a3 = player being checked. Entered from CCStart. If OptPen is 0 and a2 is
+Bcheck	;a2 = player that is B checking (SPA $F38), a3 = player being checked. Entered from CCStart. If OptPen is 0 and a2 is
 	;joystick controlled, a2 needs randomd0($20 + a2 Chk - a3 Agl) >= $18 (95: no roll against a3 the puck carrier). If a3 is within 1 direction
 	;of where a2 faces, a3 falls and checkagr may call penalty $20 (tripping) on a2. Sets collflag
 	btst	#pfalock,pflags(a3)
@@ -683,7 +683,7 @@ Bcheck	;IDA: loc_7AF26. a2 = player that is B checking (SPA $F38), a3 = player b
 .2
 	rts
 
-holdcheck	;IDA: loc_7AFBC. player a2 is in a hold animation looking to hold opponent a3. Entered from CCStart. a3 must be within 1 direction of
+holdcheck	;player a2 is in a hold animation looking to hold opponent a3. Entered from CCStart. a3 must be within 1 direction of
 	;where a2 faces. Both get the average velocity, a3 goes to SPA $1F68, a2 to $E42 or $EA6, and checkagr rolls penalty $24 or $1E
 	btst	#pfalock,pflags(a3)
 	bne.w	.4
@@ -741,12 +741,12 @@ holdcheck	;IDA: loc_7AFBC. player a2 is in a hold animation looking to hold oppo
 .4
 	rts
 
-Sweepcheck	;IDA: loc_7B08A. 95 only. Lock a3 in SPA $F38 (the sweep check). Jumped to from chgplayer (setup95_01)
+Sweepcheck	;95 only. Lock a3 in SPA $F38 (the sweep check). Jumped to from chgplayer (setup95_01)
 	bset	#pfalock,pflags(a3)
 	move.w	#$F38,d1
 	jmp	(SetSPA).l
 
-FallDown	;IDA: sub_7B09A. player a2 falls down, player a3 is the hitting player. Skips a2 in some anims, or the same pair as the last call. A skater
+FallDown	;player a2 falls down, player a3 is the hitting player. Skips a2 in some anims, or the same pair as the last call. A skater
 	;hitter adds check stats (team $10, player $11E, ChkCnt). A hit into the wall picks a fall anim from .FallList by where a2 is, a strong Stk player
 	;may just stumble (95: and drop the puck, DropPuck), and an injury (setInjuryType) adds penalty $12 (or $14) and stops play. Then the crowd and
 	;a check sound (newcheck). Called from checkint, CCStart, Bcheck and puckbody
@@ -1049,7 +1049,7 @@ FallDown	;IDA: sub_7B09A. player a2 falls down, player a3 is the hitting player.
 .34
 	jmp	(newcheck).l
 
-checkpuckcoll	;$7B51A. IDA dc.b. look for puck coll with players. a3 = puck. Clears Yvel past the back boards, then walks up and down the OOlist from
+checkpuckcoll	;look for puck coll with players. a3 = puck. Clears Yvel past the back boards, then walks up and down the OOlist from
 	;the puck and runs .ccx on each object within $1D in y: stick (puckstick), body (puckbody) or goalie (puckgoalie). 95 keeps the skater
 	;reach in RAM: stick $12 (x and y, squared $144) and body $B (squared $79), or $E / $A ($C4 / $64) unless a2 is in a one-timer.
 	;95 bugs kept: the stick distance compares against the address of ChkStickSqP, not its value, and the body y test is a move, so
@@ -1316,7 +1316,7 @@ checkpuckcoll	;$7B51A. IDA dc.b. look for puck coll with players. a3 = puck. Cle
 	jsr	(sfx).l
 	bra.w	.exit
 
-puckstick	;$7B904. IDA dc.b. puck collides with stick. a2 = player who collided, a3 = puck, d0 = distance^2 (from checkpuckcoll .ccx). A stick
+puckstick	;puck collides with stick. a2 = player who collided, a3 = puck, d0 = distance^2 (from checkpuckcoll .ccx). A stick
 	;check on the puck carrier can steal the puck (Stk rolls, smaller ranges when the carrier is in the slot, sflags6 bit 5), else a slow enough
 	;puck is caught (puckglue); a one-timer shoots it (onetimershot). 95: no highlight exit for the goalie, no steal roll against SPA $B8E
 	tst.w	position(a2)	;a2 = player who collided
@@ -1438,7 +1438,7 @@ puckstick	;$7B904. IDA dc.b. puck collides with stick. a2 = player who collided,
 .ex2
 	rts
 
-puckglue	;$7BAB2. IDA dc.b. 93 name. Player a2 takes the puck (92 puckstick .glue): faceoff and pass stats, crowd song, goalie hold time (temp5),
+puckglue	;93 name. Player a2 takes the puck (92 puckstick .glue): faceoff and pass stats, crowd song, goalie hold time (temp5),
 	;then .setd0player. 95 also sets pflags2 bit 7 on a2
 	move.w	#7,-(sp)	;SFXpuckget (song)
 	move.w	SCnum(a2),d0	;move SCnum into d0
@@ -1574,7 +1574,7 @@ puckglue	;$7BAB2. IDA dc.b. 93 name. Player a2 takes the puck (92 puckstick .glu
 	bne.w	rtspuck
 	jmp	(setc4player).l
 
-puckbody	;$7BCA8. IDA dc.b. puck hits player a2. a3 = puck, d0 = distance^2 (from checkpuckcoll .ccx). The puck bounces off. A high puck
+puckbody	;puck hits player a2. a3 = puck, d0 = distance^2 (from checkpuckcoll .ccx). The puck bounces off. A high puck
 	;(Zpos > 8) that is fast makes a2 fall (FallDown, Zpos > $C); a slower one starts SPA $2402 (94 SPAcatch) on a2
 	btst	#3,$64(a2)
 	bne.w	rtspuck
@@ -1619,10 +1619,10 @@ puckbody	;$7BCA8. IDA dc.b. puck hits player a2. a3 = puck, d0 = distance^2 (fro
 	exg	a2,a3
 	jsr	(SetSPA).l
 	exg	a2,a3
-rtspuck	;IDA: locret_7BD4A. Shared rts in the 94 rtss2 place (after puckbody), branched to from this segment
+rtspuck	;Shared rts in the 94 rtss2 place (after puckbody), branched to from this segment
 	rts
 
-deflect	;$7BD4C. IDA dc.b. random puck direction on deflection, puck = a3. Entered from puckstick. 95: Zvel = randomd0($400)
+deflect	;random puck direction on deflection, puck = a3. Entered from puckstick. 95: Zvel = randomd0($400)
 	st	(puckc).w
 	move.w	#$1000,d0
 	bsr.w	randomd0s
@@ -1635,13 +1635,13 @@ deflect	;$7BD4C. IDA dc.b. random puck direction on deflection, puck = a3. Enter
 	move.w	d0,Zvel(a3)
 	jmp	(puckflip).l
 
-checkpuckcoll_sfx	;$7BD78. IDA dc.b. Puck in the air: sfx 5 once when sflags4 bit 2 is set. Entered from checkpuckcoll
+checkpuckcoll_sfx	;Puck in the air: sfx 5 once when sflags4 bit 2 is set. Entered from checkpuckcoll
 	bclr	#2,(sflags4).w
 	beq.s	rtspuck
 	move.w	#5,-(sp)
 	jmp	(sfx).l
 
-checkgoal	;IDA: sub_7BD8C. look for coll with goal/net. a2 = goal struct, a3 = object, d2/d3 = x/y. A puck under the crossbar hits a post or the net
+checkgoal	;look for coll with goal/net. a2 = goal struct, a3 = object, d2/d3 = x/y. A puck under the crossbar hits a post or the net
 	;(ChkShotStat, sfx $25 or 8 and crowd) or goes in (Goal); a player goes to checkgoalp. Called from checkwallcoll
 	cmpi.w	#$D,Zpos(a3)
 	bgt.w	.8
@@ -1762,7 +1762,7 @@ checkgoal	;IDA: sub_7BD8C. look for coll with goal/net. a2 = goal struct, a3 = o
 	neg.w	d1
 	bra.w	wallcoll
 
-checkgoalp	;IDA: loc_7BF1E. check for player a3 collision with goal/net a2. Entered from checkgoal. Oval goal (95: $640 by $121, 94: $400 by $79);
+checkgoalp	;check for player a3 collision with goal/net a2. Entered from checkgoal. Oval goal (95: $640 by $121, 94: $400 by $79);
 	;skipped for no player coll (pflags2 bit 5), a high player or a non-player. CheckBump, then wallcoll with sflags6 bit 4 set
 	btst	#5,pflags2(a3)
 	bne.w	.1
@@ -1810,7 +1810,7 @@ checkgoalp	;IDA: loc_7BF1E. check for player a3 collision with goal/net a2. Ente
 .1
 	rts
 
-CheckBump	;IDA: sub_7BFAE. supply minimum separation velocity for coll with walls/goal/net. a2 = goal, a3 = player. On one frame in 32, a player
+CheckBump	;supply minimum separation velocity for coll with walls/goal/net. a2 = goal, a3 = player. On one frame in 32, a player
 	;near the puck in y moving faster than $24CC knocks the net (a2 gets a quarter of a3's velocity, a3 stops, scroll lock at Vpos) and, while the
 	;clock runs, calls penalty 8. Called from checkgoalp
 	movem.l	d0-d1,-(sp)
@@ -1853,7 +1853,7 @@ CheckBump	;IDA: sub_7BFAE. supply minimum separation velocity for coll with wall
 .2
 	rts
 
-wallcollduringcheck	;IDA: sub_7C042 (cards94). during a check, a skater a2 (not a goalie) near the wall: test the wall at his position with his size +
+wallcollduringcheck	;(cards94). during a check, a skater a2 (not a goalie) near the wall: test the wall at his position with his size +
 	;$17 (checkcornercoll94). Called from CCStart and FallDown
 	tst.w	position(a2)
 	beq.w	.0
@@ -1873,7 +1873,7 @@ wallcollduringcheck	;IDA: sub_7C042 (cards94). during a check, a skater a2 (not 
 .0
 	rts
 
-checkcornercoll94	;IDA: sub_7C088 (crowd94). Corner circles and side walls for object a3 at d2 / d3 (wcradiusx / wcradiusy); a hit goes to
+checkcornercoll94	;(crowd94). Corner circles and side walls for object a3 at d2 / d3 (wcradiusx / wcradiusy); a hit goes to
 	;cornercollb94. 95: end boards $128
 	bclr	#4,$64(a3)
 	move.w	#$98,d4
@@ -1947,11 +1947,11 @@ checkcornercoll94	;IDA: sub_7C088 (crowd94). Corner circles and side walls for o
 .3
 	rts
 
-cornercollb94	;IDA: sub_7C14E (crowd94). 95: straight to wallcollb
+cornercollb94	;(crowd94). 95: straight to wallcollb
 	jmp	(wallcollb).l
 
 
-puckgoalie	;$7C154. IDA dc.b. puck hits goalie a2. a3 = puck, d0/d1 = goalie - puck x/y. A save bounces the puck off (.bounceoff), a slow puck
+puckgoalie	;puck hits goalie a2. a3 = puck, d0/d1 = goalie - puck x/y. A save bounces the puck off (.bounceoff), a slow puck
 	;near the crease is held (puckglue). 95 picks the save attribute (.list) but no longer reads the save odds from the frame tables
 	;(.list2 is left unread)
 	btst	#gmhl,(gmode).w	;check if highlight
@@ -2102,7 +2102,7 @@ puckgoalie	;$7C154. IDA dc.b. puck hits goalie a2. a3 = puck, d0/d1 = goalie - p
 	dc.b	$D5,$D5,$75,$75,$D5,$D5,$75,$75,$D5,$D5,$75,$75,$D5,$D5,$75,$75
 	dc.b	$D5,$D5,$75,$75,$D5,$D5,$75,$75,$D5,$D5,$75,$75
 
-checkint	;IDA: sub_7C3FC. check for interference penalty. player a2 interferes with a3 or vice-versa; goalie is only player who can cause an
+checkint	;check for interference penalty. player a2 interferes with a3 or vice-versa; goalie is only player who can cause an
 	;interference call. Called from checkcx. .ci (IDA sub_7C40E): a2 = goalie, a3 = player interfering with goalie. a3 falls. The penalty ($22)
 	;needs a3 in the crease area, a CPU player or a pad player's joystick player, and randomd0($1E - aggres) <= 5
 	move.l	d0,-(sp)
@@ -2178,7 +2178,7 @@ checkint	;IDA: sub_7C3FC. check for interference penalty. player a2 interferes w
 .7
 	rts
 
-DropPuck	;IDA: sub_7C4F6. 95 only. a2 loses the puck (puckc = -1 if he had it) and cannot touch it for $1E frames. Called from FallDown
+DropPuck	;95 only. a2 loses the puck (puckc = -1 if he had it) and cannot touch it for $1E frames. Called from FallDown
 	move.w	d0,-(sp)
 	move.w	SCnum(a2),d0
 	cmp.w	(puckc).w,d0

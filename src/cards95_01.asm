@@ -10,7 +10,7 @@
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-NameEntryScreen	;IDA: sub_9ACE6. Name Entry screen: draw team logo, NAME ENTRY title and Name Log, then edit the name with the pad (cards94 NameEntryScreen)
+NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Log, then edit the name with the pad (cards94 NameEntryScreen)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a5,-(sp)
 	bset	#1,(BA_PS_flags).w
@@ -267,12 +267,12 @@ NameEntryScreen	;IDA: sub_9ACE6. Name Entry screen: draw team logo, NAME ENTRY t
 	move.b	d0,(a0,d4.w)
 	bra.w	.3
 
-NameEntryExit	;IDA: loc_9B0AC. NameEntryScreen exit (restore and return)
+NameEntryExit	;NameEntryScreen exit (restore and return)
 	bsr.w	StoreUserName
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-NameLetterGrid	;IDA: sub_9B0B6. Name entry: letter grid and its key help (cards94 NameLetterGrid); on the second call the name log help (NameEntryHelp)
+NameLetterGrid	;Name entry: letter grid and its key help (cards94 NameLetterGrid); on the second call the name log help (NameEntryHelp)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BF,$18,$12,$0
@@ -327,7 +327,7 @@ NameLetterGrid	;IDA: sub_9B0B6. Name entry: letter grid and its key help (cards9
 	bsr.w	NameEntryHelp
 	bra.s	.2
 
-NameEntryHelp	;IDA: sub_9B1C4. Name entry: name log key help text (cards94 NameEntryHelp)
+NameEntryHelp	;Name entry: name log key help text (cards94 NameEntryHelp)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(ClearNameHelp).l
 	jsr	(printz).l
@@ -341,7 +341,7 @@ NameEntryHelp	;IDA: sub_9B1C4. Name entry: name log key help text (cards94 NameE
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintNamePrompt	;IDA: sub_9B228. Name entry: print "Enter new name." for an empty name log slot word_FFD0F6, else "Select or replace." (cards94 PrintNamePrompt)
+PrintNamePrompt	;Name entry: print "Enter new name." for an empty name log slot word_FFD0F6, else "Select or replace." (cards94 PrintNamePrompt)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(CreateListRow).w,d0
 	mulu.w	#$C,d0
@@ -356,7 +356,7 @@ PrintNamePrompt	;IDA: sub_9B228. Name entry: print "Enter new name." for an empt
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SyncLetterCursor	;IDA: sub_9B25A. Name entry: grid cursor d5 = grid index of the current letter (sub_9B288), 0 if not in the grid (cards94 SyncLetterCursor)
+SyncLetterCursor	;Name entry: grid cursor d5 = grid index of the current letter (sub_9B288), 0 if not in the grid (cards94 SyncLetterCursor)
 	movem.l	d0-d4/a0-a6,-(sp)
 	move.b	(NameEntryBuf).w,d0
 	bsr.w	FindLetter
@@ -373,7 +373,7 @@ SyncLetterCursor	;IDA: sub_9B25A. Name entry: grid cursor d5 = grid index of the
 	movem.l	(sp)+,d0-d4/a0-a6
 	rts
 
-FindLetter	;IDA: sub_9B288. d0 = index of letter d0 in the letter grid, $1E when not found (cards94 FindLetter)
+FindLetter	;d0 = index of letter d0 in the letter grid, $1E when not found (cards94 FindLetter)
 	movem.l	d1-d3/a0-a6,-(sp)
 	movea.l	#LetterGrid,a0
 	move.b	d0,d1
@@ -389,17 +389,17 @@ FindLetter	;IDA: sub_9B288. d0 = index of letter d0 in the letter grid, $1E when
 	movem.l	(sp)+,d1-d3/a0-a6
 	rts
 
-PrintNameCursor	;IDA: sub_9B2B2. Name entry: position the name cursor (95 prints no " < "; cards94 PrintNameCursor)
+PrintNameCursor	;Name entry: position the name cursor (95 prints no " < "; cards94 PrintNameCursor)
 	jsr	(printz).l
 	String	$BF,5,$12,$0
 	add.w	d4,(printx).w
 	tst.w	(NameEntryMode).w
 	beq.w	rtsNameCursor
 
-rtsNameCursor	;IDA: locret_9B2CA. Shared rts of sub_9B2B2 (cards94 rtsNameCursor)
+rtsNameCursor	;Shared rts of sub_9B2B2 (cards94 rtsNameCursor)
 	rts
 
-PrintCurLetter	;IDA: sub_9B2CC. Name entry: print grid letter d5 when the cursor is on (cards94 PrintCurLetter)
+PrintCurLetter	;Name entry: print grid letter d5 when the cursor is on (cards94 PrintCurLetter)
 	tst.w	(NameEntryMode).w
 	beq.s	rtsNameCursor
 	movea.l	#ThreeStars,a1
@@ -410,7 +410,7 @@ PrintCurLetter	;IDA: sub_9B2CC. Name entry: print grid letter d5 when the cursor
 	move.b	d0,2(a1)
 	jmp	(printsmall).l
 
-LetterGridPos	;IDA: sub_9B2F6. Name entry: printx/printy of grid letter d5 (6 a row, 2 cells apart), d0/d1 = 3x3 box (cards94 LetterGridPos)
+LetterGridPos	;Name entry: printx/printy of grid letter d5 (6 a row, 2 cells apart), d0/d1 = 3x3 box (cards94 LetterGridPos)
 	jsr	(printz).l
 	String	$BF,9,$10,$0
 	move.w	d5,d0
@@ -425,13 +425,13 @@ LetterGridPos	;IDA: sub_9B2F6. Name entry: printx/printy of grid letter d5 (6 a 
 	moveq	#3,d1
 	rts
 
-EnterNameTxt	;IDA: unk_9B31E. Name entry prompt for an empty name log slot (cards94 EnterNameTxt)
+EnterNameTxt	;Name entry prompt for an empty name log slot (cards94 EnterNameTxt)
 	String	$BF,6,$F,'  Enter new name. ',$0
 
-SelectNameTxt	;IDA: unk_9B336. Name entry prompt for a used name log slot (cards94 SelectNameTxt)
+SelectNameTxt	;Name entry prompt for a used name log slot (cards94 SelectNameTxt)
 	String	$BF,6,$F,'Select or replace.',$0
 
-PrintNameLog	;IDA: sub_9B34E. Name entry: print the 7-row name log list (cards94 PrintNameLog)
+PrintNameLog	;Name entry: print the 7-row name log list (cards94 PrintNameLog)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(NameEntryLen).w,-(sp)
 	move.w	(CreateListRow).w,-(sp)
@@ -453,7 +453,7 @@ PrintNameLog	;IDA: sub_9B34E. Name entry: print the 7-row name log list (cards94
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-MoveLogArrows	;IDA: sub_9B3A0. Name entry: move the ] [ arrows when the name log selection changed (cards94 MoveLogArrows)
+MoveLogArrows	;Name entry: move the ] [ arrows when the name log selection changed (cards94 MoveLogArrows)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(CreateListRow).w,d0
 	cmp.w	(CreateListOldRow).w,d0
@@ -466,7 +466,7 @@ MoveLogArrows	;IDA: sub_9B3A0. Name entry: move the ] [ arrows when the name log
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintLogArrows	;IDA: sub_9B3CA. Name entry: print the two arrow Strings at a1 on name log row word_FFD0F8, then word_FFD0F8 = selection (cards94 PrintLogArrows)
+PrintLogArrows	;Name entry: print the two arrow Strings at a1 on name log row word_FFD0F8, then word_FFD0F8 = selection (cards94 PrintLogArrows)
 	tst.w	(CreateListOldRow).w
 	beq.w	.0
 	jsr	(printz).l
@@ -484,15 +484,15 @@ PrintLogArrows	;IDA: sub_9B3CA. Name entry: print the two arrow Strings at a1 on
 	move.w	(CreateListRow).w,(CreateListOldRow).w
 	rts
 
-LogArrowsTxt	;IDA: unk_9B408. Name log arrows "]" and "[" (cards94 LogArrowsTxt)
+LogArrowsTxt	;Name log arrows "]" and "[" (cards94 LogArrowsTxt)
 	String	']',$0
 	String	'[',$0
 
-LogArrowsClrTxt	;IDA: unk_9B410. Blanks that erase the name log arrows (cards94 LogArrowsClrTxt)
+LogArrowsClrTxt	;Blanks that erase the name log arrows (cards94 LogArrowsClrTxt)
 	String	' ',$0
 	String	' ',$0
 
-GetNameLength	;IDA: sub_9B418. Name entry: word_FFD0F4 = length of the name in the entry buffer (cards94 GetNameLength)
+GetNameLength	;Name entry: word_FFD0F4 = length of the name in the entry buffer (cards94 GetNameLength)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$B,d3
 	movea.l	#NameEntryBuf,a0
@@ -508,7 +508,7 @@ GetNameLength	;IDA: sub_9B418. Name entry: word_FFD0F4 = length of the name in t
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintNameField	;IDA: sub_9B446. Name entry: print the 12-char name field at a1 ("-" pads) and the current letter when the cursor is on (cards94 PrintNameField)
+PrintNameField	;Name entry: print the 12-char name field at a1 ("-" pads) and the current letter when the cursor is on (cards94 PrintNameField)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#ThreeStars,a0
 	move.w	(NameEntryLen).w,d0
@@ -552,10 +552,10 @@ PrintNameField	;IDA: sub_9B446. Name entry: print the 12-char name field at a1 (
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LetterGrid	;IDA: unk_9B4EE. Name entry letter grid, 5 rows of 6, $FF end (cards94 LetterGrid)
+LetterGrid	;Name entry letter grid, 5 rows of 6, $FF end (cards94 LetterGrid)
 	dc.b	'ABCDEFGHIJKLMNOPQRSTUVWXYZ.12  ',$FF
 
-GetLogName	;IDA: sub_9B50E. Copy name log entry word_FFD0F6 to a1 ("-" for blanks), word_FFD0F4 = its length (cards94 GetLogName)
+GetLogName	;Copy name log entry word_FFD0F6 to a1 ("-" for blanks), word_FFD0F4 = its length (cards94 GetLogName)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#namelog,a0
 	move.w	(CreateListRow).w,d2
@@ -577,7 +577,7 @@ GetLogName	;IDA: sub_9B50E. Copy name log entry word_FFD0F6 to a1 ("-" for blank
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-StoreUserName	;IDA: sub_9B550. Name entry: store the edited name in the name log slot; if changed, save and clear its old records (cards94 StoreUserName)
+StoreUserName	;Name entry: store the edited name in the name log slot; if changed, save and clear its old records (cards94 StoreUserName)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a5,-(sp)
 	movea.l	#namelog,a0
@@ -624,7 +624,7 @@ StoreUserName	;IDA: sub_9B550. Name entry: store the edited name in the name log
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-WriteNameRecord	;IDA: sub_9B5E2. Clear name slot word_FFD0F6 from every saved record (read sub_9952, write sub_98E6), zero its 16-byte entry at $D22, then sub_9908 (cards94 WriteNameRecord)
+WriteNameRecord	;Clear name slot word_FFD0F6 from every saved record (read sub_9952, write sub_98E6), zero its 16-byte entry at $D22, then sub_9908 (cards94 WriteNameRecord)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$2D7,d7
 	moveq	#2,d0

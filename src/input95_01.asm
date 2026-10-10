@@ -15,7 +15,7 @@
 ;	cmp encoding after assembly.
 
 
-doinput	;IDA: sub_83EB2. Process controller input for player a3: d0 = dpad, d1 = new buttons, d2 = changed buttons, d3 = held buttons,
+doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2 = changed buttons, d3 = held buttons,
 	;d4 = pad 0 / 2 / 4 / 6. 95: button A clears pflags2 bit 7 first
 	btst	#6,d1
 	beq.w	.0
@@ -393,7 +393,7 @@ doinput	;IDA: sub_83EB2. Process controller input for player a3: d0 = dpad, d1 =
 	beq.w	doplayeracc
 	bra.w	SetShotMode
 
-doinput_islocked	;IDA: loc_843F0. 94 global (doinput branches across). B with the player not the carrier: change player (chgplayer) and
+doinput_islocked	;94 global (doinput branches across). B with the player not the carrier: change player (chgplayer) and
 	;set $64 bit 6 of the pad's new player (95: pads 1 to 4)
 	move.w	(puckc).w,d5
 	cmp.w	$52(a3),d5
@@ -432,10 +432,10 @@ doinput_islocked	;IDA: loc_843F0. 94 global (doinput branches across). B with th
 .5
 	movem.l	(sp)+,d0/a0
 
-rtss7	;IDA: locret_84468. The doinput_islocked rts
+rtss7	;The doinput_islocked rts
 	rts
 
-faceoffinput	;IDA: loc_8446A. The faceoff player (assignment $11, 94 $17): store the dpad pull (fodir1 / fodir2) and start the faceoff
+faceoffinput	;The faceoff player (assignment $11, 94 $17): store the dpad pull (fodir1 / fodir2) and start the faceoff
 	;swipe on B (95 SPA $1B36 / $1B60; 94 $FEA / $1014)
 	btst	#6,(sflags5).w
 	beq.w	.1
@@ -462,15 +462,15 @@ faceoffinput	;IDA: loc_8446A. The faceoff player (assignment $11, 94 $17): store
 	move.w	#$1B60,d1
 	jmp	SetSPA
 
-setpassmode	;IDA: loc_844C0. Pass direction mode: passdir = facedir, sflags bit 2 (95 drops the 94 penalty shot part)
+setpassmode	;Pass direction mode: passdir = facedir, sflags bit 2 (95 drops the 94 penalty shot part)
 	move.w	$54(a3),(passdir).w
 	andi.w	#7,(passdir).w
 	bset	#2,(sflags).w
 
-rtss	;IDA: locret_844D2. The setpassmode rts
+rtss	;The setpassmode rts
 	rts
 
-passmode	;IDA: loc_844D4. Start passing: on a B change (or sflags5 bit 3) dopass, else a new pass direction from the dpad
+passmode	;Start passing: on a B change (or sflags5 bit 3) dopass, else a new pass direction from the dpad
 	btst	#4,d2
 	bne.w	dopass
 	btst	#3,(sflags5).w
@@ -481,7 +481,7 @@ passmode	;IDA: loc_844D4. Start passing: on a B change (or sflags5 bit 3) dopass
 	move.w	d0,(passdir).w
 	bset	#3,d0
 
-dopass	;IDA: loc_844F8. Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the puck speed
+dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the puck speed
 	movem.l	d0-d5/a0-a1,-(sp)
 	bclr	#2,(sflags).w
 	st	(puckc).w
@@ -635,7 +635,7 @@ dopass	;IDA: loc_844F8. Pass the puck from a3 in passdir: pick the receiver (pas
 	movem.l	(sp)+,d0-d5/a0-a1
 	rts
 
-passtoa0	;IDA: sub_8471A. Pass to player a0
+passtoa0	;Pass to player a0
 	btst	#3,$62(a3)
 	beq.w	.0
 .0
@@ -742,7 +742,7 @@ passtoa0	;IDA: sub_8471A. Pass to player a0
 	move.w	d1,(puckvy).w
 	rts
 
-OneTimerTarget	;IDA: sub_84850. onetimer94 OneTimerTarget (moved in). One-timer pass target for receiver a3: an offset by facing from
+OneTimerTarget	;onetimer94 OneTimerTarget (moved in). One-timer pass target for receiver a3: an offset by facing from
 	;OneTimerNearTbl / OneTimerFarTbl (skater, near or far from the goal) or OneTimerGoalieTbl
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#2,(sflags6).w
@@ -818,19 +818,19 @@ OneTimerTarget	;IDA: sub_84850. onetimer94 OneTimerTarget (moved in). One-timer 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-OneTimerNearTbl	;IDA: unk_8494A. OneTimerTarget target offsets (x, y) by facing, receiver near the goal
+OneTimerNearTbl	;OneTimerTarget target offsets (x, y) by facing, receiver near the goal
 	dc.w	$70,$C5,$70,$C5,$70,$C5,$70,$C5	;94 $74, $C2
 	dc.w	$FF90,$C5,$FF90,$C5,$FF90,$C5,$FF90,$C5
 
-OneTimerFarTbl	;IDA: unk_8496A. OneTimerTarget target offsets (x, y) by facing, receiver far from the goal
+OneTimerFarTbl	;OneTimerTarget target offsets (x, y) by facing, receiver far from the goal
 	dc.w	$FFFB,$AB,$FFFB,$AB,$FFFB,$AB,$FFFB,$AB
 	dc.w	$FFFB,$AB,$FFFB,$AB,$FFFB,$AB,$FFFB,$AB
 
-OneTimerGoalieTbl	;IDA: unk_8498A. OneTimerTarget target offsets (x, y) by facing, goalie
+OneTimerGoalieTbl	;OneTimerTarget target offsets (x, y) by facing, goalie
 	dc.w	$FFFB,$FFF4,$32,$FFF4,$32,$FFF4,$32,$FFF4	;94 $FFF7
 	dc.w	$FFFB,$FFF4,$FFCE,$FFF4,$FFCE,$FFF4,$FFCE,$FFF4
 
-OneTimerPass	;IDA: sub_849AA. onetimer94 OneTimerPass (moved in). One-timer pass: puckvz = sqrt(12 * onetimerheight), then puckvx / puckvy
+OneTimerPass	;onetimer94 OneTimerPass (moved in). One-timer pass: puckvz = sqrt(12 * onetimerheight), then puckvx / puckvy
 	;toward the target onetimertargetx / onetimertargety in puckvz
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$C,d0
@@ -865,7 +865,7 @@ OneTimerPass	;IDA: sub_849AA. onetimer94 OneTimerPass (moved in). One-timer pass
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-Findhittype	;IDA: sub_84A16. 94 name. Z by direction d0 from facedir and the hand (attribute bit 3): btst Dn,#imm (IDA cannot show it).
+Findhittype	;94 name. Z by direction d0 from facedir and the hand (attribute bit 3): btst Dn,#imm (IDA cannot show it).
 	;95 swaps the two masks of 94
 	neg.w	d0
 	add.w	facedir(a3),d0
@@ -878,7 +878,7 @@ Findhittype	;IDA: sub_84A16. 94 name. Z by direction d0 from facedir and the han
 	btst	d0,#$F0	;%11110000 (94 %00011110)
 	rts
 
-SetShotMode	;IDA: loc_84A36. Initiate a shot by player a3
+SetShotMode	;Initiate a shot by player a3
 	btst	#2,(BA_PS_flags).w
 	beq.w	.0
 	btst	#0,(GameFlags).w
@@ -919,7 +919,7 @@ SetShotMode	;IDA: loc_84A36. Initiate a shot by player a3
 .5
 	rts
 
-ShotMode	;IDA: loc_84AD0. The shot wind up: aim with the dpad until released
+ShotMode	;The shot wind up: aim with the dpad until released
 	cmpi.w	#$1C,$5A(a3)
 	bge.w	prepshot
 	btst	#3,d0
@@ -943,7 +943,7 @@ ShotMode	;IDA: loc_84AD0. The shot wind up: aim with the dpad until released
 .3
 	rts
 
-prepshot	;IDA: loc_84B20. Prepare the shot (shot direction), then doshot
+prepshot	;Prepare the shot (shot direction), then doshot
 	bclr	#4,(sflags5).w
 	move.w	#$B,d0
 	btst	#6,$62(a3)
@@ -966,7 +966,7 @@ prepshot	;IDA: loc_84B20. Prepare the shot (shot direction), then doshot
 .3
 	bra.w	doshot
 
-doshot	;IDA: loc_84B6E. Shoot the puck: speed and direction from the shooter's ratings, shotsets, shotdiradj; puckvz. 95: shotpflags,
+doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets, shotdiradj; puckvz. 95: shotpflags,
 	;ShotTimer
 	movem.l	d0-d7/a0-a3,-(sp)
 	bclr	#0,(GameFlags).w
@@ -1164,7 +1164,7 @@ doshot	;IDA: loc_84B6E. Shoot the puck: speed and direction from the shooter's r
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-shotsets	;IDA: unk_84E16. Offsets (x, z) for the different shot directions (passdir 0 ... 8)
+shotsets	;Offsets (x, z) for the different shot directions (passdir 0 ... 8)
 	dc.w	0,$C	;offsets for different directions on the shot: passdir 0 (x, z)
 	dc.w	$E,$C	;passdir 1 (94 $10)
 	dc.w	$E,6	;passdir 2
@@ -1175,7 +1175,7 @@ shotsets	;IDA: unk_84E16. Offsets (x, z) for the different shot directions (pass
 	dc.w	$FFF2,$C	;passdir 7
 	dc.w	0,6	;passdir 8
 
-shotdiradj	;IDA: sub_84E3A. a3 = shooter. Where to shoot for a computer player or a one timer
+shotdiradj	;a3 = shooter. Where to shoot for a computer player or a one timer
 	btst	#3,$64(a3)
 	bne.w	.0
 	btst	#3,$62(a3)
@@ -1247,7 +1247,7 @@ shotdiradj	;IDA: sub_84E3A. a3 = shooter. Where to shoot for a computer player o
 .6
 	rts
 
-shotdirmath	;IDA: sub_84F1A. shotdiradj helper
+shotdirmath	;shotdiradj helper
 	sub.w	(puckx).w,d3
 	sub.w	(pucky).w,d4
 	muls.w	d0,d4
@@ -1256,7 +1256,7 @@ shotdirmath	;IDA: sub_84F1A. shotdiradj helper
 	divs.w	d2,d4
 	rts
 
-puckvzadj	;no IDA label (IDA dc.b). onetimer94 puckvzadj (moved in; IDA name). Set puckvz for a top shelf shot from the distance to the goal
+puckvzadj	;onetimer94 puckvzadj (moved in; IDA name). Set puckvz for a top shelf shot from the distance to the goal
 	;line ($10B; 94 $108) over puckvy, at most $7FFF. Called from doshot
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(pucky).w,d0	;move pucky into d0
@@ -1308,7 +1308,7 @@ puckvzadj	;no IDA label (IDA dc.b). onetimer94 puckvzadj (moved in; IDA name). S
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-compshoot	;no IDA label (IDA dc.b). checks94 compshoot (moved in). Computer player shoots: drop the caller's return, temp2 from the
+compshoot	;checks94 compshoot (moved in). Computer player shoots: drop the caller's return, temp2 from the
 	;distance to the goal line, then assshoot. Jumped to from asspuckc, chk4shot (checks95_02) and checks95_05
 	addq.w	#4,sp
 	move.w	(pucky).w,d0

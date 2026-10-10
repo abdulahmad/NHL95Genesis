@@ -11,7 +11,7 @@
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-puckshootout	;no IDA label. checks94 puckshootout. Start a penalty shot or shootout attempt: the pads cleared, the shooter (NextShooter) or the path
+puckshootout	;checks94 puckshootout. Start a penalty shot or shootout attempt: the pads cleared, the shooter (NextShooter) or the path
 	;(StartShootoutPath), the song, the goalies back, SelectPenaltyShotSkater; the puck assignment $20 (3 with no skater)
 	bclr	#1,$62(a3)
 	beq.w	.7
@@ -126,7 +126,7 @@ puckshootout	;no IDA label. checks94 puckshootout. Start a penalty shot or shoot
 	move.w	#$20,d0
 	jmp	(assreplace).l
 
-SelectPenaltyShotSkater	;no IDA label. checks94 SelectPenaltyShotSkater. The best rated free skater of the shooting team (9 rating nibbles) in BA_Skater_Offset, a3 his sort object; d0 = 1, or -1 with none
+SelectPenaltyShotSkater	;checks94 SelectPenaltyShotSkater. The best rated free skater of the shooting team (9 rating nibbles) in BA_Skater_Offset, a3 his sort object; d0 = 1, or -1 with none
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#HmShots,a0
 	tst.w	(BA_Team).w
@@ -228,7 +228,7 @@ SelectPenaltyShotSkater	;no IDA label. checks94 SelectPenaltyShotSkater. The bes
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-puckpenshot	;no IDA label. checks94 puckpenshot. Penalty shot / shootout face-off: rink, puck and nets reset, the shooter at the puck and the goalie in the net, the others off the ice; without $62(a3) bit 1 resume play
+puckpenshot	;checks94 puckpenshot. Penalty shot / shootout face-off: rink, puck and nets reset, the shooter at the puck and the goalie in the net, the others off the ice; without $62(a3) bit 1 resume play
 	bclr	#1,$62(a3)
 	beq.w	.21
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -441,12 +441,12 @@ puckpenshot	;no IDA label. checks94 puckpenshot. Penalty shot / shootout face-of
 	clr.w	$2A(a3)
 	rts
 
-PenShotTable	;no IDA label. checks94 puckpenshot data (94 has no label). Not used
+PenShotTable	;checks94 puckpenshot data (94 has no label). Not used
 	dc.b	0,1,2,3,4,5,6,0,0,1,5,3,4,2,0,0
 	dc.b	0,3,5,1,4,0,0,0,0,0
 	dc.w	$FF06,$FFDD,$FFCE,$0023,$FFCE,$FFCE,$FFF6,$0000,$FFF1,$0032,$FFF6,$0000,$FFC4
 
-UpdatePenaltyShotEnd	;no IDA label. checks94 UpdatePenaltyShotEnd. The shot ends (BA_PS_flags bit 4) when the goalie has the puck, the loose puck timer or the clock runs out; the first time AddPenalty2 $A. Runs on into EndPenaltyShotPlay
+UpdatePenaltyShotEnd	;checks94 UpdatePenaltyShotEnd. The shot ends (BA_PS_flags bit 4) when the goalie has the puck, the loose puck timer or the clock runs out; the first time AddPenalty2 $A. Runs on into EndPenaltyShotPlay
 	movem.w	d0,-(sp)
 	move.w	(puckc).w,d0
 	cmp.w	(BA_Goalie_SCnum).w,d0
@@ -484,7 +484,7 @@ UpdatePenaltyShotEnd	;no IDA label. checks94 UpdatePenaltyShotEnd. The shot ends
 	move.w	#$A,d0
 	jsr	(AddPenalty2).l
 
-EndPenaltyShotPlay	;IDA: sub_9ECE6. checks94 EndPenaltyShotPlay. LockScroll, end the penalty shot play (the BA flags), the shooter newpnum back, then CountShootoutGoals
+EndPenaltyShotPlay	;checks94 EndPenaltyShotPlay. LockScroll, end the penalty shot play (the BA flags), the shooter newpnum back, then CountShootoutGoals
 	jsr	(LockScroll).l
 	btst	#0,(gmode2).w
 	bne.w	.0
@@ -506,10 +506,10 @@ EndPenaltyShotPlay	;IDA: sub_9ECE6. checks94 EndPenaltyShotPlay. LockScroll, end
 	movem.l	(sp)+,d0/a0
 	jsr	(CountShootoutGoals).l
 
-PenaltyShotEndReturn	;no IDA label. checks94 PenaltyShotEndReturn. Shared rts
+PenaltyShotEndReturn	;checks94 PenaltyShotEndReturn. Shared rts
 	rts
 
-SetupPenaltyShot	;no IDA label. collide94 SetupPenaltyShot. Penalty shot for team a2: the shooter plays center (BA_Skater_Offset), the goalie stays, the other players unavailable (assreplace $1D)
+SetupPenaltyShot	;collide94 SetupPenaltyShot. Penalty shot for team a2: the shooter plays center (BA_Skater_Offset), the goalie stays, the other players unavailable (assreplace $1D)
 	movem.l	d0-d5/a0-a3,-(sp)
 	movea.w	$22(a2),a3
 	moveq	#5,d4
@@ -547,7 +547,7 @@ SetupPenaltyShot	;no IDA label. collide94 SetupPenaltyShot. Penalty shot for tea
 	movem.l	(sp)+,d0-d5/a0-a3
 	rts
 
-PenaltyShotBox	;IDA: sub_9EDD2. data94 PenaltyShotBox. In a shootout PlayoffRoundScreen; else the "PENALTY SHOT!" box: the shooter, the penalty (PenaltyNames) and " by" the checker
+PenaltyShotBox	;data94 PenaltyShotBox. In a shootout PlayoffRoundScreen; else the "PENALTY SHOT!" box: the shooter, the penalty (PenaltyNames) and " by" the checker
 	bset	#7,(gmode2).w
 	btst	#0,(gmode2).w
 	beq.w	.0
@@ -598,10 +598,10 @@ PenaltyShotBox	;IDA: sub_9EDD2. data94 PenaltyShotBox. In a shootout PlayoffRoun
 	movem.l	(sp)+,d0-d2/a0-a4
 	rts
 
-PenShotBigTxt	;IDA: unk_9EEAE. data94 PenShotBigTxt. PenaltyShotBox big text
+PenShotBigTxt	;data94 PenShotBigTxt. PenaltyShotBox big text
 	String	$BF,$4,$3,'PENALTY SHOT!',$BF,$4,$5,$0
 
-PenShotChk	;IDA: sub_9EEC4. penalty94 PenShotChk. A breakaway shooter hit: a penalty shot when penalty d0 allows one (PenShotPenalties); d0 = the penalty
+PenShotChk	;penalty94 PenShotChk. A breakaway shooter hit: a penalty shot when penalty d0 allows one (PenShotPenalties); d0 = the penalty
 	movem.l	d1-d3/a0,-(sp)
 	btst	#1,$64(a2)
 	beq.w	.0
@@ -636,7 +636,7 @@ PenShotChk	;IDA: sub_9EEC4. penalty94 PenShotChk. A breakaway shooter hit: a pen
 	movem.l	(sp)+,d1-d3/a0
 	rts
 
-getBAplayerInfo	;IDA: sub_9EF3C. penalty94 getBAplayerInfo. Keep the breakaway shooter, team, goalie and checker for the penalty shot; N clear when set
+getBAplayerInfo	;penalty94 getBAplayerInfo. Keep the breakaway shooter, team, goalie and checker for the penalty shot; N clear when set
 	movem.l	d1-d3/a1,-(sp)
 	tst.w	(OptPen).w
 	beq.w	.4
@@ -683,7 +683,7 @@ getBAplayerInfo	;IDA: sub_9EF3C. penalty94 getBAplayerInfo. Keep the breakaway s
 	move.w	#$FFFF,d1
 	bra.s	.3
 
-ShortenMsgTimer	;IDA: sub_9EFE4. period94 ShortenMsgTimer. Cap the message timer at 2, unless a second pad is on and a3 is not the puck carrier
+ShortenMsgTimer	;period94 ShortenMsgTimer. Cap the message timer at 2, unless a second pad is on and a3 is not the puck carrier
 	movem.l	d0,-(sp)
 	tst.w	(cont2team).w
 	beq.w	.0
@@ -698,7 +698,7 @@ ShortenMsgTimer	;IDA: sub_9EFE4. period94 ShortenMsgTimer. Cap the message timer
 	movem.l	(sp)+,d0
 	rts
 
-setInjuryType	;IDA: sub_9F012. collide94 setInjuryType. a2 injured: out for the period ($FFFD) or the game ($FFFC); in a season a random games count (SetInjuryGames)
+setInjuryType	;collide94 setInjuryType. a2 injured: out for the period ($FFFD) or the game ($FFFC); in a season a random games count (SetInjuryGames)
 	bclr	#1,(sflags12).w
 	move.w	d0,-(sp)
 	bset	#2,$63(a2)
@@ -777,7 +777,7 @@ setInjuryType	;IDA: sub_9F012. collide94 setInjuryType. a2 injured: out for the 
 	move.w	(sp)+,d0
 	rts
 
-SetSeasonInjuries	;IDA: sub_9F144. 95 only. The players of team a2 with injury games left (save RAM $20BCB8) are out ($FFFC)
+SetSeasonInjuries	;95 only. The players of team a2 with injury games left (save RAM $20BCB8) are out ($FFFC)
 	movem.l	d0-d3/a0/a2,-(sp)
 	movea.l	#$20BCB8,a0
 	move.w	$28(a2),d0
@@ -806,7 +806,7 @@ SetSeasonInjuries	;IDA: sub_9F144. 95 only. The players of team a2 with injury g
 	movem.l	(sp)+,d0-d3/a0/a2
 	rts
 
-TickTeamInjuries	;IDA: sub_9F192. 95 only. A game played: one injury game off for teams d0 and d1 (TickInjuries), save RAM checksum
+TickTeamInjuries	;95 only. A game played: one injury game off for teams d0 and d1 (TickInjuries), save RAM checksum
 	movem.l	d2-d4/a0,-(sp)
 	bsr.w	TickInjuries
 	move.w	d1,d0
@@ -815,7 +815,7 @@ TickTeamInjuries	;IDA: sub_9F192. 95 only. A game played: one injury game off fo
 	movem.l	(sp)+,d2-d4/a0
 	rts
 
-TickInjuries	;IDA: sub_9F1AC. 95 only. One game off every injury of team d0 (save RAM $20BCB8, a nibble per player)
+TickInjuries	;95 only. One game off every injury of team d0 (save RAM $20BCB8, a nibble per player)
 	movea.l	#$20BCB8,a0
 	mulu.w	#$1C,d0
 	adda.l	d0,a0
@@ -839,7 +839,7 @@ TickInjuries	;IDA: sub_9F1AC. 95 only. One game off every injury of team d0 (sav
 	dbf	d2,.0
 	rts
 
-SetInjuryGames	;IDA: sub_9F1EA. 95 only. Injury games d0 for player d1 of team d7 (save RAM $20BCB8); sflags12 bit 1 and injurygames
+SetInjuryGames	;95 only. Injury games d0 for player d1 of team d7 (save RAM $20BCB8); sflags12 bit 1 and injurygames
 	movem.l	d0-d7/a0-a7,-(sp)
 	bset	#1,(sflags12).w
 	move.w	d0,(injurygames).w
@@ -864,7 +864,7 @@ SetInjuryGames	;IDA: sub_9F1EA. 95 only. Injury games d0 for player d1 of team d
 	movem.l	(sp)+,d0-d7/a0-a7
 	rts
 
-GetInjuryGames	;IDA: sub_9F232. 95 only. d0 = the injury games of player d1 of team d7 (save RAM $20BCB8)
+GetInjuryGames	;95 only. d0 = the injury games of player d1 of team d7 (save RAM $20BCB8)
 	movem.l	d1-d7/a0,-(sp)
 	movea.l	#$20BCB8,a0
 	mulu.w	#$1C,d7
@@ -881,13 +881,13 @@ GetInjuryGames	;IDA: sub_9F232. 95 only. d0 = the injury games of player d1 of t
 	movem.l	(sp)+,d1-d7/a0
 	rts
 
-getFgtbyte	;IDA: sub_9F260. title94 getFgtbyte. d0 = $74(a2) / 4
+getFgtbyte	;title94 getFgtbyte. d0 = $74(a2) / 4
 	clr.w	d0
 	move.b	$74(a2),d0
 	lsr.w	#2,d0
 	rts
 
-chkFgtBit1	;IDA: sub_9F26A. title94 chkFgtBit1. 95: Z from bit 1 of a random 0-99 (94 tested bit 1 of $74(a2))
+chkFgtBit1	;title94 chkFgtBit1. 95: Z from bit 1 of a random 0-99 (94 tested bit 1 of $74(a2))
 	movem.w	d0,-(sp)
 	move.w	#$64,d0
 	jsr	(randomd0).l
@@ -895,7 +895,7 @@ chkFgtBit1	;IDA: sub_9F26A. title94 chkFgtBit1. 95: Z from bit 1 of a random 0-9
 	movem.w	(sp)+,d0
 	rts
 
-CheckInjury	;IDA: sub_9F282. 95 only. The injury message when its timer runs out: "Injury to:" the player, "Out for period", "game" or n "games"
+CheckInjury	;95 only. The injury message when its timer runs out: "Injury to:" the player, "Out for period", "game" or n "games"
 	subq.w	#1,(InjCntDown).w
 	beq.w	.0
 	rts
@@ -948,7 +948,7 @@ CheckInjury	;IDA: sub_9F282. 95 only. The injury message when its timer runs out
 	movem.l	(sp)+,d0-d2/a0-a4
 	rts
 
-InsertInjurySlot	;IDA: sub_9F3B8. 95 only. Open an injury slot at player d1 of team d7 (the later nibbles up one); a player traded in
+InsertInjurySlot	;95 only. Open an injury slot at player d1 of team d7 (the later nibbles up one); a player traded in
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#$20BCB8,a0
 	mulu.w	#$1C,d7
@@ -980,7 +980,7 @@ InsertInjurySlot	;IDA: sub_9F3B8. 95 only. Open an injury slot at player d1 of t
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DeleteInjurySlot	;IDA: sub_9F40E. 95 only. Remove the injury slot of player d1 of team d7 (the later nibbles down one); a player traded out
+DeleteInjurySlot	;95 only. Remove the injury slot of player d1 of team d7 (the later nibbles down one); a player traded out
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#$20BCB8,a0
 	mulu.w	#$1C,d7
@@ -1012,7 +1012,7 @@ DeleteInjurySlot	;IDA: sub_9F40E. 95 only. Remove the injury slot of player d1 o
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-updatepwrplay	;IDA: sub_9F45E. penalty94 updatepwrplay. The power play box: the team and the time left (GetLowestPen)
+updatepwrplay	;penalty94 updatepwrplay. The power play box: the team and the time left (GetLowestPen)
 	btst	#1,(gmode2).w
 	bne.w	rtsPowerPlay
 	movea.w	#(HmShots-M68K_RAM),a2
@@ -1060,17 +1060,17 @@ updatepwrplay	;IDA: sub_9F45E. penalty94 updatepwrplay. The power play box: the 
 	movea.w	a3,a1
 	jmp	(print).l
 
-ClearPowerPlay	;IDA: sub_9F520. 95 only. Clear the power play box (sflags2 bit 5)
+ClearPowerPlay	;95 only. Clear the power play box (sflags2 bit 5)
 	bclr	#5,(sflags2).w
 	beq.w	rtsPowerPlay
 	jsr	(printz).l
 	String	$BF,$1,$19,' '
 	jmp	(EASNLogo).l
 
-rtsPowerPlay	;IDA: locret_9F53C. 95 only. Shared rts of updatepwrplay / ClearPowerPlay
+rtsPowerPlay	;95 only. Shared rts of updatepwrplay / ClearPowerPlay
 	rts
 
-GetLowestPen	;IDA: sub_9F53E. penalty94 GetLowestPen. a2 = shorthanded team, a3 = team on the power play. d0 = power play time left from the penalty box times
+GetLowestPen	;penalty94 GetLowestPen. a2 = shorthanded team, a3 = team on the power play. d0 = power play time left from the penalty box times
 	clr.w	d0
 	clr.w	d3
 	lea	$9C(a2),a0

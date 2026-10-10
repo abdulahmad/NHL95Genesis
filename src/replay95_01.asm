@@ -2,7 +2,7 @@
 ;	NHL 95 segment $A536-$A655, from lst/nhl95.bin.lst. 94 updateanim (replay94), split from the display95_01 placeholder.
 ;	setup95_01 (94 defaultsprites) follows at $A656.
 
-updateanim	;IDA: sub_A536. frame switch control on struct a3. Called from updateplayers (hockey95). 95: no horizontal rink case, and an
+updateanim	;frame switch control on struct a3. Called from updateplayers (hockey95). 95: no horizontal rink case, and an
 	;animation whose flag has bits 0 and 1 set loops back to the pair in the flag's high byte (frames95 SPAskate $1003)
 	tst.w	SPA(a3)	;test SPA
 	bne.w	.ia	;branch if not 0

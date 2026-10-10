@@ -6,12 +6,12 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-Opening	;IDA: loc_9AC8. title screen (newTitleScreen), then into Opening2. Jumped to from Begin (main95)
+Opening	;title screen (newTitleScreen), then into Opening2. Jumped to from Begin (main95)
 	jsr	(KillCrowd).l
 	jsr	(newTitleScreen).l
 	bset	#7,(sflags12).w	;Opening2 skips the sound restart
 
-Opening2	;IDA: loc_9ADA. Restart the sound (unless coming from Opening), reset the stack and clear the variables, then the main menu
+Opening2	;Restart the sound (unless coming from Opening), reset the stack and clear the variables, then the main menu
 	;(GameSetUp) and the 95 season flow, the main menu screens that are not games, user records and the playoff screen. Jumped to
 	;from ExitToOpening and the 95 season, trade and create player screens
 	bclr	#7,(sflags12).w
@@ -145,7 +145,7 @@ StartGame	;reset game state for a new game, then start the first period. 95 has 
 	move.b	#1,(VDP_PSG).l
 	jsr	(setupice).l
 
-IntermissionStart	;$9D18, no IDA label. 94 setup94 name: the PeriodOver tail. checks95_06 PeriodOver jumps here after forceblack: reset the
+IntermissionStart	;94 setup94 name: the PeriodOver tail. checks95_06 PeriodOver jumps here after forceblack: reset the
 	;clock, restart the sound driver, UpdateScores, IntermissionMenu, then GameOver or StartPer
 	jsr	(ResetClock).l
 	move.w	d0,-(sp)
@@ -192,7 +192,7 @@ IntermissionStart	;$9D18, no IDA label. 94 setup94 name: the PeriodOver tail. ch
 	bne.w	StartPer
 	bset	#1,(sflags7).w	;overtime
 
-StartPer	;IDA: loc_9DD2. start a period: reset stack, rink and clock, face off, run the game loop
+StartPer	;start a period: reset stack, rink and clock, face off, run the game loop
 	movea.w	#(Stack-M68K_RAM),sp
 	jsr	(SoundOff).l	;sound off (94 p_turnoff)
 	jsr	(setupice).l
@@ -255,7 +255,7 @@ StartPer	;IDA: loc_9DD2. start a period: reset stack, rink and clock, face off, 
 .loop
 	bra.w	Gameloop
 
-Gameloop	;IDA: loc_9EF0. Main loop for game
+Gameloop	;Main loop for game
 	bsr.w	DoGameFrame
 	jsr	(demoread).l	;check if demo mode
 	btst	#sfpz,(sflags).w	;sfpz
@@ -266,7 +266,7 @@ Gameloop	;IDA: loc_9EF0. Main loop for game
 	move.b	#1,(VDP_PSG).l
 	bra.s	Gameloop
 
-DoGameFrame	;IDA: sub_9F22. wait for at least one vblank, then run one frame of game logic. 94 periodicevents is written in line
+DoGameFrame	;wait for at least one vblank, then run one frame of game logic. 94 periodicevents is written in line
 	move.w	(vcount).w,d7
 	sub.w	(oldvcount).w,d7	;number of frames since last loop
 	beq.s	DoGameFrame
@@ -304,9 +304,9 @@ DoGameFrame	;IDA: sub_9F22. wait for at least one vblank, then run one frame of 
 	jsr	(SprSort).l
 	jsr	(updatereplay).l
 	jmp	(setvideo).l
-	rts	;IDA dc.b. Not reached
+	rts	;Not reached
 
-IntermissionMenu	;IDA: sub_9FD2. 95 only. Before the period: at game over (gsp 4) the records (UpdateRecords); outside a shootout the auto line
+IntermissionMenu	;95 only. Before the period: at game over (gsp 4) the records (UpdateRecords); outside a shootout the auto line
 	;change and every sort object's Xpos to 0; then the pause menu (Pausemode with sflags12 bit 0). Called from StartGame
 	cmpi.w	#4,(gsp).w
 	bne.w	.0
@@ -328,7 +328,7 @@ IntermissionMenu	;IDA: sub_9FD2. 95 only. Before the period: at game over (gsp 4
 	bclr	#0,(sflags12).w
 	rts
 
-updateplayers	;IDA: sub_A01C. this routine calls all collision/animation/assignment code for all players. d7 = elapsed frames.
+updateplayers	;this routine calls all collision/animation/assignment code for all players. d7 = elapsed frames.
 	;94 replay94; 95 has no puckz or crowd record checks here, and moves the velocity update (updatevel) and the pad input
 	;(updatepadinput) out
 	ori.l	#$F,(PadControlBits).w	;94: ori.w #$F

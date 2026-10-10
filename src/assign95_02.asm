@@ -9,7 +9,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-assbench	;no IDA label (IDA dc.b), asstab entry $12. Player a3 goes to the bench: skate to the bench door, hop over (SPA), then setplayer the new player
+assbench	;asstab entry $12. Player a3 goes to the bench: skate to the bench door, hop over (SPA), then setplayer the new player
 	btst	#pfalock,pflags(a3)
 	bne.w	rtsskate	;94 rtss3
 	cmpi.w	#$64,temp1(a3)
@@ -104,10 +104,10 @@ assbench	;no IDA label (IDA dc.b), asstab entry $12. Player a3 goes to the bench
 	jsr	(Setplass).l
 	st	$61(a3)
 	st	$60(a3)
-rtss4	;no IDA label. The end of assbench (94 rtss4; 95 branches go to rtsskate)
+rtss4	;The end of assbench (94 rtss4; 95 branches go to rtsskate)
 	rts
 
-asspenalty	;no IDA label (IDA dc.b), asstab entry $15. Player a3 goes to the penalty box and hops in, then assdopen
+asspenalty	;asstab entry $15. Player a3 goes to the penalty box and hops in, then assdopen
 	btst	#5,$62(a3)
 	bne.w	rtsskate	;94 rtss4
 	bclr	#1,pflags(a3)
@@ -203,7 +203,7 @@ asspenalty	;no IDA label (IDA dc.b), asstab entry $15. Player a3 goes to the pen
 .chg
 	jmp	(chgplayer).l	;94 changeplayer
 
-assdopen	;no IDA label (IDA dc.b), asstab entry $17. Add player a3 to the penalty box (PBnum)
+assdopen	;asstab entry $17. Add player a3 to the penalty box (PBnum)
 	btst	#5,pflags(a3)
 	bne.w	rtsskate	;94 rtss4
 	tst.w	position(a3)	;95: only once, and give the attribute back
@@ -219,7 +219,7 @@ assdopen	;no IDA label (IDA dc.b), asstab entry $17. Add player a3 to the penalt
 	clr.w	frame(a3)
 	rts
 
-assepen	;no IDA label (IDA dc.b), asstab entry $16. Player a3 leaves the penalty box
+assepen	;asstab entry $16. Player a3 leaves the penalty box
 	btst	#5,pflags(a3)
 	bne.w	rtsskate	;94 rtss4
 	bclr	#1,pflags(a3)

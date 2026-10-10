@@ -4,7 +4,7 @@
 ;	and ShotMode (input95_01).
 
 ; assignment for computer shooting
-assshoot	;no IDA label (IDA dc.b), asstab entry $1A. checks94 assshoot
+assshoot	;asstab entry $1A. checks94 assshoot
 	btst	#pfalock,pflags(a3)	;pfalock - animation locked
 	bne.w	rtsskate	;94 rtss2
 	bclr	#pfna,pflags(a3)	;clear pfna

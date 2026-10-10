@@ -9,7 +9,7 @@
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-NextShooter	;no IDA label. shootout94 NextShooter. Shootout: the next shooter (BA_Team, BA_Goalie_SCnum, StartShootoutPath), or the end
+NextShooter	;shootout94 NextShooter. Shootout: the next shooter (BA_Team, BA_Goalie_SCnum, StartShootoutPath), or the end
 	;(ExitToOpening)
 	btst	#3,(gmode2).w
 	beq.w	.0
@@ -31,7 +31,7 @@ NextShooter	;no IDA label. shootout94 NextShooter. Shootout: the next shooter (B
 	bclr	#2,(SortCords+(puckscnum*SCstruct)+pflags).w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-CountShootoutGoals	;IDA: sub_9DD94. shootout94 CountShootoutGoals. Shootout: count the goals and end it when one team cannot catch up
+CountShootoutGoals	;shootout94 CountShootoutGoals. Shootout: count the goals and end it when one team cannot catch up
 	;(EndShootout)
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#0,(shootoutteam+1).w
@@ -56,7 +56,7 @@ CountShootoutGoals	;IDA: sub_9DD94. shootout94 CountShootoutGoals. Shootout: cou
 .x
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-EndShootout	;IDA: sub_9DDEE. period94 EndShootout. Shootout over: LockScroll, then the 5 skaters of player slots 1-5 (sohomegoals >
+EndShootout	;period94 EndShootout. Shootout over: LockScroll, then the 5 skaters of player slots 1-5 (sohomegoals >
 	;soawaygoals) or 7-$B are set up (setplayer) above or below the view and get assscore (assinsert 7)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#2,(sflags2).w
@@ -97,7 +97,7 @@ EndShootout	;IDA: sub_9DDEE. period94 EndShootout. Shootout over: LockScroll, th
 	dbf	d2,.loop
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-PlayoffRoundScreen	;IDA: loc_9DE8A. records94 PlayoffRoundScreen. Shootout round box: "SHOOTOUT MODE" (RoundBigTxt), the shooter " vs." the
+PlayoffRoundScreen	;records94 PlayoffRoundScreen. Shootout round box: "SHOOTOUT MODE" (RoundBigTxt), the shooter " vs." the
 	;goalie, the goals of both teams and the round
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$FFFF,d0
@@ -166,9 +166,9 @@ PlayoffRoundScreen	;IDA: loc_9DE8A. records94 PlayoffRoundScreen. Shootout round
 	jsr	(print).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-RoundBigTxt	;IDA: unk_9DFD0. records94 RoundBigTxt. PlayoffRoundScreen big text
+RoundBigTxt	;records94 RoundBigTxt. PlayoffRoundScreen big text
 	String	$BF,$4,$3,'SHOOTOUT MODE',$BF,$4,$5,$0
-ShootoutWonBy	;IDA: sub_9DFE6. shootout94 ShootoutWonBy. Shootout: "SHOOTOUT WON BY" and the winning team (printbig1)
+ShootoutWonBy	;shootout94 ShootoutWonBy. Shootout: "SHOOTOUT WON BY" and the winning team (printbig1)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BF,$1,$D,$0
@@ -192,7 +192,7 @@ ShootoutWonBy	;IDA: sub_9DFE6. shootout94 ShootoutWonBy. Shootout: "SHOOTOUT WON
 	jsr	(printbig1).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-ShootoutSetup	;no IDA label. shootout94 ShootoutShooters. Pause menu SHOOTOUT SETUP: pick the 5 shooters and the goalie of team a2
+ShootoutSetup	;shootout94 ShootoutShooters. Pause menu SHOOTOUT SETUP: pick the 5 shooters and the goalie of team a2
 	btst	#0,(gmode2).w
 	beq.w	ShootersExit
 	moveq	#0,d0
@@ -210,11 +210,11 @@ ShootoutSetup	;no IDA label. shootout94 ShootoutShooters. Pause menu SHOOTOUT SE
 	jsr	(LineEditorBg).l
 	bsr.w	PrintShooterSlots
 	move.w	#0,(TestList).w
-ShootersRedraw	;no IDA label. shootout94 ShootersRedraw. Shootout shooters: redraw (ShootersBackground, PrintShooterNames, PrintShooterBox)
+ShootersRedraw	;shootout94 ShootersRedraw. Shootout shooters: redraw (ShootersBackground, PrintShooterNames, PrintShooterBox)
 	bsr.w	ShootersBackground
 	bsr.w	PrintShooterNames
 	bsr.w	PrintShooterBox
-ShootersLoop	;no IDA label. shootout94 ShootersLoop. Shootout shooters: the input loop
+ShootersLoop	;shootout94 ShootersLoop. Shootout shooters: the input loop
 	jsr	(vcountwait).l
 	jsr	(ReadMenuJoy).l
 	jsr	(ProcessInputWithRepeat).l
@@ -235,9 +235,9 @@ ShootersLoop	;no IDA label. shootout94 ShootersLoop. Shootout shooters: the inpu
 	btst	#5,d1
 	bne.w	ShooterSelectList
 	bra.s	ShootersLoop
-ShootersExit	;no IDA label. shootout94 ShootersExit. Leave (ExitAttributeScreen2)
+ShootersExit	;shootout94 ShootersExit. Leave (ExitAttributeScreen2)
 	jmp	(ExitAttributeScreen2).l
-ShooterSelectList	;no IDA label. shootout94 ShooterSelectList. Shootout shooters: the "{Select  Player}" list for slot TestList (skaters, or the
+ShooterSelectList	;shootout94 ShooterSelectList. Shootout shooters: the "{Select  Player}" list for slot TestList (skaters, or the
 	;goalies for slot 5)
 	move.w	#$C000,d7
 	movea.l	#homeshooters,a0
@@ -347,7 +347,7 @@ ShooterSelectList	;no IDA label. shootout94 ShooterSelectList. Shootout shooters
 	move.w	d0,(a0,d2.w)
 	jsr	(LineEditorBg).l
 	bra.w	ShootersRedraw
-PrintShooterList	;no IDA label. shootout94 PrintShooterList. Shootout shooters: the player list rows (getNameandAttrib); the selected row in
+PrintShooterList	;shootout94 PrintShooterList. Shootout shooters: the player list rows (getNameandAttrib); the selected row in
 	;printa d7 ($E000 with BA_PS_flags bit 1)
 	jsr	(printz).l
 	String	$BE,$16,$1,$0
@@ -406,18 +406,18 @@ PrintShooterList	;no IDA label. shootout94 PrintShooterList. Shootout shooters: 
 	addq.w	#1,d2
 	dbf	d1,.loop3
 	rts
-ShooterOverallTxt	;no IDA label. shootout94 ShooterOverallTxt. PrintShooterList heading, then the attribute long (d4)
+ShooterOverallTxt	;shootout94 ShooterOverallTxt. PrintShooterList heading, then the attribute long (d4)
 	String	'    Overall    ]'
 	dc.w	$1F3A,$A
-ShooterOverallTxt2	;no IDA label. shootout94 ShooterOverallTxt2. PrintShooterList goalie heading, then the attribute long (d4)
+ShooterOverallTxt2	;shootout94 ShooterOverallTxt2. PrintShooterList goalie heading, then the attribute long (d4)
 	String	'    Overall    ]'
 	dc.w	$1B0F,$A
-ShootersPick	;no IDA label. shootout94 ShootersPick. Shootout shooters: C on a slot; the same slot (TestList) goes back to the loop, else
+ShootersPick	;shootout94 ShootersPick. Shootout shooters: C on a slot; the same slot (TestList) goes back to the loop, else
 	;select it (ShootersSelect)
 	cmp.w	(TestList).w,d0
 	beq.w	ShootersLoop
 	bra.w	ShootersSelect
-ShootersMove	;no IDA label. shootout94 ShootersMove. Shootout shooters: move the slot cursor by d0, wrapping in 0 ... 4 (not on slot 5)
+ShootersMove	;shootout94 ShootersMove. Shootout shooters: move the slot cursor by d0, wrapping in 0 ... 4 (not on slot 5)
 	cmpi.w	#5,(TestList).w
 	beq.w	ShootersLoop
 	add.w	(TestList).w,d0
@@ -428,12 +428,12 @@ ShootersMove	;no IDA label. shootout94 ShootersMove. Shootout shooters: move the
 	bra.w	ShootersSelect
 .0
 	move.w	#4,d0
-ShootersSelect	;no IDA label. shootout94 ShootersSelect. Shootout shooters: TestList = d0, redraw the names and the player box, back to the loop
+ShootersSelect	;shootout94 ShootersSelect. Shootout shooters: TestList = d0, redraw the names and the player box, back to the loop
 	move.w	d0,(TestList).w
 	bsr.w	PrintShooterNames
 	bsr.w	PrintShooterBox
 	bra.w	ShootersLoop
-ShootersBackground	;no IDA label. shootout94 ShootersBackground. Shootout shooters: "Shootout" title and the team block (PutTeamBlock)
+ShootersBackground	;shootout94 ShootersBackground. Shootout shooters: "Shootout" title and the team block (PutTeamBlock)
 	bsr.w	ClearShooterScreen
 	jsr	(printz).l
 	String	$BE,$7,$1,$0
@@ -447,18 +447,18 @@ ShootersBackground	;no IDA label. shootout94 ShootersBackground. Shootout shoote
 	move.w	#$2C,d0
 .0
 	jmp	(PutTeamBlock).l
-ClearShooterScreen	;no IDA label. shootout94 ClearShooterScreen. Shootout shooters: erase the top of the screen
+ClearShooterScreen	;shootout94 ClearShooterScreen. Shootout shooters: erase the top of the screen
 	jsr	(printz).l
 	String	$BE,$0,$0,$0
 	moveq	#$28,d0
 	moveq	#$A,d1
 	move.w	#$7FF,d2
 	jmp	(eraser).l
-ResetShooterScroll	;no IDA label. shootout94 ResetShooterScroll. Clear the list scroll words palfadenew+$5A and palfadenew+$7A. Nothing calls it in 95
+ResetShooterScroll	;shootout94 ResetShooterScroll. Clear the list scroll words palfadenew+$5A and palfadenew+$7A. Nothing calls it in 95
 	clr.w	(palfadenew+$5A).w
 	clr.w	(palfadenew+$7A).w
 	rts
-PrintShooterSlots	;no IDA label. shootout94 PrintShooterSlots. Shootout shooters: "Shooters" 1. ... 5. and "Goalie"
+PrintShooterSlots	;shootout94 PrintShooterSlots. Shootout shooters: "Shooters" 1. ... 5. and "Goalie"
 	jsr	(printz2).l
 	String	$F9,$0,$FF,$2,$FD,$0,$FC,$A
 	jsr	(printz2).l
@@ -478,7 +478,7 @@ PrintShooterSlots	;no IDA label. shootout94 PrintShooterSlots. Shootout shooters
 	jsr	(printz2).l
 	String	$FD,$1A,$FC,$C,'Goalie'
 	rts
-PrintShooterBox	;no IDA label. shootout94 PrintShooterBox. Shootout shooters: the selected player (getname), centred
+PrintShooterBox	;shootout94 PrintShooterBox. Shootout shooters: the selected player (getname), centred
 	jsr	(printz2).l
 	String	$F8,$4,$2,$8,$7,$F9,$1,$0
 	jsr	(printz2).l
@@ -501,7 +501,7 @@ PrintShooterBox	;no IDA label. shootout94 PrintShooterBox. Shootout shooters: th
 	jsr	(printsmall).l
 	clr.w	(printfontset).w
 	rts
-PrintShooterNames	;no IDA label. shootout94 PrintShooterNames. Shootout shooters: the shooters' names (FormatPlayerNameShort), slot TestList
+PrintShooterNames	;shootout94 PrintShooterNames. Shootout shooters: the shooters' names (FormatPlayerNameShort), slot TestList
 	;highlighted
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz2).l

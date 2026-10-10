@@ -70,7 +70,7 @@ InitialSP = $FFFFF6	;reset vector 0. 93 / 94 name, 24-bit form of $FFFFFFF6. Beg
 	dc.l	$00200001,$0020FFFF	; 		$1B4	backup RAM start and end address (94: $203FFF)
 	dc.b	'            '		; 11	$1BC	modem info. (12 bytes)
 	dc.b	'                                        '	; 12	$1C8	inhibit to use (40 bytes)
-CountryCode	;$1F0. IDA name. The region lock (CHECK_VDP) reads these letters
+CountryCode	;The region lock (CHECK_VDP) reads these letters
 	dc.b	'EUJ             '	; 13	$1F0	contry code for release (16 bytes). E = Europe, U = USA, J = Japan (94: UE)
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -92,7 +92,7 @@ CountryCode	;$1F0. IDA name. The region lock (CHECK_VDP) reads these letters
 ;****************************************************************
 ; No programs are permited to run before this program.
 
-Start	;IDA: Reset ($200). Power on: the Sega hardware init, then the region lock, the checksum and Begin
+Start	;Power on: the Sega hardware init, then the region lock, the checksum and Begin
 SegaInit
 	tst.l	$a10008		; POWER ON check cntroller A,B
 	bne.s	h_s
@@ -243,7 +243,7 @@ psg_dat
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-CHECK_VDP	;IDA: loc_2FA. Hot start lands here. Match the console region to the CountryCode letters; on a mismatch draw the
+CHECK_VDP	;Hot start lands here. Match the console region to the CountryCode letters; on a mismatch draw the
 	;"DEVELOPED FOR USE ONLY WITH ... SYSTEMS." screen and hang
 	tst.w	(VDP_CTRL).l		; this is protect to push. start_bottum rapid_firely (94 comment)
 	clr.l	d0
@@ -332,10 +332,10 @@ CHECK_VDP	;IDA: loc_2FA. Hot start lands here. Match the console region to the C
 	move.b	(a0)+,d0
 	addq.w	#1,d1
 	bsr.w	RegionPrint
-RegionHang	;IDA: loc_3FE. Wrong region (or Japan PAL): hang
+RegionHang	;Wrong region (or Japan PAL): hang
 	bra.s	RegionHang
 
-RegionPrint	;IDA: sub_400. Print the 0 terminated text at a0 on plane A ($C000), row d1, column d0. Tile = character - $20
+RegionPrint	;Print the 0 terminated text at a0 on plane A ($C000), row d1, column d0. Tile = character - $20
 	move.b	d1,d2
 	andi.l	#$FF,d2
 	swap	d2
@@ -358,9 +358,9 @@ RegionPrint	;IDA: sub_400. Print the 0 terminated text at a0 on plane A ($C000),
 .1
 	rts
 
-RegionLetters	;IDA: unk_436. Letter for each version register region (0 Japan NTSC ... 3 overseas PAL). 0 = hang
+RegionLetters	;Letter for each version register region (0 Japan NTSC ... 3 overseas PAL). 0 = hang
 	dc.b	'J',0,'U','E'
-RegionSystems	;IDA: unk_43A. Country code letter (word), then its system name as an offset from RegionLetters (long). 0 ends
+RegionSystems	;Country code letter (word), then its system name as an offset from RegionLetters (long). 0 ends
 	dc.w	'J'
 	dc.l	NtscMegaDriveTxt-RegionLetters
 	dc.w	'U'
@@ -369,11 +369,11 @@ RegionSystems	;IDA: unk_43A. Country code letter (word), then its system name as
 	dc.l	PalMegaDriveTxt-RegionLetters
 	dc.w	0
 ;region lock text: column, then the characters, 0 terminated
-DevelopedTxt	;IDA: unk_44E
+DevelopedTxt
 	dc.b	6,'DEVELOPED FOR USE ONLY WITH',0
-AndTxt	;IDA: unk_46B
+AndTxt
 	dc.b	$12,'&',0
-SystemsTxt	;IDA: unk_46E
+SystemsTxt
 	dc.b	$F,'SYSTEMS.',0
 NtscMegaDriveTxt	;J
 	dc.b	$C,'NTSC MEGA DRIVE',0
@@ -381,7 +381,7 @@ NtscGenesisTxt	;U
 	dc.b	$D,'NTSC GENESIS',0
 PalMegaDriveTxt	;E
 	dc.b	4,'PAL AND FRENCH SECAM MEGA DRIVE',0
-RegionFont	;IDA: unk_4B8. 8 x 8, 1 bit per pixel, characters $20-$5A
+RegionFont	;8 x 8, 1 bit per pixel, characters $20-$5A
 	dc.b	$00,$00,$00,$00,$00,$00,$00,$00	;' '
 	dc.b	$18,$18,$18,$18,$00,$18,$18,$00	;'!'
 	dc.b	$36,$36,$48,$00,$00,$00,$00,$00	;'"'
@@ -442,9 +442,9 @@ RegionFont	;IDA: unk_4B8. 8 x 8, 1 bit per pixel, characters $20-$5A
 	dc.b	$66,$66,$66,$3C,$18,$18,$18,$00	;'Y'
 	dc.b	$7F,$07,$0E,$1C,$38,$70,$7F,$00	;'Z'
 
-RegionOK	;IDA: loc_690. The region is listed: checksum, then the game
+RegionOK	;The region is listed: checksum, then the game
 	IF CHECKSUM=1
-		jsr	(ValidationRoutine).l	;IDA: sub_1A72C0 (checksum95). jsr (x).l, 4EB9. Red screen and hang if the ROM sum is wrong
+		jsr	(ValidationRoutine).l	;(checksum95). jsr (x).l, 4EB9. Red screen and hang if the ROM sum is wrong
 	ELSE
 		nop
 		nop
@@ -455,13 +455,13 @@ RegionOK	;IDA: loc_690. The region is listed: checksum, then the game
 	dc.l	0	;$69A. Not code. 94 has the same long at the start of teamdata94, before TeamList
 
 ;exception vectors 2-5. 95 returns; 94 printed the error (AddError, Illinst, ZeroDiv in data94) and hung
-BusErr	;IDA name. Vector 2
+BusErr	;Vector 2
 	rts
-AdrErr	;IDA name. Vector 3
+AdrErr	;Vector 3
 	rts
-InvOpCode	;IDA name. Vector 4
+InvOpCode	;Vector 4
 	rts
-DivBy0	;IDA name. Vector 5
+DivBy0	;Vector 5
 	rts
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -470,7 +470,7 @@ DivBy0	;IDA name. Vector 5
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-Begin	;IDA: loc_6A6. cold start, entered from RegionOK. Clear RAM, init sound and menus, go to title
+Begin	;cold start, entered from RegionOK. Clear RAM, init sound and menus, go to title
 	move	#$2700,sr		;interrupts off
 	movea.w	#(Stack-M68K_RAM),sp	;stack pointer to RAM $FDFA (94: $FFFE)
 	movea.w	#(VSCRLPM-M68K_RAM),a0	;clear out ram

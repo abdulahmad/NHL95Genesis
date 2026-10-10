@@ -5,7 +5,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-addframe	;IDA: sub_79D80. a3 = sort cord object. Project it with find3d, then addframe2. a5 = dma trans, a6 = sprite attribute table.
+addframe	;a3 = sort cord object. Project it with find3d, then addframe2. a5 = dma trans, a6 = sprite attribute table.
 	;Called from setsortcords (display95_01)
 	movem.l	d0-d2,-(sp)
 	move.w	(a3),d0	;Xpos into d0
@@ -167,7 +167,7 @@ addframe2	;d0/d1 = x/y coord on screen, a3 = object, a5 = dma trans, a6 = sprite
 sizetab	;sprite size code to tile count. 92 video.asm sizetab, used by addframe2 (94 kept it in data94)
 	dc.b	1,2,3,4,2,4,6,8,3,6,9,$C,4,8,$C,$10
 
-updatescroll	;IDA: sub_79F64. 92 name; 93 show_rink. Using hpos and vpos set scroll cords; queue rink map rows on the dma list (a5) when vertical
+updatescroll	;92 name; 93 show_rink. Using hpos and vpos set scroll cords; queue rink map rows on the dma list (a5) when vertical
 	;scrolling needs new rows. Called from setvideo (display95_01). Rows from Rinktilelist, or RevRinkTilelist in a reverse angle replay
 	;(sflags4 bit 4). 95 has no horizontal rink check
 	moveq	#-$40,d0	;-192+128 (IDA #$FFFFFFC0)

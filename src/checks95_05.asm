@@ -10,7 +10,7 @@
 ;	cmp encoding after assembly.
 
 
-CompLine	;IDA dc.b (checks94) The computer picks a line for team a2 (a1 = other team): on a power play or penalty kill the better
+CompLine	;(checks94) The computer picks a line for team a2 (a1 = other team): on a power play or penalty kill the better
 	;of lines 3 / 4 or 5 / 6 by energy (getlinee); else from the tables by the other team's line and the score in period 3
 	;(gsp 2), the first with energy above $C00
 	movem.l	d0-d2/a0,-(sp)
@@ -84,7 +84,7 @@ CompLine	;IDA dc.b (checks94) The computer picks a line for team a2 (a1 = other 
 	dc.w	0,2,1
 	dc.w	0,1,0
 
-AutoLineChange	;IDA dc.b (checks94) Computer line change on the fly: puck in the player's own end (pucky 0-$56, 94 $58), one frame in 4,
+AutoLineChange	;(checks94) Computer line change on the fly: puck in the player's own end (pucky 0-$56, 94 $58), one frame in 4,
 	;not in line change mode, and the line tired (AvgCline $C00 or less): CompLine, SetPersonel, PrintScores1, then compshoot
 	btst	#4,(sflags7).w
 	bne.w	rtslc
@@ -116,14 +116,14 @@ AutoLineChange	;IDA dc.b (checks94) Computer line change on the fly: puck in the
 	jsr	(PrintScores1).l
 	jmp	compshoot
 
-SetupTeamForIntermission	;IDA: sub_8A572. (penalty94) 93 name. Reset the bench (ResetBench), then for each team SetupTeamLine. Called from hockey95
+SetupTeamForIntermission	;(penalty94) 93 name. Reset the bench (ResetBench), then for each team SetupTeamLine. Called from hockey95
 	bsr.w	ResetBench
 	movea.w	#(HmShots-M68K_RAM),a2
 	lea	tmsize(a2),a3
 	bsr.w	SetupTeamLine
 	exg	a2,a3
 
-SetupTeamLine	;IDA: sub_8A584. 95 only. Team a3 (a2 = other team): ResetTeamEnergy, line 0, and with line changes on the power play line 3
+SetupTeamLine	;95 only. Team a3 (a2 = other team): ResetTeamEnergy, line 0, and with line changes on the power play line 3
 	;or penalty kill line 5 when the players on ice (tmap) differ
 	jsr	(ResetTeamEnergy).l
 	clr.w	tmline(a3)
@@ -139,7 +139,7 @@ SetupTeamLine	;IDA: sub_8A584. 95 only. Team a3 (a2 = other team): ResetTeamEner
 .0
 	rts
 
-ReadTeamSRAM	;IDA dc.b 95 only, no xref. Read $39 bytes of team d7 (0-$1B) from save RAM offset d0 to a0
+ReadTeamSRAM	;95 only, no xref. Read $39 bytes of team d7 (0-$1B) from save RAM offset d0 to a0
 	movem.l	d0/d7/a0,-(sp)
 	cmp.w	#$1B,d7
 	bgt.w	.0
@@ -152,7 +152,7 @@ ReadTeamSRAM	;IDA dc.b 95 only, no xref. Read $39 bytes of team d7 (0-$1B) from 
 	movem.l	(sp)+,d0/d7/a0
 	rts
 
-DefaultLineData	;IDA: sub_8A5D8. 95 only. Copy the default line sets of the 28 teams (TeamList + 6, 8 x 8 bytes, then $64) to $FFFF3E14.
+DefaultLineData	;95 only. Copy the default line sets of the 28 teams (TeamList + 6, 8 x 8 bytes, then $64) to $FFFF3E14.
 	;Called from sram95
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#$FFFF3E14,a0
@@ -181,7 +181,7 @@ DefaultLineData	;IDA: sub_8A5D8. 95 only. Copy the default line sets of the 28 t
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LoadTeamLines	;IDA: loc_8A622. 95 only. The line sets of team struct a2 ($16C): from save RAM ($3E14 + team * $41) when there is save RAM and
+LoadTeamLines	;95 only. The line sets of team struct a2 ($16C): from save RAM ($3E14 + team * $41) when there is save RAM and
 	;line changes are on, else from the team data. Jumped to from setup95_01
 	tst.w	(OptLine).w
 	beq.w	.3
@@ -237,7 +237,7 @@ LoadTeamLines	;IDA: loc_8A622. 95 only. The line sets of team struct a2 ($16C): 
 	dbf	d0,.6
 	rts
 
-FixSavedLines	;IDA dc.b 95 only, no xref. Clamp the saved line slots of team d7 in the 4 TeamRecordSRAM records into the goalie /
+FixSavedLines	;95 only, no xref. Clamp the saved line slots of team d7 in the 4 TeamRecordSRAM records into the goalie /
 	;defense / forward ranges (ReadAttributeNibbleD7, GetDefenseStartD7, GetPlayerCountD7) and write them back
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(ReadAttributeNibbleD7).l
@@ -314,7 +314,7 @@ FixSavedLines	;IDA dc.b 95 only, no xref. Clamp the saved line slots of team d7 
 	subq.b	#1,(a0)
 	bra.s	.9
 
-CheckSavedLines	;IDA: sub_8A79A. 95 only. CheckTeamLines for tradeteam1 and tradeteam2. Called from the trade code
+CheckSavedLines	;95 only. CheckTeamLines for tradeteam1 and tradeteam2. Called from the trade code
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(tradeteam1).w,d7
 	bsr.w	CheckTeamLines
@@ -323,7 +323,7 @@ CheckSavedLines	;IDA: sub_8A79A. 95 only. CheckTeamLines for tradeteam1 and trad
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CheckTeamLines	;IDA: sub_8A7B4. 95 only. Check the saved lines of team d7 in the 4 TeamRecordSRAM records ($64 marks a valid one): each slot
+CheckTeamLines	;95 only. Check the saved lines of team d7 in the 4 TeamRecordSRAM records ($64 marks a valid one): each slot
 	;with bit 7 set is refilled by LineSlotFixTbl (slot & 7), then written back (WriteSRAM, MakeSRAMChecksum)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#3,d6
@@ -367,7 +367,7 @@ CheckTeamLines	;IDA: sub_8A7B4. 95 only. Check the saved lines of team d7 in the
 	movem.l	(sp)+,d0-d1/a0
 	bra.s	.3
 
-LineSlotFixTbl	;IDA: unk_8A838. 95 only. CheckTeamLines slot handlers by slot & 7: goalie (the best one), defense, defense, forward, forward,
+LineSlotFixTbl	;95 only. CheckTeamLines slot handlers by slot & 7: goalie (the best one), defense, defense, forward, forward,
 	;forward, extra, none
 	dc.l	.0,.4,.4,.20,.20,.20,.33,.3
 .0
@@ -589,7 +589,7 @@ LineSlotFixTbl	;IDA: unk_8A838. 95 only. CheckTeamLines slot handlers by slot & 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-EASportsScreen	;IDA: sub_8AAC8. (attract94) Called from Begin (main95). Show the EA Sports screen (EASportsMap) until a button, or $50 x 4
+EASportsScreen	;(attract94) Called from Begin (main95). Show the EA Sports screen (EASportsMap) until a button, or $50 x 4
 	;frames
 	move.l	#vb2,(vbint).w
 	bclr	#1,(disflags).w
@@ -637,7 +637,7 @@ EASportsScreen	;IDA: sub_8AAC8. (attract94) Called from Begin (main95). Show the
 	jsr	(forceblack).l
 	rts
 
-chkatop	;IDA: sub_8AB7E. (penalty94) Attack time of possession stat update. Called once a second from updatepentime
+chkatop	;(penalty94) Attack time of possession stat update. Called once a second from updatepentime
 	moveq	#0,d1
 	move.w	(pucky).w,d0
 	cmp.w	#$56,d0
@@ -656,7 +656,7 @@ chkatop	;IDA: sub_8AB7E. (penalty94) Attack time of possession stat update. Call
 .2
 	rts
 
-updatePPTeamTime	;IDA: sub_8ABB4. (period94) Power play time of the teams, once a second. Called from updatepentime
+updatePPTeamTime	;(period94) Power play time of the teams, once a second. Called from updatepentime
 	btst	#5,(sflags2).w
 	beq.w	.1
 	movea.l	#HmShots,a2
@@ -668,7 +668,7 @@ updatePPTeamTime	;IDA: sub_8ABB4. (period94) Power play time of the teams, once 
 .1
 	rts
 
-ChkShotStat	;IDA: sub_8ABDA. (penalty94) Determine if a shot was taken and add it to the stats (crowd, team, shooter and goalie)
+ChkShotStat	;(penalty94) Determine if a shot was taken and add it to the stats (crowd, team, shooter and goalie)
 	btst	#0,(gmode).w
 	bne.w	.10
 	btst	#4,(gmode).w
@@ -748,7 +748,7 @@ ChkShotStat	;IDA: sub_8ABDA. (penalty94) Determine if a shot was taken and add i
 .10
 	rts
 
-DrawTeamScreen2	;IDA: sub_8ACEC. 95 only. A DrawTeamScreen (data95_01) for the season / stats screens: screenarg is the background bitmap; the
+DrawTeamScreen2	;95 only. A DrawTeamScreen (data95_01) for the season / stats screens: screenarg is the background bitmap; the
 	;team block tiles (setupTeamBlocksMap), RosterFont at smallfontchars ... smallfont4chars with four remaps, BigFontMap2. d0 / d1 =
 	;first row / row count of the bitmap
 	movem.l	d0-d1/a2,-(sp)
@@ -839,7 +839,7 @@ DrawTeamScreen2	;IDA: sub_8ACEC. 95 only. A DrawTeamScreen (data95_01) for the s
 	movem.l	(sp)+,d0-d1/a2
 	rts
 
-DrawTeamScreen3	;IDA: wrong code. 95 only. The same with SmallFontMap
+DrawTeamScreen3	;95 only. The same with SmallFontMap
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
 .0
@@ -927,11 +927,11 @@ DrawTeamScreen3	;IDA: wrong code. 95 only. The same with SmallFontMap
 	movem.l	(sp)+,d0-d1/a2
 	rts
 
-DrawTeamScreen4NoSetup	;IDA: wrong code. 95 only. DrawTeamScreen4 without the screen setup (forceblack, scroll, vdp registers)
+DrawTeamScreen4NoSetup	;95 only. DrawTeamScreen4 without the screen setup (forceblack, scroll, vdp registers)
 	movem.l	d0-d1/a2,-(sp)
 	bra.w	DrawTeamScreen4Body
 
-DrawTeamScreen4	;IDA: wrong code. 95 only. The same as DrawTeamScreen3, the team block tiles with dma (Teamblocksmap+8)
+DrawTeamScreen4	;95 only. The same as DrawTeamScreen3, the team block tiles with dma (Teamblocksmap+8)
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
 .0
@@ -957,7 +957,7 @@ DrawTeamScreen4	;IDA: wrong code. 95 only. The same as DrawTeamScreen3, the team
 	move.w	(sp)+,(disflags).w
 	bclr	#1,(disflags).w
 
-DrawTeamScreen4Body	;IDA: wrong code. DrawTeamScreen4 after the screen setup; DrawTeamScreen4NoSetup branches here
+DrawTeamScreen4Body	;DrawTeamScreen4 after the screen setup; DrawTeamScreen4NoSetup branches here
 	moveq	#1,d4
 	movem.l	a0-a6,-(sp)
 	movea.l	#Teamblocksmap+8,a2
@@ -1021,7 +1021,7 @@ DrawTeamScreen4Body	;IDA: wrong code. DrawTeamScreen4 after the screen setup; Dr
 	movem.l	(sp)+,d0-d1/a2
 	rts
 
-DrawTeamScreen5	;IDA: wrong code. 95 only. DrawTeamScreen4 with three small fonts and palette word $A00
+DrawTeamScreen5	;95 only. DrawTeamScreen4 with three small fonts and palette word $A00
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
 .0
@@ -1106,7 +1106,7 @@ DrawTeamScreen5	;IDA: wrong code. 95 only. DrawTeamScreen4 with three small font
 	movem.l	(sp)+,d0-d1/a2
 	rts
 
-DrawTeamScreen6	;IDA: wrong code. 95 only. The team blocks (screen6chars1), the bitmap, Screen6Tiles1 / 2 (screen6chars2 / 3), three small fonts,
+DrawTeamScreen6	;95 only. The team blocks (screen6chars1), the bitmap, Screen6Tiles1 / 2 (screen6chars2 / 3), three small fonts,
 	;the big font and the framer (Framermap)
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
@@ -1202,7 +1202,7 @@ DrawTeamScreen6	;IDA: wrong code. 95 only. The team blocks (screen6chars1), the 
 	movem.l	(sp)+,d0-d1/a2
 	rts
 
-goalieacc	;IDA: loc_8B4E0. (checks94) Goalie movement: a pad goalie near his crease faces the puck and gets the ready SPA (GoalieReadySPA),
+goalieacc	;(checks94) Goalie movement: a pad goalie near his crease faces the puck and gets the ready SPA (GoalieReadySPA),
 	;turning (AdjustFacingDirection); stopna2 deep in the crease; then playeracc. A computer goalie keeps or turns its facing
 	btst	#3,pflags(a3)
 	beq.w	.9
@@ -1354,7 +1354,7 @@ goalieacc	;IDA: loc_8B4E0. (checks94) Goalie movement: a pad goalie near his cre
 	jmp	playeracc
 	rts	;unused
 
-doinput_goaliedive	;IDA: loc_8B6F8. (input94 doinput .33) The goalie dive on button A (bit 6): face TempWord1, nopuck 8, the dive SPA $1D4E, crowd
+doinput_goaliedive	;(input94 doinput .33) The goalie dive on button A (bit 6): face TempWord1, nopuck 8, the dive SPA $1D4E, crowd
 	;+$96. Jumped to from doinput (input95_01)
 	btst	#6,d1
 	beq.w	doinput_cbut
@@ -1369,6 +1369,6 @@ doinput_goaliedive	;IDA: loc_8B6F8. (input94 doinput .33) The goalie dive on but
 	bset	#5,pflags(a3)
 	addi.w	#$96,(crowdlevel).w
 
-rtss15	;IDA: locret_8B732. 94 name. The rts of doinput_goaliedive
+rtss15	;94 name. The rts of doinput_goaliedive
 	rts
 

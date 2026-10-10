@@ -14,7 +14,7 @@
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-rtsStatTables	;IDA: locret_925AE
+rtsStatTables
 	rts
 
 PlayerStatsScreen	;stats94 PlayerStatsScreen (93 name). Pause menu PLAYER STATS: DisplayAttributeScreen with d7 = 0 (this game)
@@ -450,7 +450,7 @@ ScrollArrowTbl2	;stats94 ScrollArrowTbl2 (93 name). None, up, down, both
 	String	' ',$FB,$FF,$FA,$E,'}',$F9,0
 	String	'{',$FB,$FF,$FA,$E,'}',$F9,0
 
-InitSeasonStats	;IDA: sub_92BEC
+InitSeasonStats
 	movem.l	d0-d7/a0-a6,-(sp)
 	lea	(M68K_RAM).l,a0
 	move.w	#$6DC,d0
@@ -498,7 +498,7 @@ InitSeasonStats	;IDA: sub_92BEC
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SaveSimGame	;IDA: sub_92CAE
+SaveSimGame
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(HmShots+$28).w,($20FDDC).l
 	move.w	(HmGoals).w,d7
@@ -553,7 +553,7 @@ SaveSimGame	;IDA: sub_92CAE
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-AddTeamSeasonStats	;IDA: sub_92D86
+AddTeamSeasonStats
 	mulu.w	#$A,d0
 	btst	#5,(SeasonDay+1).w
 	beq.w	.0
@@ -582,7 +582,7 @@ AddTeamSeasonStats	;IDA: sub_92D86
 	jsr	(MakeSRAMChecksum).l
 	rts
 
-AddPlayerSeasonStats	;IDA: sub_92DF0
+AddPlayerSeasonStats
 	move.l	#$21A4,d2
 	btst	#5,(SeasonDay+1).w
 	beq.w	.0
@@ -706,7 +706,7 @@ AddPlayerSeasonStats	;IDA: sub_92DF0
 	jsr	(MakeSRAMChecksum).l
 	rts
 
-ReadStatBlock	;IDA: sub_92F84
+ReadStatBlock
 	mulu.w	#$34,d0
 	add.l	d2,d0
 	movea.l	#StatBuf,a0
@@ -719,11 +719,11 @@ ReadStatBlock	;IDA: sub_92F84
 	move.w	#$19,d7
 	rts
 
-WriteStatBlock	;IDA: sub_92FB0
+WriteStatBlock
 	movem.l	(a5)+,d0-d1/a0
 	jmp	WriteSRAM
 
-SaveGameHighlights	;IDA: sub_92FBA
+SaveGameHighlights
 	btst	#3,(SeasonDay+1).w
 	bne.w	rtsHighlight
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -823,7 +823,7 @@ SaveGameHighlights	;IDA: sub_92FBA
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-BestGoalieSaves	;IDA: sub_93114
+BestGoalieSaves
 	movem.l	d4-d6/a2-a3,-(sp)
 	jsr	(ReadAttributeNibble).l
 	clr.w	d2
@@ -850,7 +850,7 @@ BestGoalieSaves	;IDA: sub_93114
 	movem.l	(sp)+,d4-d6/a2-a3
 	rts
 
-MostAssists	;IDA: sub_9315A
+MostAssists
 	jsr	(ReadAttributeNibble).l
 	move.w	#$1A,d1
 	sub.w	d0,d1
@@ -870,7 +870,7 @@ MostAssists	;IDA: sub_9315A
 	movea.l	(sp)+,a2
 	rts
 
-MostGoals	;IDA: sub_9318C
+MostGoals
 	jsr	(ReadAttributeNibble).l
 	move.w	#$1A,d1
 	sub.w	d0,d1
@@ -890,7 +890,7 @@ MostGoals	;IDA: sub_9318C
 	movea.l	(sp)+,a2
 	rts
 
-AddHighlight	;IDA: sub_931BE
+AddHighlight
 	move.w	d3,-(sp)
 	movem.l	d7,-(sp)
 	move.w	d0,d7
@@ -918,7 +918,7 @@ AddHighlight	;IDA: sub_931BE
 	move.w	(sp)+,d3
 	rts
 
-CompareHighlight	;IDA: sub_93208
+CompareHighlight
 	move.w	d1,d3
 	andi.w	#$E000,d3
 	beq.w	.0
@@ -930,10 +930,10 @@ CompareHighlight	;IDA: sub_93208
 .0
 	move.w	#1,d3
 
-rtsHighlight	;IDA: locret_93224
+rtsHighlight
 	rts
 
-ReadTeamPlayerStats	;IDA: sub_93226
+ReadTeamPlayerStats
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d7,d0
 	mulu.w	#$34,d0
@@ -991,7 +991,7 @@ ReadTeamPlayerStats	;IDA: sub_93226
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-WriteTeamPlayerStats	;IDA: sub_932F8
+WriteTeamPlayerStats
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d7,d0
 	mulu.w	#$34,d0
@@ -1049,7 +1049,7 @@ WriteTeamPlayerStats	;IDA: sub_932F8
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReadSeasonTeamRecord	;no IDA label. 95 only. Read the season record of team d7 (save RAM $3D10, or $7D2D with SeasonDay bit 5) to a0
+ReadSeasonTeamRecord	;95 only. Read the season record of team d7 (save RAM $3D10, or $7D2D with SeasonDay bit 5) to a0
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d7,d0
 	mulu.w	#$A,d0
@@ -1079,7 +1079,7 @@ ReadSeasonTeamRecord	;no IDA label. 95 only. Read the season record of team d7 (
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-MarkSeasonRosters	;IDA: sub_93430
+MarkSeasonRosters
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d7
 	movea.l	#$204348,a0
@@ -1106,7 +1106,7 @@ MarkSeasonRosters	;IDA: sub_93430
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SeasonPlayerStats	;no IDA label. 95 season Player Stats screen: set VRAM layout (AC00-AC0E), clear VRAM (setvram), then run the stats screen and return
+SeasonPlayerStats	;95 season Player Stats screen: set VRAM layout (AC00-AC0E), clear VRAM (setvram), then run the stats screen and return
 	bclr	#1,(disflags).w
 	move.w	#$C000,(VmMap2).w
 	move.w	#6,(Map2col1).w
@@ -1120,11 +1120,11 @@ SeasonPlayerStats	;no IDA label. 95 season Player Stats screen: set VRAM layout 
 	jsr	(setvram).l
 	bra.w	SeasonAttributeScreen
 
-SeasonPlayersScreen	;no IDA label. Run the season stats screen, then jump to ExitAttributeScreen2
+SeasonPlayersScreen	;Run the season stats screen, then jump to ExitAttributeScreen2
 	bsr.w	SeasonAttributeScreen
 	jmp	(ExitAttributeScreen2).l
 
-SeasonPlayersRedraw	;no IDA label. Wait for vblank, reset scroll, clear the window/scroll VDP areas, draw the team screen (DrawTeamScreen4NoSetup) and enter the stats screen draw
+SeasonPlayersRedraw	;Wait for vblank, reset scroll, clear the window/scroll VDP areas, draw the team screen (DrawTeamScreen4NoSetup) and enter the stats screen draw
 	btst	#0,(disflags).w
 	bne.s	SeasonPlayersRedraw
 	clr.w	(Hscroll).w
@@ -1157,7 +1157,7 @@ SeasonPlayersRedraw	;no IDA label. Wait for vblank, reset scroll, clear the wind
 	jsr	(DrawTeamScreen4NoSetup).l
 	bra.w	SeasonAttributeDraw
 
-SeasonAttributeScreen	;no IDA label. stats94 DisplayAttributeScreen (season version). d7 = team 0-$19 (A/B cycles teams); sflags BF0C bit 3 = playoff variant
+SeasonAttributeScreen	;stats94 DisplayAttributeScreen (season version). d7 = team 0-$19 (A/B cycles teams); sflags BF0C bit 3 = playoff variant
 	move.b	(SeasonDay+1).w,-(sp)
 	btst	#3,(sflags11).w
 	bne.w	.0
@@ -1169,7 +1169,7 @@ SeasonAttributeScreen	;no IDA label. stats94 DisplayAttributeScreen (season vers
 	move.l	#PlayerStatsBgMap,(screenarg).l
 	jsr	(DrawTeamScreen4).l
 
-SeasonAttributeDraw	;no IDA label
+SeasonAttributeDraw
 	jsr	(printz).l
 	String	$BD,$0,$6,$0
 	movea.l	#PlayerStatsTitleMap,a0
@@ -1260,7 +1260,7 @@ SeasonAttributeDraw	;no IDA label
 	clr.w	d7
 	bra.w	.0
 
-SeasonAttribScroll	;no IDA label. stats94 UpdateAttributeScroll. Per-frame scroll of the player list
+SeasonAttribScroll	;stats94 UpdateAttributeScroll. Per-frame scroll of the player list
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsSeasonAttrib
 	add.w	(VertLineScrolling).w,d0
@@ -1286,7 +1286,7 @@ SeasonAttribScroll	;no IDA label. stats94 UpdateAttributeScroll. Per-frame scrol
 	bne.w	SeasonAttribScrollReg
 	bsr.w	SeasonAttribLineDown
 
-SeasonAttribScrollReg	;no IDA label. stats94 SetAttribScrollReg. VSRAM = word_FFD278 - $68
+SeasonAttribScrollReg	;stats94 SetAttribScrollReg. VSRAM = word_FFD278 - $68
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
@@ -1296,21 +1296,21 @@ SeasonAttribScrollReg	;no IDA label. stats94 SetAttribScrollReg. VSRAM = word_FF
 	move.w	d0,(a0)
 	move.w	(sp)+,(disflags).w
 
-rtsSeasonAttrib	;no IDA label
+rtsSeasonAttrib
 	rts
 
-SeasonAttribLineUp	;no IDA label. stats94 DisplayAttributeLineUp
+SeasonAttribLineUp	;stats94 DisplayAttributeLineUp
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	bra.w	SeasonAttributeEntry
 
-SeasonAttribLineDown	;no IDA label. stats94 DisplayAttributeLineDown
+SeasonAttribLineDown	;stats94 DisplayAttributeLineDown
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	addq.w	#6,d3
 	bra.w	SeasonAttributeEntry
 
-SeasonAttributeMenu	;no IDA label. stats94 DisplayAttributeMenu (3 columns: G, A, Pts). Headers, sort title, sorted player list at $FFBC1E, draws 6 rows
+SeasonAttributeMenu	;stats94 DisplayAttributeMenu (3 columns: G, A, Pts). Headers, sort title, sorted player list at $FFBC1E, draws 6 rows
 	jsr	(printz2).l
 	String	$F8,$4,$3,$4,$9,$F9,$1,'Player',$FB,$7,$0
 	lea	SeasonAttributeMenuTxt(pc),a1
@@ -1403,7 +1403,7 @@ SeasonAttributeMenu	;no IDA label. stats94 DisplayAttributeMenu (3 columns: G, A
 	dbf	d4,.9
 	bra.w	SeasonAttribScrollReg
 
-SeasonAttributeEntry	;no IDA label. stats94 DisplayAttributeEntry. Draws list row d3 (rank, name, 3 stat columns or goalie saves/shots/save %)
+SeasonAttributeEntry	;stats94 DisplayAttributeEntry. Draws list row d3 (rank, name, 3 stat columns or goalie saves/shots/save %)
 	movea.w	#$BC1E,a4
 	adda.w	d3,a4
 	jsr	(printz).l
@@ -1495,7 +1495,7 @@ SeasonAttributeEntry	;no IDA label. stats94 DisplayAttributeEntry. Draws list ro
 .5
 	rts
 
-SeasonCheckAttribute	;no IDA label. stats94 CheckAttributeValid. d2 = stat column d1 for player d0; goalies: columns 1-2 read column 1 (A), others set BEFC bit 2 (skip)
+SeasonCheckAttribute	;stats94 CheckAttributeValid. d2 = stat column d1 for player d0; goalies: columns 1-2 read column 1 (A), others set BEFC bit 2 (skip)
 	bclr	#2,(sflags5).w
 	move.w	d0,-(sp)
 	jsr	(ReadAttributeNibbleD7).l
@@ -1508,7 +1508,7 @@ SeasonCheckAttribute	;no IDA label. stats94 CheckAttributeValid. d2 = stat colum
 	beq.w	SeasonSkipAttribute
 	moveq	#1,d1
 
-SeasonGetAttribute	;no IDA label. stats94 GetAttributeValue2 (season version). d2 = sum of the season stat words (low 15 bits) at $FFCAF8 + SeasonAttributeOffsets column offsets, player d0
+SeasonGetAttribute	;stats94 GetAttributeValue2 (season version). d2 = sum of the season stat words (low 15 bits) at $FFCAF8 + SeasonAttributeOffsets column offsets, player d0
 	movem.w	d0,-(sp)
 	movea.l	#StatBuf,a2
 	lea	SeasonAttributeOffsets(pc),a1
@@ -1529,14 +1529,14 @@ SeasonGetAttribute	;no IDA label. stats94 GetAttributeValue2 (season version). d
 	movem.w	(sp)+,d0
 	rts
 
-SeasonSkipAttribute	;no IDA label. Column not shown for this goalie: set BEFC bit 2
+SeasonSkipAttribute	;Column not shown for this goalie: set BEFC bit 2
 	bset	#2,(sflags5).w
 	rts
 
-SeasonAttributeOffsets	;no IDA label. stats94 AttributeOffsetTbl2 (season version). Word offsets into $FFCAF8 per column (G, A, Pts=G+A, saves, shots), $FFFF = none
+SeasonAttributeOffsets	;stats94 AttributeOffsetTbl2 (season version). Word offsets into $FFCAF8 per column (G, A, Pts=G+A, saves, shots), $FFFF = none
 	dc.w	$0,$FFFF,$34,$FFFF,$0,$34,$68,$FFFF,$D0,$FFFF
 
-SeasonAttributeMenuTxt	;no IDA label. stats94 AttributeMenuTxt. Column headers (goalie header, then G, A, Pts, SOG, PIM)
+SeasonAttributeMenuTxt	;stats94 AttributeMenuTxt. Column headers (goalie header, then G, A, Pts, SOG, PIM)
 	String	'Saves Shots Save %  '
 	String	'   G'
 	String	'     A'
@@ -1544,7 +1544,7 @@ SeasonAttributeMenuTxt	;no IDA label. stats94 AttributeMenuTxt. Column headers (
 	String	' SOG'
 	String	' PIM'
 
-SeasonAttributeTitleTxt	;no IDA label. stats94 AttributeTitleTxt. Sort column titles
+SeasonAttributeTitleTxt	;stats94 AttributeTitleTxt. Sort column titles
 	String	'    Goalie Saves   ]'
 	String	'[      Goals       ]'
 	String	'[     Assists      ]'
@@ -1552,7 +1552,7 @@ SeasonAttributeTitleTxt	;no IDA label. stats94 AttributeTitleTxt. Sort column ti
 	String	'[  Shots On Goal   ]'
 	String	'[ Penalty Minutes   '
 
-SeasonScrollArrows	;no IDA label. stats94 DrawScrollArrowsAttribute. Up / down arrows (SeasonScrollArrowTbl). Saves d0-d1/a1
+SeasonScrollArrows	;stats94 DrawScrollArrowsAttribute. Up / down arrows (SeasonScrollArrowTbl). Saves d0-d1/a1
 	movem.l	d0-d1/a1,-(sp)
 	jsr	(printz2).l
 	String	$F8,$4,$3,'$',$C,$F9,$3,$0
@@ -1571,13 +1571,13 @@ SeasonScrollArrows	;no IDA label. stats94 DrawScrollArrowsAttribute. Up / down a
 	movem.l	(sp)+,d0-d1/a1
 	rts
 
-SeasonScrollArrowTbl	;no IDA label. stats94 ScrollArrowTbl2. None, up, down, both
+SeasonScrollArrowTbl	;stats94 ScrollArrowTbl2. None, up, down, both
 	String	' ',$FB,$FF,$FA,$E,' ',$F9,$0
 	String	'{',$FB,$FF,$FA,$E,' ',$F9,$0
 	String	' ',$FB,$FF,$FA,$E,'}',$F9,$0
 	String	'{',$FB,$FF,$FA,$E,'}',$F9,$0
 
-DrawTeamLogo1	;no IDA label. Draw bitmap Teamblocksmap via dobitmap (dobitmap) with tile base $69A, d1 = 2*d0 (team d0). Saves all regs
+DrawTeamLogo1	;Draw bitmap Teamblocksmap via dobitmap (dobitmap) with tile base $69A, d1 = 2*d0 (team d0). Saves all regs
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#1,d4
 	move.w	d0,d1
@@ -1595,7 +1595,7 @@ DrawTeamLogo1	;no IDA label. Draw bitmap Teamblocksmap via dobitmap (dobitmap) w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SeasonTeamStats	;no IDA label. 95 season TEAM STATS screen (sflags11 bit 3 = playoff "Playoff Teams"): d7 = team 0-$19, left/right (bits 6/4 of d1) change team, start exits
+SeasonTeamStats	;95 season TEAM STATS screen (sflags11 bit 3 = playoff "Playoff Teams"): d7 = team 0-$19, left/right (bits 6/4 of d1) change team, start exits
 	bclr	#1,(disflags).w
 	move.w	#$C000,(VmMap2).w
 	move.w	#6,(Map2col1).w
@@ -1609,11 +1609,11 @@ SeasonTeamStats	;no IDA label. 95 season TEAM STATS screen (sflags11 bit 3 = pla
 	jsr	(setvram).l
 	bra.w	SeasonTeamStatsRun
 
-SeasonTeamsScreen	;no IDA label
+SeasonTeamsScreen
 	bsr.w	SeasonTeamStatsRun
 	jmp	(ExitAttributeScreen2).l
 
-SeasonTeamStatsRun	;no IDA label
+SeasonTeamStatsRun
 	move.b	(SeasonDay+1).w,-(sp)
 	btst	#3,(sflags11).w
 	bne.w	.0
@@ -1667,7 +1667,7 @@ SeasonTeamStatsRun	;no IDA label
 	move.w	#$19,d7
 	bra.w	.2
 
-PrintSeasonTeamStats	;no IDA label. print the team stat rows from the record at $FFCAF8 (a6): W,L,T,Pts, then per-game / percentage stats (like 94 DisplayTeamStatsScreen rows)
+PrintSeasonTeamStats	;print the team stat rows from the record at $FFCAF8 (a6): W,L,T,Pts, then per-game / percentage stats (like 94 DisplayTeamStatsScreen rows)
 	movem.l	a6,-(sp)
 	movea.l	#StatBuf,a6
 	jsr	(printz2).l
@@ -1864,7 +1864,7 @@ PrintSeasonTeamStats	;no IDA label. print the team stat rows from the record at 
 	movem.l	(sp)+,a6
 	rts
 
-DrawTeamLogo2	;no IDA label. draw team d0's logo: frame d0*2 of the bitmap set at Teamblocksmap, tile $69A, via dobitmap (dobitmap)
+DrawTeamLogo2	;draw team d0's logo: frame d0*2 of the bitmap set at Teamblocksmap, tile $69A, via dobitmap (dobitmap)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#1,d4
 	move.w	d0,d1
@@ -1882,7 +1882,7 @@ DrawTeamLogo2	;no IDA label. draw team d0's logo: frame d0*2 of the bitmap set a
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LeagueLeadersScreen	;no IDA label. 95 League Leaders screen (season menu): team/individual stat leader lists, scroll and category select
+LeagueLeadersScreen	;95 League Leaders screen (season menu): team/individual stat leader lists, scroll and category select
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(MarkSeasonRosters).l
 	move.l	#PlayerStatsBgMap,(screenarg).l
@@ -1986,7 +1986,7 @@ LeagueLeadersScreen	;no IDA label. 95 League Leaders screen (season menu): team/
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LeadersScrollArrows	;no IDA label. League Leaders: draw up/down scroll arrows depending on list position
+LeadersScrollArrows	;League Leaders: draw up/down scroll arrows depending on list position
 	movem.l	d0-d7/a0-a6,-(sp)
 	tst.w	(SeasonGameCount).w
 	beq.w	.0
@@ -2010,7 +2010,7 @@ LeadersScrollArrows	;no IDA label. League Leaders: draw up/down scroll arrows de
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintTeamCategory	;no IDA label. League Leaders: print category name, team mode (7 categories); individual mode goes to PrintPlayerCategory
+PrintTeamCategory	;League Leaders: print category name, team mode (7 categories); individual mode goes to PrintPlayerCategory
 	tst.w	(StatWork).w
 	bne.w	PrintPlayerCategory
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -2022,7 +2022,7 @@ PrintTeamCategory	;no IDA label. League Leaders: print category name, team mode 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-TeamCategoryText	;no IDA label
+TeamCategoryText
 	String	'       Points        ',$0
 	String	'      Goals Avg.     ',$0
 	String	'  Goals Allowed Avg. ',$0
@@ -2031,7 +2031,7 @@ TeamCategoryText	;no IDA label
 	String	'      Shots Avg.     ',$0
 	String	'  Shots Allowed Avg. ',$0
 
-PrintPlayerCategory	;no IDA label. League Leaders: print category name, individual mode (4 categories)
+PrintPlayerCategory	;League Leaders: print category name, individual mode (4 categories)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BF,$19,$7,$0
@@ -2041,13 +2041,13 @@ PrintPlayerCategory	;no IDA label. League Leaders: print category name, individu
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PlayerCategoryText	;no IDA label
+PlayerCategoryText
 	String	'   Goals       ',$0
 	String	'  Assists      ',$0
 	String	'  Points       ',$0
 	String	'      GAA      ',$0
 
-PrintLeadersHeader	;no IDA label. League Leaders: print TEAM / INDIVIDUAL column headers
+PrintLeadersHeader	;League Leaders: print TEAM / INDIVIDUAL column headers
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BF,$0,$5,$0
@@ -2059,11 +2059,11 @@ PrintLeadersHeader	;no IDA label. League Leaders: print TEAM / INDIVIDUAL column
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LeaderModeText	;no IDA label
+LeaderModeText
 	String	$BF,$11,$5,'TEAM',$BF,$5,$7,'   Team    ',$0
 	String	$BF,$F,$5,'INDIVIDUAL',$BF,$6,$7,'No. Player   Team  ',$0
 
-ReadAnyPad6	;no IDA label. League Leaders: wait (frame-synced) until a joypad reports input; d1 = buttons
+ReadAnyPad6	;League Leaders: wait (frame-synced) until a joypad reports input; d1 = buttons
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6
@@ -2100,7 +2100,7 @@ ReadAnyPad6	;no IDA label. League Leaders: wait (frame-synced) until a joypad re
 .6
 	rts
 
-ClearLeadersArea	;no IDA label. League Leaders: clear a $28x$14 text area with tile $7FF (individual mode only; team mode returns at once)
+ClearLeadersArea	;League Leaders: clear a $28x$14 text area with tile $7FF (individual mode only; team mode returns at once)
 	tst.w	(StatWork).w
 	beq.w	.0
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -2114,7 +2114,7 @@ ClearLeadersArea	;no IDA label. League Leaders: clear a $28x$14 text area with t
 .0
 	rts
 
-BuildLeaders	;no IDA label. League Leaders: build sorted team leader list for category BB20 (jump table) or individual list
+BuildLeaders	;League Leaders: build sorted team leader list for category BB20 (jump table) or individual list
 	tst.w	(StatWork).w
 	bne.w	BuildPlayerLeaders
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -2124,10 +2124,10 @@ BuildLeaders	;no IDA label. League Leaders: build sorted team leader list for ca
 	movea.l	0(a0,d0.w),a0
 	jmp	(a0)
 
-TeamLeaderJumps	;no IDA label
+TeamLeaderJumps
 	dc.l	LeadersPoints,LeadersGoalsAvg,LeadersGoalsAllowed,LeadersSavePct,LeadersShootPct,LeadersShotsAvg,LeadersShotsAllowed
 
-LeadersPoints	;no IDA label. Points: 2*wins+ties per team, sort descending
+LeadersPoints	;Points: 2*wins+ties per team, sort descending
 	movea.l	#StatBuf,a0
 	jsr	(ReadStandings).l
 	move.w	#$19,d3
@@ -2149,7 +2149,7 @@ LeadersPoints	;no IDA label. Points: 2*wins+ties per team, sort descending
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
-LeadersGoalsAvg	;no IDA label. Goals Avg: goals*100/games per team, sort descending
+LeadersGoalsAvg	;Goals Avg: goals*100/games per team, sort descending
 	move.l	#$3D10,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
@@ -2182,7 +2182,7 @@ LeadersGoalsAvg	;no IDA label. Goals Avg: goals*100/games per team, sort descend
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
-LeadersGoalsAllowed	;no IDA label. Goals Allowed Avg: goals against*100/games per team, sort ascending
+LeadersGoalsAllowed	;Goals Allowed Avg: goals against*100/games per team, sort ascending
 	move.l	#$3D10,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
@@ -2215,7 +2215,7 @@ LeadersGoalsAllowed	;no IDA label. Goals Allowed Avg: goals against*100/games pe
 	bsr.w	SortLeadersUp
 	bra.w	BuildLeadersDone
 
-LeadersField4	;no IDA label. unreferenced: field 4 *100/games per team, sort descending
+LeadersField4	;unreferenced: field 4 *100/games per team, sort descending
 	move.l	#$3D10,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
@@ -2248,7 +2248,7 @@ LeadersField4	;no IDA label. unreferenced: field 4 *100/games per team, sort des
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
-LeadersSavePct	;no IDA label. Save Percentage: (shots against - goals against)*100/shots against per team, sort descending
+LeadersSavePct	;Save Percentage: (shots against - goals against)*100/shots against per team, sort descending
 	move.l	#$3D10,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
@@ -2278,7 +2278,7 @@ LeadersSavePct	;no IDA label. Save Percentage: (shots against - goals against)*1
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
-LeadersShootPct	;no IDA label. Shooting Percentage: goals*100/shots per team, sort descending
+LeadersShootPct	;Shooting Percentage: goals*100/shots per team, sort descending
 	move.l	#$3D10,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
@@ -2309,7 +2309,7 @@ LeadersShootPct	;no IDA label. Shooting Percentage: goals*100/shots per team, so
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
-LeadersShotsAvg	;no IDA label. Shots Avg: shots*100/games per team, sort descending
+LeadersShotsAvg	;Shots Avg: shots*100/games per team, sort descending
 	move.l	#$3D10,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
@@ -2342,7 +2342,7 @@ LeadersShotsAvg	;no IDA label. Shots Avg: shots*100/games per team, sort descend
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
-LeadersShotsAllowed	;no IDA label. Shots Allowed Avg: shots against*100/games per team, sort ascending
+LeadersShotsAllowed	;Shots Allowed Avg: shots against*100/games per team, sort ascending
 	move.l	#$3D10,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
@@ -2375,11 +2375,11 @@ LeadersShotsAllowed	;no IDA label. Shots Allowed Avg: shots against*100/games pe
 	bsr.w	SortLeadersUp
 	bra.w	BuildLeadersDone
 
-BuildLeadersDone	;no IDA label
+BuildLeadersDone
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SortLeadersDown	;no IDA label. League Leaders: bubble sort word values at $FFDB04 (25 pairs) descending, swapping index bytes at a0
+SortLeadersDown	;League Leaders: bubble sort word values at $FFDB04 (25 pairs) descending, swapping index bytes at a0
 	movea.l	#TeamLeaderValues,a1
 .0
 	clr.w	d1
@@ -2408,7 +2408,7 @@ SortLeadersDown	;no IDA label. League Leaders: bubble sort word values at $FFDB0
 	bne.s	.0
 	rts
 
-SortLeadersUp	;no IDA label. League Leaders: same bubble sort, ascending
+SortLeadersUp	;League Leaders: same bubble sort, ascending
 	movea.l	#TeamLeaderValues,a1
 .0
 	clr.w	d1
@@ -2437,7 +2437,7 @@ SortLeadersUp	;no IDA label. League Leaders: same bubble sort, ascending
 	bne.s	.0
 	rts
 
-BuildPlayerLeaders	;no IDA label. League Leaders: individual mode, dispatch on category BB20 through table at $949D0
+BuildPlayerLeaders	;League Leaders: individual mode, dispatch on category BB20 through table at $949D0
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(linemarkbuf+2).w,d0
 	asl.w	#2,d0
@@ -2445,17 +2445,17 @@ BuildPlayerLeaders	;no IDA label. League Leaders: individual mode, dispatch on c
 	movea.l	0(a0,d0.w),a0
 	jmp	(a0)
 
-BuildPlayerLeadersDone	;no IDA label
+BuildPlayerLeadersDone
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PlayerLeaderJumps	;no IDA label. League Leaders: per category (word_FFBB20, from $949B4) handler that builds and sorts the leader list
+PlayerLeaderJumps	;League Leaders: per category (word_FFBB20, from $949B4) handler that builds and sorts the leader list
 	dc.l	PlayerLeadersGoals
 	dc.l	PlayerLeadersAssists
 	dc.l	PlayerLeadersPoints
 	dc.l	PlayerLeadersGAA
 
-PlayerLeadersGoals	;no IDA label. Category 0: gather with BuildLeaderList (d0 = $21A4, d1 = $548), sort descending
+PlayerLeadersGoals	;Category 0: gather with BuildLeaderList (d0 = $21A4, d1 = $548), sort descending
 	move.l	#$21A4,d0
 	move.l	#$548,d1
 	movea.l	#BuildLeaderList,a5
@@ -2463,7 +2463,7 @@ PlayerLeadersGoals	;no IDA label. Category 0: gather with BuildLeaderList (d0 = 
 	bsr.w	GatherAndSort
 	bra.s	BuildPlayerLeadersDone
 
-PlayerLeadersAssists	;no IDA label. Category 1: gather with BuildLeaderList (d0 = $2720, d1 = $548), sort descending
+PlayerLeadersAssists	;Category 1: gather with BuildLeaderList (d0 = $2720, d1 = $548), sort descending
 	move.l	#$2720,d0
 	move.l	#$548,d1
 	movea.l	#BuildLeaderList,a5
@@ -2471,7 +2471,7 @@ PlayerLeadersAssists	;no IDA label. Category 1: gather with BuildLeaderList (d0 
 	bsr.w	GatherAndSort
 	bra.s	BuildPlayerLeadersDone
 
-PlayerLeadersPoints	;no IDA label. Category 2: gather with BuildLeaderListSum (d0 = $21A4, d1 = $548), sort descending
+PlayerLeadersPoints	;Category 2: gather with BuildLeaderListSum (d0 = $21A4, d1 = $548), sort descending
 	move.l	#$21A4,d0
 	move.l	#$548,d1
 	movea.l	#BuildLeaderListSum,a5
@@ -2479,7 +2479,7 @@ PlayerLeadersPoints	;no IDA label. Category 2: gather with BuildLeaderListSum (d
 	bsr.w	GatherAndSort
 	bra.s	BuildPlayerLeadersDone
 
-PlayerLeadersGAA	;no IDA label. Category 3: gather with BuildLeaderListPct (d0 = $21A4, d1 = $548), sort ascending (bit 1 of byte_FFBEF8 set)
+PlayerLeadersGAA	;Category 3: gather with BuildLeaderListPct (d0 = $21A4, d1 = $548), sort ascending (bit 1 of byte_FFBEF8 set)
 	move.l	#$21A4,d0
 	move.l	#$548,d1
 	movea.l	#BuildLeaderListPct,a5
@@ -2487,7 +2487,7 @@ PlayerLeadersGAA	;no IDA label. Category 3: gather with BuildLeaderListPct (d0 =
 	bsr.w	GatherAndSort
 	bra.w	BuildPlayerLeadersDone
 
-GatherAndSort	;no IDA label. Call a5 to fill values at $FFFFA1AA / players at $FFFF9C60 (count word_FFBB2A), then bubble sort both lists by value (descending, or ascending when bit 1 of byte_FFBEF8)
+GatherAndSort	;Call a5 to fill values at $FFFFA1AA / players at $FFFF9C60 (count word_FFBB2A), then bubble sort both lists by value (descending, or ascending when bit 1 of byte_FFBEF8)
 	movea.l	#LeaderValues,a0
 	movea.l	#StatWork+$C,a2
 	movea.l	#LeaderPlayers,a3
@@ -2501,7 +2501,7 @@ GatherAndSort	;no IDA label. Call a5 to fill values at $FFFFA1AA / players at $F
 	btst	#1,(BA_PS_flags).w
 	bne.w	SortValuesUp
 
-SortValuesDown	;no IDA label. Descending pass: swap neighbours where the next value is larger, repeat until no swap
+SortValuesDown	;Descending pass: swap neighbours where the next value is larger, repeat until no swap
 	clr.w	d0
 	clr.w	(TempWord1).w
 	move.w	(StatWork+$C).w,d2
@@ -2529,10 +2529,10 @@ SortValuesDown	;no IDA label. Descending pass: swap neighbours where the next va
 	tst.w	(TempWord1).w
 	bne.s	SortValuesDown
 
-rtsSortValues	;no IDA label
+rtsSortValues
 	rts
 
-SortValuesUp	;no IDA label. Ascending pass: swap neighbours where the next value is smaller, repeat until no swap
+SortValuesUp	;Ascending pass: swap neighbours where the next value is smaller, repeat until no swap
 	clr.w	d0
 	clr.w	(TempWord1).w
 	move.w	(StatWork+$C).w,d2
@@ -2561,7 +2561,7 @@ SortValuesUp	;no IDA label. Ascending pass: swap neighbours where the next value
 	bne.s	SortValuesUp
 	rts
 
-DrawLeaderRows	;no IDA label. Draw the leader rows (word_FFBB26 rows from word_FFBB22): when word_FFBB1E is set use the sorted list (DrawPlayerLeaderRows), else rank, team logo (DrawTeamLogo3), and the category value (LeaderPrintJumps) from the RAM tables in LeaderTables
+DrawLeaderRows	;Draw the leader rows (word_FFBB26 rows from word_FFBB22): when word_FFBB1E is set use the sorted list (DrawPlayerLeaderRows), else rank, team logo (DrawTeamLogo3), and the category value (LeaderPrintJumps) from the RAM tables in LeaderTables
 	tst.w	(StatWork).w
 	bne.w	DrawPlayerLeaderRows
 	clr.w	d6
@@ -2612,7 +2612,7 @@ DrawLeaderRows	;no IDA label. Draw the leader rows (word_FFBB26 rows from word_F
 	blt.w	.0
 	bra.w	rtsLeaderRows
 
-LeaderPrintJumps	;no IDA label. Value print handlers per category (word_FFBB20)
+LeaderPrintJumps	;Value print handlers per category (word_FFBB20)
 	dc.l	PrintLeaderNum
 	dc.l	PrintLeaderAvg
 	dc.l	PrintLeaderAvg
@@ -2621,12 +2621,12 @@ LeaderPrintJumps	;no IDA label. Value print handlers per category (word_FFBB20)
 	dc.l	PrintLeaderAvg
 	dc.l	PrintLeaderAvg
 
-PrintLeaderNum	;no IDA label. Print d0 3 wide
+PrintLeaderNum	;Print d0 3 wide
 	move.w	#3,d1
 	jsr	(PushNumberWidth).l
 	jmp	(print).l
 
-PrintLeaderAvg	;no IDA label. Print d0 / 100 as nn.nn (3 wide, '.', 2 digits)
+PrintLeaderAvg	;Print d0 / 100 as nn.nn (3 wide, '.', 2 digits)
 	ext.l	d0
 	divu.w	#$64,d0
 	swap	d0
@@ -2642,13 +2642,13 @@ PrintLeaderAvg	;no IDA label. Print d0 / 100 as nn.nn (3 wide, '.', 2 digits)
 	jsr	(PushNumberWidthZero).l
 	jmp	(print).l
 
-PrintLeaderPct	;no IDA label. Print d0 3 wide followed by '%'
+PrintLeaderPct	;Print d0 3 wide followed by '%'
 	jsr	(PrintLeaderNum).l
 	jsr	(printz).l
 	String	'%',$0
 	rts
 
-DrawPlayerLeaderRows	;no IDA label. Sorted list rows: rank, player name (team $772 table, d7 = value / 26 team, remainder player) and value from $FFFFA1AA (category 3 as nn.nn); records the last row in word_FFBB28
+DrawPlayerLeaderRows	;Sorted list rows: rank, player name (team $772 table, d7 = value / 26 team, remainder player) and value from $FFFFA1AA (category 3 as nn.nn); records the last row in word_FFBB28
 	clr.w	d6
 	movea.l	#LeaderValues,a5
 	move.w	#9,(printy).w
@@ -2735,10 +2735,10 @@ DrawPlayerLeaderRows	;no IDA label. Sorted list rows: rank, player name (team $7
 	blt.w	.0
 	bra.w	rtsLeaderRows
 
-rtsLeaderRows	;no IDA label
+rtsLeaderRows
 	rts
 
-LeaderTables	;no IDA label. RAM tables (team order) per category for DrawLeaderRows
+LeaderTables	;RAM tables (team order) per category for DrawLeaderRows
 	dc.l	LeaderTeamTbls
 	dc.l	LeaderTeamTbls+$1A
 	dc.l	LeaderTeamTbls+$34
@@ -2747,7 +2747,7 @@ LeaderTables	;no IDA label. RAM tables (team order) per category for DrawLeaderR
 	dc.l	LeaderTeamTbls+$9C
 	dc.l	LeaderTeamTbls+$B6
 
-DrawTeamLogo3	;no IDA label. Draw small team logo d1 from Teamblocksmap at word_FFAC40/42 (dobitmap). Saves all
+DrawTeamLogo3	;Draw small team logo d1 from Teamblocksmap at word_FFAC40/42 (dobitmap). Saves all
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	asl.w	#1,d1
@@ -2764,10 +2764,10 @@ DrawTeamLogo3	;no IDA label. Draw small team logo d1 from Teamblocksmap at word_
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-BlankLine40	;no IDA label. String record (40 spaces) used by the League Leaders code before this range
+BlankLine40	;String record (40 spaces) used by the League Leaders code before this range
 	String	'                                       ',0
 
-LeadersHelp	;no IDA label. League Leaders footer: printz2 "[]=Change Stats  B=Team Leaders" or (word_FFBB1E set) "B=Individual Leaders"
+LeadersHelp	;League Leaders footer: printz2 "[]=Change Stats  B=Team Leaders" or (word_FFBB1E set) "B=Individual Leaders"
 	movem.l	d0-d7/a0-a6,-(sp)
 	tst.w	(StatWork).w
 	beq.w	.0
@@ -2785,7 +2785,7 @@ LeadersHelp	;no IDA label. League Leaders footer: printz2 "[]=Change Stats  B=Te
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PeriodStatsScreen	;no IDA label. period94 PeriodStatsScreen: both team logos, goals/shots by period and total; left/right switch, start exits
+PeriodStatsScreen	;period94 PeriodStatsScreen: both team logos, goals/shots by period and total; left/right switch, start exits
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	(matchup).w
 	moveq	#0,d0
@@ -2906,7 +2906,7 @@ PeriodStatsScreen	;no IDA label. period94 PeriodStatsScreen: both team logos, go
 	movem.l	(sp)+,d0-d7/a0-a6
 	jmp	(ExitAttributeScreen2).l
 
-PeriodStatsCaption	;no IDA label. PeriodStatsScreen .5: caption "Shots" + "[ For Goals" or "Goals" + "For Shots ]" by word_FFD262
+PeriodStatsCaption	;PeriodStatsScreen .5: caption "Shots" + "[ For Goals" or "Goals" + "For Shots ]" by word_FFD262
 	tst.w	(matchup).w
 	beq.w	.0
 	jsr	(printz).l
@@ -2921,7 +2921,7 @@ PeriodStatsCaption	;no IDA label. PeriodStatsScreen .5: caption "Shots" + "[ For
 	String	$F9,1,'For Shots ]',$F9,0,0
 	rts
 
-PeriodStatsColumns	;no IDA label. period94 PeriodStatsScreen tail (+$25A): print both teams' period columns (away row $B, home row $12) and the total
+PeriodStatsColumns	;period94 PeriodStatsScreen tail (+$25A): print both teams' period columns (away row $B, home row $12) and the total
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BE,$0,$0,$0
@@ -2934,7 +2934,7 @@ PeriodStatsColumns	;no IDA label. period94 PeriodStatsScreen tail (+$25A): print
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PeriodStatsTeam	;no IDA label. PeriodStatsScreen per team: goals ($344) or shots ($34C) by period up to the current one (OT if sflags7 bit 1), then the total
+PeriodStatsTeam	;PeriodStatsScreen per team: goals ($344) or shots ($34C) by period up to the current one (OT if sflags7 bit 1), then the total
 	lea	$344(a2),a0
 	tst.w	(matchup).w
 	beq.w	.0
@@ -2972,7 +2972,7 @@ PeriodStatsTeam	;no IDA label. PeriodStatsScreen per team: goals ($344) or shots
 	jsr	(print).l
 	rts
 
-PeriodStatsValue	;no IDA label. PeriodStatsScreen: print the next period value (a0)+ and add it to the total
+PeriodStatsValue	;PeriodStatsScreen: print the next period value (a0)+ and add it to the total
 	move.w	(a0)+,d0
 	add.w	d0,(matchuptimer).w
 	jsr	(printz).l
@@ -2986,7 +2986,7 @@ PeriodStatsValue	;no IDA label. PeriodStatsScreen: print the next period value (
 	jsr	(PushNumberWidth).l
 	jmp	(print).l
 
-LineEditor	;no IDA label. stats94 LineEditor: "Line Editor" screen for team a2, slot cursor = 1
+LineEditor	;stats94 LineEditor: "Line Editor" screen for team a2, slot cursor = 1
 	bset	#0,$30(a2)
 	moveq	#0,d0
 	moveq	#$1C,d1
@@ -2996,11 +2996,11 @@ LineEditor	;no IDA label. stats94 LineEditor: "Line Editor" screen for team a2, 
 	clr.w	(PlayerScrollCtr).w
 	move.w	#1,(setupvalues).w
 
-LineEditorRedraw	;no IDA label. stats94 LineEditorRedraw: clear and redraw the whole editor (also the exit menu's return point)
+LineEditorRedraw	;stats94 LineEditorRedraw: clear and redraw the whole editor (also the exit menu's return point)
 	jsr	(LineEditorBg).l
 	jsr	(seta2).l
 
-LineEditorReturn	;no IDA label
+LineEditorReturn
 	jsr	(printz2).l
 	String	$FF,$2,$FD,$0,$FC,$0
 	moveq	#$28,d0
@@ -3010,7 +3010,7 @@ LineEditorReturn	;no IDA label
 	st	(redrawicons).w
 	jsr	(ClearMenuFlags).l
 
-LineEditorMenu	;no IDA label. stats94 LineEditorMenu: slot cursor loop; start exits, C picks a player, d-pad moves via LineCursorTable
+LineEditorMenu	;stats94 LineEditorMenu: slot cursor loop; start exits, C picks a player, d-pad moves via LineCursorTable
 	jsr	(DrawLineEditorScreen).l
 	jsr	(DrawAttributeMenu).l
 .0
@@ -3047,7 +3047,7 @@ LineEditorMenu	;no IDA label. stats94 LineEditorMenu: slot cursor loop; start ex
 	jsr	(DrawAttributeMenu).l
 	bra.s	.0
 
-SelectAttributeItem	;no IDA label. stats94 SelectAttributeItem: build the list of players for the slot and let the user pick one (UpdatePlayerAttribute)
+SelectAttributeItem	;stats94 SelectAttributeItem: build the list of players for the slot and let the user pick one (UpdatePlayerAttribute)
 	jsr	(ReadAttributeNibble).l
 	move.w	d0,d1
 	jsr	(GetForwards).l
@@ -3143,7 +3143,7 @@ SelectAttributeItem	;no IDA label. stats94 SelectAttributeItem: build the list o
 	jsr	(LineEditorBg).l
 	bra.w	LineEditorMenu
 
-PrintAttribHeader	;no IDA label. stats94 PrintAttribHeader: player list column header (PAttribColumns page word_FFD276), then 6 rows of names, selected row highlighted
+PrintAttribHeader	;stats94 PrintAttribHeader: player list column header (PAttribColumns page word_FFD276), then 6 rows of names, selected row highlighted
 	jsr	(printz).l
 	String	$BE,$16,$1,$0
 .0
@@ -3190,7 +3190,7 @@ PrintAttribHeader	;no IDA label. stats94 PrintAttribHeader: player list column h
 	dbf	d1,.5
 	rts
 
-DrawAttributeMenu	;no IDA label. stats94 DrawAttributeMenu: draw the line icons for the cursor's line, then the selected player box
+DrawAttributeMenu	;stats94 DrawAttributeMenu: draw the line icons for the cursor's line, then the selected player box
 	moveq	#6,d5
 	lea	AttributeMenuTable(pc),a0
 	move.w	(setupvalues).w,d0
@@ -3228,10 +3228,10 @@ DrawAttributeMenu	;no IDA label. stats94 DrawAttributeMenu: draw the line icons 
 	rts
 	dc.b	0,1;the entry before AttributeMenuTable (read with OptLine set)
 
-AttributeMenuTable	;no IDA label. stats94 AttributeMenuTable: per line, bit mask of the lines drawn together
+AttributeMenuTable	;stats94 AttributeMenuTable: per line, bit mask of the lines drawn together
 	dc.b	7,7,7,$18,$18,$60,$60,$FF
 
-DrawMenuIcon	;no IDA label. stats94 DrawMenuIcon: draw line d5 (name, then its player slots) at MenuIconPosTable
+DrawMenuIcon	;stats94 DrawMenuIcon: draw line d5 (name, then its player slots) at MenuIconPosTable
 	moveq	#6,d0
 	mulu.w	d5,d0
 	lea	MenuIconPosTable(pc),a0
@@ -3275,7 +3275,7 @@ DrawMenuIcon	;no IDA label. stats94 DrawMenuIcon: draw line d5 (name, then its p
 	dbf	d3,.1
 	rts
 
-ClearAttributeArea	;no IDA label. stats94 ClearAttributeArea: erase the line area and print the position header (LD RD LW C RW)
+ClearAttributeArea	;stats94 ClearAttributeArea: erase the line area and print the position header (LD RD LW C RW)
 	jsr	(printz2).l
 	String	$FF,$2,$FD,$0,$FC,$A
 	moveq	#$28,d0
@@ -3296,7 +3296,7 @@ ClearAttributeArea	;no IDA label. stats94 ClearAttributeArea: erase the line are
 	dc.b	$FA,$2,'RW'
 	rts
 
-DrawLineEditorScreen	;no IDA label. stats94 DrawTeamScreen: clear, print the "Line Editor" title and the team logo (95: no ScoutMap bitmap / Framer)
+DrawLineEditorScreen	;stats94 DrawTeamScreen: clear, print the "Line Editor" title and the team logo (95: no ScoutMap bitmap / Framer)
 	jsr	(ClearAttributeArea2).l
 	jsr	(printz).l
 	String	$BE,$7,$1,$0
@@ -3311,7 +3311,7 @@ DrawLineEditorScreen	;no IDA label. stats94 DrawTeamScreen: clear, print the "Li
 .0
 	jmp	(PutTeamBlock).l
 
-ClearAttributeArea2	;no IDA label. stats94 ClearAttributeArea2: erase 40 x 10 at the top of map 2
+ClearAttributeArea2	;stats94 ClearAttributeArea2: erase 40 x 10 at the top of map 2
 	jsr	(printz).l
 	String	$BE,$0,$0,$0
 	moveq	#$28,d0
@@ -3319,13 +3319,13 @@ ClearAttributeArea2	;no IDA label. stats94 ClearAttributeArea2: erase 40 x 10 at
 	move.w	#$7FF,d2
 	jmp	(eraser).l
 
-ClearMenuFlags	;no IDA label. stats94 ClearMenuFlags: clear word_FFB99C and word_FFB9BC
+ClearMenuFlags	;stats94 ClearMenuFlags: clear word_FFB99C and word_FFB9BC
 	clr.w	(palfadenew+$5A).w
 	clr.w	(palfadenew+$7A).w
 	rts
 	dc.w	$10,$C,4;MenuIconPosTable-6: the entry used with OptLine set
 
-MenuIconPosTable	;no IDA label. stats94 MenuIconPosTable: line icons x, y, slot count - 1
+MenuIconPosTable	;stats94 MenuIconPosTable: line icons x, y, slot count - 1
 	dc.w	4,$C,4
 	dc.w	$10,$C,4
 	dc.w	$1C,$C,4
@@ -3335,7 +3335,7 @@ MenuIconPosTable	;no IDA label. stats94 MenuIconPosTable: line icons x, y, slot 
 	dc.w	$10,$C,3
 	dc.w	$FFFF
 
-LineCursorTable	;no IDA label. stats94 LineCursorTable: the slot after a cursor move, indexed by slot + 8
+LineCursorTable	;stats94 LineCursorTable: the slot after a cursor move, indexed by slot + 8
 	dc.b	1,1,2,3,4,5,$19,1
 	dc.b	1,1,2,3,4,5,$19,1
 	dc.b	9,9,$A,$B,$C,$D,$21,1
@@ -3346,7 +3346,7 @@ LineCursorTable	;no IDA label. stats94 LineCursorTable: the slot after a cursor 
 	dc.b	$25,$31,$32,$33,$34,$34,1,1
 	dc.b	$25,$31,$32,$33,$34,$34,1,1
 
-ExitAttributeScreen	;no IDA label. stats94 ExitAttributeScreen (95 rewrite): exit box; Start leaves, A original lines, B load / C save team line (save RAM)
+ExitAttributeScreen	;stats94 ExitAttributeScreen (95 rewrite): exit box; Start leaves, A original lines, B load / C save team line (save RAM)
 	jsr	(ClearMenuFlags).l
 	btst	#6,(sflags11).w
 	beq.w	.0
@@ -3426,7 +3426,7 @@ ExitAttributeScreen	;no IDA label. stats94 ExitAttributeScreen (95 rewrite): exi
 .7
 	jmp	(ExitAttributeScreen2).l
 
-LineEditorBg	;no IDA label. draw the line editor background bitmap (LineEditorBgMap) on map 2, clear byte_FFBEF8 bit 1
+LineEditorBg	;draw the line editor background bitmap (LineEditorBgMap) on map 2, clear byte_FFBEF8 bit 1
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#1,(BA_PS_flags).w
 	move.w	(screen6chars2).w,d4
@@ -3448,7 +3448,7 @@ LineEditorBg	;no IDA label. draw the line editor background bitmap (LineEditorBg
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PlayerSelectBg	;no IDA label. draw the player select list background bitmaps (PlayerSelectMap1, PlayerSelectMap2) on map 2, set byte_FFBEF8 bit 1
+PlayerSelectBg	;draw the player select list background bitmaps (PlayerSelectMap1, PlayerSelectMap2) on map 2, set byte_FFBEF8 bit 1
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#1,(BA_PS_flags).w
 	move.w	(screen6chars1).w,d4
@@ -3484,7 +3484,7 @@ PlayerSelectBg	;no IDA label. draw the player select list background bitmaps (Pl
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-UpdatePlayerAttribute	;no IDA label. stats94 UpdatePlayerAttribute: put player d0 in line slot d2 of team a2 (swap if already in that line)
+UpdatePlayerAttribute	;stats94 UpdatePlayerAttribute: put player d0 in line slot d2 of team a2 (swap if already in that line)
 	movem.l	d0-d2/a0-a1,-(sp)
 	lea	$16C(a2),a0
 	move.w	d2,d1
@@ -3501,7 +3501,7 @@ UpdatePlayerAttribute	;no IDA label. stats94 UpdatePlayerAttribute: put player d
 	movem.l	(sp)+,d0-d2/a0-a1
 	rts
 
-SaveTeamLines	;no IDA label. C in exit menu: save team a2's lines ($16C) to save RAM at the team's slot and mark the buffer valid ($64)
+SaveTeamLines	;C in exit menu: save team a2's lines ($16C) to save RAM at the team's slot and mark the buffer valid ($64)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	TeamLinesOffset
 	move.l	d0,-(sp)
@@ -3517,7 +3517,7 @@ SaveTeamLines	;no IDA label. C in exit menu: save team a2's lines ($16C) to save
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CopyTeamLines	;no IDA label. B in exit menu: copy the loaded line data (a0, 56 bytes) into team a2's lines ($16C)
+CopyTeamLines	;B in exit menu: copy the loaded line data (a0, 56 bytes) into team a2's lines ($16C)
 	movem.l	d0-d7/a0-a6,-(sp)
 	lea	$16C(a2),a1
 	move.w	#$D,d0
@@ -3527,7 +3527,7 @@ CopyTeamLines	;no IDA label. B in exit menu: copy the loaded line data (a0, 56 b
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-TeamLinesOffset	;no IDA label. d0 = save RAM offset of team a2's saved line ($39 bytes per team; base by byte_FFBF08 bit 3 / byte_FFBF0A bit 0)
+TeamLinesOffset	;d0 = save RAM offset of team a2's saved line ($39 bytes per team; base by byte_FFBF08 bit 3 / byte_FFBF0A bit 0)
 	move.l	#$4530,d0
 	btst	#3,(GameFlags).w
 	bne.w	.1
@@ -3547,7 +3547,7 @@ TeamLinesOffset	;no IDA label. d0 = save RAM offset of team a2's saved line ($39
 	move.w	(sp)+,d1
 	rts
 
-DisplayPeriodOver	;IDA: sub_95B1E
+DisplayPeriodOver
 	cmpi.w	#$40,(RefCnt).w
 	bgt.w	.4
 	bset	#7,(gmode).w
@@ -3595,7 +3595,7 @@ DisplayPeriodOver	;IDA: sub_95B1E
 .4
 	rts
 
-FindMaxAttributeTEam	;IDA: sub_95BEA
+FindMaxAttributeTEam
 	movem.l	d1-d2/a1/a4,-(sp)
 .0
 	movea.w	#(StatBuf-M68K_RAM),a4
@@ -3621,7 +3621,7 @@ FindMaxAttributeTEam	;IDA: sub_95BEA
 	movem.l	(sp)+,d1-d2/a1/a4
 	rts
 
-CalculateTeamAttributes	;IDA: sub_95C2A
+CalculateTeamAttributes
 	movea.w	#(StatBuf-M68K_RAM),a4
 	jsr	(GetPeriodTime).l
 	move.w	d0,d5
@@ -3650,7 +3650,7 @@ CalculateTeamAttributes	;IDA: sub_95C2A
 .1
 	rts
 
-CalculateTeamAttributeValues	;IDA: sub_95C8A
+CalculateTeamAttributeValues
 	movea.w	a2,a1
 	move.w	$C(a2),d3
 	sub.w	$C(a3),d3
@@ -3706,7 +3706,7 @@ CalculateTeamAttributeValues	;IDA: sub_95C8A
 	dbf	d4,.0
 	rts
 
-HighlightsScreen	;no IDA label. 95 season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left/right change day (byte_FFD1A6), up/down change game (word_FFBB1A), Start exits
+HighlightsScreen	;95 season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left/right change day (byte_FFD1A6), up/down change game (word_FFBB1A), Start exits
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(ReadSeasonHeader).l
 	btst	#0,(sflags11).w
@@ -3828,7 +3828,7 @@ HighlightsScreen	;no IDA label. 95 season NHL HIGHLIGHTS screen: draw bg/title, 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReadAnyPad7	;no IDA label. Highlights joypad wait: each frame poll joypads (ReadJoy1/7A4C8/7A4E0/7A50C + ProcessInputWithRepeat) until d1 != 0
+ReadAnyPad7	;Highlights joypad wait: each frame poll joypads (ReadJoy1/7A4C8/7A4E0/7A50C + ProcessInputWithRepeat) until d1 != 0
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6
@@ -3866,12 +3866,12 @@ ReadAnyPad7	;no IDA label. Highlights joypad wait: each frame poll joypads (Read
 .5
 	rts
 
-PrintHighlightsTitle	;no IDA label. print big title NHL HIGHLIGHTS
+PrintHighlightsTitle	;print big title NHL HIGHLIGHTS
 	jsr	(printbigz).l
 	String	$BF,$8,$2,'NHL HIGHLIGHTS',$0
 	rts
 
-DrawHighlightPage	;no IDA label. draw the current highlight page: day header, team logos/score of game word_FFBB1A, then goal/star list
+DrawHighlightPage	;draw the current highlight page: day header, team logos/score of game word_FFBB1A, then goal/star list
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(VisTeam).w,-(sp)
 	move.w	(HomeTeam).w,-(sp)
@@ -3919,7 +3919,7 @@ DrawHighlightPage	;no IDA label. draw the current highlight page: day header, te
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawHighlightEntry	;no IDA label. clear text area ($FFFFCAF8 via ReadSRAM) and print one highlight entry (PrintHighlight)
+DrawHighlightEntry	;clear text area ($FFFFCAF8 via ReadSRAM) and print one highlight entry (PrintHighlight)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	GetHighlightSlot
 	moveq	#4,d1
@@ -3931,7 +3931,7 @@ DrawHighlightEntry	;no IDA label. clear text area ($FFFFCAF8 via ReadSRAM) and p
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintStatHighlight	;no IDA label. print a highlight record of type 4: player name + stat line "a-b-c" (bytes FFBB1E/FFBB20/FFBB1F), centered
+PrintStatHighlight	;print a highlight record of type 4: player name + stat line "a-b-c" (bytes FFBB1E/FFBB20/FFBB1F), centered
 	move.l	a0,-(sp)
 	jsr	(printz).l
 	String	$FF,$14,$13,$0
@@ -3981,7 +3981,7 @@ PrintStatHighlight	;no IDA label. print a highlight record of type 4: player nam
 	movea.l	(sp)+,a0
 	rts
 
-AppendNumber	;no IDA label. append number d0 (1 or 2 digits) to string at $FFFFBBAA
+AppendNumber	;append number d0 (1 or 2 digits) to string at $FFFFBBAA
 	movea.l	#mesarea,a3
 	move.w	#2,d1
 	cmp.w	#9,d0
@@ -3993,7 +3993,7 @@ AppendNumber	;no IDA label. append number d0 (1 or 2 digits) to string at $FFFFB
 	movea.l	#mesarea,a3
 	rts
 
-PrintHighlight	;no IDA label. print highlight record a0: type (bits 13-15) 0 none, 4 stat line, else player name + count + GOAL(S)/ASSIST(S)/SAVE(S)
+PrintHighlight	;print highlight record a0: type (bits 13-15) 0 none, 4 stat line, else player name + count + GOAL(S)/ASSIST(S)/SAVE(S)
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.l	d0
 	move.w	(a0),d0
@@ -4041,31 +4041,31 @@ PrintHighlight	;no IDA label. print highlight record a0: type (bits 13-15) 0 non
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-HighlightPlurals	;no IDA label. plural suffix pointers by record type
+HighlightPlurals	;plural suffix pointers by record type
 	dc.l	0,AssistText,GoalsText,SavesText
 
-HighlightSingulars	;no IDA label. singular suffix pointers by record type
+HighlightSingulars	;singular suffix pointers by record type
 	dc.l	0,SaveText,AssistsText,GoalText
 
-GoalsText	;no IDA label
+GoalsText
 	String	' ASSISTS'
 
-AssistsText	;no IDA label
+AssistsText
 	String	' ASSIST',$0
 
-SavesText	;no IDA label
+SavesText
 	String	' SAVES'
 
-GoalText	;no IDA label
+GoalText
 	String	' SAVE',$0
 
-AssistText	;no IDA label
+AssistText
 	String	' GOALS'
 
-SaveText	;no IDA label
+SaveText
 	String	' GOAL',$0
 
-PrintGameScore2	;no IDA label. print the game's score (bytes 2/3 of game record a0+d0) or ".......LATER" if not yet played
+PrintGameScore2	;print the game's score (bytes 2/3 of game record a0+d0) or ".......LATER" if not yet played
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#1,4(a0,d0.w)
 	bne.w	.0
@@ -4086,7 +4086,7 @@ PrintGameScore2	;no IDA label. print the game's score (bytes 2/3 of game record 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintScore2	;no IDA label. print 2-digit number d5 at current cursor (PushNumberWidth + printbig)
+PrintScore2	;print 2-digit number d5 at current cursor (PushNumberWidth + printbig)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d5,d0
 	moveq	#2,d1
@@ -4095,7 +4095,7 @@ PrintScore2	;no IDA label. print 2-digit number d5 at current cursor (PushNumber
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawTeamLogo4	;no IDA label. draw team logo d1 (from Teamblocksmap graphics, palette word_FFBFC8) via dobitmap
+DrawTeamLogo4	;draw team logo d1 (from Teamblocksmap graphics, palette word_FFBFC8) via dobitmap
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	asl.w	#1,d1

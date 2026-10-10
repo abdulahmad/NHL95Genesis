@@ -11,7 +11,7 @@
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-GetHighlightSlot	;IDA: sub_962EE. 95 only. d0 = save RAM offset ($5FD6 + 4 a game) of the highlight slot of HomeTeam's game today, -1 none
+GetHighlightSlot	;95 only. d0 = save RAM offset ($5FD6 + 4 a game) of the highlight slot of HomeTeam's game today, -1 none
 	movem.l	d1-d7/a0-a6,-(sp)
 	clr.w	d1
 	move.b	(SeasonDay).w,d1
@@ -51,7 +51,7 @@ GetHighlightSlot	;IDA: sub_962EE. 95 only. d0 = save RAM offset ($5FD6 + 4 a gam
 	movem.l	(sp)+,d1-d7/a0-a6
 	rts
 
-HighlightsHelp	;no IDA label. 95 only. HighlightsScreen help line: {} More games, [] Change day (called from HighlightsScreen)
+HighlightsHelp	;95 only. HighlightsScreen help line: {} More games, [] Change day (called from HighlightsScreen)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(smallfontchars).w,-(sp)
 	move.w	(smallfont2chars).w,(smallfontchars).w
@@ -61,7 +61,7 @@ HighlightsHelp	;no IDA label. 95 only. HighlightsScreen help line: {} More games
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DefaultRosters	;IDA: sub_96390. 95 only. Build the default roster tables for the 28 teams in RAM (RosterTable $38 bytes a team: player ids, then the goalie, forward and defense counts; RosterRatings $20 a team) from TeamList
+DefaultRosters	;95 only. Build the default roster tables for the 28 teams in RAM (RosterTable $38 bytes a team: player ids, then the goalie, forward and defense counts; RosterRatings $20 a team) from TeamList
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#0,d1
 	movea.l	#RosterTable,a6
@@ -130,7 +130,7 @@ DefaultRosters	;IDA: sub_96390. 95 only. Build the default roster tables for the
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-GetRosterId	;IDA: sub_96454. 95 only. d0 = roster id word of player d0 of team d7 (season roster in save RAM $1B4C, or d7 << 8 | d0 outside a season)
+GetRosterId	;95 only. d0 = roster id word of player d0 of team d7 (season roster in save RAM $1B4C, or d7 << 8 | d0 outside a season)
 	movem.l	d1/d6-d7/a0,-(sp)
 	btst	#6,(sflags11).w
 	beq.w	.0
@@ -152,12 +152,12 @@ GetRosterId	;IDA: sub_96454. 95 only. d0 = roster id word of player d0 of team d
 	movem.l	(sp)+,d1/d6-d7/a0
 	rts
 
-GetCreatedName	;IDA: sub_96494. 95 only. a1 = player record of roster id d0 (created players from save RAM $5AA0)
+GetCreatedName	;95 only. a1 = player record of roster id d0 (created players from save RAM $5AA0)
 	movem.l	d0-d1/d5-d7/a0,-(sp)
 	bra.w	GetRosterNameTail
 	rts
 
-GetRosterName	;IDA: sub_9649E. 95 only. a1 = player record of player d0 of team d7: TeamList outside a season, else from the season roster (team $1C: the created players at $5D22)
+GetRosterName	;95 only. a1 = player record of player d0 of team d7: TeamList outside a season, else from the season roster (team $1C: the created players at $5D22)
 	movem.l	d0-d1/d5-d7/a0,-(sp)
 	btst	#6,(sflags11).w
 	beq.w	.2
@@ -194,7 +194,7 @@ GetRosterName	;IDA: sub_9649E. 95 only. a1 = player record of player d0 of team 
 	jsr	(ReadSRAM).l
 	move.w	(a0),d0
 
-GetRosterNameTail	;IDA: loc_96506. 95 only. GetCreatedName / GetRosterName: a1 = the player record of roster id d0
+GetRosterNameTail	;95 only. GetCreatedName / GetRosterName: a1 = the player record of roster id d0
 	move.w	d0,-(sp)
 	andi.w	#$1F00,d0
 	cmp.w	#$1E00,d0
@@ -229,7 +229,7 @@ GetRosterNameTail	;IDA: loc_96506. 95 only. GetCreatedName / GetRosterName: a1 =
 	movem.l	(sp)+,d0-d1/d5-d7/a0
 	rts
 
-ReadTeamRoster	;IDA: sub_96566. 95 only. Read team d7's $38 byte season roster from save RAM $1B4C into a0
+ReadTeamRoster	;95 only. Read team d7's $38 byte season roster from save RAM $1B4C into a0
 	movem.l	d0-d1,-(sp)
 	move.w	d7,d0
 	mulu.w	#$38,d0
@@ -239,7 +239,7 @@ ReadTeamRoster	;IDA: sub_96566. 95 only. Read team d7's $38 byte season roster f
 	movem.l	(sp)+,d0-d1
 	rts
 
-WriteTeamRoster	;IDA: sub_96584. 95 only. Write team d7's $38 byte season roster to save RAM $1B4C and update the checksum
+WriteTeamRoster	;95 only. Write team d7's $38 byte season roster to save RAM $1B4C and update the checksum
 	movem.l	d0-d1,-(sp)
 	move.w	d7,d0
 	mulu.w	#$38,d0
@@ -250,7 +250,7 @@ WriteTeamRoster	;IDA: sub_96584. 95 only. Write team d7's $38 byte season roster
 	movem.l	(sp)+,d0-d1
 	rts
 
-GetJerseyNumber	;IDA: sub_965A8. 95 only. jerseynum = the jersey number byte of player d0 of team d7 (TeamList or the season roster)
+GetJerseyNumber	;95 only. jerseynum = the jersey number byte of player d0 of team d7 (TeamList or the season roster)
 	movem.l	d0-d1/a0,-(sp)
 	btst	#6,(sflags11).w
 	beq.w	.2
@@ -285,7 +285,7 @@ GetJerseyNumber	;IDA: sub_965A8. 95 only. jerseynum = the jersey number byte of 
 	movem.l	(sp)+,d0-d1/a0
 	rts
 
-MoveSavedLines	;IDA: sub_96608. 95 only. Fix team d7's saved line players (save RAM $5700) after player d0 left
+MoveSavedLines	;95 only. Fix team d7's saved line players (save RAM $5700) after player d0 left
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d0,d2
 	jsr	(GetPlayerCountD7).l
@@ -329,7 +329,7 @@ MoveSavedLines	;IDA: sub_96608. 95 only. Fix team d7's saved line players (save 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ExecuteTrade	;IDA: sub_9668C. 95 only. Do the trade: sort the chosen players of both teams (TradeList at $FFCC32 / $FFCC3A), move each to the other team (MoveTradedPlayer) and close the gaps (RemoveTradedPlayer)
+ExecuteTrade	;95 only. Do the trade: sort the chosen players of both teams (TradeList at $FFCC32 / $FFCC3A), move each to the other team (MoveTradedPlayer) and close the gaps (RemoveTradedPlayer)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#tradeteam1,a0
 	bsr.w	SortTradePlayers
@@ -416,7 +416,7 @@ ExecuteTrade	;IDA: sub_9668C. 95 only. Do the trade: sort the chosen players of 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SortTradePlayers	;IDA: sub_967BA. 95 only. Sort the chosen players of a trade list by position (goalies, forwards, defense)
+SortTradePlayers	;95 only. Sort the chosen players of a trade list by position (goalies, forwards, defense)
 	move.w	(a0)+,d7
 	move.w	#2,d6
 .0
@@ -438,7 +438,7 @@ SortTradePlayers	;IDA: sub_967BA. 95 only. Sort the chosen players of a trade li
 	dbf	d6,.0
 	rts
 
-ShiftTradeUp	;IDA: sub_967F8. 95 only. Trade list: player numbers after a removed player move up one
+ShiftTradeUp	;95 only. Trade list: player numbers after a removed player move up one
 	move.b	(TempWord2+1).w,d0
 .0
 	tst.w	(a0,d6.w)
@@ -453,7 +453,7 @@ ShiftTradeUp	;IDA: sub_967F8. 95 only. Trade list: player numbers after a remove
 .2
 	rts
 
-ShiftTradeDown	;IDA: sub_9681A. 95 only. Trade list: player numbers after an added player move down one
+ShiftTradeDown	;95 only. Trade list: player numbers after an added player move down one
 	movem.l	d0-d7/a0-a6,-(sp)
 	addq.w	#2,d6
 	cmp.w	#8,d6
@@ -472,7 +472,7 @@ ShiftTradeDown	;IDA: sub_9681A. 95 only. Trade list: player numbers after an add
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-MoveTradedPlayer	;IDA: sub_9684A. 95 only. Insert traded player TempWord1 of team TradeFromTeam into team TradeToTeam: roster, player stats (ReadTeamPlayerStats / WriteTeamPlayerStats), saved lines and line slots
+MoveTradedPlayer	;95 only. Insert traded player TempWord1 of team TradeFromTeam into team TradeToTeam: roster, player stats (ReadTeamPlayerStats / WriteTeamPlayerStats), saved lines and line slots
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a2,-(sp)
 	bset	#7,(GameFlags).w
@@ -570,10 +570,10 @@ MoveTradedPlayer	;IDA: sub_9684A. 95 only. Insert traded player TempWord1 of tea
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-TradeStatOffsets	;IDA: unk_969AA. 95 only. Roster count bytes per position ($34 goalies, $36 defense, $35 forwards)
+TradeStatOffsets	;95 only. Roster count bytes per position ($34 goalies, $36 defense, $35 forwards)
 	dc.w	$34,$36,$35
 
-FixSavedLine	;IDA: sub_969B0. 95 only. Fix saved line block d6 (TeamRecordSRAM) of team TradeFromTeam after an added player
+FixSavedLine	;95 only. Fix saved line block d6 (TeamRecordSRAM) of team TradeFromTeam after an added player
 	movea.l	#TeamRecordSRAM,a0
 	move.w	d6,d2
 	asl.w	#3,d2
@@ -612,13 +612,13 @@ FixSavedLine	;IDA: sub_969B0. 95 only. Fix saved line block d6 (TeamRecordSRAM) 
 .3
 	rts
 
-TeamRecordSRAM	;IDA: unk_96A34. 95 only. Save RAM blocks of the saved team lines (offset, size a team)
+TeamRecordSRAM	;95 only. Save RAM blocks of the saved team lines (offset, size a team)
 	dc.l	$3E14,$41
 	dc.l	$4530,$39
 	dc.l	$4B6C,$39
 	dc.l	$5136,$39
 
-RemoveTradedPlayer	;IDA: sub_96A54. 95 only. Remove the traded player from his old team: roster, stats, saved lines and line slots
+RemoveTradedPlayer	;95 only. Remove the traded player from his old team: roster, stats, saved lines and line slots
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a2,-(sp)
 	bset	#7,(GameFlags).w
@@ -719,10 +719,10 @@ RemoveTradedPlayer	;IDA: sub_96A54. 95 only. Remove the traded player from his o
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-TradeStatOffsets2	;IDA: unk_96BB2. 95 only. As TradeStatOffsets, for RemoveTradedPlayer
+TradeStatOffsets2	;95 only. As TradeStatOffsets, for RemoveTradedPlayer
 	dc.w	$34,$36,$35
 
-FixSavedLine2	;IDA: sub_96BB8. 95 only. Fix saved line block d6 of team TradeToTeam after a removed player
+FixSavedLine2	;95 only. Fix saved line block d6 of team TradeToTeam after a removed player
 	movea.l	#TeamRecordSRAM,a0
 	move.w	d6,d2
 	asl.w	#3,d2
@@ -751,7 +751,7 @@ FixSavedLine2	;IDA: sub_96BB8. 95 only. Fix saved line block d6 of team TradeToT
 .2
 	rts
 
-TradePlayers	;IDA: loc_96C14. 95 only. Trade Player screen (main flow): the two rosters with position / rating, A cancel, B modify, C team, start evaluates the trade (CheckTrade, EvaluateTrade)
+TradePlayers	;95 only. Trade Player screen (main flow): the two rosters with position / rating, A cancel, B modify, C team, start evaluates the trade (CheckTrade, EvaluateTrade)
 	jsr	(forceblack).l
 	bsr.w	TradeGfx
 	jsr	(printbigz).l
@@ -908,7 +908,7 @@ TradePlayers	;IDA: loc_96C14. 95 only. Trade Player screen (main flow): the two 
 	move.w	#7,(setupdir).w
 	bra.w	.3
 
-DrawTradeRoster1	;IDA: sub_96EEA. 95 only. Draw the roster of HomeTeam with the chosen marks; falls into DrawTradeRosterRows
+DrawTradeRoster1	;95 only. Draw the roster of HomeTeam with the chosen marks; falls into DrawTradeRosterRows
 	move.w	(TradeData).l,d5
 	tst.w	(TradeData+$C).l
 	beq.w	.0
@@ -920,7 +920,7 @@ DrawTradeRoster1	;IDA: sub_96EEA. 95 only. Draw the roster of HomeTeam with the 
 	move.w	(HomeTeam).w,d7
 	bra.w	DrawTradeRosterRows
 
-DrawTradeRoster2	;IDA: sub_96F18. 95 only. Draw the roster of VisTeam with the chosen marks
+DrawTradeRoster2	;95 only. Draw the roster of VisTeam with the chosen marks
 	move.w	(TradeData+$2).l,d5
 	tst.w	(TradeData+$C).l
 	bne.w	.0
@@ -931,7 +931,7 @@ DrawTradeRoster2	;IDA: sub_96F18. 95 only. Draw the roster of VisTeam with the c
 	move.w	#$13,(printy).w
 	move.w	(VisTeam).w,d7
 
-DrawTradeRosterRows	;IDA: loc_96F42. 95 only. Draw the roster rows of team d7 (name, position, rating), * for the chosen players
+DrawTradeRosterRows	;95 only. Draw the roster rows of team d7 (name, position, rating), * for the chosen players
 	move.w	(printy).w,-(sp)
 	jsr	(printz).l
 	String	$BF,$0,$0,$0
@@ -980,12 +980,12 @@ DrawTradeRosterRows	;IDA: loc_96F42. 95 only. Draw the roster rows of team d7 (n
 	blt.w	.0
 	rts
 
-PositionLetters	;IDA: unk_97020. 95 only. G, F, D
+PositionLetters	;95 only. G, F, D
 	String	'G',$0
 	String	'F',$0
 	String	'D',$0
 
-ReadTradePads	;IDA: sub_9702C. 95 only. Wait up to $5460 frames for a pad 1 / 2 press (ProcessInputWithRepeat), d1 = buttons
+ReadTradePads	;95 only. Wait up to $5460 frames for a pad 1 / 2 press (ProcessInputWithRepeat), d1 = buttons
 	move.l	#$5460,d6
 .0
 	move.w	(vcount).w,d1
@@ -1008,7 +1008,7 @@ ReadTradePads	;IDA: sub_9702C. 95 only. Wait up to $5460 frames for a pad 1 / 2 
 .3
 	rts
 
-TradeDone	;IDA: loc_97074. 95 only. After a trade: rebuild both teams' trade lists (BuildTradeList) and go to EvaluateTrade
+TradeDone	;95 only. After a trade: rebuild both teams' trade lists (BuildTradeList) and go to EvaluateTrade
 	jsr	(forceblack).l
 	movea.l	#tradeteam1,a1
 	movea.l	#TradeRoster1,a2
@@ -1022,11 +1022,11 @@ TradeDone	;IDA: loc_97074. 95 only. After a trade: rebuild both teams' trade lis
 	bsr.w	BuildTradeList
 	jmp	EvaluateTrade
 
-TradeExit	;IDA: loc_970B4. 95 only. Leave the trade screen: set byte $FFD036 bit 6 and go to Opening2
+TradeExit	;95 only. Leave the trade screen: set byte $FFD036 bit 6 and go to Opening2
 	bset	#6,(setupcardflags).w
 	jmp	Opening2
 
-CheckTrade	;IDA: sub_970C0. 95 only. Check the trade: players chosen on both teams, at most three a team, and after it each team has 17-25 players, 2-3 goalies, 9-15 forwards and 6-15 defensemen; else INVALID TRADE with the reason (InvalidTradeText). d0 = 1 valid
+CheckTrade	;95 only. Check the trade: players chosen on both teams, at most three a team, and after it each team has 17-25 players, 2-3 goalies, 9-15 forwards and 6-15 defensemen; else INVALID TRADE with the reason (InvalidTradeText). d0 = 1 valid
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#StatWork,a0
 	movea.l	#TradeRoster1,a1
@@ -1163,7 +1163,7 @@ CheckTrade	;IDA: sub_970C0. 95 only. Check the trade: players chosen on both tea
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CountChosen	;IDA: sub_972E0. 95 only. Count the chosen players of a trade list by position into the three words at a0
+CountChosen	;95 only. Count the chosen players of a trade list by position into the three words at a0
 	clr.w	(a0)
 	clr.w	2(a0)
 	clr.w	4(a0)
@@ -1187,10 +1187,10 @@ CountChosen	;IDA: sub_972E0. 95 only. Count the chosen players of a trade list b
 	dbf	d0,.0
 	rts
 
-InvalidTradeText	;IDA: unk_9731E. 95 only. INVALID TRADE reasons (PrintSmallListItem)
+InvalidTradeText	;95 only. INVALID TRADE reasons (PrintSmallListItem)
 	String	$FD,$6,$FC,$D,'* No players chosen.'
 
-TradeRulesText	;IDA: unk_97338. 95 only. The roster rules text
+TradeRulesText	;95 only. The roster rules text
 	dc.w	$7A;String length
 	dc.b	$FD,$6,$FC,$D,'All teams must have:',$FA,$1,$FD
 	dc.b	$6,'* 17 to 25 players.',$FA,$1,$FD,$6,'*  2 to  3 goalies.',$FA
@@ -1199,7 +1199,7 @@ TradeRulesText	;IDA: unk_97338. 95 only. The roster rules text
 	String	$FD,$6,$FC,$D,'* No players chosen on one',$FA,$1,$FD,$8,'team.',$0
 	String	$FD,$6,$FC,$D,'* More than three players',$FA,$1,$FD,$8,'chosen on a team.'
 
-BuildTradeList	;IDA: sub_97410. 95 only. Trade list of team d7: the chosen players ($FFFF = none)
+BuildTradeList	;95 only. Trade list of team d7: the chosen players ($FFFF = none)
 	move.w	d7,(a1)+
 	move.w	#$FFFF,(a1)
 	move.w	#$FFFF,2(a1)
@@ -1216,7 +1216,7 @@ BuildTradeList	;IDA: sub_97410. 95 only. Trade list of team d7: the chosen playe
 	dbf	d6,.0
 	rts
 
-TradeGfx	;IDA: sub_9743A. 95 only. Trade screen video set up and graphics
+TradeGfx	;95 only. Trade screen video set up and graphics
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
 	bclr	#0,(disflags).w
@@ -1278,7 +1278,7 @@ TradeGfx	;IDA: sub_9743A. 95 only. Trade screen video set up and graphics
 	jsr	(dobitmap).l
 	rts
 
-DrawTradeLogo	;IDA: sub_9757C. 95 only. Draw the team block of team d1
+DrawTradeLogo	;95 only. Draw the team block of team d1
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	asl.w	#1,d1
@@ -1295,7 +1295,7 @@ DrawTradeLogo	;IDA: sub_9757C. 95 only. Draw the team block of team d1
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawTradeTeam	;IDA: sub_975AC. 95 only. Set up the trade rosters of HomeTeam and VisTeam
+DrawTradeTeam	;95 only. Set up the trade rosters of HomeTeam and VisTeam
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(ReadAttributeNibbleD7).l
 	move.w	d0,(a1)
@@ -1352,10 +1352,10 @@ DrawTradeTeam	;IDA: sub_975AC. 95 only. Set up the trade rosters of HomeTeam and
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-rtsTrade	;IDA: nullsub_1. IDA nullsub_1. rts
+rtsTrade	;rts
 	rts
 
-EvaluateTrade	;IDA: loc_9766E. 95 only. Evaluate Trade screen: the chosen players of both teams; A cancel, B modify, C execute, start propose (GMDecision)
+EvaluateTrade	;95 only. Evaluate Trade screen: the chosen players of both teams; A cancel, B modify, C execute, start propose (GMDecision)
 	jsr	(forceblack).l
 	jsr	(GMDecision).l
 	jsr	(printz2).l
@@ -1414,7 +1414,7 @@ EvaluateTrade	;IDA: loc_9766E. 95 only. Evaluate Trade screen: the chosen player
 .12
 	jmp	GMDecisionRetry
 
-PrintTradeNames	;IDA: sub_977B0. 95 only. Print the chosen players of a trade list with their position (PositionLetters2)
+PrintTradeNames	;95 only. Print the chosen players of a trade list with their position (PositionLetters2)
 	subq.w	#1,d3
 .0
 	tst.b	(a0)
@@ -1441,12 +1441,12 @@ PrintTradeNames	;IDA: sub_977B0. 95 only. Print the chosen players of a trade li
 	dbf	d3,.0
 	rts
 
-PositionLetters2	;IDA: unk_97810. 95 only. G, F, D
+PositionLetters2	;95 only. G, F, D
 	String	'G',$0
 	String	'F',$0
 	String	'D',$0
 
-ReadTradePads2	;IDA: sub_9781C. 95 only. As ReadTradePads
+ReadTradePads2	;95 only. As ReadTradePads
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6
@@ -1470,7 +1470,7 @@ ReadTradePads2	;IDA: sub_9781C. 95 only. As ReadTradePads
 .3
 	rts
 
-GMDecision	;IDA: sub_97868. 95 only. GM DECISION: rate both sides of the trade (TradeValue) and show which team has the ADVANTAGE; B modify, start continue
+GMDecision	;95 only. GM DECISION: rate both sides of the trade (TradeValue) and show which team has the ADVANTAGE; B modify, start continue
 	jsr	(TradeGfx).l
 	jsr	(printz).l
 	String	$FE,$E,$10,$0
@@ -1542,7 +1542,7 @@ GMDecision	;IDA: sub_97868. 95 only. GM DECISION: rate both sides of the trade (
 	bsr.w	DrawTradeLogo
 	rts
 
-GMDecisionRetry	;IDA: loc_97966. 95 only. GMDecision: back to the trade screen (CreateScreenGfx, TradePlayers)
+GMDecisionRetry	;95 only. GMDecision: back to the trade screen (CreateScreenGfx, TradePlayers)
 	bsr.w	CreateScreenGfx
 	jsr	(printbigz).l
 	String	$BF,$B,$2,'GM DECISION'
@@ -1654,7 +1654,7 @@ GMDecisionRetry	;IDA: loc_97966. 95 only. GMDecision: back to the trade screen (
 	bset	#6,(setupcardflags).w
 	jmp	Opening2
 
-PrintTradedPlayers	;IDA: sub_97B5C. 95 only. Print the players of a trade list (up to 3)
+PrintTradedPlayers	;95 only. Print the players of a trade list (up to 3)
 	move.w	(printx).w,-(sp)
 	move.w	(a0)+,d7
 	move.w	#2,d6
@@ -1671,7 +1671,7 @@ PrintTradedPlayers	;IDA: sub_97B5C. 95 only. Print the players of a trade list (
 	move.w	(sp)+,(printx).w
 	rts
 
-ReadTradePads3	;no IDA label. 95 only. Wait up to $5460 frames for a pad press (pads 3, 4 with FourWayPlay), d1 = buttons (no IDA label)
+ReadTradePads3	;95 only. Wait up to $5460 frames for a pad press (pads 3, 4 with FourWayPlay), d1 = buttons (no IDA label)
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6
@@ -1709,7 +1709,7 @@ ReadTradePads3	;no IDA label. 95 only. Wait up to $5460 frames for a pad press (
 .5
 	rts
 
-TradeValue	;IDA: sub_97C0E. 95 only. d0 = trade value of the d3 players at a0: each rating (byte 3) mapped through TradeRatingSteps / TradeRatingValues
+TradeValue	;95 only. d0 = trade value of the d3 players at a0: each rating (byte 3) mapped through TradeRatingSteps / TradeRatingValues
 	subq.w	#1,d3
 	clr.w	d0
 .0
@@ -1733,8 +1733,8 @@ TradeValue	;IDA: sub_97C0E. 95 only. d0 = trade value of the d3 players at a0: e
 	dbf	d3,.0
 	rts
 
-TradeRatingSteps	;IDA: unk_97C46. 95 only. Rating steps
+TradeRatingSteps	;95 only. Rating steps
 	dc.b	$32,$3C,$46,$50,$5A,$60,$65
 
-TradeRatingValues	;IDA: unk_97C4D. 95 only. Trade value of each rating step
+TradeRatingValues	;95 only. Trade value of each rating step
 	dc.b	1,3,4,6,8,$A,$C

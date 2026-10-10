@@ -5,7 +5,7 @@
 ;	a random day that has games; sub_8E2AC and sub_8E35E skip to a day (one count byte plus 2 bytes per game) and copy
 ;	its games. Ends with the retail $FF pad before sub_9722.
 
-SeasonSchedule	;$8DD8. IDA: byte_8DD8. move.b (x).l, movea.l #x (sub_8E26A, sub_8E2AC, sub_8E35E, ...)
+SeasonSchedule	;move.b (x).l, movea.l #x (sub_8E26A, sub_8E2AC, sub_8E35E, ...)
 	dc.b	192	;days
 	dc.b	4, 14,1, 16,17, 5,6, 3,13	;day 1
 	dc.b	7, 15,18, 11,9, 12,21, 4,8, 25,24, 7,19, 10,23	;day 2
@@ -199,5 +199,5 @@ SeasonSchedule	;$8DD8. IDA: byte_8DD8. move.b (x).l, movea.l #x (sub_8E26A, sub_
 	dc.b	6, 14,2, 16,12, 24,25, 8,18, 22,4, 5,20	;day 190
 	dc.b	6, 15,1, 21,13, 6,11, 19,7, 10,3, 0,23	;day 191
 	dc.b	10, 1,9, 2,24, 14,16, 12,15, 21,18, 8,13, 4,22, 20,25, 5,6, 10,7	;day 192
-SeasonScheduleEnd	;$9721, no IDA label. season95 CountTeamGames stops its scan here (cmpa.l #x,a0)
+SeasonScheduleEnd	;season95 CountTeamGames stops its scan here (cmpa.l #x,a0)
 	dc.b	$FF	;$9721. Pad to the even address of sub_9722 (94 InitSaveRAM, sram95)

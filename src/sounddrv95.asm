@@ -7,7 +7,7 @@
 
 	opt	oaq-,osq-,oz-	;the driver writes addi / subi #1-8 and 0(An) (SNASM would make them addq / subq and (An))
 
-SndDriver	;IDA: sub_AF44. 95 sound driver entry (SoundCmd, sound95_01). d0 = command 0-$F, branch to its handler; carry set and d0 = 1
+SndDriver	;95 sound driver entry (SoundCmd, sound95_01). d0 = command 0-$F, branch to its handler; carry set and d0 = 1
 	;for a bad command. 0 SndLoadZ80, 1 SndUpdate, 2 off, 3 on, 4 SndStartSeq, 5 SndStopSeq, 6 SndSetBank, 7 SndLoadList, 8 SndFreeBlocks,
 	;9 SndResetBlocks, $A SndSendZ80, $B SndReadBlock, $C SndWriteBlock, $D SndPauseZ80, $E SndResumeZ80, $F SndStopAll
 	tst.w	d0
@@ -88,7 +88,7 @@ SndDriver	;IDA: sub_AF44. 95 sound driver entry (SoundCmd, sound95_01). d0 = com
 	ori	#1,ccr
 	rts
 
-SndLoadZ80	;IDA: loc_B006. Command 0: copy the Z80 program a0 (d1 bytes; it must start with JP $00xx) to Z80 RAM, reset the Z80, wait
+SndLoadZ80	;Command 0: copy the Z80 program a0 (d1 bytes; it must start with JP $00xx) to Z80 RAM, reset the Z80, wait
 	;for it to set Z80_RAM+$4F, clear the song slots and notes, and turn the driver on. Carry set and d0 = 6 for a bad program
 	movem.l	d1/a0-a2,-(sp)
 	move	sr,-(sp)
@@ -164,7 +164,7 @@ SndLoadZ80	;IDA: loc_B006. Command 0: copy the Z80 program a0 (d1 bytes; it must
 	movem.l	(sp)+,d1/a0-a2
 	rts
 
-SndUpdate	;IDA: loc_B10C. Command 1, once a frame: note timers (SndUpdateNotes), sample streaming (SndStreamZ80), then step the 8 song
+SndUpdate	;Command 1, once a frame: note timers (SndUpdateNotes), sample streaming (SndStreamZ80), then step the 8 song
 	;slots: wait out each slot's delay, then send its events ($9x note on, $Bx controller, $Cx program, $Ex pitch bend) to the Z80 until the
 	;next delay. Controller $75 loops the song; status $FF ends it
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -380,7 +380,7 @@ SndUpdate	;IDA: loc_B10C. Command 1, once a frame: note timers (SndUpdateNotes),
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SndStartSeq	;IDA: loc_B3B8. Command 4: play song d1 (bank item type 3) in the first free slot, with d2-d4 (d4 = tempo). Carry set for no
+SndStartSeq	;Command 4: play song d1 (bank item type 3) in the first free slot, with d2-d4 (d4 = tempo). Carry set for no
 	;free slot (d0 = 7) or no such song
 	movem.l	d1-d4/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
@@ -438,7 +438,7 @@ SndStartSeq	;IDA: loc_B3B8. Command 4: play song d1 (bank item type 3) in the fi
 	movem.l	(sp)+,d1-d4/a0-a1
 	rts
 
-SndStopSeq	;IDA: loc_B47A. Command 5: stop the slot playing song id d1 and release its notes. Carry set and d0 = 3 when none plays it
+SndStopSeq	;Command 5: stop the slot playing song id d1 and release its notes. Carry set and d0 = 3 when none plays it
 	movem.l	d1-d2/a0,-(sp)
 	lea	(SndSeqId).l,a0
 	clr.w	d0
@@ -468,7 +468,7 @@ SndStopSeq	;IDA: loc_B47A. Command 5: stop the slot playing song id d1 and relea
 	movem.l	(sp)+,d1-d2/a0
 	rts
 
-SndPutZ80Cmd	;IDA: sub_B4DC. Queue the 4 byte Z80 command d0 (Z80_RAM+$D + 4 * count, count at +$C, waits while +$B is busy). d0 = -1 when it is full
+SndPutZ80Cmd	;Queue the 4 byte Z80 command d0 (Z80_RAM+$D + 4 * count, count at +$C, waits while +$B is busy). d0 = -1 when it is full
 	movem.l	d1/a0,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	0(a0),-(sp)
@@ -512,7 +512,7 @@ SndPutZ80Cmd	;IDA: sub_B4DC. Queue the 4 byte Z80 command d0 (Z80_RAM+$D + 4 * c
 	movem.l	(sp)+,d1/a0
 	rts
 
-SndUploadBlock	;IDA: sub_B55E. Copy d1 bytes from a0 to free Z80 RAM as block d0 (the 42 six byte entries at Z80_RAM+$100). Carry set: no room
+SndUploadBlock	;Copy d1 bytes from a0 to free Z80 RAM as block d0 (the 42 six byte entries at Z80_RAM+$100). Carry set: no room
 	;(d0 = 4), already there (d0 = 3) or no free entry (d0 = 7)
 	movem.l	d1-d2/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a1
@@ -593,7 +593,7 @@ SndUploadBlock	;IDA: sub_B55E. Copy d1 bytes from a0 to free Z80 RAM as block d0
 	movem.l	(sp)+,d1-d2/a0-a1
 	rts
 
-SndReadBlock	;IDA: loc_B67A. Command $B: copy Z80 block d1 to a0. Carry set and d0 = 3 when there is no such block
+SndReadBlock	;Command $B: copy Z80 block d1 to a0. Carry set and d0 = 3 when there is no such block
 	movem.l	d1-d3/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a1
 	move.w	(a1),-(sp)
@@ -636,7 +636,7 @@ SndReadBlock	;IDA: loc_B67A. Command $B: copy Z80 block d1 to a0. Carry set and 
 	movem.l	(sp)+,d1-d3/a0-a1
 	rts
 
-SndWriteBlock	;IDA: loc_B704. Command $C: copy a0 over Z80 block d1. Carry set and d0 = 3 when there is no such block
+SndWriteBlock	;Command $C: copy a0 over Z80 block d1. Carry set and d0 = 3 when there is no such block
 	movem.l	d1-d3/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a1
 	move.w	(a1),-(sp)
@@ -679,7 +679,7 @@ SndWriteBlock	;IDA: loc_B704. Command $C: copy a0 over Z80 block d1. Carry set a
 	movem.l	(sp)+,d1-d3/a0-a1
 	rts
 
-SndPauseZ80	;IDA: loc_B78E. Command $D: Z80_RAM+$50 = $FF (pause)
+SndPauseZ80	;Command $D: Z80_RAM+$50 = $FF (pause)
 	move.l	a0,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	(a0),-(sp)
@@ -698,7 +698,7 @@ SndPauseZ80	;IDA: loc_B78E. Command $D: Z80_RAM+$50 = $FF (pause)
 	movea.l	(sp)+,a0
 	rts
 
-SndResumeZ80	;IDA: loc_B7CA. Command $E: Z80_RAM+$50 = 0 (resume)
+SndResumeZ80	;Command $E: Z80_RAM+$50 = 0 (resume)
 	move.l	a0,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	(a0),-(sp)
@@ -717,7 +717,7 @@ SndResumeZ80	;IDA: loc_B7CA. Command $E: Z80_RAM+$50 = 0 (resume)
 	movea.l	(sp)+,a0
 	rts
 
-SndStopAll	;IDA: loc_B806. Command $F (SoundOff): free every song slot, send Z80 command $FF and clear the notes
+SndStopAll	;Command $F (SoundOff): free every song slot, send Z80 command $FF and clear the notes
 	movem.l	d0/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	(a0),-(sp)
@@ -734,7 +734,7 @@ SndStopAll	;IDA: loc_B806. Command $F (SoundOff): free every song slot, send Z80
 	movem.l	(sp)+,d0/a0-a1
 	rts
 
-SndClearNotes	;IDA: sub_B83E. No notes: SndNoteCount 0, SndNotes all -1
+SndClearNotes	;No notes: SndNoteCount 0, SndNotes all -1
 	movem.l	d0-d1/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	0(a0),-(sp)
@@ -750,7 +750,7 @@ SndClearNotes	;IDA: sub_B83E. No notes: SndNoteCount 0, SndNotes all -1
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
 
-SndReleaseNotes	;IDA: sub_B878. Set the timer of every note of slot d0 to 1 (released next frame)
+SndReleaseNotes	;Set the timer of every note of slot d0 to 1 (released next frame)
 	movem.l	d0-d2/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	0(a0),-(sp)
@@ -775,7 +775,7 @@ SndReleaseNotes	;IDA: sub_B878. Set the timer of every note of slot d0 to 1 (rel
 	movem.l	(sp)+,d0-d2/a0-a1
 	rts
 
-SndAddNote	;IDA: sub_B8C2. Add note d0 (timer word, then the note) to SndNotes
+SndAddNote	;Add note d0 (timer word, then the note) to SndNotes
 	movem.l	d0-d1/a0,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	SndNoteCount-SndDrvRAM(a0),d1
@@ -787,7 +787,7 @@ SndAddNote	;IDA: sub_B8C2. Add note d0 (timer word, then the note) to SndNotes
 	movem.l	(sp)+,d0-d1/a0
 	rts
 
-SndUpdateNotes	;IDA: sub_B8EE. Count down the note timers; at 0 send the note off ($8x) and remove the note
+SndUpdateNotes	;Count down the note timers; at 0 send the note off ($8x) and remove the note
 	movem.l	d0-d1/a0-a2,-(sp)
 	lea	(SndDrvRAM).l,a2
 	cmpi.w	#0,SndNoteCount-SndDrvRAM(a2)
@@ -826,7 +826,7 @@ SndUpdateNotes	;IDA: sub_B8EE. Count down the note timers; at 0 send the note of
 	movem.l	(sp)+,d0-d1/a0-a2
 	rts
 
-SndStreamZ80	;IDA: sub_B96A. Answer the Z80's sample request (Z80_RAM+$4D: 1 start sample Z80_RAM+$4E, 2 / 3 next 256 bytes) by copying
+SndStreamZ80	;Answer the Z80's sample request (Z80_RAM+$4D: 1 start sample Z80_RAM+$4E, 2 / 3 next 256 bytes) by copying
 	;from the sample (bank item type 1) to the Z80 buffer, looping or ending it
 	movem.l	d1-d2/a0,-(sp)
 	bsr.w	Z80BusRequest
@@ -921,7 +921,7 @@ SndStreamZ80	;IDA: sub_B96A. Answer the Z80's sample request (Z80_RAM+$4D: 1 sta
 	movem.l	(sp)+,d1-d2/a0
 	rts
 
-SndFindBankItem	;IDA: sub_BACA. Find bank item type d0, id d1 in the 4 banks (SndBanks): a0 = its data, d0 = its size. Carry set and d0 = 3 when
+SndFindBankItem	;Find bank item type d0, id d1 in the 4 banks (SndBanks): a0 = its data, d0 = its size. Carry set and d0 = 3 when
 	;there is none
 	movem.l	d1-d4/a1-a2,-(sp)
 	lea	(SndBanks).l,a1
@@ -968,7 +968,7 @@ SndFindBankItem	;IDA: sub_BACA. Find bank item type d0, id d1 in the 4 banks (Sn
 	movem.l	(sp)+,d1-d4/a1-a2
 	rts
 
-SndSetBank	;IDA: loc_BB48. Command 6: bank d1 (0-3) is at a0; tell the Z80 too (Z80_RAM+$51). Carry set and d0 = 3 for d1 above 3
+SndSetBank	;Command 6: bank d1 (0-3) is at a0; tell the Z80 too (Z80_RAM+$51). Carry set and d0 = 3 for d1 above 3
 	movem.l	d1/a1-a2,-(sp)
 	cmpi.w	#4,d1
 	bcs.s	.0
@@ -999,7 +999,7 @@ SndSetBank	;IDA: loc_BB48. Command 6: bank d1 (0-3) is at a0; tell the Z80 too (
 	movem.l	(sp)+,d1/a1-a2
 	rts
 
-SndLoadList	;IDA: loc_BBA4. Command 7: upload the patches (types 0 and 4) of load list d1 (bank item type $B, pairs ended by $FF) to the Z80
+SndLoadList	;Command 7: upload the patches (types 0 and 4) of load list d1 (bank item type $B, pairs ended by $FF) to the Z80
 	movem.l	d1/a0-a1,-(sp)
 	move.w	#$B,d0
 	bsr.w	SndFindBankItem
@@ -1034,7 +1034,7 @@ SndLoadList	;IDA: loc_BBA4. Command 7: upload the patches (types 0 and 4) of loa
 	movem.l	(sp)+,d1/a0-a1
 	rts
 
-SndFreeBlocks	;IDA: loc_BBF8. Command 8: free the Z80 blocks of list a0 (word pairs ended by -1) and move the blocks after them down
+SndFreeBlocks	;Command 8: free the Z80 blocks of list a0 (word pairs ended by -1) and move the blocks after them down
 	movem.l	d1-d3/a0-a2,-(sp)
 	lea	(SndDrvRAM).l,a1
 	move.w	(a1),-(sp)
@@ -1123,7 +1123,7 @@ SndFreeBlocks	;IDA: loc_BBF8. Command 8: free the Z80 blocks of list a0 (word pa
 	movem.l	(sp)+,d1-d3/a0-a2
 	rts
 
-SndResetBlocks	;IDA: loc_BD0E. Command 9: free all Z80 blocks (Z80_RAM+$100 all $FF, free pointer back to the start at Z80_RAM+3)
+SndResetBlocks	;Command 9: free all Z80 blocks (Z80_RAM+$100 all $FF, free pointer back to the start at Z80_RAM+3)
 	movem.l	a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	(a0),-(sp)
@@ -1145,7 +1145,7 @@ SndResetBlocks	;IDA: loc_BD0E. Command 9: free all Z80 blocks (Z80_RAM+$100 all 
 	movem.l	(sp)+,a0-a1
 	rts
 
-SndSendZ80	;IDA: loc_BD58. Command $A: queue Z80 command d1 with interrupts off
+SndSendZ80	;Command $A: queue Z80 command d1 with interrupts off
 	move	sr,-(sp)
 	move	#$2700,sr
 	move.l	d1,d0
@@ -1153,23 +1153,23 @@ SndSendZ80	;IDA: loc_BD58. Command $A: queue Z80 command d1 with interrupts off
 	move	(sp)+,sr
 	rts
 
-Z80BusRequest	;IDA: sub_BD68. Stop the Z80 and wait for the bus
+Z80BusRequest	;Stop the Z80 and wait for the bus
 	move.w	#$100,(IO_Z80BUS).l
 .0
 	btst	#8,(IO_Z80BUS).l
 	bne.s	.0
 	rts
 
-Z80BusRelease	;IDA: sub_BD7C. Give the bus back to the Z80
+Z80BusRelease	;Give the bus back to the Z80
 	move.w	#0,(IO_Z80BUS).l
 	rts
 	opt	oaq+,osq+,oz+
 
-Z80Program	;$BD86. The Z80 sound program (main95 Begin and hockey95 Opening2 load it with SndLoadZ80, d1 = $1B63). Starts JP $0600
+Z80Program	;The Z80 sound program (main95 Begin and hockey95 Opening2 load it with SndLoadZ80, d1 = $1B63). Starts JP $0600
 	incbin	..\Extracted\NHL95\Sound\z80_snd_drv95.bin
 	nop	;$D8EA. Pad to $D8EC (retail 4E71)
 
-SoundBanks	;$D8EC. IDA: no label (movea.l #$D8EC). Bank 0 (SndSetBank, Begin and Opening2): the item count, then 4 bytes per item
+SoundBanks	;Bank 0 (SndSetBank, Begin and Opening2): the item count, then 4 bytes per item
 	;(type, id, size), then the items in that order. Type 0 = patch (uploaded to the Z80 by a load list), 1 = sample (streamed),
 	;3 = song (SndStartSeq), $B = load list (SndLoadList). SndFindBankItem finds an item by type and id
 	dc.w	141	;items
@@ -1455,144 +1455,144 @@ SoundBanks	;$D8EC. IDA: no label (movea.l #$D8EC). Bank 0 (SndSetBank, Begin and
 	dc.w	$19	;list 0
 	dc.b	$B,$01
 	dc.w	$3F	;list 1
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_00.bin	;$DB22
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_01.bin	;$DB27
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_02.bin	;$DB2C
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_03.bin	;$DB31
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_04.bin	;$DB36
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_05.bin	;$DB3B
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_06.bin	;$DB40
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_07.bin	;$DB45
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_08.bin	;$DB4A
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_09.bin	;$DB4F
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_0A.bin	;$DB54
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_0B.bin	;$DB59
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_0C.bin	;$DB80
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_0D.bin	;$DB85
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_0E.bin	;$DBAC
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_11.bin	;$DBD3
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_13.bin	;$DBFA
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_14.bin	;$DC0A
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_15.bin	;$DC1A
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_16.bin	;$DC41
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_18.bin	;$DC68
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_19.bin	;$DC8F
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_1B.bin	;$DCB6
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_1C.bin	;$DCDD
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_1D.bin	;$DD04
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_33.bin	;$DD2B
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_36.bin	;$DD30
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_38.bin	;$DD35
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_39.bin	;$DD3A
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_3B.bin	;$DD3F
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_3D.bin	;$DD44
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_3E.bin	;$DD49
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_3F.bin	;$DD70
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_40.bin	;$DD97
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_41.bin	;$DDBE
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_42.bin	;$DDC3
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_43.bin	;$DDC8
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_44.bin	;$DDCD
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_45.bin	;$DDD2
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_46.bin	;$DDF9
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_47.bin	;$DDFE
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_48.bin	;$DE25
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_49.bin	;$DE2A
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_00.bin	;$DE51
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_01.bin	;$FF94
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_02.bin	;$101BB
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_03.bin	;$12286
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_04.bin	;$12AE9
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_05.bin	;$134EC
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_06.bin	;$143F5
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_07.bin	;$15318
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_08.bin	;$161DB
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_09.bin	;$172AE
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_0A.bin	;$175DD
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_0B.bin	;$17930
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_0C.bin	;$18EF2
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_0E.bin	;$19F37
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_10.bin	;$23AFA
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_11.bin	;$32723
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_13.bin	;$34C4B
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_15.bin	;$3A419
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_16.bin	;$3C2E2
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_17.bin	;$49365
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_18.bin	;$4DB35
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_19.bin	;$4F038
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_1B.bin	;$50B7B
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_1D.bin	;$5239D
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_00.bin	;$525CF
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_01.bin	;$56CCA
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_02.bin	;$5984C
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_03.bin	;$5CDD3
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_04.bin	;$60D06
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_05.bin	;$60D12
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_06.bin	;$60D1E
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_07.bin	;$60D2A
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_08.bin	;$60D36
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_09.bin	;$60D42
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_0A.bin	;$60D4E
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_0B.bin	;$60D5A
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_0E.bin	;$60D66
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_10.bin	;$60D74
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_11.bin	;$60D82
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_13.bin	;$60D8E
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_15.bin	;$60D9A
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_16.bin	;$60DA6
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_17.bin	;$60E0A
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_18.bin	;$60E5E
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_19.bin	;$60E6A
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_1A.bin	;$60E76
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_1B.bin	;$60E82
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_1C.bin	;$60E8E
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_1D.bin	;$60E9A
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_1E.bin	;$60EA6
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_20.bin	;$60EB4
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_21.bin	;$60EC0
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_22.bin	;$60ECC
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_23.bin	;$60ED8
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_24.bin	;$60EE4
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_25.bin	;$60EF0
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_26.bin	;$60EFC
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_27.bin	;$61217
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_28.bin	;$6122B
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_29.bin	;$6123F
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_32.bin	;$6124B
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_33.bin	;$6143D
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_34.bin	;$61921
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_35.bin	;$61B75
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_36.bin	;$61E23
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_37.bin	;$6213F
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_38.bin	;$623E7
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_39.bin	;$62683
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_3A.bin	;$6282F
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_3B.bin	;$62C13
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_3C.bin	;$62E57
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_3D.bin	;$62E87
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_3E.bin	;$6328B
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_3F.bin	;$635CC
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_40.bin	;$637D4
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_41.bin	;$63A52
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_42.bin	;$63DAA
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_43.bin	;$63ED6
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_44.bin	;$6429A
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_45.bin	;$644A6
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_46.bin	;$6471A
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_47.bin	;$64872
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_48.bin	;$64C2E
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_49.bin	;$65052
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_4A.bin	;$65452
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_4B.bin	;$65767
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_4C.bin	;$65ACC
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_4D.bin	;$65E2F
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_4E.bin	;$660F8
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_4F.bin	;$66514
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_50.bin	;$669A0
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_51.bin	;$66BF5
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_52.bin	;$66E1F
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_53.bin	;$66F0F
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_54.bin	;$67183
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_55.bin	;$67257
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_list_00.bin	;$67680
-	incbin	..\Extracted\NHL95\Sound\Bank\snd95_list_01.bin	;$67699
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_00.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_01.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_02.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_03.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_04.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_05.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_06.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_07.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_08.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_09.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_0A.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_0B.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_0C.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_0D.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_0E.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_11.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_13.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_14.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_15.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_16.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_18.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_19.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_1B.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_1C.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_1D.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_33.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_36.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_38.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_39.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_3B.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_3D.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_3E.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_3F.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_40.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_41.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_42.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_43.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_44.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_45.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_46.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_47.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_48.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_49.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_00.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_01.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_02.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_03.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_04.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_05.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_06.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_07.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_08.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_09.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_0A.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_0B.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_0C.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_0E.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_10.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_11.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_13.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_15.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_16.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_17.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_18.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_19.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_1B.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_sample_1D.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_00.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_01.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_02.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_03.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_04.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_05.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_06.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_07.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_08.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_09.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_0A.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_0B.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_0E.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_10.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_11.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_13.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_15.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_16.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_17.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_18.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_19.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_1A.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_1B.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_1C.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_1D.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_1E.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_20.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_21.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_22.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_23.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_24.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_25.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_26.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_27.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_28.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_29.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_32.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_33.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_34.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_35.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_36.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_37.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_38.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_39.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_3A.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_3B.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_3C.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_3D.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_3E.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_3F.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_40.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_41.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_42.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_43.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_44.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_45.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_46.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_47.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_48.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_49.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_4A.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_4B.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_4C.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_4D.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_4E.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_4F.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_50.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_51.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_52.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_53.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_54.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_song_55.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_list_00.bin
+	incbin	..\Extracted\NHL95\Sound\Bank\snd95_list_01.bin
