@@ -162,9 +162,9 @@ def main():
     changes = Counter()
     examples = {}
     files = sorted(fn for fn in os.listdir(SRC) if fn.endswith('.asm'))
-    files += [os.path.join('sega', fn) for fn in sorted(os.listdir(os.path.join(SRC, 'sega'))) if fn.endswith('.asm')]
-    files += [os.path.join('stubinc', fn) for fn in sorted(os.listdir(os.path.join(SRC, 'stubinc')))]
-    files += [os.path.join('macros', fn) for fn in sorted(os.listdir(os.path.join(SRC, 'macros')))]
+    for sub in ('data', 'sega', 'stubinc', 'macros'):
+        if os.path.isdir(os.path.join(SRC, sub)):
+            files += [os.path.join(sub, fn) for fn in sorted(os.listdir(os.path.join(SRC, sub)))]
     for fn in files:
         path = os.path.join(SRC, fn)
         stub = fn.endswith('_stub.asm')
