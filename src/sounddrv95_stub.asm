@@ -4,7 +4,7 @@
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-; External addresses outside $00AF44-$0676D7: none. The driver only uses its RAM (ram_addrs.inc), Z80 RAM and the IO ports.
+; External addresses outside $00AF44-$0676D7: none. The driver only uses its RAM (ram95.asm), Z80 RAM and the IO ports.
 ; region code
 	org	$AF44
 

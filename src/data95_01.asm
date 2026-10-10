@@ -8,7 +8,7 @@
 ;	LoadRosterFont), $861CE and $87468-$874A5 (InitializeGameStructures, OptionRNG); these are read from the retail bytes. IDA also
 ;	hid the printz / printz2 Strings and the DecompressGraphicsWithCallback remap bytes as instructions. Local labels are numbered;
 ;	the IDA local names are not kept.
-;	New RAM names are in stubinc/ram_addrs.inc: the 94 setup and card words (logoteam ... cardteamnum, DispAttribCtr,
+;	Its RAM names are in ram95.asm: the 94 setup and card words (logoteam ... cardteamnum, DispAttribCtr,
 ;	setupprevline), the playoff words (gsstruct ... potree), and the 95 setup words (SelectedPlayerIdx, setupvalues, setupdir ...).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.

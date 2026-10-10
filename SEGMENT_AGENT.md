@@ -6,9 +6,16 @@ This file is the queue. Do not rewrite it as a whole file. Edit the current row 
 
 None. Every ROM map row is matched, and the full build (`npm run build:retail`) matches `lst/nhl95.bin` byte for byte (SHA-1 09e87b076aa4cd6f057a1d65bb50fd889b509b44). A name another file uses for an address inside a segment must be a label in that segment (IntermissionStart $9D18 in hockey95_01, SeasonScheduleEnd $9721 in schedule95, StickHandTable $83C9E in collide95_02, DrawFaceoffWindow $88E42 in checks95_04); the stub equates only cover the segment build.
 
-RAM (`ram95`) is not a queue segment. It has no ROM bytes, so there is nothing to byte-verify, and the queue moves past its row. That does not put RAM off limits. RAM names come from the code segments as they are transcribed, not from a separate first pass: add each one to `src/stubinc/ram_addrs.inc`, which the stubs include. `src/ram95.asm` is the RAM map those names are consolidated into, and you may add to it whenever it fits. When the stubs are removed, the RAM definitions end up in `src/ram95.asm`. The full build includes both files and a stub includes only `ram_addrs.inc`, so define each name in one file, and keep a name a stub uses in `ram_addrs.inc` until the stubs are removed.
+RAM (`ram95`) is not a queue segment. It has no ROM bytes, so there is nothing to byte-verify, and the queue moves past its row. RAM names, Z80 RAM and the save RAM offsets (`SR...`) are all in `src/ram95.asm`, which the full build and every stub include. Define each name once, there.
 
-The files in `src/nhl95.asm` come from the fingerprint map `tools/segmap95.json`: every 94 routine was located in `lst/nhl95.bin`, and the rows tile the ROM. It is a provisional split. Use https://github.com/abdulahmad/NHL94Genesis to confirm where a segment starts and ends. Find the 94 routine that matches the 95 listing, then take the 95 range from the 95 listing, not from the 94 org. Split a placeholder when the 94 files are separate ranges here. Routines the ROM map lists as moved in stay in the row's file with a comment naming their 94 file; split only when a whole head or tail of the row is another 94 file (replay95_01 from display95_01). Add a file when 95 has a system 94 does not have. Drop a placeholder when 95 has no matching code, and remove its include. Keep the includes in ROM order.
+The first split came from the fingerprint map `tools/segmap95.json` (every 94 routine located in `lst/nhl95.bin`); each row's range was then confirmed from the 95 listing as it matched. Routines the ROM map lists as moved in stay in the row's file with a comment naming their 94 file; a file is split only when a whole head or tail of the row is another 94 file (replay95_01 from display95_01). Keep the includes in ROM order.
+
+## Layout
+
+- Files take the NHL94Genesis name with 95 (`hockey94` -> `hockey95`). A 94 file that 95 splits into pieces separated by other files is numbered `_01`, `_02`, ... in ROM order. Two contiguous pieces of one 94 file are one file (checks95_08 was merged into checks95_03).
+- Pure data files (tables, text, graphics, palettes) are in `src/data/`: teamdata95, frames95, schedule95, sound95_02, graphics95_01, title95_03, graphics95_02, credits95. Their stubs stay in `src/` and include `data\<file>.asm`.
+- Sega's cartridge header and power-on code are `src/sega/SegaIDTable95.asm` and `src/sega/SegaInit.asm`, included by `main95.asm`.
+- Every label's IDA name, and its old name when it was renamed, is in `docs/name_map.csv`.
 
 ## Sources
 
@@ -16,8 +23,8 @@ The files in `src/nhl95.asm` come from the fingerprint map `tools/segmap95.json`
 - The listing is an IDA LST in ASM68K / MRI mode. It has no address column. A `loc_`, `sub_`, or `unk_` name is the address.
 - Style source: the matching file in https://github.com/abdulahmad/NHL94Genesis. Use https://github.com/abdulahmad/NHLPA93Genesis only when 94 does not have the routine. A 94 name wins when the body is the same routine.
 - Reference ROM: `lst/nhl95.bin`. It is 2 MB. Bytes and branch displacements come from it.
-- `src/nhl95.asm` is the include list, in 95 ROM order. Each include line has the mapped org. Correct it in the session that matches the file.
-- Stub includes: `src/stubinc/ports.inc`, `equals.inc`, `ram_addrs.inc`.
+- `src/nhl95.asm` is the include list, in 95 ROM order. Each include line has the file's start address and what is in it.
+- Stub includes: `macros\genesis.mac` when the segment uses a macro, `stubinc\ports.inc`, `stubinc\equals.inc`, `ram95.asm`, then the segment file. Outside addresses the segment uses are equates in the stub.
 
 ## Teams
 
@@ -45,11 +52,11 @@ After every matched segment, delete `output/nhl95.bin` and `output/modified_nhl9
 - A global label ends local-label scope. A local that another routine or another file calls stays global. SNASM cannot reference another routine's local.
 - SNASM symbols are case-insensitive. `setVram` and `setvram` are the same symbol.
 - Keep each comment line under 200 characters. A longer line makes SNASM write an empty bin, and verify can then print MATCH for 0 bytes.
-- Do not delete an asm file. Edit it in place.
+- Do not delete an asm file. Edit it in place. The one exception is merging two contiguous pieces of the same 94 file.
 - Data goes in the segment of the code that owns it. Sound data follows the sound driver. Graphics are incbins from `extractAssets95.js`, named for the asset, never for an IDA address. A map reference is `Label+8`. Team palettes are `.pal` incbins.
 - A new ROM map row gets its include in `src/nhl95.asm` in ROM order in the same session.
 - Do not copy a 94 name onto a 95 address because the low 16 bits match. Do not copy a 94 org.
-- RAM names go in `stubinc/ram_addrs.inc` as you transcribe code segments. Add each new RAM name to that file when you first encounter it. Do not wait for a RAM consolidation pass. You may also add to `src/ram95.asm`, the RAM map the names are consolidated into. Define each name in only one of the two files.
+- RAM names go in `src/ram95.asm` when you first encounter them. Write a RAM immediate as `#(Name-M68K_RAM)` and an in-place save RAM access as `SaveRAM+2*SRname`.
 
 ## Naming
 
@@ -58,12 +65,12 @@ Name it in the session that transcribes it. Do not leave a cleanup pass.
 - Match a function to the 94 routine when the body is the same. Keep the 94 name. Put the IDA name in one `;IDA:` comment on the definition, not on every line.
 - If 94 already uses that name for a different routine, do not steal it. Name the new routine from what it does.
 - A structure field is an expression (`SortCords+OldXpos`), not a new global.
-- Do not leave `loc_`, `sub_`, `unk_`, `word_`, `byte_`, or `dword_` in code or in `ram_addrs.inc`.
+- Do not leave `loc_`, `sub_`, `unk_`, `word_`, `byte_`, or `dword_` in code or in `ram95.asm`. A branch target inside a routine is a local label (`.name`).
 - Bring over the 94 comment when the routine matches. If there is no comment, add one that says what it does.
 
 ## ROM map
 
-The first row that is not matched is the current segment. The rows are in 95 ROM order and tile $000000-$1FFFFF with the `$FF` fill ($1A7310-$1FFFFF, the `dcb.b` in `src/nhl95.asm`). They come from `tools/segmap95.json`: `python3 tools/fingerprint_map.py --ref <NHL94Genesis>` locates the 94 routines, `python3 tools/verify_segmap.py` checks the tiling and boundaries, `python3 tools/apply_segmap.py --ref <NHL94Genesis>` writes this table. Org and end are provisional until the row matches. Matched is the share of the row covered by 94 routines found at similarity 0.5 or more. Confidence is how sure the row's range is, not a byte match.
+The first row that is not matched is the current segment. The rows are in 95 ROM order and tile $000000-$1FFFFF with the `$FF` fill ($1A7310-$1FFFFF, the `dcb.b` in `src/nhl95.asm`). They come from `tools/segmap95.json`: `python3 tools/fingerprint_map.py --ref <NHL94Genesis>` locates the 94 routines, `python3 tools/verify_segmap.py` checks the tiling and boundaries, `python3 tools/apply_segmap.py --ref <NHL94Genesis>` wrote the first version of this table. Every row is now matched; org and end are the confirmed ranges, and the file names are the current ones. Matched is the share of the row covered by 94 routines found at similarity 0.5 or more. Confidence is how sure the row's range is, not a byte match.
 
 | File | Status | Org, start label | End | 94 file | Matched | Confidence | Note |
 |---|---|---|---|---|---|---|---|
@@ -71,7 +78,7 @@ The first row that is not matched is the current segment. The rows are in 95 ROM
 | teamdata95 | matched, 21186 bytes $000772-$005A33 | $772, no IDA label; 94 TeamList | $005A33 | teamdata94 | 0% | high | 94 TeamList, the 28 team blocks ($7E2-$5833), then playoffseats ($5834). Team palettes are the `*95.pal` slices in extractAssets95.js |
 | frames95 | matched, 13220 bytes $005A34-$008DD7 | $5A34, no IDA label; 94 SPAlist | $008DD7 | frames94 | 0% | high | SPAlist ($5A34, movea.l #$5A34), 78 SPA tables (94: 66, new order and frame numbers), then revframetbl $8596-$8DD7 (1057 words, incbin; 94 kept it at the end of graphics94; RestoreReplayFrame reads it at $8DD46). The rest of the old placeholder is schedule95 |
 | schedule95 | matched, 2378 bytes $008DD8-$009721 | $8DD8, byte_8DD8 | $009721 | new | - | high | New in 95: season schedule data, split from the frames95 placeholder. byte_8DD8 = $C0 (192 days), then per day a game count and team number pairs (1092 games), then the $FF pad at $9721; read by season code (sub_8E26A, sub_8E2AC: movea.l #$8DD8 / #$8DD9). Ends before sub_9722 (94 InitSaveRAM). The fingerprint ScrollArrowTbl hit at $9400 is inside this data |
-| ram95 | skipped | no org (equates only) | - | ram94 | - | - | Equates only, no ROM bytes. `skipped` only means this is not a queue segment: there is nothing to byte-verify, so the queue moves past it. RAM names still go in `stubinc/ram_addrs.inc` as code is transcribed, and `src/ram95.asm` may be added to |
+| ram95 | skipped | no org (equates only) | - | ram94 | - | - | Equates only, no ROM bytes. `skipped` only means this is not a queue segment: there is nothing to byte-verify, so the queue moves past it. RAM names are in `src/ram95.asm` |
 | sram95 | matched, 934 bytes $009722-$009AC7 | $9722, sub_9722; 94 InitSaveRAM | $009AC7 | sram94 | 35% | high | 94 InitSaveRAM ... ReadSRAM ($8000 save RAM bytes, 94: $2000), then three new season leader list routines (BuildLeaderList, BuildLeaderListSum, BuildLeaderListPct, IDA dc.b at $9972). Start moved from $9400 when frames95 was split: $9400-$9721 is schedule95 data |
 | hockey95_01 | matched, 1852 bytes $009AC8-$00A203 | $9AC8, loc_9AC8 | $00A203 | hockey94 | 0% | high | Game flow: 94 Opening / Opening2 (setup94), the 95 main menu exits (season, trades, create player), StartGame and StartPer (no jump between them), the 95 IntermissionMenu, Gameloop, DoGameFrame with 94 periodicevents in line, then 94 updateplayers (replay94) at $A01C |
 | display95_01 | matched, 818 bytes $00A204-$00A535 | $A204, sub_A204 | $00A535 | display94 | 70% | high | 94 setvideo, setsortcords, checksso, setffo, uppads, FormatControllerDisplay, RenderSmallFontChar, ButtonLabelCharTable. The old placeholder ran to $A655: updateanim (replay94) is split out as replay95_01 |
