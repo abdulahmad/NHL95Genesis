@@ -16,4 +16,4 @@
 
 
 ; Main segment code
-	include	title95_03.asm
+	include	data\title95_03.asm

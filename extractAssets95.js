@@ -10,7 +10,7 @@ if (!fs.existsSync(romPath)) {
 }
 // Slices: name, folder under Extracted, start, end (exclusive).
 const assets = [
-    // NHL 95 team palettes, src/teamdata95.asm .pad of each team block (block + $C): home then visitor, 32 bytes each, in ROM order.
+    // NHL 95 team palettes, src/data/teamdata95.asm .pad of each team block (block + $C): home then visitor, 32 bytes each, in ROM order.
     // Every one differs from 94, so each is the 94 file stem (93 stem for MIN / LI / NY / TBY) with 95 added.
     { name: 'ASEh95.pal', folder: 'NHL95/Graphics/Pals', start: 0x000007EE, end: 0x0000080E }, // ASE home
     { name: 'ASEv95.pal', folder: 'NHL95/Graphics/Pals', start: 0x0000080E, end: 0x0000082E }, // ASE visitor
@@ -68,7 +68,7 @@ const assets = [
     { name: 'WPGv95.pal', folder: 'NHL95/Graphics/Pals', start: 0x000052BA, end: 0x000052DA }, // WPG visitor
     { name: 'WSHh95.pal', folder: 'NHL95/Graphics/Pals', start: 0x00005562, end: 0x00005582 }, // WSH home
     { name: 'WSHv95.pal', folder: 'NHL95/Graphics/Pals', start: 0x00005582, end: 0x000055A2 }, // WSH visitor
-    // NHL 95 revframetbl, src/frames95.asm after the SPA tables: one word per sprite frame (1057), the frame RestoreReplayFrame shows for a reverse angle replay.
+    // NHL 95 revframetbl, src/data/frames95.asm after the SPA tables: one word per sprite frame (1057), the frame RestoreReplayFrame shows for a reverse angle replay.
     // 94 kept it at the end of graphics94 (NHL94/Graphics/revframetbl.bin, 880 words).
     { name: 'revframetbl.bin', folder: 'NHL95/Graphics', start: 0x00008596, end: 0x00008DD8 }, // revframetbl
     // NHL 95 sound driver data, src/sounddrv95.asm: the Z80 program ($BD86, $1B63 bytes loaded by SndLoadZ80, plus its last byte $FF),
@@ -232,7 +232,7 @@ const assets = [
     { name: 'z80_snd_drv93.bin', folder: 'NHL95/Sound', start: 0x0007E0E1, end: 0x0007E358 }, // sound95_02: the 94 Z80 driver after its first byte, up to the ld bc of the FM patch bank address (93 / 94 file, same bytes; 94 $1AD91)
     { name: 'z80_snd_drv93_end.bin', folder: 'NHL95/Sound', start: 0x0007E35D, end: 0x0007E36B }, // sound95_02: rest of the 94 Z80 driver (93 / 94 file, same bytes; 94 $1B00D)
     // NHL 95 graphics95_01 ($A1A5A-$1A1699): the player pictures, the rink, the sprites, the fonts and screen maps, the team logos.
-    // One slice per asset the code references (its label in src/graphics95_01.asm), one per FeaturedPictures picture (PlayerCards).
+    // One slice per asset the code references (its label in src/data/graphics95_01.asm), one per FeaturedPictures picture (PlayerCards).
     { name: 'NoPlayerPicture.map.jim', folder: 'NHL95/Graphics', start: 0x000A1A5A, end: 0x000A1E90 }, // NoPlayerPicture
     { name: 'NoPicSkater2.bin', folder: 'NHL95/Graphics', start: 0x000A1E90, end: 0x000A21FA }, // NoPicSkater2
     { name: 'NoPicSkater1.bin', folder: 'NHL95/Graphics', start: 0x000A21FA, end: 0x000A2564 }, // NoPicSkater1

@@ -16,4 +16,4 @@
 
 
 ; Main segment code
-	include	credits95.asm
+	include	data\credits95.asm

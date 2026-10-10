@@ -16,4 +16,4 @@
 fm_instrument_patches = $79502	;the Z80 ld bc / ld a bytes (sound95_01)
 
 ; Main segment code
-	include	sound95_02.asm
+	include	data\sound95_02.asm

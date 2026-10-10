@@ -14,4 +14,4 @@
 	include	ram95.asm		;RAM map
 
 ; Main segment code
-	include	schedule95.asm
+	include	data\schedule95.asm

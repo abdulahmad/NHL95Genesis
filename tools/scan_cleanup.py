@@ -41,6 +41,7 @@ def scan(src, listing=False):
     files = sorted(fn for fn in os.listdir(src) if fn.endswith('.asm'))
     with open(os.path.join(src, 'ram95.asm'), encoding='latin-1') as f:
         sroffs = {int(m.group(1), 16) for m in re.finditer(r'^SR\w+\s+equ\s+\$([0-9A-Fa-f]+)', f.read(), re.M)}
+    files += [os.path.join('data', fn) for fn in sorted(os.listdir(os.path.join(src, 'data'))) if fn.endswith('.asm')]
     files += [os.path.join('stubinc', fn) for fn in sorted(os.listdir(os.path.join(src, 'stubinc')))]
     for fn in files:
         stub = fn.endswith('_stub.asm')
