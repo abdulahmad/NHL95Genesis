@@ -336,15 +336,15 @@ DrawMatchupPictures	;scout94 DrawMatchupPictures. The matchup 6 x 6 pictures, vi
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawMatchupPicture	;scout94 DrawMatchupPicture. Draw player picture a0 at printx / printy with the NoPlayerPicture palettes; falls into DrawMatchupBitmap
+DrawMatchupPicture	;scout94 DrawMatchupPicture. Draw player picture a0 at printx / printy with the PicturePalette palettes; falls into DrawMatchupBitmap
 	movea.l	a0,a1
 	movea.l	a0,a2
 	adda.l	(a2)+,a0
-	movea.l	#NoPlayerPicture,a0
+	movea.l	#PicturePalette,a0
 	adda.l	(a0),a0
 	tst.l	(a2)
 	bne.w	.0
-	movea.l	#NoPlayerPicture,a1
+	movea.l	#PicturePalette,a1
 	adda.l	4(a1),a1
 	tst.l	(a2)+
 	bra.w	.1

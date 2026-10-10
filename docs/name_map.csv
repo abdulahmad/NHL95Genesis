@@ -857,6 +857,7 @@ $089A8A,ClearPenalties,sub_89A8A,,data95_02
 $089AC4,clrTmPdst,sub_89AC4,,data95_02
 $089ADA,puckIChk,,,data95_02
 $089B3A,ChkOffsides,,,data95_02
+$089C2E,PenaltyList,,PenaltyNames,data95_02
 $089C2E,PenaltyNames,unk_89C2E,,data95_02
 $089F5C,checkob,sub_89F5C,,data95_02
 $089FFC,PenShotPenalties,unk_89FFC,,data95_02
@@ -902,6 +903,7 @@ $08B734,doinput_cbut,loc_8B734,,input95_03
 $08B890,ClampTargetY,sub_8B890,,input95_03
 $08B8CE,doinput_chkanim,loc_8B8CE,,input95_03
 $08B974,FindGoalie,sub_8B974,,input95_03
+$08B974,getGoalieSCnum,,FindGoalie,input95_03
 $08B9A8,GoalieReadySPA,sub_8B9A8,,checks95_06
 $08B9D6,dirtab,unk_8B9D6,,checks95_06
 $08B9FA,dirtab2,,,checks95_06
@@ -1603,6 +1605,7 @@ $09B6F4,UserNameEntry,sub_9B6F4,,records95
 $09B7BE,CountTeamPads,sub_9B7BE,,records95
 $09B7EA,NameInUse,sub_9B7EA,,records95
 $09B822,SkipPadName,sub_9B822,,records95
+$09B838,SkipOtherUserName,,SkipUserName,records95
 $09B838,SkipUserName,sub_9B838,,records95
 $09B86C,WriteNameLog,sub_9B86C,,records95
 $09B876,ReadNameLog,sub_9B876,,records95
@@ -1619,6 +1622,7 @@ $09BB48,PrintWinRecords,,,records95
 $09BC44,ClearRecordArea,,,records95
 $09BC86,PrintPlayerRecords,,,records95
 $09BDAE,RecBlankTxt,,,records95
+$09BDAE,RecParenTxt,,RecBlankTxt,records95
 $09BDD6,RecHolderByTxt,,,records95
 $09BDDC,RecHolderVsTxt,,,records95
 $09BDE4,PrintRecordName,,,records95
@@ -1713,6 +1717,7 @@ $09D93E,CollectSeriesWinners,sub_9D93E,,awards95
 $09D9C0,RoundSeriesOffsets,unk_9D9C0,,awards95
 $09D9C8,RoundSeriesCounts,unk_9D9C8,,awards95
 $09D9CE,PlayoffTreeScreen,,,awards95
+$09DA50,ClearShootout,,ShootoutInit,title95_01
 $09DA50,ShootoutInit,sub_9DA50,,title95_01
 $09DA94,InitShooters,sub_9DA94,,title95_01
 $09DAD0,PSandSOpassdir,sub_9DAD0,,title95_01
@@ -1736,6 +1741,7 @@ $09DE8A,PlayoffRoundScreen,loc_9DE8A,,shootout95
 $09DFD0,RoundBigTxt,unk_9DFD0,,shootout95
 $09DFE6,ShootoutWonBy,sub_9DFE6,,shootout95
 $09E058,ShootoutSetup,,,shootout95
+$09E058,ShootoutShooters,,ShootoutSetup,shootout95
 $09E0AA,ShootersRedraw,,,shootout95
 $09E0B6,ShootersLoop,,,shootout95
 $09E10A,ShootersExit,,,shootout95
@@ -1880,6 +1886,7 @@ $0A1952,CupDrawTeam,sub_A1952,,title95_02
 $0A198E,CupBuildSprites,sub_A198E,,title95_02
 $0A19F8,AddSpriteFrame,sub_A19F8,,title95_02
 $0A1A5A,NoPlayerPicture,unk_A1A5A,,graphics95_01
+$0A1A5A,PicturePalette,,NoPlayerPicture,graphics95_01
 $0A1E90,NoPicSkater2,unk_A1E90,,graphics95_01
 $0A21FA,NoPicSkater1,unk_A21FA,,graphics95_01
 $0A2564,NoPicGoalie2,unk_A2564,,graphics95_01
@@ -2046,6 +2053,7 @@ $0C4A7C,Rinktilelist,unk_C4A7C,,graphics95_01
 $0CA56A,Sprites,unk_CA56A,,graphics95_01
 $0CA574,Spritetiles,,,graphics95_01
 $1318F4,frameSprData,,,graphics95_01
+$137B66,Hotlist,,HotSpotList,graphics95_01
 $137B66,HotSpotList,unk_137B66,,graphics95_01
 $1383C6,RosterFont,unk_1383C6,,graphics95_01
 $139094,SmallFontMap,unk_139094,,graphics95_01

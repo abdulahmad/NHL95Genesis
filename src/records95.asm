@@ -1,5 +1,5 @@
 ;	NHL 95 records95. Retail $09B6F4-$09C019 (2342 bytes).
-;	Mapped to records94 (84%): UserNameEntry (four pads in 95), the name log checks (NameInUse ... SkipUserName, 94 SkipOtherUserName),
+;	Mapped to records94 (84%): UserNameEntry (four pads in 95), the name log checks (NameInUse ... SkipOtherUserName, 94 SkipOtherUserName),
 ;	WriteNameLog / ReadNameLog / NameLogIO (cards94), ClearNameHelp, PlayoffStatsScreen (95 only), RecordHoldersScreen, PrintRecordPage,
 ;	PrintRecordTitles, PrintWinRecords, ClearRecordArea, PrintPlayerRecords, PrintRecordName, CalcWinPercents, ReadTeamRecords and
 ;	ClearWinRecords (title94).
@@ -96,16 +96,16 @@ NameInUse	;95 only. Step the name log selection (namelogsel) past the names the 
 	tst.w	d2
 	movem.l	(sp)+,d1-d2/a0
 	rts
-SkipPadName	;95 only. When pad slot a0 is not a5 and holds the selected name (namelogsel), step past it (SkipUserName)
+SkipPadName	;95 only. When pad slot a0 is not a5 and holds the selected name (namelogsel), step past it (SkipOtherUserName)
 	cmpa.l	a5,a0
 	beq.w	.x
 	move.w	(a0),d1
 	cmp.w	(namelogsel).w,d1
 	bne.w	.x
-	bsr.w	SkipUserName
+	bsr.w	SkipOtherUserName
 .x
 	rts
-SkipUserName	;records94 SkipOtherUserName. Step the name log selection (namelogsel) by 1 in direction d0, wrapping 1-7; d2 = 0
+SkipOtherUserName	;records94 SkipOtherUserName. Step the name log selection (namelogsel) by 1 in direction d0, wrapping 1-7; d2 = 0
 	move.w	#1,d1
 	tst.w	d0
 	bpl.w	.0
@@ -318,7 +318,7 @@ PrintWinRecords	;records94 PrintWinRecords. Record Holders page 0: name (PrintRe
 	move.w	(sp)+,d0
 	bra.w	.1
 .0
-	movea.l	#RecBlankTxt,a1
+	movea.l	#RecParenTxt,a1
 .1
 	jsr	(printsmall).l
 	addq.w	#2,(printy).w
@@ -411,14 +411,14 @@ PrintPlayerRecords	;records94 PrintPlayerRecords. Record Holders pages 1 (goals,
 	jsr	(AppendTeamName).l
 	bra.w	.9
 .8
-	movea.l	#RecBlankTxt,a1
+	movea.l	#RecParenTxt,a1
 .9
 	jsr	(printsmall).l
 	addq.w	#2,(printy).w
 	dbf	d7,.loop
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-RecBlankTxt	;records94 RecParenTxt. A blank record row (38 spaces)
+RecParenTxt	;records94 RecParenTxt. A blank record row (38 spaces)
 	String	'                                      '
 RecHolderByTxt	;records94 RecHolderByTxt. PrintPlayerRecords "by "
 	String	'by ',$0

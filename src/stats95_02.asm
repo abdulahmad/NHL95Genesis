@@ -490,7 +490,7 @@ DisplayPenaltyLineDown	;stats94 DisplayPenaltyLineDown. Penalty entry + 5 at the
 	move.l	(sp)+,d0
 	rts
 
-DisplayPenaltyEntry	;stats94 DisplayPenaltyEntry (93 name). PenSum entry d3: time, team (bit 7 of byte 2 = away), minutes and name from PenaltyNames, player (byte 3)
+DisplayPenaltyEntry	;stats94 DisplayPenaltyEntry (93 name). PenSum entry d3: time, team (bit 7 of byte 2 = away), minutes and name from PenaltyList, player (byte 3)
 	move.w	(printy).w,-(sp)
 	moveq	#$28,d0
 	moveq	#3,d1
@@ -513,7 +513,7 @@ DisplayPenaltyEntry	;stats94 DisplayPenaltyEntry (93 name). PenSum entry d3: tim
 	jsr	(print).l
 	move.b	2(a0,d3.w),d0
 	andi.w	#$7F,d0
-	movea.l	#PenaltyNames,a3
+	movea.l	#PenaltyList,a3
 	adda.w	(a3,d0.w),a3
 	clr.w	d0
 	move.b	1(a3),d0

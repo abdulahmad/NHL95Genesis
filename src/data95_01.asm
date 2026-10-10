@@ -829,7 +829,7 @@ GameSetUp	;(94 optsetup94). The game setup screen, rewritten for 95: ReadLineDat
 	btst	#0,(gmode2).w
 	beq.w	.25
 	clr.w	(OptPlayMode).w
-	jsr	(ShootoutInit).l
+	jsr	(ClearShootout).l
 .25
 	move.w	#7,(pojoy).w
 	jsr	(SetPojoyMode).l
@@ -2045,7 +2045,7 @@ DrawSetupLogo	;94 optsetup94 DrawTeamLogo. Draw the logo of team logoteam (TeamL
 
 PlayerCardTimer	;94 only. Player cards, called each frame from GameSetUp_2 while carddelay has run out: every cardtimer frames switch
 	;sides (setupcardflags bit 1), erase the card (GetBlankChar) and draw the next of 6 featured players of HomeTeam / VisTeam:
-	;the picture (GetPlayerPicture, NoPlayerPicture) unpacked to picturebuf and drawn, then the name (GetRosterName) and number
+	;the picture (GetPlayerPicture, PicturePalette) unpacked to picturebuf and drawn, then the name (GetRosterName) and number
 	cmpi.w	#1,(setupshown).w
 	beq.w	.0
 	tst.w	(carddelay).w
@@ -2114,11 +2114,11 @@ PlayerCardTimer	;94 only. Player cards, called each frame from GameSetUp_2 while
 	movea.l	a0,a1
 	movea.l	a0,a2
 	adda.l	(a2)+,a0
-	movea.l	#NoPlayerPicture,a0
+	movea.l	#PicturePalette,a0
 	adda.l	(a0),a0
 	tst.l	(a2)
 	bne.w	.8
-	movea.l	#NoPlayerPicture,a1
+	movea.l	#PicturePalette,a1
 	adda.l	4(a1),a1
 	tst.l	(a2)+
 	bra.w	.9

@@ -1,5 +1,5 @@
 ;	NHL 95 input95_03. Retail $08B734-$08B9A7 (628 bytes).
-;	94 input94 doinput_cbut, ClampTargetY (with the 10 SPA offsets after it), doinput_chkanim and getGoalieSCnum (95 FindGoalie). The
+;	94 input94 doinput_cbut, ClampTargetY (with the 10 SPA offsets after it), doinput_chkanim and getGoalieSCnum (95 getGoalieSCnum). The
 ;	row map started this file at $8B748, inside doinput_cbut; it starts at doinput_cbut ($8B734). doinput_onetimer / doinput_ispc are
 ;	not in 95 here; doinput_islocked is in input95_01. checks95_06 follows at $08B9A8.
 ;	IDA code; local labels are numbered, the IDA local names are not kept.
@@ -178,7 +178,7 @@ doinput_chkanim	;(input94) Global: doinput branches here across ClampTargetY. An
 	move.w	(TempWord1).w,d0
 	jmp	doplayeracc
 
-FindGoalie	;(input94 getGoalieSCnum) 95: d0 = SCnum of the goalie of the team of player d0 (the first position 0 going down
+getGoalieSCnum	;(input94 getGoalieSCnum) 95: d0 = SCnum of the goalie of the team of player d0 (the first position 0 going down
 	;from player d0), -1 none
 	movem.l	d1/a0,-(sp)
 	movea.l	#SortCords,a0

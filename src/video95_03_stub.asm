@@ -51,13 +51,13 @@ setupEASNmap = $7DF6A		;fourway95
 StickHandTable = $83C9E	;CalcAttrib, attribute 5 (stick handling) scale (collide95_02)
 PAttribOverallMask = $85846	;data95_01
 GAttribOverallMask = $859A8	;data95_01
-FindGoalie = $8B974		;95: d0 = SCnum of the goalie of the team of player d0
+getGoalieSCnum = $8B974		;95: d0 = SCnum of the goalie of the team of player d0
 GetCreatedName = $96494		;create95
 GetRosterName = $9649E		;a1 = name String of player d0 of team d7 (season roster aware)
 GetJerseyNumber = $965A8	;jerseynum = the jersey number byte of player d0 of team d7
 Rinktilelist = $C4A7C		;graphics95_01
 SmallFontMap2 = $139E02		;graphics95_01
-HotSpotList = $137B66		;Hot spot x / y bytes by frame (GetHot; graphics95_01)
+Hotlist = $137B66		;Hot spot x / y bytes by frame (GetHot; graphics95_01)
 ClockDigitsBitmap = $13FC18	;Big clock digits (PutClockDigit; graphics95_01)
 EnergyBarMap = $14C4C8		;graphics95_01
 BigFontMap3 = $15CE68		;graphics95_01

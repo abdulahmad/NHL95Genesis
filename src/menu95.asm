@@ -834,7 +834,7 @@ PrintLines	;95 only. print the Strings at a1 up to a $FF String
 .x
 	rts
 
-ShowPenaltyMessages	;95 only. Every $78 frames show the next queued penalty (penaltymsgs): its name (PenaltyNames) and the player
+ShowPenaltyMessages	;95 only. Every $78 frames show the next queued penalty (penaltymsgs): its name (PenaltyList) and the player
 	;(FormatPlayerNameWithAttrib) centred at $14, $F / $11, and take him off the penalty box count. d1 = 1 when the queue is empty
 	movem.l	d0-d6/a0-a3,-(sp)
 	subq.w	#1,(menutimer).w
@@ -855,7 +855,7 @@ ShowPenaltyMessages	;95 only. Every $78 frames show the next queued penalty (pen
 	subq.l	#4,a0
 	clr.w	d0
 	move.b	(a0),d0
-	movea.l	#PenaltyNames,a1
+	movea.l	#PenaltyList,a1
 	adda.w	(a1,d0.w),a1
 	clr.w	d2
 	move.b	1(a1),d2
@@ -1177,7 +1177,7 @@ PauseMenus	;(dc.b). The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset
 	String	'x MANUAL GOALIE  '
 	dc.l	ManualGoalieMenu
 	String	' SHOOTOUT SETUP '
-	dc.l	ShootoutSetup
+	dc.l	ShootoutShooters
 	String	'   ABORT GAME   '
 	dc.l	AbortGame
 	String	$FF,0

@@ -547,7 +547,7 @@ SetupPenaltyShot	;collide94 SetupPenaltyShot. Penalty shot for team a2: the shoo
 	movem.l	(sp)+,d0-d5/a0-a3
 	rts
 
-PenaltyShotBox	;data94 PenaltyShotBox. In a shootout PlayoffRoundScreen; else the "PENALTY SHOT!" box: the shooter, the penalty (PenaltyNames) and " by" the checker
+PenaltyShotBox	;data94 PenaltyShotBox. In a shootout PlayoffRoundScreen; else the "PENALTY SHOT!" box: the shooter, the penalty (PenaltyList) and " by" the checker
 	bset	#7,(gmode2).w
 	btst	#0,(gmode2).w
 	beq.w	.0
@@ -580,7 +580,7 @@ PenaltyShotBox	;data94 PenaltyShotBox. In a shootout PlayoffRoundScreen; else th
 	String	$BF,$4,$7,$0
 	movem.l	a1/a3,-(sp)
 	move.w	(pspenalty).w,d0
-	movea.l	#PenaltyNames,a1
+	movea.l	#PenaltyList,a1
 	adda.w	(a1,d0.w),a1
 	lea	2(a1),a1
 	jsr	(print).l
@@ -650,7 +650,7 @@ getBAplayerInfo	;penalty94 getBAplayerInfo. Keep the breakaway shooter, team, go
 	move.w	#1,d2
 .0
 	move.w	d1,d0
-	jsr	(FindGoalie).l
+	jsr	(getGoalieSCnum).l
 	tst.w	d0
 	bpl.w	.1
 	movem.w	(sp)+,d0

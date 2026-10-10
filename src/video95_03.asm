@@ -159,14 +159,14 @@ randomd0	;d0 = random number 0 to d0-1 (RNGseed * $BB40E62D + 1)
 	movem.l	(sp)+,d1-d2
 	rts
 
-GetHot	;Push long address of structure to get hot spot from; hot spot x/y returned in d0/d1 (HotSpotList by frame, flipped with the attribute)
+GetHot	;Push long address of structure to get hot spot from; hot spot x/y returned in d0/d1 (Hotlist by frame, flipped with the attribute)
 	movem.l	a0-a1,-(sp)
 	movea.l	$C(sp),a0
 	clr.w	d0
 	clr.w	d1
 	tst.w	6(a0)
 	ble.w	.1
-	movea.l	#HotSpotList,a1
+	movea.l	#Hotlist,a1
 	move.w	6(a0),d0
 	add.w	d0,d0
 	move.b	1(a1,d0.w),d1
@@ -1523,7 +1523,7 @@ ClrHor	;No xref. 94 ClrHor (penalty94): revert the graphics back to vertical ice
 	rts
 
 AssignPads	;No xref. 95 only. Clear c1playernum-c4playernum, then give each pad on a team a player: in Practice Mode
-	;(sflags9 bit 7) with its team's goalie control (homegoaliectl / awaygoaliectl) clear, the team's goalie (FindGoalie, setc1player ...),
+	;(sflags9 bit 7) with its team's goalie control (homegoaliectl / awaygoaliectl) clear, the team's goalie (getGoalieSCnum, setc1player ...),
 	;else chgplayer
 	move.w	#$FFFF,(c1playernum).w
 	move.w	#$FFFF,(c2playernum).w
@@ -1548,7 +1548,7 @@ AssignPads	;No xref. 95 only. Clear c1playernum-c4playernum, then give each pad 
 	beq.w	.s1
 	move.w	#$B,d0
 .s1
-	jsr	(FindGoalie).l
+	jsr	(getGoalieSCnum).l
 	clr.w	d4
 	jsr	(setc1player).l
 	movem.l	(sp)+,d0/a0/a3
@@ -1576,7 +1576,7 @@ AssignPads	;No xref. 95 only. Clear c1playernum-c4playernum, then give each pad 
 	beq.w	.s2
 	move.w	#5,d0
 .s2
-	jsr	(FindGoalie).l
+	jsr	(getGoalieSCnum).l
 	move.w	#2,d4
 	jsr	(setc2player).l
 	movem.l	(sp)+,d0/a0/a3
@@ -1604,7 +1604,7 @@ AssignPads	;No xref. 95 only. Clear c1playernum-c4playernum, then give each pad 
 	beq.w	.s3
 	move.w	#5,d0
 .s3
-	jsr	(FindGoalie).l
+	jsr	(getGoalieSCnum).l
 	move.w	#4,d4
 	jsr	(setc3player).l
 	movem.l	(sp)+,d0/a0/a3
@@ -1632,7 +1632,7 @@ AssignPads	;No xref. 95 only. Clear c1playernum-c4playernum, then give each pad 
 	beq.w	.s4
 	move.w	#5,d0
 .s4
-	jsr	(FindGoalie).l
+	jsr	(getGoalieSCnum).l
 	move.w	#6,d4
 	jsr	(setc4player).l
 	movem.l	(sp)+,d0/a0/a3

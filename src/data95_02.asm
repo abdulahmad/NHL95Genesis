@@ -1,5 +1,5 @@
 ;	NHL 95 data95_02. Retail $08996E-$08A055 (1768 bytes).
-;	Mapped to data94, but only the tables are data94 (PenaltyNames = 94 PenaltyList, PenShotPenalties, linelist); the code is moved in:
+;	Mapped to data94, but only the tables are data94 (PenaltyList = 94 PenaltyList, PenShotPenalties, linelist); the code is moved in:
 ;	collide94 checkagr, display94 showref, penalty94 ClearPenaltyBuffer, title94 ClearPenalties / clrTmPdst, checks94 puckIChk,
 ;	ChkOffsides and checkob. Each routine comment names its 94 file. input95_02 follows at $08A056.
 ;	IDA code except puckIChk and ChkOffsides (dc.b, read from the retail bytes with the 94 source as the guide). Local labels are numbered;
@@ -241,39 +241,39 @@ ChkOffsides	;(checks94) Offsides: clear the flag of a team that is all back onsi
 	bclr	#4,tmflags(a2)
 	rts
 
-PenaltyNames	;(data94) 92 Penaltylist, 94 PenaltyList. Penalty number = word offset into this table; the same entries as 94.
+PenaltyList	;(data94) 92 Penaltylist, 94 PenaltyList. Penalty number = word offset into this table; the same entries as 94.
 	;Used by AddPenalty, SetPA2, prefmes, PenaltyShotBox
 	dc.w	$0000
-	dc.w	.eop-PenaltyNames;$2 period over
-	dc.w	.eog-PenaltyNames;$4 game over
-	dc.w	.ghold-PenaltyNames;$6
-	dc.w	.ghold-PenaltyNames;$8
-	dc.w	.whistle-PenaltyNames;$A whistle
-	dc.w	.ice-PenaltyNames;$C icing
-	dc.w	.goal-PenaltyNames;$E goal
-	dc.w	.offsides-PenaltyNames;$10 offsides
-	dc.w	.rough2-PenaltyNames;$12 roughing, slow down time $A
-	dc.w	.p14-PenaltyNames;$14 no text
-	dc.w	.charge-PenaltyNames;$16
-	dc.w	.slash-PenaltyNames;$18
-	dc.w	.rough-PenaltyNames;$1A
-	dc.w	.cross-PenaltyNames;$1C
-	dc.w	.hook-PenaltyNames;$1E
-	dc.w	.trip-PenaltyNames;$20
-	dc.w	.int-PenaltyNames;$22
-	dc.w	.hold-PenaltyNames;$24
-	dc.w	.fight-PenaltyNames;$26
-	dc.w	.fight2-PenaltyNames;$28
-	dc.w	.inst-PenaltyNames;$2A
-	dc.w	.delay-PenaltyNames;$2C delay
-	dc.w	.hookps-PenaltyNames;$2E penalty shot
-	dc.w	.tripps-PenaltyNames;$30 penalty shot
-	dc.w	.ghold2-PenaltyNames;$32 face off, no slow down
-	dc.w	.intps-PenaltyNames;$34 penalty shot
-	dc.w	.roughps-PenaltyNames;$36 penalty shot
-	dc.w	.chargeps-PenaltyNames;$38 penalty shot
-	dc.w	.crossps-PenaltyNames;$3A penalty shot
-	dc.w	.slashps-PenaltyNames;$3C penalty shot
+	dc.w	.eop-PenaltyList;$2 period over
+	dc.w	.eog-PenaltyList;$4 game over
+	dc.w	.ghold-PenaltyList;$6
+	dc.w	.ghold-PenaltyList;$8
+	dc.w	.whistle-PenaltyList;$A whistle
+	dc.w	.ice-PenaltyList;$C icing
+	dc.w	.goal-PenaltyList;$E goal
+	dc.w	.offsides-PenaltyList;$10 offsides
+	dc.w	.rough2-PenaltyList;$12 roughing, slow down time $A
+	dc.w	.p14-PenaltyList;$14 no text
+	dc.w	.charge-PenaltyList;$16
+	dc.w	.slash-PenaltyList;$18
+	dc.w	.rough-PenaltyList;$1A
+	dc.w	.cross-PenaltyList;$1C
+	dc.w	.hook-PenaltyList;$1E
+	dc.w	.trip-PenaltyList;$20
+	dc.w	.int-PenaltyList;$22
+	dc.w	.hold-PenaltyList;$24
+	dc.w	.fight-PenaltyList;$26
+	dc.w	.fight2-PenaltyList;$28
+	dc.w	.inst-PenaltyList;$2A
+	dc.w	.delay-PenaltyList;$2C delay
+	dc.w	.hookps-PenaltyList;$2E penalty shot
+	dc.w	.tripps-PenaltyList;$30 penalty shot
+	dc.w	.ghold2-PenaltyList;$32 face off, no slow down
+	dc.w	.intps-PenaltyList;$34 penalty shot
+	dc.w	.roughps-PenaltyList;$36 penalty shot
+	dc.w	.chargeps-PenaltyList;$38 penalty shot
+	dc.w	.crossps-PenaltyList;$3A penalty shot
+	dc.w	.slashps-PenaltyList;$3C penalty shot
 .eop	dc.w	$0100
 	String	'Period Over'
 	dc.w	-$0510

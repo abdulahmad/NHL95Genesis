@@ -413,7 +413,7 @@ winties	equ	$FFFFD15E	;94 $FFFFD552. The ties word of each record (record bytes 
 wingames	equ	$FFFFD16E	;94 $FFFFD562. The games word of each record (record bytes $A-$B)
 sohomegoals	equ	$FFFFD180	;95 only. Shootout goals, home
 soawaygoals	equ	$FFFFD182	;95 only. Shootout goals, away
-playoffround	equ	$FFFFD184	;94 $FFFFD578. Shootout round (ShootoutInit sets 1)
+playoffround	equ	$FFFFD184	;94 $FFFFD578. Shootout round (ClearShootout sets 1)
 homeshooters	equ	$FFFFD186	;94 $FFFFD57A. The home shootout shooter list (6 words below homeshootnum, InitShooters)
 homeshootnum	equ	$FFFFD192	;94 $FFFFD586. The shooter index of the shootout
 awayshooters	equ	$FFFFD194	;94 $FFFFD588. The away shootout shooter list (6 words below shootoutteam)

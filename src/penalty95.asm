@@ -96,7 +96,7 @@ LeadSongExit	;(title94) LeadSong exit
 	movem.l	(sp)+,d0/a0-a3
 	rts
 
-Stop4Pen	;(penalty94) a0 = PenaltyNames penalty + 2. Stop the clock, set the faceoff spot from the penalty type, blow the whistle
+Stop4Pen	;(penalty94) a0 = PenaltyList penalty + 2. Stop the clock, set the faceoff spot from the penalty type, blow the whistle
 	;and start the ref (SetPA)
 	bset	#0,(gmode).w
 	bne.w	.5
@@ -183,7 +183,7 @@ Stop4Pen	;(penalty94) a0 = PenaltyNames penalty + 2. Stop the clock, set the fac
 rtspen	;The shared rts of the penalty routines (94 rtss2)
 	rts
 
-AddPenalty	;(penalty94) Add penalty d0 (PenaltyNames offset) for player a3. Ignored while the clock is stopped
+AddPenalty	;(penalty94) Add penalty d0 (PenaltyList offset) for player a3. Ignored while the clock is stopped
 	btst	#0,(gmode).w
 	bne.s	rtspen
 	cmp.w	#$C,d0
@@ -220,7 +220,7 @@ AddPenalty2	;(penalty94) Forced penalties like faceoff and game over. d0 = penal
 	bne.w	.5
 	move.b	$53(a3),-(a1)
 	move.b	d0,-(a1)
-	movea.l	#PenaltyNames,a0
+	movea.l	#PenaltyList,a0
 	adda.w	(a0,d0.w),a0
 	tst.b	1(a0)
 	beq.w	.5
@@ -289,7 +289,7 @@ chkprogress	;(penalty94) Control the progress of the ref and the game through pe
 	beq.w	rtspen
 	clr.w	d0
 	move.b	-2(a0),d0
-	movea.l	#PenaltyNames,a1
+	movea.l	#PenaltyList,a1
 	adda.w	(a1,d0.w),a1
 	tst.b	1(a1)
 	beq.s	.4
@@ -349,7 +349,7 @@ InProgress	;(penalty94) Ref in progress: update the graphics, stats and penalty 
 .2
 	clr.w	d0
 	move.b	(a0),d0
-	movea.l	#PenaltyNames,a1
+	movea.l	#PenaltyList,a1
 	adda.w	(a1,d0.w),a1
 	bclr	#5,(sflags5).w
 	clr.w	d2
@@ -600,7 +600,7 @@ checkfornewpen	;(penalty94) Look for a new penalty (entered through AddPenalty /
 	bne.w	.2
 	clr.w	d0
 	move.b	-2(a0),d0
-	movea.l	#PenaltyNames,a1
+	movea.l	#PenaltyList,a1
 	adda.w	(a1,d0.w),a1
 	tst.b	1(a1)
 	beq.w	.1
@@ -619,7 +619,7 @@ checkfornewpen	;(penalty94) Look for a new penalty (entered through AddPenalty /
 	bne.s	.0
 	clr.w	d0
 	move.b	-2(a0),d0
-	movea.l	#PenaltyNames,a1
+	movea.l	#PenaltyList,a1
 	adda.w	(a1,d0.w),a1
 	clr.w	d1
 	move.b	(a1),d1
@@ -675,7 +675,7 @@ SetPA	;(penalty94) Start ref animation d0 (penalty number); from $2E up ignored.
 	beq.w	SetPA2
 	move.w	#$3C,(penmsgtimer).w
 
-SetPA2	;(penalty94) IDA: setPA2 (94). Update the ref animation: next frame / delay pair from the PenaltyNames animation
+SetPA2	;(penalty94) IDA: setPA2 (94). Update the ref animation: next frame / delay pair from the PenaltyList animation
 	movem.l	d0-d2/a0-a1,-(sp)
 	moveq	#$40,d0
 	tst.w	(RefStep).w
@@ -683,7 +683,7 @@ SetPA2	;(penalty94) IDA: setPA2 (94). Update the ref animation: next frame / del
 	move.w	(RefStep).w,d0
 	addq.w	#2,(RefStep).w
 	move.w	(RefPen).w,d1
-	movea.l	#PenaltyNames,a0
+	movea.l	#PenaltyList,a0
 	adda.w	(a0,d1.w),a0
 	addq.w	#2,a0
 	adda.w	(a0),a0
@@ -768,7 +768,7 @@ prefmes	;(penalty94) Print the message for penalty d0 (negative clears it) under
 .0
 	jsr	(printz).l
 	String	$BF,5,$A,0
-	movea.l	#PenaltyNames,a1
+	movea.l	#PenaltyList,a1
 	adda.w	(a1,d0.w),a1
 	addq.w	#2,a1
 	move.w	(a1),d0
@@ -795,7 +795,7 @@ prefmes	;(penalty94) Print the message for penalty d0 (negative clears it) under
 	bmi.w	.4
 	jsr	(printz).l
 	String	$BF,$11,$B,$0
-	movea.l	#PenaltyNames,a1
+	movea.l	#PenaltyList,a1
 	adda.w	(a1,d0.w),a1
 	addq.w	#2,a1
 	move.w	(a1),d0

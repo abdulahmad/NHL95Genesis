@@ -50,7 +50,7 @@ PauseScores = $7FC04		;95: both team scores in big digits on the pause screen (c
 SetMenuPadSide = $7FCBA	;95 only: sflags bit 1 = the team of pad menupadnum is above 1 (checks95_01)
 TeamRosterScreen = $84FE8	;Pause menu TEAM ROSTER (data95_01)
 DrawFaceoffWindow = $88E42	;95: the face off window (checks95_04)
-PenaltyNames = $89C2E		;Penalty name Strings by penalty number (ShowPenaltyMessages)
+PenaltyList = $89C2E		;Penalty name Strings by penalty number (ShowPenaltyMessages)
 ReplayMode = $8D668		;Pause menu INSTANT REPLAY
 GameStatisticsScreen = $920DE	;Pause menu GAME STATS
 PlayerStatsScreen = $925B0	;Pause menu PLAYER STATS
@@ -62,7 +62,7 @@ GetRosterName = $9649E
 GetJerseyNumber = $965A8
 PlayoffStatsScreen = $9B8D6	;Pause menu PLAYOFF STATS
 RecordHoldersScreen = $9B90E	;Pause menu RECORD HOLDERS
-ShootoutSetup = $9E058		;Pause menu SHOOTOUT SETUP
+ShootoutShooters = $9E058		;Pause menu SHOOTOUT SETUP
 ScoringSummaryScreen = $A0D1A	;Pause menu SCORING SUMMARY
 PenaltySummaryScreen = $A1022	;Pause menu PENALTY SUMMARY
 Rinktilelist = $C4A7C		;graphics95_01

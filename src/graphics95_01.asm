@@ -5,7 +5,7 @@
 ;	the code (the names the code segments use), one per FeaturedPictures picture (Card<player>, the line 1 starter of the first team that
 ;	lists it). A map starts with its 8-byte header (palette and map offsets): a reference to its tiles is Label+8.
 
-NoPlayerPicture	;94 PicturePalette: the player picture palette, then the picture of a player with none (DrawMatchupPicture, PlayerCardScreen)
+PicturePalette	;94 PicturePalette: the player picture palette, then the picture of a player with none (DrawMatchupPicture, PlayerCardScreen)
 	incbin	..\Extracted\NHL95\Graphics\NoPlayerPicture.map.jim
 NoPicSkater2	;generic skater picture (GetPlayerPicture, hand bit 0 set)
 	incbin	..\Extracted\NHL95\Graphics\NoPicSkater2.bin
@@ -405,7 +405,7 @@ Spritetiles	;the sprite tiles (94 Spritetiles, 93 Sprites+$A; addframe2 adds the
 	incbin	..\Extracted\NHL95\Graphics\Spritetiles.bin
 frameSprData	;the sprite frame data at Sprites + $6738A (94 frameSprData)
 	incbin	..\Extracted\NHL95\Graphics\frameSprData.bin
-HotSpotList	;the hot spot byte pair of each frame (94 Hotlist; GetHot)
+Hotlist	;the hot spot byte pair of each frame (94 Hotlist; GetHot)
 	incbin	..\Extracted\NHL95\Graphics\HotSpotList.bin
 RosterFont	;data
 	incbin	..\Extracted\NHL95\Graphics\RosterFont.bin

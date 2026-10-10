@@ -1,6 +1,6 @@
 ;	NHL 95 shootout95. Retail $09DD3E-$09E5EF (2226 bytes).
 ;	Mapped to shootout94 (85%): NextShooter, CountShootoutGoals, EndShootout (period94), PlayoffRoundScreen and RoundBigTxt (records94),
-;	ShootoutWonBy, ShootoutSetup (94 ShootoutShooters) ... PrintShooterNames (the shootout shooters screen).
+;	ShootoutWonBy, ShootoutShooters (94 ShootoutShooters) ... PrintShooterNames (the shootout shooters screen).
 ;	IDA left NextShooter ($09DD3E) and ShootoutWonBy+$50 ... PrintShooterNames ($09E036-$09E5EF) as dc.b; they are transcribed from
 ;	the retail bytes. IDA hid the printz / printz2 / printbigz Strings as instructions.
 ;	Local labels are numbered; the IDA local names are not kept.
@@ -192,7 +192,7 @@ ShootoutWonBy	;shootout94 ShootoutWonBy. Shootout: "SHOOTOUT WON BY" and the win
 	jsr	(printbig1).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-ShootoutSetup	;shootout94 ShootoutShooters. Pause menu SHOOTOUT SETUP: pick the 5 shooters and the goalie of team a2
+ShootoutShooters	;shootout94 ShootoutShooters. Pause menu SHOOTOUT SETUP: pick the 5 shooters and the goalie of team a2
 	btst	#0,(gmode2).w
 	beq.w	ShootersExit
 	moveq	#0,d0

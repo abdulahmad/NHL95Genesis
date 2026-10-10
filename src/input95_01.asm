@@ -231,7 +231,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	ble.w	.33
 	move.w	#$B,d0
 .33
-	jsr	(FindGoalie).l
+	jsr	(getGoalieSCnum).l
 	tst.w	d0
 	bmi.w	rtss7
 	movem.l	d0/a3,-(sp)

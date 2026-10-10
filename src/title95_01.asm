@@ -1,5 +1,5 @@
 ;	NHL 95 title95_01. Retail $09DA50-$09DD3D (750 bytes).
-;	Mapped to title94 (77%): ShootoutInit (94 ClearShootout, shootout94) and InitShooters (shootout94), then the title94 shootout
+;	Mapped to title94 (77%): ClearShootout (94 ClearShootout, shootout94) and InitShooters (shootout94), then the title94 shootout
 ;	routines PSandSOpassdir, passdirlist, StartShootoutPath, ShootoutPaths, NextPathPoint, SkatePath and ShootoutShootCheck.
 ;	The segment map started this file at $09D9C0 (data of awards95); the confirmed start is $09DA50.
 ;	IDA left passdirlist ... ShootoutShootCheck ($09DAF8-$09DD3D) as dc.b; it is transcribed from the retail bytes.
@@ -7,7 +7,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches
 ;	the cmp encoding after assembly.
 
-ShootoutInit	;shootout94 ClearShootout. Clear the player structs (SortCords) and the shootout state, then the shooter
+ClearShootout	;shootout94 ClearShootout. Clear the player structs (SortCords) and the shootout state, then the shooter
 	;lists of both teams (InitShooters)
 	movea.l	#SortCords,a0
 	move.w	#$3FF,d0
