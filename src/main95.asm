@@ -94,9 +94,9 @@ CountryCode	;The region lock (CHECK_VDP) reads these letters
 
 Start	;Power on: the Sega hardware init, then the region lock, the checksum and Begin
 SegaInit
-	tst.l	$a10008		; POWER ON check cntroller A,B
+	tst.l	(IO_CT1_CTRL).l		; POWER ON check cntroller A,B
 	bne.s	h_s
-	tst.w	$a1000c		; POWER ON check cntroller C
+	tst.w	(IO_EXT_CTRL).l		; POWER ON check cntroller C
 h_s
 	bne.s	hot_start
 cold_start
@@ -194,8 +194,8 @@ hot_start
 
 reg_set					; registers set data table
 	dc.w	$008000,$003fff,$000100		; d5 / d6 / d7
-	dc.l	$a00000,$a11100,$a11200,$c00000	; a0 - a3
-	dc.l	$c00004			; a4
+	dc.l	Z80_RAM,IO_Z80BUS,IO_Z80RES,VDP_DATA	; a0 - a3
+	dc.l	VDP_CTRL		; a4
 vreg_dt
 	dc.b	$04,$14,$30,$3c,$07,$6c,$00,$00
 	dc.b	$00,$00,$ff,$00,$81,$37,$00,$01
