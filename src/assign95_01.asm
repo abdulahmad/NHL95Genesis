@@ -1,7 +1,7 @@
 ;	NHL 95 assign95_01. Retail $0807EC-$080BE9 (1022 bytes).
 ;	94 assign94 assdefd, rtss21 and asswingd (the defense assignments of the defensemen and the wingers). checks95_02 (94 asswingo) follows
 ;	at $080BEA.
-;	IDA left the whole range as dc.b (unk_80742 runs to $081335); it is code here, read from the retail bytes.
+;	IDA left the whole range as dc.b (saveanim runs to $081335); it is code here, read from the retail bytes.
 ;	95 changes: assdefd also checks for a puck carrier of the other team before the timer (assdefo, now asstab $C), halves aidef for the
 ;	timer, and with the team defense mode (HmDefMode / AwDefMode) at 1 leaves for assdefdchase when the other team has the puck; asswingd
 ;	then covers the carrier with its own 95 code (.cover). Some y limits move by 2 or 3 ($58 to $56, $9E to $9C, $108 to $10B ...); the

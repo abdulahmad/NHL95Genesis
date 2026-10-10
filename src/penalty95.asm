@@ -9,7 +9,7 @@
 ;	cmp encoding after assembly.
 
 
-limitfo	;(penalty94) Limit the faceoff spot to 5-20 feet from the walls of the rink, for every player in PenBuf (.1 is 93 .lf, IDA sub_88F1E).
+limitfo	;(penalty94) Limit the faceoff spot to 5-20 feet from the walls of the rink, for every player in PenBuf (.1 is 93 .lf).
 	;95: the blue line is $56 (94 $58)
 	movem.l	d0-d1/a0-a1,-(sp)
 	movea.w	#(PenBuf-M68K_RAM),a0

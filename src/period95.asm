@@ -2,7 +2,7 @@
 ;	Mapped to period94 (87%): GameStatisticsScreen, its scroll step, SetStatScroll, StatScrollRow / StatScrollRowEnd,
 ;	PrintStatScrollArrows, DisplayTeamStatsScreen, FormatStatValue, TeamStatTextTbl and TeamStatTextTblNoPen. The rest of
 ;	period94 is in other 95 files; rtsStatTables, the rts after the tables, starts stats95_01 at $0925AE.
-;	The segment map started this file at $0920BE (IDA loc_920BE), but $0920BE-$0920DD is the end of season95's SimTieTbl
+;	The segment map started this file at $0920BE, but $0920BE-$0920DD is the end of season95's SimTieTbl
 ;	(26 teams x 3 bytes); GameStatisticsScreen (no IDA label) starts at $0920DE.
 ;	IDA read the screen head, the arrows and the Strings in DisplayTeamStatsScreen / FormatStatValue as code or dc.b; they are
 ;	written from the retail bytes.

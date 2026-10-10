@@ -2103,7 +2103,7 @@ puckgoalie	;puck hits goalie a2. a3 = puck, d0/d1 = goalie - puck x/y. A save bo
 	dc.b	$D5,$D5,$75,$75,$D5,$D5,$75,$75,$D5,$D5,$75,$75
 
 checkint	;check for interference penalty. player a2 interferes with a3 or vice-versa; goalie is only player who can cause an
-	;interference call. Called from checkcx. .ci (IDA sub_7C40E): a2 = goalie, a3 = player interfering with goalie. a3 falls. The penalty ($22)
+	;interference call. Called from checkcx. .ci (checkint .1): a2 = goalie, a3 = player interfering with goalie. a3 falls. The penalty ($22)
 	;needs a3 in the crease area, a CPU player or a pad player's joystick player, and randomd0($1E - aggres) <= 5
 	move.l	d0,-(sp)
 	bsr.w	.1

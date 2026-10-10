@@ -4,7 +4,7 @@
 ;	frame,time word pairs per direction; a negative time ends the direction. SPA<name> is the table offset from
 ;	SPAlist, which the code uses (movea.l #SPAlist,a0 is $5A34). 95 has 78 tables (94: 66) in a new order and new frame
 ;	numbers (frames 1-1055; 94: 1-837). Most player animations have a second table for the puck carrier (SCnum =
-;	word_FFB3C2), named with the 94 wp (with puck) suffix. Each table's comment gives the 94 table and the 95 code that
+;	puckc), named with the 94 wp (with puck) suffix. Each table's comment gives the 94 table and the 95 code that
 ;	uses it. A direction can hold more than one terminated sequence; the extra pairs are not reached through .t.
 ;	The frames are written as numbers: the 95 SPF bases (94 SPFskatewp ...) are not confirmed yet.
 
@@ -49,7 +49,7 @@ SPAskate_table:	;Frames 1-330
 	dc.w	57,7,58,7,59,7,60,7,61,7,62,7,63,7,64,7
 	dc.w	323,6,324,6,325,6,326,6,327,6,328,6,329,6,330,-6
 
-SPAskateturn	=	*-SPAlist	; 95 only. noturn0 (IDA loc_8C066) sets it in place of the skate tables when the current SPA is a turn
+SPAskateturn	=	*-SPAlist	; 95 only. noturn0 .8 sets it in place of the skate tables when the current SPA is a turn
 SPAskateturn_table:	;Frames 267-330
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -71,7 +71,7 @@ SPAskateturn_table:	;Frames 267-330
 .6	dc.w	315,6,316,6,317,6,318,6,319,6,320,6,321,6,322,-6
 .7	dc.w	323,6,324,6,325,6,326,6,327,6,328,6,329,6,330,-6
 
-SPAskate2	=	*-SPAlist	; 95 only. noturn0 (IDA $8C022) uses it in place of SPAskate when word_FFBEF2 bit 7 is set
+SPAskate2	=	*-SPAlist	; 95 only. noturn0 (IDA $8C022) uses it in place of SPAskate when sflags bit 7 is set
 SPAskate2_table:	;Frames 1-64
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -109,7 +109,7 @@ SPAskate2_table:	;Frames 1-64
 	dc.w	57,7,58,7,59,7,60,7,61,7,62,7,63,7,64,7
 	dc.w	57,6,58,6,59,6,60,6,61,6,62,6,63,6,64,-6
 
-SPAskatewp	=	*-SPAlist	; 94 SPAskatewp ($53E): noturn0 (IDA $8C03A) for the puck carrier. input burst (IDA loc_AADA) compares it
+SPAskatewp	=	*-SPAlist	; 94 SPAskatewp ($53E): noturn0 (IDA $8C03A) for the puck carrier. input burst .anim compares it
 SPAskatewp_table:	;Frames 331-394
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -191,7 +191,7 @@ SPAglide_table:	;Frames 65-72
 .6	dc.w	71,-8
 .7	dc.w	72,-8
 
-SPAglidewp	=	*-SPAlist	; 95 only. SPAglide for the puck carrier (SCnum = word_FFB3C2): doplayeracc, dostop, doshot
+SPAglidewp	=	*-SPAlist	; 95 only. SPAglide for the puck carrier (SCnum = puckc): doplayeracc, dostop, doshot
 SPAglidewp_table:	;Frames 395-402
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -543,7 +543,7 @@ SPAfallback_table:	;Frames 65-266
 .6	dc.w	257,6,258,6,259,8,260,100,261,8,195,8,196,8,67,-8
 .7	dc.w	262,6,263,6,264,8,265,100,266,8,201,8,202,8,68,-8
 
-SPAburst	=	*-SPAlist	; 94 SPAburst ($C5E): burst (IDA loc_AAFE), CCStart
+SPAburst	=	*-SPAlist	; 94 SPAburst ($C5E): burst .skate, CCStart
 SPAburst_table:	;Frames 267-330
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -609,7 +609,7 @@ SPApassf_table:	;Frames 451-495
 .6	dc.w	487,4,488,4,489,-20
 .7	dc.w	493,4,494,4,495,-20
 
-SPApassf2	=	*-SPAlist	; 95 only. dopass uses it in place of SPApassf when byte_FFBF08 bit 1 is set
+SPApassf2	=	*-SPAlist	; 95 only. dopass uses it in place of SPApassf when GameFlags bit 1 is set
 SPApassf2_table:	;Frames 450-493
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -653,7 +653,7 @@ SPApassb_table:	;Frames 576-599
 .6	dc.w	594,4,595,4,596,-20
 .7	dc.w	597,4,598,4,599,-20
 
-SPApassb2	=	*-SPAlist	; 95 only. dopass uses it in place of SPApassb when byte_FFBF08 bit 1 is set
+SPApassb2	=	*-SPAlist	; 95 only. dopass uses it in place of SPApassb when GameFlags bit 1 is set
 SPApassb2_table:	;Frames 576-598
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -705,7 +705,7 @@ SPAshotf_table:	;Frames 448-495
 .7	dc.w	492,4,491,4,490,4,490,4,491,4,492,4,493,4,494,4
 	dc.w	495,-20
 
-SPAshotf2	=	*-SPAlist	; 95 only. SetShotMode uses it in place of SPAshotf when byte_FFBF08 bit 0 is set
+SPAshotf2	=	*-SPAlist	; 95 only. SetShotMode uses it in place of SPAshotf when GameFlags bit 0 is set
 SPAshotf2_table:	;Frames 448-495
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -765,7 +765,7 @@ SPAshotb_table:	;Frames 576-599
 .7	dc.w	597,2,597,2,597,2,597,2,597,2,597,2,598,2,599,2
 	dc.w	599,-10
 
-SPAshotb2	=	*-SPAlist	; 95 only. SetShotMode uses it in place of SPAshotb when byte_FFBF08 bit 0 is set
+SPAshotb2	=	*-SPAlist	; 95 only. SetShotMode uses it in place of SPAshotb when GameFlags bit 0 is set
 SPAshotb2_table:	;Frames 449-495
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -883,7 +883,7 @@ SPAfaceoffr_table:	;Frames 334-366
 .6
 .7	dc.w	366,-5
 
-SPAgready	=	*-SPAlist	; 94 SPAgready ($2): the goalie ready anim (IDA sub_8B9A8) near the puck or when byte_FFBEF0 bit 0 is set
+SPAgready	=	*-SPAlist	; 94 SPAgready ($2): the goalie ready anim (GoalieReadySPA) near the puck or when gmode bit 0 is set
 SPAgready_table:	;Frames 606-921
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -905,7 +905,7 @@ SPAgready_table:	;Frames 606-921
 .6	dc.w	612,-700
 .7	dc.w	613,180,919,10,920,10,921,10,613,340,921,10,920,10,919,-10
 
-SPAgready2	=	*-SPAlist	; 94 SPAgready2 ($114): the goalie ready anim (IDA sub_8B9A8) otherwise
+SPAgready2	=	*-SPAlist	; 94 SPAgready2 ($114): the goalie ready anim (GoalieReadySPA) otherwise
 SPAgready2_table:	;Frames 606-613
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1015,7 +1015,7 @@ SPAgstickl_table:	;Frames 630-637
 .6	dc.w	636,-36
 .7	dc.w	637,-36
 
-SPAgdive	=	*-SPAlist	; 94 SPAgdive ($2F4): doinput (IDA loc_8B6F8)
+SPAgdive	=	*-SPAlist	; 94 SPAgdive ($2F4): doinput (doinput_goaliedive)
 SPAgdive_table:	;Frames 646-669
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1081,7 +1081,7 @@ SPAwallleft_table:	;Frames 1005-1008
 .6	dc.w	1005,8,1006,8,1007,8,1008,-8
 .7	dc.w	1005,8,1006,8,1007,8,1008,-8
 
-SPAcheckstart	=	*-SPAlist	; 95 only. Set by check4check (computer player checks) and IDA loc_8D3FC
+SPAcheckstart	=	*-SPAlist	; 95 only. Set by check4check (computer player checks) and chkcheckstart .start
 SPAcheckstart_table:	;Frames 183-697
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1103,7 +1103,7 @@ SPAcheckstart_table:	;Frames 183-697
 .6	dc.w	692,4,693,4,694,40,225,8,220,-8
 .7	dc.w	695,4,696,4,697,40,183,8,226,-8
 
-SPAsiren	=	*-SPAlist	; 94 SPAsiren ($102E): checkgoal, on the struct after the goal (IDA loc_8C59A)
+SPAsiren	=	*-SPAlist	; 94 SPAsiren ($102E): checkgoal, on the struct after the goal (Goal .27)
 SPAsiren_table:	;Frames 698-711
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1368,7 +1368,7 @@ SPAcelebrate_table:	;Frames 836-851
 .6	dc.w	848,12,849,40,848,-5
 .7	dc.w	850,12,851,40,850,-5
 
-SPAgstackalt1	=	*-SPAlist	; 95 only. goaliesave: a pad stack save becomes this or SPAgstackalt2 (random) when word_FFBEF2 bit 3 is set
+SPAgstackalt1	=	*-SPAlist	; 95 only. goaliesave: a pad stack save becomes this or SPAgstackalt2 (random) when sflags bit 3 is set
 SPAgstackalt1_table:	;Frames 880-883
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1478,7 +1478,7 @@ SPAinjury1_table:	;Frames 227-896
 .5
 .6	dc.w	247,6,248,6,249,8,894,6,895,6,896,-1000
 
-SPAinjury2	=	*-SPAlist	; 95 only. FallDown uses it in place of SPAinjury1 when byte_FFBF0E bit 1 is set
+SPAinjury2	=	*-SPAlist	; 95 only. FallDown uses it in place of SPAinjury1 when sflags12 bit 1 is set
 SPAinjury2_table:	;Frames 227-897
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1758,7 +1758,7 @@ SPAgslamtop_table:	;Frames 898-903
 .5	dc.w	901,8,902,8,903,8,902,8,901,8,901,8,902,8,903,8
 	dc.w	902,8,901,-8
 
-SPAgextra1	=	*-SPAlist	; 95 only. goaliesave (IDA loc_806CC): with SPAgextra2, picked by the goalie side of the puck and the glove hand ($76 bit 0)
+SPAgextra1	=	*-SPAlist	; 95 only. goaliesave .26: with SPAgextra2, picked by the goalie side of the puck and the glove hand ($76 bit 0)
 SPAgextra1_table:	;Frames 1040-1043
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1780,7 +1780,7 @@ SPAgextra1_table:	;Frames 1040-1043
 .4
 .5	dc.w	1042,4,1043,-24,1042,-4
 
-SPAgextra2	=	*-SPAlist	; 95 only. goaliesave (IDA loc_806CC): see SPAgextra1. puckgoalie compares SPAgextra1
+SPAgextra2	=	*-SPAlist	; 95 only. goaliesave .26: see SPAgextra1. puckgoalie compares SPAgextra1
 SPAgextra2_table:	;Frames 876-879
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t

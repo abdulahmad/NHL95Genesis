@@ -1,11 +1,11 @@
-;	NHL 95 season schedule. Retail $008DD8-$009721 (2378 bytes), from lst/nhl95.bin.lst (all dc.b there; byte_8DD8 is the first byte).
+;	NHL 95 season schedule. Retail $008DD8-$009721 (2378 bytes), from lst/nhl95.bin.lst (all dc.b there; SeasonSchedule is the first byte).
 ;	New in 95 (94 has no season mode). The day count, then one record per day: the number of games (0-12), then two
 ;	team numbers (TeamList index, ANH 0 ... WPG 25) per game, in the order the code copies them (which one is home is
-;	not confirmed). 192 days, 1092 games, 84 games for each team. Read by the season code (season95): sub_8E26A picks
-;	a random day that has games; sub_8E2AC and sub_8E35E skip to a day (one count byte plus 2 bytes per game) and copy
-;	its games. Ends with the retail $FF pad before sub_9722.
+;	not confirmed). 192 days, 1092 games, 84 games for each team. Read by the season code (season95): PickSeasonStartDay picks
+;	a random day that has games; BuildSeasonTeamList and WriteDayGames skip to a day (one count byte plus 2 bytes per game) and copy
+;	its games. Ends with the retail $FF pad before InitSaveRAM.
 
-SeasonSchedule	;move.b (x).l, movea.l #x (sub_8E26A, sub_8E2AC, sub_8E35E, ...)
+SeasonSchedule	;move.b (x).l, movea.l #x (PickSeasonStartDay, BuildSeasonTeamList, WriteDayGames, ...)
 	dc.b	192	;days
 	dc.b	4, 14,1, 16,17, 5,6, 3,13	;day 1
 	dc.b	7, 15,18, 11,9, 12,21, 4,8, 25,24, 7,19, 10,23	;day 2
@@ -200,4 +200,4 @@ SeasonSchedule	;move.b (x).l, movea.l #x (sub_8E26A, sub_8E2AC, sub_8E35E, ...)
 	dc.b	6, 15,1, 21,13, 6,11, 19,7, 10,3, 0,23	;day 191
 	dc.b	10, 1,9, 2,24, 14,16, 12,15, 21,18, 8,13, 4,22, 20,25, 5,6, 10,7	;day 192
 SeasonScheduleEnd	;season95 CountTeamGames stops its scan here (cmpa.l #x,a0)
-	dc.b	$FF	;$9721. Pad to the even address of sub_9722 (94 InitSaveRAM, sram95)
+	dc.b	$FF	;$9721. Pad to the even address of InitSaveRAM (94 InitSaveRAM, sram95)

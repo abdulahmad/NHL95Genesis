@@ -4,8 +4,8 @@
 ;	check4check (and the 95 check4check2), asspassrec / SkateToTempTarget, assbreakaway, assnearest, skatetopuckinit, skatetopuck,
 ;	avdgoal, breakaway / BreakawayOffsidesFlagSet, chkpuckc, asspuckc, chk4shot, chk4pass, then input94 check4bench (moved in).
 ;	checks95_03 follows at $08282E.
-;	IDA left nearly the whole range as dc.b (unk_80742 to $81335, $8158E-$81A5B, $81A5E-$82E87); it is code here, read from the retail
-;	bytes with the 94 source as the guide. IDA code: puckflip (sub_81336), Setplass (sub_81540), assexit / assinsert / assreplace.
+;	IDA left nearly the whole range as dc.b (saveanim to $81335, $8158E-$81A5B, $81A5E-$82E87); it is code here, read from the retail
+;	bytes with the 94 source as the guide. IDA code: puckflip, Setplass, assexit / assinsert / assreplace.
 ;	95 changes, besides the moves: the 95 asstab numbers (assreplace / assinsert d0, .alist, the asslist compares; the comments give the
 ;	94 number), jsr / jmp .l to the routines 95 moved out of range, the y limits moved 2 or 3 out (blue line $58 to $56, goal line $108
 ;	to $10B; the comments give the 94 values), the team defense mode code (HmDefMode / AwDefMode: asscenterd .cover), Practice Mode

@@ -3,7 +3,7 @@
 ;	CheckOneTimerFacing. The tail of the old placeholder ($082FC2-$082FF9) is checks94 assshoot: it is split out to checks95_08.
 ;	94 puckvzadj, OneTimerPass, OneTimerTarget and its tables (onetimer94) are elsewhere in 95.
 ;	IDA left $082BD0-$082E87 and $082EFE-$082F5F as dc.b; they are code here, read from the retail bytes. IDA code: PuckOnAttackHalf
-;	(sub_82E88), EndOneTimer (sub_82F60); CheckOneTimerFacing ($082FB2) is dc.b again.
+;	(PuckOnAttackHalf), EndOneTimer; CheckOneTimerFacing ($082FB2) is dc.b again.
 ;	95 changes: each pad takes the one-timer shooter itself (setc1player ... setc4player by inputjoy; 94 swapped pads 3 / 4 into 1 / 2),
 ;	the 95 SPA values and goal line $10B (the comments give the 94 values), the PAL speed $18 (94 $16), the one-timer count at $35E of
 ;	the team struct (94 $35C), and CheckOneTimerFacing now calls Findhittype.

@@ -393,7 +393,7 @@ NameEntryDone	;95 only. NameEntry: return
 .0
 	rts
 
-NameEntryBg	;Draw name entry background graphic (unk_1834F4) at the printz position
+NameEntryBg	;Draw name entry background graphic (NameEntryBgMap) at the printz position
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(spritechars).w,d4
 	jsr	(printz).l
@@ -402,7 +402,7 @@ NameEntryBg	;Draw name entry background graphic (unk_1834F4) at the printz posit
 	movea.l	#NameEntryBgMap,a0
 	movea.l	a0,a1
 
-NameEntryBgTail	;(IDA label, mid-routine of sub_982B0) map draw tail
+NameEntryBgTail	;Mid-routine entry of NameEntryBg: the map draw tail
 	movea.l	a0,a2
 	adda.l	(a2)+,a0
 	adda.l	(a2)+,a1
@@ -851,7 +851,7 @@ SaveNameRet	;95 only. SaveCreateName: return
 .0
 	rts
 
-ReadCreatedPlayers	;read created players: load $36-byte list from save RAM SRFreeAgentList, build 18-byte name records at $FFFF0000 and ids at $FFFF4E20, count in word_FF55F0, add an empty slot if room
+ReadCreatedPlayers	;read created players: load $36-byte list from save RAM SRFreeAgentList, build 18-byte name records at $FFFF0000 and ids at $FFFF4E20, count in createdcount, add an empty slot if room
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	(createdcount).l
 .0
@@ -900,7 +900,7 @@ ReadCreatedPlayers	;read created players: load $36-byte list from save RAM SRFre
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-BuildEnteredName	;build the entered name (from $FFFFD0E0, spaces/dashes dropped, space after first name) as a length-word string at dword_FFBB1E and check it
+BuildEnteredName	;build the entered name (from $FFFFD0E0, spaces/dashes dropped, space after first name) as a length-word string at TempBuffer and check it
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#linemarkbuf+2,a0
 	movea.l	#NameEntryBuf,a1
@@ -995,11 +995,11 @@ FormatNameRecord	;format name string at a1 into an 18-byte record at a2: first n
 	movem.l	(sp)+,d0-d7/a1-a2
 	rts
 
-NewCreateRecord	;same as sub_98A88 but with bit 2 of byte_FFBF04 set (skips the read)
+NewCreateRecord	;same as InitCreateRecord but with bit 2 of sflags8 set (skips the read)
 	bset	#2,(sflags8).w
 	bra.w	InitCreateRecord2
 
-InitCreateRecord	;read 32-byte create record #word_FF55FE from save RAM ($5AA0) to $FFFF7538, put an 8-byte tail on it by flag $1F, write it back
+InitCreateRecord	;read 32-byte create record #CreateIndex from save RAM ($5AA0) to $FFFF7538, put an 8-byte tail on it by flag $1F, write it back
 	bclr	#2,(sflags8).w
 
 InitCreateRecord2	;95 only. InitCreateRecord without the bset (NewCreateRecord enters here)
@@ -1145,7 +1145,7 @@ ClearCreatedPlayers	;clear the created players list at $FFFF5D22 (26 x $8000 + 0
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DeleteCreatedPlayer	;delete created player #word_FFBB10: remove it from the save RAM records, roster list and team lines
+DeleteCreatedPlayer	;delete created player #TempWord1: remove it from the save RAM records, roster list and team lines
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$1C,d7
 	bset	#7,(GameFlags).w
@@ -1252,7 +1252,7 @@ ReadCreateList	;read the $36-byte created player list from save RAM SRFreeAgentL
 	movem.l	(sp)+,d0-d1
 	rts
 
-WriteCreateList	;calls sub_98E6 with d0=$5D22, d1=$36 (saves d0-d1)
+WriteCreateList	;calls WriteSRAM with d0=$5D22, d1=$36 (saves d0-d1)
 	movem.l	d0-d1,-(sp)
 	move.l	#SRFreeAgentList,d0
 	moveq	#$36,d1
@@ -1481,7 +1481,7 @@ PrintCreateName	;prints Name First:/Last: from name buffer $FFFF753A (split at t
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawRatings	;redraws every rating cell (4 columns x rows from sub_9998E, each via sub_99774), then Max Unallocated Points
+DrawRatings	;redraws every rating cell (4 columns x rows from LastFieldRow, each via DrawField), then Max Unallocated Points
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d6
 	clr.w	d7
@@ -1501,10 +1501,10 @@ DrawRatings	;redraws every rating cell (4 columns x rows from sub_9998E, each vi
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-rtsCreate3	;empty stub (called from sub_99224)
+rtsCreate3	;empty stub (called from DrawRatings)
 	rts
 
-PrintOverallRating	;unreferenced: prints OVERALL RTG. (player overall from sub_7CF78, *100/d1)
+PrintOverallRating	;unreferenced: prints OVERALL RTG. (player overall from CalcAttribRating, *100/d1)
 	jsr	(printz2).l
 	String	$F9,$0,$FD,$4,$FC,$16,'OVERALL RTG.',$FD,$13
 	movea.l	#CreateRecord,a0
@@ -1526,7 +1526,7 @@ PrintOverallRating	;unreferenced: prints OVERALL RTG. (player overall from sub_7
 	jsr	(printsmall).l
 	rts
 
-PrintUnallocated	;prints "Maximum Unallocated Points" and its value word_FF7536
+PrintUnallocated	;prints "Maximum Unallocated Points" and its value CreatePoints
 	jsr	(printz2).l
 	String	$F9,$0,$FD,$4,$FC,$17,'Maximum Unallocated Points',$FD,'"'
 	move.w	(CreatePoints).l,d0
@@ -1535,7 +1535,7 @@ PrintUnallocated	;prints "Maximum Unallocated Points" and its value word_FF7536
 	jsr	(printsmall).l
 	rts
 
-DrawRatingValue	;calls the cell routine for column d6 / row d7 from table unk_996FC (unk_9970C if word_FF7534=0), a2 = player record
+DrawRatingValue	;calls the cell routine for column d6 / row d7 from table SkaterFieldTbls (GoalieFieldTbls if CreateType=0), a2 = player record
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SkaterFieldTbls,a0
 	tst.w	(CreateType).l
@@ -1571,7 +1571,7 @@ FieldPrintSetup	;set print target a4/a0 (record+8) and number-print table a6 for
 	movea.l	#AttribWgtList,a6
 	rts
 
-FieldValue1	;field: draw cursor, print rating from record via dword_85872
+FieldValue1	;field: draw cursor, print rating from record via PAttribOverallMask+$2C (Agility)
 	bsr.w	FieldHighlight
 	bsr.s	FieldPrintSetup
 	move.l	(PAttribOverallMask+$2C).l,d4
@@ -1581,7 +1581,7 @@ FieldValue1	;field: draw cursor, print rating from record via dword_85872
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue2	;field: draw cursor, print rating from record via dword_8594E
+FieldValue2	;field: draw cursor, print rating from record via PAttribOverallMask+$108 (Endurance)
 	bsr.w	FieldHighlight
 	bsr.s	FieldPrintSetup
 	move.l	(PAttribOverallMask+$108).l,d4
@@ -1591,7 +1591,7 @@ FieldValue2	;field: draw cursor, print rating from record via dword_8594E
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue3	;field: draw cursor, print rating from record via dword_858B4
+FieldValue3	;field: draw cursor, print rating from record via PAttribOverallMask+$6E (Off. Awareness)
 	bsr.w	FieldHighlight
 	bsr.s	FieldPrintSetup
 	move.l	(PAttribOverallMask+$6E).l,d4
@@ -1601,7 +1601,7 @@ FieldValue3	;field: draw cursor, print rating from record via dword_858B4
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue4	;field: draw cursor, print rating from record via dword_858CA
+FieldValue4	;field: draw cursor, print rating from record via PAttribOverallMask+$84 (Def. Awareness)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$84).l,d4
@@ -1611,7 +1611,7 @@ FieldValue4	;field: draw cursor, print rating from record via dword_858CA
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue5	;field: draw cursor, print rating from record via dword_85922
+FieldValue5	;field: draw cursor, print rating from record via PAttribOverallMask+$DC (Stick Handling)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$DC).l,d4
@@ -1621,7 +1621,7 @@ FieldValue5	;field: draw cursor, print rating from record via dword_85922
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldWeight	;field Wt.: print weight = value*8+140 (via dword_85938)
+FieldWeight	;field Wt.: print weight = value*8+140 (via PAttribOverallMask+$F2 (Weight))
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$F2).l,d4
@@ -1633,7 +1633,7 @@ FieldWeight	;field Wt.: print weight = value*8+140 (via dword_85938)
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue6	;field: draw cursor, print rating from record via dword_858E0
+FieldValue6	;field: draw cursor, print rating from record via PAttribOverallMask+$9A (Shot Power)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$9A).l,d4
@@ -1643,7 +1643,7 @@ FieldValue6	;field: draw cursor, print rating from record via dword_858E0
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue7	;field: draw cursor, print rating from record via dword_858F6
+FieldValue7	;field: draw cursor, print rating from record via PAttribOverallMask+$B0 (Shot  Accuracy)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$B0).l,d4
@@ -1653,7 +1653,7 @@ FieldValue7	;field: draw cursor, print rating from record via dword_858F6
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue8	;field: draw cursor, print rating from record via dword_8590C
+FieldValue8	;field: draw cursor, print rating from record via PAttribOverallMask+$C6 (Pass  Accuracy)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$C6).l,d4
@@ -1663,7 +1663,7 @@ FieldValue8	;field: draw cursor, print rating from record via dword_8590C
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue9	;field: draw cursor, print rating from record via dword_85964
+FieldValue9	;field: draw cursor, print rating from record via PAttribOverallMask+$11E (Aggressiveness)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$11E).l,d4
@@ -1673,7 +1673,7 @@ FieldValue9	;field: draw cursor, print rating from record via dword_85964
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue10	;field: draw cursor, print rating from record via dword_8597A
+FieldValue10	;field: draw cursor, print rating from record via PAttribOverallMask+$134 (Checking)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$134).l,d4
@@ -1705,7 +1705,7 @@ FieldJersey	;field Unif.: print BCD jersey byte at (a2) as decimal
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue11	;field: draw cursor, print rating from record via dword_859BE
+FieldValue11	;field: draw cursor, print rating from record via GAttribOverallMask+$16 (Agility)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$16).l,d4
@@ -1715,7 +1715,7 @@ FieldValue11	;field: draw cursor, print rating from record via dword_859BE
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue12	;field: draw cursor, print rating from record via dword_85A00
+FieldValue12	;field: draw cursor, print rating from record via GAttribOverallMask+$58 (Def. Awareness)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$58).l,d4
@@ -1725,7 +1725,7 @@ FieldValue12	;field: draw cursor, print rating from record via dword_85A00
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue13	;field: draw cursor, print rating from record via dword_85A16
+FieldValue13	;field: draw cursor, print rating from record via GAttribOverallMask+$6E (Puck Control)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$6E).l,d4
@@ -1735,7 +1735,7 @@ FieldValue13	;field: draw cursor, print rating from record via dword_85A16
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue14	;field: draw cursor, print rating from record via dword_85A2C
+FieldValue14	;field: draw cursor, print rating from record via GAttribOverallMask+$84 (Stick  Right)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$84).l,d4
@@ -1745,7 +1745,7 @@ FieldValue14	;field: draw cursor, print rating from record via dword_85A2C
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue15	;field: draw cursor, print rating from record via dword_85A42
+FieldValue15	;field: draw cursor, print rating from record via GAttribOverallMask+$9A (Stick Left)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$9A).l,d4
@@ -1755,7 +1755,7 @@ FieldValue15	;field: draw cursor, print rating from record via dword_85A42
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue16	;field: draw cursor, print rating from record via dword_85A58
+FieldValue16	;field: draw cursor, print rating from record via GAttribOverallMask+$B0 (Glove  Right)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$B0).l,d4
@@ -1765,7 +1765,7 @@ FieldValue16	;field: draw cursor, print rating from record via dword_85A58
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue17	;field: draw cursor, print rating from record via dword_85A6E
+FieldValue17	;field: draw cursor, print rating from record via GAttribOverallMask+$C6 (Glove Left)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$C6).l,d4
@@ -1787,7 +1787,7 @@ HandText	;95 only. R, L
 	String	'R',0
 	String	'L',0
 
-FieldPos	;field Pos.: print G/F/D indexed by word_FF7534
+FieldPos	;field Pos.: print G/F/D indexed by CreateType
 	bsr.w	FieldHighlight
 	move.w	(CreateType).l,d0
 	movea.l	#PosText,a1
@@ -1803,7 +1803,7 @@ PosText	;95 only. G, F, D
 	String	'F',0
 	String	'D',0
 
-FieldHighlight	;set normal text color, highlight if (d6,d7) is the cursor (word_FF7530/2)
+FieldHighlight	;set normal text color, highlight if (d6,d7) is the cursor (CreateCursorX/2)
 	jsr	(printz2).l
 	String	$F9,0
 	cmp.w	(CreateCursorX).l,d6
@@ -1930,7 +1930,7 @@ SkaterLastRows	;skater last row index per column
 GoalieLastRows	;goalie last row index per column
 	dc.w	2,3,1,1
 
-EditField	;dispatch create-player edit: call handler [word_FF7530][word_FF7532] from table chosen by word_FF7534
+EditField	;dispatch create-player edit: call handler [CreateCursorX][CreateCursorY] from table chosen by CreateType
 	movea.l	#SkaterEditTbl,a0
 	tst.w	(CreateType).l
 	beq.w	.0
@@ -1945,13 +1945,13 @@ EditField	;dispatch create-player edit: call handler [word_FF7530][word_FF7532] 
 	jsr	(a0)
 	rts
 
-SkaterEditTbl	;create-player menu handler table (word_FF7534 == 0): rows by word_FF7530
+SkaterEditTbl	;create-player menu handler table (CreateType == 0): rows by CreateCursorX
 	dc.l	EditRow1
 	dc.l	EditRow2
 	dc.l	EditRow3
 	dc.l	EditRow4
 
-EditRow1	;row 0 handlers by word_FF7532
+EditRow1	;row 0 handlers by CreateCursorY
 	dc.l	EditAttrib1
 	dc.l	EditAttrib2
 	dc.l	EditAttrib3
@@ -1970,7 +1970,7 @@ EditRow4	;row 3 handlers (shared)
 	dc.l	EditHand
 	dc.l	EditJersey
 
-GoalieEditTbl	;handler table (word_FF7534 != 0)
+GoalieEditTbl	;handler table (CreateType != 0)
 	dc.l	EditRow5
 	dc.l	EditRow6
 	dc.l	EditRow3
@@ -1992,7 +1992,7 @@ EditRow6	;row 1 handlers
 	dc.l	EditAttrib18
 	dc.l	EditNone
 
-EditPlayerType	;toggle player type (word_FF7534) by d0, clamp 0..2, reset attribute record when changed
+EditPlayerType	;toggle player type (CreateType) by d0, clamp 0..2, reset attribute record when changed
 	add.w	(CreateType).l,d0
 	bpl.w	.0
 	move.w	#2,d0
@@ -2025,7 +2025,7 @@ EditPlayerType	;toggle player type (word_FF7534) by d0, clamp 0..2, reset attrib
 EditAttrib1	;attribute handler: d4 = bit mask record, then common adjust
 	move.l	(GAttribOverallMask+$16).l,d4
 
-AdjustAttrib	;adjust attribute selected by d4 bit by d0, paying from points pool word_FF7536
+AdjustAttrib	;adjust attribute selected by d4 bit by d0, paying from points pool CreatePoints
 	move.w	(CreatePoints).l,d1
 	move.w	d1,(TempPlOffset).w
 	move.w	d0,d2
@@ -2199,7 +2199,7 @@ ClearAttribDeltas	;clear 16-byte attribute buffer at FFC42C
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LoadCreateTemplate	;copy 32-word player template (index word_FF55FE) from SRCreatedPlayers into byte record FF7538, set word_FF7534 from last byte
+LoadCreateTemplate	;copy 32-word player template (index CreateIndex) from SRCreatedPlayers into byte record FF7538, set CreateType from last byte
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$1F,d0
 	movea.l	#SaveRAM+2*SRCreatedPlayers,a0
@@ -2217,7 +2217,7 @@ LoadCreateTemplate	;copy 32-word player template (index word_FF55FE) from SRCrea
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ClearCreateArea	;print control string ($BF,0,5,0) then call sub_7C8CC with d0=$28,d1=$14,d2=$7FF (clear/draw a text area)
+ClearCreateArea	;print control string ($BF,0,5,0) then call eraser with d0=$28,d1=$14,d2=$7FF (clear/draw a text area)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BF,0,5,0
@@ -2228,7 +2228,7 @@ ClearCreateArea	;print control string ($BF,0,5,0) then call sub_7C8CC with d0=$2
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SetPointsPool	;set points pool word_FF7536 to 300 (or 450 if word_FF7534 != 0)
+SetPointsPool	;set points pool CreatePoints to 300 (or 450 if CreateType != 0)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$12C,(CreatePoints).l
 	tst.w	(CreateType).l
@@ -2238,7 +2238,7 @@ SetPointsPool	;set points pool word_FF7536 to 300 (or 450 if word_FF7534 != 0)
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CommitCreatedPlayer	;commit created player: store type bits, add attribute deltas into record via unk_99E06 handlers, save record via sub_98E6 and sub_9908
+CommitCreatedPlayer	;commit created player: store type bits, add attribute deltas into record via CommitAttribJumps handlers, save record via WriteSRAM and MakeSRAMChecksum
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SaveRAM+2*SRFreeAgentList,a0
 	move.w	(CreateWork).l,d0
@@ -2340,7 +2340,7 @@ CommitNone1	;no-op
 CommitNone2	;no-op
 	rts
 
-CrScaleEven	;scale even part of d3 via loc_99E46, keep low bit of d3
+CrScaleEven	;scale even part of d3 via CrScale, keep low bit of d3
 	move.w	d3,-(sp)
 	andi.w	#$FE,d3
 	jsr	(CrScale).l
@@ -2351,7 +2351,7 @@ CrScaleEven	;scale even part of d3 via loc_99E46, keep low bit of d3
 	or.w	d2,d3
 	rts
 
-CrScaleTable	;loc_99E46, then d3 = byte lookup in StickHandTable+$10[d3]
+CrScaleTable	;CrScale, then d3 = byte lookup in StickHandTable+$10[d3]
 	bsr.s	CrScale
 	movem.l	d0/a0,-(sp)
 	movea.l	#StickHandTable+$10,a0
@@ -2582,17 +2582,17 @@ PositionMaxChecks	;per-position check routines
 	dc.l	CheckMaxForwards
 	dc.l	CheckMaxDefense
 
-CheckMaxGoalies	;compare sub_7CB60 result with 3
+CheckMaxGoalies	;compare ReadAttributeNibbleD7 result with 3
 	jsr	(ReadAttributeNibbleD7).l
 	cmp.w	#3,d0
 	rts
 
-CheckMaxForwards	;compare sub_7CC08 result with $F
+CheckMaxForwards	;compare ProcessNibbleD7 result with $F
 	jsr	(ProcessNibbleD7).l
 	cmp.w	#$F,d0
 	rts
 
-CheckMaxDefense	;compare sub_83904 - sub_7CBB6 with $F
+CheckMaxDefense	;compare GetPlayerCountD7 - GetDefenseStartD7 with $F
 	jsr	(GetDefenseStartD7).l
 	move.w	d0,-(sp)
 	jsr	(GetPlayerCountD7).l
@@ -2654,7 +2654,7 @@ FreeAgentViolation	;show VIOLATION OF ROSTER RULES message, wait, erase
 	String	$F9,$0
 	bra.w	FreeAgentLoop
 
-FreeAgentTeamBlock	;draw team header (sub_9757C) for team word_FF271C
+FreeAgentTeamBlock	;draw team header (DrawTradeLogo) for team TradeData+$C
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(TradeData+$C).l,d1
 	jsr	(printz).l
@@ -2739,7 +2739,7 @@ PositionLetters3	;position letters G/F/D
 	String	'F',0
 	String	'D',0
 
-ReadFreeAgentPads	;Wait for a joypad press (polls both pads via sub_7A4B0/sub_7A4C8 + sub_7A762 each frame); d1 = buttons
+ReadFreeAgentPads	;Wait for a joypad press (polls both pads via ReadJoy1/ReadJoy2 + ProcessInputWithRepeat each frame); d1 = buttons
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6
@@ -2763,7 +2763,7 @@ ReadFreeAgentPads	;Wait for a joypad press (polls both pads via sub_7A4B0/sub_7A
 .3
 	rts
 
-FreeAgentExit	;Exit free-agent screen: set bit 6 of byte_FFD036, jump to loc_9ADA
+FreeAgentExit	;Exit free-agent screen: set bit 6 of setupcardflags, jump to Opening2
 	bset	#6,(setupcardflags).w
 	jmp	Opening2
 
@@ -2771,7 +2771,7 @@ FreeAgentsEmpty	;"Free agent list is now empty." message box, wait for a key, th
 	clr.w	d0
 	bra.w	FreeAgentMessage
 
-FreeAgentMessage	;Show message box (string list unk_9A54A, index d0), wait for key, exit via loc_9A508
+FreeAgentMessage	;Show message box (string list FreeAgentMsgText, index d0), wait for key, exit via FreeAgentExit
 	move.w	d0,-(sp)
 	jsr	(printz).l
 	String	$BF,5,$A,0
@@ -2784,7 +2784,7 @@ FreeAgentMessage	;Show message box (string list unk_9A54A, index d0), wait for k
 	bsr.w	ReadFreeAgentPads
 	bra.s	FreeAgentExit
 
-FreeAgentMsgText	;Message string list for sub_7CB38
+FreeAgentMsgText	;Message string list for PrintSmallListItem
 	String	$F9,3,$FD,6,$FC,$D,'Free agent list is now empty.',0
 	rts
 
@@ -3039,17 +3039,17 @@ ReleaseLoop	;95 only. ReleasePlayers: input loop
 PositionMinChecks	;Roster-minimum check per position code (0 G, 1 F, 2 D); Z set = cannot release
 	dc.l	CheckMinGoalies,CheckMinForwards,CheckMinDefense
 
-CheckMinGoalies	;Position 0 (G): count from sub_7CB60, Z if == 2
+CheckMinGoalies	;Position 0 (G): count from ReadAttributeNibbleD7, Z if == 2
 	jsr	(ReadAttributeNibbleD7).l
 	cmp.w	#2,d0
 	rts
 
-CheckMinForwards	;Position 1 (F): count from sub_7CC08, Z if == 9
+CheckMinForwards	;Position 1 (F): count from ProcessNibbleD7, Z if == 9
 	jsr	(ProcessNibbleD7).l
 	cmp.w	#9,d0
 	rts
 
-CheckMinDefense	;Position 2 (D): sub_83904 roster size minus sub_7CBB6 count, Z if == 6
+CheckMinDefense	;Position 2 (D): GetPlayerCountD7 roster size minus GetDefenseStartD7 count, Z if == 6
 	jsr	(GetDefenseStartD7).l
 	move.w	d0,-(sp)
 	jsr	(GetPlayerCountD7).l
@@ -3111,7 +3111,7 @@ ReleaseViolation	;"VIOLATION OF ROSTER RULES" message box, wait for key, close i
 	String	$F9,0
 	bra.w	ReleaseLoop
 
-ReleaseTeamBlock	;Print team block for team word_FF271C (sub_9757C)
+ReleaseTeamBlock	;Print team block for team TradeData+$C (DrawTradeLogo)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(TradeData+$C).l,d1
 	jsr	(printz).l
@@ -3171,12 +3171,12 @@ DrawReleaseRoster	;Draw the visible roster rows (pos letter, name, rating) with 
 	ble.w	.0
 	rts
 
-PositionLetters4	;Position letter strings G/F/D for sub_7CB38
+PositionLetters4	;Position letter strings G/F/D for PrintSmallListItem
 	String	'G',0
 	String	'F',0
 	String	'D',0
 
-ReadReleasePads	;Wait for a joypad press on any of up to 4 pads (4-way play if word_FFCC4A); d1 = buttons
+ReadReleasePads	;Wait for a joypad press on any of up to 4 pads (4-way play if FourWayPlay); d1 = buttons
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6
@@ -3214,7 +3214,7 @@ ReadReleasePads	;Wait for a joypad press on any of up to 4 pads (4-way play if w
 .5
 	rts
 
-ReleaseExit	;Exit Release Player screen: set bit 6 of byte_FFD036, jump to loc_9ADA
+ReleaseExit	;Exit Release Player screen: set bit 6 of setupcardflags, jump to Opening2
 	bset	#6,(setupcardflags).w
 	jmp	Opening2
 
@@ -3222,7 +3222,7 @@ FreeAgentsFull	;"Free agent list is full." message box, wait for key, then exit
 	clr.w	d0
 	bra.w	ReleaseMessage
 
-ReleaseMessage	;Show message box (string list unk_9ACC4, index d0), wait for key, exit via loc_9AC82
+ReleaseMessage	;Show message box (string list ReleaseMsgText, index d0), wait for key, exit via ReleaseExit
 	move.w	d0,-(sp)
 	jsr	(printz).l
 	String	$BF,5,$A,0
@@ -3235,7 +3235,7 @@ ReleaseMessage	;Show message box (string list unk_9ACC4, index d0), wait for key
 	bsr.w	ReadReleasePads
 	bra.s	ReleaseExit
 
-ReleaseMsgText	;Message string list for sub_7CB38
+ReleaseMsgText	;Message string list for PrintSmallListItem
 	String	$F9,3,$FD,6,$FC,$D,'Free agent list is full.'
 
 rtsCreate5	;Empty routine

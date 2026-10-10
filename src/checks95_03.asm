@@ -1,9 +1,9 @@
 ;	NHL 95 checks95_03. Retail $082FFA-$0836AB (1714 bytes).
 ;	94 checks94 assgoaliectrl, a2offsides, assign94 asseben (moved in), the 95 assdefdchase, cards94 setSlotBit (moved in), assign94
 ;	assscore and assgoaliebreakwait (moved in), then checks94 ChkGoalies, ReturnGoalies, CPgoalie. 94 assgoaliecpu is in checks95_01.
-;	CPgoalie runs to $0836AB, past the mapped end $08369D (IDA loc_8369E is its .0): collide95_02 starts at $0836AC.
-;	IDA left most of the range as dc.b; it is code here, read from the retail bytes. IDA code: setSlotBit (sub_833FE), ChkGoalies
-;	(sub_835C6), ReturnGoalies and CPgoalie (sub_835E2 ... loc_8369E).
+;	CPgoalie runs to $0836AB, past the mapped end $08369D (inside CPgoalie): collide95_02 starts at $0836AC.
+;	IDA left most of the range as dc.b; it is code here, read from the retail bytes. IDA code: setSlotBit, ChkGoalies,
+;	ReturnGoalies and CPgoalie.
 ;	95 changes: the 95 asstab numbers, SPA values and limits (the comments give the 94 values), jsr / jmp .l to the routines 95 moved out
 ;	of range, the shared rtsskate (checks95_02) in place of rtss2 / rtss4, the team defense mode (assdefdchase), the scorer's
 ;	celebration in assscore.
@@ -499,7 +499,7 @@ ReturnGoalies	;If the computer pulled its goalie, see if it should return him (C
 	move.w	(foy).w,d1
 
 CPgoalie	;See if the computer should pull its goalie: third period, behind by 2, a minute left, the faceoff in the other
-	;zone (d1 = faceoff y). IDA loc_8369E (.0) is the label collide95_02 was mapped to; the routine ends at $0836AB
+	;zone (d1 = faceoff y). CPgoalie .0 is where collide95_02 was mapped; the routine ends at $0836AB
 	cmpi.w	#2,(gsp).w	;check if 3rd period
 	bne.w	rtsskate	;exit if not
 	move.w	tmscore(a1),d0	;tmscore

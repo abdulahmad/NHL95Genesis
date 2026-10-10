@@ -1708,7 +1708,7 @@ Washington	;WSH, $5556 (94 $4DFC)
 .ar	;arena
 	String	'US Air Arena'
 
-playoffseats	;(94 $5576). 93 / 94 name. movea.l #$5834 in the playoff tree setup (IDA loc_879FA, sub_87A5E). 32 rows of 16 team numbers, as 94
+playoffseats	;(94 $5576). 93 / 94 name. movea.l #$5834 in the playoff tree setup (NewPO .0, MakeTree). 32 rows of 16 team numbers, as 94
 	dc.b	19,22,10,6, 23,5,3,4, 1,14,11,12, 17,16,2,8
 	dc.b	7,25,19,6, 10,22,23,4, 18,13,9,21, 15,14,1,12
 	dc.b	3,5,0,25, 7,20,19,5, 1,13,11,15, 17,24,2,12

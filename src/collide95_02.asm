@@ -3,8 +3,8 @@
 ;	95: by team number, GetPlayerCountD7), collide94 setplayer, ClampNibble, the 95 StickHandTable and BoostAttribute, crowd94
 ;	AttributeCalc (moved in), hockey94 restoreteams (moved in), collide94 ResetBench, setup94 resetplstuff (moved in), data94 priolist and
 ;	sublist (moved in), crowd94 Create_HotCold_Table / HotColdLoop (moved in).
-;	The start moved to $0836AC: loc_8369E ... $0836AB is the end of CPgoalie (checks95_03). The end moved to $083EB1: sub_83EB2 is the
-;	start of 95 doinput (input95_01; loc_83EC0, the mapped start, is inside it).
+;	The start moved to $0836AC: CPgoalie .0 ... $0836AB is the end of CPgoalie (checks95_03). The end moved to $083EB1: doinput is the
+;	start of 95 doinput (input95_01; doinput .0, the mapped start, is inside it).
 ;	IDA left PuckcIsGoalie, forcepldata, resetplstuff and the tables as dc.b; they are code / data here, read from the retail bytes.
 ;	95 changes: SetPersonel marks the season injuries first (GameFlags bit 3, SetSeasonInjuries); setplayer reads the roster by team
 ;	number (rosterteam, GetRosterName / GetJerseyNumber), maps the stick handling nibble through StickHandTable and pulls some ratings

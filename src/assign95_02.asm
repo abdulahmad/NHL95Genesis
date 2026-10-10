@@ -1,7 +1,7 @@
 ;	NHL 95 assign95_02. Retail $08282E-$082BCF (930 bytes).
 ;	94 assign94 assbench and rtss4, asspenalty, assdopen, assepen (94 asseben, between rtss4 and asspenalty, is in checks95_03 in 95).
 ;	onetimer95 (94 assonetimer) follows at $082BD0.
-;	IDA left the whole range as dc.b (it runs from $81A5E to sub_82E88); it is code here, read from the retail bytes.
+;	IDA left the whole range as dc.b (it runs from $81A5E to PuckOnAttackHalf); it is code here, read from the retail bytes.
 ;	95 changes: the 95 asstab numbers (assdopen $17; 94 $D), the 95 SPA values (the comments give the 94 ones), the bench and box
 ;	x $98 / $96 (94 $88 / $86), the goalie bench ready animation from GoalieReadySPA, jsr / jmp .l to the routines 95 moved out of
 ;	range, the shared rtsskate (checks95_02) in place of rtss3 / rtss4 / rtss2, asspenalty .clrplayer for pads 3 and 4, and the

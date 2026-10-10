@@ -513,7 +513,7 @@ TeamRatings	;period94 TeamRatings. GetTeamRating values, one byte per team (Team
 	dc.b	$30,$3F,$48,$43,$3F,$41,$37,$45,$45,$42,$40,$4E,$50,$63,$63
 
 ScoutTextScript	;graphics94 ScoutTextScript. The scouting text lines, each ended by $D, $FF after the last; ScoutTextPlayer skips n $D for line n
-	;substitution chars: ^ arena  = home team  * away team  } away (alt intro)  < > | \ hot/cold players  # home user name (sub_A09DA)  % away user name (sub_A09CC)
+	;substitution chars: ^ arena  = home team  * away team  } away (alt intro)  < > | \ hot/cold players  # home user name (NextHomeUser)  % away user name (NextAwayUser)
 	dc.b	$D;line 0
 	dc.b	'Hi, I',$27,'m John Shrader for EA Sports.  Welcome to a sold out ^, home of the =.  Tonight the = take on the *.',$D;line 1
 	dc.b	$D;line 2
@@ -619,7 +619,7 @@ PopUserName	;95 only. NextHomeUser / NextAwayUser: pop the last entry of the lis
 
 UserNameString	;95 only. a1 = NameEntryBuf: the name of name log entry d1 (GetLogName) as a String
 	movea.l	#NameEntryBuf+2,a1
-	move.w	d1,(CreateListRow).w
+	move.w	d1,(namelogsel).w
 	jsr	(GetLogName).l
 	adda.w	(NameEntryLen).w,a1
 	move.b	#0,(a1)

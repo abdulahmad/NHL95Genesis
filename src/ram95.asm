@@ -22,7 +22,7 @@ CreatedList	equ	$FFFF5D22	;95 only. Created player list ($36 bytes, save RAM $5D
 CreateCursorX	equ	$FFFF7530	;95 only. Modify Ratings cursor column
 CreateCursorY	equ	$FFFF7532	;95 only. Modify Ratings cursor row
 CreateType	equ	$FFFF7534	;95 only. Created player type: 0 goalie, else skater
-CreatePoints	equ	$FFFF7536	;95 only. Create player: unallocated attribute points (IDA word_FF7536)
+CreatePoints	equ	$FFFF7536	;95 only. Create player: unallocated attribute points
 CreateRecord	equ	$FFFF7538	;95 only. Created player record (32 bytes; the name from +2)
 TradeRoster2	equ	$FFFF88B8	;95 only. Trade screen: VisTeam roster rows
 LeaderPlayers	equ	$FFFF9C60	;95 only. League Leaders: player ids, sorted with LeaderValues
@@ -400,7 +400,9 @@ namelog	equ	$FFFFD060	;94 $FFFFD45A. The user name log, 12 bytes per name
 NameEntryBuf	equ	$FFFFD0E0	;95 only. Name entry: the name (18 characters)
 NameEntryLen	equ	$FFFFD0F4	;95 only. Name entry: name length
 CreateListRow	equ	$FFFFD0F6	;95 only. Create player list: the current row
+namelogsel	equ	$FFFFD0F6	;94 $FFFFD4EA. Name entry: the selected name log entry. Shares CreateListRow
 CreateListOldRow	equ	$FFFFD0F8	;95 only. Create player list: the row with the markers
+namelogarrows	equ	$FFFFD0F8	;94 $FFFFD4EC. Name entry: the name log row with the arrows (PrintLogArrows). Shares CreateListOldRow
 nameentryvis	equ	$FFFFD0FA	;94 $FFFFD4EE. Name entry: the team (pad) entering a name (UserNameEntry)
 nameframechars	equ	$FFFFD13C	;95 only. Name entry frame chars (NameEntryFramer)
 recsort1	equ	$FFFFD13E	;94 $FFFFD532. Record Holders row order sorted on record byte 0 (ReadTeamRecords), read by PrintPlayerRecords
@@ -416,7 +418,7 @@ homeshooters	equ	$FFFFD186	;94 $FFFFD57A. The home shootout shooter list (6 word
 homeshootnum	equ	$FFFFD192	;94 $FFFFD586. The shooter index of the shootout
 awayshooters	equ	$FFFFD194	;94 $FFFFD588. The away shootout shooter list (6 words below shootoutteam)
 shootoutteam	equ	$FFFFD1A0	;95 only. Shootout: 0 home shoots, 1 away
-SeasonStartDay	equ	$FFFFD1A4	;95 only. Schedule day the season starts on (sub_8E26A picks it at random)
+SeasonStartDay	equ	$FFFFD1A4	;95 only. Schedule day the season starts on (PickSeasonStartDay picks it at random)
 SeasonLength	equ	$FFFFD1A5	;95 only. Days in the season ($C0 = the whole schedule)
 SeasonDay	equ	$FFFFD1A6	;95 only. Days played; the byte after it is the season flags
 SeasonFlags	equ	$FFFFD1A7	;95 only. The byte after SeasonDay: bit 1 best of seven, bit 2 multi-game injuries, bit 3 regular season over, bit 4 playoffs over, bit 5 playoffs

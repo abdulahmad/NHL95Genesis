@@ -1,5 +1,5 @@
 ;	NHL 95 input95_01. Retail $083EB2-$084FE5 (4404 bytes).
-;	94 input94 doinput (95: its start is sub_83EB2; the mapped start loc_83EC0 is inside it), doinput_islocked, rtss7, faceoffinput,
+;	94 input94 doinput (95: its start is doinput; the mapped start doinput .0 is inside it), doinput_islocked, rtss7, faceoffinput,
 ;	setpassmode, passmode, dopass, passtoa0, then onetimer94 OneTimerTarget and its tables and OneTimerPass (moved in), input94
 ;	Findhittype, SetShotMode, ShotMode, prepshot, doshot, shotsets, shotdiradj, shotdirmath, onetimer94 puckvzadj and checks94
 ;	compshoot (moved in). data95_01 follows at $084FE6.

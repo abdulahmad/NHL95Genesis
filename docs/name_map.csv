@@ -2169,3 +2169,5 @@ $1A1A1A,ArenaGfxBank,,,graphics95_02
 $1A6C28,Credits,,,credits95
 $1A6C6A,CreditsList,,,credits95
 $1A72C0,ValidationRoutine,sub_1A72C0,,checksum95
+$FFFFD0F6,namelogsel,word_FFD0F6,CreateListRow,cards95_01 records95 setup95_03
+$FFFFD0F8,namelogarrows,word_FFD0F8,CreateListOldRow,cards95_01 records95 setup95_03

@@ -81,7 +81,7 @@ CountTeamPads	;95 only. d2 = the number of pads (cont1team ... cont4team) on tea
 	addq.w	#1,d2
 .x
 	rts
-NameInUse	;95 only. Step the name log selection (CreateListRow) past the names the other pads (pad1user ... pad4user, not a5) picked,
+NameInUse	;95 only. Step the name log selection (namelogsel) past the names the other pads (pad1user ... pad4user, not a5) picked,
 	;in direction d0; Z set (d2 0) when it moved
 	movem.l	d1-d2/a0,-(sp)
 	move.w	#1,d2
@@ -96,29 +96,29 @@ NameInUse	;95 only. Step the name log selection (CreateListRow) past the names t
 	tst.w	d2
 	movem.l	(sp)+,d1-d2/a0
 	rts
-SkipPadName	;95 only. When pad slot a0 is not a5 and holds the selected name (CreateListRow), step past it (SkipUserName)
+SkipPadName	;95 only. When pad slot a0 is not a5 and holds the selected name (namelogsel), step past it (SkipUserName)
 	cmpa.l	a5,a0
 	beq.w	.x
 	move.w	(a0),d1
-	cmp.w	(CreateListRow).w,d1
+	cmp.w	(namelogsel).w,d1
 	bne.w	.x
 	bsr.w	SkipUserName
 .x
 	rts
-SkipUserName	;records94 SkipOtherUserName. Step the name log selection (CreateListRow) by 1 in direction d0, wrapping 1-7; d2 = 0
+SkipUserName	;records94 SkipOtherUserName. Step the name log selection (namelogsel) by 1 in direction d0, wrapping 1-7; d2 = 0
 	move.w	#1,d1
 	tst.w	d0
 	bpl.w	.0
 	move.w	#$FFFF,d1
 .0
-	add.w	d1,(CreateListRow).w
-	cmpi.w	#7,(CreateListRow).w
+	add.w	d1,(namelogsel).w
+	cmpi.w	#7,(namelogsel).w
 	ble.w	.1
-	move.w	#1,(CreateListRow).w
+	move.w	#1,(namelogsel).w
 .1
-	tst.w	(CreateListRow).w
+	tst.w	(namelogsel).w
 	bne.w	.2
-	move.w	#7,(CreateListRow).w
+	move.w	#7,(namelogsel).w
 .2
 	clr.w	d2
 	rts

@@ -1286,7 +1286,7 @@ SeasonAttribScroll	;stats94 UpdateAttributeScroll. Per-frame scroll of the playe
 	bne.w	SeasonAttribScrollReg
 	bsr.w	SeasonAttribLineDown
 
-SeasonAttribScrollReg	;stats94 SetAttribScrollReg. VSRAM = word_FFD278 - $68
+SeasonAttribScrollReg	;stats94 SetAttribScrollReg. VSRAM = VertLineScrolling - $68
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
@@ -2449,7 +2449,7 @@ BuildPlayerLeadersDone
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PlayerLeaderJumps	;League Leaders: per category (word_FFBB20, from $949B4) handler that builds and sorts the leader list
+PlayerLeaderJumps	;League Leaders: per category (StatWork+2, from $949B4) handler that builds and sorts the leader list
 	dc.l	PlayerLeadersGoals
 	dc.l	PlayerLeadersAssists
 	dc.l	PlayerLeadersPoints
@@ -2479,7 +2479,7 @@ PlayerLeadersPoints	;Category 2: gather with BuildLeaderListSum (d0 = $21A4, d1 
 	bsr.w	GatherAndSort
 	bra.s	BuildPlayerLeadersDone
 
-PlayerLeadersGAA	;Category 3: gather with BuildLeaderListPct (d0 = $21A4, d1 = $548), sort ascending (bit 1 of byte_FFBEF8 set)
+PlayerLeadersGAA	;Category 3: gather with BuildLeaderListPct (d0 = $21A4, d1 = $548), sort ascending (bit 1 of BA_PS_flags set)
 	move.l	#SRGoals,d0
 	move.l	#$548,d1
 	movea.l	#BuildLeaderListPct,a5
@@ -2487,7 +2487,7 @@ PlayerLeadersGAA	;Category 3: gather with BuildLeaderListPct (d0 = $21A4, d1 = $
 	bsr.w	GatherAndSort
 	bra.w	BuildPlayerLeadersDone
 
-GatherAndSort	;Call a5 to fill values at $FFFFA1AA / players at $FFFF9C60 (count word_FFBB2A), then bubble sort both lists by value (descending, or ascending when bit 1 of byte_FFBEF8)
+GatherAndSort	;Call a5 to fill values at $FFFFA1AA / players at $FFFF9C60 (count StatWork+$C), then bubble sort both lists by value (descending, or ascending when bit 1 of BA_PS_flags)
 	movea.l	#LeaderValues,a0
 	movea.l	#StatWork+$C,a2
 	movea.l	#LeaderPlayers,a3
@@ -2561,7 +2561,7 @@ SortValuesUp	;Ascending pass: swap neighbours where the next value is smaller, r
 	bne.s	SortValuesUp
 	rts
 
-DrawLeaderRows	;Draw the leader rows (word_FFBB26 rows from word_FFBB22): when word_FFBB1E is set use the sorted list (DrawPlayerLeaderRows), else rank, team logo (DrawTeamLogo3), and the category value (LeaderPrintJumps) from the RAM tables in LeaderTables
+DrawLeaderRows	;Draw the leader rows (StatWork+8 rows from StatWork+4): when StatWork is set use the sorted list (DrawPlayerLeaderRows), else rank, team logo (DrawTeamLogo3), and the category value (LeaderPrintJumps) from the RAM tables in LeaderTables
 	tst.w	(StatWork).w
 	bne.w	DrawPlayerLeaderRows
 	clr.w	d6
@@ -2612,7 +2612,7 @@ DrawLeaderRows	;Draw the leader rows (word_FFBB26 rows from word_FFBB22): when w
 	blt.w	.0
 	bra.w	rtsLeaderRows
 
-LeaderPrintJumps	;Value print handlers per category (word_FFBB20)
+LeaderPrintJumps	;Value print handlers per category (StatWork+2)
 	dc.l	PrintLeaderNum
 	dc.l	PrintLeaderAvg
 	dc.l	PrintLeaderAvg
@@ -2648,7 +2648,7 @@ PrintLeaderPct	;Print d0 3 wide followed by '%'
 	String	'%',$0
 	rts
 
-DrawPlayerLeaderRows	;Sorted list rows: rank, player name (team $772 table, d7 = value / 26 team, remainder player) and value from $FFFFA1AA (category 3 as nn.nn); records the last row in word_FFBB28
+DrawPlayerLeaderRows	;Sorted list rows: rank, player name (team $772 table, d7 = value / 26 team, remainder player) and value from $FFFFA1AA (category 3 as nn.nn); records the last row in StatWork+$A
 	clr.w	d6
 	movea.l	#LeaderValues,a5
 	move.w	#9,(printy).w
@@ -2747,7 +2747,7 @@ LeaderTables	;RAM tables (team order) per category for DrawLeaderRows
 	dc.l	LeaderTeamTbls+$9C
 	dc.l	LeaderTeamTbls+$B6
 
-DrawTeamLogo3	;Draw small team logo d1 from Teamblocksmap at word_FFAC40/42 (dobitmap). Saves all
+DrawTeamLogo3	;Draw small team logo d1 from Teamblocksmap at printx / printy (dobitmap). Saves all
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	asl.w	#1,d1
@@ -2767,7 +2767,7 @@ DrawTeamLogo3	;Draw small team logo d1 from Teamblocksmap at word_FFAC40/42 (dob
 BlankLine40	;String record (40 spaces) used by the League Leaders code before this range
 	String	'                                       ',0
 
-LeadersHelp	;League Leaders footer: printz2 "[]=Change Stats  B=Team Leaders" or (word_FFBB1E set) "B=Individual Leaders"
+LeadersHelp	;League Leaders footer: printz2 "[]=Change Stats  B=Team Leaders" or (StatWork set) "B=Individual Leaders"
 	movem.l	d0-d7/a0-a6,-(sp)
 	tst.w	(StatWork).w
 	beq.w	.0
@@ -2906,7 +2906,7 @@ PeriodStatsScreen	;period94 PeriodStatsScreen: both team logos, goals/shots by p
 	movem.l	(sp)+,d0-d7/a0-a6
 	jmp	(ExitAttributeScreen2).l
 
-PeriodStatsCaption	;PeriodStatsScreen .5: caption "Shots" + "[ For Goals" or "Goals" + "For Shots ]" by word_FFD262
+PeriodStatsCaption	;PeriodStatsScreen .5: caption "Shots" + "[ For Goals" or "Goals" + "For Shots ]" by matchup
 	tst.w	(matchup).w
 	beq.w	.0
 	jsr	(printz).l
@@ -3143,7 +3143,7 @@ SelectAttributeItem	;stats94 SelectAttributeItem: build the list of players for 
 	jsr	(LineEditorBg).l
 	bra.w	LineEditorMenu
 
-PrintAttribHeader	;stats94 PrintAttribHeader: player list column header (PAttribColumns page word_FFD276), then 6 rows of names, selected row highlighted
+PrintAttribHeader	;stats94 PrintAttribHeader: player list column header (PAttribColumns page DispAttribCtr), then 6 rows of names, selected row highlighted
 	jsr	(printz).l
 	String	$BE,$16,$1,$0
 .0
@@ -3319,7 +3319,7 @@ ClearAttributeArea2	;stats94 ClearAttributeArea2: erase 40 x 10 at the top of ma
 	move.w	#$7FF,d2
 	jmp	(eraser).l
 
-ClearMenuFlags	;stats94 ClearMenuFlags: clear word_FFB99C and word_FFB9BC
+ClearMenuFlags	;stats94 ClearMenuFlags: clear palfadenew+$5A and palfadenew+$7A
 	clr.w	(palfadenew+$5A).w
 	clr.w	(palfadenew+$7A).w
 	rts
@@ -3426,7 +3426,7 @@ ExitAttributeScreen	;stats94 ExitAttributeScreen (95 rewrite): exit box; Start l
 .7
 	jmp	(ExitAttributeScreen2).l
 
-LineEditorBg	;draw the line editor background bitmap (LineEditorBgMap) on map 2, clear byte_FFBEF8 bit 1
+LineEditorBg	;draw the line editor background bitmap (LineEditorBgMap) on map 2, clear BA_PS_flags bit 1
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#1,(BA_PS_flags).w
 	move.w	(screen6chars2).w,d4
@@ -3448,7 +3448,7 @@ LineEditorBg	;draw the line editor background bitmap (LineEditorBgMap) on map 2,
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PlayerSelectBg	;draw the player select list background bitmaps (PlayerSelectMap1, PlayerSelectMap2) on map 2, set byte_FFBEF8 bit 1
+PlayerSelectBg	;draw the player select list background bitmaps (PlayerSelectMap1, PlayerSelectMap2) on map 2, set BA_PS_flags bit 1
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#1,(BA_PS_flags).w
 	move.w	(screen6chars1).w,d4
@@ -3527,7 +3527,7 @@ CopyTeamLines	;B in exit menu: copy the loaded line data (a0, 56 bytes) into tea
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-TeamLinesOffset	;d0 = save RAM offset of team a2's saved line ($39 bytes per team; base by byte_FFBF08 bit 3 / byte_FFBF0A bit 0)
+TeamLinesOffset	;d0 = save RAM offset of team a2's saved line ($39 bytes per team; base by GameFlags bit 3 / sflags10 bit 0)
 	move.l	#$4530,d0
 	btst	#3,(GameFlags).w
 	bne.w	.1
@@ -3706,7 +3706,7 @@ CalculateTeamAttributeValues
 	dbf	d4,.0
 	rts
 
-HighlightsScreen	;95 season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left/right change day (byte_FFD1A6), up/down change game (word_FFBB1A), Start exits
+HighlightsScreen	;95 season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left/right change day (SeasonDay), up/down change game (rosterscroll), Start exits
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(ReadSeasonHeader).l
 	btst	#0,(sflags11).w
@@ -3871,7 +3871,7 @@ PrintHighlightsTitle	;print big title NHL HIGHLIGHTS
 	String	$BF,$8,$2,'NHL HIGHLIGHTS',$0
 	rts
 
-DrawHighlightPage	;draw the current highlight page: day header, team logos/score of game word_FFBB1A, then goal/star list
+DrawHighlightPage	;draw the current highlight page: day header, team logos/score of game rosterscroll, then goal/star list
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(VisTeam).w,-(sp)
 	move.w	(HomeTeam).w,-(sp)
@@ -4095,7 +4095,7 @@ PrintScore2	;print 2-digit number d5 at current cursor (PushNumberWidth + printb
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawTeamLogo4	;draw team logo d1 (from Teamblocksmap graphics, palette word_FFBFC8) via dobitmap
+DrawTeamLogo4	;draw team logo d1 (from Teamblocksmap graphics, palette teamblocksmapptr) via dobitmap
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	asl.w	#1,d1
