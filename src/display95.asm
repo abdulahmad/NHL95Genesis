@@ -4,7 +4,7 @@
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; then updateanim
-;	checksso, setsortcords, setffo, uppads, FormatControllerDisplay, RenderSmallFontChar and ButtonLabelCharTable
+;	checksso, setsortcords, setffo, uppads, QueuePadLabel, RenderSmallFontChar and ButtonLabelCharTable
 ;	then updateanim ($A536).
 ;	95 has 6 pad objects and no glove object (94: 7 with glovestruct), and keeps the pad nibbles in one long (PadControlBits).
 
@@ -178,7 +178,7 @@ setffo	;Draw the 6 objects tied to icerink scrolling (the pads; 94: 7 with the g
 	dbf	d0,.top
 	rts
 
-uppads	;Update the 6 pad objects and queue new pad labels (FormatControllerDisplay). The pad players come from the
+uppads	;Update the 6 pad objects and queue new pad labels (QueuePadLabel). The pad players come from the
 	;PadControlBits nibbles ($E = no change, $F = none). 95 has no glove object and takes all 6 nibbles from one long
 	move.w	#5,d4
 	movea.w	#(pads-M68K_RAM),a0
@@ -205,7 +205,7 @@ uppads	;Update the 6 pad objects and queue new pad labels (FormatControllerDispl
 	cmp.w	(a1),d1
 	beq.w	.next
 	move.w	d1,(a1)
-	bsr.w	FormatControllerDisplay
+	bsr.w	QueuePadLabel
 .next
 	lsr.l	#4,d3
 	adda.w	#$1C,a0
@@ -213,7 +213,7 @@ uppads	;Update the 6 pad objects and queue new pad labels (FormatControllerDispl
 	dbf	d4,.nibble
 	rts
 
-FormatControllerDisplay	;Queue the 3 character label of a pad object. d1 = label code: bits 7-4 and 3-0 are digits ($F =
+QueuePadLabel	;Queue the 3 character label of a pad object. d1 = label code: bits 7-4 and 3-0 are digits ($F =
 	;blank), bits 10-8 index ButtonLabelCharTable (none while sflags7 bit 7 is set). a0 = pad object, a5 = dma list. Falls into
 	;RenderSmallFontChar for the last char
 	lea	ButtonLabelCharTable(pc),a4

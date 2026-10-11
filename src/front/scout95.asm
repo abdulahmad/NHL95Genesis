@@ -16,7 +16,7 @@ ScoutingReport	;Pregame scouting report: the Ron Barr picture, the text box and 
 	jsr	(ReadNameLog).l
 	jsr	(BuildHotColdLists).l	;hot / cold players for the text (not matched yet)
 	clr.w	(advframe).w	;advantage mark frame
-	jsr	(play_new_song).l
+	jsr	(stop_current_song).l
 	move.w	#9,d0
 	jsr	(SoundCmd).l
 	move.w	#0,d0
@@ -108,10 +108,10 @@ ScoutingReport	;Pregame scouting report: the Ron Barr picture, the text box and 
 	jsr	(dobitmap).l
 	movea.l	#HotIconMap+8,a2
 	move.w	d4,(hoticonchars).w	;tiles: 1st vram char
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	movea.l	#ColdIconMap+8,a2
 	move.w	d4,(coldiconchars).w	;tiles: 1st vram char
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),9,2,'Scouting Report'
 	clr.w	(matchup).w	;matchup 0: the teams
@@ -272,7 +272,7 @@ PrintTwoSpaces	;Print 2 spaces at printx / printy and keep printx
 TwoSpacesTxt	;A two space String
 	String	'  '
 
-StatsText	;The rating names; -1 ends the list (PrintMatchupRatings)
+ScoutRatingText	;The rating names; -1 ends the list (PrintMatchupRatings)
 	String	'Shooting'
 	String	'Skating',0
 	String	'Passing',0
@@ -398,13 +398,13 @@ GetMatchupLogo	;a0 = the logo bitmap of team d3 (TeamLogoBitmaps)
 	movea.l	(a0,d3.w),a0
 	rts
 
-PrintMatchupRatings	;Matchup 0: the rating names (StatsText) and both team ratings
+PrintMatchupRatings	;Matchup 0: the rating names (ScoutRatingText) and both team ratings
 	;1-6: the position, the two players and their ratings
 	tst.w	(matchup).w
 	bne.w	.3
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$0,$1,$16,$16,CC_SetFont,$1,$0
-	lea	StatsText(pc),a1
+	lea	ScoutRatingText(pc),a1
 	move.w	#0,d7
 .0
 	move.w	(a1),d0

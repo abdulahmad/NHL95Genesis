@@ -5,7 +5,7 @@
 ;------------------------------------------------------------------------------------------------------------------------
 ;	Three runs in ROM order: the VDP helpers with the vblank transfers, the sprite frames and rink
 ;	scroll, then the decompressor, the vblank handlers and the pad reads.
-;	The VDP helpers: DoFill, setVram, setVram_0, Vmaddr, dobitmap, DoDMA_clearCallbackPointer, DecompressGraphics
+;	The VDP helpers: DoFill, setVram, setVram_0, Vmaddr, dobitmap, DecompressGraphicsPlain, DecompressGraphics
 ;	(95: no packed graphics), DoDMApro, WaitDMA, forcefade, cramfade, CopyPaletteToCRAM, xyVmMap, remap; then the
 ;	vblank transfers DumpSprites, DumpSprites2, DoDMAlist (ends at the shared rts rtss2), SetScroll2; then DoDMA
 ;	(95: no Z80 bus request).
@@ -115,7 +115,7 @@ Vmaddr
 	rts
 
 dobitmap	;Copy the palettes flagged in d5 to palfadenew, then write the map at a1 to the screen at printx / printy.
-	;Called from most screens. 95 steps the palettes with adda.w and always ends in DoDMA_clearCallbackPointer (94 skipped it when sflags6 bit 0)
+	;Called from most screens. 95 steps the palettes with adda.w and always ends in DecompressGraphicsPlain (94 skipped it when sflags6 bit 0)
 	move.w	(printy).w,-(sp)
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -156,13 +156,13 @@ dobitmap	;Copy the palettes flagged in d5 to palfadenew, then write the map at a
 	addq.w	#1,(printy).w
 	addq.w	#1,d6
 	dbf	d2,.loop2
-	bsr.w	DoDMA_clearCallbackPointer
+	bsr.w	DecompressGraphicsPlain
 	movem.l	(sp)+,d0-d3/d5-d6/a0-a3
 	move.w	(sp)+,(disflags).w
 	move.w	(sp)+,(printy).w
 	rts
 
-DoDMA_clearCallbackPointer	;Clear callbackPtr, fall into DecompressGraphics
+DecompressGraphicsPlain	;Clear callbackPtr, fall into DecompressGraphics
 	clr.l	(callbackPtr).w
 DecompressGraphics	;a2 = graphics data, d4 = start char. Called from this file. 95 has no decompressor
 	;a packed block (size bit 15 set) only moves d4 past its chars
@@ -902,7 +902,7 @@ AddSmallFont	;Jumped to from ReAddSmallFont. 95 loads the map at the address in 
 	move.w	d4,(smallfontchars).w
 	movea.l	(smallfontptr).w,a2
 	addq.w	#8,a2
-	bra.w	DoDMA_clearCallbackPointer
+	bra.w	DecompressGraphicsPlain
 
 DecompressGraphicsWithCallback	;DecompressGraphics, then return 8 bytes past the call (callback data)
 	move.l	(sp),(callbackPtr).w
@@ -968,7 +968,7 @@ AddFramer2	;AddFramer for the second framer map, no remap
 	movea.l	#Framermap2+8,a2
 	move.l	#Framermap2,(framermapptr).l
 	move.w	d4,(framercset).w
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	rts
 
 VBjsr	;Vertical blank interrupt (vector $78), jumps through the vbint RAM vector

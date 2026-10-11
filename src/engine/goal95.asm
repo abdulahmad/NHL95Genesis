@@ -48,7 +48,7 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, sohomegoals / s
 	bset	#0,(sflags4).w
 	bclr	#3,(sflags8).w
 	bsr.w	ChkShotStat
-	jsr	(play_new_song).l
+	jsr	(stop_current_song).l
 	move.w	d0,-(sp)
 	move.w	(vcount).w,d0
 .8
@@ -730,7 +730,7 @@ clockcont	;Clock continue: when the clock is at 0 stop the play (sfx 4) and go t
 	tst.w	(gameclock).w
 	bne.w	.0
 	bset	#3,(disflags).w	;dfclock: clock needs update
-	jsr	(play_new_song).l
+	jsr	(stop_current_song).l
 	move.w	#SFXhorn,-(sp)	;horn
 	jsr	(sfx).l
 	bsr.w	LockScroll
@@ -1028,7 +1028,7 @@ ControllerSetupScreen	;Build the controller setup screen: vram, fonts, the team 
 	move.w	#1,d4
 	move.w	d4,(smallfontchars).w
 	movea.l	#RosterFont+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(smallfont2chars).w
 	movea.l	#RosterFont+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
@@ -1040,25 +1040,25 @@ ControllerSetupScreen	;Build the controller setup screen: vram, fonts, the team 
 	move.l	#RosterFont,(smallfontptr).l
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(teamblocksmapptr).w
 	movea.l	#Teamblocksmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(padcursorchars).w
 	movea.l	#PadCursorMap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(padiconchars1).w
 	movea.l	#PadIconMap1+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(padiconchars2).w
 	movea.l	#PadIconMap2+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(padiconchars3).w
 	movea.l	#PadIconMap3+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(padiconchars4).w
 	movea.l	#PadIconMap4+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	(VisTeam).w,d1
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),2,6,0

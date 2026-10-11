@@ -16,9 +16,9 @@
 ; External addresses outside, read from lst/nhl95.bin.
 sfx = $677AC
 song = $678C2
-play_new_song = $67938
+stop_current_song = $67938
 ChooseSong = $679C4
-DoDMA_clearCallbackPointer = $79AC0
+DecompressGraphicsPlain = $79AC0
 Framer = $7A270
 randomd0 = $7C63A
 printz = $7C810

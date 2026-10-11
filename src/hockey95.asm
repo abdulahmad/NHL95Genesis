@@ -14,7 +14,7 @@ Opening2	;Restart the sound (unless coming from Opening), reset the stack and cl
 	;from ExitToOpening and the 95 season, trade and create player screens
 	bclr	#7,(sflags12).w
 	bne.w	.clear
-	jsr	(play_new_song).l	;stop the song
+	jsr	(stop_current_song).l	;stop the song
 	move.w	#9,d0	;restart the sound driver as Begin does
 	jsr	(SoundCmd).l
 	move.w	#0,d0	;command 0: load the Z80 program
@@ -124,7 +124,7 @@ StartGame	;Reset game state for a new game, then start the first period. 95 has 
 	clr.w	(gsp).w	;first period
 	clr.w	(ChkCnt).w
 	jsr	(restoreteams).l
-	jsr	(play_new_song).l	;restart the sound driver, command 7 with d1 = 1
+	jsr	(stop_current_song).l	;restart the sound driver, command 7 with d1 = 1
 	move.w	#9,d0
 	jsr	(SoundCmd).l
 	move.w	#0,d0
@@ -158,7 +158,7 @@ IntermissionStart	;The PeriodOver tail. PeriodOver jumps here after forceblack: 
 	cmp.w	(vcount).w,d0	;and the one after
 	beq.s	.vb2
 	move.w	(sp)+,d0
-	jsr	(play_new_song).l	;restart the sound driver, command 7 with d1 = 0
+	jsr	(stop_current_song).l	;restart the sound driver, command 7 with d1 = 0
 	move.w	#9,d0
 	jsr	(SoundCmd).l
 	move.w	#0,d0
@@ -227,7 +227,7 @@ StartPer	;Start a period: reset stack, rink and clock, face off, run the game lo
 	clr.w	(CurCrowdMeter).w
 	btst	#0,(gmode2).w	;no period tune in a shootout
 	bne.w	.reg
-	jsr	(play_new_song).l	;restart the sound driver, command 7 with d1 = 1
+	jsr	(stop_current_song).l	;restart the sound driver, command 7 with d1 = 1
 	move.w	#9,d0
 	jsr	(SoundCmd).l
 	move.w	#0,d0
@@ -283,8 +283,8 @@ DoGameFrame	;Wait for at least one vblank, then run one frame of game logic. in 
 	addi.w	#$18,(lldisp).w	;jps: only update once per second
 	jsr	(ChkGoalies).l
 	jsr	(UpdateCwdExcite).l
-	jsr	(CheckPeriodEnd).l
-	jsr	(UpdateLineChange).l
+	jsr	(CheckLateGameSong).l
+	jsr	(RestoreBenchEnergy).l
 	jsr	(CheckInjury).l
 	jsr	(updatepwrplay).l
 .frame
@@ -295,7 +295,7 @@ DoGameFrame	;Wait for at least one vblank, then run one frame of game logic. in 
 	bmi.w	.nosong
 	subq.w	#1,(songdelay).w
 	bne.w	.nosong
-	move.w	(delayedsong).w,-(sp)	;94 calls play_new_song first
+	move.w	(delayedsong).w,-(sp)	;94 calls stop_current_song first
 	jsr	(song).l
 .nosong
 	jsr	(setSlotBit).l
@@ -424,7 +424,7 @@ updateplayers	;This routine calls all collision/animation/assignment code for al
 	addq.w	#1,(a2,d0.w)	;add 1 to TOI for player
 .11
 	moveq	#$11,d4
-	tst.w	(music_global_tick_counter).w
+	tst.w	(PalMode).w
 	beq.w	.notoside
 	moveq	#$18,d4	;PAL (94: $16)
 .notoside

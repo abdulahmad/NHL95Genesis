@@ -156,7 +156,7 @@ Stop4Pen	;a0 = Penaltylist penalty + 2. Stop the clock, set the faceoff spot fro
 .5
 	clr.w	(Pencntdwn).w
 	bset	#2,(gmode).w
-	jsr	(play_new_song).l
+	jsr	(stop_current_song).l
 	move.w	#SFXwhistle,-(sp)	;whistle (92 used 10)
 	jsr	(sfx).l
 	movem.l	d1/a0-a3,-(sp)
@@ -304,7 +304,7 @@ chkprogress	;Control the progress of the ref and the game through penalty events
 .5
 	move.w	(ExtraChars).w,d4	;load horizontal ref tiles
 	movea.l	#RefTilesHor+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	st	(puckc).w
 	movea.w	#(puckx-M68K_RAM),a3
 	moveq	#5,d0

@@ -1244,7 +1244,7 @@ DrawTeamScreen4Body	;DrawTeamScreen4 after the screen setup; DrawTeamScreen4NoSe
 	moveq	#1,d4
 	movem.l	a0-a6,-(sp)
 	movea.l	#Teamblocksmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	movem.l	(sp)+,a0-a6
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),0,0,0
@@ -1332,7 +1332,7 @@ DrawTeamScreen5	;DrawTeamScreen4 with three small fonts and palette word $A00
 	moveq	#1,d4
 	movem.l	a0-a6,-(sp)
 	movea.l	#Teamblocksmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	movem.l	(sp)+,a0-a6
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),0,0,0
@@ -1451,10 +1451,10 @@ DrawTeamScreen6	;The team blocks (screen6chars1), the bitmap, Screen6Tiles1 / 2 
 	jsr	(dobitmap).l
 	move.w	d4,(screen6chars2).w
 	movea.l	#Screen6Tiles1,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(screen6chars3).w
 	movea.l	#Screen6Tiles2,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(smallfontchars).w
 	move.l	#SmallFontMap,(smallfontptr).l
 	movea.l	#SmallFontMap+8,a2
@@ -1470,7 +1470,7 @@ DrawTeamScreen6	;The team blocks (screen6chars1), the bitmap, Screen6Tiles1 / 2 
 	dc.b	$B1,$23,$46,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	movea.l	#Framermap+8,a2
 	move.l	#Framermap,(framermapptr).l
 	move.w	d4,(framercset).w

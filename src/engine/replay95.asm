@@ -266,10 +266,10 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	jsr	(DoFill).l
 	move.w	(ExtraChars).w,d4
 	movea.l	#ReplayMap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(ReplayIconChars).w
 	movea.l	#ReplayIconMap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	jsr	(ShowReplayIcon).l
 	bclr	#sfscrl,(sflags).w
 	bclr	#5,(sflags3).w

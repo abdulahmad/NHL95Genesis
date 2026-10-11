@@ -48,7 +48,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	move.w	#1,d4	;the team block tiles from char 1
 	move.w	d4,(teamblocksmapptr).w
 	movea.l	#Teamblocksmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.l	#SmallFontMap,(smallfontptr).l
 	move.w	d4,(smallfontchars).w
 	movea.l	(smallfontptr).w,a2
@@ -57,10 +57,10 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	movea.l	#Arrowsmap+8,a2
 	move.w	d4,(ExtraChars).w
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l
 	String	-(TXPAL3+TXMAP2),0,0,0
 	movea.l	#ScoutMap,a0
@@ -85,7 +85,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	move.l	-$20(a0),(a0)+
 	dbf	d0,.1
 	move.w	d4,(energybarchars).w
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	clr.w	(pausetimeout).w
 	clr.w	(picturebits).w
 	move.w	#$104,(clampcounter).w

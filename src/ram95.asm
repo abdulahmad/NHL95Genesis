@@ -48,7 +48,7 @@ tabchars	equ	$FFFFAC24	;Pause screen: chars of the tab bitmap (DrawTab)
 clockdigitchars	equ	$FFFFAC26	;First vram char of the big clock digits (PutClockDigit)
 energybarchars	equ	$FFFFAC28	;94 $FFFFB016
 rinkvrcset	equ	$FFFFAC2A	;94 $FFFFB018. First vram char of the rink tiles
-gamesetuptilesetindex	equ	$FFFFAC2C	;94 $FFFFB01A. Crowd tiles 1st vram char
+animchars	equ	$FFFFAC2C	;94 $FFFFB01A. Crowd tiles 1st vram char
 faceoffvrcset	equ	$FFFFAC2E	;94 $FFFFB01C
 framercset	equ	$FFFFAC30	;94 $FFFFB01E. First vram char of the framer tiles (AddFramer)
 EASNcset	equ	$FFFFAC32	;94 $FFFFB020
@@ -71,7 +71,7 @@ oldvcount	equ	$FFFFAC58	;94 $FFFFB040
 repeatdelayframes	equ	$FFFFAC5A	;94 $FFFFB042. Key repeat count down (ProcessInputWithRepeat)
 asv	equ	$FFFFAC5C	;94 $FFFFB044. Crowd noise volume (updatesound)
 lldisp	equ	$FFFFAC5E	;94 $FFFFB046. Count down to the once a second updates
-periodendtime	equ	$FFFFAC60	;94 $FFFFB048. 3rd-period song trigger time (CheckPeriodEnd)
+periodendtime	equ	$FFFFAC60	;94 $FFFFB048. 3rd-period song trigger time (CheckLateGameSong)
 SortCords	equ	$FFFFAC62	;94 $FFFFB04A. 16 sort objects of SCstruct bytes
 puckx	equ	$FFFFB362	;94 $FFFFB74A. SortCords+(puckscnum*SCstruct)
 pucky	equ	$FFFFB376	;94 $FFFFB75E
@@ -343,7 +343,7 @@ goaliemode2	equ	$FFFFCC60	;94 $FFFFD05C
 demoflag	equ	$FFFFCC68	;94 $FFFFD064
 seed	equ	$FFFFCC6A	;94 $FFFFD066
 dmaram	equ	$FFFFCC6E	;94 $FFFFD06A. Dma command long, written to the vdp as two words
-music_global_tick_counter	equ	$FFFFCC72	;94 $FFFFD06E. Begin stores the VDP PAL bit here
+PalMode	equ	$FFFFCC72	;94 $FFFFD06E. Begin stores the VDP PAL bit here
 TmpOptLine2	equ	$FFFFCC76	;94 $FFFFD072
 TempOptPlayMode	equ	$FFFFCC78	;94 $FFFFD074
 databuffer	equ	$FFFFCC7A	;94 $FFFFD076. Line data buffer (ReadLineData / WriteLineData)

@@ -106,7 +106,7 @@ newTitleScreen	;The title screen (TitleScreenImg, TitleImg) with the vblank Titl
 	clr.w	(asv).w
 	move.w	#$FFCE,(DispAttribCtr).w
 	move.w	#$20,(palcount).w
-	jsr	(play_new_song).l
+	jsr	(stop_current_song).l
 	move.w	#9,d0
 	jsr	(SoundCmd).l
 	move.w	#0,d0
@@ -363,12 +363,12 @@ StanleyCupScreen	;The Stanley Cup screen: the vblank CupVBlank, the cup (Stanley
 	move.w	#1,d4
 	move.w	d4,(teamblocksmapptr).w
 	movea.l	#Teamblocksmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	movea.l	#CupSprites,a1
 	lea	8(a1),a2
 	adda.l	(a1),a1
 	move.w	d4,(energybarchars).w
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l
 	String	-TXMAP2,$0,$0,$0
 	movea.l	#StanleyCupImg,a0
@@ -384,7 +384,7 @@ StanleyCupScreen	;The Stanley Cup screen: the vblank CupVBlank, the cup (Stanley
 	jsr	(dobitmap).l
 	bsr.w	CupDrawTeam
 	move.w	#$18,(palcount).w
-	jsr	(play_new_song).l
+	jsr	(stop_current_song).l
 	move.w	#9,d0
 	jsr	(SoundCmd).l
 	move.w	#0,d0

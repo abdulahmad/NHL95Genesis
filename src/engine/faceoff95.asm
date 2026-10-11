@@ -507,10 +507,10 @@ puckfaceoff2	;Puck assignment 4. First call: set up the faceoff: clear the penal
 	jsr	(AssignPads).l
 	move.w	(ExtraChars).w,d4
 	movea.l	#FaceOffMap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(faceoffvrcset).w
 	movea.l	#FaceOffSprites+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	#$FFFF,(arenaanim).w
 	btst	#0,(sflags7).w
 	beq.w	.21
@@ -686,7 +686,7 @@ Endfaceoff	;Drop the puck: sfx $2C, reload the ref tiles (RefTiles), clear the f
 	move.w	#$3C,(holdreset).w
 	move.w	(ExtraChars).w,d4
 	movea.l	#RefTiles+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	bclr	#2,(sflags2).w
 	bclr	#0,(gmode).w
 	bclr	#0,pflags2(a3)

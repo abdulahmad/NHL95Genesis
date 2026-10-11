@@ -59,7 +59,7 @@ Pausemode	;(PauseMode). Game is in pause mode now: fade out, stop the sound (unl
 .6
 	btst	#5,(sflags9).w
 	bne.w	.7
-	jsr	(play_new_song).l
+	jsr	(stop_current_song).l
 	move.w	#9,d0
 	jsr	(SoundCmd).l
 	move.w	#0,d0
@@ -456,12 +456,12 @@ PauseScreenDraw	;Draw the pause screen (SetupPauseScreen): wait out the dma, pla
 	dc.b	$01,$23,$45,$67,$89,$AB,$CB,$EF	;remap table
 	move.w	d4,(clockdigitchars).w
 	movea.l	#ClockDigitsBitmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(pauselogochars).w
 	addi.w	#$32,d4
 	move.w	d4,(tabchars).w
 	movea.l	#TabBitmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.l	#PauseTeamBlocksMap,(teamblocksmapptr).l
 	jsr	(setupTeamBlocksMap).l
 	move.w	#$30,d0
@@ -569,7 +569,7 @@ ShowPenaltyBoxPlayer	;Print player d0 / 2 + 1 of team a2: jersey number and pena
 	move.b	(jerseynum).w,d0
 	move.w	(printx).w,-(sp)
 	movea.w	#(TextBuffer-M68K_RAM),a1
-	jsr	(ConverByteToDigits).l
+	jsr	(ConvertByteToDigits).l
 	movea.w	#(mesarea-M68K_RAM),a1
 	move.w	#4,(a1)
 	jsr	(print).l
@@ -608,7 +608,7 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	clr.l	(a0)+
 	dbf	d1,.0
 	jsr	(setplayercolors).l
-	jsr	(setupIceRinkMap).l
+	jsr	(setupIceRinkPal).l
 	jsr	(setVram_0).l
 	jsr	(ClearOldFrames).l
 	move.w	#$800,d0
@@ -620,10 +620,10 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	jsr	(AddFonts).l
 	move.w	(energybarchars).w,d4
 	movea.l	#EnergyBarMap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
-	move.w	(gamesetuptilesetindex).w,d4
+	jsr	(DecompressGraphicsPlain).l
+	move.w	(animchars).w,d4
 	movea.l	#CrowdFrameList+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	jsr	(setupEASNmap).l
 	btst	#4,(disflags).w
 	beq.w	.1
@@ -631,10 +631,10 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	bne.w	.1
 	move.w	(ExtraChars).w,d4
 	movea.l	#FaceoffTiles+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(faceoffvrcset).w
 	movea.l	#FaceoffTiles2+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	jsr	(DrawFaceoffWindow).l
 	bra.w	.4
 .1
@@ -646,7 +646,7 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 .2
 	movea.l	#RefTiles+8,a2
 .3
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 .4
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
@@ -654,10 +654,10 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	clr.w	d4
 	move.w	d4,(rinkvrcset).w
 	movea.l	#Rinktilelist+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	jsr	(LoadHomeTeamGfx).l
 	jsr	(setplayercolors).l
-	jsr	(setupIceRinkMap).l
+	jsr	(setupIceRinkPal).l
 	move.w	(sp)+,(disflags).w
 	bclr	#0,(disflags).w
 	bclr	#2,(disflags).w

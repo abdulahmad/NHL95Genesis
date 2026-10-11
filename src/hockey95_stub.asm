@@ -18,7 +18,7 @@
 ; bsr.w is the displacement word address + displacement.
 KillCrowd = $67988
 newTitleScreen = $A12AA
-play_new_song = $67938		;Stop the song in progress.
+stop_current_song = $67938		;Stop the song in progress.
 SoundCmd = $676D8
 song = $678C2
 Z80Program = $BD86
@@ -58,8 +58,8 @@ updatesound = $67710
 clockcont = $8CD08
 ChkGoalies = $835C6
 UpdateCwdExcite = $676E8
-CheckPeriodEnd = $6776A
-UpdateLineChange = $7DB40
+CheckLateGameSong = $6776A
+RestoreBenchEnergy = $7DB40
 CheckInjury = $9F282
 updatepwrplay = $9F45E
 checkwindow = $8C900

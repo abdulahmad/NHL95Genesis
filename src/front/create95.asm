@@ -50,7 +50,7 @@ CreateScreenGfx	;Set up VDP planes and load create-player graphics/palettes
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF
 	move.w	d4,(teamblocksmapptr).w
 	movea.l	#Teamblocksmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	movea.l	#Framermap+8,a2
 	move.w	d4,(framercset).w
 	move.l	#Framermap,(framermapptr).l
@@ -82,7 +82,7 @@ CreatePlayer	;Create Player screen entry: load graphics, draw title, init player
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF
 	move.w	d4,(spritechars).w
 	movea.l	#NameEntryBgMap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
 
@@ -1099,7 +1099,7 @@ CreateRatingsGfx	;Set up the create player screen: VDP setup, decompress graphic
 	moveq	#$1C,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
-	jsr	(setupIceRinkMap).l
+	jsr	(setupIceRinkPal).l
 	jsr	(printz).l
 	String	-TXMAP2,$0,$0,$0
 	movea.l	#ControllerBgMap,a0
@@ -1308,7 +1308,7 @@ ModifyRatings	;Create Player "Modify Ratings" screen: load graphics/text, then j
 	moveq	#$1C,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
-	jsr	(setupIceRinkMap).l
+	jsr	(setupIceRinkPal).l
 	jsr	(printz).l
 	String	-TXMAP2,$0,$0,$0
 	movea.l	#ControllerBgMap,a0

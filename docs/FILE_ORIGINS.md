@@ -151,7 +151,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 ### display95
 
-- **display94** (818 bytes): setvideo, setsortcords, checksso, setffo, uppads, FormatControllerDisplay, RenderSmallFontChar
+- **display94** (818 bytes): setvideo, setsortcords, checksso, setffo, uppads, QueuePadLabel, RenderSmallFontChar
 - **replay94** (288 bytes): updateanim
 - **setup94** (774 bytes): defaultsprites, defaultsprites2, SprSort
 
@@ -173,23 +173,23 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **new in 95** (378788 bytes): SndDriver, SndLoadZ80, SndUpdate, SndStartSeq, SndStopSeq, SndPutZ80Cmd, SndUploadBlock, SndReadBlock, SndWriteBlock, SndPauseZ80, SndResumeZ80, SndStopAll, SndClearNotes, SndReleaseNotes, SndAddNote, SndUpdateNotes, SndStreamZ80, SndFindBankItem, SndSetBank, SndLoadList, SndFreeBlocks, SndResetBlocks, SndSendZ80, Z80BusRequest, Z80BusRelease, SoundCmd
 - **hockey94** (40 bytes): UpdateCwdExcite
 - **display94** (90 bytes): updatesound
-- **hockey94** (66 bytes): CheckPeriodEnd
+- **hockey94** (66 bytes): CheckLateGameSong
 - **video94** (26 bytes): sfx
 - **new in 95** (252 bytes): sfxplay
 - **video94** (70 bytes): song
 - **new in 95** (48 bytes): StartSong
-- **sound94** (38 bytes): play_new_song
+- **sound94** (38 bytes): stop_current_song
 - **new in 95** (42 bytes): play_new_song2
 - **display94** (42 bytes): KillCrowd
 - **new in 95** (18 bytes): SoundOff
 - **title94** (268 bytes): ChooseSong
-- **sound94** (2016 bytes): z80_bus_release_delay, UploadCommandBufferToZ80, ProcessOneMusicTrack, handle_command_00, ReleaseChannelAndNote, ClearZ80SpecialEffectsFlags, handle_command_10, UpdateChannelFrequencyAndVolume, SetChannelVolume, handle_command_40, handle_command_60, handle_command_30, handle_command_skip, p_initialZ80, ClearAllTrackAndSFXSlots
+- **sound94** (2016 bytes): z80_bus_release_delay, UploadCommandBufferToZ80, ProcessOneMusicTrack, handle_command_00, ReleaseChannelAndNote, StopPCMChannel, handle_command_10, UpdateChannelFrequencyAndVolume, SetChannelVolume, handle_command_40, handle_command_60, handle_command_30, handle_command_skip, p_initialZ80, ClearAllTrackAndSFXSlots
 - **collide94** (38 bytes): newcheck
 - **sound94** (71212 bytes): (tables only)
 
 ### engine/video95
 
-- **video94** (914 bytes): DoFill, setvram, setVram_0, Vmaddr, dobitmap, DoDMA_clearCallbackPointer, DecompressGraphics, DoDMApro, WaitDMA, forcefade, cramfade, CopyPaletteToCRAM, xyVmMap, remap
+- **video94** (914 bytes): DoFill, setvram, setVram_0, Vmaddr, dobitmap, DecompressGraphicsPlain, DecompressGraphics, DoDMApro, WaitDMA, forcefade, cramfade, CopyPaletteToCRAM, xyVmMap, remap
 - **display94** (52 bytes): DumpSprites, DumpSprites2, DoDMAlist
 - **collide94** (2 bytes): (tables only)
 - **display94** (28 bytes): SetScroll2
@@ -286,7 +286,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **video94** (270 bytes): printbigtext, PrintBigChar, PutBigTile
 - **data94** (60 bytes): (tables only)
 - **title94** (200 bytes): UnpackPicture
-- **hockey94** (60 bytes): UpdateLineChange
+- **hockey94** (60 bytes): RestoreBenchEnergy
 - **penalty94** (38 bytes): RestoreTeamEnergy
 - **new in 95** (40 bytes): ResetTeamEnergy
 - **collide94** (14 bytes): setpde
@@ -491,7 +491,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 ### front/season95
 
-- **hockey94** (158 bytes): demoread, HandleJoy1
+- **hockey94** (158 bytes): demoread, EndDemoOnPress
 - **new in 95** (16614 bytes): RandomSetupTeams, SeasonMain, ReadSeasonHeader, WriteSeasonHeader, PickSeasonStartDay, BuildSeasonTeamList, ReadDayGames, WriteDayGames, SkipToGameDay, DayHasGames, FindDayGames, PrevSeasonDay, NextSeasonDay, NextSeasonTeam, PrevSeasonTeam, SimDayGames, SimGameStats, SimGoalieStats, SimGoalie, PickSimGoalie, SimAssists, PickAssist, SimShots, SeasonGameOver, AddSeasonGoals, ClearSeasonData, RecordGameResult, RecordTeamResult, MakeDateString, DayToDate, DateToDay, CountTeamGames, ReadStandings, SimScore, SimTieBreak, SimTeamGoals, ScaleSimScore, SeasonSetup, ReadAnyPad, StoreSeasonSetup, WrapSetupUp, WrapSetupDown, SeasonSetupLines, SeasonSetupGfx, DrawSeasonSetup, PrintSetupValue, PrintSetupName, PrintOption, PrintOptionHi, GamesToday, GamesTodayLoop, GamesTodayLines, GamesTodayNext, GamesTodayPrev, GamesTodayToggle, GamesTodayUp, GamesTodayDown, GamesTodayExit, GamesTodayDone, ReadAnyPad2, PrintGamesToday, PrintPreviousDay, DrawGamesToday, PrintGameLine, PrintGameScore, DrawGameTeams, DrawGameUser, DrawGameResult, DrawGameCursor, GamesTodayGfx, GamesTodayHelp, SeasonOptions, MenuEndSeason, MenuPlayoffTeamStats, MenuTeamStats, MenuPlayoffPlayerStats, MenuPlayerStats, MenuHighlights, MenuGamesToday, MenuStandings, MenuPlayoffTree, MenuStay, MenuCalendar, MenuPlayGames, MenuPlayUntil, AutoplayCancel, AutoplayMessage, PrintAutoplayDay, ReadAnyPad3, DrawSeasonMenu, GetSeasonMenu, SeasonOptionsGfx, PrintWait, CalendarScreen, ReadAnyPad4, CalendarGfx, CountSeasonMonths, DrawCalendar, CalendarFirstX, DrawCalendarTeam, DrawCalendarMonth, DrawCalendarDay, DrawCalendarOpponent, DrawCalendarResult, CalendarFirstDay, CalendarBg, StandingsScreen, ReadAnyPad5, SortStandings, StandingsPoints, StandingsGroups, StandingsGfx, DrawStandings, PrintStandingsLine, DrawStandingsLogo, PrintStandingsHelp
 
 ### front/stats95

@@ -180,7 +180,7 @@ display95.asm,$00A29A,2,rtssdisp,code,display94,follows setsortcords
 display95.asm,$00A29C,360,checksso,code,display94,name
 display95.asm,$00A404,48,setffo,code,display94,name
 display95.asm,$00A434,102,uppads,code,display94,name
-display95.asm,$00A49A,100,FormatControllerDisplay,code,display94,name
+display95.asm,$00A49A,100,QueuePadLabel,code,display94,name
 display95.asm,$00A4FE,48,RenderSmallFontChar,code,display94,name
 display95.asm,$00A52E,8,ButtonLabelCharTable,data,display94,name
 display95.asm,$00A536,288,updateanim,code,replay94,name
@@ -233,13 +233,13 @@ sound/sound95.asm,$00D8EC,368108,SoundBanks,data,new in 95,follows Z80Program
 sound/sound95.asm,$0676D8,16,SoundCmd,code,new in 95,no 94 match
 sound/sound95.asm,$0676E8,40,UpdateCwdExcite,code,hockey94,name
 sound/sound95.asm,$067710,90,updatesound,code,display94,name
-sound/sound95.asm,$06776A,66,CheckPeriodEnd,code,hockey94,name
+sound/sound95.asm,$06776A,66,CheckLateGameSong,code,hockey94,name
 sound/sound95.asm,$0677AC,26,sfx,code,video94,name
 sound/sound95.asm,$0677C6,202,sfxplay,code,new in 95,header
 sound/sound95.asm,$067890,50,SfxTable,data,new in 95,header
 sound/sound95.asm,$0678C2,70,song,code,video94,name
 sound/sound95.asm,$067908,48,StartSong,code,new in 95,header
-sound/sound95.asm,$067938,38,play_new_song,code,sound94,name
+sound/sound95.asm,$067938,38,stop_current_song,code,sound94,name
 sound/sound95.asm,$06795E,42,play_new_song2,code,new in 95,header
 sound/sound95.asm,$067988,42,KillCrowd,code,display94,name
 sound/sound95.asm,$0679B2,18,SoundOff,code,new in 95,header
@@ -253,8 +253,8 @@ sound/sound95.asm,$067B24,74,ProcessOneMusicTrack,code,sound94,name
 sound/sound95.asm,$067B6E,16,command_jump_table,data,sound94,name
 sound/sound95.asm,$067B7E,50,handle_command_00,code,sound94,name
 sound/sound95.asm,$067BB0,34,ReleaseChannelAndNote,code,sound94,name
-sound/sound95.asm,$067BD2,26,ClearZ80SpecialEffectsFlags,code,sound94,name
-sound/sound95.asm,$067BEC,2,rtsfx,code,sound94,fingerprint ClearZ80SpecialEffectsFlags
+sound/sound95.asm,$067BD2,26,StopPCMChannel,code,sound94,name
+sound/sound95.asm,$067BEC,2,rtsfx,code,sound94,fingerprint StopPCMChannel
 sound/sound95.asm,$067BEE,326,handle_command_10,code,sound94,name
 sound/sound95.asm,$067D34,974,UpdateChannelFrequencyAndVolume,code,sound94,name
 sound/sound95.asm,$068102,130,SetChannelVolume,code,sound94,name
@@ -284,7 +284,7 @@ engine/video95.asm,$079936,22,setvram,code,video94,name
 engine/video95.asm,$07994C,214,setVram_0,code,video94,name
 engine/video95.asm,$079A22,26,Vmaddr,code,video94,name
 engine/video95.asm,$079A3C,132,dobitmap,code,video94,name
-engine/video95.asm,$079AC0,4,DoDMA_clearCallbackPointer,code,video94,name
+engine/video95.asm,$079AC0,4,DecompressGraphicsPlain,code,video94,name
 engine/video95.asm,$079AC4,58,DecompressGraphics,code,video94,name
 engine/video95.asm,$079AFE,20,DoDMApro,code,video94,name
 engine/video95.asm,$079B12,18,WaitDMA,code,video94,name
@@ -498,7 +498,7 @@ engine/middle95.asm,$07D9C8,74,PrintBigChar,code,video94,name
 engine/middle95.asm,$07DA12,42,PutBigTile,code,video94,name
 engine/middle95.asm,$07DA3C,60,bfasciicon,data,data94,name
 engine/middle95.asm,$07DA78,200,UnpackPicture,code,title94,name
-engine/middle95.asm,$07DB40,60,UpdateLineChange,code,hockey94,name
+engine/middle95.asm,$07DB40,60,RestoreBenchEnergy,code,hockey94,name
 engine/middle95.asm,$07DB7C,38,RestoreTeamEnergy,code,penalty94,name
 engine/middle95.asm,$07DBA2,40,ResetTeamEnergy,code,new in 95,header
 engine/middle95.asm,$07DBCA,14,setpde,code,collide94,name
@@ -969,8 +969,8 @@ engine/replay95.asm,$08DD32,16,RevReplayAdj,code,replay94,name
 engine/replay95.asm,$08DD42,474,RestoreReplayFrame,code,replay94,name
 engine/replay95.asm,$08DF1C,62,ClampReplayView,code,replay94,name
 front/season95.asm,$08DF5A,128,demoread,code,hockey94,name
-front/season95.asm,$08DFDA,28,HandleJoy1,code,hockey94,name
-front/season95.asm,$08DFF6,2,rtsdemo,code,hockey94,follows HandleJoy1
+front/season95.asm,$08DFDA,28,EndDemoOnPress,code,hockey94,name
+front/season95.asm,$08DFF6,2,rtsdemo,code,hockey94,follows EndDemoOnPress
 front/season95.asm,$08DFF8,118,RandomSetupTeams,code,new in 95,header
 front/season95.asm,$08E06E,442,SeasonMain,code,new in 95,header
 front/season95.asm,$08E228,30,ReadSeasonHeader,code,new in 95,header
@@ -1740,7 +1740,7 @@ front/scout95.asm,$09F950,50,PageMatchup,code,scout94,name
 front/scout95.asm,$09F982,36,PrintMatchupRating,code,scout94,name
 front/scout95.asm,$09F9A6,26,PrintTwoSpaces,code,scout94,name
 front/scout95.asm,$09F9C0,4,TwoSpacesTxt,data,scout94,name
-front/scout95.asm,$09F9C4,138,StatsText,data,scout94,name
+front/scout95.asm,$09F9C4,138,ScoutRatingText,data,scout94,name
 front/scout95.asm,$09FA4E,222,DrawMatchupPictures,code,scout94,name
 front/scout95.asm,$09FB2C,54,DrawMatchupPicture,code,scout94,name
 front/scout95.asm,$09FB62,38,DrawMatchupLogo,code,scout94,name

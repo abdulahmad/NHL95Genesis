@@ -3691,7 +3691,7 @@ assonetimer	;asstab entry $18 (94 $23). Player a3 shooting a one-timer: the pass
 	neg.w	d2
 .speed
 	move.w	#$11,d1
-	tst.w	(music_global_tick_counter).w
+	tst.w	(PalMode).w
 	beq.w	.chkzero
 	move.w	#$18,d1	;PAL (94 $16)
 .chkzero

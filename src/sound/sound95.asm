@@ -1511,7 +1511,7 @@ updatesound	;Move the crowd noise volume (psg noise channel, asv) toward crowdle
 	move.b	d0,(VDP_PSG).l
 	rts
 
-CheckPeriodEnd	;Called once per second. 3rd period: choose and play a song once at the random trigger time set by ResetClock
+CheckLateGameSong	;Called once per second. 3rd period: choose and play a song once at the random trigger time set by ResetClock
 	cmpi.w	#2,(gsp).w
 	bne.w	.0
 	btst	#4,(gmode).w
@@ -1619,7 +1619,7 @@ song	;Play song number, one word passed on stack. 95: songs 0-3 through StartSon
 	blt.w	.0
 	cmp.w	#$55,d0
 	bgt.w	.0
-	jsr	(play_new_song).l
+	jsr	(stop_current_song).l
 	move.w	d0,(PlayingSong).w
 .0
 	cmp.w	#3,d0
@@ -1637,7 +1637,7 @@ StartSong	;Stop the song, then song d0 (command 4, tempo $100)
 	tst.w	d0
 	bmi.w	rtsfx
 	movem.l	d0-d7/a0-a6,-(sp)
-	bsr.w	play_new_song
+	bsr.w	stop_current_song
 	move.w	d0,(PlayingSong).w
 	move.w	d0,d1
 	move.w	#4,d0
@@ -1648,7 +1648,7 @@ StartSong	;Stop the song, then song d0 (command 4, tempo $100)
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-play_new_song	;Stop the song in progress (PlayingSong, sound driver command 5)
+stop_current_song	;Stop the song in progress (PlayingSong, sound driver command 5)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#5,d0
 	move.w	(PlayingSong).w,d1
@@ -1660,7 +1660,7 @@ play_new_song	;Stop the song in progress (PlayingSong, sound driver command 5)
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-play_new_song2	;Unreferenced. A copy of play_new_song that skips the saving when no song plays
+play_new_song2	;Unreferenced. A copy of stop_current_song that skips the saving when no song plays
 	tst.w	(PlayingSong).w
 	bmi.w	.0	;no song playing
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1831,16 +1831,16 @@ handle_command_00	;Event $0x: key off note +2 on channel +1 bits 3-0 of track d7
 	btst	#0,6(a2)
 	dbne	d1,.find
 	beq.w	rtsfx
-ReleaseChannelAndNote	;Key off channel struct a2 if it is on. The PCM patches ($60 up) stop the PCM channel (ClearZ80SpecialEffectsFlags)
+ReleaseChannelAndNote	;Key off channel struct a2 if it is on. The PCM patches ($60 up) stop the PCM channel (StopPCMChannel)
 	bclr	#0,6(a2)
 	beq.w	rtsfx
 	cmpi.b	#$60,3(a2)
-	bge.w	ClearZ80SpecialEffectsFlags
+	bge.w	StopPCMChannel
 	move.b	4(a2),d0
 	bset	d0,(Z80_command_buffer).w
 	st	(music_needs_z80_update).w
 	rts
-ClearZ80SpecialEffectsFlags	;Clear Z80 RAM $8E (Z80_RAM+$8E, the PCM rate byte written by UpdateChannelFrequencyAndVolume): stops the PCM channel
+StopPCMChannel	;Clear Z80 RAM $8E (Z80_RAM+$8E, the PCM rate byte written by UpdateChannelFrequencyAndVolume): stops the PCM channel
 	move.w	d0,-(sp)	;pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
 	move.w	#$D,d0
 	jsr	(SoundCmd).l

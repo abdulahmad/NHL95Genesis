@@ -301,7 +301,7 @@ Begin	;Cold start, entered from RegionOK. Clear RAM, init sound and menus, go to
 	clr.w	(PALflag).l		;clear the PAL flag
 	move.w	(VDP_CTRL).l,d0
 	andi.w	#1<<PAL_MODE,d0		;VDP status bit 0 = PAL (50 Hz)
-	move.w	d0,(music_global_tick_counter).l
+	move.w	d0,(PalMode).l
 	beq.w	.ntsc
 	bset	#0,(PALflag).l	;PAL
 .ntsc	move.w	#$FFFF,(PlayingSong).l	;no song playing

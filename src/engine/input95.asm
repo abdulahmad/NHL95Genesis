@@ -1268,7 +1268,7 @@ puckvzadj	;Set puckvz for a top shelf shot from the distance to the goal
 	neg.w	d1	;negate d1
 .speed
 	move.w	#$11,d2	;move 11 into d2
-	tst.w	(music_global_tick_counter).w	;PAL
+	tst.w	(PalMode).w	;PAL
 	beq.w	.div	;branch if equal (always is)
 	move.w	#$18,d2	;PAL (94 $16)
 .div

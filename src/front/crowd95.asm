@@ -127,7 +127,7 @@ ShowCrowdFrame	;Crowd frame d0 (0 = none): its sprites in view as sprite table e
 	move.w	d5,-(sp)
 	move.w	4(a0),d5
 	andi.w	#$7FF,d5
-	add.w	(gamesetuptilesetindex).w,d5
+	add.w	(animchars).w,d5
 	or.w	(sp)+,d5
 	move.w	d5,(a6)+
 	move.w	6(a0),d5

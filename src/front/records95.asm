@@ -20,10 +20,10 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	addi.w	#$24,d4
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(spritechars).w
 	movea.l	#NameEntryBgMap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
 	jsr	(printz).l
@@ -1794,7 +1794,7 @@ SetupScreen	;Common start of the stats screens: blank, scroll 0, 40 cell mode, t
 	move.l	#SmallFontMap,(smallfontptr).l
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l
 	String	-TXMAP1,$0,$0,$0
 	moveq	#$40,d0

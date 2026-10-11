@@ -2,7 +2,7 @@
 ;	New in 95: SeasonMain runs the season from the main flow: SEASON SETUP, the SEASON OPTIONS menu (play games,
 ;	play until a day, standings, team schedule calendar, games today, stats and playoff screens), the simulation of the
 ;	computer games (SimDayGames, SimScore, SimGameStats and the goal weight tables at the end) and the save RAM records.
-;	At the head: demoread / HandleJoy1, and RandomSetupTeams (SetupDemo picks random teams).
+;	At the head: demoread / EndDemoOnPress, and RandomSetupTeams (SetupDemo picks random teams).
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
@@ -24,26 +24,26 @@ demoread	;Monitor the pads in demo mode (called every game loop): start on a pad
 	beq.w	.0
 	jmp	startpause1
 .0
-	bsr.w	HandleJoy1
+	bsr.w	EndDemoOnPress
 	jsr	(ReadJoy2).l
 	btst	#7,d1
 	beq.w	.1
 	jmp	startpause2
 .1
 	tst.w	(FourWayPlay).w
-	beq.w	HandleJoy1
+	beq.w	EndDemoOnPress
 	jsr	(ReadJoy3).l
 	btst	#7,d1
 	beq.w	.2
 	jmp	startpause3
 .2
-	bsr.w	HandleJoy1
+	bsr.w	EndDemoOnPress
 	jsr	(ReadJoy4).l
 	btst	#7,d1
-	beq.w	HandleJoy1
+	beq.w	EndDemoOnPress
 	jmp	startpause4
 
-HandleJoy1	;Any button on the pad just read (d1) ends the demo; 95 also sets demoflag and setuphome /
+EndDemoOnPress	;Any button on the pad just read (d1) ends the demo; 95 also sets demoflag and setuphome /
 	;setupvis to $64 before ExitToOpening
 	tst.w	d1
 	beq.w	rtsdemo
@@ -52,7 +52,7 @@ HandleJoy1	;Any button on the pad just read (d1) ends the demo; 95 also sets dem
 	move.w	#$64,(setupvis).w
 	jmp	ExitToOpening
 
-rtsdemo	;Shared rts of demoread / HandleJoy1
+rtsdemo	;Shared rts of demoread / EndDemoOnPress
 	rts
 
 RandomSetupTeams	;Random teams for the demo (SetupDemo): step the two setup team values by a random 0-27 and copy them
@@ -1683,7 +1683,7 @@ SeasonSetupGfx	;Season setup screen video set up and graphics
 	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l
 	String	-TXMAP2,$0,$0,$0
 	movea.l	#ControllerBgMap,a0
@@ -2408,7 +2408,7 @@ GamesTodayGfx	;Games today screen video set up and graphics
 	move.l	#SmallFontMap,(smallfontptr).l
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(gamestoday1chars).w
 	movea.l	#GamesTodayMap1+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
@@ -2423,7 +2423,7 @@ GamesTodayGfx	;Games today screen video set up and graphics
 	dc.b	$0B,$97,$54,$CF,$F9,$AB,$CD,$E1	;remap table
 	move.w	d4,(teamblocksmapptr).w
 	movea.l	#Teamblocksmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l
 	String	-TXMAP2,$0,$0,$0
 	movea.l	(screenarg).w,a0
@@ -2961,7 +2961,7 @@ SeasonOptionsGfx	;Season options screen video set up and graphics
 	move.l	#SmallFontMap,(smallfontptr).l
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	movea.l	#Framermap+8,a2
 	move.l	#Framermap,(framermapptr).l
 	move.w	d4,(framercset).w
@@ -3146,19 +3146,19 @@ CalendarGfx	;Calendar screen video set up and graphics
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(teamblocksmapptr).w
 	movea.l	#Teamblocksmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(padiconchars1).w
 	movea.l	#CalOpponentMap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(padiconchars2).w
 	movea.l	#CalDayMap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(padiconchars3).w
 	movea.l	#CalMonthMap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(padiconchars4).w
 	movea.l	#CalCheckMap,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(calresultchars).w
 	movea.l	#CalResultMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
@@ -3703,10 +3703,10 @@ StandingsGfx	;Standings screen video set up and graphics
 	move.l	#SmallFontMap,(smallfontptr).l
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(teamblocksmapptr).w
 	movea.l	#Teamblocksmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l
 	String	-TXMAP2,$0,$0,$0
 	movea.l	(screenarg).w,a0

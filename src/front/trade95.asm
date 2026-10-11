@@ -1255,7 +1255,7 @@ TradeGfx	;Trade screen video set up and graphics
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF
 	move.w	d4,(teamblocksmapptr).w
 	movea.l	#Teamblocksmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	movea.l	#Framermap+8,a2
 	move.l	#Framermap,(framermapptr).l
 	move.w	d4,(framercset).w

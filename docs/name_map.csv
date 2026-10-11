@@ -186,7 +186,7 @@ $00A29A,rtssdisp,locret_A29A,,display95
 $00A29C,checksso,sub_A29C,,display95
 $00A404,setffo,sub_A404,,display95
 $00A434,uppads,sub_A434,,display95
-$00A49A,FormatControllerDisplay,sub_A49A,,display95
+$00A49A,QueuePadLabel,sub_A49A,FormatControllerDisplay,display95
 $00A4FE,RenderSmallFontChar,sub_A4FE,,display95
 $00A52E,ButtonLabelCharTable,unk_A52E,,display95
 $00A536,updateanim,sub_A536,,display95
@@ -240,13 +240,13 @@ $00D8EC,SoundBanks,,,sound/sound95
 $0676D8,SoundCmd,sub_676D8,,sound/sound95
 $0676E8,UpdateCwdExcite,sub_676E8,,sound/sound95
 $067710,updatesound,sub_67710,,sound/sound95
-$06776A,CheckPeriodEnd,sub_6776A,,sound/sound95
+$06776A,CheckLateGameSong,sub_6776A,CheckPeriodEnd,sound/sound95
 $0677AC,sfx,sub_677AC,,sound/sound95
 $0677C6,sfxplay,loc_677C6,,sound/sound95
 $067890,SfxTable,unk_67890,,sound/sound95
 $0678C2,song,sub_678C2,,sound/sound95
 $067908,StartSong,sub_67908,,sound/sound95
-$067938,play_new_song,sub_67938,,sound/sound95
+$067938,stop_current_song,sub_67938,play_new_song,sound/sound95
 $06795E,play_new_song2,,,sound/sound95
 $067988,KillCrowd,sub_67988,,sound/sound95
 $0679B2,SoundOff,sub_679B2,,sound/sound95
@@ -260,7 +260,7 @@ $067B24,ProcessOneMusicTrack,,,sound/sound95
 $067B6E,command_jump_table,,,sound/sound95
 $067B7E,handle_command_00,,,sound/sound95
 $067BB0,ReleaseChannelAndNote,,,sound/sound95
-$067BD2,ClearZ80SpecialEffectsFlags,,,sound/sound95
+$067BD2,StopPCMChannel,,ClearZ80SpecialEffectsFlags,sound/sound95
 $067BEC,rtsfx,locret_67BEC,,sound/sound95
 $067BEE,handle_command_10,,,sound/sound95
 $067D34,UpdateChannelFrequencyAndVolume,,,sound/sound95
@@ -291,7 +291,7 @@ $079936,setVram,sub_79936,setvram,engine/video95
 $07994C,setVram_0,sub_7994C,,engine/video95
 $079A22,Vmaddr,sub_79A22,,engine/video95
 $079A3C,dobitmap,sub_79A3C,,engine/video95
-$079AC0,DoDMA_clearCallbackPointer,sub_79AC0,,engine/video95
+$079AC0,DecompressGraphicsPlain,sub_79AC0,DoDMA_clearCallbackPointer,engine/video95
 $079AC4,DecompressGraphics,sub_79AC4,,engine/video95
 $079AFE,DoDMApro,loc_79AFE,,engine/video95
 $079B12,WaitDMA,sub_79B12,,engine/video95
@@ -505,7 +505,7 @@ $07D9C8,PrintBigChar,sub_7D9C8,,engine/middle95
 $07DA12,PutBigTile,sub_7DA12,,engine/middle95
 $07DA3C,bfasciicon,unk_7DA3C,,engine/middle95
 $07DA78,UnpackPicture,sub_7DA78,,engine/middle95
-$07DB40,UpdateLineChange,sub_7DB40,,engine/middle95
+$07DB40,RestoreBenchEnergy,sub_7DB40,UpdateLineChange,engine/middle95
 $07DB7C,RestoreTeamEnergy,,,engine/middle95
 $07DBA2,ResetTeamEnergy,sub_7DBA2,,engine/middle95
 $07DBCA,setpde,sub_7DBCA,,engine/middle95
@@ -980,7 +980,7 @@ $08DD32,RevReplayAdj,,,engine/replay95
 $08DD42,RestoreReplayFrame,SetRCords,,engine/replay95
 $08DF1C,ClampReplayView,,,engine/replay95
 $08DF5A,demoread,sub_8DF5A,,front/season95
-$08DFDA,HandleJoy1,sub_8DFDA,,front/season95
+$08DFDA,EndDemoOnPress,sub_8DFDA,HandleJoy1,front/season95
 $08DFF6,rtsdemo,locret_8DFF6,,front/season95
 $08DFF8,RandomSetupTeams,sub_8DFF8,,front/season95
 $08E06E,SeasonMain,sub_8E06E,,front/season95
@@ -1812,7 +1812,7 @@ $09F950,PageMatchup,sub_9F950,,front/scout95
 $09F982,PrintMatchupRating,sub_9F982,,front/scout95
 $09F9A6,PrintTwoSpaces,sub_9F9A6,,front/scout95
 $09F9C0,TwoSpacesTxt,unk_9F9C0,,front/scout95
-$09F9C4,StatsText,,,front/scout95
+$09F9C4,ScoutRatingText,,StatsText,front/scout95
 $09FA4E,DrawMatchupPictures,sub_9FA4E,,front/scout95
 $09FB2C,DrawMatchupPicture,sub_9FB2C,,front/scout95
 $09FB62,DrawMatchupLogo,sub_9FB62,,front/scout95

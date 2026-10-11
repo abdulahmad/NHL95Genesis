@@ -732,7 +732,7 @@ getnamebody	;getnameD7 joins here
 	adda.w	(a0),a0
 	jsr	(GetJerseyNumber).l
 	move.b	(jerseynum).w,d0
-	bsr.w	ConverByteToDigits
+	bsr.w	ConvertByteToDigits
 	bsr.w	appendz	;add space after JNo
 	String	' '
 	movea.l	(sp)+,a1
@@ -792,7 +792,7 @@ NumInitialBody	;Shared body of FormatPlayerNumInitial
 	adda.w	(a0),a0
 	jsr	(GetJerseyNumber).l
 	move.b	(jerseynum).w,d0
-	bsr.w	ConverByteToDigits
+	bsr.w	ConvertByteToDigits
 	move.b	#$20,(a1)+
 	movea.l	(sp)+,a0
 	move.w	(a0)+,d0
@@ -818,7 +818,7 @@ FormatPlayerNameD7	;FormatPlayerName for team d7
 	adda.w	(a0),a0
 	jsr	(GetJerseyNumber).l
 	move.b	(jerseynum).w,d0
-	bsr.w	ConverByteToDigits
+	bsr.w	ConvertByteToDigits
 	move.b	#$20,(a1)+
 	movea.l	(sp)+,a0
 	move.w	(a0)+,d0
@@ -843,7 +843,7 @@ FormatPlayerName	;a1 = mesarea string "NN Last" for player d0 of team a2, built 
 	adda.w	(a0),a0
 	jsr	(GetJerseyNumber).l
 	move.b	(jerseynum).w,d0
-	bsr.w	ConverByteToDigits
+	bsr.w	ConvertByteToDigits
 	move.b	#$20,(a1)+
 	movea.l	(sp)+,a0
 	move.w	(a0)+,d0
@@ -961,7 +961,7 @@ getnamea0	;Shared tail of getplayername: GetRosterName, a0 = the name
 	movem.l	(sp)+,d0/d7/a2
 	rts
 
-ConverByteToDigits	;Converts decimal number in d0 to ascii: two ascii digits of bcd byte d0 to (a1)+, a leading 0 becomes a space ($F0 + '0')
+ConvertByteToDigits	;Converts decimal number in d0 to ascii: two ascii digits of bcd byte d0 to (a1)+, a leading 0 becomes a space ($F0 + '0')
 	move.w	d0,-(sp)	;push to stack
 	lsr.b	#4,d0	;divide by 16 (get upper digit in d0)
 	bne.w	.0
@@ -1343,7 +1343,7 @@ setupTeamBlocksMap	;Load the TeamBlocks map tiles (Teamblocksmap) at d4+$2C (93 
 	movea.w	#(TeamBlockMaps-M68K_RAM),a1
 	movea.l	(teamblocksmapptr).w,a0
 	lea	8(a0),a2
-	bsr.w	DoDMA_clearCallbackPointer
+	bsr.w	DecompressGraphicsPlain
 	adda.l	4(a0),a0
 	move.l	a0,-(sp)
 	move.w	(HomeTeam).w,d0
@@ -1503,7 +1503,7 @@ ClrHor	;Unreferenced. Revert the graphics back to vertical ice rink mode: the ri
 	move.w	#$3E8,(Oldrow).w	;1000
 	move.w	(rinkvrcset).w,d4
 	movea.l	#Rinktilelist+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	jsr	(LoadHomeTeamGfx).l
 	move.w	d4,(EASNcset).w
 	jsr	(setupEASNmap).l
@@ -1641,7 +1641,7 @@ AssignPads	;Unreferenced. Clear c1playernum-c4playernum, then give each pad on a
 .x
 	rts
 
-setupIceRinkMap	;Copy the rink palette (16 longs at the Rinktilelist header) to palfadenew
+setupIceRinkPal	;Copy the rink palette (16 longs at the Rinktilelist header) to palfadenew
 	movea.l	#Rinktilelist,a0
 	adda.l	(a0),a0
 	moveq	#$F,d0
@@ -1761,11 +1761,11 @@ AddFonts	;Load the small font at d4 (smallfontchars, smallfontptr = SmallFontMap
 	;(BigFontChars, BigFontMap). Called from setupice
 	move.w	d4,(smallfontchars).w
 	movea.l	#SmallFontMap2+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.l	#SmallFontMap2,(smallfontptr).l
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	rts
 
 chkpk	;Unreferenced. With a power play (sflags2 bit 5) chkpk2, else Z set
@@ -1996,7 +1996,7 @@ UnpackPicture	;Unpack a picture a2: count.w, then 3 bytes per row of 8 pixels to
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-UpdateLineChange	;Once a second (periodicevents): unless OptLine: bench players (tmpdst -2) of both teams get 9 energy, up to $1000 (.team)
+RestoreBenchEnergy	;Once a second (periodicevents): unless OptLine: bench players (tmpdst -2) of both teams get 9 energy, up to $1000 (.team)
 	tst.w	(OptLine).w
 	bne.w	.3
 	movea.w	#(tmstruct-M68K_RAM),a2	;team 1
@@ -2199,19 +2199,19 @@ setupice	;Set all variables, send non purgeable graphics, build sprite frame lis
 	clr.w	d4
 	move.w	d4,(rinkvrcset).w
 	movea.l	#Rinktilelist+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	jsr	(LoadHomeTeamGfx).l
 	move.w	d4,(EASNcset).w
 	jsr	(setupEASNmap).l
 	move.w	d4,(energybarchars).w	;energy bar chars
 	movea.l	#EnergyBarMap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
-	move.w	d4,(gamesetuptilesetindex).w	;crowd chars
+	jsr	(DecompressGraphicsPlain).l
+	move.w	d4,(animchars).w	;crowd chars
 	movea.l	#CrowdFrameList+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(spritechars).w
 	jsr	(defaultsprites).l
-	jsr	(setupIceRinkMap).l
+	jsr	(setupIceRinkPal).l
 	move.w	d4,(framerchars).w
 	jsr	(AddFramer2).l
 	jsr	(AddFonts).l
@@ -2265,7 +2265,7 @@ setupice	;Set all variables, send non purgeable graphics, build sprite frame lis
 ;	LoadHomeTeamGfx and TeamGfxList, EASNLogo and setupEASNmap, FormatAndPrintTime and PeriodLabelTable.
 
 
-LoadHomeTeamGfx	;Load the HomeTeam graphics of TeamGfxList to VRAM d4 - $18 (DoDMA_clearCallbackPointer). Called from setupice
+LoadHomeTeamGfx	;Load the HomeTeam graphics of TeamGfxList to VRAM d4 - $18 (DecompressGraphicsPlain). Called from setupice
 	;and ClrHor
 	move.w	d0,-(sp)
 	subi.w	#$18,d4
@@ -2274,7 +2274,7 @@ LoadHomeTeamGfx	;Load the HomeTeam graphics of TeamGfxList to VRAM d4 - $18 (DoD
 	asl.w	#2,d0
 	movea.l	(a2,d0.w),a2
 	addq.w	#8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	move.w	(sp)+,d0
 	rts
 TeamGfxList	;LoadHomeTeamGfx: one address per team (TeamList order) in the ArenaGfxBank (ASE and ASW share one)
@@ -2308,7 +2308,7 @@ EASNLogo	;Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertical ice rin
 setupEASNmap	;Load the EASN logo tiles at EASNcset. Called from setupice and ClrHor
 	move.w	(EASNcset).w,d4
 	movea.l	#EASNmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	rts
 
 FormatAndPrintTime	;Unreferenced. D0 bits 14-15 = period, bits 0-13 = seconds

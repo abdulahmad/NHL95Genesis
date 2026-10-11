@@ -997,7 +997,7 @@ puckpenshot	;Penalty shot / shootout face-off: rink, puck and nets reset, the sh
 .1
 	move.w	(ExtraChars).w,d4
 	movea.l	#RefTiles+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	bset	#3,(disflags).w
 	bclr	#0,(sflags).w
 	bclr	#0,(sflags3).w

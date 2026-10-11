@@ -1706,7 +1706,7 @@ setoptions	;Build the game setup screen: vbint VBlank_SetOptions, the vram map, 
 LoadSetupTiles	;Load the TeamBitmaps+8 tiles from char d4
 	moveq	#2,d4
 	movea.l	#TeamBitmaps+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
+	jsr	(DecompressGraphicsPlain).l
 	rts
 
 FigureJoy	;Set cont1team ... cont4team. In the playoffs (not Shootout, gmode2 bit 0) find this
@@ -2158,7 +2158,7 @@ PlayerCardTimer	;Player cards, called each frame from ReadSetupPads while cardde
 	adda.w	(a2),a2
 	move.b	(a2),d0
 	ext.w	d0
-	jsr	(ConverByteToDigits).l
+	jsr	(ConvertByteToDigits).l
 	move.w	#$2000,4(a3)
 	movea.l	(sp)+,a1
 	jsr	(appstring).l
