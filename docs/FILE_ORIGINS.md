@@ -166,7 +166,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **input94** (22 bytes): setc1player, setc2player
 - **new in 95** (24 bytes): setc3player, setc4player
 - **input94** (154 bytes): restorepl
-- **setup94** (252 bytes): clearTeamStats, setteams, InitTeamSructure
+- **setup94** (252 bytes): clearTeamStats, setteams, InitTeamStructure
 
 ### sound/sound95
 
@@ -378,7 +378,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 - **stats94** (886 bytes): TeamRosterScreen, DisplayPlayerList
 - **new in 95** (218 bytes): PrintPlayerLines
-- **stats94** (328 bytes): ExitAttributeScreen2, getNameandAttrib, AttribStatus
+- **stats94** (328 bytes): ExitStatsScreen, getNameandAttrib, AttribStatus
 - **new in 95** (100 bytes): (tables only)
 - **stats94** (488 bytes): AttribEnergy, AttribFighting, AttribRating, AttribPrintPct, AttribHanded, AttribWeight, DrawTeamScreen
 - **new in 95** (82 bytes): FindPlayerLine, LoadRosterFont
@@ -405,7 +405,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 ### engine/playoff95
 
-- **setup94** (1188 bytes): PlayoffScreen, HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, FormatScore, DrawPlayoffBracket, DrawTeamBlocks, PlayoffScreenDataTable
+- **setup94** (1188 bytes): PlayoffScreen, HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, PrintSeriesScore, DrawTreeArrow, DrawTeamBlocks, VBlank_Playoff
 - **data94** (362 bytes): (tables only)
 - **title94** (106 bytes): DrawPlayoffSprite
 - **display94** (98 bytes): SetSframe
@@ -428,7 +428,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **title94** (172 bytes): LeadSong, ClearLeadSong, LeadSongExit
 - **penalty94** (290 bytes): Stop4Pen
 - **collide94** (2 bytes): (tables only)
-- **penalty94** (2094 bytes): AddPenalty, AddPenalty2, PenaltyManager, chkprogress, InProgress, coinsearch, updatepentime, ProcessPenaltyList, RemovePlayerFromList, releasepl, checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, PrintPenaltyMessagesString
+- **penalty94** (2094 bytes): AddPenalty, AddPenalty2, PenaltyManager, chkprogress, InProgress, coinsearch, updatepentime, ProcessPenaltyList, RemovePlayerFromList, releasepl, checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, ClearPenaltyMessage
 - **collide94** (192 bytes): checkagr
 - **display94** (78 bytes): showref
 - **penalty94** (14 bytes): ClearPenaltyBuffer
@@ -473,7 +473,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **checks94** (728 bytes): Goal
 - **new in 95** (66 bytes): AssignTeam
 - **penalty94** (118 bytes): PenGoalStuff
-- **data94** (488 bytes): box, DisplayPlayerAttributeMenu
+- **data94** (488 bytes): box, ShowGoalBox
 - **title94** (112 bytes): PrintPlayerAssists, PrintPlayerGoals, PrintParenNumber
 - **new in 95** (20 bytes): LockScroll
 - **replay94** (312 bytes): checkwindow
@@ -512,9 +512,9 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **period94** (846 bytes): PeriodStatsScreen, PeriodStatsCaption, PeriodStatsColumns, PeriodStatsTeam, PeriodStatsValue
 - **stats94** (52 bytes): LineEditor, LineEditorRedraw
 - **new in 95** (38 bytes): LineEditorReturn
-- **stats94** (2070 bytes): LineEditorMenu, SelectAttributeItem, PrintAttribHeader, DrawAttributeMenu, DrawMenuIcon, ClearAttributeArea, DrawLineEditorScreen, ClearAttributeArea2, ClearMenuFlags, ExitAttributeScreen, LineEditorBg, PlayerSelectBg, UpdatePlayerAttribute
+- **stats94** (2070 bytes): LineEditorMenu, SelectAttributeItem, PrintAttribHeader, DrawLineIcons, DrawMenuIcon, ClearLineArea, DrawLineEditorScreen, ClearLineEditorTop, ClearMenuFlags, LineEditorExit, LineEditorBg, PlayerSelectBg, SetLineSlot
 - **new in 95** (142 bytes): SaveTeamLines, CopyTeamLines
-- **data94** (1000 bytes): DisplayPeriodOver, FindMaxAttributeTEam, CalculateTeamAttributes, CalculateTeamAttributeValues, HighlightsScreen
+- **data94** (1000 bytes): ShowThreeStars, TakeTopStarScore, CalcStarScores, CalcTeamStarScores, HighlightsScreen
 - **new in 95** (566 bytes): ReadAnyPad7, PrintHighlightsTitle, DrawHighlightPage, DrawHighlightEntry, PrintStatHighlight
 - **cards94** (42 bytes): AppendNumber
 - **new in 95** (392 bytes): PrintHighlight, PrintGameScore2, PrintScore2, DrawTeamLogo4

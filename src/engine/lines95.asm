@@ -465,7 +465,7 @@ DefaultLineData	;Copy the default line sets of the 28 teams (TeamList + 6, 8 x 8
 	rts
 
 LoadTeamLines	;The line sets of team struct a2 ($16C): from save RAM (SRLines + team * $41) when there is save RAM and
-	;line changes are on, else from the team data. Jumped to from InitTeamSructure
+	;line changes are on, else from the team data. Jumped to from InitTeamStructure
 	tst.w	(OptLine).w
 	beq.w	.3
 	tst.w	(ValidSRAM).w

@@ -834,7 +834,7 @@ FormatPlayerNameD7	;FormatPlayerName for team d7
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
 
-FormatPlayerName	;a1 = mesarea string "NN Last" for player d0 of team a2, built in TextBuffer. Called from DisplayPlayerAttributeMenu and others
+FormatPlayerName	;a1 = mesarea string "NN Last" for player d0 of team a2, built in TextBuffer. Called from ShowGoalBox and others
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	move.w	Xvel(a2),d7
 	bsr.w	GetPlayerNamePointer

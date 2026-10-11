@@ -3,8 +3,8 @@
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, FormatScore, DrawPlayoffBracket,
-;	DrawTeamBlocks, PlayoffScreenDataTable and PlayoffScreenText.
+;	HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, PrintSeriesScore, DrawTreeArrow,
+;	DrawTeamBlocks, VBlank_Playoff and PlayoffScreenText.
 ;	95 changes: PlayoffScreen returns at once in Shootout (gmode2 bit 0) and also runs for sflags11 bit 2; AddTeamBlock and
 ;	AddSmallFont are inline, the title uses printbig with the BigFontMap2 tiles, HandlePlayoffInput reads all four pads, the
 ;	song is 3 (94 $79), the map chars start at $69A (94 $30A).
@@ -21,7 +21,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	tst.w	(OptPlayMode).w
 	beq.s	rtsLineData
 .0
-	move.l	#PlayoffScreenDataTable,(vbint).l
+	move.l	#VBlank_Playoff,(vbint).l
 	bclr	#1,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$BC00,(VSPRITES).w
@@ -117,7 +117,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	move.b	(a0)+,(printx+1).w
 	clr.w	d0
 	move.b	(a0)+,d0
-	jsr	(DrawPlayoffBracket).l
+	jsr	(DrawTreeArrow).l
 	dbf	d4,.3
 	jsr	(printz).l
 	String	-(TXPAL1+TXMAP1),0,0,0
@@ -132,7 +132,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	move.b	(a0)+,(printy+1).w
 	jsr	(printsmallz).l
 	String	CC_SetAttribute,3
-	jsr	(FormatScore).l
+	jsr	(PrintSeriesScore).l
 	adda.w	#$10,a2
 	dbf	d4,.4
 .5
@@ -233,7 +233,7 @@ PlayoffScreen_waitvsync	;Each time palcount runs out, eor the color word at palf
 	move.w	d0,(oldvcount).w
 	rts
 
-FormatScore	;Print best of 7 wins "t-b" for game struct a2 at printx / printy
+PrintSeriesScore	;Print best of 7 wins "t-b" for game struct a2 at printx / printy
 	movea.w	#(mesarea-M68K_RAM),a1
 	move.w	#6,(a1)+
 	move.w	4(a2),d0
@@ -247,7 +247,7 @@ FormatScore	;Print best of 7 wins "t-b" for game struct a2 at printx / printy
 	movea.w	#(mesarea-M68K_RAM),a1
 	jmp	print
 
-DrawPlayoffBracket	;Draw tree arrow d0 from the arrows map (Arrowsmap) at printx / printy
+DrawTreeArrow	;Draw tree arrow d0 from the arrows map (Arrowsmap) at printx / printy
 	movem.l	d0-d7/a0-a3,-(sp)
 	movea.l	#Arrowsmap,a0
 	movea.l	a0,a1
@@ -288,7 +288,7 @@ DrawTeamBlocks	;Draw team block d1 (team * 2) from Teamblocksmap at printx / pri
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-PlayoffScreenDataTable	;The PlayoffScreen vblank handler (vbint): dma the sprite table, write
+VBlank_Playoff	;The PlayoffScreen vblank handler (vbint): dma the sprite table, write
 	;$FEA0+DispAttribCtr to the hscroll, cramfade. Always vcount+1, p_music_vblank, rte
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#2,(disflags).w
@@ -325,15 +325,15 @@ PlayoffScreenText	;Round titles by gamelevel, printbig Strings with their positi
 
 
 PlayoffTreeSetup	;Playoff tree layout by gamelevel, the same bytes as 94. Used by PlayoffScreen
-	;Per level: teams-1 then x,y per team (DrawTeamBlocks), arrows-1 then x,d0 per arrow (DrawPlayoffBracket), scores-1
-	;then x,y per score (FormatScore, negative: none)
+	;Per level: teams-1 then x,y per team (DrawTeamBlocks), arrows-1 then x,d0 per arrow (DrawTreeArrow), scores-1
+	;then x,y per score (PrintSeriesScore, negative: none)
 	dc.w	.l0-PlayoffTreeSetup
 	dc.w	.l1-PlayoffTreeSetup
 	dc.w	.l2-PlayoffTreeSetup
 	dc.w	.l3-PlayoffTreeSetup
 	dc.w	.l4-PlayoffTreeSetup
 ;tree graphics for level 0: teams-1 then x,y per team (DrawTeamBlocks), arrows-1 then x,d0 per arrow
-;(DrawPlayoffBracket), scores-1 then x,y per score (FormatScore, negative: none)
+;(DrawTreeArrow), scores-1 then x,y per score (PrintSeriesScore, negative: none)
 .l0	dc.b	16-1
 	dc.b	46,2,46,5,46,8,46,11,46,14,46,17,46,20,46,23
 	dc.b	71,2,71,5,71,8,71,11,71,14,71,17,71,20,71,23

@@ -275,7 +275,7 @@ box	;Fill a $13 x 8 rectangle at printz position $FF,$B,2 with char $7FF (eraser
 	move.l	#$7FF,d2
 	jmp	eraser
 
-DisplayPlayerAttributeMenu	;Goal box: close both line change boxes (lcfound2), then the scorer and the assists from
+ShowGoalBox	;Goal box: close both line change boxes (lcfound2), then the scorer and the assists from
 	;ScoreSum (PrintPlayerGoals / PrintPlayerAssists), the goalie counts (CountGoalies)
 	movem.l	d0-d2/a0-a4,-(sp)
 	btst	#2,(BA_PS_flags).w
@@ -376,7 +376,7 @@ DisplayPlayerAttributeMenu	;Goal box: close both line change boxes (lcfound2), t
 	movem.l	(sp)+,d0-d2/a0-a4
 	rts
 
-GoalBigTxt	;printbig Strings for DisplayPlayerAttributeMenu: GOAL!, then HAT TRICK!
+GoalBigTxt	;printbig Strings for ShowGoalBox: GOAL!, then HAT TRICK!
 	String	$BF,$F,3,'GOAL!',$BF,$C,5
 	String	$BF,$C,3,'HAT TRICK!',$BF,$C,5
 

@@ -908,7 +908,7 @@ RecordHoldersScreen	;Pause menu RECORD HOLDERS: the save RAM records (PrintRecor
 	jsr	(ProcessInputWithRepeat).l
 	btst	#7,d3
 	beq.w	.0
-	jmp	(ExitAttributeScreen2).l
+	jmp	(ExitStatsScreen).l
 .0
 	tst.w	(TempWord1).w
 	bne.w	.1

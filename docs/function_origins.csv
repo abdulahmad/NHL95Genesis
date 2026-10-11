@@ -202,7 +202,7 @@ control95.asm,$00ADA2,12,setc4player,code,new in 95,header
 control95.asm,$00ADAE,154,restorepl,code,input94,name
 control95.asm,$00AE48,142,clearTeamStats,code,setup94,name
 control95.asm,$00AED6,46,setteams,code,setup94,name
-control95.asm,$00AF04,64,InitTeamSructure,code,setup94,name
+control95.asm,$00AF04,64,InitTeamStructure,code,setup94,name
 sound/sound95.asm,$00AF44,194,SndDriver,code,new in 95,no 94 match
 sound/sound95.asm,$00B006,262,SndLoadZ80,code,new in 95,header
 sound/sound95.asm,$00B10C,684,SndUpdate,code,new in 95,header
@@ -698,7 +698,7 @@ engine/setup95.asm,$084FE8,504,TeamRosterScreen,code,stats94,name
 engine/setup95.asm,$0851E0,382,DisplayPlayerList,code,stats94,name
 engine/setup95.asm,$08535E,218,PrintPlayerLines,code,new in 95,header
 engine/setup95.asm,$085438,54,PlayerStatMenuTxt,data,stats94,name
-engine/setup95.asm,$08546E,12,ExitAttributeScreen2,code,stats94,name
+engine/setup95.asm,$08546E,12,ExitStatsScreen,code,stats94,name
 engine/setup95.asm,$08547A,68,getNameandAttrib,code,stats94,name
 engine/setup95.asm,$0854BE,12,attribjmp,data,stats94,name
 engine/setup95.asm,$0854CA,130,AttribStatus,code,stats94,name
@@ -795,10 +795,10 @@ engine/playoff95.asm,$087E34,68,HandlePlayoffInput,code,setup94,name
 engine/playoff95.asm,$087E78,98,UpdatePlayoffScroll,code,setup94,name
 engine/playoff95.asm,$087EDA,4,PlayoffScreenExit,code,setup94,name
 engine/playoff95.asm,$087EDE,36,PlayoffScreen_waitvsync,code,setup94,name
-engine/playoff95.asm,$087F02,44,FormatScore,code,setup94,name
-engine/playoff95.asm,$087F2E,46,DrawPlayoffBracket,code,setup94,name
+engine/playoff95.asm,$087F02,44,PrintSeriesScore,code,setup94,name
+engine/playoff95.asm,$087F2E,46,DrawTreeArrow,code,setup94,name
 engine/playoff95.asm,$087F5C,78,DrawTeamBlocks,code,setup94,name
-engine/playoff95.asm,$087FAA,82,PlayoffScreenDataTable,code,setup94,name
+engine/playoff95.asm,$087FAA,82,VBlank_Playoff,code,setup94,name
 engine/playoff95.asm,$087FFC,74,PlayoffScreenText,data,setup94,name
 engine/playoff95.asm,$088046,362,PlayoffTreeSetup,data,data94,name
 engine/playoff95.asm,$0881B0,106,DrawPlayoffSprite,code,title94,name
@@ -842,7 +842,7 @@ engine/penalty95.asm,$08975E,84,SetPA,code,penalty94,name
 engine/penalty95.asm,$0897B2,110,SetPA2,code,penalty94,name
 engine/penalty95.asm,$089820,120,PushRef,code,penalty94,name
 engine/penalty95.asm,$089898,178,prefmes,code,penalty94,name
-engine/penalty95.asm,$08994A,36,PrintPenaltyMessagesString,code,penalty94,name
+engine/penalty95.asm,$08994A,36,ClearPenaltyMessage,code,penalty94,name
 engine/penalty95.asm,$08996E,192,checkagr,code,collide94,name
 engine/penalty95.asm,$089A2E,78,showref,code,display94,name
 engine/penalty95.asm,$089A7C,14,ClearPenaltyBuffer,code,penalty94,name
@@ -914,7 +914,7 @@ engine/goal95.asm,$08C5DC,64,AssignTeam,code,new in 95,header
 engine/goal95.asm,$08C61C,2,rtsgoal,code,new in 95,follows AssignTeam
 engine/goal95.asm,$08C61E,118,PenGoalStuff,code,penalty94,name
 engine/goal95.asm,$08C694,28,box,code,data94,name
-engine/goal95.asm,$08C6B0,394,DisplayPlayerAttributeMenu,code,data94,name
+engine/goal95.asm,$08C6B0,394,ShowGoalBox,code,data94,name
 engine/goal95.asm,$08C83A,32,GoalBigTxt,data,data94,name
 engine/goal95.asm,$08C85A,34,PPGoalBigTxt,data,data94,name
 engine/goal95.asm,$08C87C,22,PrintPlayerAssists,code,title94,name
@@ -1273,26 +1273,26 @@ front/stats95.asm,$095254,38,LineEditorReturn,code,new in 95,header
 front/stats95.asm,$09527A,126,LineEditorMenu,code,stats94,name
 front/stats95.asm,$0952F8,348,SelectAttributeItem,code,stats94,name
 front/stats95.asm,$095454,180,PrintAttribHeader,code,stats94,name
-front/stats95.asm,$095508,174,DrawAttributeMenu,code,stats94,name
-front/stats95.asm,$0955B6,8,AttributeMenuTable,data,stats94,name
+front/stats95.asm,$095508,174,DrawLineIcons,code,stats94,name
+front/stats95.asm,$0955B6,8,LineIconGroups,data,stats94,name
 front/stats95.asm,$0955BE,158,DrawMenuIcon,code,stats94,name
-front/stats95.asm,$09565C,108,ClearAttributeArea,code,stats94,name
+front/stats95.asm,$09565C,108,ClearLineArea,code,stats94,name
 front/stats95.asm,$0956C8,68,DrawLineEditorScreen,code,stats94,header names stats94
-front/stats95.asm,$09570C,26,ClearAttributeArea2,code,stats94,name
+front/stats95.asm,$09570C,26,ClearLineEditorTop,code,stats94,name
 front/stats95.asm,$095726,16,ClearMenuFlags,code,stats94,name
 front/stats95.asm,$095736,44,MenuIconPosTable,data,stats94,name
 front/stats95.asm,$095762,72,LineCursorTable,data,stats94,name
-front/stats95.asm,$0957AA,494,ExitAttributeScreen,code,stats94,name
-front/stats95.asm,$095998,76,LineEditorBg,code,stats94,follows ExitAttributeScreen
+front/stats95.asm,$0957AA,494,LineEditorExit,code,stats94,name
+front/stats95.asm,$095998,76,LineEditorBg,code,stats94,follows LineEditorExit
 front/stats95.asm,$0959E4,124,PlayerSelectBg,code,stats94,follows LineEditorBg
-front/stats95.asm,$095A60,48,UpdatePlayerAttribute,code,stats94,name
+front/stats95.asm,$095A60,48,SetLineSlot,code,stats94,name
 front/stats95.asm,$095A90,58,SaveTeamLines,code,new in 95,header
 front/stats95.asm,$095ACA,84,CopyTeamLines,code,new in 95,header
-front/stats95.asm,$095B1E,204,DisplayPeriodOver,code,data94,name
-front/stats95.asm,$095BEA,64,FindMaxAttributeTEam,code,data94,name
-front/stats95.asm,$095C2A,96,CalculateTeamAttributes,code,data94,name
-front/stats95.asm,$095C8A,158,CalculateTeamAttributeValues,code,data94,name
-front/stats95.asm,$095D28,478,HighlightsScreen,code,data94,follows CalculateTeamAttributeValues
+front/stats95.asm,$095B1E,204,ShowThreeStars,code,data94,name
+front/stats95.asm,$095BEA,64,TakeTopStarScore,code,data94,name
+front/stats95.asm,$095C2A,96,CalcStarScores,code,data94,name
+front/stats95.asm,$095C8A,158,CalcTeamStarScores,code,data94,name
+front/stats95.asm,$095D28,478,HighlightsScreen,code,data94,follows CalcTeamStarScores
 front/stats95.asm,$095F06,128,ReadAnyPad7,code,new in 95,header
 front/stats95.asm,$095F86,28,PrintHighlightsTitle,code,new in 95,header
 front/stats95.asm,$095FA2,190,DrawHighlightPage,code,new in 95,header

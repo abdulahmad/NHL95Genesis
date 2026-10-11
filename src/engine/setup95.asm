@@ -11,7 +11,7 @@
 
 TeamRosterScreen	;"Team Roster" screen for team a2: DrawTeamScreen, then the player list (DisplayPlayerList)
 	;with page (SelectedPlayerIdx: goalies, offense, defense; C), column (DispAttribCtr: left / right) and row scroll (rosterscroll: up / down).
-	;B goes to the other team; start exits (ExitAttributeScreen2). 95 rewrote the 94 scrolling screen. Called from the item lists
+	;B goes to the other team; start exits (ExitStatsScreen). 95 rewrote the 94 scrolling screen. Called from the item lists
 	moveq	#0,d0
 	moveq	#$1C,d1
 	jsr	(DrawTeamScreen).l
@@ -68,7 +68,7 @@ TeamRosterScreen	;"Team Roster" screen for team a2: DrawTeamScreen, then the pla
 	jsr	(ReadMenuJoy).l
 	jsr	(ProcessInputWithRepeat).l
 	btst	#7,d3
-	bne.w	ExitAttributeScreen2
+	bne.w	ExitStatsScreen
 	btst	#6,d1
 	bne.w	.8
 	jsr	(nodiag).l
@@ -307,7 +307,7 @@ PlayerStatMenuTxt	;Roster page titles (SkipStrings by SelectedPlayerIdx). The fo
 	String	'    Offense     '
 	String	'    Defense     '
 
-ExitAttributeScreen2	;TeamRosterScreen start: forceblack and back to the menu (DrawMenuScreen)
+ExitStatsScreen	;TeamRosterScreen start: forceblack and back to the menu (DrawMenuScreen)
 	jsr	(forceblack).l
 	jmp	DrawMenuScreen
 
@@ -2487,7 +2487,7 @@ GetShifter	;Returns d1 = number of games - 1, d2 = first bit of WinBits
 	move.l	(sp)+,d0
 	rts
 
-DisplayTeamStatsForPlayoffs	;Add the po team's game stats to its packed playoff totals.
+AddPlayoffTeamStats	;Add the po team's game stats to its packed playoff totals.
 	cmpi.w	#1,(OptPlayMode).w
 	blt.w	.4
 	bsr.w	ReadTeamStats

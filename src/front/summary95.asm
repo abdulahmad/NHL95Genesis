@@ -41,7 +41,7 @@ ScoringSummaryScreen	;"Scoring Summary": one 4 row entry per goal (6 bytes each 
 	jsr	(ReadMenuJoy).l
 	btst	#7,d3
 	beq.w	.3
-	jmp	(ExitAttributeScreen2).l
+	jmp	(ExitStatsScreen).l
 .3
 	moveq	#-2,d0
 	btst	#0,d3
@@ -249,7 +249,7 @@ PenaltySummaryScreen	;"Penalties": one 3 row entry per penalty (4 bytes each fro
 	jsr	(ReadMenuJoy).l
 	btst	#7,d3
 	beq.w	.3
-	jmp	(ExitAttributeScreen2).l
+	jmp	(ExitStatsScreen).l
 .3
 	moveq	#-2,d0
 	btst	#0,d3

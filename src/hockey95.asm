@@ -177,7 +177,7 @@ IntermissionStart	;The PeriodOver tail. PeriodOver jumps here after forceblack: 
 	jsr	(UpdateScores).l
 	cmpi.w	#4,(gsp).w
 	bne.w	.4
-	jsr	(DisplayTeamStatsForPlayoffs).l
+	jsr	(AddPlayoffTeamStats).l
 .4
 	bset	#5,(sflags11).w
 	bsr.w	IntermissionMenu

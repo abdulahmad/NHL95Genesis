@@ -456,8 +456,8 @@ ShootersLoop	;Shootout shooters: the input loop
 	btst	#5,d1
 	bne.w	ShooterSelectList
 	bra.s	ShootersLoop
-ShootersExit	;Leave (ExitAttributeScreen2)
-	jmp	(ExitAttributeScreen2).l
+ShootersExit	;Leave (ExitStatsScreen)
+	jmp	(ExitStatsScreen).l
 ShooterSelectList	;Shootout shooters: the "{Select Player}" list for slot TestList (skaters, or the
 	;goalies for slot 5)
 	move.w	#$C000,d7

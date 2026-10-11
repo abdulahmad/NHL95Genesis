@@ -371,7 +371,7 @@ getGoalieSCnum	;d0 = SCnum of the goalie of the team of player d0 (the first pos
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	dirtab, MaxSpeed, dostop, stopna, SetSPA, doplayeracc, noturn0, noturn, playeracc and the goal code:
-;	stopna2, PenGoalStuff, box / DisplayPlayerAttributeMenu / GoalBigTxt / PPGoalBigTxt, PrintPlayerAssists /
+;	stopna2, PenGoalStuff, box / ShowGoalBox / GoalBigTxt / PPGoalBigTxt, PrintPlayerAssists /
 ;	PrintPlayerGoals / PrintParenNumber, checkwindow, PeriodOver / GameOver / ExitToOpening, clockcont_0 /
 ;	clockcont; then the controller setup screen (SetContTeams ... ReadAllPads). New in 95: the controller setup screen.
 

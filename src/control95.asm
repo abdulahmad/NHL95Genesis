@@ -1,5 +1,5 @@
 ;	The pad input per player (updatepadinput), holdplayer, Acheck, burst and setpads, chgplayer (with exit and
-;	swpchk); the setcplayer entries and restorepl; clearTeamStats, setteams, InitTeamSructure and setplayercolors.
+;	swpchk); the setcplayer entries and restorepl; clearTeamStats, setteams, InitTeamStructure and setplayercolors.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -441,20 +441,20 @@ clearTeamStats	;Clear both team structs (2 x tmsize) but keep the first $1A0 byt
 	move.w	(sp)+,(tmstruct+tmgoalie).w
 	st	(tmstruct+tmpdst+$34).w
 	st	(AwShots+tmpdst+$34).w
-setteams	;Use hometeam/visteam to set team structures (InitTeamSructure for each). Falls in from clearTeamStats
+setteams	;Use hometeam/visteam to set team structures (InitTeamStructure for each). Falls in from clearTeamStats
 	movem.l	d0/a0-a2,-(sp)
 	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	(HomeTeam).w,d0
 	move.w	#(SortCords-M68K_RAM),tmsort(a2)
-	bsr.w	InitTeamSructure
+	bsr.w	InitTeamStructure
 	movea.w	#(AwShots-M68K_RAM),a2
 	move.w	(VisTeam).w,d0
 	move.w	#(SortCords-M68K_RAM)+(6*SCstruct),tmsort(a2)
-	bsr.w	InitTeamSructure
+	bsr.w	InitTeamStructure
 	movem.l	(sp)+,d0/a0-a2
 	rts
 
-InitTeamSructure	;Set up team struct a2 for team d0: store the team number at $28 and the team data address
+InitTeamStructure	;Set up team struct a2 for team d0: store the team number at $28 and the team data address
 	;at $1E (tmdata), then LoadTeamLines (95; 94 copied the line sets here)
 	move.w	d0,Xvel(a2)
 	movea.w	#TeamList,a0

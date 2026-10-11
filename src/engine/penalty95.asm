@@ -3,7 +3,7 @@
 ;	the cmp and exg encodings after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, PrintPenaltyMessagesString,
+;	Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, ClearPenaltyMessage,
 ;	LeadSong / ClearLeadSong / LeadSongExit.
 ;	95 changes: the team struct offsets (tmpdst $68, the penalty box list $9C), RefRamMap at $DBBE, the new sounds.
 
@@ -635,7 +635,7 @@ checkfornewpen	;Look for a new penalty (entered through AddPenalty / AddPenalty2
 	bsr.w	SetPA
 	bra.s	.0
 
-UpdatePA	;Animate the ref in the ref window (RefCnt, SetPA2); game over (RefPen 4): DisplayPeriodOver; penmsgtimer
+UpdatePA	;Animate the ref in the ref window (RefCnt, SetPA2); game over (RefPen 4): ShowThreeStars; penmsgtimer
 	tst.w	(RefCnt).w
 	bmi.w	rtspen
 	sub.w	d7,(RefCnt).w
@@ -644,14 +644,14 @@ UpdatePA	;Animate the ref in the ref window (RefCnt, SetPA2); game over (RefPen 
 .0
 	cmpi.w	#4,(RefPen).l	;game over (92 used 4)
 	bne.w	.1
-	jsr	(DisplayPeriodOver).l
+	jsr	(ShowThreeStars).l
 .1
 	sub.w	d7,(penmsgtimer).w
 	bpl.w	rtspen
 	move.w	#$7FFF,(penmsgtimer).w
 	rts
 
-SetPA	;Start ref animation d0 (penalty number); from $2E up ignored. prefmes, goal ($E): DisplayPlayerAttributeMenu
+SetPA	;Start ref animation d0 (penalty number); from $2E up ignored. prefmes, goal ($E): ShowGoalBox
 	;Shootout: ShootoutWonBy. Falls into SetPA2
 	move.w	d0,(RefPen).w
 	cmp.w	#$2E,d0
@@ -662,7 +662,7 @@ SetPA	;Start ref animation d0 (penalty number); from $2E up ignored. prefmes, go
 	bsr.w	prefmes
 	cmp.w	#$E,d0	;goal (92 used 6)
 	bne.w	.1
-	jsr	(DisplayPlayerAttributeMenu).l
+	jsr	(ShowGoalBox).l
 .1
 	btst	#0,(gmode2).w
 	beq.w	.2
@@ -805,7 +805,7 @@ prefmes	;Print the message for penalty d0 (negative clears it) under the ref
 	movem.l	(sp)+,d0-d2/a1
 	rts
 
-PrintPenaltyMessagesString	;Blank the horizontal mode penalty message line (22 spaces at x 5, y $B). Unreferenced
+ClearPenaltyMessage	;Blank the horizontal mode penalty message line (22 spaces at x 5, y $B). Unreferenced
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),5,$B,'                      '
 	rts
