@@ -1408,8 +1408,8 @@ DoDMA_nd2	;93 name. vram to vram copy by dma, protected from vblank
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	lea	(VDP_CTRL).l,a1
-	move.w	#$8154,(a1)
-	move.w	#$8F01,(a1)
+	move.w	#VDPR_MODE2+$54,(a1)
+	move.w	#VDPR_AUTOINC+$01,(a1)
 	move.w	#$9300,d3
 	move.b	d0,d3
 	move.w	d3,(a1)
@@ -1424,7 +1424,7 @@ DoDMA_nd2	;93 name. vram to vram copy by dma, protected from vblank
 	lsr.w	#8,d2
 	move.b	d2,d3
 	move.w	d3,(a1)
-	move.w	#$97C0,(a1)
+	move.w	#VDPR_DMASRCH+$C0,(a1)
 	clr.l	d0
 	move.w	d1,d0
 	asl.l	#2,d0
@@ -1439,8 +1439,8 @@ DoDMA_nd2	;93 name. vram to vram copy by dma, protected from vblank
 	move.w	(dmaram).w,(a1)
 	move.w	(dmaram+2).w,(a1)
 	bsr.w	WaitDMA
-	move.w	#$8164,(a1)
-	move.w	#$8F02,(a1)
+	move.w	#VDPR_MODE2+$64,(a1)
+	move.w	#VDPR_AUTOINC+$02,(a1)
 	move.w	#$E,d0
 	jsr	(SoundCmd).l
 	move.w	(sp)+,(disflags).w

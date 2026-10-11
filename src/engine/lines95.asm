@@ -1057,14 +1057,14 @@ DrawTeamScreen2	;95 only. A DrawTeamScreen (setup95) for the season / stats scre
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.w	#$9100,4(a0)
-	move.w	#$921C,4(a0)
+	move.w	#VDPR_WINX,vdpctrl(a0)
+	move.w	#VDPR_WINY+$1C,vdpctrl(a0)
 	move.w	(VSPRITES).w,d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
-	move.w	#$8C81,4(a0)
+	move.w	#VDPR_MODE4+$81,vdpctrl(a0)
 	move.w	#6,(Map3col1).w
-	move.w	#$8D00,4(a0)
+	move.w	#VDPR_HSCROLL,vdpctrl(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
@@ -1146,14 +1146,14 @@ DrawTeamScreen3	;95 only. The same with SmallFontMap
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.w	#$9100,4(a0)
-	move.w	#$921C,4(a0)
+	move.w	#VDPR_WINX,vdpctrl(a0)
+	move.w	#VDPR_WINY+$1C,vdpctrl(a0)
 	move.w	(VSPRITES).w,d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
-	move.w	#$8C81,4(a0)
+	move.w	#VDPR_MODE4+$81,vdpctrl(a0)
 	move.w	#6,(Map3col1).w
-	move.w	#$8D00,4(a0)
+	move.w	#VDPR_HSCROLL,vdpctrl(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
@@ -1238,14 +1238,14 @@ DrawTeamScreen4	;95 only. The same as DrawTeamScreen3, the team block tiles with
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.w	#$9100,4(a0)
-	move.w	#$921C,4(a0)
+	move.w	#VDPR_WINX,vdpctrl(a0)
+	move.w	#VDPR_WINY+$1C,vdpctrl(a0)
 	move.w	(VSPRITES).w,d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
-	move.w	#$8C81,4(a0)
+	move.w	#VDPR_MODE4+$81,vdpctrl(a0)
 	move.w	#6,(Map3col1).w
-	move.w	#$8D00,4(a0)
+	move.w	#VDPR_HSCROLL,vdpctrl(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
@@ -1328,14 +1328,14 @@ DrawTeamScreen5	;95 only. DrawTeamScreen4 with three small fonts and palette wor
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.w	#$9100,4(a0)
-	move.w	#$921C,4(a0)
+	move.w	#VDPR_WINX,vdpctrl(a0)
+	move.w	#VDPR_WINY+$1C,vdpctrl(a0)
 	move.w	(VSPRITES).w,d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
-	move.w	#$8C81,4(a0)
+	move.w	#VDPR_MODE4+$81,vdpctrl(a0)
 	move.w	#6,(Map3col1).w
-	move.w	#$8D00,4(a0)
+	move.w	#VDPR_HSCROLL,vdpctrl(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
@@ -1414,14 +1414,14 @@ DrawTeamScreen6	;95 only. The team blocks (screen6chars1), the bitmap, Screen6Ti
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.w	#$9100,4(a0)
-	move.w	#$921C,4(a0)
+	move.w	#VDPR_WINX,vdpctrl(a0)
+	move.w	#VDPR_WINY+$1C,vdpctrl(a0)
 	move.w	(VSPRITES).w,d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
-	move.w	#$8C81,4(a0)
+	move.w	#VDPR_MODE4+$81,vdpctrl(a0)
 	move.w	#6,(Map3col1).w
-	move.w	#$8D00,4(a0)
+	move.w	#VDPR_HSCROLL,vdpctrl(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)

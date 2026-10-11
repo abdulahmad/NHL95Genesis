@@ -86,11 +86,11 @@ CHECK_VDP	;Hot start lands here. Match the console region to the CountryCode let
 	;wrong region: set the VDP up and load RegionFont as tiles 0-$3A
 	lea	(VDP_DATA).l,a4
 	lea	(VDP_CTRL).l,a5
-	move.w	#$8164,(a5)		;reg 1: display on, vblank int, DMA off
-	move.w	#$8230,(a5)		;reg 2: plane A at $C000
-	move.w	#$8C81,(a5)		;reg 12: 40 cell mode
-	move.w	#$8F02,(a5)		;reg 15: auto increment 2
-	move.w	#$9001,(a5)		;reg 16: 64 x 32 cell planes
+	move.w	#VDPR_MODE2+$64,(a5)		;reg 1: display on, vblank int, DMA off
+	move.w	#VDPR_PLANEA+$30,(a5)		;reg 2: plane A at $C000
+	move.w	#VDPR_MODE4+$81,(a5)		;reg 12: 40 cell mode
+	move.w	#VDPR_AUTOINC+$02,(a5)		;reg 15: auto increment 2
+	move.w	#VDPR_PLANESIZE+$01,(a5)		;reg 16: 64 x 32 cell planes
 	move.l	#$C0020000,(a5)		;cram write, address 2 (colour 1)
 	move.w	#$EEE,(a4)		;colour 1 = white
 	move.l	#$40000000,(a5)		;vram write, address 0

@@ -260,8 +260,8 @@ ReplayMode	;Instant replay play-back control and display code (94 ReplayMode). C
 	bclr	#4,(sflags4).w
 	jsr	(RestoreGameScreen).l
 	movea.l	#VDP_DATA,a0
-	move.w	#$9100,4(a0)
-	move.w	#$921C,4(a0)
+	move.w	#VDPR_WINX,vdpctrl(a0)
+	move.w	#VDPR_WINY+$1C,vdpctrl(a0)
 	move.w	#$400,d0
 	move.w	(VmMap3).w,d1
 	move.w	#$7FF,d2

@@ -25,7 +25,7 @@ DoFill	;Called from pause95, middle95. 95 writes the long straight to the vdp (9
 	lsr.w	#2,d1
 	ori.w	#$4000,d1
 	swap	d1
-	move.l	d1,4(a1)
+	move.l	d1,vdpctrl(a1)
 	move.w	d2,d3
 	swap	d3
 	move.w	d2,d3
@@ -50,7 +50,7 @@ setVram_0	;93 name: second half of 92 setVram (no fade): clear vram and set the 
 	;VmMap1-3, VSPRITES and VSCRLPM. Falls in from setvram, called from EASportsScreen (lines95), pause95, title95
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	move.w	#$8F02,(VDP_CTRL).l
+	move.w	#VDPR_AUTOINC+$02,(VDP_CTRL).l
 	clr.w	d0
 	bsr.w	Vmaddr
 	move.w	#$3FFF,d0
@@ -113,7 +113,7 @@ Vmaddr
 	ori.w	#$4000,d0
 	swap	d0
 	andi.w	#3,d0
-	move.l	d0,4(a0)
+	move.l	d0,vdpctrl(a0)
 	rts
 
 dobitmap	;Copy the palettes flagged in d5 to palfadenew, then write the map at a1 to the screen at printx / printy.
@@ -248,7 +248,7 @@ cramfade	;No xref in the listing
 	move.w	d6,d0
 	swap	d0
 	move.w	#$20,d0
-	move.l	d0,4(a0)
+	move.l	d0,vdpctrl(a0)
 	move.w	(a0),d7
 	move.w	d7,d0
 	and.w	d5,d0
@@ -265,7 +265,7 @@ cramfade	;No xref in the listing
 	move.l	#$C000,d0
 	move.b	d6,d0
 	swap	d0
-	move.l	d0,4(a0)
+	move.l	d0,vdpctrl(a0)
 	move.w	d7,(a0)
 .next
 	addq.w	#2,d6
@@ -280,7 +280,7 @@ CopyPaletteToCRAM	;93 name. Copy all 64 palfadenew colours to colour ram (dfng s
 	bset	#dfng,(disflags).w
 	movea.w	#(palfadenew-M68K_RAM),a1
 	movea.l	#VDP_DATA,a0
-	move.l	#$C0000000,4(a0)	;cram write, address 0
+	move.l	#$C0000000,vdpctrl(a0)	;cram write, address 0
 	moveq	#$1F,d0
 .0
 	move.l	(a1)+,(a0)
@@ -394,8 +394,8 @@ DoDMA	;95 drops the 94 Z80 bus request, the sr save and the last word fix for a 
 	movem.l	d2/a1,-(sp)
 .nd
 	lea	(VDP_CTRL).l,a1
-	move.w	#$8154,(a1)
-	move.w	#$8F02,(a1)
+	move.w	#VDPR_MODE2+$54,(a1)
+	move.w	#VDPR_AUTOINC+$02,(a1)
 	move.w	#$9300,d2
 	move.b	d0,d2
 	move.w	d2,(a1)
@@ -426,7 +426,7 @@ DoDMA	;95 drops the 94 Z80 bus request, the sr save and the last word fix for a 
 	move.w	(dmaram+2).w,(a1)
 	move.w	(dmaram).w,(a1)
 	bsr.w	WaitDMA
-	move.w	#$8164,(a1)
+	move.w	#VDPR_MODE2+$64,(a1)
 	movem.l	(sp)+,d2/a1
 	rts
 

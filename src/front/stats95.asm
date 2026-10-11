@@ -84,7 +84,7 @@ SetStatScroll	;period94 SetStatScroll. Plane A vertical scroll (VSRAM 0) = VertL
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.l	#$40020010,4(a0)
+	move.l	#$40020010,vdpctrl(a0)
 	move.w	#$FFB0,d0
 	add.w	(VertLineScrolling).w,d0
 	move.w	d0,(a0)
@@ -462,7 +462,7 @@ SetAttribScrollReg	;stats94 SetAttribScrollReg (93 name). VSRAM = VertLineScroll
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.l	#$40020010,4(a0)
+	move.l	#$40020010,vdpctrl(a0)
 	move.w	#$FF98,d0
 	add.w	(VertLineScrolling).w,d0
 	move.w	d0,(a0)
@@ -1463,14 +1463,14 @@ SeasonPlayersScreen	;95 only. Run the season stats screen, then jump to ExitAttr
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.w	#$9100,4(a0)
-	move.w	#$9200,4(a0)
+	move.w	#VDPR_WINX,vdpctrl(a0)
+	move.w	#VDPR_WINY,vdpctrl(a0)
 	move.w	(VSPRITES).w,d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
-	move.w	#$8C81,4(a0)
+	move.w	#VDPR_MODE4+$81,vdpctrl(a0)
 	move.w	#6,(Map2col1).w
-	move.w	#$8D00,4(a0)
+	move.w	#VDPR_HSCROLL,vdpctrl(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
@@ -1620,7 +1620,7 @@ SeasonAttribScrollReg	;stats94 SetAttribScrollReg. VSRAM = VertLineScrolling - $
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.l	#$40020010,4(a0)
+	move.l	#$40020010,vdpctrl(a0)
 	move.w	#$FF98,d0
 	add.w	(VertLineScrolling).w,d0
 	move.w	d0,(a0)
