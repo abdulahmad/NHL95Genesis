@@ -15,33 +15,7 @@
 ;	(SeasonStartDay + SeasonDay) mod 192. With the random schedule option off, SeasonStartDay is 0, so "day n" below
 ;	is SeasonDay n-1. With it on, the records rotate under the same dates.
 
-;	Team numbers (TeamList order in teamdata95)
-ANH	=	0
-BOS	=	1
-BUF	=	2
-CGY	=	3
-CHI	=	4
-DAL	=	5
-DET	=	6
-EDM	=	7
-FLA	=	8
-HFD	=	9
-LA	=	10
-MTL	=	11
-NJ	=	12
-NYI	=	13
-NYR	=	14
-OTW	=	15
-PHI	=	16
-PIT	=	17
-QUE	=	18
-SJ	=	19
-STL	=	20
-TB	=	21
-TOR	=	22
-VAN	=	23
-WSH	=	24
-WPG	=	25
+;	Team numbers ANH ... WPG: stubinc/equals.inc
 
 ;	Day: one schedule record. Args are team abbreviations in pairs (up to 12 games). Emits the game count, then the teams.
 Day	MACRO

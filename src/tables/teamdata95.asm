@@ -82,14 +82,14 @@ AllStarsEast	;ASE, $7E2 (94 $37E)
 .sodds
 	dc.b	204,176
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,21,18,07,05,17,04,00	;line 1
-	dc.b	01,21,18,12,10,15,04,00	;line 2
-	dc.b	01,19,23,14,04,17,05,00	;line 3
-	dc.b	01,20,22,07,05,06,10,00	;line 4
-	dc.b	01,21,22,16,08,11,12,00	;line 5
-	dc.b	01,18,19,10,13,09,17,00	;line 6
-	dc.b	01,20,23,12,15,16,11,00	;line 7
-	dc.b	01,21,18,17,04,13,09,00	;line 8
+	dc.b	01,21,18,07,05,17,04,00	;line 1 Sc1
+	dc.b	01,21,18,12,10,15,04,00	;line 2 Sc2
+	dc.b	01,19,23,14,04,17,05,00	;line 3 Chk
+	dc.b	01,20,22,07,05,06,10,00	;line 4 PP1
+	dc.b	01,21,22,16,08,11,12,00	;line 5 PP2
+	dc.b	01,18,19,10,13,09,17,00	;line 6 PK1
+	dc.b	01,20,23,12,15,16,11,00	;line 7 PK2
+	dc.b	01,21,18,17,04,13,09,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Patrick Roy',	3366,4355,0000,5666	;1
 	Player	'Mike Richter',	3575,4344,0000,5555	;2
@@ -140,14 +140,14 @@ AllStarsWest	;ASW, $AB2 (94 $674)
 .sodds
 	dc.b	172,176
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,21,20,08,04,12,05,00	;line 1
-	dc.b	01,21,20,08,05,07,04,00	;line 2
-	dc.b	01,17,16,04,12,13,05,00	;line 3
-	dc.b	01,19,20,15,14,10,04,00	;line 4
-	dc.b	01,21,16,04,05,12,15,00	;line 5
-	dc.b	01,17,19,06,08,13,04,00	;line 6
-	dc.b	01,18,19,09,12,10,05,00	;line 7
-	dc.b	01,21,16,08,14,06,04,00	;line 8
+	dc.b	01,21,20,08,04,12,05,00	;line 1 Sc1
+	dc.b	01,21,20,08,05,07,04,00	;line 2 Sc2
+	dc.b	01,17,16,04,12,13,05,00	;line 3 Chk
+	dc.b	01,19,20,15,14,10,04,00	;line 4 PP1
+	dc.b	01,21,16,04,05,12,15,00	;line 5 PP2
+	dc.b	01,17,19,06,08,13,04,00	;line 6 PK1
+	dc.b	01,18,19,09,12,10,05,00	;line 7 PK2
+	dc.b	01,21,16,08,14,06,04,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Curtis Joseph',	3165,4564,0000,4444	;1
 	Player	'Arturs Irbe',	3253,4443,0000,4444	;2
@@ -196,14 +196,14 @@ Anaheim	;ANH, $D66 (94 $5330)
 .sodds
 	dc.b	180,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,21,18,13,03,08,05,00	;line 1
-	dc.b	01,21,18,13,03,08,05,00	;line 2
-	dc.b	01,19,23,15,05,09,03,00	;line 3
-	dc.b	01,17,22,12,04,11,03,00	;line 4
-	dc.b	01,21,18,05,04,08,03,00	;line 5
-	dc.b	01,19,23,13,03,09,08,00	;line 6
-	dc.b	01,19,23,13,03,08,09,00	;line 7
-	dc.b	01,21,18,15,06,09,03,00	;line 8
+	dc.b	01,21,18,13,03,08,05,00	;line 1 Sc1
+	dc.b	01,21,18,13,03,08,05,00	;line 2 Sc2
+	dc.b	01,19,23,15,05,09,03,00	;line 3 Chk
+	dc.b	01,17,22,12,04,11,03,00	;line 4 PP1
+	dc.b	01,21,18,05,04,08,03,00	;line 5 PP2
+	dc.b	01,19,23,13,03,09,08,00	;line 6 PK1
+	dc.b	01,19,23,13,03,08,09,00	;line 7 PK2
+	dc.b	01,21,18,15,06,09,03,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Guy Hebert',	3164,3332,0000,3333	;1
 	Player	'Mikhail Shtalenkov',	3562,2223,0000,2222	;2
@@ -254,14 +254,14 @@ Boston	;BOS, $102A (94 $966)
 .sodds
 	dc.b	178,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,18,20,06,03,08,06,00	;line 1
-	dc.b	01,18,21,14,03,08,06,00	;line 2
-	dc.b	01,20,22,15,06,10,03,00	;line 3
-	dc.b	01,19,23,16,07,12,03,00	;line 4
-	dc.b	01,18,20,14,03,08,06,00	;line 5
-	dc.b	01,19,22,15,06,10,03,00	;line 6
-	dc.b	01,18,21,15,03,08,06,00	;line 7
-	dc.b	01,19,23,16,06,10,03,00	;line 8
+	dc.b	01,18,20,06,03,08,06,00	;line 1 Sc1
+	dc.b	01,18,21,14,03,08,06,00	;line 2 Sc2
+	dc.b	01,20,22,15,06,10,03,00	;line 3 Chk
+	dc.b	01,19,23,16,07,12,03,00	;line 4 PP1
+	dc.b	01,18,20,14,03,08,06,00	;line 5 PP2
+	dc.b	01,19,22,15,06,10,03,00	;line 6 PK1
+	dc.b	01,18,21,15,03,08,06,00	;line 7 PK2
+	dc.b	01,19,23,16,06,10,03,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Jon Casey',	3024,3343,0000,4343	;1
 	Player	'Vincent Riendeau',	3763,3222,0000,3222	;2
@@ -313,14 +313,14 @@ Buffalo	;BUF, $1304 (94 $C4C)
 .sodds
 	dc.b	91,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,19,23,05,04,14,09,00	;line 1
-	dc.b	01,19,24,09,04,14,05,00	;line 2
-	dc.b	01,20,22,10,05,16,14,00	;line 3
-	dc.b	01,18,23,13,08,15,04,00	;line 4
-	dc.b	01,19,24,09,04,14,05,00	;line 5
-	dc.b	01,21,23,10,05,16,14,00	;line 6
-	dc.b	01,23,24,08,05,16,04,00	;line 7
-	dc.b	01,20,22,09,03,15,05,00	;line 8
+	dc.b	01,19,23,05,04,14,09,00	;line 1 Sc1
+	dc.b	01,19,24,09,04,14,05,00	;line 2 Sc2
+	dc.b	01,20,22,10,05,16,14,00	;line 3 Chk
+	dc.b	01,18,23,13,08,15,04,00	;line 4 PP1
+	dc.b	01,19,24,09,04,14,05,00	;line 5 PP2
+	dc.b	01,21,23,10,05,16,14,00	;line 6 PK1
+	dc.b	01,23,24,08,05,16,04,00	;line 7 PK2
+	dc.b	01,20,22,09,03,15,05,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Dominik Hasek',	3945,3554,0000,5656	;1
 	Player	'Grant Fuhr',	3175,4555,0100,3455	;2
@@ -372,14 +372,14 @@ Calgary	;CGY, $15E0 (94 $F3A)
 .sodds
 	dc.b	196,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,16,18,09,03,12,14,00	;line 1
-	dc.b	01,16,18,09,03,14,12,00	;line 2
-	dc.b	01,17,21,08,04,12,03,00	;line 3
-	dc.b	01,19,20,10,05,11,03,00	;line 4
-	dc.b	01,16,18,09,03,12,14,00	;line 5
-	dc.b	01,17,21,08,04,11,03,00	;line 6
-	dc.b	01,16,18,08,12,04,03,00	;line 7
-	dc.b	01,17,21,09,03,07,14,00	;line 8
+	dc.b	01,16,18,09,03,12,14,00	;line 1 Sc1
+	dc.b	01,16,18,09,03,14,12,00	;line 2 Sc2
+	dc.b	01,17,21,08,04,12,03,00	;line 3 Chk
+	dc.b	01,19,20,10,05,11,03,00	;line 4 PP1
+	dc.b	01,16,18,09,03,12,14,00	;line 5 PP2
+	dc.b	01,17,21,08,04,11,03,00	;line 6 PK1
+	dc.b	01,16,18,08,12,04,03,00	;line 7 PK2
+	dc.b	01,17,21,09,03,07,14,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Mike Vernon',	3043,4444,0000,4444	;1
 	Player	'Trevor Kidd',	3733,3222,0000,3322	;2
@@ -431,14 +431,14 @@ Chicago	;CHI, $18BE (94 $1234)
 .sodds
 	dc.b	196,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,19,18,09,03,16,14,00	;line 1
-	dc.b	01,19,18,11,03,14,16,00	;line 2
-	dc.b	01,24,23,08,04,16,03,00	;line 3
-	dc.b	01,17,20,09,05,13,03,00	;line 4
-	dc.b	01,18,23,14,03,16,08,00	;line 5
-	dc.b	01,24,19,08,04,13,11,00	;line 6
-	dc.b	01,19,18,04,03,14,11,00	;line 7
-	dc.b	01,24,23,05,13,11,14,00	;line 8
+	dc.b	01,19,18,09,03,16,14,00	;line 1 Sc1
+	dc.b	01,19,18,11,03,14,16,00	;line 2 Sc2
+	dc.b	01,24,23,08,04,16,03,00	;line 3 Chk
+	dc.b	01,17,20,09,05,13,03,00	;line 4 PP1
+	dc.b	01,18,23,14,03,16,08,00	;line 5 PP2
+	dc.b	01,24,19,08,04,13,11,00	;line 6 PK1
+	dc.b	01,19,18,04,03,14,11,00	;line 7 PK2
+	dc.b	01,24,23,05,13,11,14,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Ed Belfour',	3066,4665,0000,6655	;1
 	Player	'Jeff Hackett',	3152,3112,0000,2222	;2
@@ -490,14 +490,14 @@ Detroit	;DET, $1B9E (94 $152E)
 .sodds
 	dc.b	138,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,19,18,04,03,13,14,00	;line 1
-	dc.b	01,21,18,05,03,14,04,00	;line 2
-	dc.b	01,19,23,08,04,13,03,00	;line 3
-	dc.b	01,22,20,09,06,07,03,00	;line 4
-	dc.b	01,21,18,05,03,14,04,00	;line 5
-	dc.b	01,19,23,08,04,13,03,00	;line 6
-	dc.b	01,19,23,09,04,03,14,00	;line 7
-	dc.b	01,21,20,05,03,14,04,00	;line 8
+	dc.b	01,19,18,04,03,13,14,00	;line 1 Sc1
+	dc.b	01,21,18,05,03,14,04,00	;line 2 Sc2
+	dc.b	01,19,23,08,04,13,03,00	;line 3 Chk
+	dc.b	01,22,20,09,06,07,03,00	;line 4 PP1
+	dc.b	01,21,18,05,03,14,04,00	;line 5 PP2
+	dc.b	01,19,23,08,04,13,03,00	;line 6 PK1
+	dc.b	01,19,23,09,04,03,14,00	;line 7 PK2
+	dc.b	01,21,20,05,03,14,04,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Bob Essensa',	3533,4433,0000,3333	;1
 	Player	'Chris Osgood',	3034,3343,0000,3333	;2
@@ -549,14 +549,14 @@ Edmonton	;EDM, $1E9C (94 $1848)
 .sodds
 	dc.b	181,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,19,22,10,03,13,05,00	;line 1
-	dc.b	01,19,24,10,03,14,05,00	;line 2
-	dc.b	01,22,20,13,05,16,03,00	;line 3
-	dc.b	01,23,21,12,07,17,03,00	;line 4
-	dc.b	01,19,20,10,03,14,05,00	;line 5
-	dc.b	01,22,18,13,05,16,03,00	;line 6
-	dc.b	01,23,22,10,03,05,14,00	;line 7
-	dc.b	01,19,24,17,05,03,14,00	;line 8
+	dc.b	01,19,22,10,03,13,05,00	;line 1 Sc1
+	dc.b	01,19,24,10,03,14,05,00	;line 2 Sc2
+	dc.b	01,22,20,13,05,16,03,00	;line 3 Chk
+	dc.b	01,23,21,12,07,17,03,00	;line 4 PP1
+	dc.b	01,19,20,10,03,14,05,00	;line 5 PP2
+	dc.b	01,22,18,13,05,16,03,00	;line 6 PK1
+	dc.b	01,23,22,10,03,05,14,00	;line 7 PK2
+	dc.b	01,19,24,17,05,03,14,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Bill Ranford',	3045,3435,0000,4455	;1
 	Player	'Fred Brathwaite',	3152,2222,0000,2122	;2
@@ -608,14 +608,14 @@ Florida	;FLA, $218E (94 $50E6)
 .sodds
 	dc.b	196,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,17,20,10,06,15,03,00	;line 1
-	dc.b	01,17,20,10,06,15,03,00	;line 2
-	dc.b	01,23,18,08,03,13,06,00	;line 3
-	dc.b	01,24,21,09,04,14,06,00	;line 4
-	dc.b	01,24,20,10,06,15,03,00	;line 5
-	dc.b	01,17,21,09,04,14,06,00	;line 6
-	dc.b	01,23,21,08,03,10,06,00	;line 7
-	dc.b	01,17,18,13,04,06,03,00	;line 8
+	dc.b	01,17,20,10,06,15,03,00	;line 1 Sc1
+	dc.b	01,17,20,10,06,15,03,00	;line 2 Sc2
+	dc.b	01,23,18,08,03,13,06,00	;line 3 Chk
+	dc.b	01,24,21,09,04,14,06,00	;line 4 PP1
+	dc.b	01,24,20,10,06,15,03,00	;line 5 PP2
+	dc.b	01,17,21,09,04,14,06,00	;line 6 PK1
+	dc.b	01,23,21,08,03,10,06,00	;line 7 PK2
+	dc.b	01,17,18,13,04,06,03,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'John Vanbiesbrk',	3454,3453,0000,4455	;1
 	Player	'Mark Fitzpatrik',	3073,4223,0000,3434	;2
@@ -667,14 +667,14 @@ Hartford	;HFD, $246E (94 $1B44)
 .sodds
 	dc.b	196,16
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,19,23,09,04,15,06,00	;line 1
-	dc.b	01,20,18,09,04,15,06,00	;line 2
-	dc.b	01,19,23,13,06,17,08,00	;line 3
-	dc.b	01,22,24,12,08,14,04,00	;line 4
-	dc.b	01,20,23,09,04,15,06,00	;line 5
-	dc.b	01,22,18,08,06,17,04,00	;line 6
-	dc.b	01,20,23,15,04,09,06,00	;line 7
-	dc.b	01,22,18,10,05,09,06,00	;line 8
+	dc.b	01,19,23,09,04,15,06,00	;line 1 Sc1
+	dc.b	01,20,18,09,04,15,06,00	;line 2 Sc2
+	dc.b	01,19,23,13,06,17,08,00	;line 3 Chk
+	dc.b	01,22,24,12,08,14,04,00	;line 4 PP1
+	dc.b	01,20,23,09,04,15,06,00	;line 5 PP2
+	dc.b	01,22,18,08,06,17,04,00	;line 6 PK1
+	dc.b	01,20,23,15,04,09,06,00	;line 7 PK2
+	dc.b	01,22,18,10,05,09,06,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Sean Burke',	01A4,3223,0000,3344	;1
 	Player	'Jeff Reese',	3542,3322,0000,2222	;2
@@ -726,14 +726,14 @@ LosAngeles	;LA, $2762 (94 $1E52)
 .sodds
 	dc.b	168,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,16,17,08,03,11,04,00	;line 1
-	dc.b	01,16,18,10,03,11,04,00	;line 2
-	dc.b	01,17,22,08,04,15,03,00	;line 3
-	dc.b	01,19,20,07,05,12,03,00	;line 4
-	dc.b	01,16,18,08,03,11,04,00	;line 5
-	dc.b	01,17,19,10,04,12,03,00	;line 6
-	dc.b	01,16,19,07,11,03,08,00	;line 7
-	dc.b	01,18,20,10,03,11,08,00	;line 8
+	dc.b	01,16,17,08,03,11,04,00	;line 1 Sc1
+	dc.b	01,16,18,10,03,11,04,00	;line 2 Sc2
+	dc.b	01,17,22,08,04,15,03,00	;line 3 Chk
+	dc.b	01,19,20,07,05,12,03,00	;line 4 PP1
+	dc.b	01,16,18,08,03,11,04,00	;line 5 PP2
+	dc.b	01,17,19,10,04,12,03,00	;line 6 PK1
+	dc.b	01,16,19,07,11,03,08,00	;line 7 PK2
+	dc.b	01,18,20,10,03,11,08,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Kelly Hrudey',	3263,3343,0000,2223	;1
 	Player	'Robb Stauber',	3562,3443,0000,2222	;2
@@ -784,14 +784,14 @@ Dallas	;DAL, $2A24 (94 $214E, after LA as 94 Minnesota)
 .sodds
 	dc.b	181,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,19,20,04,03,16,08,00	;line 1
-	dc.b	01,19,23,08,03,16,04,00	;line 2
-	dc.b	01,24,20,10,04,14,03,00	;line 3
-	dc.b	01,21,18,11,05,17,03,00	;line 4
-	dc.b	01,19,23,09,03,16,08,00	;line 5
-	dc.b	01,24,20,10,04,14,03,00	;line 6
-	dc.b	01,19,24,11,05,03,16,00	;line 7
-	dc.b	01,21,20,17,07,03,16,00	;line 8
+	dc.b	01,19,20,04,03,16,08,00	;line 1 Sc1
+	dc.b	01,19,23,08,03,16,04,00	;line 2 Sc2
+	dc.b	01,24,20,10,04,14,03,00	;line 3 Chk
+	dc.b	01,21,18,11,05,17,03,00	;line 4 PP1
+	dc.b	01,19,23,09,03,16,08,00	;line 5 PP2
+	dc.b	01,24,20,10,04,14,03,00	;line 6 PK1
+	dc.b	01,19,24,11,05,03,16,00	;line 7 PK2
+	dc.b	01,21,20,17,07,03,16,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Andy Moog',	3543,3123,0000,3233	;1
 	Player	'Darcy Wakaluk',	3463,3334,0000,3344	;2
@@ -843,14 +843,14 @@ Montreal	;MTL, $2CF8 (94 $243E)
 .sodds
 	dc.b	211,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,18,17,09,03,14,04,00	;line 1
-	dc.b	01,24,17,09,03,14,04,00	;line 2
-	dc.b	01,18,23,08,04,13,03,00	;line 3
-	dc.b	01,21,19,10,05,15,03,00	;line 4
-	dc.b	01,18,17,09,03,14,04,00	;line 5
-	dc.b	01,21,19,08,06,13,03,00	;line 6
-	dc.b	01,24,17,10,05,03,09,00	;line 7
-	dc.b	01,18,23,04,03,09,14,00	;line 8
+	dc.b	01,18,17,09,03,14,04,00	;line 1 Sc1
+	dc.b	01,24,17,09,03,14,04,00	;line 2 Sc2
+	dc.b	01,18,23,08,04,13,03,00	;line 3 Chk
+	dc.b	01,21,19,10,05,15,03,00	;line 4 PP1
+	dc.b	01,18,17,09,03,14,04,00	;line 5 PP2
+	dc.b	01,21,19,08,06,13,03,00	;line 6 PK1
+	dc.b	01,24,17,10,05,03,09,00	;line 7 PK2
+	dc.b	01,18,23,04,03,09,14,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Patrick Roy',	3366,4355,0000,5666	;1
 	Player	'Ron Tugnutt',	0122,3231,0000,1122	;2
@@ -902,14 +902,14 @@ NewJersey	;NJ, $2FE8 (94 $2740)
 .sodds
 	dc.b	92,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,21,18,16,05,15,04,00	;line 1
-	dc.b	01,21,18,16,04,15,05,00	;line 2
-	dc.b	01,20,22,08,05,14,04,00	;line 3
-	dc.b	01,19,23,11,06,13,04,00	;line 4
-	dc.b	01,21,18,16,04,15,05,00	;line 5
-	dc.b	01,20,23,08,05,14,04,00	;line 6
-	dc.b	01,21,18,16,04,15,05,00	;line 7
-	dc.b	01,20,22,11,06,15,04,00	;line 8
+	dc.b	01,21,18,16,05,15,04,00	;line 1 Sc1
+	dc.b	01,21,18,16,04,15,05,00	;line 2 Sc2
+	dc.b	01,20,22,08,05,14,04,00	;line 3 Chk
+	dc.b	01,19,23,11,06,13,04,00	;line 4 PP1
+	dc.b	01,21,18,16,04,15,05,00	;line 5 PP2
+	dc.b	01,20,23,08,05,14,04,00	;line 6 PK1
+	dc.b	01,21,18,16,04,15,05,00	;line 7 PK2
+	dc.b	01,20,22,11,06,15,04,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Chris Terreri',	3124,4443,0000,4433	;1
 	Player	'Martin Brodeur',	3075,3344,0000,5555	;2
@@ -961,14 +961,14 @@ NYIslanders	;NYI, $32DA (94 $2A58)
 .sodds
 	dc.b	181,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,18,19,08,03,13,10,00	;line 1
-	dc.b	01,19,20,10,03,13,08,00	;line 2
-	dc.b	01,18,24,08,04,14,03,00	;line 3
-	dc.b	01,21,22,09,06,15,03,00	;line 4
-	dc.b	01,18,20,10,03,13,08,00	;line 5
-	dc.b	01,21,22,08,04,14,03,00	;line 6
-	dc.b	01,19,20,08,03,10,13,00	;line 7
-	dc.b	01,18,24,09,04,03,13,00	;line 8
+	dc.b	01,18,19,08,03,13,10,00	;line 1 Sc1
+	dc.b	01,19,20,10,03,13,08,00	;line 2 Sc2
+	dc.b	01,18,24,08,04,14,03,00	;line 3 Chk
+	dc.b	01,21,22,09,06,15,03,00	;line 4 PP1
+	dc.b	01,18,20,10,03,13,08,00	;line 5 PP2
+	dc.b	01,21,22,08,04,14,03,00	;line 6 PK1
+	dc.b	01,19,20,08,03,10,13,00	;line 7 PK2
+	dc.b	01,18,24,09,04,03,13,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Ron Hextall',	7273,4443,0000,2233	;1
 	Player	'Jamie McLennan',	2973,3222,0000,2222	;2
@@ -1020,14 +1020,14 @@ NYRangers	;NYR, $35C6 (94 $2D5C)
 .sodds
 	dc.b	196,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,18,20,08,03,15,13,00	;line 1
-	dc.b	01,18,21,08,03,13,15,00	;line 2
-	dc.b	01,22,20,14,06,15,03,00	;line 3
-	dc.b	01,24,19,10,04,17,03,00	;line 4
-	dc.b	01,18,20,08,03,13,15,00	;line 5
-	dc.b	01,22,19,10,06,15,03,00	;line 6
-	dc.b	01,18,21,08,03,15,13,00	;line 7
-	dc.b	01,22,20,10,05,03,08,00	;line 8
+	dc.b	01,18,20,08,03,15,13,00	;line 1 Sc1
+	dc.b	01,18,21,08,03,13,15,00	;line 2 Sc2
+	dc.b	01,22,20,14,06,15,03,00	;line 3 Chk
+	dc.b	01,24,19,10,04,17,03,00	;line 4 PP1
+	dc.b	01,18,20,08,03,13,15,00	;line 5 PP2
+	dc.b	01,22,19,10,06,15,03,00	;line 6 PK1
+	dc.b	01,18,21,08,03,15,13,00	;line 7 PK2
+	dc.b	01,22,20,10,05,03,08,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Mike Richter',	3575,4344,0000,5555	;1
 	Player	'Glenn Healy',	3053,4433,0000,3322	;2
@@ -1079,14 +1079,14 @@ Ottawa	;OTW, $38A8 (94 $3054)
 .sodds
 	dc.b	197,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,19,20,06,04,03,12,00	;line 1
-	dc.b	01,19,21,06,04,12,03,00	;line 2
-	dc.b	01,23,20,07,03,14,04,00	;line 3
-	dc.b	01,22,24,11,05,13,04,00	;line 4
-	dc.b	01,19,23,06,04,03,12,00	;line 5
-	dc.b	01,22,20,07,05,14,12,00	;line 6
-	dc.b	01,19,21,11,05,04,12,00	;line 7
-	dc.b	01,24,20,12,04,03,06,00	;line 8
+	dc.b	01,19,20,06,04,03,12,00	;line 1 Sc1
+	dc.b	01,19,21,06,04,12,03,00	;line 2 Sc2
+	dc.b	01,23,20,07,03,14,04,00	;line 3 Chk
+	dc.b	01,22,24,11,05,13,04,00	;line 4 PP1
+	dc.b	01,19,23,06,04,03,12,00	;line 5 PP2
+	dc.b	01,22,20,07,05,14,12,00	;line 6 PK1
+	dc.b	01,19,21,11,05,04,12,00	;line 7 PK2
+	dc.b	01,24,20,12,04,03,06,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Craig Billington',	0143,4221,0000,2222	;1
 	Player	'Mark LaForest',	3582,2121,0000,1111	;2
@@ -1138,14 +1138,14 @@ Philadelphia	;PHI, $3B9E (94 $3348)
 .sodds
 	dc.b	90,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,16,17,04,03,12,08,00	;line 1
-	dc.b	01,16,17,08,03,12,04,00	;line 2
-	dc.b	01,18,19,09,04,13,03,00	;line 3
-	dc.b	01,20,22,10,05,14,03,00	;line 4
-	dc.b	01,16,17,09,03,12,04,00	;line 5
-	dc.b	01,20,19,10,04,13,03,00	;line 6
-	dc.b	01,18,19,04,03,08,12,00	;line 7
-	dc.b	01,16,17,05,06,03,04,00	;line 8
+	dc.b	01,16,17,04,03,12,08,00	;line 1 Sc1
+	dc.b	01,16,17,08,03,12,04,00	;line 2 Sc2
+	dc.b	01,18,19,09,04,13,03,00	;line 3 Chk
+	dc.b	01,20,22,10,05,14,03,00	;line 4 PP1
+	dc.b	01,16,17,09,03,12,04,00	;line 5 PP2
+	dc.b	01,20,19,10,04,13,03,00	;line 6 PK1
+	dc.b	01,18,19,04,03,08,12,00	;line 7 PK2
+	dc.b	01,16,17,05,06,03,04,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Dominic Roussel',	3363,3333,0000,3322	;1
 	Player	'Tommy Soderstrom',	3033,3342,0000,2323	;2
@@ -1197,14 +1197,14 @@ Pittsburgh	;PIT, $3E7C (94 $3646)
 .sodds
 	dc.b	197,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,18,19,07,03,13,12,00	;line 1
-	dc.b	01,18,17,07,03,12,13,00	;line 2
-	dc.b	01,20,19,08,04,13,03,00	;line 3
-	dc.b	01,21,22,09,05,14,03,00	;line 4
-	dc.b	01,18,19,07,03,13,12,00	;line 5
-	dc.b	01,20,17,14,04,12,13,00	;line 6
-	dc.b	01,18,19,13,03,12,07,00	;line 7
-	dc.b	01,20,17,07,04,03,12,00	;line 8
+	dc.b	01,18,19,07,03,13,12,00	;line 1 Sc1
+	dc.b	01,18,17,07,03,12,13,00	;line 2 Sc2
+	dc.b	01,20,19,08,04,13,03,00	;line 3 Chk
+	dc.b	01,21,22,09,05,14,03,00	;line 4 PP1
+	dc.b	01,18,19,07,03,13,12,00	;line 5 PP2
+	dc.b	01,20,17,14,04,12,13,00	;line 6 PK1
+	dc.b	01,18,19,13,03,12,07,00	;line 7 PK2
+	dc.b	01,20,17,07,04,03,12,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Tom Barrasso',	35A4,4554,0100,4344	;1
 	Player	'Ken Wregget',	3182,3332,0000,3232	;2
@@ -1256,14 +1256,14 @@ Quebec	;QUE, $416C (94 $393C)
 .sodds
 	dc.b	166,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,20,19,09,03,05,15,00	;line 1
-	dc.b	01,20,18,09,05,15,03,00	;line 2
-	dc.b	01,19,22,08,03,16,05,00	;line 3
-	dc.b	01,23,24,12,04,17,05,00	;line 4
-	dc.b	01,19,22,09,03,05,15,00	;line 5
-	dc.b	01,20,24,08,04,15,03,00	;line 6
-	dc.b	01,20,18,07,04,03,05,00	;line 7
-	dc.b	01,19,22,06,05,03,09,00	;line 8
+	dc.b	01,20,19,09,03,05,15,00	;line 1 Sc1
+	dc.b	01,20,18,09,05,15,03,00	;line 2 Sc2
+	dc.b	01,19,22,08,03,16,05,00	;line 3 Chk
+	dc.b	01,23,24,12,04,17,05,00	;line 4 PP1
+	dc.b	01,19,22,09,03,05,15,00	;line 5 PP2
+	dc.b	01,20,24,08,04,15,03,00	;line 6 PK1
+	dc.b	01,20,18,07,04,03,05,00	;line 7 PK2
+	dc.b	01,19,22,06,05,03,09,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Stephane Fiset',	3553,3332,0000,3222	;1
 	Player	'Jocelyn Thibault',	4153,3222,0000,2222	;2
@@ -1315,14 +1315,14 @@ SanJose	;SJ, $4452 (94 $3C42)
 .sodds
 	dc.b	212,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,17,19,14,03,16,10,00	;line 1
-	dc.b	01,17,19,10,03,16,14,00	;line 2
-	dc.b	01,18,20,08,04,14,03,00	;line 3
-	dc.b	01,21,23,09,05,15,03,00	;line 4
-	dc.b	01,17,19,10,03,16,14,00	;line 5
-	dc.b	01,18,20,14,04,15,03,00	;line 6
-	dc.b	01,21,23,09,05,03,14,00	;line 7
-	dc.b	01,18,19,08,03,16,10,00	;line 8
+	dc.b	01,17,19,14,03,16,10,00	;line 1 Sc1
+	dc.b	01,17,19,10,03,16,14,00	;line 2 Sc2
+	dc.b	01,18,20,08,04,14,03,00	;line 3 Chk
+	dc.b	01,21,23,09,05,15,03,00	;line 4 PP1
+	dc.b	01,17,19,10,03,16,14,00	;line 5 PP2
+	dc.b	01,18,20,14,04,15,03,00	;line 6 PK1
+	dc.b	01,21,23,09,05,03,14,00	;line 7 PK2
+	dc.b	01,18,19,08,03,16,10,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Arturs Irbe',	3254,4443,0000,4444	;1
 	Player	'Jim Waite',	2962,3222,0000,2222	;2
@@ -1373,14 +1373,14 @@ StLouis	;STL, $4716 (94 $3F30)
 .sodds
 	dc.b	212,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,22,18,08,03,11,05,00	;line 1
-	dc.b	01,24,18,08,03,11,05,00	;line 2
-	dc.b	01,22,21,09,05,12,11,00	;line 3
-	dc.b	01,20,23,07,04,13,11,00	;line 4
-	dc.b	01,22,18,08,03,11,05,00	;line 5
-	dc.b	01,24,19,05,04,12,11,00	;line 6
-	dc.b	01,24,18,08,12,11,03,00	;line 7
-	dc.b	01,20,21,13,11,03,08,00	;line 8
+	dc.b	01,22,18,08,03,11,05,00	;line 1 Sc1
+	dc.b	01,24,18,08,03,11,05,00	;line 2 Sc2
+	dc.b	01,22,21,09,05,12,11,00	;line 3 Chk
+	dc.b	01,20,23,07,04,13,11,00	;line 4 PP1
+	dc.b	01,22,18,08,03,11,05,00	;line 5 PP2
+	dc.b	01,24,19,05,04,12,11,00	;line 6 PK1
+	dc.b	01,24,18,08,12,11,03,00	;line 7 PK2
+	dc.b	01,20,21,13,11,03,08,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Curtis Joseph',	3165,4564,0000,4444	;1
 	Player	'Jim Hrivnak',	2962,3222,0000,2222	;2
@@ -1432,14 +1432,14 @@ TampaBay	;TB, $49FE (94 $4216)
 .sodds
 	dc.b	196,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,18,17,03,04,14,10,00	;line 1
-	dc.b	01,18,16,10,04,14,03,00	;line 2
-	dc.b	01,17,19,08,03,13,04,00	;line 3
-	dc.b	01,21,20,11,05,12,04,00	;line 4
-	dc.b	01,17,16,03,04,14,10,00	;line 5
-	dc.b	01,18,19,09,05,12,04,00	;line 6
-	dc.b	01,18,19,08,05,04,10,00	;line 7
-	dc.b	01,17,16,10,03,04,14,00	;line 8
+	dc.b	01,18,17,03,04,14,10,00	;line 1 Sc1
+	dc.b	01,18,16,10,04,14,03,00	;line 2 Sc2
+	dc.b	01,17,19,08,03,13,04,00	;line 3 Chk
+	dc.b	01,21,20,11,05,12,04,00	;line 4 PP1
+	dc.b	01,17,16,03,04,14,10,00	;line 5 PP2
+	dc.b	01,18,19,09,05,12,04,00	;line 6 PK1
+	dc.b	01,18,19,08,05,04,10,00	;line 7 PK2
+	dc.b	01,17,16,10,03,04,14,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Daren Puppa',	9394,4453,0100,3344	;1
 	Player	'Wendell Young',	0163,3223,0000,2222	;2
@@ -1489,14 +1489,14 @@ Toronto	;TOR, $4CB6 (94 $4518)
 .sodds
 	dc.b	212,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,21,18,09,04,10,15,00	;line 1
-	dc.b	01,17,18,09,04,15,10,00	;line 2
-	dc.b	01,21,19,10,03,16,04,00	;line 3
-	dc.b	01,23,22,11,07,14,04,00	;line 4
-	dc.b	01,17,18,10,04,14,09,00	;line 5
-	dc.b	01,21,19,09,03,15,04,00	;line 6
-	dc.b	01,21,19,10,04,09,15,00	;line 7
-	dc.b	01,17,18,15,07,04,09,00	;line 8
+	dc.b	01,21,18,09,04,10,15,00	;line 1 Sc1
+	dc.b	01,17,18,09,04,15,10,00	;line 2 Sc2
+	dc.b	01,21,19,10,03,16,04,00	;line 3 Chk
+	dc.b	01,23,22,11,07,14,04,00	;line 4 PP1
+	dc.b	01,17,18,10,04,14,09,00	;line 5 PP2
+	dc.b	01,21,19,09,03,15,04,00	;line 6 PK1
+	dc.b	01,21,19,10,04,09,15,00	;line 7 PK2
+	dc.b	01,17,18,15,07,04,09,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Felix Potvin',	2964,4664,0000,5454	;1
 	Player	'Damian Rhodes',	0152,3223,0000,3322	;2
@@ -1548,14 +1548,14 @@ Vancouver	;VAN, $4FA8 (94 $481C)
 .sodds
 	dc.b	196,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,18,19,07,03,13,14,00	;line 1
-	dc.b	01,24,19,07,03,13,14,00	;line 2
-	dc.b	01,18,23,09,05,14,13,00	;line 3
-	dc.b	01,21,22,08,04,11,13,00	;line 4
-	dc.b	01,18,19,07,03,13,14,00	;line 5
-	dc.b	01,17,23,09,04,14,13,00	;line 6
-	dc.b	01,24,19,13,05,14,09,00	;line 7
-	dc.b	01,18,22,14,06,09,07,00	;line 8
+	dc.b	01,18,19,07,03,13,14,00	;line 1 Sc1
+	dc.b	01,24,19,07,03,13,14,00	;line 2 Sc2
+	dc.b	01,18,23,09,05,14,13,00	;line 3 Chk
+	dc.b	01,21,22,08,04,11,13,00	;line 4 PP1
+	dc.b	01,18,19,07,03,13,14,00	;line 5 PP2
+	dc.b	01,17,23,09,04,14,13,00	;line 6 PK1
+	dc.b	01,24,19,13,05,14,09,00	;line 7 PK2
+	dc.b	01,18,22,14,06,09,07,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Kirk McLean',	0164,4444,0000,4444	;1
 	Player	'Kay Whitmore',	3553,3452,0000,2323	;2
@@ -1607,14 +1607,14 @@ Winnipeg	;WPG, $528E (94 $4B0A)
 .sodds
 	dc.b	166,0
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,22,19,08,03,13,04,00	;line 1
-	dc.b	01,22,19,08,03,13,04,00	;line 2
-	dc.b	01,20,21,11,04,15,13,00	;line 3
-	dc.b	01,17,23,09,05,16,13,00	;line 4
-	dc.b	01,22,19,08,03,13,04,00	;line 5
-	dc.b	01,20,21,05,04,15,13,00	;line 6
-	dc.b	01,20,21,08,15,03,13,00	;line 7
-	dc.b	01,22,19,09,05,03,13,00	;line 8
+	dc.b	01,22,19,08,03,13,04,00	;line 1 Sc1
+	dc.b	01,22,19,08,03,13,04,00	;line 2 Sc2
+	dc.b	01,20,21,11,04,15,13,00	;line 3 Chk
+	dc.b	01,17,23,09,05,16,13,00	;line 4 PP1
+	dc.b	01,22,19,08,03,13,04,00	;line 5 PP2
+	dc.b	01,20,21,05,04,15,13,00	;line 6 PK1
+	dc.b	01,20,21,08,15,03,13,00	;line 7 PK2
+	dc.b	01,22,19,09,05,03,13,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Tim Cheveldae',	2963,4443,0000,3333	;1
 	Player	'Mike O''Neill',	0142,2222,0000,2212	;2
@@ -1665,14 +1665,14 @@ Washington	;WSH, $5556 (94 $4DFC)
 .sodds
 	dc.b	164,32
 .ls	;		-G,LD,RD,LW,-C,RW,XA,00. 8 lines
-	dc.b	01,20,18,10,04,05,13,00	;line 1
-	dc.b	01,21,18,10,05,13,04,00	;line 2
-	dc.b	01,20,22,12,04,17,05,00	;line 3
-	dc.b	01,23,19,09,06,07,05,00	;line 4
-	dc.b	01,21,18,07,05,13,04,00	;line 5
-	dc.b	01,20,22,10,04,06,05,00	;line 6
-	dc.b	01,24,18,09,04,05,10,00	;line 7
-	dc.b	01,21,20,12,06,05,10,00	;line 8
+	dc.b	01,20,18,10,04,05,13,00	;line 1 Sc1
+	dc.b	01,21,18,10,05,13,04,00	;line 2 Sc2
+	dc.b	01,20,22,12,04,17,05,00	;line 3 Chk
+	dc.b	01,23,19,09,06,07,05,00	;line 4 PP1
+	dc.b	01,21,18,07,05,13,04,00	;line 5 PP2
+	dc.b	01,20,22,10,04,06,05,00	;line 6 PK1
+	dc.b	01,24,18,09,04,05,10,00	;line 7 PK2
+	dc.b	01,21,20,12,06,05,10,00	;line 8 8th line (94 addition, no linelist name)
 .pld	;							unwl,sodp,chga,eytm
 	Player	'Don Beaupre',	3343,4333,0000,4343	;1
 	Player	'Rick Tabaracci',	3163,3112,0000,3332	;2
@@ -1709,38 +1709,38 @@ Washington	;WSH, $5556 (94 $4DFC)
 	String	'US Air Arena'
 
 playoffseats	;(94 $5576). 93 / 94 name. movea.l #$5834 in the playoff tree setup (NewPO .0, MakeTree). 32 rows of 16 team numbers, as 94
-	dc.b	19,22,10,6, 23,5,3,4, 1,14,11,12, 17,16,2,8
-	dc.b	7,25,19,6, 10,22,23,4, 18,13,9,21, 15,14,1,12
-	dc.b	3,5,0,25, 7,20,19,5, 1,13,11,15, 17,24,2,12
-	dc.b	19,25,10,20, 23,4,3,5, 1,21,11,13, 17,8,2,16
-	dc.b	7,22,0,6, 3,5,23,25, 18,24,9,12, 15,14,2,17
-	dc.b	3,25,23,22, 10,4,19,20, 1,8,17,13, 9,12,14,2
-	dc.b	19,10,23,3, 0,7,22,6, 1,11,17,2, 18,9,15,14
-	dc.b	5,4,20,25, 6,19,10,22, 12,24,16,8, 13,21,14,1
+	dc.b	SJ,TOR,LA,DET, VAN,DAL,CGY,CHI, BOS,NYR,MTL,NJ, PIT,PHI,BUF,FLA
+	dc.b	EDM,WPG,SJ,DET, LA,TOR,VAN,CHI, QUE,NYI,HFD,TB, OTW,NYR,BOS,NJ
+	dc.b	CGY,DAL,ANH,WPG, EDM,STL,SJ,DAL, BOS,NYI,MTL,OTW, PIT,WSH,BUF,NJ
+	dc.b	SJ,WPG,LA,STL, VAN,CHI,CGY,DAL, BOS,TB,MTL,NYI, PIT,FLA,BUF,PHI
+	dc.b	EDM,TOR,ANH,DET, CGY,DAL,VAN,WPG, QUE,WSH,HFD,NJ, OTW,NYR,BUF,PIT
+	dc.b	CGY,WPG,VAN,TOR, LA,CHI,SJ,STL, BOS,FLA,PIT,NYI, HFD,NJ,NYR,BUF
+	dc.b	SJ,LA,VAN,CGY, ANH,EDM,TOR,DET, BOS,MTL,PIT,BUF, QUE,HFD,OTW,NYR
+	dc.b	DAL,CHI,STL,WPG, DET,SJ,LA,TOR, NJ,WSH,PHI,FLA, NYI,TB,NYR,BOS
 
-	dc.b	23,7,3,0, 19,5,10,4, 17,9,2,18, 14,21,12,13
-	dc.b	25,5,20,6, 4,22,23,3, 1,13,11,8, 17,16,15,18
-	dc.b	19,4,22,3, 10,23,6,5, 1,8,14,2, 11,17,12,16
-	dc.b	6,19,3,23, 22,4,5,20, 14,13,17,24, 12,2,1,11
-	dc.b	6,20,19,5, 3,22,23,4, 14,11,13,1, 17,12,24,2
-	dc.b	6,4,20,23, 5,22,3,19, 14,2,11,24, 13,17,1,12
-	dc.b	6,23,4,3, 20,22,5,19, 14,12,2,1, 11,13,24,17
-	dc.b	6,19,23,5, 4,20,3,22, 14,17,12,24, 2,11,1,13
+	dc.b	VAN,EDM,CGY,ANH, SJ,DAL,LA,CHI, PIT,HFD,BUF,QUE, NYR,TB,NJ,NYI
+	dc.b	WPG,DAL,STL,DET, CHI,TOR,VAN,CGY, BOS,NYI,MTL,FLA, PIT,PHI,OTW,QUE
+	dc.b	SJ,CHI,TOR,CGY, LA,VAN,DET,DAL, BOS,FLA,NYR,BUF, MTL,PIT,NJ,PHI
+	dc.b	DET,SJ,CGY,VAN, TOR,CHI,DAL,STL, NYR,NYI,PIT,WSH, NJ,BUF,BOS,MTL
+	dc.b	DET,STL,SJ,DAL, CGY,TOR,VAN,CHI, NYR,MTL,NYI,BOS, PIT,NJ,WSH,BUF
+	dc.b	DET,CHI,STL,VAN, DAL,TOR,CGY,SJ, NYR,BUF,MTL,WSH, NYI,PIT,BOS,NJ
+	dc.b	DET,VAN,CHI,CGY, STL,TOR,DAL,SJ, NYR,NJ,BUF,BOS, MTL,NYI,WSH,PIT
+	dc.b	DET,SJ,VAN,DAL, CHI,STL,CGY,TOR, NYR,PIT,NJ,WSH, BUF,MTL,BOS,NYI
 
-	dc.b	6,22,19,3, 23,4,5,20, 14,13,17,1, 12,2,24,11
-	dc.b	6,20,22,5, 19,23,3,4, 14,11,13,24, 17,12,1,2
-	dc.b	6,4,20,3, 22,19,5,23, 14,2,11,1, 13,17,24,12
-	dc.b	6,23,4,5, 20,22,3,19, 14,12,2,24, 11,13,1,17
-	dc.b	6,19,23,3, 4,20,5,22, 14,17,12,1, 2,11,24,13
-	dc.b	6,22,19,5, 23,4,3,20, 14,13,17,24, 12,1,11,2
-	dc.b	7,22,19,5, 0,4,25,23, 21,11,15,1, 17,8,14,18
-	dc.b	7,23,22,25, 19,0,5,4, 21,18,11,14, 15,17,1,8
+	dc.b	DET,TOR,SJ,CGY, VAN,CHI,DAL,STL, NYR,NYI,PIT,BOS, NJ,BUF,WSH,MTL
+	dc.b	DET,STL,TOR,DAL, SJ,VAN,CGY,CHI, NYR,MTL,NYI,WSH, PIT,NJ,BOS,BUF
+	dc.b	DET,CHI,STL,CGY, TOR,SJ,DAL,VAN, NYR,BUF,MTL,BOS, NYI,PIT,WSH,NJ
+	dc.b	DET,VAN,CHI,DAL, STL,TOR,CGY,SJ, NYR,NJ,BUF,WSH, MTL,NYI,BOS,PIT
+	dc.b	DET,SJ,VAN,CGY, CHI,STL,DAL,TOR, NYR,PIT,NJ,BOS, BUF,MTL,WSH,NYI
+	dc.b	DET,TOR,SJ,DAL, VAN,CHI,CGY,STL, NYR,NYI,PIT,WSH, NJ,BOS,MTL,BUF
+	dc.b	EDM,TOR,SJ,DAL, ANH,CHI,WPG,VAN, TB,MTL,OTW,BOS, PIT,FLA,NYR,QUE
+	dc.b	EDM,VAN,TOR,WPG, SJ,ANH,DAL,CHI, TB,QUE,MTL,NYR, OTW,PIT,BOS,FLA
 
-	dc.b	7,4,23,5, 22,19,25,0, 21,8,18,1, 11,15,14,17
-	dc.b	7,0,4,25, 23,22,5,19, 21,17,8,14, 18,11,1,15
-	dc.b	3,10,6,19, 23,5,4,0, 13,9,2,16, 17,18,14,1
-	dc.b	3,0,10,4, 6,23,19,5, 13,1,9,14, 2,17,16,18
-	dc.b	3,5,0,19, 10,6,4,23, 13,18,16,1, 9,2,14,17
-	dc.b	3,23,5,4, 0,10,19,6, 13,17,18,14, 16,9,1,2
-	dc.b	3,6,23,19, 5,0,4,10, 13,2,17,1, 18,16,14,9
-	dc.b	3,10,6,4, 23,5,19,0, 13,9,2,14, 17,18,1,16
+	dc.b	EDM,CHI,VAN,DAL, TOR,SJ,WPG,ANH, TB,FLA,QUE,BOS, MTL,OTW,NYR,PIT
+	dc.b	EDM,ANH,CHI,WPG, VAN,TOR,DAL,SJ, TB,PIT,FLA,NYR, QUE,MTL,BOS,OTW
+	dc.b	CGY,LA,DET,SJ, VAN,DAL,CHI,ANH, NYI,HFD,BUF,PHI, PIT,QUE,NYR,BOS
+	dc.b	CGY,ANH,LA,CHI, DET,VAN,SJ,DAL, NYI,BOS,HFD,NYR, BUF,PIT,PHI,QUE
+	dc.b	CGY,DAL,ANH,SJ, LA,DET,CHI,VAN, NYI,QUE,PHI,BOS, HFD,BUF,NYR,PIT
+	dc.b	CGY,VAN,DAL,CHI, ANH,LA,SJ,DET, NYI,PIT,QUE,NYR, PHI,HFD,BOS,BUF
+	dc.b	CGY,DET,VAN,SJ, DAL,ANH,CHI,LA, NYI,BUF,PIT,BOS, QUE,PHI,NYR,HFD
+	dc.b	CGY,LA,DET,CHI, VAN,DAL,SJ,ANH, NYI,HFD,BUF,NYR, PIT,QUE,BOS,PHI
