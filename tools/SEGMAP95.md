@@ -1,6 +1,6 @@
 # NHL 95 segment map
 
-The rows are in `SEGMENT_AGENT.md` "ROM map", made from `tools/segmap95.json`.
+The rows are in `SEGMENT_AGENT.md` "ROM map", made from `tools/segmap95.json`. The segment names in `segmap95.json` are the first flat split (`checks95_01` ...); the source now has one file per subsystem, and the ROM map uses those paths.
 
 ## Rerun
 

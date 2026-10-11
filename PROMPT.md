@@ -2,6 +2,8 @@
 
 Paste this into a new Copilot Agent session. Opus 5.5, High. One segment only. Run it again for the next file. Do not edit this prompt.
 
+The prompt was written for the flat layout, with every file in `src/` and its include in `nhl95.asm`. In the subsystem layout `<file>` is a path under `src/` (`engine\logic95`): the stub is `src/<path>_stub.asm` next to the file, the include goes in `nhl95.asm` or the include list of its folder (`engine95.asm` ...), and `seg:<name>` uses the file name without the folder. See `SEGMENT_AGENT.md` "Layout".
+
 ```text
 Read SEGMENT_AGENT.md before you write any asm. It is the queue. Take the first file in the ROM map that is not marked matched. That file is the only segment this session. Do not start the file after it.
 

@@ -6,6 +6,8 @@ No sections. Every file stays one contiguous ROM range and the include order is 
 
 `docs/WHY_95_MOVED.md` explains why 95's order follows subsystems rather than 94's files. This proposal turns that reading into a file list.
 
+Implemented on the branch `cursor/subsystems-75f7` (not merged to `main`); see "Implemented on branch" below.
+
 ## What the real names probably were
 
 No 95 file names survive. The ROM has no file name strings, and the 93 and 94 names (`checks94`, `assign94`, `collide94` ...) were chosen by those disassembly projects. Only NHL92's names are real: Jim Simmons's source has `hockey.asm` (the root and the game flow), `main.asm`, `teamdata.asm`, `frames.asm` (`Frames.Asm`), `ram.asm`, `logic.asm`, `middle.asm`, `penalty.asm`, `video.asm`, `checksum.asm`, `sound\sound.asm` and `EALogo.asm`. All are short lowercase words that fit DOS 8.3. Lesser took over that source for 94, so his files most likely kept those names. In 95 he re-filed the code by subsystem (`docs/WHY_95_MOVED.md`), so new subsystems would have new short names in the same style.
@@ -165,6 +167,18 @@ No new address is hardcoded. Files and include lists have no org, and the stubs 
 5. Fix comments that name a file (`(collide95_01)`, `called from checks95_04`) to the new names.
 6. Update README, SEGMENT_AGENT.md (the ROM map table and the file rules) and PROMPT.md.
 7. Full build and all 43 segments after each step.
+
+## Implemented on branch `cursor/subsystems-75f7`
+
+The layout above is implemented on the branch `cursor/subsystems-75f7`, not on `main`. Full build MATCH (SHA-1 `09e87b076aa4cd6f057a1d65bb50fd889b509b44`) and 43 / 43 segments MATCH after every commit. No code or data byte changed.
+
+- The 43 files, the four include lists and the stubs are as in the table. The old flat files are deleted.
+- Joined files keep each old header as a banner; split files got a header for each part, and the headers and banners name only what is in their own part. The `N parts` line of a header counts its banners.
+- Comments that named an old file name the new one (`(collide95_02)` -> `(players95)`); where a split file was named, the caller or callee decided which new file it is. `extractAssets95.js` names the new paths.
+- Merged files include `macros\genesis.mac` once.
+- `tools/file_origins.py` expands the include lists; `tools/strip_noise.py` and `tools/scan_cleanup.py` read the five folders. `docs/FILE_ORIGINS.md` and `docs/function_origins.csv` were regenerated: every label keeps its origin and evidence, only the file names changed. The `module` column of `docs/name_map.csv` is the path (`engine/logic95`), set by address from the stubs; `old_name` is kept.
+- `tools/segmap95.json`, `SEGMAP95.md` and `segmap95_overrides.json` are not changed: they are the first fingerprint split, kept for history, and their segment names are the old flat names.
+- README, `SEGMENT_AGENT.md` (layout rules, build, and a 43-row ROM map plus `ram95`) and a note in `PROMPT.md` describe the new layout.
 
 ## For and against
 
