@@ -57,10 +57,8 @@ Sizes run from a label to the next one, so the vectors ($0-$FF) and the header b
 | `front/crowd95` | $0A0B3E-$0A0D19 | 476 | display94 61%, new in 95 21%, hockey94 18% |
 | `front/summary95` | $0A0D1A-$0A12A9 | 1424 | stats94 100% |
 | `front/title95` | $0A12AA-$0A1A59 | 1968 | title94 66%, new in 95 34% |
-| `art/graphics95` | $0A1A5A-$1A1699 | 1047616 | graphics94 100%, cards94 <1% |
-| `art/logopals95` | $1A169A-$1A1A19 | 896 | title94 100% |
-| `art/arena95` | $1A1A1A-$1A6C27 | 21006 | graphics94 100% |
-| `art/credits95` | $1A6C28-$1A72BF | 1688 | teamdata94 100% |
+| `graphics95` | $0A1A5A-$1A6C27 | 1069518 | graphics94 100%, title94 <1%, cards94 <1% |
+| `credits95` | $1A6C28-$1A72BF | 1688 | teamdata94 100% |
 | `checksum95` | $1A72C0-$1A730F | 80 | checksum94 100% |
 
 ## By 94 file
@@ -72,7 +70,7 @@ Where the routines and tables of each 94 file ended up in 95: bytes, then the la
 | sega/SegaIDTable94 | `sega/SegaIDTable95` 16 (1) |
 | sega/SegaInit | `sega/SegaInit` 250 (27) |
 | main94 | `main95` 0 (1) |
-| teamdata94 | `tables/teamdata95` 21186 (28), `art/credits95` 1688 (2), `main95` 4 (1) |
+| teamdata94 | `tables/teamdata95` 21186 (28), `credits95` 1688 (2), `main95` 4 (1) |
 | frames94 | `tables/frames95` 11106 (79) |
 | hockey94 | `hockey95` 820 (4), `engine/pause95` 480 (8), `engine/goal95` 344 (2), `front/injury95` 310 (1), `main95` 204 (1), `front/season95` 158 (3), `engine/middle95` 126 (3), `sound/sound95` 106 (2), `front/crowd95` 88 (1), `engine/players95` 32 (1), `engine/faceoff95` 16 (1), `engine/video95` 6 (1) |
 | menu94 | `engine/pause95` 1016 (6), `engine/middle95` 22 (1) |
@@ -90,18 +88,18 @@ Where the routines and tables of each 94 file ended up in 95: bytes, then the la
 | data94 | `engine/setup95` 2750 (29), `front/stats95` 1000 (5), `engine/penalty95` 904 (3), `engine/middle95` 502 (16), `engine/goal95` 488 (4), `engine/playoff95` 362 (1), `front/shootout95` 242 (2), `engine/logic95` 136 (1), `engine/players95` 114 (2), `engine/video95` 16 (1), `main95` 8 (4) |
 | sram94 | `sram95` 592 (8) |
 | sound94 | `sound/sound95` 73266 (33), `sound/z80old95` 652 (1), `engine/video95` 352 (13) |
-| graphics94 | `art/graphics95` 1046976 (281), `art/arena95` 21006 (1), `tables/frames95` 2114 (1), `front/scout95` 692 (1) |
+| graphics94 | `graphics95` 1067982 (282), `tables/frames95` 2114 (1), `front/scout95` 692 (1) |
 | onetimer94 | `engine/logic95` 928 (5), `engine/input95` 592 (6) |
 | fourway94 | `engine/fourway95` 216 (5) |
 | crowd94 | `front/scout95` 606 (9), `engine/collide95` 204 (2), `engine/players95` 138 (3), `engine/skate95` 74 (1) |
 | optsetup94 | `engine/setup95` 5308 (30), `engine/middle95` 168 (2) |
-| cards94 | `front/records95` 3836 (41), `art/graphics95` 640 (1), `engine/middle95` 354 (9), `front/scout95` 270 (1), `front/create95` 216 (3), `engine/logic95` 84 (1), `engine/collide95` 70 (1), `front/stats95` 42 (1), `front/awards95` 28 (1) |
+| cards94 | `front/records95` 3836 (41), `graphics95` 640 (1), `engine/middle95` 354 (9), `front/scout95` 270 (1), `front/create95` 216 (3), `engine/logic95` 84 (1), `engine/collide95` 70 (1), `front/stats95` 42 (1), `front/awards95` 28 (1) |
 | records94 | `front/records95` 1984 (17), `front/shootout95` 348 (2) |
 | shootout94 | `front/shootout95` 1850 (20) |
 | scout94 | `front/scout95` 2756 (32), `engine/middle95` 14 (1) |
 | period94 | `front/stats95` 3036 (18), `front/shootout95` 202 (2), `front/scout95` 156 (3), `engine/lines95` 38 (1) |
 | goalie94 | `engine/pause95` 232 (1) |
-| title94 | `front/title95` 1294 (7), `art/logopals95` 896 (1), `front/shootout95` 622 (14), `control95` 524 (1), `engine/middle95` 382 (4), `sound/sound95` 268 (3), `engine/skate95` 266 (1), `engine/penalty95` 252 (5), `front/scout95` 202 (1), `engine/setup95` 114 (3), `engine/goal95` 112 (3), `engine/playoff95` 106 (1), `engine/logic95` 82 (1), `front/records95` 74 (1), `front/injury95` 34 (2) |
+| title94 | `front/title95` 1294 (7), `graphics95` 896 (1), `front/shootout95` 622 (14), `control95` 524 (1), `engine/middle95` 382 (4), `sound/sound95` 268 (3), `engine/skate95` 266 (1), `engine/penalty95` 252 (5), `front/scout95` 202 (1), `engine/setup95` 114 (3), `engine/goal95` 112 (3), `engine/playoff95` 106 (1), `engine/logic95` 82 (1), `front/records95` 74 (1), `front/injury95` 34 (2) |
 | checksum94 | `checksum95` 80 (1) |
 | new in 95 | `sound/sound95` 379148 (33), `front/season95` 16614 (178), `front/create95` 12218 (178), `front/stats95` 7928 (85), `front/trade95` 6502 (45), `front/awards95` 4932 (66), `engine/pause95` 4402 (36), `engine/lines95` 3384 (15), `tables/schedule95` 2378 (2), `engine/goal95` 2006 (26), `engine/middle95` 1702 (35), `engine/setup95` 1082 (15), `main95` 928 (11), `engine/logic95` 840 (3), `front/title95` 674 (8), `hockey95` 562 (1), `front/injury95` 480 (9), `front/records95` 460 (7), `engine/replay95` 452 (2), `engine/skate95` 384 (3), `sram95` 342 (3), `engine/video95` 274 (4), `control95` 262 (5), `engine/faceoff95` 196 (1), `engine/players95` 188 (4), `front/scout95` 130 (6), `front/crowd95` 98 (1), `engine/fourway95` 92 (4), `engine/collide95` 44 (2) |
 
@@ -612,21 +610,15 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **title94** (1294 bytes): newTitleScreen, CreditsPrintRow, CreditsWait, TitleVBlank, CreditsLineScroll, CreditsScrollStep, HiScoreScreen
 - **new in 95** (674 bytes): StanleyCupScreen, CupReadPads, CupWaitFrame, CupExit, CupVBlank, CupDrawTeam, CupBuildSprites, AddSpriteFrame
 
-### art/graphics95
+### graphics95
 
 - **graphics94** (142754 bytes): (tables only)
 - **cards94** (640 bytes): (tables only)
 - **graphics94** (904222 bytes): (tables only)
-
-### art/logopals95
-
 - **title94** (896 bytes): (tables only)
-
-### art/arena95
-
 - **graphics94** (21006 bytes): (tables only)
 
-### art/credits95
+### credits95
 
 - **teamdata94** (1688 bytes): (tables only)
 
