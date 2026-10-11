@@ -8,7 +8,7 @@
 
 	include	macros\genesis.mac	;String
 
-CreateScreenGfx	;set up VDP planes and load create-player graphics/palettes
+CreateScreenGfx	;Set up VDP planes and load create-player graphics/palettes
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
 	bclr	#0,(disflags).w
@@ -127,7 +127,7 @@ CreatePlayer	;Create Player screen entry: load graphics, draw title, init player
 	clr.w	d0
 	bra.w	.nameCursorMove
 
-.createPlayerLoop	;main input loop: list mode scrolls players, edit mode moves name/char cursors
+.createPlayerLoop	;Main input loop: list mode scrolls players, edit mode moves name/char cursors
 	bsr.w	CountNameLength
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),5,$12,0
@@ -192,7 +192,7 @@ CreatePlayer	;Create Player screen entry: load graphics, draw title, init player
 	bsr.w	NameEntry
 	bra.w	.createPlayerLoop
 
-.createListMove	;move player-list selection by d0 and scroll the list window
+.createListMove	;Move player-list selection by d0 and scroll the list window
 	add.w	d0,(CreateListRow).w
 	move.w	(CreateListRow).w,d1
 	cmp.w	(createdcount).l,d1
@@ -244,7 +244,7 @@ CreatePlayer	;Create Player screen entry: load graphics, draw title, init player
 	neg.w	d0
 	bra.w	.nameCursorMove
 
-.nameCursorMove	;move name cursor (d4, 0-$11) by d0
+.nameCursorMove	;Move name cursor (d4, 0-$11) by d0
 	add.w	d4,d0
 	cmp.w	#$11,d0
 	bhi.w	.createPlayerLoop
@@ -259,7 +259,7 @@ CreatePlayer	;Create Player screen entry: load graphics, draw title, init player
 	bsr.w	FindGridLetter
 	sub.w	d5,d0
 
-.gridCursorMove	;move character-grid cursor (d5, 0-$1D) by d0 and write char into name buffer
+.gridCursorMove	;Move character-grid cursor (d5, 0-$1D) by d0 and write char into name buffer
 	add.w	d5,d0
 	cmp.w	#$1D,d0
 	bhi.w	.createPlayerLoop
@@ -849,7 +849,7 @@ SaveNameRet	;SaveCreateName: return
 .0
 	rts
 
-ReadCreatedPlayers	;read created players: load $36-byte list from save RAM SRFreeAgentList, build 18-byte name records at M68K_RAM and ids at CreatedIds, count in createdcount, add an empty slot if room
+ReadCreatedPlayers	;Read created players: load $36-byte list from save RAM SRFreeAgentList, build 18-byte name records at M68K_RAM and ids at CreatedIds, count in createdcount, add an empty slot if room
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	(createdcount).l
 .0
@@ -898,7 +898,7 @@ ReadCreatedPlayers	;read created players: load $36-byte list from save RAM SRFre
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-BuildEnteredName	;build the entered name (from NameEntryBuf, spaces/dashes dropped, space after first name) as a length-word string at TempBuffer and check it
+BuildEnteredName	;Build the entered name (from NameEntryBuf, spaces/dashes dropped, space after first name) as a length-word string at TempBuffer and check it
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#linemarkbuf+2,a0
 	movea.l	#NameEntryBuf,a1
@@ -957,7 +957,7 @@ BuildEnteredName	;build the entered name (from NameEntryBuf, spaces/dashes dropp
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-FormatNameRecord	;format name string at a1 into an 18-byte record at a2: first name padded to 8 and last name to 10 with dashes
+FormatNameRecord	;Format name string at a1 into an 18-byte record at a2: first name padded to 8 and last name to 10 with dashes
 	movem.l	d0-d7/a1-a2,-(sp)
 	move.w	(a1)+,d7
 	subq.w	#3,d7
@@ -993,11 +993,11 @@ FormatNameRecord	;format name string at a1 into an 18-byte record at a2: first n
 	movem.l	(sp)+,d0-d7/a1-a2
 	rts
 
-NewCreateRecord	;same as InitCreateRecord but with bit 2 of sflags8 set (skips the read)
+NewCreateRecord	;Same as InitCreateRecord but with bit 2 of sflags8 set (skips the read)
 	bset	#2,(sflags8).w
 	bra.w	InitCreateRecord2
 
-InitCreateRecord	;read 32-byte create record #CreateIndex from save RAM (SRCreatedPlayers) to CreateRecord, put an 8-byte tail on it by flag $1F, write it back
+InitCreateRecord	;Read 32-byte create record #CreateIndex from save RAM (SRCreatedPlayers) to CreateRecord, put an 8-byte tail on it by flag $1F, write it back
 	bclr	#2,(sflags8).w
 
 InitCreateRecord2	;InitCreateRecord without the bset (NewCreateRecord enters here)
@@ -1048,7 +1048,7 @@ CreateRecordTail2	;8 byte record tail (record byte $1F set)
 	dc.b	$22
 	dc.b	$22
 
-CreateRatingsGfx	;set up the create player screen: VDP setup, decompress graphics, print, draw background map
+CreateRatingsGfx	;Set up the create player screen: VDP setup, decompress graphics, print, draw background map
 	move	#$2700,sr
 	move.w	#2,d4
 	move.l	#VBlank_SetOptions,(vbint).w
@@ -1119,7 +1119,7 @@ CreateRatingsGfx	;set up the create player screen: VDP setup, decompress graphic
 	jsr	(dobitmap).l
 	rts
 
-CheckCreateSlots	;check free create slots: d0/flags = -1 (N set) if 20 created players exist, else 1
+CheckCreateSlots	;Check free create slots: d0/flags = -1 (N set) if 20 created players exist, else 1
 	movem.w	d0,-(sp)
 	move.w	(SaveRAM+2*SRCreateCount).l,d0
 	cmp.b	#$14,d0
@@ -1132,7 +1132,7 @@ CheckCreateSlots	;check free create slots: d0/flags = -1 (N set) if 20 created p
 	movem.w	(sp)+,d0
 	rts
 
-ClearCreatedPlayers	;clear the created players list at CreatedList (26 x $8000 + 0 terminator)
+ClearCreatedPlayers	;Clear the created players list at CreatedList (26 x $8000 + 0 terminator)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#CreatedList,a0
 	move.w	#$19,d6
@@ -1143,7 +1143,7 @@ ClearCreatedPlayers	;clear the created players list at CreatedList (26 x $8000 +
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DeleteCreatedPlayer	;delete created player #TempWord1: remove it from the save RAM records, roster list and team lines
+DeleteCreatedPlayer	;Delete created player #TempWord1: remove it from the save RAM records, roster list and team lines
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$1C,d7
 	bset	#7,(GameFlags).w
@@ -1227,7 +1227,7 @@ DeleteCreatedPlayer	;delete created player #TempWord1: remove it from the save R
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-GetCreatedId	;return player id word for created entry d0 from table SRFreeAgentList (4-byte entries)
+GetCreatedId	;Return player id word for created entry d0 from table SRFreeAgentList (4-byte entries)
 	movem.l	d1-d7/a0-a6,-(sp)
 	movea.l	#SaveRAM+2*SRFreeAgentList,a0
 	add.w	d0,d0
@@ -1242,7 +1242,7 @@ GetCreatedId	;return player id word for created entry d0 from table SRFreeAgentL
 	movem.l	(sp)+,d1-d7/a0-a6
 	rts
 
-ReadCreateList	;read the $36-byte created player list from save RAM SRFreeAgentList into a0
+ReadCreateList	;Read the $36-byte created player list from save RAM SRFreeAgentList into a0
 	movem.l	d0-d1,-(sp)
 	move.l	#SRFreeAgentList,d0
 	moveq	#$36,d1
@@ -1250,7 +1250,7 @@ ReadCreateList	;read the $36-byte created player list from save RAM SRFreeAgentL
 	movem.l	(sp)+,d0-d1
 	rts
 
-WriteCreateList	;calls WriteSRAM with d0=$5D22, d1=$36 (saves d0-d1)
+WriteCreateList	;Write the $36-byte created player list at a0 to save RAM SRFreeAgentList (WriteSRAM). Saves d0-d1
 	movem.l	d0-d1,-(sp)
 	move.l	#SRFreeAgentList,d0
 	moveq	#$36,d1
@@ -1433,7 +1433,7 @@ ModifyRatings	;Create Player "Modify Ratings" screen: load graphics/text, then j
 	bset	#6,(setupcardflags).w
 	jmp	Opening2
 
-PrintCreateName	;prints Name First:/Last: from CreateRecord+2 (split at the space) via mesarea
+PrintCreateName	;Prints Name First:/Last: from CreateRecord+2 (split at the space) via mesarea
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$4,$6,'Name',-(TXPRI+TXMAP1),$4,$7,'First:',-(TXPRI+TXMAP1),$4,$8,'Last:'
@@ -1479,7 +1479,7 @@ PrintCreateName	;prints Name First:/Last: from CreateRecord+2 (split at the spac
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawRatings	;redraws every rating cell (4 columns x rows from LastFieldRow, each via DrawField), then Max Unallocated Points
+DrawRatings	;Redraws every rating cell (4 columns x rows from LastFieldRow, each via DrawField), then Max Unallocated Points
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d6
 	clr.w	d7
@@ -1499,10 +1499,10 @@ DrawRatings	;redraws every rating cell (4 columns x rows from LastFieldRow, each
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-rtsCreate3	;empty stub (called from DrawRatings)
+rtsCreate3	;Empty stub (called from DrawRatings)
 	rts
 
-PrintOverallRating	;unreferenced: prints OVERALL RTG. (player overall from CalcAttribRating, *100/d1)
+PrintOverallRating	;Unreferenced: prints OVERALL RTG. (player overall from CalcAttribRating, *100/d1)
 	jsr	(printsmallz).l
 	String	CC_SetFont,$0,CC_SetX,$4,CC_SetY,$16,'OVERALL RTG.',CC_SetX,$13
 	movea.l	#CreateRecord,a0
@@ -1524,7 +1524,7 @@ PrintOverallRating	;unreferenced: prints OVERALL RTG. (player overall from CalcA
 	jsr	(printsmall).l
 	rts
 
-PrintUnallocated	;prints "Maximum Unallocated Points" and its value CreatePoints
+PrintUnallocated	;Prints "Maximum Unallocated Points" and its value CreatePoints
 	jsr	(printsmallz).l
 	String	CC_SetFont,$0,CC_SetX,$4,CC_SetY,$17,'Maximum Unallocated Points',CC_SetX,'"'
 	move.w	(CreatePoints).l,d0
@@ -1533,7 +1533,7 @@ PrintUnallocated	;prints "Maximum Unallocated Points" and its value CreatePoints
 	jsr	(printsmall).l
 	rts
 
-DrawRatingValue	;calls the cell routine for column d6 / row d7 from table SkaterFieldTbls (GoalieFieldTbls if CreateType=0), a2 = player record
+DrawRatingValue	;Call the cell routine for column d6 / row d7 from table SkaterFieldTbls (GoalieFieldTbls if CreateType=0), a2 = player record
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SkaterFieldTbls,a0
 	tst.w	(CreateType).l
@@ -1552,7 +1552,7 @@ DrawRatingValue	;calls the cell routine for column d6 / row d7 from table Skater
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-FieldValue0	;Field value: draw the cursor and print a rating (PAttribOverallMask+$42)
+FieldValue0	;Field: draw cursor, print rating from record via PAttribOverallMask+$42 (Speed)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$42).l,d4
@@ -1562,14 +1562,14 @@ FieldValue0	;Field value: draw the cursor and print a rating (PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldPrintSetup	;set print target a4/a0 (record+8) and number-print table a6 for a field value
+FieldPrintSetup	;Set print target a4/a0 (record+8) and number-print table a6 for a field value
 	movea.l	#FieldTextBuf,a4
 	movea.l	a2,a0
 	addq.w	#8,a0
 	movea.l	#AttribWgtList,a6
 	rts
 
-FieldValue1	;field: draw cursor, print rating from record via PAttribOverallMask+$2C (Agility)
+FieldValue1	;Field: draw cursor, print rating from record via PAttribOverallMask+$2C (Agility)
 	bsr.w	FieldHighlight
 	bsr.s	FieldPrintSetup
 	move.l	(PAttribOverallMask+$2C).l,d4
@@ -1579,7 +1579,7 @@ FieldValue1	;field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue2	;field: draw cursor, print rating from record via PAttribOverallMask+$108 (Endurance)
+FieldValue2	;Field: draw cursor, print rating from record via PAttribOverallMask+$108 (Endurance)
 	bsr.w	FieldHighlight
 	bsr.s	FieldPrintSetup
 	move.l	(PAttribOverallMask+$108).l,d4
@@ -1589,7 +1589,7 @@ FieldValue2	;field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue3	;field: draw cursor, print rating from record via PAttribOverallMask+$6E (Off. Awareness)
+FieldValue3	;Field: draw cursor, print rating from record via PAttribOverallMask+$6E (Off. Awareness)
 	bsr.w	FieldHighlight
 	bsr.s	FieldPrintSetup
 	move.l	(PAttribOverallMask+$6E).l,d4
@@ -1599,7 +1599,7 @@ FieldValue3	;field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue4	;field: draw cursor, print rating from record via PAttribOverallMask+$84 (Def. Awareness)
+FieldValue4	;Field: draw cursor, print rating from record via PAttribOverallMask+$84 (Def. Awareness)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$84).l,d4
@@ -1609,7 +1609,7 @@ FieldValue4	;field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue5	;field: draw cursor, print rating from record via PAttribOverallMask+$DC (Stick Handling)
+FieldValue5	;Field: draw cursor, print rating from record via PAttribOverallMask+$DC (Stick Handling)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$DC).l,d4
@@ -1619,7 +1619,7 @@ FieldValue5	;field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldWeight	;field Wt.: print weight = value*8+140 (via PAttribOverallMask+$F2 (Weight))
+FieldWeight	;Field Wt.: print weight = value*8+140 (via PAttribOverallMask+$F2 (Weight))
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$F2).l,d4
@@ -1631,7 +1631,7 @@ FieldWeight	;field Wt.: print weight = value*8+140 (via PAttribOverallMask+$F2 (
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue6	;field: draw cursor, print rating from record via PAttribOverallMask+$9A (Shot Power)
+FieldValue6	;Field: draw cursor, print rating from record via PAttribOverallMask+$9A (Shot Power)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$9A).l,d4
@@ -1641,7 +1641,7 @@ FieldValue6	;field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue7	;field: draw cursor, print rating from record via PAttribOverallMask+$B0 (Shot Accuracy)
+FieldValue7	;Field: draw cursor, print rating from record via PAttribOverallMask+$B0 (Shot Accuracy)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$B0).l,d4
@@ -1651,7 +1651,7 @@ FieldValue7	;field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue8	;field: draw cursor, print rating from record via PAttribOverallMask+$C6 (Pass Accuracy)
+FieldValue8	;Field: draw cursor, print rating from record via PAttribOverallMask+$C6 (Pass Accuracy)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$C6).l,d4
@@ -1661,7 +1661,7 @@ FieldValue8	;field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue9	;field: draw cursor, print rating from record via PAttribOverallMask+$11E (Aggressiveness)
+FieldValue9	;Field: draw cursor, print rating from record via PAttribOverallMask+$11E (Aggressiveness)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$11E).l,d4
@@ -1671,7 +1671,7 @@ FieldValue9	;field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue10	;field: draw cursor, print rating from record via PAttribOverallMask+$134 (Checking)
+FieldValue10	;Field: draw cursor, print rating from record via PAttribOverallMask+$134 (Checking)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$134).l,d4
@@ -1681,15 +1681,15 @@ FieldValue10	;field: draw cursor, print rating from record via PAttribOverallMas
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldBlank1	;field with no value: draw cursor only (unreferenced)
+FieldBlank1	;Field with no value: draw cursor only (unreferenced)
 	bsr.w	FieldHighlight
 	bra.w	FieldDone
 
-FieldBlank2	;field with no value: draw cursor only (unreferenced)
+FieldBlank2	;Field with no value: draw cursor only (unreferenced)
 	bsr.w	FieldHighlight
 	bra.w	FieldDone
 
-FieldJersey	;field Unif.: print BCD jersey byte at (a2) as decimal
+FieldJersey	;Field Unif.: print BCD jersey byte at (a2) as decimal
 	bsr.w	FieldHighlight
 	clr.w	d4
 	move.b	(a2),d4
@@ -1703,7 +1703,7 @@ FieldJersey	;field Unif.: print BCD jersey byte at (a2) as decimal
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue11	;field: draw cursor, print rating from record via GAttribOverallMask+$16 (Agility)
+FieldValue11	;Field: draw cursor, print rating from record via GAttribOverallMask+$16 (Agility)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$16).l,d4
@@ -1713,7 +1713,7 @@ FieldValue11	;field: draw cursor, print rating from record via GAttribOverallMas
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue12	;field: draw cursor, print rating from record via GAttribOverallMask+$58 (Def. Awareness)
+FieldValue12	;Field: draw cursor, print rating from record via GAttribOverallMask+$58 (Def. Awareness)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$58).l,d4
@@ -1723,7 +1723,7 @@ FieldValue12	;field: draw cursor, print rating from record via GAttribOverallMas
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue13	;field: draw cursor, print rating from record via GAttribOverallMask+$6E (Puck Control)
+FieldValue13	;Field: draw cursor, print rating from record via GAttribOverallMask+$6E (Puck Control)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$6E).l,d4
@@ -1733,7 +1733,7 @@ FieldValue13	;field: draw cursor, print rating from record via GAttribOverallMas
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue14	;field: draw cursor, print rating from record via GAttribOverallMask+$84 (Stick Right)
+FieldValue14	;Field: draw cursor, print rating from record via GAttribOverallMask+$84 (Stick Right)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$84).l,d4
@@ -1743,7 +1743,7 @@ FieldValue14	;field: draw cursor, print rating from record via GAttribOverallMas
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue15	;field: draw cursor, print rating from record via GAttribOverallMask+$9A (Stick Left)
+FieldValue15	;Field: draw cursor, print rating from record via GAttribOverallMask+$9A (Stick Left)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$9A).l,d4
@@ -1753,7 +1753,7 @@ FieldValue15	;field: draw cursor, print rating from record via GAttribOverallMas
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue16	;field: draw cursor, print rating from record via GAttribOverallMask+$B0 (Glove Right)
+FieldValue16	;Field: draw cursor, print rating from record via GAttribOverallMask+$B0 (Glove Right)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$B0).l,d4
@@ -1763,7 +1763,7 @@ FieldValue16	;field: draw cursor, print rating from record via GAttribOverallMas
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue17	;field: draw cursor, print rating from record via GAttribOverallMask+$C6 (Glove Left)
+FieldValue17	;Field: draw cursor, print rating from record via GAttribOverallMask+$C6 (Glove Left)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$C6).l,d4
@@ -1773,7 +1773,7 @@ FieldValue17	;field: draw cursor, print rating from record via GAttribOverallMas
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldHand	;field Hand: print R/L from bit 0 of record byte 4
+FieldHand	;Field Hand: print R/L from bit 0 of record byte 4
 	bsr.w	FieldHighlight
 	move.b	4(a2),d0
 	andi.w	#1,d0
@@ -1785,13 +1785,13 @@ HandText	;R, L
 	String	'R',0
 	String	'L',0
 
-FieldPos	;field Pos.: print G/F/D indexed by CreateType
+FieldPos	;Field Pos.: print G/F/D indexed by CreateType
 	bsr.w	FieldHighlight
 	move.w	(CreateType).l,d0
 	movea.l	#PosText,a1
 	jsr	(PrintSmallListItem).l
 
-FieldDone	;common field exit: reset text color (printz2 $F9,0)
+FieldDone	;Common field exit: reset text color (printz2 $F9,0)
 	jsr	(printsmallz).l
 	String	CC_SetFont,0
 	rts
@@ -1801,7 +1801,7 @@ PosText	;G, F, D
 	String	'F',0
 	String	'D',0
 
-FieldHighlight	;set normal text color, highlight if (d6,d7) is the cursor (CreateCursorX/2)
+FieldHighlight	;Set normal text color, highlight if (d6,d7) is the cursor (CreateCursorX/2)
 	jsr	(printsmallz).l
 	String	CC_SetFont,0
 	cmp.w	(CreateCursorX).l,d6
@@ -1813,10 +1813,10 @@ FieldHighlight	;set normal text color, highlight if (d6,d7) is the cursor (Creat
 .0
 	rts
 
-SkaterFieldTbls	;skater field-routine tables by column
+SkaterFieldTbls	;Skater field-routine tables by column
 	dc.l	FieldTbl1,FieldTbl2,FieldTbl3,FieldTbl4
 
-GoalieFieldTbls	;goalie field-routine tables by column
+GoalieFieldTbls	;Goalie field-routine tables by column
 	dc.l	FieldTbl5,FieldTbl6,FieldTbl3,FieldTbl4
 
 FieldTbl1	;Field routines of a column
@@ -1837,7 +1837,7 @@ FieldTbl5	;Field routines of a column
 FieldTbl6	;Field routines of a column
 	dc.l	FieldValue14,FieldValue15,FieldValue16,FieldValue17
 
-DrawField	;draw one Create Player field (d6=column,d7=row): label then value, all regs saved
+DrawField	;Draw one Create Player field (d6=column,d7=row): label then value, all regs saved
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	PrintFieldLabel
 	bsr.w	DrawRatingValue
@@ -1870,10 +1870,10 @@ PrintFieldLabel	;print field label: pick skater/goalie label list, highlight if 
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
 
-SkaterLabelLists	;skater attribute-label lists by column
+SkaterLabelLists	;Skater attribute-label lists by column
 	dc.l	SkaterSkillLabels,SkaterShotLabels,PosWeightLabels,HandUniformLabels
 
-GoalieLabelLists	;goalie attribute-label lists by column
+GoalieLabelLists	;Goalie attribute-label lists by column
 	dc.l	GoalieSkillLabels,GoalieSaveLabels,PosWeightLabels,HandUniformLabels
 
 SkaterSkillLabels	;Create Player labels, skater column 1: skating and awareness ratings
@@ -1922,17 +1922,17 @@ LastFieldRow	;d4 = last row index for column d6 (skater or goalie table)
 	movem.l	(sp)+,d6/a0
 	rts
 
-SkaterLastRows	;skater last row index per column
+SkaterLastRows	;Skater last row index per column
 	dc.w	5,4,1,1
 
-GoalieLastRows	;goalie last row index per column
+GoalieLastRows	;Goalie last row index per column
 	dc.w	2,3,1,1
 
-EditField	;dispatch create-player edit: call handler [CreateCursorX][CreateCursorY] from table chosen by CreateType
-	movea.l	#SkaterEditTbl,a0
+EditField	;Run the edit handler of the cursor field (CreateCursorX / CreateCursorY) for the player type
+	movea.l	#GoalieEditTbl,a0
 	tst.w	(CreateType).l
 	beq.w	.0
-	movea.l	#GoalieEditTbl,a0
+	movea.l	#SkaterEditTbl,a0
 .0
 	move.w	(CreateCursorX).l,d1
 	asl.w	#2,d1
@@ -1943,38 +1943,38 @@ EditField	;dispatch create-player edit: call handler [CreateCursorX][CreateCurso
 	jsr	(a0)
 	rts
 
-SkaterEditTbl	;create-player menu handler table (CreateType == 0): rows by CreateCursorX
+GoalieEditTbl	;Edit handlers for a goalie (CreateType 0): one list per column (CreateCursorX), indexed by row (CreateCursorY)
 	dc.l	EditRow1
 	dc.l	EditRow2
 	dc.l	EditRow3
 	dc.l	EditRow4
 
-EditRow1	;row 0 handlers by CreateCursorY
+EditRow1	;Goalie column 1: agility, awareness, puck control
 	dc.l	EditAttrib1
 	dc.l	EditAttrib2
 	dc.l	EditAttrib3
 
-EditRow2	;row 1 handlers
+EditRow2	;Goalie column 2: stick and glove sides
 	dc.l	EditAttrib4
 	dc.l	EditAttrib5
 	dc.l	EditAttrib6
 	dc.l	EditAttrib7
 
-EditRow3	;row 2 handlers (shared)
+EditRow3	;Column 3 (both): position, weight
 	dc.l	EditPlayerType
 	dc.l	EditNibble
 
-EditRow4	;row 3 handlers (shared)
+EditRow4	;Column 4 (both): hand, uniform number
 	dc.l	EditHand
 	dc.l	EditJersey
 
-GoalieEditTbl	;handler table (CreateType != 0)
+SkaterEditTbl	;Edit handlers for a skater (CreateType 1 / 2), same layout
 	dc.l	EditRow5
 	dc.l	EditRow6
 	dc.l	EditRow3
 	dc.l	EditRow4
 
-EditRow5	;row 0 handlers
+EditRow5	;Skater column 1: skating, awareness, stickhandling
 	dc.l	EditAttrib8
 	dc.l	EditAttrib9
 	dc.l	EditAttrib10
@@ -1982,7 +1982,7 @@ EditRow5	;row 0 handlers
 	dc.l	EditAttrib12
 	dc.l	EditAttrib13
 
-EditRow6	;row 1 handlers
+EditRow6	;Skater column 2: shooting, passing, aggression, checking
 	dc.l	EditAttrib14
 	dc.l	EditAttrib15
 	dc.l	EditAttrib16
@@ -1990,7 +1990,7 @@ EditRow6	;row 1 handlers
 	dc.l	EditAttrib18
 	dc.l	EditNone
 
-EditPlayerType	;toggle player type (CreateType) by d0, clamp 0..2, reset attribute record when changed
+EditPlayerType	;Change the position (CreateType 0 G, 1 F, 2 D) by d0, clamped, reset attribute record when changed
 	add.w	(CreateType).l,d0
 	bpl.w	.0
 	move.w	#2,d0
@@ -2020,10 +2020,10 @@ EditPlayerType	;toggle player type (CreateType) by d0, clamp 0..2, reset attribu
 	move.b	d0,$1F(a0)
 	rts
 
-EditAttrib1	;attribute handler: d4 = bit mask record, then common adjust
+EditAttrib1	;Adjust the goalie Agility rating (d4 = its nibble mask)
 	move.l	(GAttribOverallMask+$16).l,d4
 
-AdjustAttrib	;adjust attribute selected by d4 bit by d0, paying from points pool CreatePoints
+AdjustAttrib	;Adjust attribute selected by d4 bit by d0, paying from points pool CreatePoints
 	move.w	(CreatePoints).l,d1
 	move.w	d1,(TempPlOffset).w
 	move.w	d0,d2
@@ -2056,15 +2056,15 @@ AdjustAttrib	;adjust attribute selected by d4 bit by d0, paying from points pool
 rtsAdjustAttrib	;rts of AdjustAttrib
 	rts
 
-EditAttrib2	;attribute handler
+EditAttrib2	;Adjust the goalie Def. Awareness rating (d4 = its nibble mask)
 	move.l	(GAttribOverallMask+$58).l,d4
 	bra.s	AdjustAttrib
 
-EditAttrib3	;attribute handler
+EditAttrib3	;Adjust the goalie Puck Control rating (d4 = its nibble mask)
 	move.l	(GAttribOverallMask+$6E).l,d4
 	bra.s	AdjustAttrib
 
-EditNibble	;adjust high nibble of record byte 1 by d0 (0..15)
+EditNibble	;Adjust the weight (high nibble of record byte 1) by d0, 0-15
 	movea.l	#CreateRecord,a0
 	adda.w	(a0),a0
 	clr.w	d1
@@ -2082,29 +2082,29 @@ EditNibble	;adjust high nibble of record byte 1 by d0 (0..15)
 	move.b	d0,1(a0)
 	rts
 
-EditAttrib4	;attribute handler
+EditAttrib4	;Adjust the goalie Stick Right rating (d4 = its nibble mask)
 	move.l	(GAttribOverallMask+$84).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib5	;attribute handler
+EditAttrib5	;Adjust the goalie Stick Left rating (d4 = its nibble mask)
 	move.l	(GAttribOverallMask+$9A).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib6	;attribute handler
+EditAttrib6	;Adjust the goalie Glove Right rating (d4 = its nibble mask)
 	move.l	(GAttribOverallMask+$B0).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib7	;attribute handler
+EditAttrib7	;Adjust the goalie Glove Left rating (d4 = its nibble mask)
 	move.l	(GAttribOverallMask+$C6).l,d4
 	bra.w	AdjustAttrib
 
-EditHand	;toggle bit 0 of record byte 4 (probably handedness)
+EditHand	;Toggle the hand (bit 0 of record byte 4)
 	movea.l	#CreateRecord,a0
 	adda.w	(a0),a0
 	eori.b	#1,4(a0)
 	rts
 
-EditJersey	;adjust BCD jersey number in record byte 0 by d0, wrap 1..99
+EditJersey	;Adjust BCD jersey number in record byte 0 by d0, wrap 1..99
 	movea.l	#CreateRecord,a0
 	adda.w	(a0),a0
 	clr.w	d1
@@ -2140,54 +2140,54 @@ EditJersey	;adjust BCD jersey number in record byte 0 by d0, wrap 1..99
 	move.b	d1,(a0)
 	rts
 
-EditAttrib8	;attribute handler
+EditAttrib8	;Adjust the skater Speed rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$42).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib9	;attribute handler
+EditAttrib9	;Adjust the skater Agility rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$2C).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib10	;attribute handler
+EditAttrib10	;Adjust the skater Endurance rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$108).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib11	;attribute handler
+EditAttrib11	;Adjust the skater Off. Awareness rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$6E).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib12	;attribute handler
+EditAttrib12	;Adjust the skater Def. Awareness rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$84).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib13	;attribute handler
+EditAttrib13	;Adjust the skater Stickhandling rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$DC).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib14	;attribute handler
+EditAttrib14	;Adjust the skater Shot Power rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$9A).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib15	;attribute handler
+EditAttrib15	;Adjust the skater Shot Accuracy rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$B0).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib16	;attribute handler
+EditAttrib16	;Adjust the skater Pass Accuracy rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$C6).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib17	;attribute handler
+EditAttrib17	;Adjust the skater Aggression rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$11E).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib18	;attribute handler
+EditAttrib18	;Adjust the skater Checking rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$134).l,d4
 	bra.w	AdjustAttrib
 
-EditNone	;no-op handler
+EditNone	;No-op handler
 	rts
 
-ClearAttribDeltas	;clear 16-byte attribute buffer AttribDeltas
+ClearAttribDeltas	;Clear 16-byte attribute buffer AttribDeltas
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#AttribDeltas,a0
 	move.w	#3,d0
@@ -2197,7 +2197,7 @@ ClearAttribDeltas	;clear 16-byte attribute buffer AttribDeltas
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LoadCreateTemplate	;copy 32-word player template (index CreateIndex) from SRCreatedPlayers into byte record CreateRecord, set CreateType from last byte
+LoadCreateTemplate	;Copy 32-word player template (index CreateIndex) from SRCreatedPlayers into byte record CreateRecord, set CreateType from last byte
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$1F,d0
 	movea.l	#SaveRAM+2*SRCreatedPlayers,a0
@@ -2226,7 +2226,7 @@ ClearCreateArea	;print control string ($BF,0,5,0) then call eraser with d0=$28,d
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SetPointsPool	;set points pool CreatePoints to 300 (or 450 if CreateType != 0)
+SetPointsPool	;CreatePoints = 300 for a goalie, 450 for a skater
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$12C,(CreatePoints).l
 	tst.w	(CreateType).l
@@ -2236,7 +2236,7 @@ SetPointsPool	;set points pool CreatePoints to 300 (or 450 if CreateType != 0)
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CommitCreatedPlayer	;commit created player: store type bits, add attribute deltas into record via CommitAttribJumps handlers, save record via WriteSRAM and MakeSRAMChecksum
+CommitCreatedPlayer	;Commit created player: store type bits, add attribute deltas into record via CommitAttribJumps handlers, save record via WriteSRAM and MakeSRAMChecksum
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SaveRAM+2*SRFreeAgentList,a0
 	move.w	(CreateWork).l,d0
@@ -2308,7 +2308,7 @@ CommitCreatedPlayer	;commit created player: store type bits, add attribute delta
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CommitAttribJumps	;jump table indexed by mode (16 entries)
+CommitAttribJumps	;Jump table indexed by mode (16 entries)
 	dc.l	CommitNone1
 	dc.l	CommitNone1
 	dc.l	CommitNone2
@@ -2332,13 +2332,13 @@ CrScale	;d3 += d2/14 (signed)
 	add.w	d2,d3
 	rts
 
-CommitNone1	;no-op
+CommitNone1	;No-op
 	rts
 
-CommitNone2	;no-op
+CommitNone2	;No-op
 	rts
 
-CrScaleEven	;scale even part of d3 via CrScale, keep low bit of d3
+CrScaleEven	;Scale even part of d3 via CrScale, keep low bit of d3
 	move.w	d3,-(sp)
 	andi.w	#$FE,d3
 	jsr	(CrScale).l
@@ -2570,27 +2570,27 @@ FreeAgentLoop	;SignFreeAgents: input loop
 .9
 	bra.w	.0
 
-PositionCountFns	;per-position rating routines
+PositionCountFns	;Per-position rating routines
 	dc.l	ReadAttributeNibbleD7
 	dc.l	GetDefenseStartD7
 	dc.l	GetPlayerCountD7
 
-PositionMaxChecks	;per-position check routines
+PositionMaxChecks	;Per-position check routines
 	dc.l	CheckMaxGoalies
 	dc.l	CheckMaxForwards
 	dc.l	CheckMaxDefense
 
-CheckMaxGoalies	;compare ReadAttributeNibbleD7 result with 3
+CheckMaxGoalies	;Compare ReadAttributeNibbleD7 result with 3
 	jsr	(ReadAttributeNibbleD7).l
 	cmp.w	#3,d0
 	rts
 
-CheckMaxForwards	;compare ProcessNibbleD7 result with $F
+CheckMaxForwards	;Compare ProcessNibbleD7 result with $F
 	jsr	(ProcessNibbleD7).l
 	cmp.w	#$F,d0
 	rts
 
-CheckMaxDefense	;compare GetPlayerCountD7 - GetDefenseStartD7 with $F
+CheckMaxDefense	;Compare GetPlayerCountD7 - GetDefenseStartD7 with $F
 	jsr	(GetDefenseStartD7).l
 	move.w	d0,-(sp)
 	jsr	(GetPlayerCountD7).l
@@ -2598,7 +2598,7 @@ CheckMaxDefense	;compare GetPlayerCountD7 - GetDefenseStartD7 with $F
 	cmp.w	#$F,d0
 	rts
 
-FreeAgentArrows	;draw scroll up/down arrows for the list
+FreeAgentArrows	;Draw scroll up/down arrows for the list
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printsmallz).l
 	String	CC_SetFont,$1
@@ -2631,7 +2631,7 @@ FreeAgentArrows	;draw scroll up/down arrows for the list
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-FreeAgentViolation	;show VIOLATION OF ROSTER RULES message, wait, erase
+FreeAgentViolation	;Show VIOLATION OF ROSTER RULES message, wait, erase
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$5,$A,$0
 	move.w	#$1F,d0
@@ -2652,7 +2652,7 @@ FreeAgentViolation	;show VIOLATION OF ROSTER RULES message, wait, erase
 	String	CC_SetFont,$0
 	bra.w	FreeAgentLoop
 
-FreeAgentTeamBlock	;draw team header (DrawTradeLogo) for team TradeData+$C
+FreeAgentTeamBlock	;Draw team header (DrawTradeLogo) for team TradeData+$C
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(TradeData+$C).l,d1
 	jsr	(printz).l
@@ -2661,7 +2661,7 @@ FreeAgentTeamBlock	;draw team header (DrawTradeLogo) for team TradeData+$C
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawFreeAgents	;draw visible free agent rows (pos, name, rating)
+DrawFreeAgents	;Draw visible free agent rows (pos, name, rating)
 	move.w	(TradeData).l,d5
 	movea.l	#TradeData+$4,a5
 	movea.l	#TradeRoster1,a4
@@ -2732,7 +2732,7 @@ DrawFreeAgents	;draw visible free agent rows (pos, name, rating)
 	ble.w	.0
 	rts
 
-PositionLetters3	;position letters G/F/D
+PositionLetters3	;Position letters G/F/D
 	String	'G',0
 	String	'F',0
 	String	'D',0

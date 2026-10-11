@@ -692,7 +692,7 @@ GetAttributeValue2	;d2 = stat column d1 for player d0. d7 = 0: the team struct b
 	add.w	d3,d2
 	rts
 
-SkipAttribute	;the column is not shown for this goalie (sflags5 bit 2)
+SkipAttribute	;The column is not shown for this goalie (sflags5 bit 2)
 	bset	#2,(sflags5).w
 	rts
 
@@ -2183,7 +2183,7 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	movem.l	(sp)+,a6
 	rts
 
-DrawTeamLogo2	;draw team d0's logo: frame d0*2 of the bitmap set at Teamblocksmap, tile $69A, via dobitmap
+DrawTeamLogo2	;Draw team d0's logo: frame d0*2 of the bitmap set at Teamblocksmap, tile $69A, via dobitmap
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#1,d4
 	move.w	d0,d1
@@ -2534,7 +2534,7 @@ LeadersGoalsAllowed	;Goals Allowed Avg: goals against*100/games per team, sort a
 	bsr.w	SortLeadersUp
 	bra.w	BuildLeadersDone
 
-LeadersField4	;unreferenced: field 4 *100/games per team, sort descending
+LeadersField4	;Unreferenced: field 4 *100/games per team, sort descending
 	move.l	#SRTeamStats,d0
 	move.l	#$104,d1
 	movea.l	#StatBuf,a0
@@ -3745,7 +3745,7 @@ ExitAttributeScreen	;Exit box (rewritten in 95): Start leaves, A original lines,
 .7
 	jmp	(ExitAttributeScreen2).l
 
-LineEditorBg	;draw the line editor background bitmap (LineEditorBgMap) on map 2, clear BA_PS_flags bit 1
+LineEditorBg	;Draw the line editor background bitmap (LineEditorBgMap) on map 2, clear BA_PS_flags bit 1
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#1,(BA_PS_flags).w
 	move.w	(screen6chars2).w,d4
@@ -3767,7 +3767,7 @@ LineEditorBg	;draw the line editor background bitmap (LineEditorBgMap) on map 2,
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PlayerSelectBg	;draw the player select list background bitmaps (PlayerSelectMap1, PlayerSelectMap2) on map 2, set BA_PS_flags bit 1
+PlayerSelectBg	;Draw the player select list background bitmaps (PlayerSelectMap1, PlayerSelectMap2) on map 2, set BA_PS_flags bit 1
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#1,(BA_PS_flags).w
 	move.w	(screen6chars1).w,d4
@@ -4196,7 +4196,7 @@ PrintHighlightsTitle	;print big title NHL HIGHLIGHTS
 	String	-(TXPRI+TXMAP1),$8,$2,'NHL HIGHLIGHTS',$0
 	rts
 
-DrawHighlightPage	;draw the current highlight page: day header, team logos/score of game rosterscroll, then goal/star list
+DrawHighlightPage	;Draw the current highlight page: day header, team logos/score of game rosterscroll, then goal/star list
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(VisTeam).w,-(sp)
 	move.w	(HomeTeam).w,-(sp)
@@ -4244,7 +4244,7 @@ DrawHighlightPage	;draw the current highlight page: day header, team logos/score
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawHighlightEntry	;clear text area (StatBuf via ReadSRAM) and print one highlight entry (PrintHighlight)
+DrawHighlightEntry	;Clear text area (StatBuf via ReadSRAM) and print one highlight entry (PrintHighlight)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	GetHighlightSlot
 	moveq	#4,d1
@@ -4306,7 +4306,7 @@ PrintStatHighlight	;print a highlight record of type 4: player name + stat line 
 	movea.l	(sp)+,a0
 	rts
 
-AppendNumber	;append number d0 (1 or 2 digits) to string at mesarea
+AppendNumber	;Append number d0 (1 or 2 digits) to string at mesarea
 	movea.l	#mesarea,a3
 	move.w	#2,d1
 	cmp.w	#9,d0
@@ -4366,10 +4366,10 @@ PrintHighlight	;print highlight record a0: type (bits 13-15) 0 none, 4 stat line
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-HighlightPlurals	;plural suffix pointers by record type
+HighlightPlurals	;Plural suffix pointers by record type
 	dc.l	0,AssistText,GoalsText,SavesText
 
-HighlightSingulars	;singular suffix pointers by record type
+HighlightSingulars	;Singular suffix pointers by record type
 	dc.l	0,SaveText,AssistsText,GoalText
 
 GoalsText
@@ -4420,7 +4420,7 @@ PrintScore2	;print 2-digit number d5 at current cursor (PushNumberWidth + printb
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawTeamLogo4	;draw team logo d1 (from Teamblocksmap graphics, palette teamblocksmapptr) via dobitmap
+DrawTeamLogo4	;Draw team logo d1 (from Teamblocksmap graphics, palette teamblocksmapptr) via dobitmap
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	asl.w	#1,d1

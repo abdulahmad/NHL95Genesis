@@ -52,7 +52,7 @@ HandleJoy1	;Any button on the pad just read (d1) ends the demo; 95 also sets dem
 	move.w	#$64,(setupvis).w
 	jmp	ExitToOpening
 
-rtsdemo	;shared rts of demoread / HandleJoy1
+rtsdemo	;Shared rts of demoread / HandleJoy1
 	rts
 
 RandomSetupTeams	;Random teams for the demo (SetupDemo): step the two setup team values by a random 0-27 and copy them
@@ -361,7 +361,7 @@ SkipToGameDay	;Step SeasonDay forward until a day with games
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DayHasGames	;ne when SeasonDay has games (FindDayGames)
+DayHasGames	;Ne when SeasonDay has games (FindDayGames)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	FindDayGames
 	tst.b	(a0)

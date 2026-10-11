@@ -1512,12 +1512,12 @@ $09998E,LastFieldRow,sub_9998E,,front/create95
 $0999B4,SkaterLastRows,unk_999B4,,front/create95
 $0999BC,GoalieLastRows,unk_999BC,,front/create95
 $0999C4,EditField,sub_999C4,,front/create95
-$0999F6,SkaterEditTbl,unk_999F6,,front/create95
+$0999F6,GoalieEditTbl,unk_999F6,SkaterEditTbl,front/create95
 $099A06,EditRow1,,,front/create95
 $099A12,EditRow2,,,front/create95
 $099A22,EditRow3,,,front/create95
 $099A2A,EditRow4,,,front/create95
-$099A32,GoalieEditTbl,unk_99A32,,front/create95
+$099A32,SkaterEditTbl,unk_99A32,GoalieEditTbl,front/create95
 $099A42,EditRow5,,,front/create95
 $099A5A,EditRow6,,,front/create95
 $099A72,EditPlayerType,,,front/create95
