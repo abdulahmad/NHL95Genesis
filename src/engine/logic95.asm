@@ -833,7 +833,7 @@ assdefd	;asstab entry 7
 	btst	#5,pflags(a3)	;check if locked in animiation
 	bne.w	rtss21	;exit if so
 	btst	#0,(gmode).w	;check if clock running
-	bne.w	donothing	;assnothing if no clock
+	bne.w	donothing	;donothing if no clock
 	bsr.w	check4bench	;check if going to bench
 	btst	#3,pflags(a3)	;check if joystick controlled
 	bne.w	rtss21	;exit if so
@@ -996,7 +996,7 @@ asswingd	;asstab entry 8
 	btst	#5,pflags(a3)	;check if locked in animation
 	bne.s	rtss21	;exit if so
 	btst	#0,(gmode).w	;check if clock is running
-	bne.w	donothing	;assnothing if its stopped
+	bne.w	donothing	;donothing if its stopped
 	bsr.w	check4bench	;check if going to bench
 	btst	#3,pflags(a3)	;check if joystick controlled
 	bne.s	rtss21	;exit if so
@@ -1144,7 +1144,7 @@ asswingd	;asstab entry 8
 	bra.s	.go
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	asscenterd, asscentero, assdefo, assnothing, pucknorm, puckunflip, puckflip, puckshadow, findpc,
+;	asscenterd, asscentero, assdefo, donothing, pucknorm, puckunflip, puckflip, puckshadow, findpc,
 ;	a2touchpuck, Setplass, assexit / assinsert / assreplace, EvadePC, skateto, check4check,
 ;	asspassrec / SkateToTempTarget, assbreakaway, assnearest, skatetopuckinit, skatetopuck, avdgoal,
 ;	breakaway / BreakawayOffsidesFlagSet, chkpuckc, asspuckc, chk4shot, chk4pass and check4bench.
@@ -1157,7 +1157,7 @@ asswingo	;asstab entry 9. Winger on offense: a random spot in the puck zone (.de
 	btst	#pfalock,pflags(a3)	;check if locked in animation
 	bne.w	rtss21	;exit if so
 	btst	#gmclock,(gmode).w	;check game clock
-	bne.w	donothing	;assnothing if stopped
+	bne.w	donothing	;donothing if stopped
 	bsr.w	check4bench	;check if player going to bench
 	btst	#pfjoycon,pflags(a3)	;check if joystick controlled
 	bne.w	rtss21	;exit if so

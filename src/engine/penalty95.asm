@@ -96,7 +96,7 @@ LeadSongExit	;LeadSong exit
 	movem.l	(sp)+,d0/a0-a3
 	rts
 
-Stop4Pen	;a0 = PenaltyList penalty + 2. Stop the clock, set the faceoff spot from the penalty type, blow the whistle
+Stop4Pen	;a0 = Penaltylist penalty + 2. Stop the clock, set the faceoff spot from the penalty type, blow the whistle
 	;and start the ref (SetPA)
 	bset	#0,(gmode).w
 	bne.w	.5
@@ -183,7 +183,7 @@ Stop4Pen	;a0 = PenaltyList penalty + 2. Stop the clock, set the faceoff spot fro
 rtspen	;The shared rts of the penalty routines
 	rts
 
-AddPenalty	;Add penalty d0 (PenaltyList offset) for player a3. Ignored while the clock is stopped
+AddPenalty	;Add penalty d0 (Penaltylist offset) for player a3. Ignored while the clock is stopped
 	btst	#0,(gmode).w
 	bne.s	rtspen
 	cmp.w	#$C,d0	;icing (92 used 8)
@@ -675,7 +675,7 @@ SetPA	;Start ref animation d0 (penalty number); from $2E up ignored. prefmes, go
 	beq.w	SetPA2
 	move.w	#$3C,(penmsgtimer).w	;60
 
-SetPA2	;Update the ref animation: next frame / delay pair from the PenaltyList animation
+SetPA2	;Update the ref animation: next frame / delay pair from the Penaltylist animation
 	movem.l	d0-d2/a0-a1,-(sp)
 	moveq	#$40,d0	;clear ref window
 	tst.w	(RefStep).w

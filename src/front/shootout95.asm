@@ -1301,7 +1301,7 @@ SetupPenaltyShot	;Penalty shot for team a2: the shooter plays center (BA_Skater_
 	movem.l	(sp)+,d0-d5/a0-a3
 	rts
 
-PenaltyShotBox	;In a shootout PlayoffRoundScreen; else the "PENALTY SHOT!" box: the shooter, the penalty (PenaltyList) and " by" the checker
+PenaltyShotBox	;In a shootout PlayoffRoundScreen; else the "PENALTY SHOT!" box: the shooter, the penalty (Penaltylist) and " by" the checker
 	bset	#7,(gmode2).w
 	btst	#0,(gmode2).w
 	beq.w	.0

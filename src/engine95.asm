@@ -19,7 +19,7 @@
 	include	engine\setup95.asm		; $084FE6  team roster screen, the game setup screen, playoff structures, line data
 	include	engine\playoff95.asm		; $087BA2  PlayoffScreen, the playoff tree
 	include	engine\faceoff95.asm		; $08827C  the scoreboard after a goal, faceoffs
-	include	engine\penalty95.asm		; $088F06  penalties, the referee, PenaltyList, icing and offsides
+	include	engine\penalty95.asm		; $088F06  penalties, the referee, Penaltylist, icing and offsides
 	include	engine\lines95.asm		; $08A056  line changes, computer lines, saved lines, team line screens
 	include	engine\skate95.asm		; $08B4E0  goalie and skater movement
 	include	engine\goal95.asm		; $08C304  the goal, period and game over, the clock, the controller setup screen

@@ -1,4 +1,4 @@
-;	UpdateScores / SetScore / sctab and ClearShotData, puckfaceoff ... Endfaceoff with assfaceoff / assfaceoffp1,
+;	UpdateScores / SetScore / sctab and ClearShotData, puckfaceoff ... Endfaceoff with assfaceoff / assfaceoffpl,
 ;	checkfo, and DrawFaceoffWindow.
 ;	95 changes: four pads (c1playernum ... c4playernum, cont3team / cont4team), the new assignment numbers
 ;	($1F, 4, $10, $11, 1) and SPA values, net y $112 / $FEEE (94 $10C / $FEF4), Practice Mode (sflags9 bit 7)
@@ -312,7 +312,7 @@ UpdateFaceoffLineChangeTimer	;Line change timer d0 (temp1 / temp2 of the puck): 
 
 puckfaceoff2	;Puck assignment 4. First call: set up the faceoff: clear the penalty flags, stop the clock
 	;reset the rink, puck and nets, scroll to the spot (checkwindow), reset the bench and players (ResetBench, SetPersonel,
-	;forcepldata, resetplstuff), place the players (.apl / .ptab, as 94) with the faceoff assignments ($10 assfaceoff, $11 assfaceoffp1
+	;forcepldata, resetplstuff), place the players (.apl / .ptab, as 94) with the faceoff assignments ($10 assfaceoff, $11 assfaceoffpl
 	;for the centers), load the faceoff tiles, draw the window (DrawFaceoffWindow) and set the drop time. Practice (sflags9 bit 7)
 	;keeps the scroll on the spot and drops at once. Later calls: count down (updatefaceoff), then Endfaceoff
 	bclr	#1,pflags(a3)

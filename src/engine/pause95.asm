@@ -928,7 +928,7 @@ PrintLines	;print the Strings at a1 up to a $FF String
 .x
 	rts
 
-ShowPenaltyMessages	;Every $78 frames show the next queued penalty (penaltymsgs): its name (PenaltyList) and the player
+ShowPenaltyMessages	;Every $78 frames show the next queued penalty (penaltymsgs): its name (Penaltylist) and the player
 	;(FormatPlayerNameWithAttrib) centred at $14, $F / $11, and take him off the penalty box count. d1 = 1 when the queue is empty
 	movem.l	d0-d6/a0-a3,-(sp)
 	subq.w	#1,(menutimer).w
