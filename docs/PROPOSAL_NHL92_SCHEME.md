@@ -121,6 +121,8 @@ and in `logic95.asm`:
 ...routines...
 ```
 
+No addresses are hardcoded. The only numbers are `org(0)` and the 2 MB ROM size, as in today's `nhl95.asm`. Where a section lands follows from the sizes of the sections declared before it, so a routine that grows or shrinks moves everything after it, as it does now. The `$...` on the section lines above are comments.
+
 ## Tested (scratch copy, not committed)
 
 Two builds were made in a copy of the tree outside the repo:
@@ -133,14 +135,14 @@ What had to change to get there (all source only, no byte changes):
 | Problem | Fix |
 | --- | --- |
 | `String` and `PLAYER` in `macros/genesis.mac` use `*` and `org` to write the length back; SNASM refuses `org` after a section, and `if *&1` does not evaluate in one | Write the length from a forward label difference and pad with `even`: `.sb\@` / `dc.w .se\@-.sb\@` / the bytes / `even` / `.se\@`. The labels must use `.` (this build's local label character) and `\@` so each use is unique |
-| `dcb.b $200000-*,$FF` (the fill at the ROM end) uses `*` | `dcb.b $200000-$1A7310,$FF` |
+| `dcb.b $200000-*,$FF` (the fill at the ROM end) uses `*` | `dcb.b $200000-groupsize(rom),$FF`: the group's size is where the code ends |
 | The `SPA...` equates in `frames95` are `=` (redefinable) symbols; SNASM will not forward reference them, and `hockey95` used them before `frames95` was included | Include `frames95` before `hockey95` (or make them `equ`) |
 | An `opt oaq-,osq-,oz-` line sat in a file header and moved away from the sound driver it covers; `addi.l #1,d5` became `addq` and the ROM was 76 bytes short | Each `opt` pair goes inside the run it covers (there are four: sound driver, sram, two in video95_02) |
-| The listing shows addresses relative to each section, and `fixopcodes.js` patches by listing address | Add each section's base: the address of its first routine (the run starts in the CSV). Tested by rewriting the listing with absolute addresses |
+| The listing shows addresses relative to each section, and `fixopcodes.js` patches by listing address | `nhl95.asm` prints each section's size at the end of the build (`inform 0,"section s000 %h",sectsize(s000)`, one line per section). A section starts where the sizes before it add up to; add that to the listing address. Tested by rewriting the listing this way (the sizes add up to $1A7310), then running the normal `fixopcodes.js` |
 
 Not tested, and needed before it could replace the current layout:
 
-- **Segment builds.** A stub would have to put each run of its file at its own address (one group with `org` per run). `verifySegment.js` checks one range; it would have to check a list. In the first small test, two groups whose ranges overlapped overwrote each other with no error, so the check matters.
+- **Segment builds.** Today each stub carries an `org` and `Name = $ADDR` equates for what is outside its file. A stub for a file here would need an address for each of its runs (one group with `org` per run), so 30 stubs would hold 282 run addresses, and `verifySegment.js` would have to check a list of ranges. Two groups whose ranges overlap overwrite each other with no error. The other way, with no run addresses, is to check each file's runs inside the full build, using the same section sizes as `fixopcodes.js`; that checks the bytes but does not assemble the file on its own.
 - **The tools** that read the file list or the listing: `package.json` scripts, `tools/file_origins.py`, `scan_cleanup.py`, the SEGMENT_AGENT.md ROM map, `docs/name_map.csv`.
 - **New code** must keep writing explicit sizes (`bra.w`, `.l` addresses). In the small test an unsized `bra` to another section came out as `bra.w` and a label address as absolute long, where in one section SNASM would have used the short forms.
 
