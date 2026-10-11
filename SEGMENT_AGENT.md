@@ -140,3 +140,4 @@ Add a file here when the listing shows a system 94 does not have.
 - Teams: `stubinc/equals.inc` has the team numbers `ANH`=0 ... `WPG`=25, `ASE`=26, `ASW`=27 (TeamList order); playoffseats uses them. `.ls` line rows are commented with the linelist names (Sc1, Sc2, Chk, PP1, PP2, PK1, PK2).
   95: schedule95 Day uses the same equates; SimGoals*/SimTieTbl rows carry their team.
 - VDP commands: `ports.inc` adds `VRAM_W`, `CRAM_W`, `VSRAM_W` (long control words; add `(addr&$3FFF)<<16 + addr>>14`): `move.l #VSRAM_W+(2<<16),vdpctrl(a0)`.
+- Extracted: `Extracted/NHL95/Text/ScoutTextScript.bin` ($A0718-$A08DB, 452 bytes), as 94.

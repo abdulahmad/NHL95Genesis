@@ -71,6 +71,8 @@ const assets = [
     // NHL 95 revframetbl, src/tables/frames95.asm after the SPA tables: one word per sprite frame (1057), the frame RestoreReplayFrame shows for a reverse angle replay.
     // 94 kept it at the end of graphics94 (NHL94/Graphics/revframetbl.bin, 880 words).
     { name: 'revframetbl.bin', folder: 'NHL95/Graphics', start: 0x00008596, end: 0x00008DD8 }, // revframetbl
+    // NHL 95 ScoutTextScript (scout95): the scouting text lines, each ended by $D, $FF after the last (94: NHL94/Text/ScoutTextScript.bin)
+    { name: 'ScoutTextScript.bin', folder: 'NHL95/Text', start: 0x000A0718, end: 0x000A08DC }, // ScoutTextScript
     // NHL 95 sound driver data, src/sound/sound95.asm: the Z80 program ($BD86, $1B63 bytes loaded by SndLoadZ80, plus its last byte $FF),
     // then the items of the sound bank at $D8EC (SoundBanks) in bank order, named by item type and id.
     { name: 'z80_snd_drv95.bin', folder: 'NHL95/Sound', start: 0x0000BD86, end: 0x0000D8EA }, // Z80Program

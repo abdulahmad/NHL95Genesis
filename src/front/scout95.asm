@@ -1229,19 +1229,7 @@ TeamRatings	;period94 TeamRatings. GetTeamRating values, one byte per team (Team
 
 ScoutTextScript	;graphics94 ScoutTextScript. The scouting text lines, each ended by $D, $FF after the last; ScoutTextPlayer skips n $D for line n
 	;substitution chars: ^ arena  = home team  * away team  } away (alt intro)  < > | \ hot/cold players  # home user name (NextHomeUser)  % away user name (NextAwayUser)
-	dc.b	$D;line 0
-	dc.b	'Hi, I',$27,'m John Shrader for EA Sports.  Welcome to a sold out ^, home of the =.  Tonight the = take on the *.',$D;line 1
-	dc.b	$D;line 2
-	dc.b	'For the =, < is on a hot streak, but | is off his game. ',$D;line 3
-	dc.b	'For the *, > is on a hot streak, but \ is off his game. ',$D;line 4
-	dc.b	'Hit the start button to begin.  Use the A and C buttons to cycle through matchups.',$D;line 5
-	dc.b	'The = are played by:',$D;line 6
-	dc.b	' # ',$D;line 7
-	dc.b	'The * are played by...',$D;line 8
-	dc.b	' % ',$D;line 9
-	dc.b	'Hi, I',$27,'m John Shrader for EA Sports.  Welcome to a sold out ^.  Tonight the = take on the }.',$D;line 10
-	dc.b	$D;line 11
-	dc.b	$FF;end of script
+	incbin	..\Extracted\NHL95\Text\ScoutTextScript.bin	;$A0718-$A08DB (452 bytes): 12 lines (0-11), $FF end
 
 GetHomeUsers	;95 only. homeusers = the count, then the name log entries of the pads on the home team (pad1user ... pad4user)
 	move.l	a0,-(sp)
