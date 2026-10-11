@@ -304,7 +304,7 @@ NameLetterGrid	;Name entry: letter grid and its key help (NameLetterGrid); on th
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$18,$11,$0
 	jsr	(printsmallz).l
-	dc.w	$44;String length
+	dc.w	$44	;String length
 	dc.b	'{}[]',$FA,$1,$FD,$18,'=Select letter',$FA,$2
 	dc.b	$FD,$18,'C=Enter letter',$FA,$2,$FD,$18,'A=Go back'
 	dc.b	$FA,$2,$FD,$18,'B=Cancel',$0
@@ -334,7 +334,7 @@ NameEntryHelp	;Name entry: name log key help text (NameEntryHelp)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$18,$11,$0
 	jsr	(printsmallz).l
-	dc.w	$42;String length
+	dc.w	$42	;String length
 	dc.b	'{}=Select',$FA,$1,$FD,$1B,'name',$FA,$2
 	dc.b	$FD,$19,'B=Enter/edit',$FA,$1,$FD,$1B,'name'
 	dc.b	$FA,$2,$FD,$19,'START',$FA,$1,$FD

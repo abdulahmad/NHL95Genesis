@@ -1669,11 +1669,11 @@ setoptions	;options screen display ( 94). Build the game setup screen: vbint VBl
 	move.w	d4,(smallfont2chars).w
 	movea.l	#SetupFont+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EB;remap table
+	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EB	;remap table
 	move.w	d4,(smallfont3chars).w
 	movea.l	#SetupFont+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EA;remap table
+	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EA	;remap table
 	move.w	d4,(recwins).w
 	jsr	(printz).l
 	String	-TXMAP1,0,0,0

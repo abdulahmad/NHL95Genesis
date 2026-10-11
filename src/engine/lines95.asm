@@ -1095,23 +1095,23 @@ DrawTeamScreen2	;A DrawTeamScreen for the season / stats screens: screenarg is t
 	movea.l	(smallfontptr).w,a2
 	addq.w	#8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$04,$83,$45,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$04,$83,$45,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont2chars).w
 	movea.l	#RosterFont+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0C,$83,$45,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0C,$83,$45,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont3chars).w
 	movea.l	#RosterFont+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$06,$83,$45,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$06,$83,$45,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont4chars).w
 	movea.l	#RosterFont+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$16,$83,$45,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$16,$83,$45,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
 	jsr	(printz).l
 	String	-TXMAP2,0,0,0
 	moveq	#$40,d0
@@ -1183,23 +1183,23 @@ DrawTeamScreen3	;The same with SmallFontMap
 	move.l	#SmallFontMap,(smallfontptr).l
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont2chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$8B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$8B,$83,$44,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont3chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont4chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$1B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$1B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
 	jsr	(printz).l
 	String	-TXMAP2,0,0,0
 	moveq	#$40,d0
@@ -1277,23 +1277,23 @@ DrawTeamScreen4Body	;DrawTeamScreen4 after the screen setup; DrawTeamScreen4NoSe
 	move.l	#SmallFontMap,(smallfontptr).l
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont2chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$8B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$8B,$83,$44,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont3chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont4chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$1B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$1B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
 	jsr	(printz).l
 	String	-TXMAP2,0,0,0
 	moveq	#$40,d0
@@ -1365,19 +1365,19 @@ DrawTeamScreen5	;DrawTeamScreen4 with three small fonts and palette word $A00
 	move.l	#SmallFontMap,(smallfontptr).l
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont2chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont3chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$E1,$23,$46,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$E1,$23,$46,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
 	jsr	(printz).l
 	String	-TXMAP2,0,0,0
 	moveq	#$40,d0
@@ -1459,15 +1459,15 @@ DrawTeamScreen6	;The team blocks (screen6chars1), the bitmap, Screen6Tiles1 / 2 
 	move.l	#SmallFontMap,(smallfontptr).l
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont2chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$01,$23,$46,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$01,$23,$46,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont3chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$B1,$23,$46,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$B1,$23,$46,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
@@ -1475,7 +1475,7 @@ DrawTeamScreen6	;The team blocks (screen6chars1), the bitmap, Screen6Tiles1 / 2 
 	move.l	#Framermap,(framermapptr).l
 	move.w	d4,(framercset).w
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$07,$89,$A5,$6B,$89,$AB,$CD,$EF;remap table
+	dc.b	$07,$89,$A5,$6B,$89,$AB,$CD,$EF	;remap table
 	jsr	(printz).l
 	String	-TXMAP2,0,0,0
 	moveq	#$40,d0

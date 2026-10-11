@@ -822,7 +822,7 @@ InvalidName	;SaveCreateName: "Invalid Name. Make sure player has both a first an
 	move.w	#$F,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	dc.w	$4C;String length
+	dc.w	$4C	;String length
 	dc.b	$F9,$3,$FD,$6,$FC,$6,'Invalid Name.',$FD
 	dc.b	$6,$FA,$1,'Make sure player has',$FD,$6,$FA,$1
 	dc.b	'both a first and last name.'
@@ -1329,7 +1329,7 @@ ModifyRatings	;Create Player "Modify Ratings" screen: load graphics/text, then j
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),$7,$2,'Modify Ratings',$0
 	jsr	(printsmallz).l
-	dc.w	$44;String length
+	dc.w	$44	;String length
 	dc.b	$F9,$1,$FD,$9,$FC,$19,'{}[] = Select Rating',$FA
 	dc.b	$1,$FD,$4,'A,B=Decrease/Increase',$FD,$1C,'START=Done',$F9
 	dc.b	$0,$0
@@ -2392,7 +2392,7 @@ SignFreeAgents	;Sign Free Agents screen: draw, input loop
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),$7,$2,'Sign Free Agent'
 	jsr	(printsmallz).l
-	dc.w	$18;String length
+	dc.w	$18	;String length
 	dc.b	$F9,$1,$FD,$7,$FC,$19,'A,B',$FD
 	dc.b	$17,'C',$FD,$1F,'Start',$FA,$1,$0
 	jsr	(printsmallz).l
@@ -3032,7 +3032,7 @@ ReleaseLoop	;ReleasePlayers: input loop
 	bra.w	ReleaseRedraw
 .16
 	bra.w	.0
-	dc.l	ReadAttributeNibbleD7,GetDefenseStartD7,GetPlayerCountD7;unused pointers
+	dc.l	ReadAttributeNibbleD7,GetDefenseStartD7,GetPlayerCountD7	;unused pointers
 
 PositionMinChecks	;Roster-minimum check per position code (0 G, 1 F, 2 D); Z set = cannot release
 	dc.l	CheckMinGoalies,CheckMinForwards,CheckMinDefense

@@ -381,8 +381,8 @@ PlayoffTreeSetup	;Playoff tree layout by gamelevel, the same bytes as 94. Used b
 	dc.b	71,12
 	dc.b	58,23
 	dc.b	5,15,0,29,2,43,4,83,6,97,8,111,10
-	dc.b	-1;no scores
-	dc.b	$FF;pad (93 $47)
+	dc.b	-1	;no scores
+	dc.b	$FF	;pad (93 $47)
 
 DrawPlayoffSprite	;The PlayoffSprite sprite at playoffspritex / playoffspritey in Satt, then end the
 	;list and set Sattsize. 95 animates it: frame picturebits 0-4, the next one every $A calls (pausetimeout). Called from PlayoffScreen

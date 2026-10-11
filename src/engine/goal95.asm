@@ -1032,11 +1032,11 @@ ControllerSetupScreen	;Build the controller setup screen: vram, fonts, the team 
 	move.w	d4,(smallfont2chars).w
 	movea.l	#RosterFont+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$05,$23,$45,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$05,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont3chars).w
 	movea.l	#RosterFont+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0D,$23,$45,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0D,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
 	move.l	#RosterFont,(smallfontptr).l
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2

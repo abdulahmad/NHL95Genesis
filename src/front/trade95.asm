@@ -800,11 +800,11 @@ TradePlayers	;Trade Player screen (main flow): the two rosters with position / r
 	jsr	(printsmallz).l
 	String	CC_SetFont,$2,CC_SetX,$15,CC_SetY,$11,'POSITION',CC_SetX,$1F,'RATING'
 	jsr	(printsmallz).l
-	dc.w	$16;String length
+	dc.w	$16	;String length
 	dc.b	$F9,$1,$FD,$4,$FC,$19,'A',$FD
 	dc.b	$C,'B',$FD,$16,'C',$FD,$1F,'Start'
 	jsr	(printsmallz).l
-	dc.w	$26;String length
+	dc.w	$26	;String length
 	dc.b	$FD,$2,$FC,$1A,'Team',$FD,$A,'Cancel'
 	dc.b	$FD,$14,'Player',$FD,$1E,'Evaluate',$F9,$0
 .4
@@ -1189,7 +1189,7 @@ InvalidTradeText	;INVALID TRADE reasons (PrintSmallListItem)
 	String	$FD,$6,$FC,$D,'* No players chosen.'
 
 TradeRulesText	;The roster rules text
-	dc.w	$7A;String length
+	dc.w	$7A	;String length
 	dc.b	$FD,$6,$FC,$D,'All teams must have:',$FA,$1,$FD
 	dc.b	$6,'* 17 to 25 players.',$FA,$1,$FD,$6,'*  2 to  3 goalies.',$FA
 	dc.b	$1,$FD,$6,'*  9 to 15 forwards.',$FA,$1,$FD,$6

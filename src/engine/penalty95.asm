@@ -1052,36 +1052,36 @@ ChkOffsides	;Offsides: clear the flag of a team that is all back onside (.8), th
 Penaltylist	;Penalty number = word offset into this table; the same entries as 94.
 	;Used by AddPenalty, SetPA2, prefmes, PenaltyShotBox
 	dc.w	$0000
-	dc.w	.eop-Penaltylist;$2 period over
-	dc.w	.eog-Penaltylist;$4 game over
-	dc.w	.ghold-Penaltylist;$6
-	dc.w	.ghold-Penaltylist;$8
-	dc.w	.whistle-Penaltylist;$A whistle
-	dc.w	.ice-Penaltylist;$C icing
-	dc.w	.goal-Penaltylist;$E goal
-	dc.w	.offsides-Penaltylist;$10 offsides
-	dc.w	.rough2-Penaltylist;$12 roughing, slow down time $A
-	dc.w	.p14-Penaltylist;$14 no text
-	dc.w	.charge-Penaltylist;$16
-	dc.w	.slash-Penaltylist;$18
-	dc.w	.rough-Penaltylist;$1A
-	dc.w	.cross-Penaltylist;$1C
-	dc.w	.hook-Penaltylist;$1E
-	dc.w	.trip-Penaltylist;$20
-	dc.w	.int-Penaltylist;$22
-	dc.w	.hold-Penaltylist;$24
-	dc.w	.fight-Penaltylist;$26
-	dc.w	.fight2-Penaltylist;$28
-	dc.w	.inst-Penaltylist;$2A
-	dc.w	.delay-Penaltylist;$2C delay
-	dc.w	.hookps-Penaltylist;$2E penalty shot
-	dc.w	.tripps-Penaltylist;$30 penalty shot
-	dc.w	.ghold2-Penaltylist;$32 face off, no slow down
-	dc.w	.intps-Penaltylist;$34 penalty shot
-	dc.w	.roughps-Penaltylist;$36 penalty shot
-	dc.w	.chargeps-Penaltylist;$38 penalty shot
-	dc.w	.crossps-Penaltylist;$3A penalty shot
-	dc.w	.slashps-Penaltylist;$3C penalty shot
+	dc.w	.eop-Penaltylist	;$2 period over
+	dc.w	.eog-Penaltylist	;$4 game over
+	dc.w	.ghold-Penaltylist	;$6
+	dc.w	.ghold-Penaltylist	;$8
+	dc.w	.whistle-Penaltylist	;$A whistle
+	dc.w	.ice-Penaltylist	;$C icing
+	dc.w	.goal-Penaltylist	;$E goal
+	dc.w	.offsides-Penaltylist	;$10 offsides
+	dc.w	.rough2-Penaltylist	;$12 roughing, slow down time $A
+	dc.w	.p14-Penaltylist	;$14 no text
+	dc.w	.charge-Penaltylist	;$16
+	dc.w	.slash-Penaltylist	;$18
+	dc.w	.rough-Penaltylist	;$1A
+	dc.w	.cross-Penaltylist	;$1C
+	dc.w	.hook-Penaltylist	;$1E
+	dc.w	.trip-Penaltylist	;$20
+	dc.w	.int-Penaltylist	;$22
+	dc.w	.hold-Penaltylist	;$24
+	dc.w	.fight-Penaltylist	;$26
+	dc.w	.fight2-Penaltylist	;$28
+	dc.w	.inst-Penaltylist	;$2A
+	dc.w	.delay-Penaltylist	;$2C delay
+	dc.w	.hookps-Penaltylist	;$2E penalty shot
+	dc.w	.tripps-Penaltylist	;$30 penalty shot
+	dc.w	.ghold2-Penaltylist	;$32 face off, no slow down
+	dc.w	.intps-Penaltylist	;$34 penalty shot
+	dc.w	.roughps-Penaltylist	;$36 penalty shot
+	dc.w	.chargeps-Penaltylist	;$38 penalty shot
+	dc.w	.crossps-Penaltylist	;$3A penalty shot
+	dc.w	.slashps-Penaltylist	;$3C penalty shot
 .eop	dc.w	$0100
 	String	'Period Over'
 	dc.w	-$0510
@@ -1089,10 +1089,10 @@ Penaltylist	;Penalty number = word offset into this table; the same entries as 9
 	String	'Game Over'
 	dc.w	$0510,-$4060
 .goal	dc.w	$0100
-	dc.w	2;String with no text
+	dc.w	2	;String with no text
 	dc.w	$050A,-$4018
 .p14	dc.w	$0100
-	dc.w	2;String with no text
+	dc.w	2	;String with no text
 	dc.w	$0510,-$4018
 .ice	dc.w	$0100
 	String	'Icing'
@@ -1110,7 +1110,7 @@ Penaltylist	;Penalty number = word offset into this table; the same entries as 9
 	String	'Penalty'
 	dc.w	$0003,$0301,-$0408
 .whistle	dc.w	$0000
-	dc.w	2;String with no text
+	dc.w	2	;String with no text
 	dc.w	-$050A
 .charge	dc.w	$0402
 	String	'Charging'

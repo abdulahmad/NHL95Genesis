@@ -55,7 +55,7 @@ HandleJoy1	;Any button on the pad just read (d1) ends the demo; 95 also sets dem
 rtsdemo	;shared rts of demoread / HandleJoy1
 	rts
 
-RandomSetupTeams	;(SetupDemo picks random teams). Step the two setup team values by a random 0-27 and copy them
+RandomSetupTeams	;Random teams for the demo (SetupDemo): step the two setup team values by a random 0-27 and copy them
 	;to Opt1team / Opt2team, set OptUserRec, clear OptPlayMode and GameFlags bits 3, 4 (season), OptPen = random 0 / 1
 	move.w	#$1C,d0
 	jsr	(randomd0).l
@@ -1676,11 +1676,11 @@ SeasonSetupGfx	;Season setup screen video set up and graphics
 	move.w	d4,(smallfont2chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont3chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
@@ -2400,11 +2400,11 @@ GamesTodayGfx	;Games today screen video set up and graphics
 	move.w	d4,(smallfontchars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont2chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
 	move.l	#SmallFontMap,(smallfontptr).l
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
@@ -2412,15 +2412,15 @@ GamesTodayGfx	;Games today screen video set up and graphics
 	move.w	d4,(seasonchars2).w
 	movea.l	#GamesTodayMap1+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$97,$54,$CF,$F9,$AB,$CD,$E1;remap table
+	dc.b	$0B,$97,$54,$CF,$F9,$AB,$CD,$E1	;remap table
 	move.w	d4,(padcursorchars).w
 	movea.l	#GamesTodayMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$97,$54,$CF,$F9,$AB,$CD,$E1;remap table
+	dc.b	$0B,$97,$54,$CF,$F9,$AB,$CD,$E1	;remap table
 	move.w	d4,(seasonchars1).w
 	movea.l	#GamesTodayMap3+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$97,$54,$CF,$F9,$AB,$CD,$E1;remap table
+	dc.b	$0B,$97,$54,$CF,$F9,$AB,$CD,$E1	;remap table
 	move.w	d4,(teamblocksmapptr).w
 	movea.l	#Teamblocksmap+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
@@ -2640,7 +2640,7 @@ MenuPlayUntil	;Play Until A Day: pick the day with A (month) / B (day), C cancel
 	jsr	(printsmallz).l
 	String	CC_SetFont,$2,'Please complete human',CC_SetX,$7,CC_SetY,$D,'controlled games before'
 	jsr	(printsmallz).l
-	dc.w	$3C;String length
+	dc.w	$3C	;String length
 	dc.b	$FD,$7,$FA,$1,$F9,$2,'selecting autoplay.',$FD
 	dc.b	$7,$FA,$2,$F9,$2,'Press START to continue.',$F9,$0
 	dc.b	$0
@@ -2777,7 +2777,7 @@ AutoplayMessage	;AUTOPLAYING GAMES. DO NOT PRESS RESET !!, d0 = 0
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$7,$C,$0
 	jsr	(printsmallz).l
-	dc.w	$46;String length
+	dc.w	$46	;String length
 	dc.b	$F9,$2,$FA,$3,'AUTOPLAYING GAMES.',$FA,$2,$FD
 	dc.b	$7,'DO NOT PRESS RESET !!',$FA,$2,$FD,$7,'Please wait...',$F9
 	dc.b	$0,$0
@@ -2906,7 +2906,7 @@ SeasonMenuText	;Regular season menu
 	String	'     Player Stats     '
 	String	'      Highlights      '
 	String	'End Season After Today'
-	dc.w	0;end
+	dc.w	0	;end
 
 SeasonEndMenuText	;Menu after the regular season
 	String	'    On To Playoffs    '
@@ -2916,7 +2916,7 @@ SeasonEndMenuText	;Menu after the regular season
 	String	'    League Leaders    '
 	String	'      Team Stats      '
 	String	'     Player Stats     '
-	dc.w	0;end
+	dc.w	0	;end
 
 PlayoffMenuText	;Playoff menu
 	String	'      Play Games      '
@@ -2926,7 +2926,7 @@ PlayoffMenuText	;Playoff menu
 	String	'  Playoff Team Stats  '
 	String	' Playoff Player Stats '
 	String	'     Playoff Tree     '
-	dc.w	0;end
+	dc.w	0	;end
 
 SeasonOptionsGfx	;Season options screen video set up and graphics
 	move.l	#VBlank_SetOptions,(vbint).w
@@ -2949,15 +2949,15 @@ SeasonOptionsGfx	;Season options screen video set up and graphics
 	move.w	d4,(smallfontchars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont2chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont3chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$BB,$83,$44,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$BB,$83,$44,$67,$89,$AB,$CD,$EF	;remap table
 	move.l	#SmallFontMap,(smallfontptr).l
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
@@ -2966,7 +2966,7 @@ SeasonOptionsGfx	;Season options screen video set up and graphics
 	move.l	#Framermap,(framermapptr).l
 	move.w	d4,(framercset).w
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
 	jsr	(printz).l
 	String	-TXMAP2,$0,$0,$0
 	movea.l	#ControllerBgMap,a0
@@ -3018,7 +3018,7 @@ CalendarScreen	;CALENDAR (team schedule): {} change team, [] change month, start
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$1,$7,$0
 	jsr	(printsmallz).l
-	dc.w	$38;String length
+	dc.w	$38	;String length
 	dc.b	$F9,$1,'[ ]',$FD,$1,$FA,$1,'= Change'
 	dc.b	$FD,$1,$FA,$1,'Month',$FD,$1,$FA
 	dc.b	$2,'{ }',$FD,$1,$FA,$1,'= Change',$FD
@@ -3134,16 +3134,16 @@ CalendarGfx	;Calendar screen video set up and graphics
 	move.w	d4,(smallfontchars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF	;remap table
 	move.l	#SmallFontMap,(smallfontptr).l
 	move.w	d4,(smallfont2chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(teamblocksmapptr).w
 	movea.l	#Teamblocksmap+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
@@ -3162,7 +3162,7 @@ CalendarGfx	;Calendar screen video set up and graphics
 	move.w	d4,(calresultchars).w
 	movea.l	#CalResultMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$01,$21,$23,$45,$67,$89,$AB,$CD;remap table
+	dc.b	$01,$21,$23,$45,$67,$89,$AB,$CD	;remap table
 	move.w	d4,(calbgchars).w
 	jsr	(printz).l
 	String	-TXMAP2,$0,$0,$0
@@ -3695,11 +3695,11 @@ StandingsGfx	;Standings screen video set up and graphics
 	move.w	d4,(smallfontchars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF	;remap table
 	move.w	d4,(smallfont2chars).w
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
+	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
 	move.l	#SmallFontMap,(smallfontptr).l
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2

@@ -93,7 +93,7 @@ newTitleScreen	;The title screen (TitleScreenImg, TitleImg) with the vblank Titl
 	move.l	#RosterFont,(smallfontptr).l
 	movea.l	#RosterFont+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0D,$10,$45,$67,$89,$AB,$CD,$EF;remap bytes
+	dc.b	$0D,$10,$45,$67,$89,$AB,$CD,$EF	;remap bytes
 	clr.w	(TempWord1).w
 	jsr	(printz).l
 	String	-(TXPAL1+TXMAP1),0,0,0
