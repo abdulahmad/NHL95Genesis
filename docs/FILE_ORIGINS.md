@@ -302,7 +302,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 ### engine/fourway95
 
 - **new in 95** (26 bytes): AnyPadAssigned
-- **fourway94** (216 bytes): Detect4WayPlay, Read4WayPad1, Read4WayPad2, Read4WayPad3, Read4WayPad4
+- **fourway94** (216 bytes): Detect4WayPlay, ReadJoySwapPad1, ReadJoySwapPad2, ReadJoySwapPad3, ReadJoySwapPad4
 - **new in 95** (66 bytes): Read4WayPort1, Read4WayPort2, ReadJoyJmp
 
 ### sound/z80old95

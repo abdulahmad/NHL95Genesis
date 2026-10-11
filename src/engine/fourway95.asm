@@ -1,4 +1,4 @@
-;	AnyPadAssigned, then Detect4WayPlay and the unused Read4WayPad1-4 (the pads are read through Read4WayPort1 /
+;	AnyPadAssigned, then Detect4WayPlay and the unused ReadJoySwapPad1-4 (the pads are read through Read4WayPort1 /
 ;	Read4WayPort2).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
@@ -36,25 +36,25 @@ Detect4WayPlay	;Detect the 4 way play adaptor (EA 4 Way Play) on port 2: FourWay
 	move.w	#$100,(IO_Z80RES).l
 	rts
 
-Read4WayPad1	;Unreferenced. Read 4 way play pad 1
+ReadJoySwapPad1	;Unreferenced. Read 4 way play pad 1
 	move.b	#0,(IO_CT2_DATA+1).l	;4 way play: select pad
 	move.w	(pad4waysave1).w,(pad4wayword).w
 	jsr	(Read4WayPort1).l
 	move.w	(pad4wayword).w,(pad4waysave1).w
 	rts
-Read4WayPad2	;Unreferenced. The same for pad 2
+ReadJoySwapPad2	;Unreferenced. The same for pad 2
 	move.b	#$10,(IO_CT2_DATA+1).l	;4 way play: select pad
 	move.w	(pad4waysave2).w,(pad4wayword).w
 	jsr	(Read4WayPort1).l
 	move.w	(pad4wayword).w,(pad4waysave2).w
 	rts
-Read4WayPad3	;Unreferenced. The same for pad 3
+ReadJoySwapPad3	;Unreferenced. The same for pad 3
 	move.b	#$20,(IO_CT2_DATA+1).l	;4 way play: select pad
 	move.w	(pad4waysave3).w,(pad4wayword).w
 	jsr	(Read4WayPort1).l
 	move.w	(pad4wayword).w,(pad4waysave3).w
 	rts
-Read4WayPad4	;Unreferenced. The same for pad 4
+ReadJoySwapPad4	;Unreferenced. The same for pad 4
 	move.b	#$30,(IO_CT2_DATA+1).l	;4 way play: select pad
 	move.w	(pad4waysave4).w,(pad4wayword).w
 	jsr	(Read4WayPort1).l

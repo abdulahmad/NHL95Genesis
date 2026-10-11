@@ -518,10 +518,10 @@ engine/middle95.asm,$07DF7C,32,FormatAndPrintTime,code,video94,name
 engine/middle95.asm,$07DF9C,16,PeriodLabelTable,data,video94,name
 engine/fourway95.asm,$07DFAC,26,AnyPadAssigned,code,new in 95,header
 engine/fourway95.asm,$07DFC6,104,Detect4WayPlay,code,fourway94,name
-engine/fourway95.asm,$07E02E,28,Read4WayPad1,code,fourway94,name
-engine/fourway95.asm,$07E04A,28,Read4WayPad2,code,fourway94,name
-engine/fourway95.asm,$07E066,28,Read4WayPad3,code,fourway94,name
-engine/fourway95.asm,$07E082,28,Read4WayPad4,code,fourway94,name
+engine/fourway95.asm,$07E02E,28,ReadJoySwapPad1,code,fourway94,name
+engine/fourway95.asm,$07E04A,28,ReadJoySwapPad2,code,fourway94,name
+engine/fourway95.asm,$07E066,28,ReadJoySwapPad3,code,fourway94,name
+engine/fourway95.asm,$07E082,28,ReadJoySwapPad4,code,fourway94,name
 engine/fourway95.asm,$07E09E,30,Read4WayPort1,code,new in 95,header
 engine/fourway95.asm,$07E0BC,30,Read4WayPort2,code,new in 95,header
 engine/fourway95.asm,$07E0DA,6,ReadJoyJmp,code,new in 95,header
@@ -1077,12 +1077,12 @@ front/season95.asm,$090274,4,CompText,data,new in 95,header
 front/season95.asm,$090278,4,HumanText,data,new in 95,header
 front/season95.asm,$09027C,158,DrawGameResult,code,new in 95,header
 front/season95.asm,$09031A,48,DrawGameCursor,code,new in 95,header
-front/season95.asm,$09034A,3,GameColsTbl1,data,new in 95,header
-front/season95.asm,$09034D,3,GameColsTbl2,data,new in 95,follows GameColsTbl1
-front/season95.asm,$090350,3,GameColsTbl3,data,new in 95,follows GameColsTbl2
-front/season95.asm,$090353,6,GameColsTbl4,data,new in 95,follows GameColsTbl3
-front/season95.asm,$090359,3,GameColsTbl5,data,new in 95,follows GameColsTbl4
-front/season95.asm,$09035C,4,GameColsTbl6,data,new in 95,follows GameColsTbl5
+front/season95.asm,$09034A,3,GameRowsTbl1,data,new in 95,header
+front/season95.asm,$09034D,3,GameRowsTbl2,data,new in 95,follows GameRowsTbl1
+front/season95.asm,$090350,3,GameRowsTbl3,data,new in 95,follows GameRowsTbl2
+front/season95.asm,$090353,6,GameRowsTbl4,data,new in 95,follows GameRowsTbl3
+front/season95.asm,$090359,3,GameRowsTbl5,data,new in 95,follows GameRowsTbl4
+front/season95.asm,$09035C,4,GameRowsTbl6,data,new in 95,follows GameRowsTbl5
 front/season95.asm,$090360,302,GamesTodayGfx,code,new in 95,header
 front/season95.asm,$09048E,68,GamesTodayHelp,code,new in 95,header
 front/season95.asm,$0904D2,334,SeasonOptions,code,new in 95,header

@@ -2170,18 +2170,18 @@ DrawGamesToday	;Draw the date, the day's games and the arrows
 	jsr	(printz).l
 	String	-TXMAP1,$0,$0,$0
 	move.w	#$E,(printx).w
-	movea.l	#GameColsTbl2,a1
+	movea.l	#GameRowsTbl2,a1
 	move.b	(a1,d2.w),(printy+1).w
 	clr.w	d1
 	move.b	(a0,d0.w),d1
 	bsr.w	DrawGameCursor
 	move.w	#$E,(printx).w
-	movea.l	#GameColsTbl1,a1
+	movea.l	#GameRowsTbl1,a1
 	move.b	(a1,d2.w),(printy+1).w
 	clr.w	d1
 	move.b	1(a0,d0.w),d1
 	bsr.w	DrawGameCursor
-	movea.l	#GameColsTbl4,a1
+	movea.l	#GameRowsTbl4,a1
 	move.b	(a1,d2.w),(printy+1).w
 	move.w	#$13,(printx).w
 	jsr	(printz).l
@@ -2209,10 +2209,10 @@ PrintGameLine	;Print a game line
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d5
 	move.b	2(a0,d0.w),d5
-	movea.l	#GameColsTbl6,a1
+	movea.l	#GameRowsTbl6,a1
 	bsr.w	PrintGameScore
 	move.b	3(a0,d0.w),d5
-	movea.l	#GameColsTbl5,a1
+	movea.l	#GameRowsTbl5,a1
 	bsr.w	PrintGameScore
 	movem.l	(sp)+,d0-d7/a0-a6
 .0
@@ -2234,7 +2234,7 @@ DrawGameTeams	;Draw the team names of a game line
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	-TXMAP1,$8,$0,$0
-	movea.l	#(GameColsTbl4+3),a0
+	movea.l	#(GameRowsTbl4+3),a0
 	move.w	(setupprevline).w,d1
 	move.b	(a0,d1.w),(printy+1).w
 	move.w	#2,d0
@@ -2243,7 +2243,7 @@ DrawGameTeams	;Draw the team names of a game line
 	jsr	(eraser).l
 	jsr	(printz).l
 	String	-TXMAP1,$8,$0,$0
-	movea.l	#(GameColsTbl4+3),a0
+	movea.l	#(GameRowsTbl4+3),a0
 	move.w	(SelectedPlayerIdx).w,d1
 	move.b	(a0,d1.w),(printy+1).w
 	move.w	(gamestoday1chars).w,d4
@@ -2267,7 +2267,7 @@ DrawGameUser	;Draw the C / H (computer / human) marks of a game line
 	bne.w	.0
 	jsr	(printz).l
 	String	-TXMAP1,$B,$0,$0
-	movea.l	#GameColsTbl3,a1
+	movea.l	#GameRowsTbl3,a1
 	move.b	(a1,d2.w),(printy+1).w
 	clr.w	d0
 	clr.w	d1
@@ -2285,7 +2285,7 @@ DrawGameUser	;Draw the C / H (computer / human) marks of a game line
 .0
 	jsr	(printz).l
 	String	-TXMAP1,$1A,$0,$0
-	movea.l	#GameColsTbl4,a1
+	movea.l	#GameRowsTbl4,a1
 	move.b	(a1,d2.w),(printy+1).w
 	movea.l	#HumanText,a1
 	jsr	(print).l
@@ -2312,7 +2312,7 @@ DrawGameResult	;Draw the result of a game line
 	jsr	(printz).l
 	String	-TXMAP1,$0,$0,$0
 	move.w	#$B,(printx).w
-	movea.l	#GameColsTbl3,a1
+	movea.l	#GameRowsTbl3,a1
 	move.b	(a1,d2.w),(printy+1).w
 	clr.w	d0
 	clr.w	d1
@@ -2330,7 +2330,7 @@ DrawGameResult	;Draw the result of a game line
 .0
 	jsr	(printz).l
 	String	-TXMAP1,$1A,$0,$0
-	movea.l	#GameColsTbl4,a1
+	movea.l	#GameRowsTbl4,a1
 	move.b	(a1,d2.w),(printy+1).w
 	movea.l	#CompText,a1
 	jsr	(print).l
@@ -2361,22 +2361,22 @@ DrawGameCursor	;Draw the cursor on the game line
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-GameColsTbl1	;Game line columns
+GameRowsTbl1	;Game line rows (printy by line), as the tables below
 	dc.b	7,$D,$13
 
-GameColsTbl2
+GameRowsTbl2
 	dc.b	$A,$10,$16
 
-GameColsTbl3
+GameRowsTbl3
 	dc.b	8,$E,$14
 
-GameColsTbl4
+GameRowsTbl4
 	dc.b	9,$F,$15,8,$E,$14
 
-GameColsTbl5
+GameRowsTbl5
 	dc.b	8,$E,$14
 
-GameColsTbl6
+GameRowsTbl6
 	dc.b	$A,$10,$16,$FF
 
 GamesTodayGfx	;Games today screen video set up and graphics

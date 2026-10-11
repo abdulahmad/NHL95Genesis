@@ -45,7 +45,7 @@ SPFflip	=	SPFswingb+24	; 600 (94: 633)
 SPFGoalie	=	SPFflip+6	; 606 (94: 407): gready, gglovel, gglover, gstickl, gstickr
 SPFgdive	=	SPFGoalie+40	; 646 (94: 519)
 SPFglovel2	=	SPFgdive+24	; 670 not used by a 95 table (94: 535), inferred; 95 has no gglovel2
-SPFblock	=	SPFglovel2+4	; 674 The shot block (95 PC blockfront ...)
+SPFblock	=	SPFglovel2+4	; 674 The shot block
 SPFSiren	=	SPFblock+24	; 698 (94: 563)
 SPFgstack	=	SPFSiren+14	; 712(94 gstackr, gstackl, gswing use SPFGoalie)
 SPFboard	=	SPFgstack+40	; 752 boardtop, boardright, boardbot, boardleft
@@ -766,7 +766,7 @@ SPAshotf_table:	;Frames 448-495
 .7	dc.w	SPFswing+44,4,SPFswing+43,4,SPFswing+42,4,SPFswing+42,4,SPFswing+43,4,SPFswing+44,4,SPFswing+45,4,SPFswing+46,4
 	dc.w	SPFswing+47,-20
 
-SPAfakeshotf	=	*-SPAlist	; 95 PC name. The fake shot: SetShotMode uses it in place of SPAshotf when GameFlags bit 0 is set
+SPAfakeshotf	=	*-SPAlist	; The fake shot: SetShotMode uses it in place of SPAshotf when GameFlags bit 0 is set
 SPAfakeshotf_table:	;Frames 448-495
 .t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -826,7 +826,7 @@ SPAshotb_table:	;Frames 576-599
 .7	dc.w	SPFswingb+21,2,SPFswingb+21,2,SPFswingb+21,2,SPFswingb+21,2,SPFswingb+21,2,SPFswingb+21,2,SPFswingb+22,2,SPFswingb+23,2
 	dc.w	SPFswingb+23,-10
 
-SPAfakeshotb	=	*-SPAlist	; 95 PC name. The backhand fake shot: see SPAfakeshotf
+SPAfakeshotb	=	*-SPAlist	; The backhand fake shot: see SPAfakeshotf
 SPAfakeshotb_table:	;Frames 449-495
 .t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -988,7 +988,7 @@ SPAgready2_table:	;Frames 606-613
 .6	dc.w	SPFGoalie+6,-700
 .7	dc.w	SPFGoalie+7,-700
 
-SPAgglover	=	*-SPAlist	; goaliesave.saveanim 0 and 6
+SPAgglover	=	*-SPAlist	; saveanim entries 0 and 6
 SPAgglover_table:	;Frames 622-629
 .t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1010,7 +1010,7 @@ SPAgglover_table:	;Frames 622-629
 .6	dc.w	SPFGoalie+22,-32
 .7	dc.w	SPFGoalie+23,-32
 
-SPAgglovel	=	*-SPAlist	; goaliesave.saveanim 1 and 7
+SPAgglovel	=	*-SPAlist	; saveanim entries 1 and 7
 SPAgglovel_table:	;Frames 614-621
 .t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1032,7 +1032,7 @@ SPAgglovel_table:	;Frames 614-621
 .6	dc.w	SPFGoalie+14,-32
 .7	dc.w	SPFGoalie+15,-32
 
-SPAgstickr	=	*-SPAlist	; goaliesave.saveanim 4 and 8
+SPAgstickr	=	*-SPAlist	; saveanim entries 4 and 8
 SPAgstickr_table:	;Frames 638-645
 .t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1054,7 +1054,7 @@ SPAgstickr_table:	;Frames 638-645
 .6	dc.w	SPFGoalie+38,-36
 .7	dc.w	SPFGoalie+39,-36
 
-SPAgstickl	=	*-SPAlist	; goaliesave.saveanim 5 and 9
+SPAgstickl	=	*-SPAlist	; saveanim entries 5 and 9
 SPAgstickl_table:	;Frames 630-637
 .t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1142,7 +1142,7 @@ SPAwallleft_table:	;Frames 1005-1008
 .6	dc.w	SPFPen,8,SPFPen+1,8,SPFPen+2,8,SPFPen+3,-8
 .7	dc.w	SPFPen,8,SPFPen+1,8,SPFPen+2,8,SPFPen+3,-8
 
-SPAblock	=	*-SPAlist	; The shot block (95 PC has blockleft, blockright, blockfront, blockknee): check4check and
+SPAblock	=	*-SPAlist	; The shot block: check4check and
 	;check4check2 for a joystick player (CanBlock), chkblock in place of SPAhook
 SPAblock_table:	;Frames 183-697
 .t	;Offset to each direction of animation (0-7)
@@ -1232,7 +1232,7 @@ SPAgswing_table:	;Frames 736-751
 .6	dc.w	SPFgstack+36,5,SPFgstack+37,8,SPFgstack+36,-16
 .7	dc.w	SPFgstack+38,5,SPFgstack+39,8,SPFgstack+38,-16
 
-SPAgstackl	=	*-SPAlist	; goaliesave.saveanim 3
+SPAgstackl	=	*-SPAlist	; saveanim entries 3
 SPAgstackl_table:	;Frames 724-735
 .t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1254,7 +1254,7 @@ SPAgstackl_table:	;Frames 724-735
 .6	dc.w	SPFgstack+20,8,SPFgstack+21,-32
 .7	dc.w	SPFgstack+22,8,SPFgstack+23,-32
 
-SPAgstackr	=	*-SPAlist	; goaliesave.saveanim 2
+SPAgstackr	=	*-SPAlist	; saveanim entries 2
 SPAgstackr_table:	;Frames 712-723
 .t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1730,7 +1730,7 @@ SPAboardmidr_table:	;Frames 66-1039
 .6
 .7	dc.w	SPFboardmid+24,6,SPFboardmid+25,6,SPFboardmid+26,6,SPFboardmid+27,80,SPFboardmid+26,6,SPFboardmid+24,6,SPFglide+6,-8
 
-SPApump	=	*-SPAlist	; inferred: the word list after SPAcelebrate (label), with SPApump2
+SPApump	=	*-SPAlist	; the word list after SPAcelebrate (label), with SPApump2
 SPApump_table:	;Frames 922-937
 .t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1774,7 +1774,7 @@ SPAstanley_table:	;Frames 938-953
 .6	dc.w	SPFcup+12,12,SPFcup+13,12,SPFcup+12,12,SPFcup+13,12,SPFcup+12,12,SPFcup+13,-12
 .7	dc.w	SPFcup+14,12,SPFcup+15,12,SPFcup+14,12,SPFcup+15,12,SPFcup+14,12,SPFcup+15,-12
 
-SPApump2	=	*-SPAlist	; inferred: the word list alternates it with SPApump
+SPApump2	=	*-SPAlist	; the word list alternates it with SPApump
 SPApump2_table:	;Frames 954-969
 .t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1820,7 +1820,7 @@ SPAgslamtop_table:	;Frames 898-903
 .5	dc.w	SPFgslamtop+3,8,SPFgslamtop+4,8,SPFgslamtop+5,8,SPFgslamtop+4,8,SPFgslamtop+3,8,SPFgslamtop+3,8,SPFgslamtop+4,8,SPFgslamtop+5,8
 	dc.w	SPFgslamtop+4,8,SPFgslamtop+3,-8
 
-SPAgextra1	=	*-SPAlist	; goaliesave.26: with SPAgextra2, picked by the goalie side of the puck and the glove hand ($76 bit 0)
+SPAgextra1	=	*-SPAlist	; goaliesave: with SPAgextra2, picked by the goalie side of the puck and the glove hand ($76 bit 0)
 SPAgextra1_table:	;Frames 1040-1043
 .t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1842,7 +1842,7 @@ SPAgextra1_table:	;Frames 1040-1043
 .4
 .5	dc.w	SPFgextra1+2,4,SPFgextra1+3,-24,SPFgextra1+2,-4
 
-SPAgextra2	=	*-SPAlist	; goaliesave.26: see SPAgextra1. puckgoalie compares SPAgextra1
+SPAgextra2	=	*-SPAlist	; goaliesave: see SPAgextra1. puckgoalie compares SPAgextra1
 SPAgextra2_table:	;Frames 876-879
 .t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
