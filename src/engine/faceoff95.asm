@@ -1,7 +1,7 @@
 ; $08827C  Adapted from checks94.asm and penalty94.asm: the scoreboard after a goal, faceoffs
 ;	penalty94 UpdateScores / SetScore / sctab and hockey94 ClearShotData, then 94 checks94 puckfaceoff ... Endfaceoff with
-;	assign94 assfaceoff / assfaceoffp1 moved in, display94 checkfo, and the 95 DrawFaceoffWindow (94 puckfaceoff2
-;	.drawfaceoffwindow). 94 ChkGoalies, ReturnGoalies, CPgoalie and CompLine are not here. penalty95
+;	assign94 assfaceoff / assfaceoffp1 moved in, display94 checkfo, and the 95 DrawFaceoffWindow
+;	(94 puckfaceoff2 .drawfaceoffwindow). 94 ChkGoalies, ReturnGoalies, CPgoalie and CompLine are not here. penalty95
 ;	follows at $088F06.
 ;	IDA left puckfaceoff ... Endfaceoff ($883C8-$88D51) as dc.b; that code is read from the retail bytes with the 94 source as the
 ;	guide. IDA hid the printz / printz2 Strings as instructions; they are String here. Local labels are numbered; the IDA local names
