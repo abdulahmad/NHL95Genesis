@@ -1,10 +1,10 @@
 ; $0A0D1A  Adapted from stats94.asm: scoring and penalty summaries
-;	Mapped to stats94 (58%): ScoringSummaryScreen ... DisplayPenaltyEntry (the goal and penalty summaries); before them updatecrowdf (hockey94)
-;	and showcrowd (display94), with the 95 crowd frame table.
+;	Mapped to stats94 (58%): ScoringSummaryScreen ... DisplayPenaltyEntry (the goal and penalty summaries). crowd95 (updatecrowdf,
+;	showcrowd) is just before it.
 ;	IDA left ScoringSummaryScreen ... DisplayPenaltyEntry ($0A0D1A-$0A12A9) as dc.b; it is transcribed from the retail bytes.
 ;	Local labels are numbered; the IDA local names are not kept.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
-;	the cmp and exg encodings after assembly.
+;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
+;	cmp encoding after assembly.
 
 ScoringSummaryScreen	;stats94 ScoringSummaryScreen (93 name). "Scoring Summary": one 4 row entry per goal (6 bytes each from ScoreSum), scrolled with up / down, start exits
 	moveq	#9,d0

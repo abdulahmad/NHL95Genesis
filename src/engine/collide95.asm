@@ -1,11 +1,10 @@
 ; $07A7B4  Adapted from collide94.asm: checks, falls, walls, puck and goal collisions
-;	video94 ProcessInputWithRepeat, stats94 WaitVSyncAndReadInput, then the 94 collide94
-;	collision code in a new order: checkcoll, checkwallcoll, wallcollb, wallcoll, checkplcoll, checkcx, checkcheck, CCStart (checkinglist, the 95
+;	The 94 collide94 collision code in a new order: checkcoll, checkwallcoll, wallcollb, wallcoll, checkplcoll, checkcx, checkcheck, CCStart (checkinglist, the 95
 ;	checkinglist2, Bcheck, holdcheck, the 95 Sweepcheck), FallDown, checkpuckcoll, puckstick, puckglue, puckbody, rtspuck (the 94 rtss2 place),
 ;	deflect, checkpuckcoll_sfx, checkgoal (the 94 .goal code is elsewhere: Goal), checkgoalp, CheckBump, cards94 wallcollduringcheck, crowd94
-;	checkcornercoll94 / cornercollb94, puckgoalie, checkint, the 95 DropPuck. video95_02 (94 sroot) follows at $7C512.
-;	written as instructions: WaitVSyncAndReadInput, a second rts after checkwallcoll ($7A976), checkpuckcoll ... checkpuckcoll_sfx
-;	($7B51A-$7BD8B) and puckgoalie ($7C154-$7C3FB).
+;	checkcornercoll94 / cornercollb94, puckgoalie, checkint, the 95 DropPuck. middle95 (94 sroot) follows at $7C512.
+;	written as instructions: a second rts after checkwallcoll ($7A976), checkpuckcoll ... checkpuckcoll_sfx ($7B51A-$7BD8B) and
+;	puckgoalie ($7C154-$7C3FB).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 ;	Sort struct (SortCords, $80 each): $40 temp1, $64 bit 3 one-timer, bit 4 wall collision, bit 5 fell, $68 Agl, $73 aggres, $74 Fgt, $75 Chk.
@@ -710,7 +709,7 @@ holdcheck	;player a2 is in a hold animation looking to hold opponent a3. Entered
 .4
 	rts
 
-Sweepcheck	;95 only. Lock a3 in SPA $F38 (the sweep check). Jumped to from chgplayer (setup95_01)
+Sweepcheck	;95 only. Lock a3 in SPA $F38 (the sweep check). Jumped to from chgplayer (control95)
 	bset	#pfalock,pflags(a3)
 	move.w	#$F38,d1
 	jmp	(SetSPA).l

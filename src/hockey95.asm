@@ -145,7 +145,7 @@ StartGame	;reset game state for a new game, then start the first period. 95 has 
 	move.b	#1,(VDP_PSG).l
 	jsr	(setupice).l
 
-IntermissionStart	;94 setup94 name: the PeriodOver tail. checks95_04 PeriodOver jumps here after forceblack: reset the
+IntermissionStart	;94 setup94 name: the PeriodOver tail. goal95 PeriodOver jumps here after forceblack: reset the
 	;clock, restart the sound driver, UpdateScores, IntermissionMenu, then GameOver or StartPer
 	jsr	(ResetClock).l	;hockey94_01
 	move.w	d0,-(sp)

@@ -1,12 +1,12 @@
 ; $088F06  Adapted from penalty94.asm: penalties, the referee, PenaltyList, icing and offsides
 ;	2 parts in ROM order, each under its banner below.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
+;	the cmp and exg encodings after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $088F06  From penalty94.asm: penalties, the referee, the scoreboard messages
 ;	94 penalty94 limitfo, Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, PrintPenaltyMessagesString,
-;	with title94 LeadSong / ClearLeadSong / LeadSongExit moved in. data95 follows at $08996E.
+;	with title94 LeadSong / ClearLeadSong / LeadSongExit moved in. checkagr follows at $08996E.
 ;	IDA code except LeadSong ... LeadSongExit and PrintPenaltyMessagesString (dc.b, read from the retail bytes). IDA hid the printz
 ;	Strings as instructions; they are String here. Local labels are numbered; the IDA local names are not kept. Each routine comment
 ;	names its 94 file.
@@ -819,7 +819,7 @@ PrintPenaltyMessagesString	;(penalty94) 93 name. Blank the horizontal mode penal
 ; $08996E  From data94.asm and others: PenaltyList, penalty and offsides checks
 ;	Mapped to data94, but only the tables are data94 (PenaltyList = 94 PenaltyList, PenShotPenalties, linelist); the code is moved in:
 ;	collide94 checkagr, display94 showref, penalty94 ClearPenaltyBuffer, title94 ClearPenalties / clrTmPdst, checks94 puckIChk,
-;	ChkOffsides and checkob. Each routine comment names its 94 file. input95_02 follows at $08A056.
+;	ChkOffsides and checkob. Each routine comment names its 94 file. lines95 follows at $08A056.
 ;	IDA code except puckIChk and ChkOffsides (dc.b, read from the retail bytes with the 94 source as the guide). Local labels are numbered;
 ;	the IDA local names are not kept.
 ;	95 changes: the goal line $10B (94 $108), the blue line $52 (94 $54), checkagr's base $32 and the sflags9 penalty options.

@@ -1,4 +1,4 @@
-;	NHL 95 title95_02. Retail $1A169A-$1A1A19 (896 bytes).
+;	NHL 95 logopals95. Retail $1A169A-$1A1A19 (896 bytes).
 ;	Mapped to title94 (100%): TeamLogoPalettes, one 32 byte palette per team in TeamList order. 25 are the same bytes as the 94 files
 ;	and keep their 94 names; DAL, ASE and ASW differ and are the 94 stem with 95 added.
 

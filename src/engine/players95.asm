@@ -1,10 +1,10 @@
-;	NHL 95 collide95_02. Retail $0836AC-$083EB1 (2054 bytes).
+;	NHL 95 players95. Retail $0836AC-$083EB1 (2054 bytes).
 ;	The 95 PuckcIsGoalie, then collide94 SetPersonel, SetPlList, TryAddPlayerToList, forcepldata, stats94 GetPlayerCount (moved in;
 ;	95: by team number, GetPlayerCountD7), collide94 setplayer, ClampNibble, the 95 StickHandTable and BoostAttribute, crowd94
 ;	AttributeCalc (moved in), hockey94 restoreteams (moved in), collide94 ResetBench, setup94 resetplstuff (moved in), data94 priolist and
 ;	sublist (moved in), crowd94 Create_HotCold_Table / HotColdLoop (moved in).
-;	The start moved to $0836AC: CPgoalie .0 ... $0836AB is the end of CPgoalie (checks95_02). The end moved to $083EB1: doinput is the
-;	start of 95 doinput (input95_01; doinput .0, the mapped start, is inside it).
+;	The start moved to $0836AC: CPgoalie .0 ... $0836AB is the end of CPgoalie (logic95). The end moved to $083EB1: doinput is the
+;	start of 95 doinput (input95; doinput .0, the mapped start, is inside it).
 ;	IDA left PuckcIsGoalie, forcepldata, resetplstuff and the tables as dc.b; they are code / data here, read from the retail bytes.
 ;	95 changes: SetPersonel marks the season injuries first (GameFlags bit 3, SetSeasonInjuries); setplayer reads the roster by team
 ;	number (rosterteam, GetRosterName / GetJerseyNumber), maps the stick handling nibble through StickHandTable and pulls some ratings
@@ -14,7 +14,7 @@
 
 
 PuckcIsGoalie	;95 only. Z set (eq) when the puck carrier is a goalie (a minus puckc returns ne). Called from assdefo
-	;(checks95_01)
+	;(logic95)
 	movem.l	d0/a0,-(sp)
 	move.w	(puckc).w,d0
 	bmi.w	.x

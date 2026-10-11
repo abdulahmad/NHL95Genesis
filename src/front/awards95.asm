@@ -7,8 +7,8 @@
 ;	from the retail bytes. IDA hid printz / printz2 Strings and remap bytes as instructions.
 ;	$20xxxx addresses are save RAM (odd bytes).
 ;	Local labels are numbered; the IDA local names are not kept.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
-;	the cmp and exg encodings after assembly.
+;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
+;	cmp encoding after assembly.
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 

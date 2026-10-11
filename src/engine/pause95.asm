@@ -1,5 +1,5 @@
 ; $07E36C  Adapted from menu94.asm and hockey94.asm: Pausemode, the 95 pause menu and its items
-;	2 parts in ROM order, each under its banner below.
+;	3 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -143,7 +143,7 @@ DrawMenuScreen	;93 name. Call the draw routine, clear the menu box, print the it
 	movea.l	(menudraw).w,a0
 	jsr	(a0)
 	bsr.w	ClearMenuBox
-RedrawMenu	;95 only, no IDA label. Print the menu items and fade in. Called from the checks95_01 menu items after they clear the box
+RedrawMenu	;95 only, no IDA label. Print the menu items and fade in. Called from the menu items below (ManualGoalieMenu, SelectGoalieMenu, TimeoutMenu) after they clear the box
 	jsr	(printz2).l
 	String	$FE,4,$FC,$C
 	jsr	(SetMenuPrintX).l
@@ -1482,7 +1482,7 @@ TimeoutMenu	;stats94 TimeoutMenu. Pause menu TIMEOUT for team a2: drop the item 
 	jmp	(RedrawMenu).l
 
 PauseScores	;95 only. The two scores in big digits on the pause screen (PutScoreDigit): home at printz position
-	;$1E, 6, away at 6, 6; no tens digit under 10. Called from PauseScreenDraw (menu95)
+	;$1E, 6, away at 6, 6; no tens digit under 10. Called from PauseScreenDraw (pause95)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	$BE,$1E,6,0
@@ -1521,7 +1521,7 @@ PauseScores	;95 only. The two scores in big digits on the pause screen (PutScore
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PutScoreDigit	;95 only. The same code as PutClockDigit (video95_02): big digit d0 at printx / printy from
+PutScoreDigit	;95 only. The same code as PutClockDigit (middle95): big digit d0 at printx / printy from
 	;ClockDigitsBitmap (dobitmap, chars clockdigitchars), then printx + 2
 	movem.w	d0-d7,-(sp)
 	movea.l	#ClockDigitsBitmap,a0
@@ -1542,7 +1542,7 @@ PutScoreDigit	;95 only. The same code as PutClockDigit (video95_02): big digit d
 	rts
 
 SetMenuPadSide	;95 only. sflags bit 1 set when the team of pad menupadnum (padteams) is above 1, else cleared. Called from
-	;ManualGoalieMenu and PrintMenuItem (menu95)
+	;ManualGoalieMenu and PrintMenuItem (pause95)
 	movem.l	d0/a0-a1,-(sp)
 	movea.l	#padteams,a0
 	move.w	(menupadnum).w,d0

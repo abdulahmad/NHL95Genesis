@@ -1,5 +1,5 @@
 ; $00A204  Adapted from display94.asm, replay94.asm and setup94.asm: video setup, sort coordinates, pads, updateanim, default sprites
-;	2 parts in ROM order, each under its banner below.
+;	3 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 

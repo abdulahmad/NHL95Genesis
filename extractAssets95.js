@@ -10,7 +10,7 @@ if (!fs.existsSync(romPath)) {
 }
 // Slices: name, folder under Extracted, start, end (exclusive).
 const assets = [
-    // NHL 95 team palettes, src/teamdata95.asm .pad of each team block (block + $C): home then visitor, 32 bytes each, in ROM order.
+    // NHL 95 team palettes, src/tables/teamdata95.asm .pad of each team block (block + $C): home then visitor, 32 bytes each, in ROM order.
     // Every one differs from 94, so each is the 94 file stem (93 stem for MIN / LI / NY / TBY) with 95 added.
     { name: 'ASEh95.pal', folder: 'NHL95/Graphics/Pals', start: 0x000007EE, end: 0x0000080E }, // ASE home
     { name: 'ASEv95.pal', folder: 'NHL95/Graphics/Pals', start: 0x0000080E, end: 0x0000082E }, // ASE visitor
@@ -68,10 +68,10 @@ const assets = [
     { name: 'WPGv95.pal', folder: 'NHL95/Graphics/Pals', start: 0x000052BA, end: 0x000052DA }, // WPG visitor
     { name: 'WSHh95.pal', folder: 'NHL95/Graphics/Pals', start: 0x00005562, end: 0x00005582 }, // WSH home
     { name: 'WSHv95.pal', folder: 'NHL95/Graphics/Pals', start: 0x00005582, end: 0x000055A2 }, // WSH visitor
-    // NHL 95 revframetbl, src/frames95.asm after the SPA tables: one word per sprite frame (1057), the frame RestoreReplayFrame shows for a reverse angle replay.
+    // NHL 95 revframetbl, src/tables/frames95.asm after the SPA tables: one word per sprite frame (1057), the frame RestoreReplayFrame shows for a reverse angle replay.
     // 94 kept it at the end of graphics94 (NHL94/Graphics/revframetbl.bin, 880 words).
     { name: 'revframetbl.bin', folder: 'NHL95/Graphics', start: 0x00008596, end: 0x00008DD8 }, // revframetbl
-    // NHL 95 sound driver data, src/sound95_01.asm: the Z80 program ($BD86, $1B63 bytes loaded by SndLoadZ80, plus its last byte $FF),
+    // NHL 95 sound driver data, src/sound/sound95.asm: the Z80 program ($BD86, $1B63 bytes loaded by SndLoadZ80, plus its last byte $FF),
     // then the items of the sound bank at $D8EC (SoundBanks) in bank order, named by item type and id.
     { name: 'z80_snd_drv95.bin', folder: 'NHL95/Sound', start: 0x0000BD86, end: 0x0000D8EA }, // Z80Program
     { name: 'snd95_patch_00.bin', folder: 'NHL95/Sound/Bank', start: 0x0000DB22, end: 0x0000DB27 }, // patch 0
@@ -215,7 +215,7 @@ const assets = [
     { name: 'snd95_song_55.bin', folder: 'NHL95/Sound/Bank', start: 0x00067257, end: 0x00067680 }, // song 85
     { name: 'snd95_list_00.bin', folder: 'NHL95/Sound/Bank', start: 0x00067680, end: 0x00067699 }, // list 0
     { name: 'snd95_list_01.bin', folder: 'NHL95/Sound/Bank', start: 0x00067699, end: 0x000676D8 }, // list 1
-    // NHL 95 sound95_01: the 94 PCM samples and FM patches (same bytes as the 94 files, 94 address + $4D2BA).
+    // NHL 95 sound95: the 94 PCM samples and FM patches (same bytes as the 94 files, 94 address + $4D2BA).
     { name: 'sfx_shotbh_pcm.bin', folder: 'NHL95/Sound', start: 0x0006834E, end: 0x00068542 }, // 94 file, same bytes (94 $1B094)
     { name: 'sfx_pass_pcm.bin', folder: 'NHL95/Sound', start: 0x00068542, end: 0x0006926F }, // 94 file, same bytes (94 $1B288)
     { name: 'sfx_oooh_pcm.bin', folder: 'NHL95/Sound', start: 0x00069270, end: 0x0006C4B4 }, // 94 file, same bytes (94 $1BFB6)
@@ -229,10 +229,10 @@ const assets = [
     { name: 'sfx_shotfh_pcm.bin', folder: 'NHL95/Sound', start: 0x000786EA, end: 0x000792A2 }, // 94 file, same bytes (94 $2B430)
     { name: 'sfx_puckget_pcm.bin', folder: 'NHL95/Sound', start: 0x000792A2, end: 0x00079502 }, // 94 file, same bytes (94 $2BFE8)
     { name: 'fm_instrument_patches.bin', folder: 'NHL95/Sound', start: 0x00079502, end: 0x00079902 }, // 94 file, same bytes (94 $2C248)
-    { name: 'z80_snd_drv93.bin', folder: 'NHL95/Sound', start: 0x0007E0E1, end: 0x0007E358 }, // sound95_02: the 94 Z80 driver after its first byte, up to the ld bc of the FM patch bank address (93 / 94 file, same bytes; 94 $1AD91)
-    { name: 'z80_snd_drv93_end.bin', folder: 'NHL95/Sound', start: 0x0007E35D, end: 0x0007E36B }, // sound95_02: rest of the 94 Z80 driver (93 / 94 file, same bytes; 94 $1B00D)
-    // NHL 95 graphics95_01 ($A1A5A-$1A1699): the player pictures, the rink, the sprites, the fonts and screen maps, the team logos.
-    // One slice per asset the code references (its label in src/graphics95_01.asm), one per FeaturedPictures picture (PlayerCards).
+    { name: 'z80_snd_drv93.bin', folder: 'NHL95/Sound', start: 0x0007E0E1, end: 0x0007E358 }, // z80old95: the 94 Z80 driver after its first byte, up to the ld bc of the FM patch bank address (93 / 94 file, same bytes; 94 $1AD91)
+    { name: 'z80_snd_drv93_end.bin', folder: 'NHL95/Sound', start: 0x0007E35D, end: 0x0007E36B }, // z80old95: rest of the 94 Z80 driver (93 / 94 file, same bytes; 94 $1B00D)
+    // NHL 95 graphics95 ($A1A5A-$1A1699): the player pictures, the rink, the sprites, the fonts and screen maps, the team logos.
+    // One slice per asset the code references (its label in src/art/graphics95.asm), one per FeaturedPictures picture (PlayerCards).
     { name: 'NoPlayerPicture.map.jim', folder: 'NHL95/Graphics', start: 0x000A1A5A, end: 0x000A1E90 }, // NoPlayerPicture
     { name: 'NoPicSkater2.bin', folder: 'NHL95/Graphics', start: 0x000A1E90, end: 0x000A21FA }, // NoPicSkater2
     { name: 'NoPicSkater1.bin', folder: 'NHL95/Graphics', start: 0x000A21FA, end: 0x000A2564 }, // NoPicSkater1
@@ -516,7 +516,7 @@ const assets = [
     { name: 'logoWPG.map.jim', folder: 'NHL95/Graphics', start: 0x001A08B8, end: 0x001A0D2E }, // logoWPG
     { name: 'logoASE.map.jim', folder: 'NHL95/Graphics', start: 0x001A0D2E, end: 0x001A11E4 }, // logoASE
     { name: 'logoASW.map.jim', folder: 'NHL95/Graphics', start: 0x001A11E4, end: 0x001A169A }, // logoASW
-    // NHL 95 title95_02 TeamLogoPalettes ($1A169A): one 32 byte palette per team; 25 are the same bytes as the 94 files (94 names), DAL / ASE / ASW differ.
+    // NHL 95 logopals95 TeamLogoPalettes ($1A169A): one 32 byte palette per team; 25 are the same bytes as the 94 files (94 names), DAL / ASE / ASW differ.
     { name: 'MatchupPalANHA.pal', folder: 'NHL95/Graphics/Pals', start: 0x001A169A, end: 0x001A16BA }, // ANH TeamLogoPalettes, 94 file, same bytes
     { name: 'TeamLogoPalBOS.pal', folder: 'NHL95/Graphics/Pals', start: 0x001A16BA, end: 0x001A16DA }, // BOS TeamLogoPalettes, 94 file, same bytes
     { name: 'MatchupPalBUFA.pal', folder: 'NHL95/Graphics/Pals', start: 0x001A16DA, end: 0x001A16FA }, // BUF TeamLogoPalettes, 94 file, same bytes
@@ -545,7 +545,7 @@ const assets = [
     { name: 'MatchupPalWPGA.pal', folder: 'NHL95/Graphics/Pals', start: 0x001A19BA, end: 0x001A19DA }, // WPG TeamLogoPalettes, 94 file, same bytes
     { name: 'MatchupPalASEA95.pal', folder: 'NHL95/Graphics/Pals', start: 0x001A19DA, end: 0x001A19FA }, // ASE TeamLogoPalettes, differs from 94 MatchupPalASEA.pal
     { name: 'MatchupPalASWA95.pal', folder: 'NHL95/Graphics/Pals', start: 0x001A19FA, end: 0x001A1A1A }, // ASW TeamLogoPalettes, differs from 94 MatchupPalASWA.pal
-    // NHL 95 graphics95_02 ArenaGfxBank ($1A1A1A): the home team graphics, $30A bytes per team in bank order (TeamGfxList, fourway95).
+    // NHL 95 arena95 ArenaGfxBank ($1A1A1A): the home team graphics, $30A bytes per team in bank order (TeamGfxList, middle95).
     { name: 'ArenaGfxANH.bin', folder: 'NHL95/Graphics/ArenaGfx', start: 0x001A1A1A, end: 0x001A1D24 }, // ArenaGfxBank+$0, ANH
     { name: 'ArenaGfxBUF.bin', folder: 'NHL95/Graphics/ArenaGfx', start: 0x001A1D24, end: 0x001A202E }, // ArenaGfxBank+$30A, BUF
     { name: 'ArenaGfxCGY.bin', folder: 'NHL95/Graphics/ArenaGfx', start: 0x001A202E, end: 0x001A2338 }, // ArenaGfxBank+$614, CGY

@@ -13,7 +13,7 @@
 ;	PushNumber, PushNumberWidth, appendz, appstring, setup94 setupTeamBlocksMap / CopyTeamBlockMapData, video94 DoDMA_nd2, TeamLogoBitmaps,
 ;	hockey94 ResetClock / GetPeriodTime, penalty94 ClrHor, the 95 AssignPads, video94 waitx, penalty94 PrintScores1 / PrintTeamNameAndScore,
 ;	checks94 chkpk / chkpk2, video94 printbigz ... PutBigTile, data94 bfasciicon, title94 UnpackPicture, penalty94 RestoreTeamEnergy,
-;	checks94 WeightedRandomSelect, cards94 AppendTeamName ... TrimSpaces, then setup94 setupice. fourway95 (94 LoadHomeTeamGfx) follows at $7DEA0.
+;	checks94 WeightedRandomSelect, cards94 AppendTeamName ... TrimSpaces, then setup94 setupice. LoadHomeTeamGfx follows at $7DEA0.
 ;	written as instructions: the ControlCodeJumpTable code, GetDefenseStart, GetForwards, ProcessNibble ... getnameD7,
 ;	FormatPlayerNameLast ... FormatLastName, FormatLastNameAlt, PushNumberWidthZero, GetTeamLogo, DrawTeamLogo, ClrHor, AssignPads,
 ;	ReAddFramer, ReAddSmallFont, chkpk, printbigz2, printbig2, RestoreTeamEnergy, AppendTeamName ... TrimSpaces. IDA hid the printz Strings
@@ -2276,7 +2276,7 @@ setupice	;set all variables, send non purgeable graphics, build sprite frame lis
 
 
 LoadHomeTeamGfx	;(title94). Load the HomeTeam graphics of TeamGfxList to VRAM d4 - $18 (DoDMA_clearCallbackPointer). Called from setupice
-	;and ClrHor (video95_02)
+	;and ClrHor (middle95)
 	move.w	d0,-(sp)
 	subi.w	#$18,d4
 	movea.l	#TeamGfxList,a2
@@ -2297,7 +2297,7 @@ TeamGfxList	;(dc.b). LoadHomeTeamGfx: one address per team (TeamList order) in t
 	dc.l	ArenaGfxBank+$45E6,ArenaGfxBank+$48F0,ArenaGfxBank+$4F04,ArenaGfxBank+$4F04
 
 EASNLogo	;(penalty94). 93 name. Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertical ice rink if no power play. Called
-	;from PrintScores1 (video95_02)
+	;from PrintScores1 (middle95)
 	btst	#5,(sflags2).w	;sf2pwrplay
 	bne.w	.x
 	bsr.w	printz
@@ -2315,7 +2315,7 @@ EASNLogo	;(penalty94). 93 name. Draw the EASN logo map at x 2, y $19 (94: x 1) o
 .x
 	rts
 
-setupEASNmap	;(penalty94 EASNLogo+$14). Load the EASN logo tiles at EASNcset. Called from setupice and ClrHor (video95_02)
+setupEASNmap	;(penalty94 EASNLogo+$14). Load the EASN logo tiles at EASNcset. Called from setupice and ClrHor (middle95)
 	move.w	(EASNcset).w,d4
 	movea.l	#EASNmap+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l

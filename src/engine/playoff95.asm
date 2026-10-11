@@ -6,18 +6,18 @@
 ;------------------------------------------------------------------------------------------------------------------------
 ; $087BA2  From setup94.asm: PlayoffScreen
 ;	94 setup94 PlayoffScreen, HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, FormatScore,
-;	DrawPlayoffBracket, DrawTeamBlocks, PlayoffScreenDataTable and PlayoffScreenText. checks95_03 follows at $088046 (PlayoffTreeSetup).
+;	DrawPlayoffBracket, DrawTeamBlocks, PlayoffScreenDataTable and PlayoffScreenText. PlayoffTreeSetup follows at $088046.
 ;	IDA code except PlayoffScreenDataTable (dc.b, read from the retail bytes). IDA hid the printz / printz2 Strings and the
 ;	DecompressGraphicsWithCallback remap bytes as instructions; they are String / dc.b here. Local labels are numbered; the IDA local
 ;	names are not kept.
 ;	95 changes: PlayoffScreen returns at once in Shootout (gmode2 bit 0) and also runs for sflags11 bit 2; the shared rts is
-;	rtsLineData (optsetup95, 94 rtss2). AddTeamBlock and AddSmallFont are inline, the title uses printbig with the BigFontMap2
+;	rtsLineData (setup95, 94 rtss2). AddTeamBlock and AddSmallFont are inline, the title uses printbig with the BigFontMap2
 ;	tiles, HandlePlayoffInput reads all four pads, the song is 3 (94 $79), the map chars start at $69A (94 $30A).
 
 
 
 PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; OptPlayMode nonzero or sflags11 bit 2).
-	;Called from GameOver and Opening2 (setup95_01). Runs its own vblank (PlayoffScreenDataTable) and scrolls the tree a page ($70
+	;Called from Opening2 (hockey95) and PlayoffTreeScreen (awards95). Runs its own vblank (PlayoffScreenDataTable) and scrolls the tree a page ($70
 	;pixels) at a time. Returns when start is pressed (PlayoffScreenExit)
 	btst	#0,(gmode2).w
 	bne.s	rtsLineData
@@ -332,7 +332,7 @@ PlayoffScreenText	;93 name. Round titles by gamelevel, printbig Strings with the
 
 
 PlayoffTreeSetup	;(data94). 93 name. Playoff tree layout by gamelevel, the same bytes as 94. Used by PlayoffScreen
-	;(setup95_02). Per level: teams-1 then x,y per team (DrawTeamBlocks), arrows-1 then x,d0 per arrow (DrawPlayoffBracket), scores-1
+	;(playoff95). Per level: teams-1 then x,y per team (DrawTeamBlocks), arrows-1 then x,d0 per arrow (DrawPlayoffBracket), scores-1
 	;then x,y per score (FormatScore, negative: none)
 	dc.w	.l0-PlayoffTreeSetup
 	dc.w	.l1-PlayoffTreeSetup

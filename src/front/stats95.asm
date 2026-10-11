@@ -7,7 +7,7 @@
 ; $0920DE  From period94.asm: the game statistics screen
 ;	Mapped to period94 (87%): GameStatisticsScreen, its scroll step, SetStatScroll, StatScrollRow / StatScrollRowEnd,
 ;	PrintStatScrollArrows, DisplayTeamStatsScreen, FormatStatValue, TeamStatTextTbl and TeamStatTextTblNoPen. The rest of
-;	period94 is in other 95 files; rtsStatTables, the rts after the tables, starts stats95_01 at $0925AE.
+;	period94 is in other 95 files; rtsStatTables, the rts after the tables, starts stats95 at $0925AE.
 ;	The segment map started this file at $0920BE, but $0920BE-$0920DD is the end of season95's SimTieTbl
 ;	(26 teams x 3 bytes); GameStatisticsScreen (no IDA label) starts at $0920DE.
 ;	IDA read the screen head, the arrows and the Strings in DisplayTeamStatsScreen / FormatStatValue as code or dc.b; they are
@@ -333,8 +333,6 @@ TeamStatTextTblNoPen	;period94 TeamStatTextTblNoPen. The rows without the power 
 ;	the 94 routines from the 94 source. IDA hid printz Strings; they are String here.
 ;	Local labels are numbered; the IDA local names are not kept.
 
-
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
 rtsStatTables	;rts (period94 rtsStatTables)
 	rts

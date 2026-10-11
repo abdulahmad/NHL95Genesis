@@ -1,11 +1,11 @@
-;	NHL 95 title95_01. Retail $0A12AA-$0A1A59 (1968 bytes).
+;	NHL 95 title95. Retail $0A12AA-$0A1A59 (1968 bytes).
 ;	Mapped to title94 (53%): newTitleScreen, CreditsPrintRow, CreditsWait, TitleVBlank, CreditsLineScroll, CreditsScrollStep, HiScoreScreen;
 ;	95 only: the Stanley Cup screen (StanleyCupScreen ... AddSpriteFrame).
 ;	IDA left TitleVBlank, CreditsScrollStep and CupVBlank as dc.b and hid the printz Strings and remap bytes; they are written from the retail
 ;	bytes.
 ;	Local labels are numbered; the IDA local names are not kept.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
-;	the cmp and exg encodings after assembly.
+;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
+;	cmp encoding after assembly.
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 

@@ -1,11 +1,11 @@
-;	NHL 95 input95_01. Retail $083EB2-$084FE5 (4404 bytes).
+;	NHL 95 input95. Retail $083EB2-$084FE5 (4404 bytes).
 ;	94 input94 doinput (95: its start is doinput; the mapped start doinput .0 is inside it), doinput_islocked, rtss7, faceoffinput,
 ;	setpassmode, passmode, dopass, passtoa0, then onetimer94 OneTimerTarget and its tables and OneTimerPass (moved in), input94
 ;	Findhittype, SetShotMode, ShotMode, prepshot, doshot, shotsets, shotdiradj, shotdirmath, onetimer94 puckvzadj and checks94
-;	compshoot (moved in). optsetup95 follows at $084FE6.
-;	The 94 doinput parts doinput_cbut ... doinput_ispc, getGoalieSCnum are in checks95_04; the goalie dive (doinput .33) is
-;	doinput_goaliedive (checks95_04); burst, Acheck, changeplayer (95 chgplayer), setc1player ... are in setup95_01; SetLCmode, lineinput
-;	in input95_02.
+;	compshoot (moved in). setup95 follows at $084FE6.
+;	The 94 doinput parts doinput_cbut ... doinput_ispc, getGoalieSCnum are in skate95; the goalie dive (doinput .33) is
+;	doinput_goaliedive (skate95); burst, Acheck, changeplayer (95 chgplayer), setc1player ... are in control95; SetLCmode, lineinput
+;	in lines95.
 ;	IDA code except puckvzadj and compshoot (dc.b, read from the retail bytes) and the dead / data bytes noted below. Local labels are
 ;	numbered; the IDA local names are not kept.
 ;	95 changes: four pads (doinput_islocked marks the player of pad c1 ... c4playernum), the 95 asstab numbers and SPA values, the y
@@ -1309,7 +1309,7 @@ puckvzadj	;onetimer94 puckvzadj (moved in; IDA name). Set puckvz for a top shelf
 	rts
 
 compshoot	;checks94 compshoot (moved in). Computer player shoots: drop the caller's return, temp2 from the
-	;distance to the goal line, then assshoot. Jumped to from asspuckc, chk4shot (checks95_01) and checks95_04
+	;distance to the goal line, then assshoot. Jumped to from asspuckc, chk4shot (logic95) and AutoLineChange (lines95)
 	addq.w	#4,sp
 	move.w	(pucky).w,d0
 	btst	#7,pflags(a3)

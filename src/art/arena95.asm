@@ -1,6 +1,6 @@
-;	NHL 95 graphics95_02. Retail $1A1A1A-$1A6C27 (21006 bytes).
+;	NHL 95 arena95. Retail $1A1A1A-$1A6C27 (21006 bytes).
 ;	ArenaGfxBank (94 graphics94 ArenaGfxBank): the home team graphics LoadHomeTeamGfx loads, $30A bytes per team, read through
-;	TeamGfxList (fourway95, TeamList order; ASE and ASW share one). One incbin per team in bank order (extractAssets95.js).
+;	TeamGfxList (middle95, TeamList order; ASE and ASW share one). One incbin per team in bank order (extractAssets95.js).
 
 ArenaGfxBank	;retail $1A1A1A-$1A6C27. LoadHomeTeamGfx: one block of $30A bytes per team (TeamGfxList)
 	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxANH.bin	;$1A1A1A, ANH (ArenaGfxBank+$0)

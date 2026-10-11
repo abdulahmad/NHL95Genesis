@@ -1,5 +1,5 @@
 ; $09DA50  Adapted from shootout94.asm, title94.asm and checks94.asm: the shootout and the penalty shot
-;	2 parts in ROM order, each under its banner below.
+;	3 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -772,10 +772,7 @@ PrintShooterNames	;shootout94 PrintShooterNames. Shootout shooters: the shooters
 ;	IDA left puckshootout ... UpdatePenaltyShotEnd ($09E5F0-$09ECE5) and SetupPenaltyShot as dc.b; they are transcribed from the retail
 ;	bytes. IDA hid the printz / printbigz / appendz Strings as instructions.
 ;	Local labels are numbered; the IDA local names are not kept.
-;	the cmp and exg encodings after assembly.
 
-
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
 puckshootout	;checks94 puckshootout. Start a penalty shot or shootout attempt: the pads cleared, the shooter (NextShooter) or the path
 	;(StartShootoutPath), the song, the goalies back, SelectPenaltyShotSkater; the puck assignment $20 (3 with no skater)

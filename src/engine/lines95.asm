@@ -1,12 +1,12 @@
 ; $08A056  Adapted from input94.asm and checks94.asm: line changes, computer lines, saved lines, team line screens
 ;	2 parts in ROM order, each under its banner below.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
+;	the cmp and exg encodings after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $08A056  From input94.asm: line changes
 ;	94 input94 SetLCmode, SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2, with penalty94 linebar,
-;	getlinee and AvgCline moved in. checks95_04 follows at $08A3FE (CompLine).
+;	getlinee and AvgCline moved in. CompLine follows at $08A3FE.
 ;	IDA code except AvgCline (dc.b, read from the retail bytes). IDA hid a printz String as instructions; it is String here. Local labels
 ;	are numbered; the IDA local names are not kept.
 ;	95 changes: the team struct offsets, the zero long at $69A (94 $30A).
@@ -295,12 +295,10 @@ AvgCline	;(penalty94) 93 name. Return d0 = average energy of the current line on
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $08A3FE  From checks94.asm: computer line changes, saved lines, team screens
-;	Three runs in ROM order: checks94 CompLine ... goalieacc with the 95 saved line and team screen code ($8A3FE), the input94
-;	doinput_cbut ... getGoalieSCnum ($8B734), checks94 dirtab ... the 95 controller setup screen ($8B9A8). Each routine comment names
-;	its 94 file or says 95 only.
-;	checks94 CompLine, AutoLineChange and goalieacc, the input94 goalie dive, with moved in: penalty94 SetupTeamForIntermission, chkatop
-;	and ChkShotStat, attract94 EASportsScreen, period94 updatePPTeamTime; and 95 only code: the saved line set routines
-;	(DefaultLineData, LoadTeamLines, CheckTeamLines ...) and six DrawTeamScreen variants.
+;	checks94 CompLine and AutoLineChange, with moved in: penalty94 SetupTeamForIntermission, chkatop and ChkShotStat, attract94
+;	EASportsScreen, period94 updatePPTeamTime; and 95 only code: the saved line set routines (DefaultLineData, LoadTeamLines,
+;	CheckTeamLines ...) and six DrawTeamScreen variants. Each routine comment names its 94 file or says 95 only. skate95 follows at
+;	$08B4E0 (goalieacc).
 ;	IDA left CompLine, AutoLineChange, ReadTeamSRAM, FixSavedLines, the LineSlotFixTbl handlers and the DrawTeamScreen variants as dc.b
 ;	or as wrong code; they are read from the retail bytes. IDA hid printz Strings and DecompressGraphicsWithCallback remap bytes as
 ;	instructions; they are String / dc.b here. Local labels are numbered; the IDA local names are not kept.
@@ -479,7 +477,7 @@ DefaultLineData	;95 only. Copy the default line sets of the 28 teams (TeamList +
 	rts
 
 LoadTeamLines	;95 only. The line sets of team struct a2 ($16C): from save RAM (SRLines + team * $41) when there is save RAM and
-	;line changes are on, else from the team data. Jumped to from setup95_01
+	;line changes are on, else from the team data. Jumped to from InitTeamSructure (control95)
 	tst.w	(OptLine).w
 	beq.w	.3
 	tst.w	(ValidSRAM).w
@@ -1045,7 +1043,7 @@ ChkShotStat	;(penalty94) Determine if a shot was taken and add it to the stats (
 .10
 	rts
 
-DrawTeamScreen2	;95 only. A DrawTeamScreen (optsetup95) for the season / stats screens: screenarg is the background bitmap; the
+DrawTeamScreen2	;95 only. A DrawTeamScreen (setup95) for the season / stats screens: screenarg is the background bitmap; the
 	;team block tiles (setupTeamBlocksMap), RosterFont at smallfontchars ... smallfont4chars with four remaps, BigFontMap2. d0 / d1 =
 	;first row / row count of the bitmap
 	movem.l	d0-d1/a2,-(sp)

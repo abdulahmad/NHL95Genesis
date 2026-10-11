@@ -1,14 +1,12 @@
 ; $07DFAC  Adapted from fourway94.asm: four-player adaptor
-;	title94 LoadHomeTeamGfx and TeamGfxList, penalty94 EASNLogo and setupEASNmap,
-;	video94 FormatAndPrintTime and PeriodLabelTable, the 95 AnyPadAssigned, then fourway94 Detect4WayPlay and the unused Read4WayPad1-4,
-;	which 95 reads through its own Read4WayPort1 / Read4WayPort2 (the 94 Set4WayPlayerStub / Set4WayPlayer are gone). sound95_02 (the 94
-;	Z80 program) follows at $7E0E0.
-;	written as instructions: TeamGfxList, FormatAndPrintTime, PeriodLabelTable, Read4WayPad1 ... ReadJoyJmp ($7E02E-$7E0DF).
-;	IDA hid the printz String in EASNLogo as instructions.
+;	The 95 AnyPadAssigned, then fourway94 Detect4WayPlay and the unused Read4WayPad1-4, which 95 reads through its own
+;	Read4WayPort1 / Read4WayPort2 (the 94 Set4WayPlayerStub / Set4WayPlayer are gone). z80old95 (the 94 Z80 program) follows at
+;	$7E0E0.
+;	written as instructions: Read4WayPad1 ... ReadJoyJmp ($7E02E-$7E0DF).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-AnyPadAssigned	;95 only. Z clear when any pad is on a team (cont1team ... cont4team). Called from menu95
+AnyPadAssigned	;95 only. Z clear when any pad is on a team (cont1team ... cont4team). Called from pause95
 	movem.w	d0,-(sp)
 	move.w	(cont1team).w,d0
 	or.w	(cont2team).w,d0
@@ -87,5 +85,5 @@ Read4WayPort2	;No xref. 95 only. The same for port 2, against pad4wayword2
 	eor.w	d1,d2
 	and.w	d2,d1
 	rts
-ReadJoyJmp	;95 only. jmp ReadJoy (video95_01)
+ReadJoyJmp	;95 only. jmp ReadJoy (video95)
 	jmp	(ReadJoy).l

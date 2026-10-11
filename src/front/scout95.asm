@@ -10,7 +10,6 @@
 ;	the retail bytes.
 ;	$20xxxx addresses are save RAM (odd bytes).
 ;	Local labels are numbered; the IDA local names are not kept.
-;	the cmp and exg encodings after assembly.
 
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
@@ -397,7 +396,7 @@ DrawMatchupBitmap	;scout94 DrawMatchupBitmap. 6 x 6 dobitmap, then erase the nam
 	jsr	(eraser).l
 	rts
 
-GetMatchupLogo	;scout94 GetTeamLogo (video95_02 has the hockey94 GetTeamLogo). a0 = the logo bitmap of team d3 (TeamLogoBitmaps)
+GetMatchupLogo	;scout94 GetTeamLogo (middle95 has the hockey94 GetTeamLogo). a0 = the logo bitmap of team d3 (TeamLogoBitmaps)
 	asl.w	#2,d3
 	movea.l	#TeamLogoBitmaps,a0
 	movea.l	(a0,d3.w),a0
@@ -725,10 +724,7 @@ SortHotColdStarters	;crowd94 SortHotColdStarters. Sum the hot / cold values of t
 ;	IDA left CompareHotColdTotals / GetHotColdTotal and ScoutTextScript as dc.b and hid printz Strings; they are written from the retail bytes.
 ;	$20xxxx addresses are save RAM (odd bytes).
 ;	Local labels are numbered; the IDA local names are not kept.
-;	the cmp and exg encodings after assembly.
 
-
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
 StartScoutText	;setup94 StartScoutText. Start the text player ScoutTextPlayer: VertLineScrolling = -1, PlayerScrollCtr = -1, clear SelectedPlayerIdx / typedelay; a0 = TestList (the script line list)
 	move.w	#$FFFF,(VertLineScrolling).w

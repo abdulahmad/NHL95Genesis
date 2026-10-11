@@ -3,7 +3,7 @@
 ;	play until a day, standings, team schedule calendar, games today, stats and playoff screens), the simulation of the computer
 ;	games (SimDayGames, SimScore, SimGameStats and the goal weight tables at the end) and the save RAM records. Moved in at the
 ;	head: hockey94 demoread / HandleJoy1, and RandomSetupTeams (95 only; optsetup94 SetupDemo picks random teams). Each routine
-;	comment names its 94 file or says 95 only. period95 follows at $0920DE.
+;	comment names its 94 file or says 95 only. stats95 follows at $0920DE.
 ;	IDA left DayToDate / DateToDay, the season menu actions and the calendar screen as dc.b; they and the tables are read from the
 ;	retail bytes. IDA hid printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions; they
 ;	are String / dc.b here. The four goal weight tables at the end IDA read as code.

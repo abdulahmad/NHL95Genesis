@@ -158,7 +158,7 @@ goalieacc	;(checks94) Goalie movement: a pad goalie near his crease faces the pu
 	rts	;unused
 
 doinput_goaliedive	;(input94 doinput .33) The goalie dive on button A (bit 6): face TempWord1, nopuck 8, the dive SPA $1D4E, crowd
-	;+$96. Jumped to from doinput (input95_01)
+	;+$96. Jumped to from doinput (input95)
 	btst	#6,d1
 	beq.w	doinput_cbut
 	move.w	(TempWord1).w,d0
@@ -178,7 +178,7 @@ rtss15	;94 name. The rts of doinput_goaliedive
 ;------------------------------------------------------------------------------------------------------------------------
 ; $08B734  From input94.asm: doinput_cbut, ClampTargetY, doinput_chkanim, getGoalieSCnum
 ;	94 input94 doinput_cbut, ClampTargetY (with the 10 SPA offsets after it), doinput_chkanim and getGoalieSCnum (95 getGoalieSCnum).
-;	doinput_onetimer / doinput_ispc are not in 95 here; doinput_islocked is in input95_01. IDA code.
+;	doinput_onetimer / doinput_ispc are not in 95 here; doinput_islocked is in input95. IDA code.
 ;	95 changes: the y limits $106 / $FEFA, the goalie box in doinput_chkanim, the 95 SPA values.
 
 

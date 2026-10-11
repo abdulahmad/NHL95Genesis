@@ -1,7 +1,7 @@
 ; $079902  Adapted from video94.asm and display94.asm: VDP helpers, DMA, palettes, sprite frames, rink scroll, decompressor, vblank, pads
-;	2 parts in ROM order, each under its banner below.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	4 parts in ROM order, each under its banner below.
+;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
+;	the cmp and exg encodings after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $079902  From video94.asm and display94.asm: VDP helpers, DMA, palettes, sprite frames, rink scroll, decompressor, vblank, pads
@@ -17,7 +17,7 @@
 ; d0 = bytes to fill
 ; d1 = vram address
 ; d2 = data to fill with
-DoFill	;Called from menu95, video95_02. 95 writes the long straight to the vdp (94 went through dmaram)
+DoFill	;Called from pause95, middle95. 95 writes the long straight to the vdp (94 went through dmaram)
 	movem.l	d3/a1,-(sp)
 	movea.l	#VDP_DATA,a1
 	andi.l	#$FFFF,d1
@@ -47,7 +47,7 @@ setvram	;Fade every colour to d0, then fall into setVram_0
 	move.w	#$18,(palcount).w
 	bsr.w	forcefade
 setVram_0	;93 name: second half of 92 setVram (no fade): clear vram and set the VDP registers from disflags, Map1col,
-	;VmMap1-3, VSPRITES and VSCRLPM. Falls in from setvram, called from checks95_04, menu95, title95_01
+	;VmMap1-3, VSPRITES and VSCRLPM. Falls in from setvram, called from EASportsScreen (lines95), pause95, title95
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
 	move.w	#$8F02,(VDP_CTRL).l
@@ -274,7 +274,7 @@ cramfade	;No xref in the listing
 	rts
 
 CopyPaletteToCRAM	;93 name. Copy all 64 palfadenew colours to colour ram (dfng set), then palcount = -1. Called from
-	;cramfade and checks95_04. 95 writes cram straight (94 waited for the dma and the Z80 bus)
+	;cramfade and EASportsScreen (lines95). 95 writes cram straight (94 waited for the dma and the Z80 bus)
 	movem.l	d0/a0-a1,-(sp)
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -345,7 +345,7 @@ DumpSprites2	;93 name (display94). Transfer sprite table, then the dma list. Fal
 	move.w	(Sattsize).w,d0	;93 Sattsize: words
 	move.w	(VSPRITES).w,d1
 	bsr.w	DoDMA
-DoDMAlist	;(display94). Transfer data from dmalist. Also called from video95_02
+DoDMAlist	;(display94). Transfer data from dmalist. Also called from middle95
 	movea.l	(DMAlistend).w,a6
 	cmpa.l	#DMAList,a6
 	beq.w	rtss2	;list empty
@@ -356,8 +356,8 @@ DoDMAlist	;(display94). Transfer data from dmalist. Also called from video95_02
 	bsr.w	DoDMA
 	cmpa.l	#DMAList,a6
 	bne.s	.0
-rtss2	;Shared rts (93 rtss; 94 kept it in collide94), branched to from cramfade, collide95_01, updatescroll (below), setup95_02,
-	;video95_02, and movea.l #x in optsetup95
+rtss2	;Shared rts (93 rtss; 94 kept it in collide94), branched to from cramfade, collide95, updatescroll (below), playoff95,
+	;middle95, and movea.l #x in setup95
 	rts
 
 SetScroll2	;93 name (display94); 93 IDA DoScroller. Write Hscroll / Vscroll to the vdp. Called from DumpSprites, checks95
@@ -905,7 +905,7 @@ FlushOutputBuffer	;93 name. Write the full ring buffer to vram
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
 
-AddSmallFont	;93 name. Jumped to from ReAddSmallFont (video95_02). 95 loads the map at the address in smallfontptr (94: SmallFontMap)
+AddSmallFont	;93 name. Jumped to from ReAddSmallFont (middle95). 95 loads the map at the address in smallfontptr (94: SmallFontMap)
 	move.w	d4,(smallfontchars).w
 	movea.l	(smallfontptr).w,a2
 	addq.w	#8,a2
@@ -962,7 +962,7 @@ Framer	;Draw a d0 x d1 frame at printx / printy from the framer map. 95 takes th
 	move.w	d3,(a0)
 	rts
 
-AddFramer	;93 name. Jumped to from ReAddFramer (video95_02). Load the framer tiles at char d4 through DecompressGraphicsWithCallback with the remap table
+AddFramer	;93 name. Jumped to from ReAddFramer (middle95). Load the framer tiles at char d4 through DecompressGraphicsWithCallback with the remap table
 	;after the jsr (colour 7 to 1); 95 also stores the map address in framermapptr
 	movea.l	#Framermap+8,a2
 	move.w	d4,(framercset).w

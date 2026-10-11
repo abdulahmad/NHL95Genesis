@@ -1,4 +1,4 @@
-;	NHL 95 graphics95_01. Retail $0A1A5A-$1A1699 (1047616 bytes).
+;	NHL 95 graphics95. Retail $0A1A5A-$1A1699 (1047616 bytes).
 ;	graphics94 data: the player pictures (FeaturedPicIdx / FeaturedPictures), the rink, the sprites, the fonts and the screen maps and
 ;	bitmaps, up to the team logos. incbin only (plus the two FeaturedPictures tables), no gap and no overlap. Each file is a slice of
 ;	lst/nhl95.bin written by npm run extractassets (extractAssets95.js) into Extracted\NHL95\Graphics. One slice per asset referenced by

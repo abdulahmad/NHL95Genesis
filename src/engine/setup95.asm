@@ -1,9 +1,9 @@
-;	NHL 95 optsetup95. Retail $084FE6-$087BA1 (11196 bytes).
+;	NHL 95 setup95. Retail $084FE6-$087BA1 (11196 bytes).
 ;	Mapped to data94 (34%), but most of the row is other 94 files moved together: stats94 TeamRosterScreen, DisplayPlayerList,
 ;	getNameandAttrib and its column handlers, DrawTeamScreen; data94 PAttribColumns / GAttribColumns, PlayerPositionText; the 95 game
 ;	setup screen (optsetup94 GameSetUp ... setoptions, attract94 DrawTeamBitmap, SetPojoyMode, rewritten for the 13 95 play modes,
 ;	the season and the player cards); data94 DefaultMenus, FigureJoy and the playoff routines InitializeGameStructures ... MakeTree;
-;	title94 ReadLineData / WriteLineData. setup95_02 follows at $087BA2.
+;	title94 ReadLineData / WriteLineData. playoff95 follows at $087BA2.
 ;	IDA hid code as dc.b at $84FE6-$8546D (TeamRosterScreen ... PrintPlayerLines), $8547A-$8581D (getNameandAttrib ...
 ;	LoadRosterFont), $861CE and $87468-$874A5 (InitializeGameStructures, OptionRNG); these are read from the retail bytes. IDA also
 ;	hid the printz / printz2 Strings and the DecompressGraphicsWithCallback remap bytes as instructions. Local labels are numbered;
@@ -17,7 +17,7 @@
 
 TeamRosterScreen	;93 name (94 stats94). "Team Roster" screen for team a2: DrawTeamScreen, then the player list (DisplayPlayerList)
 	;with page (SelectedPlayerIdx: goalies, offense, defense; C), column (DispAttribCtr: left / right) and row scroll (rosterscroll: up / down).
-	;B goes to the other team; start exits (ExitAttributeScreen2). 95 rewrote the 94 scrolling screen. Called from the menu95 item lists
+	;B goes to the other team; start exits (ExitAttributeScreen2). 95 rewrote the 94 scrolling screen. Called from the pause95 item lists
 	moveq	#0,d0
 	moveq	#$1C,d1
 	jsr	(DrawTeamScreen).l
@@ -313,7 +313,7 @@ PlayerStatMenuTxt	;93 name. Roster page titles (SkipStrings by SelectedPlayerIdx
 	String	'    Offense     '
 	String	'    Defense     '
 
-ExitAttributeScreen2	;94 stats94 name. TeamRosterScreen start: forceblack and back to the menu (DrawMenuScreen, menu95)
+ExitAttributeScreen2	;94 stats94 name. TeamRosterScreen start: forceblack and back to the menu (DrawMenuScreen, pause95)
 	jsr	(forceblack).l
 	jmp	DrawMenuScreen
 
@@ -574,7 +574,7 @@ PAttribColumns	;(93 PAttribColumns). Skater attribute columns for DisplayPlayerL
 	String	'     Status    ]'
 	dc.w	$0000,$0	;status
 
-PAttribOverall	;The Overall entry; PAttribOverallMask is read by video95_02
+PAttribOverall	;The Overall entry; PAttribOverallMask is read by middle95
 	String	'[   Overall    ]'
 
 PAttribOverallMask
@@ -613,7 +613,7 @@ GAttribColumns	;(93 GAttribColumns). Goalie attribute columns, same format as PA
 	String	'     Status    ]'
 	dc.w	$0000,$0	;status
 
-GAttribOverall	;The Overall entry; GAttribOverallMask is read by video95_02
+GAttribOverall	;The Overall entry; GAttribOverallMask is read by middle95
 	String	'[   Overall    ]'
 
 GAttribOverallMask
@@ -2000,7 +2000,7 @@ DrawVisBlock	;94 only (rewritten). Erase the left logo (setupcardflags bit 2 was
 	move.w	#1,(printx).w
 
 DrawSetupLogo	;94 optsetup94 DrawTeamLogo. Draw the logo of team logoteam (TeamLogoBitmaps) at printx, 6 x 6, palette TeamLogoPalettes
-	;+ team * $20 - $20 (bit 2: home) or - $40. Branched to from DrawHomeBlock; the name DrawTeamLogo is video95_02's
+	;+ team * $20 - $20 (bit 2: home) or - $40. Branched to from DrawHomeBlock; the name DrawTeamLogo is middle95's
 	move.w	#1,(printy).w
 	move.w	(homepicchars).w,d4
 	btst	#2,(setupcardflags).w
@@ -2861,5 +2861,5 @@ WriteLineData	;(title94) Write databuffer back to save RAM SRLineData (WriteSRAM
 	move.w	#$FFFF,(lastsfx).w
 	move.l	#M68K_RAM,(recbpr).w
 	movem.l	(sp)+,d0-d1/a0
-rtsLineData	;The shared rts; PlayoffScreen (setup95_02) branches to it
+rtsLineData	;The shared rts; PlayoffScreen (playoff95) branches to it
 	rts

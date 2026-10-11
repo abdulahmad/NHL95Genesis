@@ -208,7 +208,7 @@ ReadSRAM	;move into a0 location and increment: copy d1 save RAM bytes from byte 
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	Season leader lists. New in 95 (IDA dc.b, no xref). The Individual Leaders screen (stats95_01) runs one of these through a5
+;	Season leader lists. New in 95 (IDA dc.b, no xref). The Individual Leaders screen (stats95) runs one of these through a5
 ;	(movea.l #x,a5 at $949EC-$94A46). Save RAM stats are words (2 save RAM bytes, the odd bytes of 2 words) at byte d0 + 2 * player.
 ;	In: d0 = first save RAM byte of the stat, d1 = 2 * players ($548: 26 teams of 26), a0 = value list, a3 = player number list,
 ;	a2 = count word. Out: one value / player number pair per listed player, (a2) = the number listed

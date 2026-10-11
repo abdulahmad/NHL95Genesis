@@ -8,10 +8,9 @@
 ;	Mapped to cards94 (81%): NameEntryScreen, NameLetterGrid, NameEntryHelp, PrintNamePrompt, SyncLetterCursor, FindLetter,
 ;	PrintNameCursor, PrintCurLetter, LetterGridPos, EnterNameTxt / SelectNameTxt, PrintNameLog, MoveLogArrows, PrintLogArrows,
 ;	GetNameLength, PrintNameField, LetterGrid, GetLogName, StoreUserName and WriteNameRecord (the user records name entry).
-;	The segment map ended this file at $09B72F, inside records94 UserNameEntry ($09B6F4); records95 starts at $09B6F4.
+;	The old segment map ended this part at $09B72F, inside records94 UserNameEntry ($09B6F4); UserNameEntry starts at $09B6F4.
 ;	IDA hid printz / printz2 / printbigz Strings as instructions; they are written from the retail bytes.
 ;	Local labels are numbered; the IDA local names are not kept.
-;	the cmp and exg encodings after assembly.
 
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
@@ -728,10 +727,7 @@ WriteNameRecord	;Clear name slot namelogsel from every saved record (read ReadSR
 ;	The segment map started this file at $09B730 (inside UserNameEntry); the confirmed start is $09B6F4.
 ;	IDA left $09B8D6-$09C019 as dc.b; it is transcribed from the retail bytes. IDA hid printz / printz2 / printbigz Strings as instructions.
 ;	Local labels are numbered; the IDA local names are not kept.
-;	the cmp encoding after assembly.
 
-
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
 UserNameEntry	;With user records on (OptUserRec 0): the name entry (NameEntryScreen) for each pad in use (records94 UserNameEntry),
 	;then sflags11 bit 7 when no team has more than one pad
@@ -1331,10 +1327,7 @@ ClearWinRecords	;title94 ClearWinRecords. Clear bytes 8-$B (wins, games) of the 
 ;	CountPlayers; SetupScreen (stats94, 93 name) follows them in 95.
 ;	IDA left SetupScreen ($09C5B8) as dc.b; it is transcribed from the retail bytes. IDA hid its printz Strings and remap bytes.
 ;	Local labels are numbered; the IDA local names are not kept.
-;	the cmp encoding after assembly.
 
-
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
 UpdateRecords	;cards94 UpdateRecords. With save RAM (ValidSRAM) and user records on (OptUserRec 0), update the player records
 	;(UpdatePlayerRecords), with sflags11 bit 7 the crowd records of both teams (UpdateCrowdRecord), then the team record of each pad
