@@ -218,7 +218,7 @@ forcepldata	;no skating on/off: force players to correct data (for faceoffs only
 
 GetPlayerCount	;stats94 GetPlayerCount (moved in). d0 = players on team a2. 95: by team number ($28 of the team struct, GetPlayerCountD7)
 	movem.l	d7-a0,-(sp)
-	move.w	$28(a2),d7
+	move.w	Xvel(a2),d7
 	bsr.w	GetPlayerCountD7
 	movem.l	(sp)+,d7-a0
 	rts
@@ -397,15 +397,15 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	add.b	(ThirdPBonus).w,d3
 	bsr.w	ClampNibble
 	bsr.w	BoostAttribute
-	move.b	d3,$75(a3)	;move Chk into player struct
+	move.b	d3,checking(a3)	;move Chk into player struct
 	bclr	#3,4(a3)
 	move.b	4(a0),handed(a3)	;move Chk/Hnd byte to Hnd in player struct
 	andi.b	#1,handed(a3)
 	beq.w	.10
 	bset	#3,4(a3)
 .10
-	move.b	4(a0),$74(a3)	;moves Chk/Hnd byte into Fgt byte in player struct
-	andi.b	#$E,$74(a3)	;mask the byte with E, ignoring the Hnd bit - will always be even
+	move.b	4(a0),fighting(a3)	;moves Chk/Hnd byte into Fgt byte in player struct
+	andi.b	#$E,fighting(a3)	;mask the byte with E, ignoring the Hnd bit - will always be even
 	move.b	5(a0),d3	;move Stk/ShA byte into d3
 	lsr.b	#4,d3
 	movem.l	d0/a0,-(sp)
@@ -453,13 +453,13 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	bsr.w	BoostAttribute
 	bsr.w	ClampNibble
 	move.b	d3,passacc(a3)	;Pas gets PP and Tm bonus
-	move.b	7(a0),$73(a3)	;moves Pas/Agr into Agr byte in player struct
-	move.b	$73(a3),d3	;moves Pas/Agr byte into d3 (weird way to do it)
+	move.b	7(a0),aggress(a3)	;moves Pas/Agr into Agr byte in player struct
+	move.b	aggress(a3),d3	;moves Pas/Agr byte into d3 (weird way to do it)
 	andi.b	#$F,d3
 	move.w	#$F,(TempWord2).w
 	jsr	(AttributeCalc).l
-	move.b	d3,$73(a3)	;Agr gets no bonus
-	andi.b	#$F,$73(a3)	;mask Agr byte with F, so max is 15 decimal
+	move.b	d3,aggress(a3)	;Agr gets no bonus
+	andi.b	#$F,aggress(a3)	;mask Agr byte with F, so max is 15 decimal
 	rts
 
 ClampNibble	;94 name. Clamp byte d3 to 0-$1E. Called by setplayer

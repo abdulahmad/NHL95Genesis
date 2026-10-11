@@ -585,7 +585,7 @@ SimGameStats	;95 only. Fill the team structs for a simulated game a0 (teams, sco
 	movea.l	#HmShots,a1
 	movea.l	#AwShots,a2
 	move.w	(HomeTeam).w,$28(a1)
-	move.w	(VisTeam).w,$28(a2)
+	move.w	(VisTeam).w,Xvel(a2)
 	clr.w	d0
 	move.b	2(a0),d0
 	move.w	d0,tmscore(a1)

@@ -617,7 +617,7 @@ SkipStrings	;95 only. a1 = String d0 of a String list
 
 ReadAttributeNibble	;93 name. d0 = goalies on team a2 (ReadAttributeNibbleD7 with d7 = the team number)
 	movem.l	d7-a0,-(sp)
-	move.w	$28(a2),d7
+	move.w	Xvel(a2),d7
 	bsr.w	ReadAttributeNibbleD7
 	movem.l	(sp)+,d7-a0
 	rts
@@ -689,7 +689,7 @@ GetForwards	;95 only. d0 = forwards on team a2: ProcessNibble (team data) with s
 	btst	#6,(sflags11).w
 	bne.w	ProcessNibble
 	movem.l	d1-d7/a0,-(sp)
-	move.w	$28(a2),d0
+	move.w	Xvel(a2),d0
 
 ProcessNibbleSeason	;95 only. Shared tail of GetForwards / ProcessNibbleD7: read the save RAM byte for team d0
 	mulu.w	#$38,d0
@@ -729,7 +729,7 @@ getnameD7	;95 only. getname for player d0 of team number d7
 
 getname	;(93 getname) a1 = mesarea "NN First Last" for player d0 of team struct a2. 95 reads the number with GetJerseyNumber
 	movem.l	d0-d3/d7-a0/a2-a3,-(sp)
-	move.w	$28(a2),d7
+	move.w	Xvel(a2),d7
 	bsr.w	getplayername	;get to start of player name
 getnamebody	;getnameD7 joins here
 	move.l	a0,-(sp)
@@ -790,7 +790,7 @@ FormatPlayerNameWithAttribD7	;95 only. FormatPlayerNameWithAttrib for team d7
 
 FormatPlayerNameWithAttrib	;93 name. a1 = mesarea string "NN F. Last" for player d0 of team a2, built in TextBuffer (93 name). Called from PenaltyShotBox and others
 	movem.l	d0-d3/d7-a0/a2,-(sp)
-	move.w	$28(a2),d7
+	move.w	Xvel(a2),d7
 	bsr.w	getplayername
 
 NameWithAttrib	;shared body of FormatPlayerNameWithAttrib
@@ -843,7 +843,7 @@ FormatPlayerNameD7	;95 only. FormatPlayerName for team d7
 
 FormatPlayerName	;93 name. a1 = mesarea string "NN Last" for player d0 of team a2, built in TextBuffer. Called from DisplayPlayerAttributeMenu and others
 	movem.l	d0-d3/d7-a0/a2,-(sp)
-	move.w	$28(a2),d7
+	move.w	Xvel(a2),d7
 	bsr.w	getplayername
 	move.l	a0,-(sp)
 	movea.w	#(TextBuffer-M68K_RAM),a1
@@ -960,7 +960,7 @@ getplayernameD7	;95 only. getplayername for team d7
 getplayername	;(93 GetPlayerNamePointer) loops through team roster to get to d0 player: a0 = name string of player d0 (roster offset) of team struct a2. Each
 	;record is a length word String and 8 more bytes
 	movem.l	d0/d7/a2,-(sp)
-	move.w	$28(a2),d7
+	move.w	Xvel(a2),d7
 
 getnamea0	;shared tail of getplayername: GetRosterName, a0 = the name
 	jsr	(GetRosterName).l
@@ -1003,7 +1003,7 @@ CalcAttrib	;(and comments) 94 only: the overall rating of player d0: his attribu
 	adda.l	d1,a4	;add d1 to a4
 	adda.l	#$10,a4	;add 16 dec to a4. Move to start of Hot/Cold for player.
 	movem.l	d7/a1,-(sp)
-	move.w	$28(a2),d7
+	move.w	Xvel(a2),d7
 	jsr	(GetRosterName).l
 	adda.w	(a1),a1
 	addq.w	#8,a1

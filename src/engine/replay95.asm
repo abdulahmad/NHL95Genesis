@@ -659,7 +659,7 @@ UpdateCameraPos	;Camera struct a5 = object a3 x/y (negated for the reverse angle
 	neg.w	d0
 .0
 	move.w	d0,(a5)
-	move.w	$14(a3),d1
+	move.w	Ypos(a3),d1
 	btst	#7,(sflags4).w
 	beq.w	.2
 	neg.w	d1

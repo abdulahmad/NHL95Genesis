@@ -8,19 +8,19 @@
 setInjuryType	;collide94 setInjuryType. a2 injured: out for the period ($FFFD) or the game ($FFFC); in a season a random games count (SetInjuryGames)
 	bclr	#1,(sflags12).w
 	move.w	d0,-(sp)
-	bset	#2,$63(a2)
+	bset	#2,pflags2(a2)
 	addi.w	#$12C,(crowdlevel).w
 	addi.w	#$1E,(CwdExciteLvl).w
 	move.w	#$D,-(sp)	;sound effect
 	jsr	(sfx).l
-	clr.w	$28(a2)
-	clr.w	$2A(a2)
+	clr.w	Xvel(a2)
+	clr.w	Yvel(a2)
 	move.w	(a2),(xc1).w	;move Xpos to scroll center
-	move.w	$14(a2),(yc1).w
+	move.w	Ypos(a2),(yc1).w
 	bset	#6,(sflags).w
 	clr.w	d1	;clear d1
 	movea.w	#(HmShots-M68K_RAM),a0	;move Home team Struct to a0
-	btst	#6,$62(a2)
+	btst	#6,pflags(a2)
 	beq.w	.0	;branch if home
 	move.w	#$8000,d1
 	adda.w	#tmsize,a0	;add $364 to a0 (Away Team Struct start)
@@ -87,7 +87,7 @@ setInjuryType	;collide94 setInjuryType. a2 injured: out for the period ($FFFD) o
 SetSeasonInjuries	;95 only. The players of team a2 with injury games left (save RAM SRInjuries) are out ($FFFC)
 	movem.l	d0-d3/a0/a2,-(sp)
 	movea.l	#SaveRAM+2*SRInjuries,a0
-	move.w	$28(a2),d0
+	move.w	Xvel(a2),d0
 	mulu.w	#$1C,d0
 	adda.l	d0,a0
 	adda.w	#$68,a2
@@ -190,7 +190,7 @@ GetInjuryGames	;95 only. d0 = the injury games of player d1 of team d7 (save RAM
 
 getFgtbyte	;title94 getFgtbyte. d0 = $74(a2) / 4
 	clr.w	d0	;clear d0
-	move.b	$74(a2),d0	;move H/F bit into d0 (this is always even)
+	move.b	fighting(a2),d0	;move H/F bit into d0 (this is always even)
 	lsr.w	#2,d0	;shift 2 right (divide by 4)
 	rts
 
@@ -393,7 +393,7 @@ GetLowestPen	;penalty94 GetLowestPen. a2 = shorthanded team, a3 = team on the po
 	move.w	d2,d3
 	bra.s	.0
 .1
-	cmpi.w	#6,$24(a3)	;tmap: 6 on ice, done
+	cmpi.w	#6,OldZpos(a3)	;tmap: 6 on ice, done
 	beq.w	.3
 	sub.w	d3,d0
 	lea	$9C(a3),a0

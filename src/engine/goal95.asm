@@ -222,7 +222,7 @@ AssignTeam	;95 only. Give assignment d0 to every player of team a2 on the ice (a
 	btst	#0,pflags2(a3)
 	bne.w	.2
 	bclr	#2,pflags(a3)
-	bclr	#3,$64(a3)
+	bclr	#pf3onetimer,pflags3(a3)
 	beq.w	.1
 	jsr	(EndOneTimer).l
 .1
@@ -328,7 +328,7 @@ DisplayPlayerAttributeMenu	;(data94) 93 name. Goal box: close both line change b
 	blt.w	.5
 	adda.w	(a1),a1	;HAT TRICK!
 	move.w	d0,-(sp)
-	move.w	$28(a2),d0
+	move.w	Xvel(a2),d0
 	cmp.w	(HomeTeam).w,d0
 	bne.w	.4
 	move.w	#0,d0

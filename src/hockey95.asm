@@ -338,7 +338,7 @@ updateplayers	;this routine calls all collision/animation/assignment code for al
 	move.l	(a3),OldXpos(a3)	;Xpos, oldXpos
 	move.l	Ypos(a3),OldYpos(a3)	;Ypos, oldYpos
 	move.l	Zpos(a3),OldZpos(a3)	;Zpos, oldZpos
-	btst	#5,$64(a3)	;falling down?
+	btst	#pf3fall,pflags3(a3)	;falling down?
 	beq.w	.top2	;branch if not
 	clr.w	Xvel(a3)	;clear Xvel
 	clr.w	Yvel(a3)	;clear Yvel

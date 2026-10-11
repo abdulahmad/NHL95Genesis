@@ -314,7 +314,7 @@ updateanim	;frame switch control on struct a3. Called from updateplayers (hockey
 	clr.w	SPAnum(a3)	;clear SPANum
 	bclr	#pfalock,pflags(a3)	;clear animation lock
 	bclr	#pf2aip,pflags2(a3)	;clear animation in progress
-	bclr	#5,$64(a3)	;clear fall down flag
+	bclr	#pf3fall,pflags3(a3)	;clear fall down flag
 	bra.w	.1
 .again
 	lsr.w	#8,d1
@@ -325,14 +325,14 @@ updateanim	;frame switch control on struct a3. Called from updateplayers (hockey
 	beq.w	.1
 	bclr	#pfalock,pflags(a3)
 	bclr	#pf2aip,pflags2(a3)
-	bclr	#5,$64(a3)
+	bclr	#pf3fall,pflags3(a3)
 	bra.w	.1
 .end	;the animation is over
 	clr.w	d0
 	clr.w	SPAnum(a3)
 	bclr	#pfalock,pflags(a3)
 	bclr	#pf2aip,pflags2(a3)
-	bclr	#5,$64(a3)
+	bclr	#pf3fall,pflags3(a3)
 	cmpi.w	#SPAfallback,SPA(a3)	;95: a fall back ends facing the other way
 	bne.w	.clr
 	eori.w	#4,facedir(a3)

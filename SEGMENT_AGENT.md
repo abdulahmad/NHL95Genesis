@@ -129,3 +129,7 @@ Add a file here when the listing shows a system 94 does not have.
 - `trade95` `$0962EE-$097C53`: schedule day ('More games', 'Change day', $9636B) then trades ('Trade Player', 'INVALID TRADE', $96C29-$97325). sub_962EE is called from sub_92FBA (stats95)
 - `create95` `$097C54-$09ACE5`: create player (letter entry help text $981B6, 'Maximum Unallocated Points', the attribute names $9980C). sub_97C54 is called from trade95 (loc_97966); sub_9A9D4, sub_9AAE0, sub_9AB02 and sub_9AC02 are called from $9A6xx. It reuses 94 NameEntryFramer (cards94) at $986B6. Ends at sub_9ACE6, 94 NameEntryScreen
 - `awards95` `$09C6F0-$09DA4F`: end of season awards (HART MEMORIAL TROPHY ... CONN SMYTHE AWARD, $9C820) and the playoffs (seeding, series, PlayoffTreeScreen). sub_9C6F0 is called from sub_9C01A (94 UpdateRecords)
+
+## Readability equates and macros (audit 2026-10)
+
+- Player struct fields: `stubinc/equals.inc` adds `pflags3` ($64) with bit names `pf3offs`/`pf3break`/`pf3gctrl`/`pf3onetimer`/`pf3wall`/`pf3fall`, and `aggress` ($73), `fighting` ($74), `checking` ($75). Write player struct offsets on a2/a3 as these names (`pflags3(a3)`, `nopuck+1(a3)`) rather than `$64(a3)`.

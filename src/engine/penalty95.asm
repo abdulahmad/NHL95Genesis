@@ -432,7 +432,7 @@ InProgress	;(penalty94) Ref in progress: update the graphics, stats and penalty 
 	move.b	d0,-1(a0)
 	st	(a0)
 	movem.l	(sp)+,a0
-	addq.w	#1,$32(a2)
+	addq.w	#1,impact(a2)
 	bset	#6,(sflags9).w
 	move.w	#$15,d0
 	jsr	(assreplace).l
@@ -587,7 +587,7 @@ releasepl	;(penalty94) 93 name. The player's penalty time is up, so let him out 
 	addq.w	#1,a0
 .1
 	clr.w	position(a3)
-	move.b	(a0,d1.w),$35(a3)
+	move.b	(a0,d1.w),position+1(a3)
 	jsr	(Setplass).l
 	bsr.w	setplayer
 	bset	#2,pflags2(a3)
@@ -830,7 +830,7 @@ checkagr	;(collide94) Aggression check: d0 = randomd0((($32 - Agr) / 2) * 13) (9
 	;$28 of the puck; a2 on a breakaway ($64 bit 1) rolls again (8 / 7 / 4 / 3 by his distance from the goal line). 95: d0 = $7F (no
 	;penalty) when sflags9 bit 2 (home checker) / bit 1 (away) is set. The callers call a penalty when d0 is small
 	move.w	#$32,d0
-	sub.b	$73(a3),d0	;Agr(a3) - subtract Agr from d0
+	sub.b	aggress(a3),d0	;Agr(a3) - subtract Agr from d0
 	lsr.b	#1,d0	;divide result by 2
 	mulu.w	#$D,d0	;multiply d0 with 13 decimal
 	btst	#3,pflags(a3)
@@ -852,9 +852,9 @@ checkagr	;(collide94) Aggression check: d0 = randomd0((($32 - Agr) / 2) * 13) (9
 	asr.w	#1,d0	;divide by 2
 .1
 	jsr	(randomd0).l
-	btst	#1,$64(a2)	;Check for player on breakaway
+	btst	#pf3break,pflags3(a2)	;Check for player on breakaway
 	beq.w	.4
-	move.w	$14(a2),d1	;Ypos of player being checked
+	move.w	Ypos(a2),d1	;Ypos of player being checked
 	bpl.w	.2
 	neg.w	d1	;flip result (other side of rink)
 .2

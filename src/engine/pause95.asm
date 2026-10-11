@@ -528,7 +528,7 @@ ShowPenaltyBox	;95 only. The players in the penalty box list of team a2 ($9C, -1
 .1
 	btst	#5,(sflags9).w
 	beq.w	.2
-	sub.w	$32(a2),d7
+	sub.w	impact(a2),d7
 .2
 	lea	$9C(a2),a0
 .3
@@ -563,9 +563,9 @@ ShowPenaltyBoxPlayer	;95 only. Print player d0 / 2 + 1 of team a2: jersey number
 	lsr.w	#1,d0
 	addq.w	#1,d0
 	move.l	d7,-(sp)
-	move.w	$28(a2),d7
+	move.w	Xvel(a2),d7
 	jsr	(GetRosterName).l
-	move.w	$28(a2),d7
+	move.w	Xvel(a2),d7
 	subq.w	#1,d0
 	jsr	(GetJerseyNumber).l
 	move.l	(sp)+,d7
@@ -999,7 +999,7 @@ ShowPenaltyMessages	;95 only. Every $78 frames show the next queued penalty (pen
 	bmi.w	.5
 	bra.s	.3
 .4
-	subq.w	#1,$32(a2)
+	subq.w	#1,impact(a2)
 	bsr.w	ShowPenaltyBoxes
 .5
 	movem.l	(sp)+,d0-d7/a0-a6

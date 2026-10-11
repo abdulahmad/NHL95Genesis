@@ -484,7 +484,7 @@ LoadTeamLines	;95 only. The line sets of team struct a2 ($16C): from save RAM (S
 	bmi.w	.0
 	movem.l	d0-d2,-(sp)
 	move.l	#SRLines,d0
-	move.w	$28(a2),d2
+	move.w	Xvel(a2),d2
 	mulu.w	#$41,d2
 	add.l	d2,d0
 	moveq	#$41,d1
@@ -512,7 +512,7 @@ LoadTeamLines	;95 only. The line sets of team struct a2 ($16C): from save RAM (S
 	bmi.w	.4
 	movem.l	d0-d2,-(sp)
 	move.l	#SRLines,d0
-	move.w	$28(a2),d2
+	move.w	Xvel(a2),d2
 	mulu.w	#$41,d2
 	add.l	d2,d0
 	moveq	#$41,d1
@@ -998,7 +998,7 @@ ChkShotStat	;(penalty94) Determine if a shot was taken and add it to the stats (
 	dbf	d1,.2
 	bra.w	.9
 .3
-	move.w	$52(a2),d0	;SCnum
+	move.w	SCnum(a2),d0	;SCnum
 	bra.w	.5
 .4
 	movem.l	d0-d1/a1-a3,-(sp)

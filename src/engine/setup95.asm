@@ -32,7 +32,7 @@ TeamRosterScreen	;93 name (94 stats94). "Team Roster" screen for team a2: DrawTe
 	clr.w	(DispAttribCtr).w
 .0
 	movem.l	a0-a6,-(sp)
-	move.w	$28(a2),d3
+	move.w	Xvel(a2),d3
 	jsr	(GetTeamLogo).l
 	jsr	(printz).l
 	String	$8D,2,1,0
@@ -320,7 +320,7 @@ ExitAttributeScreen2	;94 stats94 name. TeamRosterScreen start: forceblack and ba
 getNameandAttrib	;(93 GetNameandAttrib). Print player d0's name, then at x $21 (94 $1E) the column d4 picks (attribjmp; above 2
 	;a rating through CalcAttrib, the jump offset in the low word). 95 keeps the team and player in screenarg / attribplayer
 	movem.l	d0-d4/a0-a1/a4-a5,-(sp)
-	move.w	$28(a2),(screenarg).w
+	move.w	Xvel(a2),(screenarg).w
 	move.w	d0,(attribplayer).w
 	pea	.1(pc)
 	jsr	(getname).l
@@ -363,7 +363,7 @@ AttribStatus	;93 name. Player d0's status word at $68(a2) (94 $66): Ice, Bench, 
 	bne.w	.2
 	movem.l	d0-d1/d7,-(sp)
 	move.w	(attribplayer).w,d1
-	move.w	$28(a2),d7
+	move.w	Xvel(a2),d7
 	jsr	(GetInjuryGames).l
 	lea	InjuryGamesTbl(pc),a1
 	jsr	(PrintSmallListItem).l
@@ -2501,7 +2501,7 @@ AddPOStats	;(93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to it
 	move.w	(potreeteam).w,d2
 	move.b	(a0,d2.w),d2
 	movea.w	#(HmShots-M68K_RAM),a2
-	cmp.w	$28(a2),d2
+	cmp.w	Xvel(a2),d2
 	beq.w	.0
 	adda.w	#tmsize,a2
 .0

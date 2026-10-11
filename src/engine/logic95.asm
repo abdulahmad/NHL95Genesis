@@ -195,7 +195,7 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	move.b	d0,temp1(a3)	;move d0 into temp1
 	btst	#3,pflags(a3)	;check if joy controlled
 	beq.w	.nocontrol	;branch if not
-	btst	#2,$64(a3)	;check bit 2
+	btst	#pf3gctrl,pflags3(a3)	;check bit 2
 	bne.w	.nocontrol	;branch if set
 	moveq	#$1B,d0	;assignment assgoaliectrl (94 $1D)
 	bra.w	assinsert
@@ -464,9 +464,9 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	asr.w	#1,d1
 .vt2
 	jsr	(vtoa).l
-	move.b	d0,$43(a3)	;move d0 into temp2+1
+	move.b	d0,temp2+1(a3)	;move d0 into temp2+1
 .nodec
-	move.b	$43(a3),d2	;temp2+1
+	move.b	temp2+1(a3),d2	;temp2+1
 	ext.w	d2
 	cmp.w	#7,d2
 	ble.w	.pa
@@ -486,7 +486,7 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 .23
 	cmpi.l	#$1324,$2A(a1)
 	blt.w	.de5
-	cmpi.l	#$9C4,$2A(a2)
+	cmpi.l	#$9C4,Yvel(a2)
 	blt.w	.de5
 	cmpi.w	#$E3,(pucky).w
 	bgt.w	.24
@@ -692,7 +692,7 @@ goaliesave	;checks94 goaliesave. 95 first aims the goalie: Xvel from where the p
 	bne.w	.19
 	andi.w	#3,d3
 	beq.w	.19
-	cmpi.b	#$B,$73(a3)	;73 = Glove Left
+	cmpi.b	#$B,aggress(a3)	;73 = Glove Left
 	blt.w	.19	;95 dropped the reach out glove save line; the branch stays
 .19
 	cmp.w	#$205E,d1	;95: a pad stack facing up or down, with sflags bit 3: dive ($23E8, or $23BE 40 times in 100)
@@ -821,7 +821,7 @@ assgoalietopuck	;asstab entry $14. The same as 94
 .t0
 	cmpi.l	#$E10,$2A(a1)
 	blt.w	assexit
-	cmpi.l	#$640,$2A(a2)
+	cmpi.l	#$640,Yvel(a2)
 	blt.w	assexit
 .go
 	bra.w	skatetopuck
@@ -915,7 +915,7 @@ assdefd	;asstab entry 7
 	cmp.w	#1,d0
 	beq.w	assdefdchase
 .de01
-	bclr	#7,$64(a3)	;95: assdefdchase sets it
+	bclr	#7,pflags3(a3)	;95: assdefdchase sets it
 	move.w	#$41,temp3(a3)	;'A' ; move 65 dec into temp3
 	cmpi.w	#2,position(a3)	;compare if player is RD
 	beq.w	.de1	;branch if RD
@@ -1507,7 +1507,7 @@ asscentero	;asstab entry $B. Center on offense: a random spot in the puck zone
 ; a3 = goalie
 
 assdefo	;asstab entry $C. assign94 assdefo (moved in). Defenseman on offense. 95: back to assdefd at once when the other team has the puck (or nobody), no blue line test; holds no deeper than the other forwards (.lim), and at -$C0 when the other goalie has the puck (PuckcIsGoalie)
-	bclr	#7,$64(a3)	;95: assdefdchase sets it
+	bclr	#7,pflags3(a3)	;95: assdefdchase sets it
 	btst	#5,pflags(a3)
 	bne.w	rtsskate
 	btst	#0,(gmode).w	;#gmclock
@@ -1832,7 +1832,7 @@ a2touchpuck	;Player a2 touched the puck: last touch, scorer / assist slots, offs
 .t
 	clr.w	d0
 	move.b	pnum(a2),d0	;move pnum into d0
-	btst	#3,$64(a2)	;check if one timer
+	btst	#pf3onetimer,pflags3(a2)	;check if one timer
 	beq.w	.checklast	;branch if not
 	bset	#7,(sflags8).w	;set if one timer
 .checklast
@@ -2062,7 +2062,7 @@ check4check	;Check an opponent in front of a3. 95: a joystick player blocks the 
 	btst	#7,(sflags10).w	;95: always look with sflags10 bit 7
 	bne.w	.look
 	move.w	#$28,d0	;'('   ; start with 28 hex (40 decimal)
-	sub.b	$75(a3),d0	;subtract Chk from d0 (Chk max is 1E or 30 decimal)
+	sub.b	checking(a3),d0	;subtract Chk from d0 (Chk max is 1E or 30 decimal)
 	tst.w	(OptPen).w	;check for penalties option
 	beq.w	.nopen	;branch if not on
 	asl.w	#1,d0	;mult by 2
@@ -2145,7 +2145,7 @@ check4check2	;95 only. check4check with a puck y test before the check (burstchk
 	btst	#7,(sflags10).w
 	bne.w	.look
 	move.w	#$28,d0
-	sub.b	$75(a3),d0
+	sub.b	checking(a3),d0
 	tst.w	(OptPen).w
 	beq.w	.nopen
 	asl.w	#1,d0
@@ -2305,7 +2305,7 @@ assbreakaway	;asstab entry $21. Breakaway; falls into assnearest
 	cmp.w	(puckc).w,d0	;compare puck carrier SCnum with d0
 	beq.w	.puckc	;branch if puck carrier
 .notpuckc
-	bclr	#1,$64(a3)	;clear breakaway bit
+	bclr	#pf3break,pflags3(a3)	;clear breakaway bit
 	move.w	#$E,d0	;assnearest (94 $11)
 	bsr.w	assreplace
 	bra.w	assnearest
@@ -2316,12 +2316,12 @@ assbreakaway	;asstab entry $21. Breakaway; falls into assnearest
 assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates at the future puck spot, no crowd meter boost
 	bclr	#2,(sflags5).w
 	bne.w	.chkpuck
-	bclr	#1,$64(a3)	;clear breakaway bit
+	bclr	#pf3break,pflags3(a3)	;clear breakaway bit
 .chkpuck
 	move.w	SCnum(a3),d0	;move SCnum into d0
 	cmp.w	(puckc).w,d0	;compare with puck carrier SCnum
 	bne.w	.chkbreak	;jump if not puck carrier
-	btst	#1,$64(a3)	;check breakaway bit
+	btst	#pf3break,pflags3(a3)	;check breakaway bit
 	bne.w	.chkbreak	;jump if set
 	btst	#2,(BA_PS_flags).w	;check if bit 2 set (cleared on Faceoffs)
 	bne.w	.chkbreak	;jump if set
@@ -2333,12 +2333,12 @@ assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates 
 .chkbreak
 	bclr	#1,pflags(a3)	;pfna - clear new assignment
 	beq.w	.nna
-	btst	#1,$64(a3)	;check if breakaway
+	btst	#pf3break,pflags3(a3)	;check if breakaway
 	beq.w	.chkbreak2	;jump if not
 	move.w	#1,-(sp)	;ding SFX
 	jsr	(sfx).l
 .chkbreak2
-	btst	#1,$64(a3)	;check if breakaway
+	btst	#pf3break,pflags3(a3)	;check if breakaway
 	beq.w	.nobreak	;jump if not
 	movem.l	a2,-(sp)	;push a2 to stack
 	movea.l	#HmShots,a2	;put Home Team Struct into a2
@@ -2396,7 +2396,7 @@ assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates 
 	btst	#6,pflags(a3)	;pfteam - 0 home, 1 away
 	beq.s	.tmnopc	;jump if home
 .nopc3
-	clr.l	$2A(a2)	;Calculated future Ypos of the player closest to the puck
+	clr.l	Yvel(a2)	;Calculated future Ypos of the player closest to the puck
 	move.w	(puckc).w,d1	;move puck carrier SCnum into d1
 	bmi.w	.np	;branch if no puck carrier
 	asl.w	#7,d1	;scsize
@@ -2445,7 +2445,7 @@ assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates 
 	dbf	d4,.de0	;iterate through loop
 	tst.l	d2	;check if 0
 	bmi.w	.de1	;branch if less (no one near puck)
-	move.l	d2,$2A(a2)	;moves d2 into $2A(a2)
+	move.l	d2,Yvel(a2)	;moves d2 into $2A(a2)
 .switch
 	cmpa.w	a1,a3	;a1 = closest to the puck, or puckc (if on same team)
 	beq.w	.de1	;branch if same
@@ -2453,16 +2453,16 @@ assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates 
 	bne.w	.de1	;jump if stopped
 	btst	#2,pflags2(a1)	;pf2unav
 	bne.w	.de1	;jump if unavailable
-	btst	#3,$64(a1)	;shooting one timer
+	btst	#pf3onetimer,pflags3(a1)	;shooting one timer
 	bne.w	.de1	;jump if shooting
-	btst	#7,$64(a1)	;95: with bit 7 (assdefdchase) only when a1 has the puck, and clear it
+	btst	#7,pflags3(a1)	;95: with bit 7 (assdefdchase) only when a1 has the puck, and clear it
 	beq.w	.x1
 	movem.w	d0,-(sp)
 	move.w	SCnum(a1),d0
 	cmp.w	(puckc).w,d0
 	movem.w	(sp)+,d0
 	bne.w	.de1
-	bclr	#7,$64(a1)
+	bclr	#7,pflags3(a1)
 .x1
 	exg	a1,a3	;swap addresses
 	bclr	#pfdoff,pflags(a3)	;clear pfdoff
@@ -2488,7 +2488,7 @@ assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates 
 	addq.w	#4,d1	;add 4 to d1
 .x
 	move.w	#$28,d0	;'('   ; move $28 into d0 (40 dec)
-	sub.b	$75(a3),d0	;sub checking from d0
+	sub.b	checking(a3),d0	;sub checking from d0
 	asl.w	d1,d0	;shift d0 by value of d1
 	jsr	(randomd0).l	;RNG
 	cmp.w	#2,d0	;compare 2 to d0
@@ -2569,7 +2569,7 @@ assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates 
 .chkcont
 	btst	#5,(sflags6).w	;check if puckc is in the slot
 	beq.w	check4check	;branch if not in slot
-	move.b	$75(a3),d0	;move Chk into d0
+	move.b	checking(a3),d0	;move Chk into d0
 	ext.w	d0	;clear top byte of d0
 	movem.l	d0/a3,-(sp)	;push to stack
 	add.b	d0,d0	;add d0 to itself
@@ -2577,10 +2577,10 @@ assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates 
 	blt.w	.chkcont2	;branch if less
 	move.b	#$1E,d0	;move 1E into d0
 .chkcont2
-	move.b	d0,$75(a3)	;move d0 into Chk
+	move.b	d0,checking(a3)	;move d0 into Chk
 	bsr.w	check4check
 	movem.l	(sp)+,d0/a3	;pop off stack
-	move.b	d0,$75(a3)	;move original Chk into player
+	move.b	d0,checking(a3)	;move original Chk into player
 	rts
 .topuck
 	bsr.w	skatetopuck
@@ -2765,8 +2765,8 @@ breakaway	;Breakaway for the carrier
 BreakawayOffsidesFlagSet	;94 name: the breakaway / offsides flags of a3 ($64 bits 1 and 0)
 	btst	#1,pflags(a3)	;check for new assignment
 	beq.w	.loadYpos	;branch if no new assignment
-	bclr	#0,$64(a3)	;clear player offsides flag
-	bclr	#1,$64(a3)	;clear player breakaway flag
+	bclr	#pf3offs,pflags3(a3)	;clear player offsides flag
+	bclr	#pf3break,pflags3(a3)	;clear player breakaway flag
 .loadYpos
 	movem.w	d0-d1/a0,-(sp)
 	move.w	#$10B,d0	;top goal line Y pos (94 $108)
@@ -2788,10 +2788,10 @@ BreakawayOffsidesFlagSet	;94 name: the breakaway / offsides flags of a3 ($64 bit
 	cmp.w	d1,d0	;compare Ypos to blue line Y
 	blt.w	.offzone	;branch if in offensive zone
 .setoffside
-	bset	#0,$64(a3)	;set offsides flag
+	bset	#pf3offs,pflags3(a3)	;set offsides flag
 	bra.w	.nogood
 .offzone
-	bclr	#0,$64(a3)	;clear offside bit
+	bclr	#pf3offs,pflags3(a3)	;clear offside bit
 	beq.w	.nogood	;branch if on the blue line
 	movea.l	#SortCords+(11*SCstruct),a0	;loads last SCScruct player struct (Away pos #6)
 	move.w	#$B,d0	;B = # of player structs to check (12)
@@ -2807,7 +2807,7 @@ BreakawayOffsidesFlagSet	;94 name: the breakaway / offsides flags of a3 ($64 bit
 	suba.w	#SCstruct,a0
 	dbf	d0,.checkYpos2
 .setBAbit
-	bset	#1,$64(a3)	;set breakaway bit
+	bset	#pf3break,pflags3(a3)	;set breakaway bit
 	move.w	#1,d0	;moves 1 into d0 (used by returned subroutine)
 .exit
 	movem.w	(sp)+,d0-d1/a0
@@ -2834,14 +2834,14 @@ chkpuckc	;asstab entry $1E. Breakaway carrier check, then asspuckc
 	bsr.w	breakaway
 	bpl.w	asspuckc	;currently skating towards net in Y
 .0
-	bclr	#1,$64(a3)	;clear breakaway bit
+	bclr	#pf3break,pflags3(a3)	;clear breakaway bit
 	move.w	#$F,d0	;asspuckc (94 $10)
 	bsr.w	assreplace
 
 asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a message is up, Practice Mode breakaways
 	bclr	#2,(sflags5).w
 	bne.w	.0
-	bclr	#1,$64(a3)
+	bclr	#pf3break,pflags3(a3)
 .0
 	move.w	(puckc).w,d0
 	cmp.w	SCnum(a3),d0
@@ -2854,7 +2854,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	jsr	(SetSPA).l
 	bra.w	.x
 .1
-	btst	#1,$64(a3)
+	btst	#pf3break,pflags3(a3)
 	bne.w	.2
 	btst	#2,(BA_PS_flags).w
 	bne.w	.2
@@ -2878,12 +2878,12 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	bne.w	assexit
 	bclr	#1,pflags(a3)
 	beq.w	.7
-	btst	#1,$64(a3)
+	btst	#pf3break,pflags3(a3)
 	beq.w	.4
 	move.w	#1,-(sp)
 	jsr	(sfx).l
 .4
-	btst	#1,$64(a3)
+	btst	#pf3break,pflags3(a3)
 	beq.w	.6
 	movem.l	a2,-(sp)
 	movea.l	#HmShots,a2
@@ -2924,7 +2924,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	bne.w	.12
 	btst	#2,(BA_PS_flags).w
 	bne.w	.12
-	btst	#1,$64(a3)
+	btst	#pf3break,pflags3(a3)
 	bne.w	.11
 	move.w	#1,d0
 	btst	#6,pflags(a3)
@@ -3076,7 +3076,7 @@ chk4shot	;Shoot or clear the puck; compshoot is in input95. 95: the breakaway de
 .pkill
 	btst	#7,(sflags9).w	;95: the breakaway deke always in Practice Mode
 	bne.w	.dk
-	btst	#1,$64(a3)
+	btst	#pf3break,pflags3(a3)
 	beq.w	.npk
 .dk
 	move.w	#$1E,d0
@@ -3598,7 +3598,7 @@ assonetimer	;asstab entry $18 (94 $23). 94 IDA name. Player a3 shooting a one-ti
 	;control of him (setc1player ... setc4player), start the animation (setonetimeranim), then shoot when the puck arrives (EndOneTimer)
 	bclr	#1,pflags(a3)	;pfna - clear new assignment
 	beq.w	.checkxpos	;branch if not new assignment
-	bset	#3,$64(a3)	;set one timer bit
+	bset	#pf3onetimer,pflags3(a3)	;set one timer bit
 	bne.w	.checkxpos	;branch if already set
 	bclr	#0,(onetimerflags).w
 	bclr	#5,(sflags8).w
@@ -3869,7 +3869,7 @@ onetimershot	;94 IDA name. Do the one-timer shot (doshot), credit the last two p
 EndOneTimer	;title94 EndOneTimer (moved in). End a one-timer for a3: bits cleared, onetimerplayer = -1, SetSPA $B5C (94 $50C),
 	;then assexit (goalie) or Setplass. Called from assonetimer and from $8C606 (goal95)
 	movem.l	d0/a0,-(sp)
-	bclr	#3,$64(a3)
+	bclr	#pf3onetimer,pflags3(a3)
 	bclr	#5,pflags(a3)
 	bclr	#1,pflags2(a3)
 	clr.w	(onetimerflags).w
@@ -3950,28 +3950,28 @@ assgoaliectrl	;asstab entry $1B (94 $1D). The joystick goalie: a stoppage when h
 .cont
 	sub.w	(Hpos).w,d0	;sub ice rink horiz position from Xpos
 	sub.w	(Vpos).w,d1	;sub ice rink vert position from Ypos
-	bclr	#2,$64(a3)	;clear goalie control bit?
+	bclr	#pf3gctrl,pflags3(a3)	;clear goalie control bit?
 	cmp.w	#$74,d0	;'t'   ; compare $74 to Xpos diff
 	blt.w	.0	;branch if less than
-	bset	#2,$64(a3)	;set goalie control bit?
+	bset	#pf3gctrl,pflags3(a3)	;set goalie control bit?
 	bra.w	.cont2
 .0
 	cmp.w	#$FF8C,d0	;compare -$74 to Xpos diff
 	bgt.w	.1	;branch if greater than
-	bset	#2,$64(a3)	;set goalie control bit?
+	bset	#pf3gctrl,pflags3(a3)	;set goalie control bit?
 	bra.w	.cont2
 .1
 	cmp.w	#$64,d1	;'d'   ; compare $64 to Ypos diff
 	blt.w	.2	;branch if less than
-	bset	#2,$64(a3)	;set goalie control bit?
+	bset	#pf3gctrl,pflags3(a3)	;set goalie control bit?
 	bra.w	.cont2
 .2
 	cmp.w	#$FF9C,d1	;compare -$64 to Ypos diff
 	bgt.w	.cont2	;branch if greater than
-	bset	#2,$64(a3)	;set goalie control bit?
+	bset	#pf3gctrl,pflags3(a3)	;set goalie control bit?
 .cont2
 	movem.w	(sp)+,d0-d1	;pop from stack
-	btst	#2,$64(a3)	;check goalie ctrl bit
+	btst	#pf3gctrl,pflags3(a3)	;check goalie ctrl bit
 	bne.w	checkanim	;branch if set
 .na
 	btst	#5,pflags(a3)	;check if anim lock
@@ -4086,7 +4086,7 @@ assdefdchase	;95 only. assdefd with the team defense mode at 1 and the other tea
 	;puck) half a step ahead. Puck in the defensive zone: the right defenseman takes the slot ($D9 out), the left one the middle between
 	;the puck and the goal line. Else hold $26 off the middle at $C8 from the puck toward his goal, no deeper than the other forwards
 	;(.lim). Then skateto and check4check2 with sflags10 bit 7 set
-	bset	#7,$64(a3)
+	bset	#7,pflags3(a3)
 	move.w	(puckx).w,d0
 	sub.w	(a3),d0
 	bpl.w	.0

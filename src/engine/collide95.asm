@@ -86,7 +86,7 @@ checkcoll	;d2 = new x coord, d3 = new y coord, a3 = struct of object. Check wall
 checkwallcoll	;93 name. d2/d3 = x/y to test, a3 = object, wcradiusx/wcradiusy = radius. Check the corner circles, the goals (checkgoal
 	;with a2 = SortCords+(13*SCstruct) top, SortCords+(12*SCstruct) bottom) and then the side and end boards. Calls wallcollb on a hit, with
 	;d0/d1 = cos/sin of the wall. 95 rink: sideline $98, end boards $138, corner radius $4C (94: $88, $12A, $40)
-	bclr	#4,$64(a3)	;wall collision bit
+	bclr	#pf3wall,pflags3(a3)	;wall collision bit
 	move.w	#$98,d4
 	sub.w	(wcradiusx).w,d4
 	move.w	#$138,d5
@@ -267,7 +267,7 @@ wallcoll	;d0 = cosine, d1 = sine of angle of incidence with wall, a3 = object. B
 	bgt.w	.6
 	bclr	#4,(sflags6).w
 	bne.w	.3
-	bset	#4,$64(a3)	;set wall collision bit
+	bset	#pf3wall,pflags3(a3)	;set wall collision bit
 .3
 	cmp.w	#$F000,d2	;$-1000
 	bgt.w	.4
@@ -552,7 +552,7 @@ CCStart	;Player a3 is checking player a2. Holds (95 SPA $E10, $E74) go to holdch
 .3
 	move.w	d1,-(sp)
 	clr.w	d1
-	move.b	$75(a3),d1
+	move.b	checking(a3),d1
 	sub.w	d1,d0
 	move.w	(sp)+,d1
 	exg	a2,a3	;swap addresses in a2 and a3 registers
@@ -570,11 +570,11 @@ CCStart	;Player a3 is checking player a2. Holds (95 SPA $E10, $E74) go to holdch
 	bne.w	.4
 	asr.w	#1,d0
 .4
-	btst	#4,$64(a3)	;wall collision bit
+	btst	#pf3wall,pflags3(a3)	;wall collision bit
 	bne.w	.5
 	bsr.w	randomd0	;d0 is the RNG range.
 	clr.w	(TempWord1).w
-	move.b	$75(a3),(TempWord1+1).w	;$75 is Chk attrib. in player struct
+	move.b	checking(a3),(TempWord1+1).w	;$75 is Chk attrib. in player struct
 	lsr	(TempWord1).w
 	cmp.b	(TempWord1+1).w,d0	;d0 - Chk rating / 2
 	ble.w	.5
@@ -618,7 +618,7 @@ Bcheck	;a2 = player that is B checking (SPA $F38), a3 = player being checked. En
 	btst	#pfjoycon,pflags(a2)	;check if player controlled
 	beq.w	.0
 	move.w	#$20,d0	;20 hex starting value
-	add.b	$75(a2),d0	;add Chk of player B checking
+	add.b	checking(a2),d0	;add Chk of player B checking
 	sub.b	legstr(a3),d0
 	move.w	SCnum(a3),d1
 	cmp.w	(puckc).w,d1
@@ -734,23 +734,23 @@ FallDown	;player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	beq.w	.33
 	move.l	a2,(PlayerChked).w	;player checked
 	move.l	a3,(PlayerChking).w	;player checking
-	btst	#3,$64(a2)	;is player a2 doing a one-timer
+	btst	#pf3onetimer,pflags3(a2)	;is player a2 doing a one-timer
 	bne.w	rtss2	;exit if yes
-	btst	#3,$64(a3)	;Is player a3 doing a one-timer
+	btst	#pf3onetimer,pflags3(a3)	;Is player a3 doing a one-timer
 	bne.w	rtss2	;exit if yes
 	move.w	#$1AA4,d1
-	btst	#4,$64(a3)	;wall collision bit
+	btst	#pf3wall,pflags3(a3)	;wall collision bit
 	bne.w	.0
 	cmpi.b	#$10,stickhand(a2)
 	blt.w	.0
-	tst.b	$5F(a2)	;check if puck collision possible
+	tst.b	nopuck+1(a2)	;check if puck collision possible
 	bne.w	.0
 	move.w	(VDP_CNTR).l,d0	;frame counter
 	andi.w	#$F,d0	;pass 1st byte of d0
 	addi.w	#$20,d0
 	cmp.w	impact(a2),d0	;compare impact value to d0.
 	ble.w	.0
-	move.b	#$3C,$5F(a2)	;move 3C (60 decimal) into nopuck
+	move.b	#$3C,nopuck+1(a2)	;move 3C (60 decimal) into nopuck
 	cmpi.b	#$14,stickhand(a2)
 	bgt.w	.26
 	bsr.w	DropPuck
@@ -769,7 +769,7 @@ FallDown	;player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	adda.w	d0,a0
 	addq.b	#1,$11E(a0)
 	addq.w	#1,(ChkCnt).w	;Add 1 to ChkCnt
-	tst.b	$74(a3)	;checks fight attribute?
+	tst.b	fighting(a3)	;checks fight attribute?
 	bne.w	.2
 	addq.w	#2,(ChkCnt).w	;add 2 to ChkCnt
 .2
@@ -782,7 +782,7 @@ FallDown	;player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	tst.w	position(a2)
 	beq.w	.24
 	jsr	(wallcollduringcheck).l	;check for wall collision
-	btst	#4,$64(a2)	;check wall collision bit
+	btst	#pf3wall,pflags3(a2)	;check wall collision bit
 	beq.w	.24
 	movem.l	d1-d4,-(sp)
 	move.w	Xvel(a2),d1
@@ -914,7 +914,7 @@ FallDown	;player a2 falls down, player a3 is the hitting player. Skips a2 in som
 .20
 	clr.w	Xvel(a2)
 	clr.w	Yvel(a2)
-	btst	#5,$64(a2)
+	btst	#pf3fall,pflags3(a2)
 	bne.w	.22
 	move.w	#$2D,-(sp)
 	btst	#pfteam,pflags(a2)
@@ -923,7 +923,7 @@ FallDown	;player a2 falls down, player a3 is the hitting player. Skips a2 in som
 .21
 	jsr	(sfx).l
 .22
-	bset	#5,$64(a2)	;set falldown bit
+	bset	#pf3fall,pflags3(a2)	;set falldown bit
 	bset	#pfdoff,pflags(a2)
 	movem.l	(sp)+,d0/a0	;pop from stack
 	bra.w	.25
@@ -945,11 +945,11 @@ FallDown	;player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	beq.w	.26
 	cmpi.w	#$254A,SPA(a3)
 	beq.w	.26
-	cmpi.b	#$14,$75(a3)	;compare $14 to checker Chk attribute
+	cmpi.b	#$14,checking(a3)	;compare $14 to checker Chk attribute
 	blt.w	.26
 	cmpi.w	#$B,SCnum(a3)	;check if SCNum of checker is a player
 	bgt.w	.26
-	btst	#5,$64(a2)	;check if falldown bit is set for player
+	btst	#pf3fall,pflags3(a2)	;check if falldown bit is set for player
 	bne.w	.26
 	move.w	#$2596,d1
 .26
@@ -1092,7 +1092,7 @@ checkpuckcoll	;look for puck coll with players. a3 = puck. Clears Yvel past the 
 	bne.w	.exit	;exit if set
 	tst.b	nopuck(a2)	;check if nopuck collision
 	bne.w	.exit	;branch if nopuck
-	btst	#3,$64(a2)	;95: a one-timer keeps the long reach
+	btst	#pf3onetimer,pflags3(a2)	;95: a one-timer keeps the long reach
 	bne.w	.reach
 	move.w	#$A,(ChkBodyP).w
 	move.w	#$E,(ChkStickP).w
@@ -1109,7 +1109,7 @@ checkpuckcoll	;look for puck coll with players. a3 = puck. Clears Yvel past the 
 	bgt.w	.chkbody	;branch if higher
 	move.l	a2,-(sp)
 	bsr.w	GetHot	;Get Hot Spot d0/d1 = x/y
-	btst	#3,$64(a2)	;95: half the hot spot offset in a one-timer
+	btst	#pf3onetimer,pflags3(a2)	;95: half the hot spot offset in a one-timer
 	beq.w	.hot
 	asr.w	#1,d0
 	asr.w	#1,d1
@@ -1141,7 +1141,7 @@ checkpuckcoll	;look for puck coll with players. a3 = puck. Clears Yvel past the 
 .chkbody
 	tst.w	position(a2)	;check if goalie
 	beq.w	.chkgoalie	;branch if goalie
-	btst	#3,$64(a2)	;check if doing one timer
+	btst	#pf3onetimer,pflags3(a2)	;check if doing one timer
 	bne.w	.exit	;exit if so
 	move.w	(a2),d0	;Xpos into d0
 	sub.w	(a3),d0	;sub Xpos a3
@@ -1364,7 +1364,7 @@ puckstick	;puck collides with stick. a2 = player who collided, a3 = puck, d0 = d
 	cmp.l	#$40,d0
 	bhi.w	rtspuck	;smaller range for stealing puck
 .onetimerchk
-	btst	#3,$64(a2)	;check if onetimer
+	btst	#pf3onetimer,pflags3(a2)	;check if onetimer
 	beq.w	.nosteal2	;branch if not
 	cmp.l	#$100,d0	;95: $100 (94: $64)
 	bhi.w	.3
@@ -1381,7 +1381,7 @@ puckstick	;puck collides with stick. a2 = player who collided, a3 = puck, d0 = d
 	clr.w	d1
 	btst	#sf2shot,(sflags2).w	;check if shot was taken
 	bne.w	.nohand	;branch if so
-	btst	#3,$64(a2)	;check if one timer
+	btst	#pf3onetimer,pflags3(a2)	;check if one timer
 	bne.w	.onetimer	;branch if so
 	move.b	stickhand(a2),d1
 	mulu.w	#$15E,d1
@@ -1544,7 +1544,7 @@ puckglue	;93 name. Player a2 takes the puck (92 puckstick .glue): faceoff and pa
 
 puckbody	;puck hits player a2. a3 = puck, d0 = distance^2 (from checkpuckcoll .ccx). The puck bounces off. A high puck
 	;(Zpos > 8) that is fast makes a2 fall (FallDown, Zpos > $C); a slower one starts SPA $2402 (94 SPAcatch) on a2
-	btst	#3,$64(a2)
+	btst	#pf3onetimer,pflags3(a2)
 	bne.w	rtspuck
 	cmpi.w	#8,Zpos(a3)
 	bgt.w	.hit
@@ -1843,7 +1843,7 @@ wallcollduringcheck	;(cards94). during a check, a skater a2 (not a goalie) near 
 
 checkcornercoll94	;(crowd94). Corner circles and side walls for object a3 at d2 / d3 (wcradiusx / wcradiusy); a hit goes to
 	;cornercollb94. 95: end boards $128
-	bclr	#4,$64(a3)	;clears bit 4 in pflags3 (not used in 92)
+	bclr	#pf3wall,pflags3(a3)	;clears bit 4 in pflags3 (not used in 92)
 	move.w	#$98,d4
 	sub.w	(wcradiusx).w,d4
 	move.w	#$128,d5
@@ -2135,7 +2135,7 @@ checkint	;check for interference penalty. player a2 interferes with a3 or vice-v
 	cmp.w	#$FFEC,d0	;compare Xpos to goalpost
 	blt.w	.7
 	move.w	#$1E,d0
-	sub.b	$73(a3),d0	;aggres
+	sub.b	aggress(a3),d0	;aggres
 	jsr	(randomd0).l
 	cmp.w	#5,d0
 	bhi.w	.7

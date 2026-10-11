@@ -539,7 +539,7 @@ DisplayAttributeMenu	;stats94 DisplayAttributeMenu (93 name)
 	ext.l	d2
 	asl.l	#8,d2
 	movem.l	d7/a0,-(sp)
-	move.w	$28(a2),d7
+	move.w	Xvel(a2),d7
 	jsr	(GetRosterName).l
 	adda.w	(a1),a1
 	movem.l	(sp)+,d7/a0
@@ -1074,7 +1074,7 @@ SaveGameHighlights	;95 only. Pick today's highlight of HomeTeam's game (most goa
 	bsr.w	MostGoals
 	cmp.w	#2,d2
 	blt.w	.2
-	move.w	$28(a2),d0
+	move.w	Xvel(a2),d0
 	mulu.w	#$1A,d0
 	add.w	d3,d0
 	ori.w	#$2000,d0
@@ -1085,7 +1085,7 @@ SaveGameHighlights	;95 only. Pick today's highlight of HomeTeam's game (most goa
 	bsr.w	MostGoals
 	cmp.w	#3,d2
 	blt.w	.3
-	move.w	$28(a2),d0
+	move.w	Xvel(a2),d0
 	mulu.w	#$1A,d0
 	add.w	d3,d0
 	ori.w	#$2000,d0
@@ -1096,7 +1096,7 @@ SaveGameHighlights	;95 only. Pick today's highlight of HomeTeam's game (most goa
 	tst.w	tmscore(a3)
 	bne.w	.5
 .4
-	move.w	$28(a2),d0
+	move.w	Xvel(a2),d0
 	mulu.w	#$1A,d0
 	add.w	d3,d0
 	ori.w	#$6000,d0
@@ -1121,7 +1121,7 @@ SaveGameHighlights	;95 only. Pick today's highlight of HomeTeam's game (most goa
 .7
 	cmp.w	#2,d2
 	blt.w	.8
-	move.w	$28(a2),d0
+	move.w	Xvel(a2),d0
 	mulu.w	#$1A,d0
 	add.w	d3,d0
 	ori.w	#$4000,d0
@@ -1133,7 +1133,7 @@ SaveGameHighlights	;95 only. Pick today's highlight of HomeTeam's game (most goa
 	bne.w	.9
 	movem.l	(sp),a2-a3
 	bsr.w	MostGoals
-	move.w	$28(a2),d0
+	move.w	Xvel(a2),d0
 	mulu.w	#$1A,d0
 	add.w	d3,d0
 	ori.w	#$2000,d0
@@ -3872,7 +3872,7 @@ TeamLinesOffset	;95 only. d0 = save RAM offset of team a2's saved line ($39 byte
 .2
 	moveq	#$39,d1
 	move.w	d1,-(sp)
-	mulu.w	$28(a2),d1
+	mulu.w	Xvel(a2),d1
 	add.l	d1,d0
 	move.w	(sp)+,d1
 	rts

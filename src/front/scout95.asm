@@ -1207,7 +1207,7 @@ CopyColdestPlayer	;crowd94 CopyColdestPlayer. Copy the coldest player of TempBuf
 
 GetTeamRating	;period94 GetTeamRating. d0 = the rating byte of team $28(a2): TeamRatingsLine with OptLine 1, else TeamRatings
 	movem.l	d1-d7/a0-a6,-(sp)
-	move.w	$28(a2),d0
+	move.w	Xvel(a2),d0
 	movea.l	#TeamRatingsLine,a0
 	cmpi.w	#1,(OptLine).w
 	beq.w	.0

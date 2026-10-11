@@ -877,7 +877,7 @@ PlayoffStatsScreen	;95 only. Pause menu PLAYOFF STATS: the playoff stats (Displa
 	move.w	(potreeteam).w,d0
 	move.b	(a0,d0.w),d0
 	movea.l	#HmShots,a2
-	cmp.w	$28(a2),d0
+	cmp.w	Xvel(a2),d0
 	beq.w	.0
 	adda.w	#tmsize,a2
 .0

@@ -26,16 +26,16 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	btst	#5,d1	;C button
 	beq.w	.1	;branch if not pressed
 	bclr	#4,d1
-	bset	#6,$64(a3)
+	bset	#6,pflags3(a3)
 	bra.w	.5
 .1
 	btst	#4,d1
 	beq.w	.2
-	bclr	#6,$64(a3)
+	bclr	#6,pflags3(a3)
 .2
 	btst	#4,d2
 	beq.w	.5
-	bclr	#6,$64(a3)
+	bclr	#6,pflags3(a3)
 	beq.w	.5
 	tst.w	d4
 	bne.w	.3
@@ -90,7 +90,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	beq.w	.8
 	btst	#3,pflags(a3)
 	bne.w	.8
-	btst	#3,$64(a3)
+	btst	#pf3onetimer,pflags3(a3)
 	bne.w	.8
 	move.w	d4,(inputjoy).w
 	move.w	#$18,d0
@@ -99,7 +99,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	rts
 .8
 	movem.l	(sp)+,d0-d2/a0/a3
-	btst	#3,$64(a3)
+	btst	#pf3onetimer,pflags3(a3)
 	bne.w	.9
 	btst	#5,pflags(a3)
 	bne.w	doinput_islocked
@@ -109,7 +109,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	beq.w	.41
 	tst.w	position(a3)
 	beq.w	.11
-	btst	#3,$64(a3)
+	btst	#pf3onetimer,pflags3(a3)
 	beq.w	.10
 	bra.w	.11
 .10
@@ -260,7 +260,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	jmp	doinput_goaliedive
 .38
 	move.w	(TempWord1).w,d0
-	btst	#3,$64(a3)
+	btst	#pf3onetimer,pflags3(a3)
 	bne.w	rtss7
 	btst	#5,d1
 	beq.w	doplayeracc
@@ -428,7 +428,7 @@ doinput_islocked	;94 global (doinput branches across). B with the player not the
 	asl.w	#7,d0
 	movea.l	#SortCords,a0
 	adda.w	d0,a0
-	bset	#6,$64(a0)
+	bset	#6,pflags3(a0)
 .5
 	movem.l	(sp)+,d0/a0
 
@@ -979,7 +979,7 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	move.w	#$1E,(ShotTimer).w
 	move.b	pflags(a3),(shotpflags).w
 	bclr	#4,(gmode2).w
-	btst	#1,$64(a3)	;check if player on breakaway
+	btst	#pf3break,pflags3(a3)	;check if player on breakaway
 	beq.w	.1
 	bset	#4,(gmode2).w	;set if breakaway
 .1
@@ -988,7 +988,7 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	move.w	SCnum(a3),(shotplayer).w
 	bclr	#3,(sflags).w
 	bset	#5,pflags(a3)
-	btst	#3,$64(a3)	;check if shooting one timer
+	btst	#pf3onetimer,pflags3(a3)	;check if shooting one timer
 	bne.w	.2
 	move.w	(puckc).w,d0	;puck carrier SCnum into d0
 	cmp.w	SCnum(a3),d0	;is player puck carrier?
@@ -1003,7 +1003,7 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	lsr.w	#2,d0	;sub 25% for backhand shots
 	sub.w	d0,(passspeed).w
 .3
-	btst	#3,$64(a3)	;check if shooting one timer
+	btst	#pf3onetimer,pflags3(a3)	;check if shooting one timer
 	beq.w	.4
 	movem.l	d0-d1,-(sp)	;push d0-d1 on stack
 	move.w	#$1F,d0	;1F into d0 - one timer min speed
@@ -1155,7 +1155,7 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	bra.w	.20
 	bclr	#4,(sflags5).w	;dead (the bra above skips it): the 94 top shelf call
 	beq.w	.20
-	btst	#3,$64(a3)	;check if one timer
+	btst	#pf3onetimer,pflags3(a3)	;check if one timer
 	bne.w	.20
 	jsr	(puckvzadj).l	;adjust puckvz for top shelf shot
 .20
@@ -1176,7 +1176,7 @@ shotsets	;Offsets (x, z) for the different shot directions (passdir 0 ... 8)
 	dc.w	0,6	;passdir 8
 
 shotdiradj	;a3 = shooter. Where to shoot for a computer player or a one timer
-	btst	#3,$64(a3)	;check if shooting one timer
+	btst	#pf3onetimer,pflags3(a3)	;check if shooting one timer
 	bne.w	.0	;jump if shooting one timer
 	btst	#3,pflags(a3)
 	bne.w	.6

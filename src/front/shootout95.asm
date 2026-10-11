@@ -56,7 +56,7 @@ PSandSOpassdir	;title94 PSandSOpassdir. Penalty shot / shootout: passdir = sopat
 	;NextPathPoint), turned by passdirlist for the bottom net
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(sopathdir).w,d0
-	btst	#7,$62(a3)	;check what net shooting at
+	btst	#7,pflags(a3)	;check what net shooting at
 	bne.w	.0	;branch if top net
 	movea.l	#passdirlist,a0
 	add.w	d0,d0
@@ -117,7 +117,7 @@ NextPathPoint	;title94 NextPathPoint. Next point of shootout path sopath (sopath
 	asl.w	#2,d1
 	movea.l	(a0,d1.w),a0
 	move.w	(a0,d0.w),(sopathx).w
-	btst	#0,$76(a3)
+	btst	#0,handed(a3)
 	beq.w	.0
 	neg.w	(sopathx).w
 .0
@@ -138,7 +138,7 @@ SkatePath	;title94 SkatePath. Shootout skate path: d0 / d1 = the point (mirrored
 	beq.w	.x
 	move.w	(sopathx).w,d0
 	move.w	(sopathy).w,d1
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	bne.w	.0
 	neg.w	d0
 	neg.w	d1
@@ -147,9 +147,9 @@ SkatePath	;title94 SkatePath. Shootout skate path: d0 / d1 = the point (mirrored
 	bpl.w	.1
 	neg.w	d0
 .1
-	tst.w	$28(a3)
+	tst.w	Xvel(a3)
 	bne.w	.2
-	tst.w	$2A(a3)
+	tst.w	Yvel(a3)
 	bne.w	.2
 	cmp.w	#$12,d0
 	ble.w	.3
@@ -157,13 +157,13 @@ SkatePath	;title94 SkatePath. Shootout skate path: d0 / d1 = the point (mirrored
 	cmp.w	#$A,d0
 	bgt.w	.7
 .3
-	sub.w	$14(a3),d1
+	sub.w	Ypos(a3),d1
 	bpl.w	.4
 	neg.w	d1
 .4
-	tst.w	$28(a3)
+	tst.w	Xvel(a3)
 	bne.w	.5
-	tst.w	$2A(a3)
+	tst.w	Yvel(a3)
 	bne.w	.5
 	cmp.w	#$12,d1
 	ble.w	.6
@@ -183,7 +183,7 @@ ShootoutShootCheck	;title94 ShootoutShootCheck. Shootout, skater a3 has the puck
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#1,(gmode2).w
 	beq.w	.5
-	move.w	$52(a3),d0
+	move.w	SCnum(a3),d0
 	cmp.w	(puckc).w,d0
 	bne.w	.5
 	cmpi.w	#3,(shootoutclock).w
@@ -202,7 +202,7 @@ ShootoutShootCheck	;title94 ShootoutShootCheck. Shootout, skater a3 has the puck
 .0
 	move.w	(sopathx).w,d0
 	move.w	(sopathy).w,d1
-	btst	#7,$62(a3)
+	btst	#7,pflags(a3)
 	bne.w	.1
 	neg.w	d0
 	neg.w	d1
@@ -211,7 +211,7 @@ ShootoutShootCheck	;title94 ShootoutShootCheck. Shootout, skater a3 has the puck
 	bpl.w	.2
 	neg.w	d0
 .2
-	sub.w	$14(a3),d1
+	sub.w	Ypos(a3),d1
 	bpl.w	.3
 	neg.w	d1
 .3
@@ -857,7 +857,7 @@ puckshootout	;checks94 puckshootout. Start a penalty shot or shootout attempt: t
 	adda.w	d0,a2
 	tst.w	$34(a2)
 	bne.w	.10
-	btst	#2,$63(a2)
+	btst	#2,pflags2(a2)
 	beq.w	.14
 .10
 	move.w	(BA_Goalie_SCnum).w,d0
@@ -880,7 +880,7 @@ puckshootout	;checks94 puckshootout. Start a penalty shot or shootout attempt: t
 	adda.w	d1,a2
 	tst.w	$34(a2)
 	bne.s	.11
-	btst	#2,$63(a2)
+	btst	#2,pflags2(a2)
 	bne.s	.11
 	move.w	d0,(BA_Goalie_SCnum).w
 .14
@@ -1366,7 +1366,7 @@ PenShotBigTxt	;data94 PenShotBigTxt. PenaltyShotBox big text
 
 PenShotChk	;penalty94 PenShotChk. A breakaway shooter hit: a penalty shot when penalty d0 allows one (PenShotPenalties); d0 = the penalty
 	movem.l	d1-d3/a0,-(sp)
-	btst	#1,$64(a2)	;breakaway
+	btst	#pf3break,pflags3(a2)	;breakaway
 	beq.w	.0
 	btst	#3,(gmode).w
 	bne.w	.0
@@ -1384,7 +1384,7 @@ PenShotChk	;penalty94 PenShotChk. A breakaway shooter hit: a penalty shot when p
 	movea.l	#PenShotPenalties,a0
 	move.w	(a0,d0.w),d1
 	bmi.w	.3
-	move.w	$52(a2),d2	;SCnum
+	move.w	SCnum(a2),d2	;SCnum
 	movem.w	d0-d1,-(sp)
 	move.w	d2,d0
 	jsr	(getBAplayerInfo).l
