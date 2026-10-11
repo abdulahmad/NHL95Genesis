@@ -1,13 +1,10 @@
 ;	NHL 95.
-;	Mapped (34%), but most of the row is other 94 files moved together: TeamRosterScreen, DisplayPlayerList
-;	getNameandAttrib and its column handlers, DrawTeamScreen; PAttribColumns / GAttribColumns, PlayerPositionText; the 95 game
-;	setup screen (GameSetUp ... setoptions, DrawTeamBitmap, SetPojoyMode, rewritten for the 13 95 play modes
-;	the season and the player cards); DefaultMenus, FigureJoy and the playoff routines InitializeGameStructures ... MakeTree
-;	ReadLineData / WriteLineData. follows.
-;code as dc.b (TeamRosterScreen ...
-;these are read from the retail bytes.
-;	hid the printz / printz2 Strings and the DecompressGraphicsWithCallback remap bytes as instructions. Local labels are numbered;
-;the names are not kept.
+;	Mapped (34%), but most of the row is other 94 files moved together: TeamRosterScreen, DisplayPlayerList getNameandAttrib and
+;	its column handlers, DrawTeamScreen; PAttribColumns / GAttribColumns, PlayerPositionText; the 95 game setup screen (GameSetUp
+;	... setoptions, DrawTeamBitmap, SetPojoyMode, rewritten for the 13 95 play modes the season and the player cards);
+;	DefaultMenus, FigureJoy and the playoff routines InitializeGameStructures ... MakeTree ReadLineData / WriteLineData. follows.
+;	code as dc.b (TeamRosterScreen ... these are read from the retail bytes. hid the printz / printz2 Strings and the
+;	DecompressGraphicsWithCallback remap bytes as instructions.
 ;	Its RAM names are: the 94 setup and card words (logoteam ... cardteamnum, DispAttribCtr
 ;	setupprevline), the playoff words (gsstruct ... potree), and the 95 setup words (SelectedPlayerIdx, setupvalues, setupdir ...).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
@@ -347,7 +344,7 @@ attribjmp	;getNameandAttrib column handlers, offsets from attribjmp: status, ene
 	dc.w	AttribRating-attribjmp
 
 AttribStatus	;Player d0's status word at $68(a2) (94 $66): Ice, Bench, Inj. P, Inj. G, or penalty time. 95: an injured player
-	;(status 3) shows his games out from InjuryGamesTbl (GetInjuryGames)
+	;(status 3) shows his games out from InjuryGamesTbl
 	add.w	d0,d0	;jump for status
 	move.w	tmpdst(a2,d0.w),d0
 	bpl.w	.3
@@ -648,7 +645,7 @@ PlayerPositionText	;Position names for the line slots (no xref in)
 	String	'RW'
 
 GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the options from TmpOptLine2 /
-	;TempOptPlayMode. In a season (GameFlags bit 5) take the season options (ReadSeasonHeader) and the matchup (StepSeasonTeam).
+	;TempOptPlayMode. In a season (GameFlags bit 5) take the season options (ReadSeasonHeader) and the matchup.
 	;Then setoptions, and the line cursor loop: FixModeOptions, PrintOptions, the logos or matchup bitmaps, GameSetUp_2 for a key;
 	;up / down move SelectedPlayerIdx, left / right step setupvalues (WrapOptionUp / Down), start stores them (SetupStart) and sets the
 	;pads (SetPojoyMode, FigureJoy).
@@ -960,7 +957,7 @@ MoveMenuFrame	;nms. Keep SelectedPlayerIdx inside DispAttribCtr ... VertLineScro
 
 FixModeOptions	;(rewritten). Set setuplines / setupshown for the mode in setupvalues (Trade, Create, Sign, Release and Shootout
 	;show fewer lines), keep the two teams 0-$19 and different in Trade Players, skip the modes save RAM or the season do not allow
-	;(ValidSRAM, ReadSeasonHeader, CheckCreateSlots, ReadCreatedPlayers), step a season matchup (StepSeasonTeam) and start new /
+	;(ValidSRAM, ReadSeasonHeader, CheckCreateSlots, ReadCreatedPlayers), step a season matchup and start new /
 	;continue playoffs (NewPO, ContinuePlayoffs) when line 1 changes
 	movea.l	#setupvalues,a0
 	move.w	#8,(setuplines).w
@@ -1534,7 +1531,7 @@ GetSetupValues	;setupvalues from the options: line 0 from ModeToSetupMode(OptPla
 ModeToSetupMode	;OptPlayMode 0-4 to the setup mode list (OptionValueOffsets line 0)
 	dc.w	$5,$304,$CFF
 
-SetupStart	;93 setoptions.ex. Store setupvalues in the options: OptPlayMode (SetupModeToMode), the mode flags
+SetupStart	;93 setoptions.ex. Store setupvalues in the options: OptPlayMode, the mode flags
 	;(sflags10 bits 2 / 4-6 Trade / Create / Sign / Release, gmode2 bit 0 Shootout, sflags11 bit 6 Regular Game, sflags9 bit 7
 	;Practice, GameFlags bits 3 / 4 season), the teams, then the other options; line changes 2 (Auto) sets sflags7 bit 4.
 	;Playoff modes set sflags10 bit 0
@@ -1999,7 +1996,7 @@ DrawVisBlock	;(rewritten). Erase the left logo (setupcardflags bit 2 was set) an
 	String	-(TXPAL3+TXMAP1),$0,$0,$0
 	move.w	#1,(printx).w
 
-DrawSetupLogo	;94 DrawTeamLogo. Draw the logo of team logoteam (TeamLogoBitmaps) at printx, 6 x 6, palette TeamLogoPalettes
+DrawSetupLogo	;94 DrawTeamLogo. Draw the logo of team logoteam at printx, 6 x 6, palette TeamLogoPalettes
 	;+ team * $20 - $20 (bit 2: home) or - $40. Branched to from DrawHomeBlock; the name DrawTeamLogo is 's
 	move.w	#1,(printy).w
 	move.w	(homepicchars).w,d4
@@ -2837,7 +2834,7 @@ CheckPlayoffsStarted	;ContinuePlayoffs, then d0 = gamelevel | bosgames (0 = no g
 	or.w	(bosgames).w,d0
 	rts
 
-ReadLineData	;Read the $100 bytes at save RAM SRLineData (94 $1EF6) to databuffer (ReadSRAM); sflags bit 4 cleared
+ReadLineData	;Read the $100 bytes at save RAM SRLineData (94 $1EF6) to databuffer; sflags bit 4 cleared
 	;lastsfx = -1, recbpr = M68K_RAM. Called from GameSetUp and Begin
 	movem.l	d0-d1/a0,-(sp)
 	move.l	#$100,d1

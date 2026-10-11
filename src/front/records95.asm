@@ -8,7 +8,7 @@
 ;	GetNameLength, PrintNameField, LetterGrid, GetLogName, StoreUserName and WriteNameRecord (the user records name entry).
 ;	The old segment map ended this part, inside UserNameEntry; UserNameEntry starts.
 ;printz / printz2 / printbigz Strings as instructions; they are written from the retail bytes.
-;Local labels are numbered; the names are not kept.
+
 
 
 	include	macros\genesis.mac	;String
@@ -399,7 +399,7 @@ PrintNameCursor	;Name entry: position the name cursor (95 prints no " < "; Print
 	tst.w	(NameEntryMode).w
 	beq.w	rtsNameCursor
 
-rtsNameCursor	;Shared rts of PrintNameCursor (rtsNameCursor)
+rtsNameCursor	;Shared rts of PrintNameCursor
 	rts
 
 PrintCurLetter	;Name entry: print grid letter d5 when the cursor is on (PrintCurLetter)
@@ -413,7 +413,7 @@ PrintCurLetter	;Name entry: print grid letter d5 when the cursor is on (PrintCur
 	move.b	d0,2(a1)
 	jmp	(printsmall).l
 
-LetterGridPos	;Name entry: printx/printy of grid letter d5 (6 a row, 2 cells apart), d0/d1 = 3x3 box (LetterGridPos)
+LetterGridPos	;Name entry: printx/printy of grid letter d5 (6 a row, 2 cells apart), d0/d1 = 3x3 box
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),9,$10,$0
 	move.w	d5,d0
@@ -627,7 +627,7 @@ StoreUserName	;Name entry: store the edited name in the name log slot; if change
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-WriteNameRecord	;Clear name slot namelogsel from every saved record (read ReadSRAM, write WriteSRAM), zero its 16-byte entry at $D22, then MakeSRAMChecksum (WriteNameRecord)
+WriteNameRecord	;Clear name slot namelogsel from every saved record (read ReadSRAM, write WriteSRAM), zero its 16-byte entry at $D22, then MakeSRAMChecksum
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$2D7,d7
 	moveq	#2,d0
@@ -723,7 +723,7 @@ WriteNameRecord	;Clear name slot namelogsel from every saved record (read ReadSR
 ;	ClearWinRecords.
 ;	The segment map started this file (inside UserNameEntry); the confirmed start is.
 ;it is transcribed from the retail bytes. printz / printz2 / printbigz Strings as instructions.
-;Local labels are numbered; the names are not kept.
+
 
 
 UserNameEntry	;With user records on (OptUserRec 0): the name entry (NameEntryScreen) for each pad in use (UserNameEntry)
@@ -837,10 +837,10 @@ SkipOtherUserName	;Step the name log selection (namelogsel) by 1 in direction d0
 .2
 	clr.w	d2
 	rts
-WriteNameLog	;Write the user name log ($80 bytes at namelog) to save RAM SRNameLog (NameLogIO)
+WriteNameLog	;Write the user name log ($80 bytes at namelog) to save RAM SRNameLog
 	bset	#6,(sflags6).w
 	bra.w	NameLogIO
-ReadNameLog	;Read the user name log from save RAM SRNameLog to namelog (NameLogIO)
+ReadNameLog	;Read the user name log from save RAM SRNameLog to namelog
 	bclr	#6,(sflags6).w
 NameLogIO	;Read or write (sflags6 bit 6) the name log
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1244,7 +1244,7 @@ CalcWinPercents	;For the 8 user record blocks at ThreeStars: the win % (winpcts)
 	movea.l	(sp)+,a1
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-ReadTeamRecords	;Read the $80 byte records from save RAM SRTeamRecords (ReadSRAM) and sort the rows on record
+ReadTeamRecords	;Read the $80 byte records from save RAM SRTeamRecords and sort the rows on record
 	;byte 0 (recsort1) or, with sflags6 bit 6, byte 4 (recsort2)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	#SRTeamRecords,d0
@@ -1322,7 +1322,7 @@ ClearWinRecords	;Clear bytes 8-$B (wins, games) of the 8 ThreeStars records and 
 ;	UpdatePlayerRecords, the save RAM record block IO (ReadTeamRecord ... WritePlayerRecord, PlayerRecordOffsets), CountGoalies and
 ;	CountPlayers; SetupScreen follows them in 95.
 ;SetupScreen as dc.b; it is transcribed from the retail bytes. its printz Strings and remap bytes.
-;Local labels are numbered; the names are not kept.
+
 
 
 UpdateRecords	;With save RAM (ValidSRAM) and user records on (OptUserRec 0), update the player records
@@ -1716,7 +1716,7 @@ PlayerRecordIO	;The player record: read or write (sflags6 bit 6)
 .x
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
-WritePlayerRecord	;Write the 4 byte player record (PlayerRecordIO)
+WritePlayerRecord	;Write the 4 byte player record
 	bset	#6,(sflags6).w
 	bra.s	PlayerRecordIO
 PlayerRecordOffsets	;The first player record of each team (26 per team), ReadPlayerRecord

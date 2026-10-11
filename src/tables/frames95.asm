@@ -8,11 +8,11 @@
 ;	uses it. A direction can hold more than one terminated sequence; the extra pairs are not reached through .t.
 ;	The frames are written as SPF base + n, as 94.
 
-; Sprite Frame (SPF) base indices, in frame sheet order, with the 94 name and value where 95 has the group. 95 moves
-; the plain skating frames first and gives the skating groups 8 frames per direction (94: 5); a "New in 95" group is new
-; frames. Names for the new 95 groups follow the 94 tables that use them, or the 95 PC animation names (SPFblock).
-; sets the arrow, star, replay cursor, net and puck frames, which no table uses. SPFglovel2 is inferred from
-; 94 (the 4 frames after gdive). Frames 115-120, 670-673, 886-889 and 970-999 are not used by a 95 table or the code.
+; Sprite Frame (SPF) base indices, in frame sheet order, with the and value where 95 has the group. 95 moves the plain
+; skating frames first and gives the skating groups 8 frames per direction (94: 5); a "New in 95" group is new frames.
+; Names for the new 95 groups follow the 94 tables that use them, or the 95 PC animation names (SPFblock). sets the
+; arrow, star, replay cursor, net and puck frames, which no table uses. SPFglovel2 is inferred from 94 (the 4 frames
+; after gdive). Frames 115-120, 670-673, 886-889 and 970-999 are not used by a 95 table or the code.
 SPFskate	=	1	; 1 (94: 41)
 SPFglide	=	SPFskate+64	; 65 glide, and the first frame of the falls
 SPFstop	=	SPFglide+8	; 73 (94: 145)
@@ -1078,7 +1078,7 @@ SPAgstickl_table:	;Frames 630-637
 .6	dc.w	SPFGoalie+30,-36
 .7	dc.w	SPFGoalie+31,-36
 
-SPAgdive	=	*-SPAlist	; doinput (doinput_goaliedive)
+SPAgdive	=	*-SPAlist	; doinput
 SPAgdive_table:	;Frames 646-669
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1410,7 +1410,7 @@ SPAgskate_table:	;Frames 852-875
 .6	dc.w	SPFgskate+18,12,SPFgskate+19,8,SPFgskate+20,12,SPFgskate+19,-8
 .7	dc.w	SPFgskate+21,12,SPFgskate+22,8,SPFgskate+23,12,SPFgskate+22,-8
 
-SPAcelebrate	=	*-SPAlist	; the 94 version step
+SPAcelebrate	=	*-SPAlist	; the 94 step
 SPAcelebrate_table:	;Frames 836-851
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t

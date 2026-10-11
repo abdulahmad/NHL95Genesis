@@ -7,7 +7,7 @@
 ;DayToDate / DateToDay, the season menu actions and the calendar screen as dc.b; they and the tables are read from the
 ;retail bytes. printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions; they
 ;are String / dc.b here. The four goal weight tables at the end as code.
-;Local labels are numbered; the names are not kept.
+
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 

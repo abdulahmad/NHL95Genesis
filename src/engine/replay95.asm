@@ -251,8 +251,8 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	move.w	#7,d0
 	move.w	#1,d1
 	jsr	(SoundCmd).l
-	;the 94 version starts here. As 93: a d-pad press picks the nearest object in that direction
-	;and the camera follows it
+	;the 94 starts here. As 93: a d-pad press picks the nearest object in that direction and the
+	;camera follows it
 	bclr	#0,(sflags5).w
 	jsr	(forceblack).l
 	move.w	(disflags).w,-(sp)

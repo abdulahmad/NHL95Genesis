@@ -1,6 +1,6 @@
-;	The pad input the 94 version did in line; holdplayer, Acheck, burst and setpads
-;	chgplayer (with exit and swpchk); the setcplayer entries and restorepl; clearTeamStats
-;	setteams, InitTeamSructure and setplayercolors. is before it; the sound driver follows at $AF44.
+;	The pad input 94 did in line; holdplayer, Acheck, burst and setpads chgplayer (with exit and
+;	swpchk); the setcplayer entries and restorepl; clearTeamStats setteams, InitTeamSructure and
+;	setplayercolors. is before it; the sound driver follows at $AF44.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -115,7 +115,7 @@ burst	;C button speed burst: take $CC energy unless OptLine is set, add a facedi
 	movea.l	#dirtab,a0
 	muls.w	(a0,d2.w),d0
 	muls.w	2(a0,d2.w),d1
-	btst	#pfjoycon,pflags(a3)	;95: no effect, both ways add
+	btst	#pfjoycon,pflags(a3)	;no effect, both ways add
 	beq.w	.add
 .add
 	add.w	d0,Xvel(a3)	;add to X Vel
@@ -123,7 +123,7 @@ burst	;C button speed burst: take $CC energy unless OptLine is set, add a facedi
 	bra.w	.anim
 .anim
 	bclr	#pfdoff,pflags(a3)
-	cmpi.w	#SPAskatewp,SPA(a3)	;95: the puck carrier keeps skating
+	cmpi.w	#SPAskatewp,SPA(a3)	;the puck carrier keeps skating
 	beq.w	.x
 	bset	#pfalock,pflags(a3)	;lock in this animation
 	cmpi.w	#SPAskate,SPA(a3)
@@ -145,7 +145,7 @@ burst	;C button speed burst: take $CC energy unless OptLine is set, add a facedi
 	jmp	(SetSPA).l
 
 setpads	;Put SCnum of a3 in the d4 nibble of PadControlBits ; d4 = -2 puck carrier, 0 / 2 / 4 / 6 pads.
-	;95: a long (94: a word)
+	;a long (94: a word)
 	movem.l	d0-d1,-(sp)
 	moveq	#2,d0
 	add.w	d4,d0
@@ -210,7 +210,7 @@ chgplayer	;the pad d4 takes the nearest free skater to where the puck is going (
 	movem.l	(sp)+,d0
 	bne.w	.next
 .1
-	movem.w	d1,-(sp)	;95: the pad's own player may be locked
+	movem.w	d1,-(sp)	;the pad's own player may be locked
 	move.w	SCnum(a0),d1
 	cmp.w	(a1,d4.w),d1
 	movem.w	(sp)+,d1
@@ -312,7 +312,7 @@ chgplayer	;the pad d4 takes the nearest free skater to where the puck is going (
 	dbf	d2,.ptop
 	bra.w	.found
 .same
-	btst	#pfalock,pflags(a3)	;95: no sweep check while locked
+	btst	#pfalock,pflags(a3)	;no sweep check while locked
 	beq.w	.swpchk
 	rts
 .swpchk	;94 swpchk. Sweepcheck
@@ -336,7 +336,7 @@ setc1player	;Jumped to from doinput
 	bsr.s	setcplayer
 	move.w	(sp)+,d4
 	rts
-setc2player	;Give pad 2 player d0 (setcplayer, d4 = 2). the 94 version did it inline
+setc2player	;Give pad 2 player d0 (setcplayer, d4 = 2). 94 did it inline
 	move.w	d4,-(sp)
 	move.w	#2,d4
 	bsr.s	setcplayer
@@ -395,7 +395,7 @@ restorepl	;d1 = old player (back to the computer), d0 = new player (joystick con
 	tst.w	(goaliemode1).w
 .1
 	beq.w	.3
-	bra.w	.ex	;95: the goalie stays with the computer (94: the first SCnum of the team)
+	bra.w	.ex	;the goalie stays with the computer (94: the first SCnum of the team)
 .3
 	bset	#pfjoycon,pflags(a0,d1.w)	;set pfjoycon for SCNum
 .ex
@@ -456,7 +456,7 @@ setteams	;Use hometeam/visteam to set team structures (InitTeamSructure for each
 	rts
 
 InitTeamSructure	;Set up team struct a2 for team d0: store the team number at $28 and the team data address
-	;(TeamList) at $1E (tmdata), then LoadTeamLines (95; 94 copied the line sets here)
+	;at $1E (tmdata), then LoadTeamLines (95; 94 copied the line sets here)
 	move.w	d0,Xvel(a2)
 	movea.w	#TeamList,a0
 	asl.w	#2,d0

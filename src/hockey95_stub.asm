@@ -15,7 +15,7 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside, read from lst/nhl95.bin: jsr / jmp (x).l and movea.l / move.l #x carry the address
-; bsr.w is the displacement word address + displacement. 94 names where the 95 body is the 94 routine.
+; bsr.w is the displacement word address + displacement.
 KillCrowd = $67988
 newTitleScreen = $A12AA
 play_new_song = $67938		;Stop the song in progress.
@@ -72,9 +72,9 @@ SetupTeamForIntermission = $8A572
 PlaceBoardFall = $8C1FA
 updateanim = $A536
 loadTeamStruct = $7CAF0
-updatevel = $8BB6C		;the velocity update the 94 version does in line.
+updatevel = $8BB6C		;the velocity update 94 does in line.
 setpads = $AB2A
-updatepadinput = $A95C		;the pad input the 94 version does in line (.tp2).
+updatepadinput = $A95C		;the pad input 94 does in line (.tp2).
 ; SPA tables
 SPAboardtop = $20B0
 SPAboardright = $2122

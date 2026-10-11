@@ -3,17 +3,16 @@
 ;	the cmp and exg encodings after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, PrintPenaltyMessagesString
-;	with LeadSong / ClearLeadSong / LeadSongExit moved in. checkagr follows.
-;except LeadSong ... LeadSongExit and PrintPenaltyMessagesString (dc.b, read from the retail bytes). the printz
-;Strings as instructions; they are String here. Local labels are numbered; the names are not kept. Each routine comment
-;	names its 94 file.
-;	95 changes: the team struct offsets (tmpdst $68, the penalty box list $9C), the RAM moved (RefRamMap $DBBE), the 95 sounds.
+;	Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, PrintPenaltyMessagesString with
+;	LeadSong / ClearLeadSong / LeadSongExit moved in. checkagr follows. except LeadSong ... LeadSongExit and
+;	PrintPenaltyMessagesString (dc.b, read from the retail bytes). the printz Strings as instructions; they are String here.
+;	Each routine comment names its 94 file. 95 changes: the team struct offsets (tmpdst $68, the penalty box list $9C), the RAM
+;	moved (RefRamMap $DBBE), the 95 sounds.
 
 
 
 limitfo	;Limit the faceoff spot to 5-20 feet from the walls of the rink, for every player in PenBuf (.1 is 93.lf).
-	;95: the blue line is $56 (94 $58)
+	;the blue line is $56 (94 $58)
 	movem.l	d0-d1/a0-a1,-(sp)
 	movea.w	#(PenBuf-M68K_RAM),a0
 .0
@@ -500,7 +499,7 @@ updatepentime	;Update the time remaining on all penalized players, once a second
 	bsr.w	ProcessPenaltyList
 	adda.w	#tmsize,a2
 
-ProcessPenaltyList	;93 name. a2 = team. Walk the penalty box list ($9C, 94 $9A): the first two players without a coincidental
+ProcessPenaltyList	;a2 = team. Walk the penalty box list ($9C, 94 $9A): the first two players without a coincidental
 	;penalty count down one second and the rest wait. Beeps when the first served time gets to 5 or less and releases the player at 0
 	lea	$9C(a2),a0
 	movea.w	#(mesarea-M68K_RAM),a1	;serving players
@@ -555,7 +554,7 @@ ProcessPenaltyList	;93 name. a2 = team. Walk the penalty box list ($9C, 94 $9A):
 .8
 	clr.w	tmpdst(a2,d0.w)	;falls into RemovePlayerFromList
 
-RemovePlayerFromList	;93 name. Remove the entry before a0 from a penalty box list by shifting the rest down. Return a0 =
+RemovePlayerFromList	;Remove the entry before a0 from a penalty box list by shifting the rest down. Return a0 =
 	;removed slot
 	moveq	#$FFFFFFFF,d2
 .0
@@ -565,7 +564,7 @@ RemovePlayerFromList	;93 name. Remove the entry before a0 from a penalty box lis
 	subq.w	#1,a0
 	rts
 
-releasepl	;93 name. The player's penalty time is up, so let him out (if appropriate). a2 = team, d0 = player * 2
+releasepl	;The player's penalty time is up, so let him out (if appropriate). a2 = team, d0 = player * 2
 	movem.l	d0-d3/a0-a3,-(sp)
 	movea.w	tmsort(a2),a3
 	suba.w	#SCstruct,a3
@@ -808,18 +807,16 @@ prefmes	;Print the message for penalty d0 (negative clears it) under the ref
 	movem.l	(sp)+,d0-d2/a1
 	rts
 
-PrintPenaltyMessagesString	;93 name. Blank the horizontal mode penalty message line (22 spaces at x 5, y $B). no xref
+PrintPenaltyMessagesString	;Blank the horizontal mode penalty message line (22 spaces at x 5, y $B). no xref
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),5,$B,'                      '
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Mapped, but only the tables are ; the code is moved
-;	checkagr, showref, ClearPenaltyBuffer, ClearPenalties / clrTmPdst, puckIChk
-;	ChkOffsides and checkob. follows.
-;except puckIChk and ChkOffsides (dc.b, read from the retail bytes with the 94 source as the guide). Local labels are numbered
-;the names are not kept.
-;	95 changes: the goal line $10B (94 $108), the blue line $52 (94 $54), checkagr's base $32 and the sflags9 penalty options.
+;	Mapped, but only the tables are ; the code is moved checkagr, showref, ClearPenaltyBuffer, ClearPenalties / clrTmPdst,
+;	puckIChk ChkOffsides and checkob. follows. except puckIChk and ChkOffsides (dc.b, read from the retail bytes with the 94
+;	source as the guide). 95 changes: the goal line $10B (94 $108), the blue line $52 (94 $54), checkagr's base $32 and the
+;	sflags9 penalty options.
 
 
 

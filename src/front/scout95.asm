@@ -7,7 +7,7 @@
 ;the printz / printbigz Strings and the remap bytes after DecompressGraphicsWithCallback as instructions; they are written from
 ;	the retail bytes.
 ;	$20xxxx addresses are save RAM (odd bytes).
-;Local labels are numbered; the names are not kept.
+
 
 
 	include	macros\genesis.mac	;String
@@ -262,7 +262,7 @@ PrintMatchupRating	;Print the team rating of team a0 (GetTeamRating) as 2 digits
 	move.l	(sp)+,d0
 	rts
 
-PrintTwoSpaces	;Print 2 spaces at printx / printy (TwoSpacesTxt) and keep printx
+PrintTwoSpaces	;Print 2 spaces at printx / printy and keep printx
 	move.l	a1,-(sp)
 	move.w	(printx).w,-(sp)
 	movea.l	#TwoSpacesTxt,a1
@@ -401,7 +401,7 @@ GetMatchupLogo	;a0 = the logo bitmap of team d3 (TeamLogoBitmaps)
 	rts
 
 PrintMatchupRatings	;Matchup 0: the rating names (StatsText) and both team ratings
-	;1-6: the position (MatchupPosNames), the two players and their ratings
+	;1-6: the position, the two players and their ratings
 	tst.w	(matchup).w
 	bne.w	.3
 	jsr	(printsmallz).l
@@ -513,7 +513,7 @@ MatchupPosNames	;Position names of matchups 1-6
 	String	'right defenseman'
 	String	'     goalie     '
 
-GetMatchupPlayers	;matchuphome / matchupvis = the home / visitors player of the matchup (GetMatchupPlayer)
+GetMatchupPlayers	;matchuphome / matchupvis = the home / visitors player of the matchup
 	movem.l	d0/a0-a1,-(sp)
 .0
 	movea.l	#tmstruct,a0
@@ -720,7 +720,7 @@ SortHotColdStarters	;Sum the hot / cold values of the 6 starters of team a0 (sav
 ;	(GetHomeUsers ... UserNameString).
 ;CompareHotColdTotals / GetHotColdTotal and ScoutTextScript as dc.b and hid printz Strings; they are written from the retail bytes.
 ;	$20xxxx addresses are save RAM (odd bytes).
-;Local labels are numbered; the names are not kept.
+
 
 
 InitScoutingDisplay	;Start the text player ScoutTextPlayer: VertLineScrolling = -1, PlayerScrollCtr = -1, clear SelectedPlayerIdx / typedelay; a0 = TestList (the script line list)
@@ -733,7 +733,7 @@ InitScoutingDisplay	;Start the text player ScoutTextPlayer: VertLineScrolling = 
 
 UpdateScoutingDisplay	;Text player of ScoutingReport: types the ScoutTextScript lines of TestList word by word with a
 	;typing delay (typedelay, longer after , and .); $D ends a line; the special characters insert Strings (team names, arena, hot / cold players,
-	;user names); line breaks scroll the text box (ScoutTextNextLine)
+	;user names); line breaks scroll the text box
 	cmpi.w	#$1000,(typedelay).w
 	bgt.w	.13
 	tst.w	(asv).w
@@ -1333,7 +1333,7 @@ UserNameString	;a1 = NameEntryBuf: the name of name log entry d1 (GetLogName) as
 NullSaveClear	;Does nothing (calls it)
 	rts
 
-GetPlayerPicture	;95: only the picture: a0 = the picture of player d0 of team d1 (the team picture by jersey number, else a generic one)
+GetPlayerPicture	;only the picture: a0 = the picture of player d0 of team d1 (the team picture by jersey number, else a generic one)
 	movem.l	d0-d7/a1-a6,-(sp)
 	btst	#6,(sflags11).w
 	beq.w	.0

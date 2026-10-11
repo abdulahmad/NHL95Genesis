@@ -234,8 +234,8 @@ AssignTeam	;Give assignment d0 to every player of team a2 on the ice (assinsert)
 rtsgoal	;The shared rts of Goal and AssignTeam
 	rts
 
-PenGoalStuff	;93 name. Do this stuff after a goal: a1 = scored on team, a2 = scoring team. Clears PenBuf, lets the
-	;first penalized player of the scored on team out (RemovePlayerFromList), erases the message box (box)
+PenGoalStuff	;Do this stuff after a goal: a1 = scored on team, a2 = scoring team. Clears PenBuf, lets the
+	;first penalized player of the scored on team out (RemovePlayerFromList), erases the message box
 	movem.l	d0-d2/a0,-(sp)
 	cmpi.w	#3,(gsp).w
 	bne.w	.0
@@ -276,7 +276,7 @@ box	;Fill a $13 x 8 rectangle at printz position $FF,$B,2 with char $7FF (eraser
 	move.l	#$7FF,d2
 	jmp	eraser
 
-DisplayPlayerAttributeMenu	;93 name. Goal box: close both line change boxes (lcfound2), then the scorer and the assists from
+DisplayPlayerAttributeMenu	;Goal box: close both line change boxes (lcfound2), then the scorer and the assists from
 	;ScoreSum (PrintPlayerGoals / PrintPlayerAssists), the goalie counts (CountGoalies)
 	movem.l	d0-d2/a0-a4,-(sp)
 	btst	#2,(BA_PS_flags).w
@@ -1009,7 +1009,7 @@ PracticePlayersTxt
 	String	$FD,$C,$FC,$16,'PRACTICE PLAYERS',$FD,$19,$FC,$17,'No. of Players',$FD,$2,'No. of Players'
 
 ControllerSetupScreen	;Build the controller setup screen: vram, fonts, the team blocks and pad tiles, the backgrounds and
-	;"Controller SetUp" (printbigz); the team blocks of VisTeam / HomeTeam (DrawSetupTeamBlock)
+	;"Controller SetUp" (printbigz); the team blocks of VisTeam / HomeTeam
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
 	bclr	#0,(disflags).w
@@ -1135,7 +1135,7 @@ PrintSetupStrHi	;Wrong code in. The same highlighted ($F9,1)
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReadAllPads	;Wrong code in. Read the 4 pads (nodiag) into TempWord1, TempWord2, TempRawSpd and TempMaxSpd
+ReadAllPads	;Wrong code in. Read the 4 pads into TempWord1, TempWord2, TempRawSpd and TempMaxSpd
 	;(the same RAM as scratch here), all of them ored in TempLegSpd
 	jsr	(ReadJoy1).l
 	jsr	(nodiag).l

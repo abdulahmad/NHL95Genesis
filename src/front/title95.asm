@@ -3,7 +3,7 @@
 ;	New in 95: the Stanley Cup screen (StanleyCupScreen ... AddSpriteFrame).
 ;TitleVBlank, CreditsScrollStep and CupVBlank as dc.b and hid the printz Strings and remap bytes; they are written from the retail
 ;	bytes.
-;Local labels are numbered; the names are not kept.
+
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -347,7 +347,7 @@ HiScoreScreen	;vb2, the HiScoreBgMap and HiScoreImg bitmaps, then wait up to $50
 	move	#$2700,sr
 	rts
 
-StanleyCupScreen	;The Stanley Cup screen: the vblank CupVBlank, the cup (StanleyCupImg), the winner team block (CupDrawTeam), the song, then the animated sprites (CupBuildSprites) until start (CupReadPads)
+StanleyCupScreen	;The Stanley Cup screen: the vblank CupVBlank, the cup (StanleyCupImg), the winner team block (CupDrawTeam), the song, then the animated sprites until start
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	#CupVBlank,(vbint).l
 	bclr	#1,(disflags).w
@@ -425,7 +425,7 @@ CupReadPads	;StanleyCupScreen: the buttons of all pads; start leaves StanleyCupS
 	bne.w	CupExit
 	rts
 
-CupWaitFrame	;StanleyCupScreen: wait for the next vblank (vcount)
+CupWaitFrame	;StanleyCupScreen: wait for the next vblank
 	move.w	(vcount).w,d0
 .0
 	cmp.w	(vcount).w,d0
@@ -437,7 +437,7 @@ CupExit	;Leave StanleyCupScreen (CupReadPads on start: drop its return address).
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CupVBlank	;StanleyCupScreen vblank: the sprites (Sattsize), cramfade, vcount, the music; nothing with disflags bit 2; rte
+CupVBlank	;StanleyCupScreen vblank: the sprites, cramfade, vcount, the music; nothing with disflags bit 2; rte
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#2,(disflags).w
 	bne.w	.1

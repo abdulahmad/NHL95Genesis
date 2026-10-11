@@ -7,7 +7,7 @@
 ;	ClearShootout and InitShooters, then the shootout routines PSandSOpassdir, passdirlist, StartShootoutPath
 ;	ShootoutPaths, NextPathPoint, SkatePath and ShootoutShootCheck; then the shootout itself.
 ;passdirlist ... ShootoutShootCheck as dc.b; it is transcribed from the retail bytes.
-;Local labels are numbered; the names are not kept.
+
 
 
 	include	macros\genesis.mac	;String
@@ -103,8 +103,8 @@ ShootoutPath6	;ShootoutPaths path: x, y points; $80 in the high byte ends it (lo
 	dc.w	$1C,$F4,8,$E0,$8020,6
 ShootoutPath7	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
 	dc.w	$FFE6,$F8,0,$E0,$8020,2
-NextPathPoint	;Next point of shootout path sopath (sopathpoint): sopathx / sopathy = x (turned by bit 0
-	;of $76(a3)) / y; at the end ($80) sflags7 bit 3, sopathend and sopathdir (passdir)
+NextPathPoint	;Next point of shootout path sopath: sopathx / sopathy = x (turned by bit 0
+	;of $76(a3)) / y; at the end ($80) sflags7 bit 3, sopathend and sopathdir
 	movem.l	d0-d7/a0-a6,-(sp)
 	cmpi.b	#$80,(sopathx).w
 	beq.w	.x
@@ -768,7 +768,7 @@ PrintShooterNames	;Shootout shooters: the shooters' names (FormatPlayerNameShort
 ;	injuries (SetSeasonInjuries ... DeleteInjurySlot, save RAM SRInjuries), CheckInjury and ClearPowerPlay.
 ;puckshootout ... UpdatePenaltyShotEnd and SetupPenaltyShot as dc.b; they are transcribed from the retail
 ;bytes. the printz / printbigz / appendz Strings as instructions.
-;Local labels are numbered; the names are not kept.
+
 
 
 puckshootout	;Start a penalty shot or shootout attempt: the pads cleared, the shooter (NextShooter) or the path

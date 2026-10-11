@@ -4,8 +4,8 @@
 
 	include	macros\genesis.mac	;String
 
-updatecrowdf	;Every game loop, d7 = elapsed frames: the crowd level falls (faster when loud); every $10 frames the next crowd frame of CrowdFrameTbl (crowdtblidx) in crowdframe.
-	;95: a frame table instead of the 94 random frame / time pairs
+updatecrowdf	;Every game loop, d7 = elapsed frames: the crowd level falls (faster when loud); every $10 frames the next crowd frame of CrowdFrameTbl in crowdframe.
+	;a frame table instead of the 94 random frame / time pairs
 	cmpi.w	#$15E,(crowdlevel).w
 	blt.w	.0
 	subq.w	#3,(crowdlevel).w	;loud crowd calms down faster
@@ -43,7 +43,7 @@ CrowdFrameTbl	;updatecrowdf crowd animation frames, -1 wraps
 	dc.b	4,5,4,3,2,3,4,5,4,5,$B,$C,6,7,8,9
 	dc.b	$FF,$FF
 
-showcrowd	;Crowd sprites (CrowdFrameList): up to 3 frames per PBnum nibble (ShowCrowdPb), then the crowdframe frame (ShowCrowdFrame)
+showcrowd	;Crowd sprites: up to 3 frames per PBnum nibble (ShowCrowdPb), then the crowdframe frame
 	;none in a reverse angle replay (sflags4 bit 4). a6 = sprite table, d6 = link counter
 	btst	#4,(sflags4).w	;check if reverse angle replay
 	bne.w	rtsShowCrowd
@@ -62,7 +62,7 @@ showcrowd	;Crowd sprites (CrowdFrameList): up to 3 frames per PBnum nibble (Show
 	move.b	(crowdframe+1).w,d0
 	bra.w	ShowCrowdFrame
 
-ShowCrowdPb	;pb. d2 = the count (PBnum nibble, at most 3), d3 = the first frame (ShowCrowdFrame)
+ShowCrowdPb	;pb. d2 = the count (PBnum nibble, at most 3), d3 = the first frame
 	andi.w	#$F,d2
 	cmp.w	#3,d2
 	bls.w	.0

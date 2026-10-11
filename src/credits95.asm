@@ -1,6 +1,6 @@
 ;	NHL 95. follows.
 ;	The title screen credits: length-prefixed Strings, String -1 ends a screen; newTitleScreen
-;	prints Credits first, then CreditsList (CreditsPrintRow).
+;	prints Credits first, then CreditsList.
 
 	include	macros\genesis.mac	;String
 

@@ -16,7 +16,7 @@
 
 GameStatisticsScreen	;Pause menu GAME STATS: both teams' totals
 	;(DisplayTeamStatsScreen). There are more rows than the screen: up / down scroll them (matchupvis the most, $70 or $30 without
-	;penalties, OptPen), start exits (ExitAttributeScreen2). 95 draws the screen with DrawTeamScreen2 (ControllerBgMap)
+	;penalties, OptPen), start exits (ExitAttributeScreen2). 95 draws the screen with DrawTeamScreen2
 	moveq	#9,d0
 	moveq	#$19,d1
 	move.l	#ControllerBgMap,(screenarg).l
@@ -319,16 +319,14 @@ TeamStatTextTblNoPen	;The rows without the power play ones, used when penalties 
 	dc.w	$14,$12
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Mapped (22%), with and moved in. In ROM order: rtsStatTables; the pause menu
-;	PLAYER STATS screen (PlayerStatsScreen ... ScrollArrowTbl2); the 95 season stats save code (InitSeasonStats
-;	SaveSimGame, the player / team stat blocks in save RAM and the game highlights); the 95 season PLAYER STATS, TEAM STATS
-;	and LEAGUE LEADERS screens (also the pause menu SEASON PLAYERS / SEASON TEAMS); PeriodStatsScreen
-;	line editor (LineEditor ... UpdatePlayerAttribute) with the 95 save / load of team lines; DisplayPeriodOver
-;	FindMaxAttributeTEam, CalculateTeamAttributes, CalculateTeamAttributeValues; and the 95 season NHL HIGHLIGHTS screen.
-;	(no 94 name). follows.
-;they are written from the retail bytes
-;the 94 routines from the 94 source. printz Strings; they are String here.
-;Local labels are numbered; the names are not kept.
+;	Mapped (22%), with and moved in. In ROM order: rtsStatTables; the pause menu PLAYER STATS screen (PlayerStatsScreen ...
+;	ScrollArrowTbl2); the 95 season stats save code (InitSeasonStats SaveSimGame, the player / team stat blocks in save RAM
+;	and the game highlights); the 95 season PLAYER STATS, TEAM STATS and LEAGUE LEADERS screens (also the pause menu SEASON
+;	PLAYERS / SEASON TEAMS); PeriodStatsScreen line editor (LineEditor ... UpdatePlayerAttribute) with the 95 save / load of
+;	team lines; DisplayPeriodOver FindMaxAttributeTEam, CalculateTeamAttributes, CalculateTeamAttributeValues; and the 95
+;	season NHL HIGHLIGHTS screen. (no). follows. they are written from the retail bytes the 94 routines from the 94 source.
+;	printz Strings; they are String here.
+
 
 
 rtsStatTables	;rts (rtsStatTables)
@@ -700,7 +698,7 @@ GetAttributeValue2	;d2 = stat column d1 for player d0. d7 = 0: the team struct b
 	add.w	d3,d2
 	rts
 
-SkipAttribute	;95: the column is not shown for this goalie (sflags5 bit 2)
+SkipAttribute	;the column is not shown for this goalie (sflags5 bit 2)
 	bset	#2,(sflags5).w
 	rts
 
@@ -1904,7 +1902,7 @@ SeasonScrollArrowTbl	;None, up, down, both
 	String	' ',$FB,$FF,$FA,$E,'}',$F9,$0
 	String	'{',$FB,$FF,$FA,$E,'}',$F9,$0
 
-DrawTeamLogo1	;Draw bitmap Teamblocksmap via dobitmap (dobitmap) with tile base $69A, d1 = 2*d0 (team d0). Saves all regs
+DrawTeamLogo1	;Draw bitmap Teamblocksmap via dobitmap with tile base $69A, d1 = 2*d0 (team d0). Saves all regs
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#1,d4
 	move.w	d0,d1
@@ -2191,7 +2189,7 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	movem.l	(sp)+,a6
 	rts
 
-DrawTeamLogo2	;draw team d0's logo: frame d0*2 of the bitmap set at Teamblocksmap, tile $69A, via dobitmap (dobitmap)
+DrawTeamLogo2	;draw team d0's logo: frame d0*2 of the bitmap set at Teamblocksmap, tile $69A, via dobitmap
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#1,d4
 	move.w	d0,d1
@@ -3074,7 +3072,7 @@ LeaderTables	;RAM tables (team order) per category for DrawLeaderRows
 	dc.l	LeaderTeamTbls+$9C
 	dc.l	LeaderTeamTbls+$B6
 
-DrawTeamLogo3	;Draw small team logo d1 from Teamblocksmap at printx / printy (dobitmap). Saves all
+DrawTeamLogo3	;Draw small team logo d1 from Teamblocksmap at printx / printy. Saves all
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	asl.w	#1,d1
@@ -4039,7 +4037,7 @@ CalculateTeamAttributeValues	; Star scores of team a2 (a3 = other team) to (a4)+
 	dbf	d4,.0
 	rts
 
-HighlightsScreen	;95 season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left/right change day (SeasonDay), up/down change game (rosterscroll), Start exits
+HighlightsScreen	;95 season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left/right change day, up/down change game (rosterscroll), Start exits
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(ReadSeasonHeader).l
 	btst	#0,(sflags11).w

@@ -61,7 +61,7 @@ printx	equ	$FFFFAC40	;94 $FFFFB028
 printy	equ	$FFFFAC42	;94 $FFFFB02A
 printa	equ	$FFFFAC44	;94 $FFFFB02C. Print attribute (palette / priority bits)
 printm	equ	$FFFFAC46	;94 $FFFFB02E. Print map offset from VmMap1
-printfontset	equ	$FFFFAC48	;94 $FFFFB030. Char set index of printsmall (ControlCode_SetFont)
+printfontset	equ	$FFFFAC48	;94 $FFFFB030. Char set index of printsmall
 fodropx	equ	$FFFFAC4A	;94 $FFFFB032. Faceoff window x (DrawFaceoffWindow)
 fodropy	equ	$FFFFAC4C	;94 $FFFFB034
 recbpr	equ	$FFFFAC4E	;94 $FFFFB036. Replay record pointer
@@ -134,7 +134,7 @@ lj1	equ	$FFFFBAEC	;94 $FFFFBEEE. Last buttons read by ReadJoy1
 lj2	equ	$FFFFBAEE	;94 $FFFFBEF0
 lj3	equ	$FFFFBAF0	;94 $FFFFBEF2
 lj4	equ	$FFFFBAF2	;94 $FFFFBEF4
-pad4way1	equ	$FFFFBAF4	;94 $FFFFBEF6. Pad 1 byte read each vblank (ReadJoyData)
+pad4way1	equ	$FFFFBAF4	;94 $FFFFBEF6. Pad 1 byte read each vblank
 pad4way2	equ	$FFFFBAF5	;94 $FFFFBEF7
 pad4way3	equ	$FFFFBAF6	;94 $FFFFBEF8
 pad4way4	equ	$FFFFBAF7	;94 $FFFFBEF9
@@ -161,7 +161,7 @@ StatWork	equ	$FFFFBB1E	;Scratch of the season stat screens (League Leaders: +0 m
 TempBuffer	equ	$FFFFBB1E	;94 $FFFFBF20. 40 byte scratch buffer (hot / cold sum byte pairs, Strings). Shares linemarkbuf
 recuser2	equ	$FFFFBB20	;UpdatePlayerRecords: the other team's user word (GetPadUser)
 SeasonGameCount	equ	$FFFFBB22	;Human season games counted in SeasonGoalSum
-SRAMbyte	equ	$FFFFBB46	;Save RAM byte read by ReadAttributeNibbleD7 / ProcessNibbleSeason (ReadSRAM)
+SRAMbyte	equ	$FFFFBB46	;Save RAM byte read by ReadAttributeNibbleD7 / ProcessNibbleSeason
 recwins	equ	$FFFFBB4C	;94 $FFFFBF4E. A scratch word (record page wins; assdefo clears it)
 rosterteam	equ	$FFFFBB4E	;setplayer: the team number ($28 of the team struct) for GetRosterName / GetJerseyNumber
 recties	equ	$FFFFBB50	;94 $FFFFBF4A. Record Holders: the row ties (PrintWinRecords)
@@ -222,7 +222,7 @@ sflags8	equ	$FFFFBF04	;94 $FFFFC2FE
 sflags9	equ	$FFFFBF06	;Bit 7 Practice Mode (main menu item 2)
 GameFlags	equ	$FFFFBF08	;Flag byte: bit 7 holds MakeSRAMChecksum during a batch of save RAM writes; bit 0 fake shot, bit 1 drop pass, bit 2 shot block done
 sflags10	equ	$FFFFBF0A	;Main menu: bit 2 Trade Players, bit 4 Create Player, bit 5 Sign Free Agents, bit 6 Release Players
-sflags11	equ	$FFFFBF0C	;Bit 7 user records count (UserNameEntry: at most one pad per team), bit 6 Regular Game (main menu item 1; kept over the Opening2 RAM clear), bit 5 set around IntermissionMenu, bit 4 a team award (SeasonAwards), bit 3 the playoff stats (GetAwardGoals), bit 2 set around PlayoffScreen (PlayoffTreeScreen)
+sflags11	equ	$FFFFBF0C	;Bit 7 user records count (UserNameEntry: at most one pad per team), bit 6 Regular Game (main menu item 1; kept over the Opening2 RAM clear), bit 5 set around IntermissionMenu, bit 4 a team award (SeasonAwards), bit 3 the playoff stats (GetAwardGoals), bit 2 set around PlayoffScreen
 sflags12	equ	$FFFFBF0E	;Bit 7 Opening2 skips the sound restart (set by Opening), bit 6 SortAwardScores lowest first, bit 0 set while IntermissionMenu runs Pausemode
 sflags13	equ	$FFFFBF10	;Bit 2: the Stanley Cup was won (clockcont_0; GameOver shows StanleyCupScreen)
 cupwinner	equ	$FFFFBF12	;Team number of the Stanley Cup winner
@@ -266,7 +266,7 @@ PerTimeTotal	equ	$FFFFC026	;94 $FFFFC46C. Period length in seconds (ResetClock)
 ChkCnt	equ	$FFFFC028	;94 $FFFFC46E
 TempPlOffset	equ	$FFFFC02A	;94 $FFFFC470. Player for GetTempPlayerName (bit 15: away team)
 ScoreSumbytes	equ	$FFFFC02C	;94 $FFFFC472
-ScoreSum	equ	$FFFFC02E	;94 $FFFFC474. Goal summary, 6 bytes per goal (ScoreSumbytes)
+ScoreSum	equ	$FFFFC02E	;94 $FFFFC474. Goal summary, 6 bytes per goal
 PenSumLength	equ	$FFFFC196	;94 $FFFFC5DC
 PenSum	equ	$FFFFC198	;94 $FFFFC5DE. Penalty summary, 4 bytes per penalty (PenSumLength)
 tmstruct	equ	$FFFFC288	;94 $FFFFC6CE. Home team struct
@@ -291,7 +291,7 @@ PlList	equ	$FFFFCAD2	;94 $FFFFCF14. SetPlList: the players wanted on the ice (6 
 menuitem	equ	$FFFFCADE	;94 $FFFFCF20. Menu state: selected item, then (+2) first item shown
 menulist	equ	$FFFFCAE2	;94 $FFFFCF24. Menu item list (InitMenuState)
 menudraw	equ	$FFFFCAE6	;94 $FFFFCF28. Menu screen draw routine
-menuitemoffset	equ	$FFFFCAEA	;Long: offset of the shown items in menulist (SetPauseMenuItems)
+menuitemoffset	equ	$FFFFCAEA	;Long: offset of the shown items in menulist
 TickerNum	equ	$FFFFCAEE	;94 $FFFFCF2C
 PPBonus	equ	$FFFFCAF0	;94 $FFFFCF2E. setplayer attribute bonuses: power play
 PKBonus	equ	$FFFFCAF1	;94 $FFFFCF2F. Penalty kill
@@ -448,14 +448,14 @@ AwardWait	equ	$FFFFD1D2	;AwardsLoop: frames left before it returns
 SeasonTeams	equ	$FFFFD1DC	;Season team list (BuildSeasonTeamList)
 matchup	equ	$FFFFD262	;94 $FFFFD598. PeriodStatsScreen: 0 goals, else shots
 scoutunused	equ	$FFFFD264	;94 $FFFFD59A. Cleared by ScoutingReport, never read
-matchuphome	equ	$FFFFD266	;94 $FFFFD59C. The home player of the matchup (GetMatchupPlayers)
+matchuphome	equ	$FFFFD266	;94 $FFFFD59C. The home player of the matchup
 matchupvis	equ	$FFFFD268	;94 $FFFFD59E. The visitors player of the matchup; also the scroll limit of GameStatisticsScreen
-homerating	equ	$FFFFD26A	;94 $FFFFD5A0. The home rating of the matchup (PrintMatchupRatings)
+homerating	equ	$FFFFD26A	;94 $FFFFD5A0. The home rating of the matchup
 visrating	equ	$FFFFD26C	;94 $FFFFD5A2. The visitors rating of the matchup
 advframe	equ	$FFFFD26E	;94 $FFFFD5A4. Advantage marks step (PrintAdvantageMarks)
 advcount	equ	$FFFFD270	;94 $FFFFD5A6. Advantage marks frame count
 matchuptimer	equ	$FFFFD272	;94 $FFFFD5A8. PeriodStatsScreen: the running total
-matchupslot	equ	$FFFFD274	;94 $FFFFD5AA. The line slot of the matchup (GetMatchupPlayer)
+matchupslot	equ	$FFFFD274	;94 $FFFFD5AA. The line slot of the matchup
 DispAttribCtr	equ	$FFFFD276	;94 $FFFFD5AC. Roster attribute page; game setup: first line shown
 VertLineScrolling	equ	$FFFFD278	;94 $FFFFD5AE. Game setup: last line shown
 PlayerScrollCtr	equ	$FFFFD27A	;94 $FFFFD5B0. Scroll step (playoff screen); TeamRosterScreen: nonzero stops the page keys
@@ -568,7 +568,7 @@ SRNameLog	equ	$DA2	;the name log (NameLogIO)
 SRSeasonHeader	equ	$E22	;the 8 byte season header, SeasonStartDay ... (ReadSeasonHeader, WriteSeasonHeader)
 SRGameResults	equ	$E2A	;the saved game results, 3 bytes a game ($CCC bytes; ReadDayGames)
 SRStandings	equ	$1AF6	;the regular season standings: wins, losses, ties, 3 bytes a team (RecordTeamResult)
-SRGoalTotal	equ	$1B44	;season goal total of the human games, a long, then SeasonGameCount (AddSeasonGoals)
+SRGoalTotal	equ	$1B44	;season goal total of the human games, a long, then SeasonGameCount
 SRRosters	equ	$1B4C	;the season rosters, $38 bytes a team: 26 roster id words, then the goalie, forward and defense counts at +$34
 SRGoals	equ	$21A4	;regular season player stats, a word per player, $57C bytes each (26 teams of 27): goals (bit 15 set for goalies)
 SRAssists	equ	$2720	;assists

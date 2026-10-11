@@ -1,15 +1,13 @@
-;	NHL 95.
-;	the 94 version (95: its start is doinput; the mapped start doinput.0 is inside it), doinput_islocked, rtss7, faceoffinput
-;	setpassmode, passmode, dopass, passtoa0, then OneTimerTarget and its tables and OneTimerPass (moved in)
-;	Findhittype, SetShotMode, ShotMode, prepshot, doshot, shotsets, shotdiradj, shotdirmath, puckvzadj
-;	compshoot (moved in). follows.
-;	The the 94 version parts doinput_cbut ... doinput_ispc, getGoalieSCnum are; the goalie dive (doinput.33)
-;	doinput_goaliedive; burst, Acheck, changeplayer, setc1player ... are; SetLCmode, lineinput
-;except puckvzadj and compshoot (dc.b, read from the retail bytes) and the dead / data bytes noted below. Local labels are
-;numbered; the names are not kept.
-;	95 changes: four pads (doinput_islocked marks the player of pad c1 ... c4playernum), the asstab numbers and SPA values, the y
-;	limits moved 3 out ($108 to $10B ...), the PAL speed $18 (94 $16), the one-timer table offsets, Findhittype's two masks swapped,
-;	shotsets $E / $FFF2 (94 $10 / $FFF0), jsr / jmp .l to the routines 95 moved out of range.
+;	NHL 95. doinput (its start is doinput; the mapped start doinput.0 is inside it), doinput_islocked, rtss7,
+;	faceoffinput setpassmode, passmode, dopass, passtoa0, then OneTimerTarget and its tables and OneTimerPass (moved in)
+;	Findhittype, SetShotMode, ShotMode, prepshot, doshot, shotsets, shotdiradj, shotdirmath, puckvzadj compshoot (moved in).
+;	follows.
+;	The 94 parts doinput_cbut ... doinput_ispc, getGoalieSCnum are; the goalie dive (doinput.33) doinput_goaliedive; burst, Acheck,
+;	changeplayer, setc1player ... are; SetLCmode, lineinput except puckvzadj and compshoot (dc.b, read from the retail bytes) and
+;	the dead / data bytes noted below. 95 changes: four pads (doinput_islocked marks the player of pad c1 ... c4playernum), the
+;	asstab numbers and SPA values, the y limits moved 3 out ($108 to $10B ...), the PAL speed $18 (94 $16), the one-timer table
+;	offsets, Findhittype's two masks swapped, shotsets $E / $FFF2 (94 $10 / $FFF0), jsr / jmp .l to the routines 95 moved out of
+;	range.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -330,7 +328,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 .47
 	movem.l	(sp)+,d5-d6/a1-a4
 	beq.w	.48
-	bset	#1,(GameFlags).w	;95: drop pass (A with the dpad back)
+	bset	#1,(GameFlags).w	;drop pass (A with the dpad back)
 	movem.l	(sp)+,a0
 	bra.w	setpassmode
 	dc.b	8,0,4,8,6,7,5,8,2,1,3,8,8,8,8,8	;unused: dpad bits to a direction (8 = none)
@@ -374,7 +372,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	tst.w	d0
 	bmi.w	.55
 	movem.w	(sp)+,d0
-	bset	#0,(GameFlags).w	;95: fake shot (A released in the attacking zone)
+	bset	#0,(GameFlags).w	;fake shot (A released in the attacking zone)
 	bne.w	.54
 	jmp	SetShotMode
 .54
@@ -968,7 +966,7 @@ prepshot	;Prepare the shot (shot direction), then doshot
 doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets, shotdiradj; puckvz. shotpflags
 	;ShotTimer
 	movem.l	d0-d7/a0-a3,-(sp)
-	bclr	#0,(GameFlags).w	;95: a fake shot ends in SPAglidewp without the shot
+	bclr	#0,(GameFlags).w	;a fake shot ends in SPAglidewp without the shot
 	beq.w	.0
 	bclr	#3,(sflags).w
 	move.w	#$B8E,d1

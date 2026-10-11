@@ -1,11 +1,7 @@
-;	UpdateScores / SetScore / sctab and ClearShotData, then ... Endfaceoff with
-;	assfaceoff / assfaceoffp1 moved in, checkfo, and the DrawFaceoffWindow
-;	ReturnGoalies, CPgoalie and CompLine are not here.
-;	follows.
-;puckfaceoff ... Endfaceoff as dc.b; that code is read from the retail bytes with the 94 source as the
-;guide. the printz / printz2 Strings as instructions; they are String here. Local labels are numbered; the names
-;	are not kept.
-;	95 changes: four pads (c1playernum ... c4playernum, cont3team / cont4team), the 95 assignment numbers ($1F, 4, $10, $11, 1) and SPA
+;	UpdateScores / SetScore / sctab and ClearShotData, then ... Endfaceoff with assfaceoff / assfaceoffp1 moved in, checkfo, and the
+;	DrawFaceoffWindow ReturnGoalies, CPgoalie and CompLine are not here. follows. puckfaceoff ... Endfaceoff as dc.b; that code is read
+;	from the retail bytes with the 94 source as the guide. the printz / printz2 Strings as instructions; they are String here. 95
+;	changes: four pads (c1playernum ... c4playernum, cont3team / cont4team), the 95 assignment numbers ($1F, 4, $10, $11, 1) and SPA
 ;	values, net y $112 / $FEEE (94 $10C / $FEF4), Practice Mode (sflags9 bit 7) faceoffs, tmsize $366.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
@@ -238,7 +234,7 @@ SetFaceoffComputerLine	;Line changes on and team d0 not on a pad (or sflags7 bit
 	move.w	#$2710,(crowdnoisedelay).w
 	rts
 
-StartFaceoffLineChange	;Player d0 (sort object) opens the line change box (SetLCmode); when it is open start
+StartFaceoffLineChange	;Player d0 (sort object) opens the line change box; when it is open start
 	;its timer in the puck temp1 / temp2 and keep the SCnum in temp3 / temp4
 	exg	a2,a3
 	asl.w	#7,d0
@@ -284,7 +280,7 @@ WaitForFaceoffLineChanges	;Lock the pads (padcont -1), run both line change time
 	move.w	#4,d0
 	bra.w	assreplace
 
-UpdateFaceoffLineChangeTimer	;Line change timer d0 (temp1 / temp2 of the puck): close the box (SetLCmode2) when the
+UpdateFaceoffLineChangeTimer	;Line change timer d0 (temp1 / temp2 of the puck): close the box when the
 	;player closed it, else count down by d7 and pick the line (lcfound) when it runs out
 	tst.w	(a3,d0.w)
 	bmi.s	rtsfaceoff

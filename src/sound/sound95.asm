@@ -1170,7 +1170,7 @@ Z80Program	;The Z80 sound program. Starts JP $0600
 
 SoundBanks	;Bank 0 (SndSetBank, Begin and Opening2): the item count, then 4 bytes per item
 	;(type, id, size), then the items in that order. Type 0 = patch (uploaded to the Z80 by a load list), 1 = sample (streamed),
-	;3 = song (SndStartSeq), $B = load list (SndLoadList). SndFindBankItem finds an item by type and id
+	;3 = song, $B = load list (SndLoadList). SndFindBankItem finds an item by type and id
 	dc.w	141	;items
 	SndItem	SB_PATCH,$00,$5	;patch 0
 	SndItem	SB_PATCH,$01,$5	;patch 1
@@ -1634,7 +1634,7 @@ song	;play song number, one word passed on stack. 95: songs 0-3 through StartSon
 	addq.w	#2,sp
 	rts
 
-StartSong	;stop the song (play_new_song), then song d0 (command 4, tempo $100)
+StartSong	;stop the song, then song d0 (command 4, tempo $100)
 	tst.w	d0
 	bmi.w	rtsfx
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1689,7 +1689,7 @@ SoundOff	;sound driver command $F, every song off
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ChooseSong	;SongNum = byte SongIndex of the 6 song bytes of team HmTeam (TeamSongs), or one of the 8 of RandomSongs
+ChooseSong	;SongNum = byte SongIndex of the 6 song bytes of team HmTeam, or one of the 8 of RandomSongs
 	;at random when 0; $FFFF with gmode bit 4
 	movem.l	d0-d1/a0-a1,-(sp)
 	btst	#4,(gmode).w
@@ -1760,7 +1760,7 @@ z80_bus_release_delay	;Z80 busy: give the bus back, wait, then falls into Upload
 .delay
 	dbf	d0,.delay
 UploadCommandBufferToZ80	;Copy the 33 byte command buffer (Z80_command_buffer) to Z80 RAM $02 once the Z80 is idle (Z80 RAM $97 = 0, $96 = $7D)
-	move.w	d0,-(sp)	;95: pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
+	move.w	d0,-(sp)	;pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
 	move.w	#$D,d0
 	jsr	(SoundCmd).l
 	move.w	(sp)+,d0
@@ -1842,16 +1842,16 @@ ReleaseChannelAndNote	;Key off channel struct a2 if it is on. The PCM patches ($
 	st	(music_needs_z80_update).w
 	rts
 ClearZ80SpecialEffectsFlags	;Clear Z80 RAM $8E (Z80_RAM+$8E, the PCM rate byte written by UpdateChannelFrequencyAndVolume): stops the PCM channel
-	move.w	d0,-(sp)	;95: pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
+	move.w	d0,-(sp)	;pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
 	move.w	#$D,d0
 	jsr	(SoundCmd).l
 	move.w	(sp)+,d0
 	clr.b	(Z80_RAM+$8E).l
 	clr.w	(IO_Z80BUS).l
-rtsfx	;95: the shared rts (94 had it in play_sfx_or_music_track, not in 95). ProcessOneMusicTrack, handle_command_00 and StartSong branch here
+rtsfx	;the shared rts (94 had it in play_sfx_or_music_track, not in 95). ProcessOneMusicTrack, handle_command_00 and StartSong branch here
 	rts
 handle_command_10	;Event $1x: key on note +2 at volume +3 on channel +1 bits 3-0 of track d7 (volume 0 = key off). An FM
-	;patch takes a free channel or the oldest one; a PCM patch ($60 up) sets the sample start / end (pcm_sample_table, 93 name) in Z80 RAM
+	;patch takes a free channel or the oldest one; a PCM patch ($60 up) sets the sample start / end (pcm_sample_table) in Z80 RAM
 	;$23-$28. Then the volume (SetChannelVolume) and the frequency (UpdateChannelFrequencyAndVolume)
 	tst.b	3(a0)
 	beq.s	handle_command_00	;volume 0: key off
@@ -1932,7 +1932,7 @@ handle_command_10	;Event $1x: key on note +2 at volume +3 on channel +1 bits 3-0
 	lea	pcm_sample_table(pc),a1	;PCM sample start, end longs by patch - $60
 	move.l	4(a1,d0.w),d1
 	move.l	0(a1,d0.w),d0
-	move.w	d0,-(sp)	;95: pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
+	move.w	d0,-(sp)	;pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
 	move.w	#$D,d0
 	jsr	(SoundCmd).l
 	move.w	(sp)+,d0
@@ -2002,7 +2002,7 @@ UpdateChannelFrequencyAndVolume	;Set the frequency of channel struct a2 from its
 .1
 	btst	#0,6(a2)
 	beq.w	.x
-	move.w	d0,-(sp)	;95: pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
+	move.w	d0,-(sp)	;pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
 	move.w	#$D,d0
 	jsr	(SoundCmd).l
 	move.w	(sp)+,d0
@@ -2081,7 +2081,7 @@ SetChannelVolume	;Set the volume of channel struct a2: note volume (+2) * the vo
 .veltab	;attenuation by volume / 8
 	dc.b	$1A,$18,$16,$14,$12,$10,$0E,$0C,$0A,$08,$06,$04,$03,$02,$01,$00
 .0
-	move.w	d0,-(sp)	;95: pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
+	move.w	d0,-(sp)	;pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
 	move.w	#$D,d0
 	jsr	(SoundCmd).l
 	move.w	(sp)+,d0
@@ -2197,7 +2197,7 @@ ClearAllTrackAndSFXSlots	;95 cuts it down to PlayingSong = -1 (94 freed the 8 tr
 newcheck	;start a new check sound: one of 4 sounds $1C-$1F, never the last one again. Called from checkcx and FallDown
 	move.l	d0,-(sp)
 	moveq	#3,d0
-	jsr	(randomd0).l	;94: bsr.w
+	jsr	(randomd0).l	;bsr.w
 	addq.w	#1,d0	;1-3 sounds on from the last one
 	add.w	(ltack).w,d0	;last tackle sound
 	andi.w	#3,d0

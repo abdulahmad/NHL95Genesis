@@ -5,7 +5,7 @@
 ;	stats, saved lines and line slots. No 94 code. follows.
 ;printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions and left
 ;	HighlightsHelp and ReadTradePads3 as dc.b; they are written from the retail bytes.
-;Local labels are numbered; the names are not kept.
+
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
 ;	the cmp and exg encodings after assembly.
 
@@ -1414,7 +1414,7 @@ EvaluateTrade	;Evaluate Trade screen: the chosen players of both teams; A cancel
 .12
 	jmp	GMDecisionRetry
 
-PrintTradeNames	;Print the chosen players of a trade list with their position (PositionLetters2)
+PrintTradeNames	;Print the chosen players of a trade list with their position
 	subq.w	#1,d3
 .0
 	tst.b	(a0)

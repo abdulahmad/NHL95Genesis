@@ -77,7 +77,7 @@ InitSaveRAM	;Called from Begin. Copy the $8000 byte save RAM (the odd bytes at S
 	move.w	#$20,d4
 	bra.s	.loadcolor	;branch (screen flashes green)
 
-SRAMWaitVblank	;Wait for the next vblank (vcountwait). Called from InitSaveRAM
+SRAMWaitVblank	;Wait for the next vblank. Called from InitSaveRAM
 	jsr	(vcountwait).l
 	rts
 

@@ -3,19 +3,18 @@
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, FormatScore
-;	DrawPlayoffBracket, DrawTeamBlocks, PlayoffScreenDataTable and PlayoffScreenText. PlayoffTreeSetup follows.
-;except PlayoffScreenDataTable (dc.b, read from the retail bytes). the printz / printz2 Strings and the
-;DecompressGraphicsWithCallback remap bytes as instructions; they are String / dc.b here. Local labels are numbered; the
-;	names are not kept.
-;	95 changes: PlayoffScreen returns at once in Shootout (gmode2 bit 0) and also runs for sflags11 bit 2; the shared rts is
-;	rtsLineData. AddTeamBlock and AddSmallFont are inline, the title uses printbig with the BigFontMap2
-;	tiles, HandlePlayoffInput reads all four pads, the song is 3 (94 $79), the map chars start at $69A (94 $30A).
+;	HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, FormatScore DrawPlayoffBracket,
+;	DrawTeamBlocks, PlayoffScreenDataTable and PlayoffScreenText. PlayoffTreeSetup follows. except PlayoffScreenDataTable
+;	(dc.b, read from the retail bytes). the printz / printz2 Strings and the DecompressGraphicsWithCallback remap bytes as
+;	instructions; they are String / dc.b here. 95 changes: PlayoffScreen returns at once in Shootout (gmode2 bit 0) and also
+;	runs for sflags11 bit 2; the shared rts is rtsLineData. AddTeamBlock and AddSmallFont are inline, the title uses
+;	printbig with the BigFontMap2 tiles, HandlePlayoffInput reads all four pads, the song is 3 (94 $79), the map chars start
+;	at $69A (94 $30A).
 
 
 
 PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; OptPlayMode nonzero or sflags11 bit 2).
-	;Called from Opening2 and PlayoffTreeScreen. Runs its own vblank (PlayoffScreenDataTable) and scrolls the tree a page ($70
+	;Called from Opening2 and PlayoffTreeScreen. Runs its own vblank and scrolls the tree a page ($70
 	;pixels) at a time. Returns when start is pressed (PlayoffScreenExit)
 	btst	#0,(gmode2).w
 	bne.s	rtsLineData
@@ -165,7 +164,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	jsr	(HandlePlayoffInput).l
 	bra.s	.7
 
-HandlePlayoffInput	;Read the four pads: start leaves PlayoffScreen (PlayoffScreenExit), right / left set the
+HandlePlayoffInput	;Read the four pads: start leaves PlayoffScreen, right / left set the
 	;scroll step, then falls into UpdatePlayoffScroll
 	jsr	(ReadJoy1).l
 	move.w	d3,-(sp)
@@ -291,7 +290,7 @@ DrawTeamBlocks	;Draw team block d1 (team * 2) from Teamblocksmap at printx / pri
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-PlayoffScreenDataTable	;dc.b. 93 name. The PlayoffScreen vblank handler (vbint): dma the sprite table, write
+PlayoffScreenDataTable	;dc.b. The PlayoffScreen vblank handler (vbint): dma the sprite table, write
 	;$FEA0+DispAttribCtr to the hscroll, cramfade. Always vcount+1, p_music_vblank, rte
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#2,(disflags).w
@@ -328,7 +327,7 @@ PlayoffScreenText	;Round titles by gamelevel, printbig Strings with their positi
 
 
 
-PlayoffTreeSetup	;93 name. Playoff tree layout by gamelevel, the same bytes as 94. Used by PlayoffScreen
+PlayoffTreeSetup	;Playoff tree layout by gamelevel, the same bytes as 94. Used by PlayoffScreen
 	;Per level: teams-1 then x,y per team (DrawTeamBlocks), arrows-1 then x,d0 per arrow (DrawPlayoffBracket), scores-1
 	;then x,y per score (FormatScore, negative: none)
 	dc.w	.l0-PlayoffTreeSetup
@@ -388,7 +387,7 @@ PlayoffTreeSetup	;93 name. Playoff tree layout by gamelevel, the same bytes as 9
 	dc.b	-1;no scores
 	dc.b	$FF;pad (93 $47)
 
-DrawPlayoffSprite	;The PlayoffSprite sprite at playoffspritex / playoffspritey (SetSframe) in Satt, then end the
+DrawPlayoffSprite	;The PlayoffSprite sprite at playoffspritex / playoffspritey in Satt, then end the
 	;list and set Sattsize. 95 animates it: frame picturebits 0-4, the next one every $A calls (pausetimeout). Called from PlayoffScreen
 	movea.w	#(Satt-M68K_RAM),a6
 	moveq	#1,d6

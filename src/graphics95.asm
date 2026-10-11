@@ -408,7 +408,7 @@ Spritetiles	;the sprite tiles
 	incbin	..\Extracted\NHL95\Graphics\Spritetiles.bin
 frameSprData
 	incbin	..\Extracted\NHL95\Graphics\frameSprData.bin
-Hotlist	;the hot spot byte pair of each frame (GetHot)
+Hotlist	;the hot spot byte pair of each frame
 	incbin	..\Extracted\NHL95\Graphics\HotSpotList.bin
 RosterFont	;data
 	incbin	..\Extracted\NHL95\Graphics\RosterFont.bin
@@ -651,7 +651,7 @@ logoASW	;team logo (TeamLogoBitmaps)
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	Mapped (100%): TeamLogoPalettes, one 32 byte palette per team in TeamList order. 25 are the same bytes as the 94 files
-;	and keep their 94 names; DAL, ASE and ASW differ and are the 94 stem with 95 added.
+;	and keep their DAL, ASE and ASW differ and are the 94 stem with 95 added.
 
 TeamLogoPalettes	;Team logo palettes, 16 colors per team (DrawMatchupLogo, NameEntryScreen, DrawTeamBitmap)
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalANHA.pal	;ANH, 94 file, same bytes

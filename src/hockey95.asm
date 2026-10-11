@@ -1,7 +1,7 @@
 ;	NHL 95 segment, from lst/nhl95.bin.lst. The game flow from the title screen to the game loop. 95 runs it as one
 ;	stretch of code: and Opening2, the 95 main menu exits (season, trades, create player), StartGame and StartPer
-;	without a jump between them, the IntermissionMenu, the game loop, DoGameFrame with the 94 version written
-;	line, and 94 updateplayers. setvideo follows at $A204.
+;	without a jump between them, the IntermissionMenu, the game loop, DoGameFrame with the 94 written line, and 94
+;	updateplayers. setvideo follows at $A204.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -196,7 +196,7 @@ StartPer	;start a period: reset stack, rink and clock, face off, run the game lo
 	jsr	(SoundOff).l	;sound off
 	jsr	(setupice).l
 	jsr	(ResetClock).l
-	ori.l	#$F00000,(PadControlBits).w	;94: ori.w #$F000
+	ori.l	#$F00000,(PadControlBits).w	;ori.w #$F000
 	st	(c1playernum).w	;no controlled player yet
 	st	(c2playernum).w
 	st	(c3playernum).w
@@ -265,7 +265,7 @@ Gameloop	;Main loop for game
 	move.b	#1,(VDP_PSG).l
 	bra.s	Gameloop
 
-DoGameFrame	;wait for at least one vblank, then run one frame of game logic. the 94 version is written in line
+DoGameFrame	;wait for at least one vblank, then run one frame of game logic. in 94 this is written in line
 	move.w	(vcount).w,d7
 	sub.w	(oldvcount).w,d7	;number of frames since last loop
 	beq.s	DoGameFrame
@@ -330,7 +330,7 @@ IntermissionMenu	;Before the period: at game over (gsp 4) the records (UpdateRec
 updateplayers	;this routine calls all collision/animation/assignment code for all players. d7 = elapsed frames.
 	;94 ; 95 has no puckz or crowd record checks here, and moves the velocity update (updatevel) and the pad input
 	;(updatepadinput) out
-	ori.l	#$F,(PadControlBits).w	;94: ori.w #$F
+	ori.l	#$F,(PadControlBits).w	;ori.w #$F
 	movea.w	#(SortCords-M68K_RAM),a3
 .top
 	move.w	SCnum(a3),d6
@@ -382,13 +382,13 @@ updateplayers	;this routine calls all collision/animation/assignment code for al
 	move.w	d0,Ypos(a3)
 	bra.w	.top2
 .7
-	move.w	#$92,(a3)	;94: $82
+	move.w	#$92,(a3)	;$82
 	btst	#3,attribute(a3)
 	beq.w	.top2
 	move.w	#$FF6E,(a3)
 	bra.w	.top2
 .8
-	move.w	#$98,(a3)	;94: $88
+	move.w	#$98,(a3)	;$88
 	btst	#3,attribute(a3)
 	beq.w	.top2
 	move.w	#$FF68,(a3)
@@ -420,7 +420,7 @@ updateplayers	;this routine calls all collision/animation/assignment code for al
 	move.b	pnum(a3),d0	;player offset on roster
 	bmi.w	.11
 	add.w	d0,d0
-	addi.w	#$138,d0	;94: $136
+	addi.w	#$138,d0	;$136
 	jsr	(loadTeamStruct).l
 	addq.w	#1,(a2,d0.w)	;add 1 to TOI for player
 .11

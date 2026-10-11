@@ -13,7 +13,7 @@ FIFO_EMPTY equ 9
 ; ----------------------------------
 ; Structure and flag equates. Empty until the first segment confirms the 95 values.
 
-;the sort object structure (SCstruct = $80 bytes each, from SortCords). 93 / 94 names; updateplayers confirms these 95 values
+;the sort object structure (SCstruct = $80 bytes each, from SortCords). updateplayers confirms these 95 values
 SCstruct equ $80
 puckscnum equ $E	;the puck sort object (SortCords + puckscnum * SCstruct = puckx); the shadow is puckscnum+1
 Xpos equ $0
@@ -121,8 +121,8 @@ sf2pwrtm equ 6		;0 for team 1 in power play
 sf2offsig equ 7		;offsides little ref on
 sf3rmplay equ 1		;play mode on for replay (sflags3)
 
-;team variables (HmShots / AwShots = the home / away team struct). 94 names; confirms these 95 values
-tmshots equ $0		;shots stat (94 names and offsets $0-$A)
+;team variables (HmShots / AwShots = the home / away team struct). confirms these 95 values
+tmshots equ $0		;shots stat (and offsets $0-$A)
 tmPwrGoals equ $2		;power play goals stat
 tmPwrPlays equ $4		;power plays stat
 tmPenalties equ $6		;penalties stat
@@ -137,7 +137,7 @@ tmgoalie equ $26		;goalie 1/2/none
 tmpde equ $34		;energy level of each roster player (94: $32)
 tmpdst equ $68		;-2=bench/-1=ice/0+=penalty box (94: $66)
 tmflags equ $30		;flags
-tmsize equ $366		;94: $364
+tmsize equ $366		;$364
 
 ;text control codes in Strings
 ;print / printz / printbig / printbigz: a negative byte -(TXPRI+TXPALn+TXVF+TXHF+TXMAPn), then x, y (printa = the bits << 9, printm = map)

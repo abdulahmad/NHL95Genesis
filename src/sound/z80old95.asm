@@ -1,6 +1,6 @@
-;NHL 95 segment, from lst/nhl95.bin.lst (no label). The 94 Z80 program, still
-;	loaded by p_initialZ80 (no caller in 95). The same bytes as 94 except the bank window address of the FM patches, which 95
-;	keeps at the end. the 94 version follows, at the head.
+;NHL 95 segment, from lst/nhl95.bin.lst (no label). The 94 Z80 program, still loaded by p_initialZ80 (no caller in 95).
+;	The same bytes as 94 except the bank window address of the FM patches, which 95 keeps at the end. the 94 follows, at the
+;	head.
 
 Z80_Program_Code	;First byte of the Z80 program (movea.l in p_initialZ80); the rest is the 94 Z80 driver. p_initialZ80 copies $295
 	;bytes from here (through, into in 95; 94 read into pcm_sample_table)

@@ -193,7 +193,7 @@ getFgtbyte	;d0 = $74(a2) / 4
 	lsr.w	#2,d0	;shift 2 right (divide by 4)
 	rts
 
-chkFgtBit1	;95: Z from bit 1 of a random 0-99 (94 tested bit 1 of $74(a2))
+chkFgtBit1	;Z from bit 1 of a random 0-99 (94 tested bit 1 of $74(a2))
 	movem.w	d0,-(sp)
 	move.w	#$64,d0
 	jsr	(randomd0).l

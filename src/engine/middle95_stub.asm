@@ -48,12 +48,12 @@ ReadJoy4 = $7A50C
 StickHandTable = $83C9E		;CalcAttrib, attribute 5 (stick handling) scale
 PAttribOverallMask = $85846
 GAttribOverallMask = $859A8
-getGoalieSCnum = $8B974		;95: d0 = SCnum of the goalie of the team of player d0
+getGoalieSCnum = $8B974		;d0 = SCnum of the goalie of the team of player d0
 GetCreatedName = $96494
 GetRosterName = $9649E		;a1 = name String of player d0 of team d7 (season roster aware)
 GetJerseyNumber = $965A8		;jerseynum = the jersey number byte of player d0 of team d7
 Rinktilelist = $C4A7C		;Rink map
-Hotlist = $137B66		;Hot spot x / y bytes by frame (GetHot)
+Hotlist = $137B66		;Hot spot x / y bytes by frame
 SmallFontMap2 = $139E02
 ClockDigitsBitmap = $13FC18
 EnergyBarMap = $14C4C8

@@ -44,7 +44,7 @@ setvram	;Fade every colour to d0, then fall into setVram_0
 	dbf	d1,.0
 	move.w	#$18,(palcount).w
 	bsr.w	forcefade
-setVram_0	;second half of the 92 version (no fade): clear vram and set the VDP registers from disflags, Map1col
+setVram_0	;second half of setVram without the fade: clear vram and set the VDP registers from disflags, Map1col
 	;VmMap1-3, VSPRITES and VSCRLPM. Falls in from setvram, called from EASportsScreen
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -462,7 +462,7 @@ addframe2	;d0/d1 = x/y coord on screen, a3 = object, a5 = dma trans, a6 = sprite
 	movea.l	#Sprites,a2	;sprite frame list
 	adda.l	4(a2),a2	;add long word at offset 4 to a2 address
 	asl.w	#1,d4	;frame * 2
-	cmp.w	(a2),d4	;95: the offset count is at 0 (94: 2)
+	cmp.w	(a2),d4	;the offset count is at 0 (94: 2)
 	bge.w	.exit	;branch if greater than or equal
 	move.w	2(a2,d4.w),d5	;next frame's offset
 	sub.w	(a2,d4.w),d5	;minus this frame's offset
@@ -521,7 +521,7 @@ addframe2	;d0/d1 = x/y coord on screen, a3 = object, a5 = dma trans, a6 = sprite
 	add.w	VRchar(a3),d3	;add VRChar of player struct to d3
 	ext.l	d2	;extend d2 (clears out upper word)
 	asl.l	#5,d2	;mult d2 by 32
-	movem.l	d0/a2,-(sp)	;95: the tiles start at Sprites+$A
+	movem.l	d0/a2,-(sp)	;the tiles start at Sprites+$A
 	movea.l	#Sprites,a2
 	move.l	a2,d0
 	addi.l	#$A,d0
@@ -562,7 +562,7 @@ addframe2	;d0/d1 = x/y coord on screen, a3 = object, a5 = dma trans, a6 = sprite
 	sub.w	6(a2),d2	;sub X global from d2
 .noxflip
 	add.w	d2,d0	;add d2 to d0 (d0 = Xpos of Sort Cord)
-	move.w	d0,6(a6)	;move sprite's Xpos into 6+a6 position (Satt)
+	move.w	d0,6(a6)	;move sprite's Xpos into 6+a6 position
 	move.b	2(a2),2(a6)	;move size byte into 2+a6
 	move.b	d6,3(a6)	;move d6 (link counter) into 3+a6
 	move.b	4(a2),d2	;flags (top 5 bits of the tile word) to the high byte
@@ -594,13 +594,13 @@ addframe2	;d0/d1 = x/y coord on screen, a3 = object, a5 = dma trans, a6 = sprite
 sizetab	;sprite size code to tile count. sizetab, used by addframe2 (94 kept it)
 	dc.b	1,2,3,4,2,4,6,8,3,6,9,$C,4,8,$C,$10
 
-updatescroll	;92 name; 93 show_rink. Using hpos and vpos set scroll cords; queue rink map rows on the dma list (a5) when vertical
+updatescroll	;93 show_rink. Using hpos and vpos set scroll cords; queue rink map rows on the dma list (a5) when vertical
 	;scrolling needs new rows. Called from setvideo. Rows from Rinktilelist, or RevRinkTilelist in a reverse angle replay
 	;(sflags4 bit 4). 95 has no horizontal rink check
 	moveq	#-$40,d0	;-192+128 (#$FFFFFFC0)
 	sub.w	(Hpos).w,d0
 	move.w	(Vpos).w,d1
-	addi.w	#$10,d1	;95: rink 16 lines lower
+	addi.w	#$10,d1	;rink 16 lines lower
 	move.w	d0,(Hscroll).w
 	move.w	d1,(Vscroll).w
 	neg.w	(Vscroll).w
@@ -705,8 +705,8 @@ forceblack2	;No xref. forceblack with palcount $64 (one step, CopyPaletteToCRAM)
 	movem.l	(sp)+,d0/a0
 	rts
 
-DecompressBytecode	;No caller in 95 (DecompressGraphics skips packed blocks). 93 name. Unpack a0 into the 256 byte ring buffer
-	;at ThreeStars
+DecompressBytecode	;No caller in 95 (DecompressGraphics skips packed blocks). Unpack a0 into the 256 byte ring buffer at
+	;ThreeStars
 	movea.w	#(ThreeStars-M68K_RAM),a1
 	movea.w	#(ThreeStars-M68K_RAM),a3
 	movea.w	#(callbackPtr-M68K_RAM),a4
@@ -741,7 +741,7 @@ jump_table	;DecompressBytecode handler offsets, one per opcode high nibble
 	dc.w	Opcode_CopyBackwardReverseShort-jump_table	;D
 	dc.w	Opcode_CopyBackwardReverseMedium-jump_table	;E
 	dc.w	Opcode_CopyBackwardReverseLong-jump_table	;F
-Opcode_CopyLiteral	;93: opcodes 0-1, copy (low 5 bits)+1 bytes from the data
+Opcode_CopyLiteral	;opcodes 0-1, copy (low 5 bits)+1 bytes from the data
 	move.b	-1(a0),d0
 	andi.w	#$1F,d0
 .loop
@@ -752,7 +752,7 @@ Opcode_CopyLiteral	;93: opcodes 0-1, copy (low 5 bits)+1 bytes from the data
 .next
 	dbf	d0,.loop
 	rts
-Opcode_ClearBytes	;93: opcode 2, write (low 4 bits)+1 zero bytes
+Opcode_ClearBytes	;opcode 2, write (low 4 bits)+1 zero bytes
 	move.b	-1(a0),d0
 	andi.w	#$F,d0
 .loop
@@ -763,7 +763,7 @@ Opcode_ClearBytes	;93: opcode 2, write (low 4 bits)+1 zero bytes
 .next
 	dbf	d0,.loop
 	rts
-Opcode_Fillbytes	;93: opcode 3, write the next data byte (low 4 bits)+3 times
+Opcode_Fillbytes	;opcode 3, write the next data byte (low 4 bits)+3 times
 	move.b	-1(a0),d0
 	andi.w	#$F,d0
 	addq.w	#2,d0
@@ -776,7 +776,7 @@ Opcode_Fillbytes	;93: opcode 3, write the next data byte (low 4 bits)+3 times
 .next
 	dbf	d0,.loop
 	rts
-Opcode_CopyBackwardShort	;93: opcodes 4-7, copy from back in the output buffer
+Opcode_CopyBackwardShort	;opcodes 4-7, copy from back in the output buffer
 	move.b	-1(a0),d0
 	andi.w	#7,d0
 	addq.w	#1,d0
@@ -784,7 +784,7 @@ Opcode_CopyBackwardShort	;93: opcodes 4-7, copy from back in the output buffer
 	lsr.w	#3,d2
 	andi.w	#7,d2
 	addq.w	#1,d2
-CopyBackwardRun	;93: shared copy loop, d0 = count-1, d2 = distance back
+CopyBackwardRun	;shared copy loop, d0 = count-1, d2 = distance back
 	neg.b	d2
 	add.b	d1,d2
 .loop
@@ -796,13 +796,13 @@ CopyBackwardRun	;93: shared copy loop, d0 = count-1, d2 = distance back
 .next
 	dbf	d0,.loop
 	rts
-Opcode_CopyBackwardMedium	;93: opcode 8
+Opcode_CopyBackwardMedium	;opcode 8
 	move.b	-1(a0),d0
 	andi.w	#$F,d0
 	addq.w	#2,d0
 	move.b	(a0)+,d2
 	bra.s	CopyBackwardRun
-Opcode_CopyBackwardLong	;93: opcode 9
+Opcode_CopyBackwardLong	;opcode 9
 	move.b	(a0),d0
 	asl.b	#1,d0
 	move.b	-1(a0),d0
@@ -813,7 +813,7 @@ Opcode_CopyBackwardLong	;93: opcode 9
 	andi.w	#$7F,d2
 	addq.w	#1,d2
 	bra.s	CopyBackwardRun
-Opcode_CopyBackwardExtended1	;93: opcode A
+Opcode_CopyBackwardExtended1	;opcode A
 	move.b	-1(a0),d0
 	asl.w	#8,d0
 	move.b	(a0),d0
@@ -824,7 +824,7 @@ Opcode_CopyBackwardExtended1	;93: opcode A
 	andi.w	#$3F,d2
 	addq.w	#1,d2
 	bra.s	CopyBackwardRun
-Opcode_CopyBackwardExtended2	;93: opcode B
+Opcode_CopyBackwardExtended2	;opcode B
 	move.b	-1(a0),d0
 	asl.w	#8,d0
 	move.b	(a0),d0
@@ -835,7 +835,7 @@ Opcode_CopyBackwardExtended2	;93: opcode B
 	andi.w	#$1F,d2
 	addq.w	#1,d2
 	bra.s	CopyBackwardRun
-Opcode_CopyBackwardReverseShort	;93: opcodes C-D, copy backwards through the source
+Opcode_CopyBackwardReverseShort	;opcodes C-D, copy backwards through the source
 	move.b	-1(a0),d0
 	andi.w	#3,d0
 	addq.w	#1,d0
@@ -843,7 +843,7 @@ Opcode_CopyBackwardReverseShort	;93: opcodes C-D, copy backwards through the sou
 	lsr.w	#2,d2
 	andi.w	#7,d2
 	addq.w	#1,d2
-CopyBackwardReverseRun	;93: shared reverse copy loop
+CopyBackwardReverseRun	;shared reverse copy loop
 	neg.b	d2
 	add.b	d1,d2
 .loop
@@ -855,7 +855,7 @@ CopyBackwardReverseRun	;93: shared reverse copy loop
 .next
 	dbf	d0,.loop
 	rts
-Opcode_CopyBackwardReverseMedium	;93: opcode E. Distance 0 is the end code
+Opcode_CopyBackwardReverseMedium	;opcode E. Distance 0 is the end code
 	move.b	-1(a0),d0
 	andi.w	#$F,d0
 	addq.w	#2,d0
@@ -868,7 +868,7 @@ Opcode_CopyBackwardReverseMedium	;93: opcode E. Distance 0 is the end code
 	addq.w	#4,sp
 	movem.l	(sp)+,d0-d3/a0-a2
 	rts
-Opcode_CopyBackwardReverseLong	;93: opcode F
+Opcode_CopyBackwardReverseLong	;opcode F
 	move.b	(a0),d0
 	asl.b	#1,d0
 	move.b	-1(a0),d0
@@ -978,7 +978,7 @@ VBjsr	;Vertical blank interrupt (vector $78), jumps through the vbint RAM vector
 	move.l	(vbint).w,-(sp)	;push handler address
 	rts	;and "return" into it
 
-VBlank	;93 name; 93 Main vblank code for game play (vbint target). DumpSprites when dfok is set
+VBlank	;Main vblank code for game play (vbint target). DumpSprites when dfok is set
 	;cramfade, then the game clock. gmode2 bit 2 keeps the clock running after the whistle, and with gmode2 bit 1 (penalty shot /
 	;shootout) shootoutclock counts down instead (shootoutjiffy jiffies, not while gmode2 bit 7 is set)
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1010,7 +1010,7 @@ VBlank	;93 name; 93 Main vblank code for game play (vbint target). DumpSprites w
 	cmpi.w	#$3C,(gameclock).w	;60
 	blt.w	.c
 	move.w	#SFXbeep2,-(sp)	;SFXbeep2, played when gameclock reaches 60
-	jsr	(sfx).l	;95: jsr (94: bsr.w)
+	jsr	(sfx).l	;jsr (94: bsr.w)
 .c
 	addq.w	#1,(vcount).w
 	jsr	(p_music_vblank).l
@@ -1027,14 +1027,14 @@ VBlank	;93 name; 93 Main vblank code for game play (vbint target). DumpSprites w
 	subq.w	#1,(shootoutclock).w
 	bra.s	.c
 
-p_music_vblank	;Read the pads (ReadJoyData), then SoundCmd 1: the 95 sound driver's vblank update. Called from the
+p_music_vblank	;Read the pads, then SoundCmd 1: the 95 sound driver's vblank update. Called from the
 	;vblank handlers
 	bsr.w	ReadJoyData
 	move.w	#1,d0
 	jsr	(SoundCmd).l
 	rts
 
-vb2	;93 name. Vblank used for palfades only, no dmas (vbint target). No rte here: falls into IRQ7
+vb2	;Vblank used for palfades only, no dmas (vbint target). No rte here: falls into IRQ7
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w
 	bne.w	.nograph
@@ -1046,7 +1046,7 @@ vb2	;93 name. Vblank used for palfades only, no dmas (vbint target). No rte here
 IRQ7	;rte only. vb2 falls in; the vector table ($60, $64, ...) points here
 	rte
 
-VBlank_SetOptions	;vbint handler stored by the menus: the 92 version (cramfade unless dfng), plus
+VBlank_SetOptions	;vbint handler stored by the menus: cramfade unless dfng, plus
 	;DumpSprites2 when dfok is set
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w
@@ -1135,7 +1135,7 @@ ReadJoy2
 	eor.w	d1,d2
 	and.w	d2,d1
 	rts
-ReadJoy3	;95: nothing pressed (NoJoy) without FourWayPlay
+ReadJoy3	;nothing pressed (NoJoy) without FourWayPlay
 	tst.w	(FourWayPlay).w
 	beq.w	NoJoy
 	move.b	(pad4way3).w,d0
@@ -1179,7 +1179,7 @@ jdtab	dc.b	8
 	;convert button l,r,d,u into directions 0-7,8
 	dc.b	0,4,8,6,7,5,8,2,1,3,8,8,8,8,8
 
-ReadJoyData	;Read the pads every vblank (p_music_vblank). With FourWayPlay, pads 1-4 through the 4 way adaptor
+ReadJoyData	;Read the pads every vblank. With FourWayPlay, pads 1-4 through the 4 way adaptor
 	;(ReadPad4Way1 ... ReadPad4Way4) to pad4way1-pad4way4, else pads 1 and 2 (ReadPad1, ReadPad2)
 	movem.l	d1/a0,-(sp)
 	tst.w	(FourWayPlay).w
@@ -1255,7 +1255,7 @@ ReadPad3Button	;Read a 3 button pad at a0 (TH low, then high), resume the sound 
 	nop
 	nop
 	move.b	(a0),d1
-	move.w	d0,-(sp)	;95: resume the sound driver where 94 released the Z80 bus
+	move.w	d0,-(sp)	;resume the sound driver where 94 released the Z80 bus
 	move.w	#$E,d0
 	jsr	(SoundCmd).l
 	move.w	(sp)+,d0
@@ -1283,7 +1283,7 @@ ResetZ80Bus	;Reset the Z80 and wait for its bus. No caller in 95
 	rts
 
 ReadMenuJoy	;Read the menu pad: with sflags12 bit 0 clear, pad menupadnum (ReadJoy1-4). Else, with no pad on a team
-	;all pads (orjoy4way); otherwise the first pad on a team that has buttons down becomes menupadnum
+	;all pads; otherwise the first pad on a team that has buttons down becomes menupadnum
 	btst	#0,(sflags12).w
 	bne.w	.any
 	tst.w	(menupadnum).w
@@ -1341,7 +1341,7 @@ ReadMenuJoy	;Read the menu pad: with sflags12 bit 0 clear, pad menupadnum (ReadJ
 ;ProcessInputWithRepeat and WaitVSyncAndReadInput, which 95 put in front of the collision code
 ;	(starts). WaitVSyncAndReadInput is written as instructions.
 
-ProcessInputWithRepeat	;93 name. nodiag, then key repeat on d1-d3. 95: first repeat after $19 frames, then every 4 (every $14 with sflags12
+ProcessInputWithRepeat	;nodiag, then key repeat on d1-d3. 95: first repeat after $19 frames, then every 4 (every $14 with sflags12
 	;bit 0)
 	bsr.w	nodiag
 	tst.w	d3

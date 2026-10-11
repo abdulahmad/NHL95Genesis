@@ -1,7 +1,7 @@
 ;	Mapped (58%): ScoringSummaryScreen ... DisplayPenaltyEntry (the goal and penalty summaries). (updatecrowdf
 ;	showcrowd) is just before it.
 ;ScoringSummaryScreen ... DisplayPenaltyEntry as dc.b; it is transcribed from the retail bytes.
-;Local labels are numbered; the names are not kept.
+
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -57,7 +57,7 @@ ScoringSummaryScreen	;"Scoring Summary": one 4 row entry per goal (6 bytes each 
 	bsr.w	CheckGameStatScroll
 	bra.s	.2
 
-CheckGameStatScroll	;Add the scroll speed (PlayerScrollCtr) to the scroll position (VertLineScrolling) within 0 ... SelectedPlayerIdx, then UpdateGameStatScroll
+CheckGameStatScroll	;Add the scroll speed (PlayerScrollCtr) to the scroll position within 0 ... SelectedPlayerIdx, then UpdateGameStatScroll
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsGameStatScroll
 	add.w	(VertLineScrolling).w,d0

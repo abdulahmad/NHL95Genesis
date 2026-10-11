@@ -256,7 +256,7 @@ printsmall	;print String a1 with the small font at printx / printy (control code
 	bsr.w	xyVmMap
 	bra.s	.4
 
-ControlCodeJumpTable	;(dc.b). 93 name. printsmall control codes, indexed by -byte
+ControlCodeJumpTable	;(dc.b). printsmall control codes, indexed by -byte
 	dc.l	ControlCode_None	;0: padding, no-op (the rts of ControlCode_SetFont)
 	dc.l	ControlCode_SetMap	;-1: map
 	dc.l	ControlCode_SetAttribute	;-2: palette/priority
@@ -266,7 +266,7 @@ ControlCodeJumpTable	;(dc.b). 93 name. printsmall control codes, indexed by -byt
 	dc.l	ControlCode_AddY	;-6: y offset
 	dc.l	ControlCode_SetFont	;-7: char set
 	dc.l	ControlCode_SetMapAndPosition	;-8: attribute, map, x, y
-ControlCode_SetMapAndPosition	;the 93 version control code -8, next 4 bytes = attribute, map, x, y
+ControlCode_SetMapAndPosition	;control code -8, next 4 bytes = attribute, map, x, y
 	bsr.w	ControlCode_SetAttribute
 	bsr.w	ControlCode_SetMap
 	bsr.w	ControlCode_SetX
@@ -298,19 +298,19 @@ ControlCode_SetY	;Control code -4, next byte = printy
 	subq.w	#1,d3
 	move.w	d0,(printy).w
 	bra.w	xyVmMap
-ControlCode_AddX	;93: control code -5, add the next (signed) byte to printx
+ControlCode_AddX	;control code -5, add the next (signed) byte to printx
 	move.b	(a1)+,d0
 	ext.w	d0
 	subq.w	#1,d3
 	add.w	d0,(printx).w
 	bra.w	xyVmMap
-ControlCode_AddY	;93: control code -6, add the next (signed) byte to printy
+ControlCode_AddY	;control code -6, add the next (signed) byte to printy
 	move.b	(a1)+,d0
 	ext.w	d0
 	subq.w	#1,d3
 	add.w	d0,(printy).w
 	bra.w	xyVmMap
-ControlCode_SetFont	;93: control code -7, next byte = char set index
+ControlCode_SetFont	;control code -7, next byte = char set index
 	clr.w	d0
 	move.b	(a1)+,d0
 	subq.w	#1,d3
@@ -472,7 +472,7 @@ PutClockDigit	;Draw big clock digit d0 (0-9, $A the colon) at printx / printy fr
 	movem.w	(sp)+,d0-d7
 	rts
 
-showclockdma	;the 94 version vertical rink body (.3): when dfclock is set queue the clock chars in the dma list (a5); with gmode2 bit 1 shootoutclock is shown. Not in a
+showclockdma	;the 94 vertical rink body (.3): when dfclock is set queue the clock chars in the dma list (a5); with gmode2 bit 1 shootoutclock is shown. Not in a
 	;stoppage (sflags2 bit 3) or game over (gsp 4)
 	bclr	#3,(disflags).w
 	beq.w	.2
@@ -532,7 +532,7 @@ ClockDigitChar	;showclockdma helper: next digit of d0 (divu remainder) as a cloc
 	ext.l	d0
 	rts
 
-PerLabels	;(dc.b). 93 name. text list for periods; 94 ' F' (93 'Final'). Used by PrintScores1
+PerLabels	;(dc.b). text list for periods; 94 ' F' (93 'Final'). Used by PrintScores1
 	String	'1',$12
 	String	'2',$13
 	String	'3',$14
@@ -665,7 +665,7 @@ GetDefenseStart	;d0 = goalies + forwards of team a2, the roster index of the fir
 	jsr	(GetForwards).l
 	add.w	(sp)+,d0
 	rts
-.team	;the 94 routine (team data)
+.team	;team data
 	movem.l	a0,-(sp)
 	bsr.w	ReadAttributeNibble
 	move.w	d0,-(sp)
@@ -1816,7 +1816,7 @@ printbigz2	;No xref. printbigz with the third big font (printbig2). String macro
 	movea.l	(sp)+,a1
 	rts
 
-printbigz1	;printbigz with BigFontMap (printbig1)
+printbigz1	;printbigz with BigFontMap
 	move.l	a1,-(sp)
 	movea.l	4(sp),a1
 	bsr.w	printbig1
@@ -1828,14 +1828,14 @@ printbig1	;printbig with BigFontMap (the AddFonts big font)
 	move.l	#BigFontMap,(bigfontptr).l
 	bra.w	printbigtext
 
-printbig	;print String a1 with the big font at printx / printy. BigFontMap2 (bigfontptr)
+printbig	;print String a1 with the big font at printx / printy. BigFontMap2
 	move.l	#BigFontMap2,(bigfontptr).l
 	bra.w	printbigtext
 
 printbig2	;printbig with BigFontMap3. Falls into printbigtext
 	move.l	#BigFontMap3,(bigfontptr).l
 
-printbigtext	;the 94 version body, with the font map at bigfontptr. Lower case is printed as upper case
+printbigtext	;body, with the font map at bigfontptr. Lower case is printed as upper case
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movem.l	d0-d7/a0/a2,-(sp)
@@ -2293,7 +2293,7 @@ TeamGfxList	;(dc.b). LoadHomeTeamGfx: one address per team (TeamList order) in t
 	dc.l	ArenaGfxBank+$39BE,ArenaGfxBank+$3CC8,ArenaGfxBank+$3FD2,ArenaGfxBank+$42DC
 	dc.l	ArenaGfxBank+$45E6,ArenaGfxBank+$48F0,ArenaGfxBank+$4F04,ArenaGfxBank+$4F04
 
-EASNLogo	;93 name. Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertical ice rink if no power play.
+EASNLogo	;Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertical ice rink if no power play.
 	;from PrintScores1
 	btst	#5,(sflags2).w	;sf2pwrplay
 	bne.w	.x
@@ -2318,7 +2318,7 @@ setupEASNmap	;(EASNLogo+$14). Load the EASN logo tiles at EASNcset. Called from 
 	jsr	(DoDMA_clearCallbackPointer).l
 	rts
 
-FormatAndPrintTime	;No xref. 93 name. d0 bits 14-15 = period, bits 0-13 = seconds
+FormatAndPrintTime	;No xref. d0 bits 14-15 = period, bits 0-13 = seconds
 	swap	d0
 	clr.w	d0
 	rol.l	#2,d0

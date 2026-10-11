@@ -3,11 +3,9 @@
 ;	the cmp and exg encodings after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2, with linebar
-;	getlinee and AvgCline moved in. CompLine follows.
-;except AvgCline (dc.b, read from the retail bytes). a printz String as instructions; it is String here. Local labels
-;are numbered; the names are not kept.
-;	95 changes: the team struct offsets, the zero long at $69A (94 $30A).
+;	SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2, with linebar getlinee and AvgCline moved
+;	in. CompLine follows. except AvgCline (dc.b, read from the retail bytes). a printz String as instructions; it is String
+;	here. 95 changes: the team struct offsets, the zero long at $69A (94 $30A).
 
 
 
@@ -27,7 +25,7 @@ SetLCmode	;Open the line change box for team of player a3 (loadTeamStruct): not 
 	bclr	#3,(sflags).w
 	bset	#3,pflags2(a3)
 
-SetLCmode2	;93 name. a2 = team struct. Draw the line change box (box, Framer) with the line names (linelist) and their
+SetLCmode2	;a2 = team struct. Draw the line change box (box, Framer) with the line names (linelist) and their
 	;energy bars (linebar)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	setlccords
@@ -186,7 +184,7 @@ lineinput	;Process input for line changes: d1 = new button presses (passmode fir
 .6
 	rts
 
-lcfound	;Line d2 was picked: store it ($2E), set tmline (getlchoice) and the players (SetPersonel); falls into lcfound2
+lcfound	;Line d2 was picked: store it ($2E), set tmline and the players (SetPersonel); falls into lcfound2
 	move.w	d2,d0
 	move.w	d2,$2E(a2)
 	bsr.w	getlchoice	;translate choice 0-2 into line number 0-6
@@ -199,7 +197,7 @@ lcfound	;Line d2 was picked: store it ($2E), set tmline (getlchoice) and the pla
 	move.w	d0,tmline(a2)
 	jsr	(setpersonel).l
 
-lcfound2	;Erase the line change box (eraser) and redraw the scores (PrintScores1)
+lcfound2	;Erase the line change box and redraw the scores (PrintScores1)
 	btst	#7,(sflags).w
 	bne.w	rtslc
 	bsr.w	setlccords
@@ -216,7 +214,7 @@ lcfound2	;Erase the line change box (eraser) and redraw the scores (PrintScores1
 rtslc	;The shared rts of the line change routines
 	rts
 
-linebar	;93 name. Draw the energy bar of line d0 for team a2 at printx / printy (EnergyBarMap, 16 steps)
+linebar	;Draw the energy bar of line d0 for team a2 at printx / printy (EnergyBarMap, 16 steps)
 	movem.l	d0-d5/a0-a2,-(sp)
 	bsr.w	getlinee
 	move.w	(printa).w,-(sp)
@@ -267,7 +265,7 @@ getlinee	;d0 = line number, a2 = team struct. Return d0 = energy level of this l
 	movem.l	(sp)+,d1-d5/a0-a3
 	rts
 
-AvgCline	;93 name. Return d0 = average energy of the current line on team a2
+AvgCline	;Return d0 = average energy of the current line on team a2
 	movem.l	d1-d3/a0,-(sp)
 	clr.l	d0
 	clr.w	d1
@@ -292,12 +290,11 @@ AvgCline	;93 name. Return d0 = average energy of the current line on team a2
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	CompLine and AutoLineChange, with moved in: SetupTeamForIntermission, chkatop and ChkShotStat
-;	EASportsScreen, updatePPTeamTime; andcode: the saved line set routines (DefaultLineData, LoadTeamLines
-;	CheckTeamLines ...) and six DrawTeamScreen variants. follows at
-;CompLine, AutoLineChange, ReadTeamSRAM, FixSavedLines, the LineSlotFixTbl handlers and the DrawTeamScreen variants as dc.b
-;or as wrong code; they are read from the retail bytes. printz Strings and DecompressGraphicsWithCallback remap bytes as
-;instructions; they are String / dc.b here. Local labels are numbered; the names are not kept.
+;	CompLine and AutoLineChange, with moved in: SetupTeamForIntermission, chkatop and ChkShotStat EASportsScreen,
+;	updatePPTeamTime; andcode: the saved line set routines (DefaultLineData, LoadTeamLines CheckTeamLines ...) and six
+;	DrawTeamScreen variants. follows at CompLine, AutoLineChange, ReadTeamSRAM, FixSavedLines, the LineSlotFixTbl handlers and
+;	the DrawTeamScreen variants as dc.b or as wrong code; they are read from the retail bytes. printz Strings and
+;	DecompressGraphicsWithCallback remap bytes as instructions; they are String / dc.b here.
 
 
 
@@ -407,7 +404,7 @@ chk4lc	;Computer line change on the fly: puck in the player's own end (pucky 0-$
 	jsr	(printscores1).l
 	jmp	compshoot
 
-SetupTeamForIntermission	;93 name. Reset the bench (ResetBench), then for each team SetupTeamLine.
+SetupTeamForIntermission	;Reset the bench (ResetBench), then for each team SetupTeamLine.
 	bsr.w	ResetBench
 	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a3
@@ -1397,7 +1394,7 @@ DrawTeamScreen5	;DrawTeamScreen4 with three small fonts and palette word $A00
 	rts
 
 DrawTeamScreen6	;The team blocks (screen6chars1), the bitmap, Screen6Tiles1 / 2 (screen6chars2 / 3), three small fonts
-	;the big font and the framer (Framermap)
+	;the big font and the framer
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
 .0

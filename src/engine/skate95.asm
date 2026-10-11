@@ -4,7 +4,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets the ready SPA (GoalieReadySPA)
+goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets the ready SPA
 	;turning (AdjustFacingDirection); stopna2 deep in the crease; then playeracc. A computer goalie keeps or turns its facing
 	btst	#3,pflags(a3)
 	beq.w	.9
@@ -505,7 +505,7 @@ stopna	;Slow player a3 by $96 in x and y toward 0, no animation change
 .3
 	rts
 
-updatevel	;The velocity update the 94 version does in line
+updatevel	;The velocity update 94 does in line
 	cmpi.w	#$E,SCnum(a3)
 	bne.w	.1
 	cmpi.w	#$150,Ypos(a3)

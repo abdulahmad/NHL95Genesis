@@ -1,12 +1,12 @@
 ;	NHL 95.
-;	New in 95 (no 94 file): GetTeamUser (UpdateRecords), the end of season awards (SeasonAwards: the award scans, the finalists and
+;	New in 95 (no 94 file): GetTeamUser, the end of season awards (SeasonAwards: the award scans, the finalists and
 ;	winner screens) and the playoffs (InitPlayoffs ... CollectSeriesWinners, PlayoffTreeScreen).
 ;	The segment map ended this file ; RoundSeriesOffsets / RoundSeriesCounts and PlayoffTreeScreen (to) belong here
 ;	starts.
 ;ScanPresidents ... GetAwardAssists, RestoreSeasonHeader and PlayoffTreeScreen as dc.b; they are transcribed
 ;from the retail bytes. printz / printz2 Strings and remap bytes as instructions.
 ;	$20xxxx addresses are save RAM (odd bytes).
-;Local labels are numbered; the names are not kept.
+
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -131,7 +131,7 @@ AwardDescs2	;PrintAwardTitle Strings: the second description lines
 	String	'Season Record',$0
 	String	'In Playoffs',$0
 
-DrawAwardPicture	;Draw the picture of award AwardIndex (AwardPictures) at AwardPictureX / AwardPictureY (dobitmap)
+DrawAwardPicture	;Draw the picture of award AwardIndex at AwardPictureX / AwardPictureY
 	jsr	(printz).l
 	String	-TXMAP1,$0,$0,$0
 	move.w	(AwardIndex).w,d0
@@ -187,7 +187,7 @@ DrawWinnerPanel	;Draw the winner panel (WinnerPanelMap) at 29,9
 	movea.l	#WinnerPanelMap,a0
 	bra.w	DrawAwardPanel
 
-DrawAwardPanel	;Draw the panel bitmap a0 at awardpanelchars (dobitmap)
+DrawAwardPanel	;Draw the panel bitmap a0 at awardpanelchars
 	movea.l	a0,a1
 	movea.l	a0,a2
 	adda.l	(a2)+,a0
@@ -451,7 +451,7 @@ AwardsScreenSetup	;Awards screen setup: vram layout, the small font (two remaps)
 	move.w	d4,(awardpanelchars).w
 	rts
 
-FindAwardFinalists	;Score the candidates of award AwardIndex (AwardScanTbl), sort them (SortAwardScores), keep the winner in AwardWinner and put the top 3 in a random order
+FindAwardFinalists	;Score the candidates of award AwardIndex, sort them (SortAwardScores), keep the winner in AwardWinner and put the top 3 in a random order
 	move.w	(AwardIndex).w,d0
 	asl.w	#2,d0
 	movea.l	#AwardScanTbl,a0
@@ -622,7 +622,7 @@ ScanVezina	;Vezina: goalies (VezinaScore)
 	bsr.w	ScanAllPlayers
 	rts
 
-ScanAllPlayers	;Every player d1 of the 26 teams (d7): when the score routine a6 qualifies him (d5 >= 0), add d1 to AwardIds and d5 to AwardScores (AwardCount)
+ScanAllPlayers	;Every player d1 of the 26 teams (d7): when the score routine a6 qualifies him (d5 >= 0), add d1 to AwardIds and d5 to AwardScores
 	clr.w	d1
 	clr.w	d7
 	movea.l	#AwardIds,a1
@@ -962,7 +962,7 @@ GetAwardAssists	;d6 = assists of player d0 / 4 (save RAM SRAssists, the playoff 
 	move.b	3(a0,d0.w),d6
 	rts
 
-InitPlayoffs	;Seed the playoffs: the two conferences (ConferenceTeams1 / 2) sorted by points (SortSeeds), 1 v 8 ... 4 v 5 to save RAM SRPOPairings (SeedPairings)
+InitPlayoffs	;Seed the playoffs: the two conferences (ConferenceTeams1 / 2) sorted by points (SortSeeds), 1 v 8 ... 4 v 5 to save RAM SRPOPairings
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$B,d0
 	movea.l	#AwardIds,a0
@@ -1135,7 +1135,7 @@ SetupPlayoffs	;Start the playoffs: save the season header (SRSeasonHeaderSave), 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-RestoreSeasonHeader	;Put back the season header saved by SetupPlayoffs (ReadSeasonHeader). Nothing calls it
+RestoreSeasonHeader	;Put back the season header saved by SetupPlayoffs. Nothing calls it
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SaveRAM+2*SRSeasonHeader,a0
 	movea.l	#SaveRAM+2*SRSeasonHeaderSave,a1
@@ -1252,7 +1252,7 @@ SeriesInRound	;d0 = the series in the round (SeriesCountTbl)
 SeriesCountTbl	;Series per round
 	dc.w	8,4,2,1
 
-GetRoundPairings	;a1 = the pairings of the round in save RAM SRPOPairings (RoundPairOffsets)
+GetRoundPairings	;a1 = the pairings of the round in save RAM SRPOPairings
 	movem.l	d0/a0,-(sp)
 	movea.l	#SaveRAM+2*SRPOPairings,a1
 	move.w	(SaveRAM+2*(SRPORound+1)).l,d0

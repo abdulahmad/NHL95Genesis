@@ -1,6 +1,6 @@
 ;	NHL 95.
 ;	The PuckcIsGoalie, then SetPersonel, SetPlList, TryAddPlayerToList, forcepldata, GetPlayerCount (moved
-;	95: by team number, GetPlayerCountD7), setplayer, ClampNibble, the StickHandTable and BoostAttribute
+;	by team number, GetPlayerCountD7), setplayer, ClampNibble, the StickHandTable and BoostAttribute
 ;	AttributeCalc (moved in), restoreteams (moved in), ResetBench, resetplstuff (moved in), priolist and
 ;	sublist (moved in), Create_HotCold_Table / HotColdLoop (moved in).
 ;	The start moved to: CPgoalie.0 ... The end moved to: doinput is the
@@ -25,7 +25,7 @@ PuckcIsGoalie	;Z set (eq) when the puck carrier is a goalie (a minus puckc retur
 	movem.l	(sp)+,d0/a0
 	rts
 
-setpersonel	;Set personnel on team a2 by PlList (SetPlList): players already on the ice stay
+setpersonel	;Set personnel on team a2 by PlList: players already on the ice stay
 	;the others take the free sort objects. SetSeasonInjuries first with GameFlags bit 3
 	movem.l	d0-d5/a0-a4,-(sp)
 	btst	#3,(GameFlags).w
@@ -88,7 +88,7 @@ setpersonel	;Set personnel on team a2 by PlList (SetPlList): players already on 
 	rts
 
 SetPlList	;Create PlList of players who we want on the ice now. a2 = team struct. Takes the current line (tmline) by
-	;priolist; an unavailable player is replaced from sublist (TryAddPlayerToList), else by roster order (GetPlayerCount)
+	;priolist; an unavailable player is replaced from sublist, else by roster order (GetPlayerCount)
 	movea.w	#(PlList-M68K_RAM),a4
 	clr.l	(a4)	;clear 6 bytes (PlList)
 	clr.w	4(a4)

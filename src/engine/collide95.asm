@@ -1049,7 +1049,7 @@ checkpuckcoll	;look for puck coll with players. a3 = puck. Clears Yvel past the 
 	move.b	1(a1,d1.w),d4	;next higher object number
 	move.w	0(a2,d4.w),d5	;Y pos of next higher object
 	sub.w	Ypos(a3),d5	;sub Ypos from d5
-	cmp.w	#$1D,d5	;95: $1D (94: $16 = cbody + cstick)
+	cmp.w	#$1D,d5	;$1D (94: $16 = cbody + cstick)
 	bgt.w	.cl	;no higher sprite coll
 	bsr.w	.ccx
 	addq.w	#1,d1
@@ -1091,7 +1091,7 @@ checkpuckcoll	;look for puck coll with players. a3 = puck. Clears Yvel past the 
 	bne.w	.exit	;exit if set
 	tst.b	nopuck(a2)	;check if nopuck collision
 	bne.w	.exit	;branch if nopuck
-	btst	#pf3onetimer,pflags3(a2)	;95: a one-timer keeps the long reach
+	btst	#pf3onetimer,pflags3(a2)	;a one-timer keeps the long reach
 	bne.w	.reach
 	move.w	#$A,(ChkBodyP).w
 	move.w	#$E,(ChkStickP).w
@@ -1108,7 +1108,7 @@ checkpuckcoll	;look for puck coll with players. a3 = puck. Clears Yvel past the 
 	bgt.w	.chkbody	;branch if higher
 	move.l	a2,-(sp)
 	bsr.w	GetHot	;Get Hot Spot d0/d1 = x/y
-	btst	#pf3onetimer,pflags3(a2)	;95: half the hot spot offset in a one-timer
+	btst	#pf3onetimer,pflags3(a2)	;half the hot spot offset in a one-timer
 	beq.w	.hot
 	asr.w	#1,d0
 	asr.w	#1,d1
@@ -1152,7 +1152,7 @@ checkpuckcoll	;look for puck coll with players. a3 = puck. Clears Yvel past the 
 	sub.w	Ypos(a3),d1	;sub Ypos a3
 	cmp.w	(ChkBodyP).w,d1	;compare cbody
 	bgt.w	.exit	;exit if greater
-	move.w	(NegChkBodyP).w,d1	;95: a move, not a cmp (always negative, so the blt exits)
+	move.w	(NegChkBodyP).w,d1	;a move, not a cmp (always negative, so the blt exits)
 	blt.w	.exit	;exit if less than
 	muls.w	d0,d0	;square d0
 	muls.w	d1,d1	;square d1
@@ -1187,7 +1187,7 @@ checkpuckcoll	;look for puck coll with players. a3 = puck. Clears Yvel past the 
 	move.w	#$F,d0	;move F into d0 (remove Agl)
 	bra.w	.calcagl
 .anim
-	cmpi.w	#$1C54,SPA(a2)	;95: two goalie anims use the smallest reach
+	cmpi.w	#$1C54,SPA(a2)	;two goalie anims use the smallest reach
 	beq.w	.min
 	cmpi.w	#$1B7A,SPA(a2)
 	bne.w	.calcagl
@@ -1287,7 +1287,7 @@ puckstick	;puck collides with stick. a2 = player who collided, a3 = puck, d0 = d
 	;check on the puck carrier can steal the puck (Stk rolls, smaller ranges when the carrier is in the slot, sflags6 bit 5), else a slow enough
 	;puck is caught (puckglue); a one-timer shoots it (onetimershot). 95: no highlight exit for the goalie, no steal roll against SPA $B8E
 	tst.w	position(a2)	;a2 = player who collided
-	bne.w	.0	;95: branches to the next instruction (94 skipped the highlight check here)
+	bne.w	.0	;branches to the next instruction (94 skipped the highlight check here)
 .0
 	bclr	#pfdoff,pflags(a2)	;clear offside bit
 	move.w	(puckc).w,d1	;move puckc into d1
@@ -1313,7 +1313,7 @@ puckstick	;puck collides with stick. a2 = player who collided, a3 = puck, d0 = d
 	beq.w	.steal	;branch if goalie
 	tst.w	position(a0)	;check if goalie
 	beq.w	rtspuck	;no stealing from goalie
-	cmpi.w	#$B8E,SPA(a0)	;95: the carrier in SPA $B8E always loses the puck
+	cmpi.w	#$B8E,SPA(a0)	;the carrier in SPA $B8E always loses the puck
 	beq.w	.steal
 	move.b	stickhand(a0),d0	;Stk for puckc
 	lsr.b	#1,d0	;divide by 2
@@ -1365,7 +1365,7 @@ puckstick	;puck collides with stick. a2 = player who collided, a3 = puck, d0 = d
 .onetimerchk
 	btst	#pf3onetimer,pflags3(a2)	;check if onetimer
 	beq.w	.nosteal2	;branch if not
-	cmp.l	#$100,d0	;95: $100 (94: $64)
+	cmp.l	#$100,d0	;$100 (94: $64)
 	bhi.w	.3
 	cmpi.w	#$18,SPAnum(a2)
 	bge.w	.nosteal2
@@ -1407,7 +1407,7 @@ puckstick	;puck collides with stick. a2 = player who collided, a3 = puck, d0 = d
 
 puckglue	;Player a2 takes the puck (92 puckstick.glue): faceoff and pass stats, crowd song, goalie hold time (temp5)
 	;then .setd0player. 95 also sets pflags2 bit 7 on a2
-	move.w	#7,-(sp)	;SFXpuckget (song)
+	move.w	#7,-(sp)	;SFXpuckget
 	move.w	SCnum(a2),d0	;move SCnum into d0
 	move.w	d0,(puckc).w	;move d0 into puckc
 	bset	#7,pflags2(a2)
@@ -1586,7 +1586,7 @@ puckbody	;puck hits player a2. a3 = puck, d0 = distance^2 (from checkpuckcoll .c
 	exg	a2,a3
 	jsr	(SetSPA).l
 	exg	a2,a3
-rtspuck	;Shared rts in the 94 version place (after puckbody), branched to from this segment
+rtspuck	;Shared rts in the 94 place (after puckbody), branched to from this segment
 	rts
 
 deflect	;random puck direction on deflection, puck = a3. Entered from puckstick. Zvel = randomd0($400)
@@ -1841,7 +1841,7 @@ wallcollduringcheck	;during a check, a skater a2 (not a goalie) near the wall: t
 	rts
 
 checkcornercoll94	;Corner circles and side walls for object a3 at d2 / d3 (wcradiusx / wcradiusy); a hit goes to
-	;95: end boards $128
+	;end boards $128
 	bclr	#pf3wall,pflags3(a3)	;clears bit 4 in pflags3 (not used in 92)
 	move.w	#$98,d4
 	sub.w	(wcradiusx).w,d4
@@ -1914,7 +1914,7 @@ checkcornercoll94	;Corner circles and side walls for object a3 at d2 / d3 (wcrad
 .3
 	rts
 
-cornercollb94	;95: straight to wallcollb
+cornercollb94	;straight to wallcollb
 	jmp	(wallcollb).l
 
 
@@ -2004,7 +2004,7 @@ puckgoalie	;puck hits goalie a2. a3 = puck, d0/d1 = goalie - puck x/y. A save bo
 .chkanim
 	cmpi.w	#$1D4E,SPA(a2)	;goalie dive animation
 	beq.s	.bounceoff	;branch if equal
-	cmpi.w	#$1C86,SPA(a2)	;95: two more goalie anims bounce the puck
+	cmpi.w	#$1C86,SPA(a2)	;two more goalie anims bounce the puck
 	beq.s	.bounceoff
 	cmpi.w	#$2AE4,SPA(a2)
 	beq.s	.bounceoff	;branch if equal
@@ -2014,7 +2014,7 @@ puckgoalie	;puck hits goalie a2. a3 = puck, d0/d1 = goalie - puck x/y. A save bo
 	asl.w	#1,d0	;mult by 2
 	bsr.w	randomd0	;random
 	addi.w	#$C00,d0	;add C00 to d0
-	cmpi.w	#$23E8,SPA(a2)	;95: more in SPA $23E8
+	cmpi.w	#$23E8,SPA(a2)	;more in SPA $23E8
 	bne.w	.dbl
 	addi.w	#$300,d0
 .dbl

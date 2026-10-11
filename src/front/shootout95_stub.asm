@@ -63,7 +63,7 @@ prefmes = $89898
 Penaltylist = $89C2E
 PenShotPenalties = $89FFC
 DrawTeamScreen6 = $8B32A
-getGoalieSCnum = $8B974		;95: d0 = SCnum of the goalie of the team of player d0
+getGoalieSCnum = $8B974		;d0 = SCnum of the goalie of the team of player d0
 SetSPA = $8BC9A
 LockScroll = $8C8EC
 checkwindow = $8C900

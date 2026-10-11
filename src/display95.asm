@@ -23,7 +23,7 @@ setvideo	;this is not vblank code but sets up ram for vblank transfers. Called o
 	bsr.w	checksso
 	bsr.w	setsortcords
 	bsr.w	setffo
-	btst	#sfpz,(sflags).w	;95: no clock while paused
+	btst	#sfpz,(sflags).w	;no clock while paused
 	bne.w	.0
 	jsr	(showclock).l
 .0
@@ -150,7 +150,7 @@ checksso	;do graphics for sso structure: arrows for the players when they are of
 	add.w	4(a1,d2.w),d3
 	move.w	d3,frame(a3)
 	move.w	6(a1,d2.w),attribute(a3)
-	jmp	(addframe2).l	;94: bra.w
+	jmp	(addframe2).l	;bra.w
 .tab	;93 .tab. x spot, y spot, frame add, attribute per direction
 	dc.w	0,$64,0,$0000
 	dc.w	$74,$64,1,$0000
@@ -306,7 +306,7 @@ updateanim	;frame switch control on struct a3. Called from updateplayers. 95: no
 	bpl.w	.1	;branch if positive (not the end of the animation)
 	btst	#0,d1	;check if anim attribute loops
 	beq.w	.end
-	btst	#1,d1	;95: loop to the pair in the flag's high byte
+	btst	#1,d1	;loop to the pair in the flag's high byte
 	bne.w	.again
 	clr.w	d0	;loop from the start
 	clr.w	SPAnum(a3)	;clear SPANum
@@ -331,7 +331,7 @@ updateanim	;frame switch control on struct a3. Called from updateplayers. 95: no
 	bclr	#pfalock,pflags(a3)
 	bclr	#pf2aip,pflags2(a3)
 	bclr	#pf3fall,pflags3(a3)
-	cmpi.w	#SPAfallback,SPA(a3)	;95: a fall back ends facing the other way
+	cmpi.w	#SPAfallback,SPA(a3)	;a fall back ends facing the other way
 	bne.w	.clr
 	eori.w	#4,facedir(a3)
 .clr
@@ -409,7 +409,7 @@ defaultsprites2	;objects which are tied to screen scrolling and have velocity: t
 	movea.w	#(SortCords-M68K_RAM),a3
 	movea.w	#(OOlistpos-M68K_RAM),a4
 .0
-	moveq	#$1D,d0	;94: $1F
+	moveq	#$1D,d0	;$1F
 	movea.w	a3,a0
 .1
 	clr.l	(a0)+
@@ -430,7 +430,7 @@ defaultsprites2	;objects which are tied to screen scrolling and have velocity: t
 	move.b	(a2)+,asslist(a3)
 	addq.w	#1,a2
 	move.b	(a2)+,pflags(a3)
-	btst	#pfteam,pflags(a3)	;95: the away team starts facing down
+	btst	#pfteam,pflags(a3)	;the away team starts facing down
 	beq.w	.2
 	move.w	#4,facedir(a3)
 .2

@@ -16,7 +16,7 @@
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-InitialSP = $FFFFF6	;reset vector 0. 93 / 94 name, 24-bit form of $FFFFFFF6. Begin moves the stack to Stack
+InitialSP = $FFFFF6	;reset vector 0. 24-bit form of $FFFFFFF6. Begin moves the stack to Stack
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
@@ -300,7 +300,7 @@ Begin	;cold start, entered from RegionOK. Clear RAM, init sound and menus, go to
 .0	clr.l	(a0)+			;clear RAM $AC00-$DC7F (94: $B000-$DEF3)
 	cmpa.w	#(varend-M68K_RAM),a0
 	blt.s	.0
-	clr.w	(PALflag).l		;clear the PAL flag (flag)
+	clr.w	(PALflag).l		;clear the PAL flag
 	move.w	(VDP_CTRL).l,d0
 	andi.w	#1<<PAL_MODE,d0		;VDP status bit 0 = PAL (50 Hz)
 	move.w	d0,(music_global_tick_counter).l

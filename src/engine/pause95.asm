@@ -25,7 +25,7 @@ Pausemode	;(PauseMode). Game is in pause mode now: fade out, stop the sound (unl
 	btst	#5,(sflags9).w
 	bne.w	.1	;eq = leave pause
 	jsr	(SoundOff).l
-	bra.w	.1	;95: to the next instruction
+	bra.w	.1	;to the next instruction
 .1
 	move.w	(sflags).w,-(sp)
 	jsr	(seta2).l	;a2 = team of pausing controller
@@ -900,7 +900,7 @@ DrawMenuInfo	;With no menu list: clear the box and run draw routine menuitem of 
 MenuInfoList	;(dc.b). The info page draw routines for DrawMenuInfo (0 ends)
 	dc.l	PauseInfo,0
 PauseInfo	;The info page: a bitmap at $11, $B (a0 is whatever printz left: the vdp data port) and
-	;PauseInfoText (PrintLines)
+	;PauseInfoText
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$11,$B,0
 	movea.l	a0,a1
@@ -1363,13 +1363,13 @@ ManualGoalieMenu	;Pause menu MANUAL GOALIE / AUTO GOALIE: with OptNOP set, toggl
 
 SelectGoalieMenu	;Pause menu CHANGE GOALIE: pick team a2's goalie (or no goalie) from a list
 	;(DisplayPlayerSelectMenu) with up / down, C or start; sets tmgoalie and SetPersonel. 95 clears the menu box first (ClearMenuBox) and
-	;redraws the menu after (RedrawMenu), where 94 drew a frame (Framer)
+	;redraws the menu after (RedrawMenu), where 94 drew a frame
 	move.w	(menuitem).w,-(sp)
 	move.w	(menuitem+2).w,-(sp)
 	bsr.w	ClearMenuBox
 	jsr	(ReadAttributeNibble).l
 	move.w	d0,(menuitem+2).w
-	add.w	(menuitem+2).w,d1	;the 94 version height. Nothing reads it in 95
+	add.w	(menuitem+2).w,d1	;the 94 height. Nothing reads it in 95
 	move.w	tmgoalie(a2),d0
 	bpl.w	.0
 	moveq	#-1,d0
@@ -1538,7 +1538,7 @@ PutScoreDigit	;The same code as PutClockDigit: big digit d0 at printx / printy f
 	movem.w	(sp)+,d0-d7
 	rts
 
-SetMenuPadSide	;sflags bit 1 set when the team of pad menupadnum (padteams) is above 1, else cleared. Called from
+SetMenuPadSide	;sflags bit 1 set when the team of pad menupadnum is above 1, else cleared. Called from
 	;ManualGoalieMenu and PrintMenuItem
 	movem.l	d0/a0-a1,-(sp)
 	movea.l	#padteams,a0
