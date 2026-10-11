@@ -1,6 +1,6 @@
 ;	NHL 95 title95. Retail $0A12AA-$0A1A59 (1968 bytes).
 ;	Mapped to title94 (53%): newTitleScreen, CreditsPrintRow, CreditsWait, TitleVBlank, CreditsLineScroll, CreditsScrollStep, HiScoreScreen;
-;	95 only: the Stanley Cup screen (StanleyCupScreen ... AddSpriteFrame).
+;	New in 95: the Stanley Cup screen (StanleyCupScreen ... AddSpriteFrame).
 ;TitleVBlank, CreditsScrollStep and CupVBlank as dc.b and hid the printz Strings and remap bytes; they are written from the retail
 ;	bytes.
 ;Local labels are numbered; the names are not kept.
@@ -9,7 +9,7 @@
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-newTitleScreen	;title94 newTitleScreen. The title screen (TitleScreenImg, TitleImg) with the vblank TitleVBlank and the song, then the scrolling credits (Credits, CreditsList, CreditsPrintRow) until start
+newTitleScreen	;The title screen (TitleScreenImg, TitleImg) with the vblank TitleVBlank and the song, then the scrolling credits (Credits, CreditsList, CreditsPrintRow) until start
 	move	#$2700,sr
 	move.w	(VDP_CNTR).l,(seed).w
 	move.w	(VDP_CNTR).l,(seed+2).w
@@ -156,7 +156,7 @@ newTitleScreen	;title94 newTitleScreen. The title screen (TitleScreenImg, TitleI
 	bpl.s	.2
 	rts
 
-CreditsPrintRow	;title94 CreditsPrintRow. Credits: clear the row below the screen (Vscroll / 8 + $1C) and print the Strings from a1 centred there
+CreditsPrintRow	;Credits: clear the row below the screen (Vscroll / 8 + $1C) and print the Strings from a1 centred there
 	move.w	(Vscroll).w,d0
 	asr.w	#3,d0
 	addi.w	#$1C,d0
@@ -182,7 +182,7 @@ CreditsPrintRow	;title94 CreditsPrintRow. Credits: clear the row below the scree
 	bpl.s	.0
 	rts
 
-CreditsWait	;title94 CreditsWait. Credits: wait one frame, run the clampcounter count down; from TempWord1 5 on, start returns from the caller
+CreditsWait	;Credits: wait one frame, run the clampcounter count down; from TempWord1 5 on, start returns from the caller
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(vcount).w,d0
 .0
@@ -205,7 +205,7 @@ CreditsWait	;title94 CreditsWait. Credits: wait one frame, run the clampcounter 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-VBlank_TitleScreen	;title94 TitleVBlank. newTitleScreen vblank: the line scroll table and Vscroll, the sprites, cramfade, CreditsScrollStep, the music; rte
+VBlank_TitleScreen	;newTitleScreen vblank: the line scroll table and Vscroll, the sprites, cramfade, CreditsScrollStep, the music; rte
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#2,(disflags).w
 	bne.w	.1
@@ -231,7 +231,7 @@ VBlank_TitleScreen	;title94 TitleVBlank. newTitleScreen vblank: the line scroll 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rte
 
-CreditsLineScroll	;title94 CreditsLineScroll. Credits: the line scroll table at SortCords
+CreditsLineScroll	;Credits: the line scroll table at SortCords
 	movem.l	d0-d1,-(sp)
 	move.w	#$14,(Hscroll).w
 	move.w	#$50,(TempWord2).w
@@ -254,7 +254,7 @@ CreditsLineScroll	;title94 CreditsLineScroll. Credits: the line scroll table at 
 	movem.l	(sp)+,d0-d1
 	rts
 
-CreditsScrollStep	;title94 CreditsScrollStep. Credits: line scroll step, every TempWord2 frames
+CreditsScrollStep	;Credits: line scroll step, every TempWord2 frames
 	subq.w	#1,(TempWord2).w
 	bmi.w	.0
 	rts
@@ -288,7 +288,7 @@ CreditsScrollStep	;title94 CreditsScrollStep. Credits: line scroll step, every T
 	movem.l	(sp)+,d0-d2/a0
 	rts
 
-HiScoreScreen	;title94 HiScoreScreen. vb2, the HiScoreBgMap and HiScoreImg bitmaps, then wait up to $50 * 4 frames or a button (waitx)
+HiScoreScreen	;vb2, the HiScoreBgMap and HiScoreImg bitmaps, then wait up to $50 * 4 frames or a button (waitx)
 	move.l	#vb2,(vbint).w
 	bclr	#1,(disflags).w
 	move.w	#5,(Map3col1).w
@@ -347,7 +347,7 @@ HiScoreScreen	;title94 HiScoreScreen. vb2, the HiScoreBgMap and HiScoreImg bitma
 	move	#$2700,sr
 	rts
 
-StanleyCupScreen	;95 only. The Stanley Cup screen: the vblank CupVBlank, the cup (StanleyCupImg), the winner team block (CupDrawTeam), the song, then the animated sprites (CupBuildSprites) until start (CupReadPads)
+StanleyCupScreen	;The Stanley Cup screen: the vblank CupVBlank, the cup (StanleyCupImg), the winner team block (CupDrawTeam), the song, then the animated sprites (CupBuildSprites) until start (CupReadPads)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	#CupVBlank,(vbint).l
 	bclr	#1,(disflags).w
@@ -408,7 +408,7 @@ StanleyCupScreen	;95 only. The Stanley Cup screen: the vblank CupVBlank, the cup
 	jsr	(CupReadPads).l
 	bra.s	.0
 
-CupReadPads	;95 only. StanleyCupScreen: the buttons of all pads; start leaves StanleyCupScreen (drops the return address)
+CupReadPads	;StanleyCupScreen: the buttons of all pads; start leaves StanleyCupScreen (drops the return address)
 	jsr	(ReadJoy1).l
 	move.w	d3,-(sp)
 	jsr	(ReadJoy2).l
@@ -425,19 +425,19 @@ CupReadPads	;95 only. StanleyCupScreen: the buttons of all pads; start leaves St
 	bne.w	CupExit
 	rts
 
-CupWaitFrame	;95 only. StanleyCupScreen: wait for the next vblank (vcount)
+CupWaitFrame	;StanleyCupScreen: wait for the next vblank (vcount)
 	move.w	(vcount).w,d0
 .0
 	cmp.w	(vcount).w,d0
 	beq.s	.0
 	rts
 
-CupExit	;95 only. Leave StanleyCupScreen (CupReadPads on start: drop its return address). 95 only. Leave StanleyCupScreen (CupReadPads on start: drop its return address)
+CupExit	;Leave StanleyCupScreen (CupReadPads on start: drop its return address). Leave StanleyCupScreen (CupReadPads on start: drop its return address)
 	addq.w	#4,sp
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CupVBlank	;95 only. StanleyCupScreen vblank: the sprites (Sattsize), cramfade, vcount, the music; nothing with disflags bit 2; rte
+CupVBlank	;StanleyCupScreen vblank: the sprites (Sattsize), cramfade, vcount, the music; nothing with disflags bit 2; rte
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#2,(disflags).w
 	bne.w	.1
@@ -455,7 +455,7 @@ CupVBlank	;95 only. StanleyCupScreen vblank: the sprites (Sattsize), cramfade, v
 	movem.l	(sp)+,d0-d7/a0-a6
 	rte
 
-CupDrawTeam	;95 only. StanleyCupScreen: the team block of the winner (cupwinner, Teamblocksmap)
+CupDrawTeam	;StanleyCupScreen: the team block of the winner (cupwinner, Teamblocksmap)
 	movem.l	d0-d7/a0-a3,-(sp)
 	jsr	(printz).l
 	String	-TXMAP2,$17,$16,$0
@@ -473,7 +473,7 @@ CupDrawTeam	;95 only. StanleyCupScreen: the team block of the winner (cupwinner,
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-CupBuildSprites	;95 only. StanleyCupScreen: the sprite list at Satt from the animated CupSprites frame (cupframe, one step every $A cupticks over $E frames), Sattsize
+CupBuildSprites	;StanleyCupScreen: the sprite list at Satt from the animated CupSprites frame (cupframe, one step every $A cupticks over $E frames), Sattsize
 	movea.w	#(Satt-M68K_RAM),a6
 	moveq	#1,d6
 	movea.l	#CupSprites,a0
@@ -504,7 +504,7 @@ CupBuildSprites	;95 only. StanleyCupScreen: the sprite list at Satt from the ani
 	move.w	d0,(Sattsize).w
 	rts
 
-AddSpriteFrame	;95 only. Add the sprites of frame d2 of a0, offset by d0 / d1, to the sprite list at a6 (d6 sprites, at most $40)
+AddSpriteFrame	;Add the sprites of frame d2 of a0, offset by d0 / d1, to the sprite list at a6 (d6 sprites, at most $40)
 	cmp.w	#$40,d6
 	bge.w	.2
 	movem.l	d0-d5/a0,-(sp)

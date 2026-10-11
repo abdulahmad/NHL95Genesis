@@ -6,7 +6,7 @@
 ;------------------------------------------------------------------------------------------------------------------------
 ; $00A204  From display94.asm: video setup, sort coordinates, pads; then updateanim from replay94.asm
 ;	94 setvideo, checksso, setsortcords, setffo, uppads, FormatControllerDisplay, RenderSmallFontChar and ButtonLabelCharTable
-;	(display94), then updateanim (replay94, $A536).
+;	then updateanim ($A536).
 ;	95 has 6 pad objects and no glove object (94: 7 with glovestruct), and keeps the pad nibbles in one long (PadControlBits).
 
 
@@ -274,15 +274,15 @@ ButtonLabelCharTable	;Third label character by bits 10-8 of the label code
 ;------------------------------------------------------------------------------------------------------------------------
 ; $00A536  From replay94.asm: updateanim
 
-updateanim	;frame switch control on struct a3. Called from updateplayers (hockey95). 95: no horizontal rink case, and an
-	;animation whose flag has bits 0 and 1 set loops back to the pair in the flag's high byte (frames95 SPAskate $1003)
+updateanim	;frame switch control on struct a3. Called from updateplayers. 95: no horizontal rink case, and an
+	;animation whose flag has bits 0 and 1 set loops back to the pair in the flag's high byte (SPAskate $1003)
 	tst.w	SPA(a3)	;test SPA
 	bne.w	.ia	;branch if not 0
 	bclr	#pfalock,pflags(a3)	;clear anim lock
 	bclr	#pf2aip,pflags2(a3)	;clear anim in progress
 	rts
 .ia
-	movea.l	#SPAlist,a0	;animation data tables (frames95)
+	movea.l	#SPAlist,a0	;animation data tables
 	adda.w	SPA(a3),a0	;add SPA to a0 address
 	move.w	Ypos(a3),d0	;left over from the 94 horizontal rink check
 	move.w	#0,d0
@@ -357,7 +357,7 @@ updateanim	;frame switch control on struct a3. Called from updateplayers (hockey
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $00A656  From setup94.asm: defaultsprites, defaultsprites2, SprSort
-;	setup94 defaultsprites, defaultsprites2 and SprSort. control95 follows at $A95C.
+;	defaultsprites, defaultsprites2 and SprSort. follows at $A95C.
 
 
 defaultsprites	;allocate vram and assign char area for graphic structures. d4 = char area for data. Sets up the sso (4) and

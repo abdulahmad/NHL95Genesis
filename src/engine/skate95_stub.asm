@@ -14,14 +14,14 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $08B4E0-$08C303, read from lst/nhl95.bin.
-SPAlist = $5A34		;frames95
-sfx = $677AC		;sound95
-sroot = $7C512		;middle95
-vtoa = $7C586		;middle95
-getpde = $7CAD0		;middle95
-setpde = $7DBCA		;middle95
-AdjustFacingDirection = $80426		;logic95
-goaliesave = $80478		;logic95
+SPAlist = $5A34
+sfx = $677AC
+sroot = $7C512
+vtoa = $7C586
+getpde = $7CAD0
+setpde = $7DBCA
+AdjustFacingDirection = $80426
+goaliesave = $80478
 
 ; Main segment code
 	include	engine\skate95.asm

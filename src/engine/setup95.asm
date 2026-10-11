@@ -1,9 +1,9 @@
 ;	NHL 95 setup95. Retail $084FE6-$087BA1 (11196 bytes).
-;	Mapped to data94 (34%), but most of the row is other 94 files moved together: stats94 TeamRosterScreen, DisplayPlayerList,
-;	getNameandAttrib and its column handlers, DrawTeamScreen; data94 PAttribColumns / GAttribColumns, PlayerPositionText; the 95 game
-;	setup screen (optsetup94 GameSetUp ... setoptions, attract94 DrawTeamBitmap, SetPojoyMode, rewritten for the 13 95 play modes,
-;	the season and the player cards); data94 DefaultMenus, FigureJoy and the playoff routines InitializeGameStructures ... MakeTree;
-;	title94 ReadLineData / WriteLineData. playoff95 follows at $087BA2.
+;	Mapped to data94 (34%), but most of the row is other 94 files moved together: TeamRosterScreen, DisplayPlayerList
+;	getNameandAttrib and its column handlers, DrawTeamScreen; PAttribColumns / GAttribColumns, PlayerPositionText; the 95 game
+;	setup screen (GameSetUp ... setoptions, DrawTeamBitmap, SetPojoyMode, rewritten for the 13 95 play modes
+;	the season and the player cards); DefaultMenus, FigureJoy and the playoff routines InitializeGameStructures ... MakeTree
+;	ReadLineData / WriteLineData. follows at $087BA2.
 ;code as dc.b at $84FE6-$8546D (TeamRosterScreen ... PrintPlayerLines), $8547A-$8581D (getNameandAttrib ...
 ;LoadRosterFont), $861CE and $87468-$874A5 (InitializeGameStructures, OptionRNG); these are read from the retail bytes.
 ;	hid the printz / printz2 Strings and the DecompressGraphicsWithCallback remap bytes as instructions. Local labels are numbered;
@@ -15,9 +15,9 @@
 
 	rts	;unused (the byte after compshoot)
 
-TeamRosterScreen	;(94 stats94). "Team Roster" screen for team a2: DrawTeamScreen, then the player list (DisplayPlayerList)
+TeamRosterScreen	;"Team Roster" screen for team a2: DrawTeamScreen, then the player list (DisplayPlayerList)
 	;with page (SelectedPlayerIdx: goalies, offense, defense; C), column (DispAttribCtr: left / right) and row scroll (rosterscroll: up / down).
-	;B goes to the other team; start exits (ExitAttributeScreen2). 95 rewrote the 94 scrolling screen. Called from the pause95 item lists
+	;B goes to the other team; start exits (ExitAttributeScreen2). 95 rewrote the 94 scrolling screen. Called from the item lists
 	moveq	#0,d0
 	moveq	#$1C,d1
 	jsr	(DrawTeamScreen).l
@@ -135,7 +135,7 @@ TeamRosterScreen	;(94 stats94). "Team Roster" screen for team a2: DrawTeamScreen
 	clr.w	(PlayerScrollCtr).w	;unused
 	rts
 
-DisplayPlayerList	;(94 stats94). Draw roster page SelectedPlayerIdx: the title (PlayerStatMenuTxt), the scroll marks, the column header
+DisplayPlayerList	;Draw roster page SelectedPlayerIdx: the title (PlayerStatMenuTxt), the scroll marks, the column header
 	;(PAttribColumns, or GAttribColumns for goalies) and up to 5 rows from rosterscroll: getNameandAttrib, then the lines the player
 	;is on (PrintPlayerLines); the first row is highlighted
 	jsr	(printsmallz).l
@@ -238,7 +238,7 @@ DisplayPlayerList	;(94 stats94). Draw roster page SelectedPlayerIdx: the title (
 	dbf	d1,.10
 	rts
 
-PrintPlayerLines	;95 only. Print at printx the lines player d0 of team a2 is on (FindPlayerLine for the 7 line slots at $16C(a2)...):
+PrintPlayerLines	;Print at printx the lines player d0 of team a2 is on (FindPlayerLine for the 7 line slots at $16C(a2)...)
 	;linemarkbuf "123 12 12", a ^ where he is not on that line
 	movem.l	d1/a1,-(sp)
 	movea.l	#linemarkbuf,a1
@@ -313,11 +313,11 @@ PlayerStatMenuTxt	;Roster page titles (SkipStrings by SelectedPlayerIdx). The fo
 	String	'    Offense     '
 	String	'    Defense     '
 
-ExitAttributeScreen2	;94 stats94 name. TeamRosterScreen start: forceblack and back to the menu (DrawMenuScreen, pause95)
+ExitAttributeScreen2	;TeamRosterScreen start: forceblack and back to the menu (DrawMenuScreen)
 	jsr	(forceblack).l
 	jmp	DrawMenuScreen
 
-GetNameandAttrib	;(93 GetNameandAttrib). Print player d0's name, then at x $21 (94 $1E) the column d4 picks (attribjmp; above 2
+GetNameandAttrib	;Print player d0's name, then at x $21 (94 $1E) the column d4 picks (attribjmp; above 2
 	;a rating through CalcAttrib, the jump offset in the low word). 95 keeps the team and player in screenarg / attribplayer
 	movem.l	d0-d4/a0-a1/a4-a5,-(sp)
 	move.w	Xvel(a2),(screenarg).w
@@ -396,7 +396,7 @@ StatusTextTbl	;AttribStatus Strings (94 'Injury P' / 'Injury G')
 	String	'    '
 	String	' C  '
 
-InjuryGamesTbl	;95 only. AttribStatus Strings for an injury of 0-9 games
+InjuryGamesTbl	;AttribStatus Strings for an injury of 0-9 games
 	String	'Inj. G  '
 	String	'Inj.1G  '
 	String	'Inj.2G  '
@@ -460,7 +460,7 @@ AttribWeight	;Weight: 140 + 8 * rating lb
 	String	' lb  '
 	rts
 
-DrawTeamScreen	;(94 stats94). Roster screen background: wait for the dma (disflags bit 0), clear the scroll, set the window plane
+DrawTeamScreen	;Roster screen background: wait for the dma (disflags bit 0), clear the scroll, set the window plane
 	;registers, the roster bitmap (RosterBitmap) on map 2 and map 1, the RosterFont tiles (LoadRosterFont, then two remaps at
 	;smallfont2chars / smallfont3chars), clear map 1 and fade in. d0 / d1 = first row / row count of the bitmap
 	movem.l	d0-d1/a2,-(sp)
@@ -536,7 +536,7 @@ DrawTeamScreen	;(94 stats94). Roster screen background: wait for the dma (disfla
 	movem.l	(sp)+,d0-d1/a2
 	rts
 
-FindPlayerLine	;95 only. Find player d0 (0 based) in the 6 slots of line a3: d1 = the line (counted by 8 bytes), -1 not found
+FindPlayerLine	;Find player d0 (0 based) in the 6 slots of line a3: d1 = the line (counted by 8 bytes), -1 not found
 	movem.l	d0/d2-d3/a3,-(sp)
 	move.w	#8,d2
 	clr.w	d3
@@ -560,7 +560,7 @@ FindPlayerLine	;95 only. Find player d0 (0 based) in the 6 slots of line a3: d1 
 	movem.l	(sp)+,d0/d2-d3/a3
 	rts
 
-LoadRosterFont	;95 only. Load the small font tiles (smallfontptr + 8) at char d4 with the remap below; d4 = next char
+LoadRosterFont	;Load the small font tiles (smallfontptr + 8) at char d4 with the remap below; d4 = next char
 	move.w	d4,(smallfontchars).w
 	movea.l	(smallfontptr).w,a2
 	addq.w	#8,a2
@@ -568,13 +568,13 @@ LoadRosterFont	;95 only. Load the small font tiles (smallfontptr + 8) at char d4
 	dc.b	$04,$83,$45,$67,$89,$AB,$CD,$EF
 	rts
 
-PAttribColumns	;(93 PAttribColumns). Skater attribute columns for DisplayPlayerList and getNameandAttrib. String header, then a
+PAttribColumns	;Skater attribute columns for DisplayPlayerList and getNameandAttrib. String header, then a
 	;long: high word = mask of rating nibbles to average, low word = attribjmp offset (0 status, 2 energy, 4 handed, 6 weight, 8
 	;fighting, $A rating). A negative word ends the list. The same table as 94
 	String	'     Status    ]'
 	dc.w	$0000,$0	;status
 
-PAttribOverall	;The Overall entry; PAttribOverallMask is read by middle95
+PAttribOverall	;The Overall entry; PAttribOverallMask is read
 	String	'[   Overall    ]'
 
 PAttribOverallMask
@@ -609,11 +609,11 @@ PAttribOverallMask
 	dc.w	$0080,$A
 	dc.w	-1
 
-GAttribColumns	;(93 GAttribColumns). Goalie attribute columns, same format as PAttribColumns
+GAttribColumns	;Goalie attribute columns, same format as PAttribColumns
 	String	'     Status    ]'
 	dc.w	$0000,$0	;status
 
-GAttribOverall	;The Overall entry; GAttribOverallMask is read by middle95
+GAttribOverall	;The Overall entry; GAttribOverallMask is read
 	String	'[   Overall    ]'
 
 GAttribOverallMask
@@ -647,11 +647,11 @@ PlayerPositionText	;Position names for the line slots (no xref in)
 	String	'C'
 	String	'RW'
 
-GameSetUp	;(94 optsetup94). The game setup screen, rewritten for 95: ReadLineData, ReadPassBits, the options from TmpOptLine2 /
+GameSetUp	;The game setup screen, rewritten for 95: ReadLineData, ReadPassBits, the options from TmpOptLine2 /
 	;TempOptPlayMode. In a season (GameFlags bit 5) take the season options (ReadSeasonHeader) and the matchup (StepSeasonTeam).
 	;Then setoptions, and the line cursor loop: FixModeOptions, PrintOptions, the logos or matchup bitmaps, GameSetUp_2 for a key;
 	;up / down move SelectedPlayerIdx, left / right step setupvalues (WrapOptionUp / Down), start stores them (SetupStart) and sets the
-	;pads (SetPojoyMode, FigureJoy). Called from hockey95
+	;pads (SetPojoyMode, FigureJoy).
 	jsr	(ReadLineData).l
 	movea.l	#pwddatabuffer,a3	;saved playoff state
 	jsr	(ReadPassBits).l
@@ -835,7 +835,7 @@ GameSetUp	;(94 optsetup94). The game setup screen, rewritten for 95: ReadLineDat
 	jsr	(SetPojoyMode).l
 	jmp	FigureJoy
 
-GameSetUp_2	;(94 optsetup94). Wait up to $E10 frames (94 $5460) for a key on pad 1 / 2 (pads 3 / 4 with FourWayPlay):
+GameSetUp_2	;Wait up to $E10 frames (94 $5460) for a key on pad 1 / 2 (pads 3 / 4 with FourWayPlay)
 	;d1 = new keys, 0 when time ran out. C held repeats faster (setupcardflags bit 5). Runs PlayerCardTimer each frame
 	move.l	#$E10,d6
 .0
@@ -958,7 +958,7 @@ MoveMenuFrame	;93 setoptions .nms. Keep SelectedPlayerIdx inside DispAttribCtr .
 .2
 	rts
 
-FixModeOptions	;94 only (rewritten). Set setuplines / setupshown for the mode in setupvalues (Trade, Create, Sign, Release and Shootout
+FixModeOptions	;(rewritten). Set setuplines / setupshown for the mode in setupvalues (Trade, Create, Sign, Release and Shootout
 	;show fewer lines), keep the two teams 0-$19 and different in Trade Players, skip the modes save RAM or the season do not allow
 	;(ValidSRAM, ReadSeasonHeader, CheckCreateSlots, ReadCreatedPlayers), step a season matchup (StepSeasonTeam) and start new /
 	;continue playoffs (NewPO, ContinuePlayoffs) when line 1 changes
@@ -1255,7 +1255,7 @@ FixModeOptions	;94 only (rewritten). Set setuplines / setupshown for the mode in
 .47
 	rts
 
-EraseCardText	;95 only. Erase the card text areas: 5 rows at $FF,8,3 and 1 row at $FF,9,9 with GetBlankChar
+EraseCardText	;Erase the card text areas: 5 rows at $FF,8,3 and 1 row at $FF,9,9 with GetBlankChar
 	movem.l	d0-d2/a0,-(sp)
 	move.w	#$18,d0
 	move.w	#5,d1
@@ -1272,7 +1272,7 @@ EraseCardText	;95 only. Erase the card text areas: 5 rows at $FF,8,3 and 1 row a
 	movem.l	(sp)+,d0-d2/a0
 	rts
 
-PrintOptions	;93 setoptions .ps (94 PrintOptions). Print the option names (PrintOptionName) and values (GameSetUp_4) of lines
+PrintOptions	;93 setoptions.ps. Print the option names (PrintOptionName) and values (GameSetUp_4) of lines
 	;DispAttribCtr ... VertLineScrolling from row $B, then the scroll marks at x 2: '{' when lines are above, '}' when more follow
 	bsr.w	MoveMenuFrame
 	move.w	(DispAttribCtr).w,d0
@@ -1461,7 +1461,7 @@ PrintOptionName	;94 PrintOptionNames, one line. Print option name d0 (OptionName
 BlankNameTxt	;A blank option name
 	String	'              '
 
-PrintSetupText	;95 only. Print String a1 at printx / printy with the SetupFont chars at smallfont2chars
+PrintSetupText	;Print String a1 at printx / printy with the SetupFont chars at smallfont2chars
 	move.w	(smallfontchars).w,-(sp)
 	movem.l	a1,-(sp)
 	move.l	#SetupFont,(smallfontptr).l
@@ -1477,7 +1477,7 @@ PrintSetupText	;95 only. Print String a1 at printx / printy with the SetupFont c
 	move.w	(sp)+,(smallfontchars).w
 	rts
 
-PrintSetupTextHi	;95 only. The same with the highlight chars (smallfont3chars)
+PrintSetupTextHi	;The same with the highlight chars (smallfont3chars)
 	move.w	(smallfontchars).w,-(sp)
 	movem.l	a1,-(sp)
 	move.l	#SetupFont,(smallfontptr).l
@@ -1510,7 +1510,7 @@ defmenuoptions	;(93 DefaultMenus .defom). Mode 0, players 0, teams $E and $17, l
 	dc.w	$0,$0,$E,$17,$1,$0,$1,$0
 	dc.w	$1
 
-GetSetupValues	;95 only. setupvalues from the options: line 0 from ModeToSetupMode(OptPlayMode); in Regular Game (sflags11 bit 6) all 8
+GetSetupValues	;setupvalues from the options: line 0 from ModeToSetupMode(OptPlayMode); in Regular Game (sflags11 bit 6) all 8
 	;from Opt1Team ... OptLine
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(OptPlayMode).w,d0
@@ -1534,7 +1534,7 @@ GetSetupValues	;95 only. setupvalues from the options: line 0 from ModeToSetupMo
 ModeToSetupMode	;OptPlayMode 0-4 to the setup mode list (OptionValueOffsets line 0)
 	dc.w	$5,$304,$CFF
 
-SetupStart	;93 setoptions .ex (94 SetupStart). Store setupvalues in the options: OptPlayMode (SetupModeToMode), the mode flags
+SetupStart	;93 setoptions.ex. Store setupvalues in the options: OptPlayMode (SetupModeToMode), the mode flags
 	;(sflags10 bits 2 / 4-6 Trade / Create / Sign / Release, gmode2 bit 0 Shootout, sflags11 bit 6 Regular Game, sflags9 bit 7
 	;Practice, GameFlags bits 3 / 4 season), the teams, then the other options; line changes 2 (Auto) sets sflags7 bit 4.
 	;Playoff modes set sflags10 bit 0
@@ -1856,7 +1856,7 @@ OptionValueOffsets	;Offsets of each option's value Strings from OptionValueOffse
 	String	'Off                 '
 	String	'Auto                '
 
-DrawMatchupBitmaps	;94 only (attract94). For the modes after Practice draw the VisTeam bitmap at $DF,8,1 and the HomeTeam bitmap at
+DrawMatchupBitmaps	;For the modes after Practice draw the VisTeam bitmap at $DF,8,1 and the HomeTeam bitmap at
 	;$CF,$15,1 (DrawTeamBitmap) with their TeamLogoPalettes colors
 	movem.l	d0-d7/a0-a2,-(sp)
 	cmpi.b	#2,(setupvalues).w
@@ -1895,7 +1895,7 @@ DrawMatchupBitmaps	;94 only (attract94). For the modes after Practice draw the V
 	movem.l	(sp)+,d0-d7/a0-a2
 	rts
 
-DrawTeamBitmap	;94 only (attract94). dobitmap entry d1 of TeamBitmaps (d4 from the caller)
+DrawTeamBitmap	;dobitmap entry d1 of TeamBitmaps (d4 from the caller)
 	clr.w	d0
 	asl.w	#1,d1
 	movea.l	#TeamBitmaps,a0
@@ -1908,7 +1908,7 @@ DrawTeamBitmap	;94 only (attract94). dobitmap entry d1 of TeamBitmaps (d4 from t
 	moveq	#0,d5
 	jmp	dobitmap
 
-UpdateSetupLogos	;95 only. When a team changed (setuphome / setupvis against setupvalues 1 / 2) erase the card text (EraseCardText),
+UpdateSetupLogos	;When a team changed (setuphome / setupvis against setupvalues 1 / 2) erase the card text (EraseCardText)
 	;restart carddelay and draw the changed team's block (DrawHomeBlock / DrawVisBlock)
 	bclr	#6,(setupcardflags).w
 	bne.w	.0
@@ -1964,7 +1964,7 @@ UpdateSetupLogos	;95 only. When a team changed (setuphome / setupvis against set
 .7
 	rts
 
-DrawHomeBlock	;94 only (rewritten). Erase the right logo (setupcardflags bit 3 was set) and draw logo logoteam at x $21
+DrawHomeBlock	;(rewritten). Erase the right logo (setupcardflags bit 3 was set) and draw logo logoteam at x $21
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#2,(setupcardflags).w
 	bclr	#3,(setupcardflags).w
@@ -1982,7 +1982,7 @@ DrawHomeBlock	;94 only (rewritten). Erase the right logo (setupcardflags bit 3 w
 	move.w	#$21,(printx).w
 	bra.w	DrawSetupLogo
 
-DrawVisBlock	;94 only (rewritten). Erase the left logo (setupcardflags bit 2 was set) and draw logo logoteam at x 1
+DrawVisBlock	;(rewritten). Erase the left logo (setupcardflags bit 2 was set) and draw logo logoteam at x 1
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#3,(setupcardflags).w
 	bclr	#2,(setupcardflags).w
@@ -1999,7 +1999,7 @@ DrawVisBlock	;94 only (rewritten). Erase the left logo (setupcardflags bit 2 was
 	String	-(TXPAL3+TXMAP1),$0,$0,$0
 	move.w	#1,(printx).w
 
-DrawSetupLogo	;94 optsetup94 DrawTeamLogo. Draw the logo of team logoteam (TeamLogoBitmaps) at printx, 6 x 6, palette TeamLogoPalettes
+DrawSetupLogo	;94 DrawTeamLogo. Draw the logo of team logoteam (TeamLogoBitmaps) at printx, 6 x 6, palette TeamLogoPalettes
 	;+ team * $20 - $20 (bit 2: home) or - $40. Branched to from DrawHomeBlock; the name DrawTeamLogo is middle95's
 	move.w	#1,(printy).w
 	move.w	(homepicchars).w,d4
@@ -2043,7 +2043,7 @@ DrawSetupLogo	;94 optsetup94 DrawTeamLogo. Draw the logo of team logoteam (TeamL
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PlayerCardTimer	;94 only. Player cards, called each frame from GameSetUp_2 while carddelay has run out: every cardtimer frames switch
+PlayerCardTimer	;Player cards, called each frame from GameSetUp_2 while carddelay has run out: every cardtimer frames switch
 	;sides (setupcardflags bit 1), erase the card (GetBlankChar) and draw the next of 6 featured players of HomeTeam / VisTeam:
 	;the picture (GetPlayerPicture, PicturePalette) unpacked to picturebuf and drawn, then the name (GetRosterName) and number
 	cmpi.w	#1,(setupshown).w
@@ -2182,18 +2182,18 @@ PlayerCardTimer	;94 only. Player cards, called each frame from GameSetUp_2 while
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ResetCardTimer	;94 only. Card timer cardtimer = $2D, featuredplayer 0, setupcardflags bit 1 clear
+ResetCardTimer	;Card timer cardtimer = $2D, featuredplayer 0, setupcardflags bit 1 clear
 	move.w	#$2D,(cardtimer).w
 	clr.w	(featuredplayer).w
 	bclr	#1,(setupcardflags).w
 	rts
 
-GetBlankChar	;95 only. d2 = the blank char of the setup font (recwins + $C)
+GetBlankChar	;d2 = the blank char of the setup font (recwins + $C)
 	move.w	(recwins).w,d2
 	addi.w	#$C,d2
 	rts
 
-EraseCard	;94 only. Erase both card areas (6 x 6 at x $21 and x 1), then the card text (EraseCardText)
+EraseCard	;Erase both card areas (6 x 6 at x $21 and x 1), then the card text (EraseCardText)
 	jsr	(printz).l
 	String	-TXMAP1,$0,$0,$0
 	move.w	#$21,(printx).w
@@ -2211,7 +2211,7 @@ EraseCard	;94 only. Erase both card areas (6 x 6 at x $21 and x 1), then the car
 	jsr	(EraseCardText).l
 	rts
 
-ClearLogoPalettes	;95 only. Clear the two logo palette longs and set palcount
+ClearLogoPalettes	;Clear the two logo palette longs and set palcount
 	move.l	#0,(palfadenew+$62).w
 	clr.w	(palfadenew+$6A).w
 	move.l	#0,(palfadenew+$42).w
@@ -2219,7 +2219,7 @@ ClearLogoPalettes	;95 only. Clear the two logo palette longs and set palcount
 	move.w	#$64,(palcount).w
 	rts
 
-StepSeasonTeam	;95 only. Step the season matchup (setupdir 2: PrevSeasonTeam, else NextSeasonTeam) until one is found; setupvalues
+StepSeasonTeam	;Step the season matchup (setupdir 2: PrevSeasonTeam, else NextSeasonTeam) until one is found; setupvalues
 	;1 / 2 = its two teams from SeasonTeams
 	cmpi.w	#2,(setupdir).w
 	beq.w	.0
@@ -2238,7 +2238,7 @@ StepSeasonTeam	;95 only. Step the season matchup (setupdir 2: PrevSeasonTeam, el
 	movea.l	(sp)+,a1
 	rts
 
-SetPojoyMode	;94 only (attract94). Set pojoy from the number of players for play modes 2 and 3 (7, or $B with FourWayPlay, - OptNOP)
+SetPojoyMode	;Set pojoy from the number of players for play modes 2 and 3 (7, or $B with FourWayPlay, - OptNOP)
 	cmpi.w	#2,(OptPlayMode).w
 	blt.w	.1
 	cmpi.w	#4,(OptPlayMode).w
@@ -2271,7 +2271,7 @@ InitializeGameStructures	;Random team pairs for all 8 gsstruct games, none of th
 	dbf	d2,.0
 	rts
 
-GetRandomUnusedTeam	;(93 GetRandomUnusedTeam). d0 = a random team 0-25 not yet set in d3, and set its bit
+GetRandomUnusedTeam	;d0 = a random team 0-25 not yet set in d3, and set its bit
 	moveq	#$1A,d0
 	jsr	(randomd0).l
 	bset	d0,d3
@@ -2493,7 +2493,7 @@ GetShifter	;(92 / 93 GetShifter). Returns d1 = number of games - 1, d2 = first b
 	move.l	(sp)+,d0
 	rts
 
-DisplayTeamStatsForPlayoffs	;(93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to its packed playoff totals. Called from hockey95
+DisplayTeamStatsForPlayoffs	;Add the po team's game stats to its packed playoff totals.
 	cmpi.w	#1,(OptPlayMode).w
 	blt.w	.4
 	bsr.w	ReadTeamStats
@@ -2772,7 +2772,7 @@ NewPO	;(93 SelectRandomPlayoffTree). New playoff tree with Opt1Team (a random
 	adda.w	#$10,a0	;gssize
 	dbf	d0,.2
 
-maketree	;(93 maketree). Make the playoff tree (potree) from playoffseats and WinBits, then FigureJoy
+maketree	;Make the playoff tree (potree) from playoffseats and WinBits, then FigureJoy
 	movem.l	d0-d4/a0-a3,-(sp)
 	move.w	(postarts).w,d1
 	asl.w	#4,d1
@@ -2813,7 +2813,7 @@ maketree	;(93 maketree). Make the playoff tree (potree) from playoffseats and Wi
 	movem.l	(sp)+,d0-d4/a0-a3
 	rts
 
-SetTreeGameTeams	;95 only (94 MakeTree inline). Put the two teams at a0 in game a1: flipped (gsstruct flags bit 0) except for
+SetTreeGameTeams	;(94 MakeTree inline). Put the two teams at a0 in game a1: flipped (gsstruct flags bit 0) except for
 	;bosgames 2, 3 and 5
 	cmpi.w	#2,(bosgames).w
 	beq.w	.0
@@ -2831,13 +2831,13 @@ SetTreeGameTeams	;95 only (94 MakeTree inline). Put the two teams at a0 in game 
 	move.b	(a0)+,3(a1)
 	rts
 
-CheckPlayoffsStarted	;95 only. ContinuePlayoffs, then d0 = gamelevel | bosgames (0 = no game played yet). Called from FixModeOptions
+CheckPlayoffsStarted	;ContinuePlayoffs, then d0 = gamelevel | bosgames (0 = no game played yet). Called from FixModeOptions
 	jsr	(ContinuePlayoffs).l
 	move.w	(gamelevel).w,d0
 	or.w	(bosgames).w,d0
 	rts
 
-ReadLineData	;(title94) Read the $100 bytes at save RAM SRLineData (94 $1EF6) to databuffer (ReadSRAM); sflags bit 4 cleared,
+ReadLineData	;Read the $100 bytes at save RAM SRLineData (94 $1EF6) to databuffer (ReadSRAM); sflags bit 4 cleared
 	;lastsfx = -1, recbpr = M68K_RAM. Called from GameSetUp and Begin
 	movem.l	d0-d1/a0,-(sp)
 	move.l	#$100,d1
@@ -2850,7 +2850,7 @@ ReadLineData	;(title94) Read the $100 bytes at save RAM SRLineData (94 $1EF6) to
 	movem.l	(sp)+,d0-d1/a0
 	rts
 
-WriteLineData	;(title94) Write databuffer back to save RAM SRLineData (WriteSRAM, MakeSRAMChecksum); as ReadLineData after
+WriteLineData	;Write databuffer back to save RAM SRLineData (WriteSRAM, MakeSRAMChecksum); as ReadLineData after
 	movem.l	d0-d1/a0,-(sp)
 	move.l	#$100,d1
 	move.l	#SRLineData,d0
@@ -2861,5 +2861,5 @@ WriteLineData	;(title94) Write databuffer back to save RAM SRLineData (WriteSRAM
 	move.w	#$FFFF,(lastsfx).w
 	move.l	#M68K_RAM,(recbpr).w
 	movem.l	(sp)+,d0-d1/a0
-rtsLineData	;The shared rts; PlayoffScreen (playoff95) branches to it
+rtsLineData	;The shared rts; PlayoffScreen branches to it
 	rts

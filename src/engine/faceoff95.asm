@@ -1,6 +1,6 @@
 ; $08827C  Adapted from checks94.asm and penalty94.asm: the scoreboard after a goal, faceoffs
-;	penalty94 UpdateScores / SetScore / sctab and hockey94 ClearShotData, then 94 checks94 puckfaceoff ... Endfaceoff with
-;	assign94 assfaceoff / assfaceoffp1 moved in, display94 checkfo, and the 95 DrawFaceoffWindow
+;	UpdateScores / SetScore / sctab and ClearShotData, then 94 puckfaceoff ... Endfaceoff with
+;	assfaceoff / assfaceoffp1 moved in, checkfo, and the 95 DrawFaceoffWindow
 ;	(94 puckfaceoff2 .drawfaceoffwindow). 94 ChkGoalies, ReturnGoalies, CPgoalie and CompLine are not here. penalty95
 ;	follows at $088F06.
 ;puckfaceoff ... Endfaceoff ($883C8-$88D51) as dc.b; that code is read from the retail bytes with the 94 source as the
@@ -11,7 +11,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-UpdateScores	;(penalty94). Update the ticker score values of the other games (SetScore). Called from PeriodOver
+UpdateScores	;Update the ticker score values of the other games (SetScore). Called from PeriodOver
 	bsr.w	GetShifter
 	move.w	d1,(TickerNum).w
 	movea.w	#(gsstruct-M68K_RAM),a0
@@ -30,7 +30,7 @@ UpdateScores	;(penalty94). Update the ticker score values of the other games (Se
 	dbf	d1,.0
 	rts
 
-SetScore	;(penalty94). Add to the score of the game in a0. After period 3 a game within one goal goes to OT (gsper 3)
+SetScore	;Add to the score of the game in a0. After period 3 a game within one goal goes to OT (gsper 3)
 	;and asks for a highlight
 	cmpi.w	#4,8(a0)	;gsper
 	bge.w	.2
@@ -87,7 +87,7 @@ SetScore	;(penalty94). Add to the score of the game in a0. After period 3 a game
 	moveq	#4,d0	;4 weights
 	jmp	WeightedRandomSelect
 
-sctab	;(penalty94). 93 SetScore .sctab. Weights for 0, 1, 2, 3 goals, 8 rows
+sctab	;93 SetScore.sctab. Weights for 0, 1, 2, 3 goals, 8 rows
 	dc.w	$2B,$1E,$17,4
 	dc.w	$27,$20,$18,5
 	dc.w	$23,$21,$1A,6
@@ -97,7 +97,7 @@ sctab	;(penalty94). 93 SetScore .sctab. Weights for 0, 1, 2, 3 goals, 8 rows
 	dc.w	$13,$26,$1F,$C
 	dc.w	$F,$26,$20,$F
 
-ClearShotData	;(hockey94). Clear $E4 words at outputbuffer
+ClearShotData	;Clear $E4 words at outputbuffer
 	move.w	#$E3,d0
 	movea.w	#(outputbuffer-M68K_RAM),a0
 .0
@@ -105,7 +105,7 @@ ClearShotData	;(hockey94). Clear $E4 words at outputbuffer
 	dbf	d0,.0
 	rts
 
-puckfaceoff	;(checks94). Puck assignment 3: start a faceoff. Shootout: stop the puck, assignment $1F (puckshootout). Else on
+puckfaceoff	;Puck assignment 3: start a faceoff. Shootout: stop the puck, assignment $1F (puckshootout). Else on
 	;the first call: clear the faceoff spot when sflags8 bit 0, the pads, check for the end of the period (PeriodOver, clockcont_0 in
 	;overtime) and a delayed penalty (Stop4Pen), the halftime song, return the goalies (ReturnGoalies); with line changes on, start the
 	;pads' line changes (StartFaceoffLineChange) and the computer line (SetFaceoffComputerLine). 95 has no faceoff animation choice here
@@ -218,7 +218,7 @@ puckfaceoff	;(checks94). Puck assignment 3: start a faceoff. Shootout: stop the 
 	bsr.w	SetFaceoffComputerLine
 	bra.w	WaitForFaceoffLineChanges
 
-SetFaceoffComputerLine	;(checks94). Line changes on and team d0 not on a pad (or sflags7 bit 4): CompLine, SetPersonel,
+SetFaceoffComputerLine	;Line changes on and team d0 not on a pad (or sflags7 bit 4): CompLine, SetPersonel
 	;PrintScores1, crowdnoisedelay $2710
 	tst.w	(OptLine).w
 	bne.w	rtsfaceoff
@@ -239,7 +239,7 @@ SetFaceoffComputerLine	;(checks94). Line changes on and team d0 not on a pad (or
 	move.w	#$2710,(crowdnoisedelay).w
 	rts
 
-StartFaceoffLineChange	;(checks94). Player d0 (sort object) opens the line change box (SetLCmode); when it is open start
+StartFaceoffLineChange	;Player d0 (sort object) opens the line change box (SetLCmode); when it is open start
 	;its timer in the puck temp1 / temp2 and keep the SCnum in temp3 / temp4
 	exg	a2,a3
 	asl.w	#7,d0
@@ -265,7 +265,7 @@ StartFaceoffLineChange	;(checks94). Player d0 (sort object) opens the line chang
 rtsfaceoff	;The shared rts of the faceoff routines (94 rtss2)
 	rts
 
-WaitForFaceoffLineChanges	;(checks94). Lock the pads (padcont -1), run both line change timers; when both are done set the
+WaitForFaceoffLineChanges	;Lock the pads (padcont -1), run both line change timers; when both are done set the
 	;home computer line and go to assignment 4 (puckfaceoff2)
 	move.l	#$FFFFFFFF,(padcont).w
 	move.l	#$FFFFFFFF,(padcont+4).w
@@ -285,7 +285,7 @@ WaitForFaceoffLineChanges	;(checks94). Lock the pads (padcont -1), run both line
 	move.w	#4,d0
 	bra.w	assreplace
 
-UpdateFaceoffLineChangeTimer	;(checks94). Line change timer d0 (temp1 / temp2 of the puck): close the box (SetLCmode2) when the
+UpdateFaceoffLineChangeTimer	;Line change timer d0 (temp1 / temp2 of the puck): close the box (SetLCmode2) when the
 	;player closed it, else count down by d7 and pick the line (lcfound) when it runs out
 	tst.w	(a3,d0.w)
 	bmi.s	rtsfaceoff
@@ -315,7 +315,7 @@ UpdateFaceoffLineChangeTimer	;(checks94). Line change timer d0 (temp1 / temp2 of
 	movea.l	(sp)+,a3
 	rts
 
-puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: clear the penalty flags, stop the clock,
+puckfaceoff2	;Puck assignment 4. First call: set up the faceoff: clear the penalty flags, stop the clock
 	;reset the rink, puck and nets, scroll to the spot (checkwindow), reset the bench and players (ResetBench, SetPersonel,
 	;forcepldata, resetplstuff), place the players (.apl / .ptab, as 94) with the faceoff assignments ($10 assfaceoff, $11 assfaceoffp1
 	;for the centers), load the faceoff tiles, draw the window (DrawFaceoffWindow) and set the drop time. Practice (sflags9 bit 7)
@@ -583,7 +583,7 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 	dc.w	0,$FEF9,$FFDD,$FFCE,$23,$FFCE,$FFCE,$FFF6
 	dc.w	0,$FFF1,$32,$FFF6,0,$FFC4
 
-assfaceoff	;(assign94). Assignment $10: wait for the faceoff to end (sflags2 bit 0), then assexit
+assfaceoff	;Assignment $10: wait for the faceoff to end (sflags2 bit 0), then assexit
 	btst	#5,pflags(a3)
 	bne.w	.0
 	btst	#0,(sflags2).w
@@ -591,7 +591,7 @@ assfaceoff	;(assign94). Assignment $10: wait for the faceoff to end (sflags2 bit
 .0
 	rts
 
-assfaceoffpl	;(assign94). Assignment $11, the faceoff player: set his fofdata2 frame from his stick hand and goal
+assfaceoffpl	;Assignment $11, the faceoff player: set his fofdata2 frame from his stick hand and goal
 	;and start the faceoff SPA ($1B36, or $1B60 at random once the puck temp1 is above $10). After the faceoff: nopuck $14 and assexit
 	btst	#5,pflags(a3)
 	bne.w	.7
@@ -644,7 +644,7 @@ assfaceoffpl	;(assign94). Assignment $11, the faceoff player: set his fofdata2 f
 .7
 	rts
 
-updatefaceoff	;(checks94). Faceoff count down: fofdata frame from temp1; at 0 erase the faceoff window (fodropx / fodropy)
+updatefaceoff	;Faceoff count down: fofdata frame from temp1; at 0 erase the faceoff window (fodropx / fodropy)
 	btst	#5,(sflags9).w
 	beq.w	.0
 	bset	#0,(sflags).w
@@ -682,7 +682,7 @@ updatefaceoff	;(checks94). Faceoff count down: fofdata frame from temp1; at 0 er
 	bset	#3,(disflags).w
 	jmp	printscores1
 
-Endfaceoff	;(checks94). Drop the puck: sfx $2C, reload the ref tiles (RefTiles), clear the faceoff flags, pick the winner
+Endfaceoff	;Drop the puck: sfx $2C, reload the ref tiles (RefTiles), clear the faceoff flags, pick the winner
 	;(.ftab from the two fofdata2 frames and randomd0) and the puck direction (fodir1 / fodir2 or random, dirtab); assignment 1
 	;(pucknorm). Practice drops it dead
 	move.w	#SFXpuckice,-(sp)
@@ -760,7 +760,7 @@ Endfaceoff	;(checks94). Drop the puck: sfx $2C, reload the ref tiles (RefTiles),
 .ftab
 	dc.b	0,8,$10,0,8,$10
 
-checkfo	;(display94). Check for faceoff sprites: the 3 fofdata2 entries (frame, flags) as FaceOffSprites sprites
+checkfo	;Check for faceoff sprites: the 3 fofdata2 entries (frame, flags) as FaceOffSprites sprites
 	;at fodropx / fodropy in Satt (a6, d6). Called from setvideo
 	btst	#0,(sflags).w
 	bne.w	.7
@@ -841,7 +841,7 @@ checkfo	;(display94). Check for faceoff sprites: the 3 fofdata2 entries (frame, 
 .7
 	rts
 
-DrawFaceoffWindow	;95 only (94 puckfaceoff2 .drawfaceoffwindow). The faceoff window (FaceOffMap) at x $36 or $BE,
+DrawFaceoffWindow	;(94 puckfaceoff2.drawfaceoffwindow). The faceoff window (FaceOffMap) at x $36 or $BE
 	;y $5C, and with line changes on the two line names (linelist)
 	jsr	(printz).l
 	String	-TXMAP1,0,0,0

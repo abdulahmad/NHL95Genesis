@@ -6,7 +6,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-ScoringSummaryScreen	;stats94 ScoringSummaryScreen. "Scoring Summary": one 4 row entry per goal (6 bytes each from ScoreSum), scrolled with up / down, start exits
+ScoringSummaryScreen	;"Scoring Summary": one 4 row entry per goal (6 bytes each from ScoreSum), scrolled with up / down, start exits
 	moveq	#9,d0
 	moveq	#$19,d1
 	move.l	#ControllerBgMap,(screenarg).l
@@ -58,7 +58,7 @@ ScoringSummaryScreen	;stats94 ScoringSummaryScreen. "Scoring Summary": one 4 row
 	bsr.w	CheckGameStatScroll
 	bra.s	.2
 
-CheckGameStatScroll	;stats94 CheckGameStatScroll. Add the scroll speed (PlayerScrollCtr) to the scroll position (VertLineScrolling) within 0 ... SelectedPlayerIdx, then UpdateGameStatScroll
+CheckGameStatScroll	;Add the scroll speed (PlayerScrollCtr) to the scroll position (VertLineScrolling) within 0 ... SelectedPlayerIdx, then UpdateGameStatScroll
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsGameStatScroll
 	add.w	(VertLineScrolling).w,d0
@@ -66,7 +66,7 @@ CheckGameStatScroll	;stats94 CheckGameStatScroll. Add the scroll speed (PlayerSc
 	cmp.w	(SelectedPlayerIdx).w,d0
 	bgt.w	rtsGameStatScroll
 
-UpdateGameStatScroll	;stats94 UpdateGameStatScroll. Scroll to d0: on an entry boundary the arrows (DrawScrollArrowsPenalty) and stop; the entry coming into view; VSRAM = position - $50
+UpdateGameStatScroll	;Scroll to d0: on an entry boundary the arrows (DrawScrollArrowsPenalty) and stop; the entry coming into view; VSRAM = position - $50
 	move.w	(VertLineScrolling).w,d1
 	move.w	d0,(VertLineScrolling).w
 	ext.l	d0
@@ -99,7 +99,7 @@ UpdateGameStatScroll	;stats94 UpdateGameStatScroll. Scroll to d0: on an entry bo
 	move.w	(sp)+,(disflags).w
 	rts
 
-DisplayGameStatLineUp	;stats94 DisplayGameStatLineUp. The goal entry in the high word of d0 at the top of the window
+DisplayGameStatLineUp	;The goal entry in the high word of d0 at the top of the window
 	move.l	d0,-(sp)
 	swap	d0
 	moveq	#6,d3
@@ -115,7 +115,7 @@ DisplayGameStatLineUp	;stats94 DisplayGameStatLineUp. The goal entry in the high
 	move.l	(sp)+,d0
 	rts
 
-DisplayGameStatLineDown	;stats94 DisplayGameStatLineDown. Goal entry + 4 at the bottom of the window
+DisplayGameStatLineDown	;Goal entry + 4 at the bottom of the window
 	move.l	d0,-(sp)
 	swap	d0
 	addq.w	#4,d0
@@ -132,7 +132,7 @@ DisplayGameStatLineDown	;stats94 DisplayGameStatLineDown. Goal entry + 4 at the 
 	move.l	(sp)+,d0
 	rts
 
-DisplayGameStatEntry	;stats94 DisplayGameStatEntry. Goal entry d3: the time, the team, the goal type (GoalTypeTbl), the scorer and the assists (PrintPeriodTime)
+DisplayGameStatEntry	;Goal entry d3: the time, the team, the goal type (GoalTypeTbl), the scorer and the assists (PrintPeriodTime)
 	move.w	(printy).w,-(sp)
 	moveq	#$28,d0
 	moveq	#4,d1
@@ -171,7 +171,7 @@ DisplayGameStatEntry	;stats94 DisplayGameStatEntry. Goal entry d3: the time, the
 	clr.w	(printfontset).w
 	rts
 
-PrintPeriodTime	;stats94 PrintPeriodTime. Print player d0 (byte, negative = none) and go down a row
+PrintPeriodTime	;Print player d0 (byte, negative = none) and go down a row
 	ext.w	d0
 	bmi.w	.0
 	jsr	(FormatPlayerNameWithAttrib).l
@@ -182,14 +182,14 @@ PrintPeriodTime	;stats94 PrintPeriodTime. Print player d0 (byte, negative = none
 rtsGameStatScroll	;stats94. Shared rts of CheckGameStatScroll
 	rts
 
-GoalTypeTbl	;stats94 GoalTypeTbl. ScoreSum byte 2 & $7F: SH2, SH, even, PP, PP2
+GoalTypeTbl	;ScoreSum byte 2 & $7F: SH2, SH, even, PP, PP2
 	String	'SH2'
 	String	'SH'
 	String	' '
 	String	'PP'
 	String	'PP2'
 
-DrawScrollArrowsPenalty	;stats94 DrawScrollArrowsPenalty. Summary screen up / down arrows (ScrollArrowTbl). Saves d0-d1/a1
+DrawScrollArrowsPenalty	;Summary screen up / down arrows (ScrollArrowTbl). Saves d0-d1/a1
 	movem.l	d0-d1/a1,-(sp)
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$4,$3,$1,$9,CC_SetFont,$1,$0
@@ -208,13 +208,13 @@ DrawScrollArrowsPenalty	;stats94 DrawScrollArrowsPenalty. Summary screen up / do
 	movem.l	(sp)+,d0-d1/a1
 	rts
 
-ScrollArrowTbl	;stats94 ScrollArrowTbl. None, up, down, both
+ScrollArrowTbl	;None, up, down, both
 	String	' ',$FB,$FF,$FA,$10,' ',$F9,$0
 	String	'{',$FB,$FF,$FA,$10,' ',$F9,$0
 	String	' ',$FB,$FF,$FA,$10,'}',$F9,$0
 	String	'{',$FB,$FF,$FA,$10,'}',$F9,$0
 
-PenaltySummaryScreen	;stats94 PenaltySummaryScreen. "Penalties": one 3 row entry per penalty (4 bytes each from PenSum, PenSumLength), scrolled with up / down, start exits
+PenaltySummaryScreen	;"Penalties": one 3 row entry per penalty (4 bytes each from PenSum, PenSumLength), scrolled with up / down, start exits
 	moveq	#9,d0
 	moveq	#$19,d1
 	move.l	#ControllerBgMap,(screenarg).l
@@ -266,7 +266,7 @@ PenaltySummaryScreen	;stats94 PenaltySummaryScreen. "Penalties": one 3 row entry
 	bsr.w	CheckPenaltyScroll
 	bra.s	.2
 
-CheckPenaltyScroll	;stats94 CheckPenaltyScroll. As CheckGameStatScroll for the penalty summary
+CheckPenaltyScroll	;As CheckGameStatScroll for the penalty summary
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsPenaltyScroll
 	add.w	(VertLineScrolling).w,d0
@@ -274,7 +274,7 @@ CheckPenaltyScroll	;stats94 CheckPenaltyScroll. As CheckGameStatScroll for the p
 	cmp.w	(SelectedPlayerIdx).w,d0
 	bgt.w	rtsPenaltyScroll
 
-UpdatePenaltyScroll	;(stats94; 93 name) Penalty summary: set VertLineScrolling = d0, stop on an entry boundary (24 lines), draw the
+UpdatePenaltyScroll	;(93 name) Penalty summary: set VertLineScrolling = d0, stop on an entry boundary (24 lines), draw the
 	;entry coming into view, VSRAM = VertLineScrolling - $50
 	move.w	(VertLineScrolling).w,d1
 	move.w	d0,(VertLineScrolling).w
@@ -313,7 +313,7 @@ UpdatePenaltyScroll	;(stats94; 93 name) Penalty summary: set VertLineScrolling =
 rtsPenaltyScroll	;stats94. Shared rts of CheckPenaltyScroll
 	rts
 
-DisplayPenaltyLineUp	;stats94 DisplayPenaltyLineUp. The penalty entry in the high word of d0 at the top of the window
+DisplayPenaltyLineUp	;The penalty entry in the high word of d0 at the top of the window
 	move.l	d0,-(sp)
 	swap	d0
 	move.w	d0,d3
@@ -329,7 +329,7 @@ DisplayPenaltyLineUp	;stats94 DisplayPenaltyLineUp. The penalty entry in the hig
 	move.l	(sp)+,d0
 	rts
 
-DisplayPenaltyLineDown	;stats94 DisplayPenaltyLineDown. Penalty entry + 5 at the bottom of the window
+DisplayPenaltyLineDown	;Penalty entry + 5 at the bottom of the window
 	move.l	d0,-(sp)
 	swap	d0
 	addq.w	#5,d0
@@ -346,7 +346,7 @@ DisplayPenaltyLineDown	;stats94 DisplayPenaltyLineDown. Penalty entry + 5 at the
 	move.l	(sp)+,d0
 	rts
 
-DisplayPenaltyEntry	;stats94 DisplayPenaltyEntry. PenSum entry d3: time, team (bit 7 of byte 2 = away), minutes and name from PenaltyList, player (byte 3)
+DisplayPenaltyEntry	;PenSum entry d3: time, team (bit 7 of byte 2 = away), minutes and name from PenaltyList, player (byte 3)
 	move.w	(printy).w,-(sp)
 	moveq	#$28,d0
 	moveq	#3,d1

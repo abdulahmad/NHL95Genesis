@@ -14,30 +14,30 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $088F06-$08A055, read from lst/nhl95.bin.
-sfx = $677AC		;sound95
-song = $678C2		;sound95
-play_new_song = $67938		;sound95
-ChooseSong = $679C4		;sound95
-DoDMA_clearCallbackPointer = $79AC0		;video95
-Framer = $7A270		;video95
-randomd0 = $7C63A		;middle95
-printz = $7C810		;middle95
-print = $7C822		;middle95
-eraser = $7C8CC		;middle95
-GetPeriodTimeRemaining = $7D762		;middle95
-Setplass = $81540		;logic95
-assinsert = $81570		;logic95
-assreplace = $8157A		;logic95
-setplayer = $83960		;players95
-priolist = $83E16		;players95
-chkatop = $8AB7E		;lines95
-updatePPTeamTime = $8ABB4		;lines95
-DisplayPlayerAttributeMenu = $8C6B0		;goal95
-DisplayPeriodOver = $95B1E		;stats95
-ShootoutWonBy = $9DFE6		;shootout95
-PenaltyShotBox = $9EDD2		;shootout95
-RefTiles = $14EB04		;graphics95
-RefTilesHor = $14FBA2		;graphics95
+sfx = $677AC
+song = $678C2
+play_new_song = $67938
+ChooseSong = $679C4
+DoDMA_clearCallbackPointer = $79AC0
+Framer = $7A270
+randomd0 = $7C63A
+printz = $7C810
+print = $7C822
+eraser = $7C8CC
+GetPeriodTimeRemaining = $7D762
+Setplass = $81540
+assinsert = $81570
+assreplace = $8157A
+setplayer = $83960
+priolist = $83E16
+chkatop = $8AB7E
+updatePPTeamTime = $8ABB4
+DisplayPlayerAttributeMenu = $8C6B0
+DisplayPeriodOver = $95B1E
+ShootoutWonBy = $9DFE6
+PenaltyShotBox = $9EDD2
+RefTiles = $14EB04
+RefTilesHor = $14FBA2
 
 ; Main segment code
 	include	engine\penalty95.asm

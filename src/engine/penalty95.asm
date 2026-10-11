@@ -5,8 +5,8 @@
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $088F06  From penalty94.asm: penalties, the referee, the scoreboard messages
-;	94 penalty94 limitfo, Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, PrintPenaltyMessagesString,
-;	with title94 LeadSong / ClearLeadSong / LeadSongExit moved in. checkagr follows at $08996E.
+;	94 limitfo, Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, PrintPenaltyMessagesString
+;	with LeadSong / ClearLeadSong / LeadSongExit moved in. checkagr follows at $08996E.
 ;except LeadSong ... LeadSongExit and PrintPenaltyMessagesString (dc.b, read from the retail bytes). the printz
 ;Strings as instructions; they are String here. Local labels are numbered; the names are not kept. Each routine comment
 ;	names its 94 file.
@@ -14,7 +14,7 @@
 
 
 
-limitfo	;(penalty94) Limit the faceoff spot to 5-20 feet from the walls of the rink, for every player in PenBuf (.1 is 93 .lf).
+limitfo	;Limit the faceoff spot to 5-20 feet from the walls of the rink, for every player in PenBuf (.1 is 93.lf).
 	;95: the blue line is $56 (94 $58)
 	movem.l	d0-d1/a0-a1,-(sp)
 	movea.w	#(PenBuf-M68K_RAM),a0
@@ -52,7 +52,7 @@ limitfo	;(penalty94) Limit the faceoff spot to 5-20 feet from the walls of the r
 .5
 	rts
 
-LeadSong	;(title94) Not in a shootout (gmode2 bit 1) and one team has more players on ice (tmap): once (sflags2 bit 5) ChooseSong
+LeadSong	;Not in a shootout (gmode2 bit 1) and one team has more players on ice (tmap): once (sflags2 bit 5) ChooseSong
 	;with SongIndex 1 (home) or 4, and sflags8 bit 6; sflags2 bit 6 keeps which team. sflags2 is put back on exit. Called from puckfaceoff2
 	movem.l	d0/a0-a3,-(sp)
 	move.w	(sflags2).w,-(sp)
@@ -92,16 +92,16 @@ LeadSong	;(title94) Not in a shootout (gmode2 bit 1) and one team has more playe
 	jsr	(ChooseSong).l
 	bra.s	.2
 
-ClearLeadSong	;(title94) Clear sflags2 bit 5
+ClearLeadSong	;Clear sflags2 bit 5
 	bclr	#5,(sflags2).w
 	rts
 
-LeadSongExit	;(title94) LeadSong exit
+LeadSongExit	;LeadSong exit
 	move.w	(sp)+,(sflags2).w
 	movem.l	(sp)+,d0/a0-a3
 	rts
 
-Stop4Pen	;(penalty94) a0 = PenaltyList penalty + 2. Stop the clock, set the faceoff spot from the penalty type, blow the whistle
+Stop4Pen	;a0 = PenaltyList penalty + 2. Stop the clock, set the faceoff spot from the penalty type, blow the whistle
 	;and start the ref (SetPA)
 	bset	#0,(gmode).w
 	bne.w	.5
@@ -188,7 +188,7 @@ Stop4Pen	;(penalty94) a0 = PenaltyList penalty + 2. Stop the clock, set the face
 rtspen	;The shared rts of the penalty routines (94 rtss2)
 	rts
 
-AddPenalty	;(penalty94) Add penalty d0 (PenaltyList offset) for player a3. Ignored while the clock is stopped
+AddPenalty	;Add penalty d0 (PenaltyList offset) for player a3. Ignored while the clock is stopped
 	btst	#0,(gmode).w
 	bne.s	rtspen
 	cmp.w	#$C,d0	;icing (92 PenIcing = 8)
@@ -202,7 +202,7 @@ AddPenalty	;(penalty94) Add penalty d0 (PenaltyList offset) for player a3. Ignor
 	cmp.w	#$10,d0	;offsides (92 PenOffsides = $A)
 	beq.s	rtspen
 
-AddPenalty2	;(penalty94) Forced penalties like faceoff and game over. d0 = penalty number, a3 = player
+AddPenalty2	;Forced penalties like faceoff and game over. d0 = penalty number, a3 = player
 	btst	#7,(sflags).w
 	bne.s	rtspen
 	movem.l	d1/a0-a1,-(sp)
@@ -244,13 +244,13 @@ AddPenalty2	;(penalty94) Forced penalties like faceoff and game over. d0 = penal
 	movem.l	(sp)+,d1/a0-a1
 	rts
 
-PenaltyManager	;(penalty94) Called periodically. d7 = elapsed time since last call: checkfornewpen, chkprogress, updatepentime, UpdatePA
+PenaltyManager	;Called periodically. d7 = elapsed time since last call: checkfornewpen, chkprogress, updatepentime, UpdatePA
 	bsr.w	updatepentime
 	bsr.w	checkfornewpen
 	bsr.w	chkprogress
 	bra.w	UpdatePA
 
-chkprogress	;(penalty94) Control the progress of the ref and the game through penalty events. While BA_PS_flags bit 2 is set run
+chkprogress	;Control the progress of the ref and the game through penalty events. While BA_PS_flags bit 2 is set run
 	;PenaltyShotBox (bit 7) or the msgtimer count down and erase the message area
 	btst	#2,(BA_PS_flags).w
 	beq.w	.3
@@ -324,7 +324,7 @@ chkprogress	;(penalty94) Control the progress of the ref and the game through pe
 	move.w	#$18,(palcount).w	;24
 	rts
 
-InProgress	;(penalty94) Ref in progress: update the graphics, stats and penalty information
+InProgress	;Ref in progress: update the graphics, stats and penalty information
 	tst.w	(RefCnt).w
 	bpl.w	rtspen
 	tst.w	(RefStep).w
@@ -467,7 +467,7 @@ InProgress	;(penalty94) Ref in progress: update the graphics, stats and penalty 
 	movem.l	(sp)+,d0/a0-a3
 	rts
 
-coinsearch	;(penalty94) 93 a2 = team. Count the players kept off the ice by penalties (coincidental penalties)
+coinsearch	;93 a2 = team. Count the players kept off the ice by penalties (coincidental penalties)
 	moveq	#6,d1
 	moveq	#$32,d0	;(MaxRos-1)*2
 .0
@@ -487,7 +487,7 @@ coinsearch	;(penalty94) 93 a2 = team. Count the players kept off the ice by pena
 	move.w	d1,tmap(a2)
 	rts
 
-updatepentime	;(penalty94) Update the time remaining on all penalized players, once a second (Penaltytimer); sets sflags3 bit 6 on that
+updatepentime	;Update the time remaining on all penalized players, once a second (Penaltytimer); sets sflags3 bit 6 on that
 	;tick. chkatop, updatePPTeamTime, then ProcessPenaltyList for both teams
 	bclr	#6,(sflags3).w
 	btst	#0,(gmode).w
@@ -502,7 +502,7 @@ updatepentime	;(penalty94) Update the time remaining on all penalized players, o
 	bsr.w	ProcessPenaltyList
 	adda.w	#tmsize,a2
 
-ProcessPenaltyList	;(penalty94) 93 name. a2 = team. Walk the penalty box list ($9C, 94 $9A): the first two players without a coincidental
+ProcessPenaltyList	;93 name. a2 = team. Walk the penalty box list ($9C, 94 $9A): the first two players without a coincidental
 	;penalty count down one second and the rest wait. Beeps when the first served time gets to 5 or less and releases the player at 0
 	lea	$9C(a2),a0
 	movea.w	#(mesarea-M68K_RAM),a1	;serving players
@@ -557,7 +557,7 @@ ProcessPenaltyList	;(penalty94) 93 name. a2 = team. Walk the penalty box list ($
 .8
 	clr.w	tmpdst(a2,d0.w)	;falls into RemovePlayerFromList
 
-RemovePlayerFromList	;(penalty94) 93 name. Remove the entry before a0 from a penalty box list by shifting the rest down. Return a0 =
+RemovePlayerFromList	;93 name. Remove the entry before a0 from a penalty box list by shifting the rest down. Return a0 =
 	;removed slot
 	moveq	#$FFFFFFFF,d2
 .0
@@ -567,7 +567,7 @@ RemovePlayerFromList	;(penalty94) 93 name. Remove the entry before a0 from a pen
 	subq.w	#1,a0
 	rts
 
-releasepl	;(penalty94) 93 name. The player's penalty time is up, so let him out (if appropriate). a2 = team, d0 = player * 2
+releasepl	;93 name. The player's penalty time is up, so let him out (if appropriate). a2 = team, d0 = player * 2
 	movem.l	d0-d3/a0-a3,-(sp)
 	movea.w	tmsort(a2),a3
 	suba.w	#SCstruct,a3
@@ -594,7 +594,7 @@ releasepl	;(penalty94) 93 name. The player's penalty time is up, so let him out 
 	movem.l	(sp)+,d0-d3/a0-a3
 	rts
 
-checkfornewpen	;(penalty94) Look for a new penalty (entered through AddPenalty / AddPenalty2)
+checkfornewpen	;Look for a new penalty (entered through AddPenalty / AddPenalty2)
 	btst	#7,(sflags).w
 	bne.w	rtspen
 	movea.w	#(PenBuf-M68K_RAM),a0
@@ -640,7 +640,7 @@ checkfornewpen	;(penalty94) Look for a new penalty (entered through AddPenalty /
 	bsr.w	SetPA
 	bra.s	.0
 
-UpdatePA	;(penalty94) Animate the ref in the ref window (RefCnt, SetPA2); game over (RefPen 4): DisplayPeriodOver; penmsgtimer
+UpdatePA	;Animate the ref in the ref window (RefCnt, SetPA2); game over (RefPen 4): DisplayPeriodOver; penmsgtimer
 	tst.w	(RefCnt).w
 	bmi.w	rtspen
 	sub.w	d7,(RefCnt).w
@@ -656,7 +656,7 @@ UpdatePA	;(penalty94) Animate the ref in the ref window (RefCnt, SetPA2); game o
 	move.w	#$7FFF,(penmsgtimer).w
 	rts
 
-SetPA	;(penalty94) Start ref animation d0 (penalty number); from $2E up ignored. prefmes, goal ($E): DisplayPlayerAttributeMenu,
+SetPA	;Start ref animation d0 (penalty number); from $2E up ignored. prefmes, goal ($E): DisplayPlayerAttributeMenu
 	;Shootout: ShootoutWonBy. Falls into SetPA2
 	move.w	d0,(RefPen).w
 	cmp.w	#$2E,d0
@@ -680,7 +680,7 @@ SetPA	;(penalty94) Start ref animation d0 (penalty number); from $2E up ignored.
 	beq.w	SetPA2
 	move.w	#$3C,(penmsgtimer).w	;60
 
-SetPA2	;(penalty94) (94). Update the ref animation: next frame / delay pair from the PenaltyList animation
+SetPA2	;(94). Update the ref animation: next frame / delay pair from the PenaltyList animation
 	movem.l	d0-d2/a0-a1,-(sp)
 	moveq	#$40,d0	;clear ref window
 	tst.w	(RefStep).w
@@ -717,7 +717,7 @@ SetPA2	;(penalty94) (94). Update the ref animation: next frame / delay pair from
 	movem.l	(sp)+,d0-d2/a0-a1
 	rts
 
-PushRef	;(penalty94) Tell vblank what to display: ref frame d0 (RefTiles, RefTilesHor in the horizontal rink) into RefRamMap; $40
+PushRef	;Tell vblank what to display: ref frame d0 (RefTiles, RefTilesHor in the horizontal rink) into RefRamMap; $40
 	;clears the window
 	movem.l	d0-d2/a0-a1,-(sp)
 	cmp.w	#$40,d0
@@ -757,7 +757,7 @@ PushRef	;(penalty94) Tell vblank what to display: ref frame d0 (RefTiles, RefTil
 	movem.l	(sp)+,d0-d2/a0-a1
 	rts
 
-prefmes	;(penalty94) Print the message for penalty d0 (negative clears it) under the ref
+prefmes	;Print the message for penalty d0 (negative clears it) under the ref
 	movem.l	d0-d2/a1,-(sp)
 	btst	#7,(sflags).w
 	bne.w	.3
@@ -810,7 +810,7 @@ prefmes	;(penalty94) Print the message for penalty d0 (negative clears it) under
 	movem.l	(sp)+,d0-d2/a1
 	rts
 
-PrintPenaltyMessagesString	;(penalty94) 93 name. Blank the horizontal mode penalty message line (22 spaces at x 5, y $B). no xref
+PrintPenaltyMessagesString	;93 name. Blank the horizontal mode penalty message line (22 spaces at x 5, y $B). no xref
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),5,$B,'                      '
 	rts
@@ -818,15 +818,15 @@ PrintPenaltyMessagesString	;(penalty94) 93 name. Blank the horizontal mode penal
 ;------------------------------------------------------------------------------------------------------------------------
 ; $08996E  From data94.asm and others: PenaltyList, penalty and offsides checks
 ;	Mapped to data94, but only the tables are data94 (PenaltyList = 94 PenaltyList, PenShotPenalties, linelist); the code is moved in:
-;	collide94 checkagr, display94 showref, penalty94 ClearPenaltyBuffer, title94 ClearPenalties / clrTmPdst, checks94 puckIChk,
-;	ChkOffsides and checkob. Each routine comment names its 94 file. lines95 follows at $08A056.
+;	checkagr, showref, ClearPenaltyBuffer, ClearPenalties / clrTmPdst, puckIChk
+;	ChkOffsides and checkob. follows at $08A056.
 ;except puckIChk and ChkOffsides (dc.b, read from the retail bytes with the 94 source as the guide). Local labels are numbered
 ;the names are not kept.
 ;	95 changes: the goal line $10B (94 $108), the blue line $52 (94 $54), checkagr's base $32 and the sflags9 penalty options.
 
 
 
-checkagr	;(collide94) Aggression check: d0 = randomd0((($32 - Agr) / 2) * 13) (94 $28), doubled for a pad player, halved within
+checkagr	;Aggression check: d0 = randomd0((($32 - Agr) / 2) * 13) (94 $28), doubled for a pad player, halved within
 	;$28 of the puck; a2 on a breakaway ($64 bit 1) rolls again (8 / 7 / 4 / 3 by his distance from the goal line). 95: d0 = $7F (no
 	;penalty) when sflags9 bit 2 (home checker) / bit 1 (away) is set. The callers call a penalty when d0 is small
 	move.w	#$32,d0
@@ -886,7 +886,7 @@ checkagr	;(collide94) Aggression check: d0 = randomd0((($32 - Agr) / 2) * 13) (9
 .7
 	rts
 
-showref	;(display94) Ref window: when sflags2 bit 1 is set add the 8 RefRamMap rows to the dma list at a5 (VmMap1)
+showref	;Ref window: when sflags2 bit 1 is set add the 8 RefRamMap rows to the dma list at a5 (VmMap1)
 	bclr	#1,(sflags2).w
 	beq.w	rtspen
 	movea.w	#(RefRamMap-M68K_RAM),a0
@@ -915,7 +915,7 @@ showref	;(display94) Ref window: when sflags2 bit 1 is set add the 8 RefRamMap r
 	dbf	d2,.2
 	rts
 
-ClearPenaltyBuffer	;(penalty94) (94). Clear PenBuf
+ClearPenaltyBuffer	;(94). Clear PenBuf
 	moveq	#$1F,d0	;MaxPen-1
 	movea.w	#(PenBuf-M68K_RAM),a0
 .0
@@ -923,7 +923,7 @@ ClearPenaltyBuffer	;(penalty94) (94). Clear PenBuf
 	dbf	d0,.0
 	rts
 
-ClearPenalties	;(title94) Clear the penalties: PBnum, Penaltytimer, Pencntdwn, PenBuf and both teams' penalty slots (clrTmPdst)
+ClearPenalties	;Clear the penalties: PBnum, Penaltytimer, Pencntdwn, PenBuf and both teams' penalty slots (clrTmPdst)
 	movem.l	d0/a0,-(sp)
 	clr.w	(PBnum).w
 	clr.w	(Penaltytimer).w
@@ -940,7 +940,7 @@ ClearPenalties	;(title94) Clear the penalties: PBnum, Penaltytimer, Pencntdwn, P
 	movem.l	(sp)+,d0/a0
 	rts
 
-clrTmPdst	;(title94) Set the 26 tmpdst words of team a0 to -2 (bench), then -1
+clrTmPdst	;Set the 26 tmpdst words of team a0 to -2 (bench), then -1
 	move.w	#$19,d0	;19 = 25 decimal (max roster size)
 	adda.w	#$68,a0
 .0
@@ -949,7 +949,7 @@ clrTmPdst	;(title94) Set the 26 tmpdst words of team a0 to -2 (bench), then -1
 	move.w	#$FFFF,(a0)	;-1 = ice
 	rts
 
-puckIChk	;(checks94) Icing check: once the puck is loose (puckc negative) past the goal line ($10B, 94 $108) set iflags bit 0
+puckIChk	;Icing check: once the puck is loose (puckc negative) past the goal line ($10B, 94 $108) set iflags bit 0
 	;(ifcgl), unless it went in the crease ($2C either side), which clears bit 2 (ifok)
 	btst	#2,(iflags).w	;#ifok
 	beq.w	.0
@@ -979,7 +979,7 @@ puckIChk	;(checks94) Icing check: once the puck is loose (puckc negative) past t
 	bset	#0,(iflags).w	;#ifcgl
 	rts
 
-ChkOffsides	;(checks94) Offsides: clear the flag of a team that is all back onside (.8, 94 ClearOffsidesIfAllPlayers), then when
+ChkOffsides	;Offsides: clear the flag of a team that is all back onside (.8, 94 ClearOffsidesIfAllPlayers), then when
 	;puck a3 crosses a blue line ($52, 94 $54) set tmflags bit 4 of the team with a player ahead of it
 	btst	#5,(gmode).w
 	beq.w	.3
@@ -1058,7 +1058,7 @@ ChkOffsides	;(checks94) Offsides: clear the flag of a team that is all back onsi
 	bclr	#4,tmflags(a2)
 	rts
 
-Penaltylist	;(data94) 92 Penaltylist, 94 PenaltyList. Penalty number = word offset into this table; the same entries as 94.
+Penaltylist	;94 PenaltyList. Penalty number = word offset into this table; the same entries as 94.
 	;Used by AddPenalty, SetPA2, prefmes, PenaltyShotBox
 	dc.w	$0000
 	dc.w	.eop-Penaltylist;$2 period over
@@ -1179,7 +1179,7 @@ Penaltylist	;(data94) 92 Penaltylist, 94 PenaltyList. Penalty number = word offs
 	String	'Fight Instigator'
 	dc.w	$0004,$0D01,$0E01,$0D01,$0E01,$0D01,$0E01,$0D01,$0E01,-$0101
 
-checkob	;(checks94) Offside watch (gmode bit 5): with a player of the attacking side past the blue line ($5A) ahead of the puck
+checkob	;Offside watch (gmode bit 5): with a player of the attacking side past the blue line ($5A) ahead of the puck
 	;the ref raises his arm (PushRef 6, sflags2 bit 7), back to $40 when they are onside
 	btst	#5,(gmode).w
 	beq.w	rtspen
@@ -1235,11 +1235,11 @@ checkob	;(checks94) Offside watch (gmode bit 5): with a player of the attacking 
 	dbf	d0,.8
 	bra.s	.3
 
-PenShotPenalties	;(data94) The penalty shot penalty number for penalty number d0 (word offset), -1 none. Used by PenShotChk
+PenShotPenalties	;The penalty shot penalty number for penalty number d0 (word offset), -1 none. Used by PenShotChk
 	dc.w	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,$38,$3C
 	dc.w	$36,$3A,$2E,$30,$34,-1,-1,-1,-1,-1,-1,-1
 
-linelist	;(data94) (94). Text list for the line choices. Used by SetLCmode2 and DrawFaceoffWindow
+linelist	;(94). Text list for the line choices. Used by SetLCmode2 and DrawFaceoffWindow
 	String	'Sc1'
 	String	'Sc2'
 	String	'Chk'

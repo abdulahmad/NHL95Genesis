@@ -1,11 +1,11 @@
 ; $00A95C  Adapted from input94.asm, title94.asm and setup94.asm: which pad controls which player, team setup
-;	The pad input 94 updateplayers did in line (replay94, the 95 updatepadinput); input94 holdplayer, Acheck, burst and setpads;
-;	title94 chgplayer (with exit and swpchk); the 95 setcplayer entries and input94 restorepl; setup94 clearTeamStats,
-;	setteams, InitTeamSructure and setplayercolors. display95 is before it; the sound driver (sound95) follows at $AF44.
+;	The pad input 94 updateplayers did in line (the 95 updatepadinput); holdplayer, Acheck, burst and setpads
+;	chgplayer (with exit and swpchk); the 95 setcplayer entries and restorepl; clearTeamStats
+;	setteams, InitTeamSructure and setplayercolors. display95 is before it; the sound driver follows at $AF44.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-updatepadinput	;95 only: the end of 94 updateplayers (replay94 .tp2 on), called from updateplayers (hockey95) with a3 =
+updatepadinput	;the end of 94 updateplayers (replay94.tp2 on), called from updateplayers with a3 =
 	;object, d6 = SCnum. The pad (1-4) controlling a3 reads its buttons and runs doinput, with d4 = 0 / 2 / 4 / 6 (94 swaps the pad 3 /
 	;4 variables into pads 1 / 2). Then the assignment, collisions and the impact decay
 	cmp.w	(c1playernum).w,d6	;check if cont 1 is puck carrier
@@ -74,9 +74,9 @@ holdplayer	;Jumped to from doinput
 	adda.w	d0,a0	;add offset to a0
 	bra.w	Acheck
 .0
-	jsr	(chkblock).l	;95 only
+	jsr	(chkblock).l
 	jmp	(SetSPA).l
-Acheck	;(input94) Hold check for a3 on player a0 (the CPU jumps in here): SPAHold (stick in the air) or SPAhook by Ypos of a3 - a0
+Acheck	;Hold check for a3 on player a0 (the CPU jumps in here): SPAHold (stick in the air) or SPAhook by Ypos of a3 - a0
 	;and the goal a3 shoots at (pfgoal); SPAhook with no impact
 	bset	#pfalock,pflags(a3)	;lock animation
 	move.w	#SPAhook,d1	;move anim into d1 - normal hold check
@@ -94,11 +94,11 @@ Acheck	;(input94) Hold check for a3 on player a0 (the CPU jumps in here): SPAHol
 	jmp	(SetSPA).l
 
 ; c button press check/speed
-burstchk	;95 only: no burst while the animation is locked. Jumped to from doinput
+burstchk	;no burst while the animation is locked. Jumped to from doinput
 	btst	#pfalock,pflags(a3)
 	beq.w	burst
 	rts
-burst	;(input94) C button speed burst: take $CC energy unless OptLine is set, add a facedir push to Xvel / Yvel and set SPAburst.
+burst	;C button speed burst: take $CC energy unless OptLine is set, add a facedir push to Xvel / Yvel and set SPAburst.
 	jsr	(getpde).l	;get players energy
 	tst.w	(OptLine).w
 	bne.w	.0
@@ -161,7 +161,7 @@ setpads	;Put SCnum of a3 in the d4 nibble of PadControlBits ; d4 = -2 puck carri
 	movem.l	(sp)+,d0-d1
 	rts
 
-chgplayer	;(title94). the pad d4 takes the nearest free skater to where the puck is going (not a goalie, not locked or
+chgplayer	;the pad d4 takes the nearest free skater to where the puck is going (not a goalie, not locked or
 	;unavailable; in a penalty shot / shootout only BA_Sktr_SCnum or BA_Goalie_SCnum), or sweep checks when it is the same one. 95:
 	;with no skater found and no player on the pad, a second pass that also takes the goalie. Jumped to from doinput
 	btst	#6,(sflags5).w	;Check bit 6
@@ -252,7 +252,7 @@ chgplayer	;(title94). the pad d4 takes the nearest free skater to where the puck
 	movem.l	(sp)+,d0-d6/a0-a1
 .exit	;94 exit
 	rts
-.pass2	;95 only: as .top, but a goalie (position 0) may be taken
+.pass2	;as.top, but a goalie (position 0) may be taken
 	moveq	#-1,d5
 	movea.w	#(SortCords-M68K_RAM),a0
 	movea.w	#(cont1team-M68K_RAM),a1
@@ -319,7 +319,7 @@ chgplayer	;(title94). the pad d4 takes the nearest free skater to where the puck
 .swpchk	;94 swpchk. Sweepcheck
 	jmp	(Sweepcheck).l
 
-setcplayer	;95 only: give pad d4 (0 / 2 / 4 / 6) player d0 (94 setc1player / setc2player): restorepl the old one, then
+setcplayer	;give pad d4 (0 / 2 / 4 / 6) player d0 (94 setc1player / setc2player): restorepl the old one, then
 	;c1playernum + d4 = d0. Jumped to from chgplayer
 	movem.l	d0/a0-a1,-(sp)
 	movea.l	#c1playernum,a0
@@ -343,20 +343,20 @@ setc2player	;Give pad 2 player d0 (setcplayer, d4 = 2). 94 setc2player did it in
 	bsr.s	setcplayer
 	move.w	(sp)+,d4
 	rts
-setc3player	;95 only. Give pad 3 player d0 (setcplayer, d4 = 4)
+setc3player	;Give pad 3 player d0 (setcplayer, d4 = 4)
 	move.w	d4,-(sp)
 	move.w	#4,d4
 	bsr.s	setcplayer
 	move.w	(sp)+,d4
 	rts
-setc4player	;95 only. Give pad 4 player d0 (setcplayer, d4 = 6)
+setc4player	;Give pad 4 player d0 (setcplayer, d4 = 6)
 	move.w	d4,-(sp)
 	move.w	#6,d4
 	bsr.s	setcplayer
 	move.w	(sp)+,d4
 	rts
 
-restorepl	;(input94; 93 restorepl). d1 = old player (back to the computer), d0 = new player (joystick controlled)
+restorepl	;d1 = old player (back to the computer), d0 = new player (joystick controlled)
 	movem.l	a0,-(sp)
 	movea.l	#SortCords,a0
 	tst.w	d1

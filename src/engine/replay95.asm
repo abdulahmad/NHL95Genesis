@@ -1,15 +1,15 @@
 ;	NHL 95 replay95. Retail $08D39A-$08DF59 (3008 bytes).
 ;	Mapped to replay94 (80%): updatereplay, ReplayMode, ShowReplayIcon / EraseReplayIcon / ShowReplayBanner / EraseReplayBanner,
 ;	suba4, adda4, UpdateCameraPos, RevReplayAdj, RestoreReplayFrame and ClampReplayView. 95 adds chkblock and CanBlock
-;	(the 95 shot block tests) ahead of updatereplay, and a sound driver restart at the top of ReplayMode. replay94 checkwindow is in
-;	goal95. Each routine comment names its 94 routine or says 95 only. season95 follows at $08DF5A.
+;	(the 95 shot block tests) ahead of updatereplay, and a sound driver restart at the top of ReplayMode. checkwindow is in
+;	goal95. follows at $08DF5A.
 ;	95 packs a replay frame object as 9-bit x and 11-bit frame (94: 10-bit x, 12-bit frame) and saves both PadControlBits words.
-;Local labels follow replay94 where the code is 94 code and are numbered in the 95 only routines; the names are not kept.
+;Local labels follow where the code is 94 code and are numbered in the new 95 routines; the names are not kept.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
-chkblock	;95 only. Called with d1 = SPAhook for a player a3 about to check: d1 becomes the shot block
+chkblock	;Called with d1 = SPAhook for a player a3 about to check: d1 becomes the shot block
 	;SPAblock ($1E6C) when the puck carrier (shot dir mode set) or the last shooter (ShotTimer running)
 	;is on the other team
 	btst	#sfssdir,(sflags).w
@@ -66,7 +66,7 @@ chkblock	;95 only. Called with d1 = SPAhook for a player a3 about to check: d1 b
 .rts
 	rts
 
-CanBlock	;95 only. ne when joystick player a3 may block the shot (SPAblock): pfalock clear, sflags sfssdir
+CanBlock	;ne when joystick player a3 may block the shot (SPAblock): pfalock clear, sflags sfssdir
 	;set and GameFlags bit 2 clear (one block per shot; cleared while sfssdir is clear), a3 at y $56 or more toward the goal it shoots
 	;at, the puck carrier on the other team, the direction (vtoa) from a3 to the puck the same as from the goal at
 	;y $10B to the puck, a3 on the puck's side of x 0 and within y $B2 of it, and a3 facing that direction or one
@@ -231,10 +231,10 @@ updatereplay	;Called every frame to save replay events, d7 = elapsed frames. 95 
 	move.w	(sp)+,d0
 	move.w	(Hpos).w,(a0)+
 	move.w	(Vpos).w,(a0)+
-rtss8	;rts (replay94 rtss8; 93 rtss2)
+rtss8	;rts (rtss8; 93 rtss2)
 	rts
 
-ReplayMode	;Instant replay play-back control and display code (94 ReplayMode). Called from the pause menu.
+ReplayMode	;Instant replay play-back control and display code. Called from the pause menu.
 	;95 first restarts the sound driver: load the Z80 program and the sound banks
 	jsr	(SoundOff).l
 	move.w	#$FFFF,(PlayingSong).w
@@ -526,7 +526,7 @@ ReplayMode	;Instant replay play-back control and display code (94 ReplayMode). C
 	move.w	#$18,(palcount).w
 	rts
 
-ShowReplayIcon	;(replay94) Show the replay icon and start the $F0 frame replayicontimer timer. 95: the icon is $A x 5 at 0,0 from ReplayIconChars
+ShowReplayIcon	;Show the replay icon and start the $F0 frame replayicontimer timer. 95: the icon is $A x 5 at 0,0 from ReplayIconChars
 	move.w	#$F0,(replayicontimer).w
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),2,2,0
@@ -541,7 +541,7 @@ ShowReplayIcon	;(replay94) Show the replay icon and start the $F0 frame replayic
 	movea.w	#ZeroLong,a2
 	jmp	dobitmap
 
-EraseReplayIcon	;(replay94) Erase the $A x 5 replay icon (replayicontimer ran out)
+EraseReplayIcon	;Erase the $A x 5 replay icon (replayicontimer ran out)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),2,2,0
 	move.w	#$A,d0
@@ -549,7 +549,7 @@ EraseReplayIcon	;(replay94) Erase the $A x 5 replay icon (replayicontimer ran ou
 	move.w	#$7FF,d2
 	jmp	eraser
 
-ShowReplayBanner	;(replay94) Show the replay banner at 0,0 and stop the replayicontimer timer. 95: $A x 6 from ExtraChars
+ShowReplayBanner	;Show the replay banner at 0,0 and stop the replayicontimer timer. 95: $A x 6 from ExtraChars
 	st	(replayicontimer).w
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),2,2,0
@@ -564,7 +564,7 @@ ShowReplayBanner	;(replay94) Show the replay banner at 0,0 and stop the replayic
 	movea.w	#ZeroLong,a2
 	jmp	dobitmap
 
-EraseReplayBanner	;(replay94) Erase the $A x 6 area ShowReplayBanner drew
+EraseReplayBanner	;Erase the $A x 6 area ShowReplayBanner drew
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),2,2,0
 	move.w	#$A,d0
@@ -589,7 +589,7 @@ suba4	;a4 = current replay frame. Back up 1 frame and set video parameters for d
 	clr.w	d7
 	rts
 
-adda4	;Step forward 1 frame (93 adda4). 94 first handles a reverse angle switch (sflags4 bit 6)
+adda4	;Step forward 1 frame. 94 first handles a reverse angle switch (sflags4 bit 6)
 	bclr	#6,(sflags4).w
 	beq.w	.1
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -687,7 +687,7 @@ UpdateCameraPos	;Camera struct a5 = object a3 x/y (negated for the reverse angle
 	rts
 	; set flag for reverse replay setup if needed
 
-RevReplayAdj	;94 only. Set sflags4 bit 7 for a reverse angle replay, then fall into RestoreReplayFrame
+RevReplayAdj	;Set sflags4 bit 7 for a reverse angle replay, then fall into RestoreReplayFrame
 	btst	#4,(sflags4).w;check if reverse angle replay
 	beq.w	RestoreReplayFrame;branch if not
 	bset	#7,(sflags4).w;set bit 7
@@ -844,7 +844,7 @@ RestoreReplayFrame	;a4 = current replay frame address to convert into normal cor
 	movem.l	(sp)+,d0-d2/a0/a6
 	rts
 
-ClampReplayView	;94 only. Clamp Hpos to -$3C..$3C and Vpos to -$C8..$100
+ClampReplayView	;Clamp Hpos to -$3C..$3C and Vpos to -$C8..$100
 	move.w	d0,-(sp)
 	move.w	#$3C,d0
 	cmp.w	(Hpos).w,d0

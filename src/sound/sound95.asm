@@ -1,5 +1,5 @@
 ; $00AF44  Adapted from sound94.asm: the 95 sound driver and sound bank, the sound calls, the unused 94 driver and samples
-;	The 95 sound driver ($AF44-$676D7) is new in 95; 94 has the sound94 driver, most of which is still here ($676D8 on), unused.
+;	The 95 sound driver ($AF44-$676D7) is new in 95; 94 has the driver, most of which is still here ($676D8 on), unused.
 ;	The 68000 side of a song player: SndDriver takes a command in d0 (95 calls it through SoundCmd), runs up to 8 songs of MIDI style
 ;	events, and keeps the Z80 program fed. Then the Z80 program (Z80Program) and the sound bank (SoundBanks, $D8EC to $676D7).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
@@ -88,7 +88,7 @@ SndDriver	;95 sound driver entry (SoundCmd, below). d0 = command 0-$F, branch to
 	ori	#1,ccr
 	rts
 
-SndLoadZ80	;95 only. Command 0: copy the Z80 program a0 (d1 bytes; it must start with JP $00xx) to Z80 RAM, reset the Z80, wait
+SndLoadZ80	;Command 0: copy the Z80 program a0 (d1 bytes; it must start with JP $00xx) to Z80 RAM, reset the Z80, wait
 	;for it to set Z80_RAM+$4F, clear the song slots and notes, and turn the driver on. Carry set and d0 = 6 for a bad program
 	movem.l	d1/a0-a2,-(sp)
 	move	sr,-(sp)
@@ -164,7 +164,7 @@ SndLoadZ80	;95 only. Command 0: copy the Z80 program a0 (d1 bytes; it must start
 	movem.l	(sp)+,d1/a0-a2
 	rts
 
-SndUpdate	;95 only. Command 1, once a frame: note timers (SndUpdateNotes), sample streaming (SndStreamZ80), then step the 8 song
+SndUpdate	;Command 1, once a frame: note timers (SndUpdateNotes), sample streaming (SndStreamZ80), then step the 8 song
 	;slots: wait out each slot's delay, then send its events ($9x note on, $Bx controller, $Cx program, $Ex pitch bend) to the Z80 until the
 	;next delay. Controller $75 loops the song; status $FF ends it
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -380,7 +380,7 @@ SndUpdate	;95 only. Command 1, once a frame: note timers (SndUpdateNotes), sampl
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SndStartSeq	;95 only. Command 4: play song d1 (bank item type 3) in the first free slot, with d2-d4 (d4 = tempo). Carry set for no
+SndStartSeq	;Command 4: play song d1 (bank item type 3) in the first free slot, with d2-d4 (d4 = tempo). Carry set for no
 	;free slot (d0 = 7) or no such song
 	movem.l	d1-d4/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
@@ -438,7 +438,7 @@ SndStartSeq	;95 only. Command 4: play song d1 (bank item type 3) in the first fr
 	movem.l	(sp)+,d1-d4/a0-a1
 	rts
 
-SndStopSeq	;95 only. Command 5: stop the slot playing song id d1 and release its notes. Carry set and d0 = 3 when none plays it
+SndStopSeq	;Command 5: stop the slot playing song id d1 and release its notes. Carry set and d0 = 3 when none plays it
 	movem.l	d1-d2/a0,-(sp)
 	lea	(SndSeqId).l,a0
 	clr.w	d0
@@ -468,7 +468,7 @@ SndStopSeq	;95 only. Command 5: stop the slot playing song id d1 and release its
 	movem.l	(sp)+,d1-d2/a0
 	rts
 
-SndPutZ80Cmd	;95 only. Queue the 4 byte Z80 command d0 (Z80_RAM+$D + 4 * count, count at +$C, waits while +$B is busy). d0 = -1 when it is full
+SndPutZ80Cmd	;Queue the 4 byte Z80 command d0 (Z80_RAM+$D + 4 * count, count at +$C, waits while +$B is busy). d0 = -1 when it is full
 	movem.l	d1/a0,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	0(a0),-(sp)
@@ -512,7 +512,7 @@ SndPutZ80Cmd	;95 only. Queue the 4 byte Z80 command d0 (Z80_RAM+$D + 4 * count, 
 	movem.l	(sp)+,d1/a0
 	rts
 
-SndUploadBlock	;95 only. Copy d1 bytes from a0 to free Z80 RAM as block d0 (the 42 six byte entries at Z80_RAM+$100). Carry set: no room
+SndUploadBlock	;Copy d1 bytes from a0 to free Z80 RAM as block d0 (the 42 six byte entries at Z80_RAM+$100). Carry set: no room
 	;(d0 = 4), already there (d0 = 3) or no free entry (d0 = 7)
 	movem.l	d1-d2/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a1
@@ -593,7 +593,7 @@ SndUploadBlock	;95 only. Copy d1 bytes from a0 to free Z80 RAM as block d0 (the 
 	movem.l	(sp)+,d1-d2/a0-a1
 	rts
 
-SndReadBlock	;95 only. Command $B: copy Z80 block d1 to a0. Carry set and d0 = 3 when there is no such block
+SndReadBlock	;Command $B: copy Z80 block d1 to a0. Carry set and d0 = 3 when there is no such block
 	movem.l	d1-d3/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a1
 	move.w	(a1),-(sp)
@@ -636,7 +636,7 @@ SndReadBlock	;95 only. Command $B: copy Z80 block d1 to a0. Carry set and d0 = 3
 	movem.l	(sp)+,d1-d3/a0-a1
 	rts
 
-SndWriteBlock	;95 only. Command $C: copy a0 over Z80 block d1. Carry set and d0 = 3 when there is no such block
+SndWriteBlock	;Command $C: copy a0 over Z80 block d1. Carry set and d0 = 3 when there is no such block
 	movem.l	d1-d3/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a1
 	move.w	(a1),-(sp)
@@ -679,7 +679,7 @@ SndWriteBlock	;95 only. Command $C: copy a0 over Z80 block d1. Carry set and d0 
 	movem.l	(sp)+,d1-d3/a0-a1
 	rts
 
-SndPauseZ80	;95 only. Command $D: Z80_RAM+$50 = $FF (pause)
+SndPauseZ80	;Command $D: Z80_RAM+$50 = $FF (pause)
 	move.l	a0,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	(a0),-(sp)
@@ -698,7 +698,7 @@ SndPauseZ80	;95 only. Command $D: Z80_RAM+$50 = $FF (pause)
 	movea.l	(sp)+,a0
 	rts
 
-SndResumeZ80	;95 only. Command $E: Z80_RAM+$50 = 0 (resume)
+SndResumeZ80	;Command $E: Z80_RAM+$50 = 0 (resume)
 	move.l	a0,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	(a0),-(sp)
@@ -717,7 +717,7 @@ SndResumeZ80	;95 only. Command $E: Z80_RAM+$50 = 0 (resume)
 	movea.l	(sp)+,a0
 	rts
 
-SndStopAll	;95 only. Command $F (SoundOff): free every song slot, send Z80 command $FF and clear the notes
+SndStopAll	;Command $F (SoundOff): free every song slot, send Z80 command $FF and clear the notes
 	movem.l	d0/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	(a0),-(sp)
@@ -734,7 +734,7 @@ SndStopAll	;95 only. Command $F (SoundOff): free every song slot, send Z80 comma
 	movem.l	(sp)+,d0/a0-a1
 	rts
 
-SndClearNotes	;95 only. No notes: SndNoteCount 0, SndNotes all -1
+SndClearNotes	;No notes: SndNoteCount 0, SndNotes all -1
 	movem.l	d0-d1/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	0(a0),-(sp)
@@ -750,7 +750,7 @@ SndClearNotes	;95 only. No notes: SndNoteCount 0, SndNotes all -1
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
 
-SndReleaseNotes	;95 only. Set the timer of every note of slot d0 to 1 (released next frame)
+SndReleaseNotes	;Set the timer of every note of slot d0 to 1 (released next frame)
 	movem.l	d0-d2/a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	0(a0),-(sp)
@@ -775,7 +775,7 @@ SndReleaseNotes	;95 only. Set the timer of every note of slot d0 to 1 (released 
 	movem.l	(sp)+,d0-d2/a0-a1
 	rts
 
-SndAddNote	;95 only. Add note d0 (timer word, then the note) to SndNotes
+SndAddNote	;Add note d0 (timer word, then the note) to SndNotes
 	movem.l	d0-d1/a0,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	SndNoteCount-SndDrvRAM(a0),d1
@@ -787,7 +787,7 @@ SndAddNote	;95 only. Add note d0 (timer word, then the note) to SndNotes
 	movem.l	(sp)+,d0-d1/a0
 	rts
 
-SndUpdateNotes	;95 only. Count down the note timers; at 0 send the note off ($8x) and remove the note
+SndUpdateNotes	;Count down the note timers; at 0 send the note off ($8x) and remove the note
 	movem.l	d0-d1/a0-a2,-(sp)
 	lea	(SndDrvRAM).l,a2
 	cmpi.w	#0,SndNoteCount-SndDrvRAM(a2)
@@ -826,7 +826,7 @@ SndUpdateNotes	;95 only. Count down the note timers; at 0 send the note off ($8x
 	movem.l	(sp)+,d0-d1/a0-a2
 	rts
 
-SndStreamZ80	;95 only. Answer the Z80's sample request (Z80_RAM+$4D: 1 start sample Z80_RAM+$4E, 2 / 3 next 256 bytes) by copying
+SndStreamZ80	;Answer the Z80's sample request (Z80_RAM+$4D: 1 start sample Z80_RAM+$4E, 2 / 3 next 256 bytes) by copying
 	;from the sample (bank item type 1) to the Z80 buffer, looping or ending it
 	movem.l	d1-d2/a0,-(sp)
 	bsr.w	Z80BusRequest
@@ -921,7 +921,7 @@ SndStreamZ80	;95 only. Answer the Z80's sample request (Z80_RAM+$4D: 1 start sam
 	movem.l	(sp)+,d1-d2/a0
 	rts
 
-SndFindBankItem	;95 only. Find bank item type d0, id d1 in the 4 banks (SndBanks): a0 = its data, d0 = its size. Carry set and d0 = 3 when
+SndFindBankItem	;Find bank item type d0, id d1 in the 4 banks (SndBanks): a0 = its data, d0 = its size. Carry set and d0 = 3 when
 	;there is none
 	movem.l	d1-d4/a1-a2,-(sp)
 	lea	(SndBanks).l,a1
@@ -968,7 +968,7 @@ SndFindBankItem	;95 only. Find bank item type d0, id d1 in the 4 banks (SndBanks
 	movem.l	(sp)+,d1-d4/a1-a2
 	rts
 
-SndSetBank	;95 only. Command 6: bank d1 (0-3) is at a0; tell the Z80 too (Z80_RAM+$51). Carry set and d0 = 3 for d1 above 3
+SndSetBank	;Command 6: bank d1 (0-3) is at a0; tell the Z80 too (Z80_RAM+$51). Carry set and d0 = 3 for d1 above 3
 	movem.l	d1/a1-a2,-(sp)
 	cmpi.w	#4,d1
 	bcs.s	.0
@@ -999,7 +999,7 @@ SndSetBank	;95 only. Command 6: bank d1 (0-3) is at a0; tell the Z80 too (Z80_RA
 	movem.l	(sp)+,d1/a1-a2
 	rts
 
-SndLoadList	;95 only. Command 7: upload the patches (types 0 and 4) of load list d1 (bank item type $B, pairs ended by $FF) to the Z80
+SndLoadList	;Command 7: upload the patches (types 0 and 4) of load list d1 (bank item type $B, pairs ended by $FF) to the Z80
 	movem.l	d1/a0-a1,-(sp)
 	move.w	#$B,d0
 	bsr.w	SndFindBankItem
@@ -1034,7 +1034,7 @@ SndLoadList	;95 only. Command 7: upload the patches (types 0 and 4) of load list
 	movem.l	(sp)+,d1/a0-a1
 	rts
 
-SndFreeBlocks	;95 only. Command 8: free the Z80 blocks of list a0 (word pairs ended by -1) and move the blocks after them down
+SndFreeBlocks	;Command 8: free the Z80 blocks of list a0 (word pairs ended by -1) and move the blocks after them down
 	movem.l	d1-d3/a0-a2,-(sp)
 	lea	(SndDrvRAM).l,a1
 	move.w	(a1),-(sp)
@@ -1123,7 +1123,7 @@ SndFreeBlocks	;95 only. Command 8: free the Z80 blocks of list a0 (word pairs en
 	movem.l	(sp)+,d1-d3/a0-a2
 	rts
 
-SndResetBlocks	;95 only. Command 9: free all Z80 blocks (Z80_RAM+$100 all $FF, free pointer back to the start at Z80_RAM+3)
+SndResetBlocks	;Command 9: free all Z80 blocks (Z80_RAM+$100 all $FF, free pointer back to the start at Z80_RAM+3)
 	movem.l	a0-a1,-(sp)
 	lea	(SndDrvRAM).l,a0
 	move.w	(a0),-(sp)
@@ -1145,7 +1145,7 @@ SndResetBlocks	;95 only. Command 9: free all Z80 blocks (Z80_RAM+$100 all $FF, f
 	movem.l	(sp)+,a0-a1
 	rts
 
-SndSendZ80	;95 only. Command $A: queue Z80 command d1 with interrupts off
+SndSendZ80	;Command $A: queue Z80 command d1 with interrupts off
 	move	sr,-(sp)
 	move	#$2700,sr
 	move.l	d1,d0
@@ -1153,19 +1153,19 @@ SndSendZ80	;95 only. Command $A: queue Z80 command d1 with interrupts off
 	move	(sp)+,sr
 	rts
 
-Z80BusRequest	;95 only. Stop the Z80 and wait for the bus
+Z80BusRequest	;Stop the Z80 and wait for the bus
 	move.w	#$100,(IO_Z80BUS).l
 .0
 	btst	#8,(IO_Z80BUS).l
 	bne.s	.0
 	rts
 
-Z80BusRelease	;95 only. Give the bus back to the Z80
+Z80BusRelease	;Give the bus back to the Z80
 	move.w	#0,(IO_Z80BUS).l
 	rts
 	opt	oaq+,osq+,oz+
 
-Z80Program	;The Z80 sound program (main95 Begin and hockey95 Opening2 load it with SndLoadZ80, d1 = $1B63). Starts JP $0600
+Z80Program	;The Z80 sound program (main95 Begin and Opening2 load it with SndLoadZ80, d1 = $1B63). Starts JP $0600
 	incbin	..\Extracted\NHL95\Sound\z80_snd_drv95.bin
 	nop	;$D8EA. Pad to $D8EC (retail 4E71)
 
@@ -1458,10 +1458,10 @@ SoundBanks	;Bank 0 (SndSetBank, Begin and Opening2): the item count, then 4 byte
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $0676D8  From sound94.asm: the sound calls, the unused 94 driver, the 94 samples and FM patches
-;	The 95 sound calls (SoundCmd ... ChooseSong, hockey94 / display94 / video94 / title94 routines moved in), then what is left of the
-;94 sound driver (sound94): z80_bus_release_delay ... p_initialZ80 as 94, and no caller in 95, with the RAM moved by -$3FC
+;	The 95 sound calls (SoundCmd ... ChooseSong, hockey94 / display94 / video94 / routines moved in), then what is left of the
+;94 sound driver: z80_bus_release_delay ... p_initialZ80 as 94, and no caller in 95, with the RAM moved by -$3FC
 ;	each Z80 bus request but p_initialZ80's replaced by a SoundCmd $D (pause the 95 driver) and ClearAllTrackAndSFXSlots cut down;
-;	collide94 newcheck; then the 94 PCM samples and FM patches (the 94 files).
+;	newcheck; then the 94 PCM samples and FM patches (the 94 files).
 
 SoundCmd	;Send command d0 to the 95 sound driver (SndDriver, above). Called from Begin, Opening2, StartGame ...
 	jsr	(SndDriver).l
@@ -1471,7 +1471,7 @@ SoundCmd	;Send command d0 to the 95 sound driver (SndDriver, above). Called from
 .0
 	rts
 
-UpdateCwdExcite	;(hockey94). called once per second. Track peak and running total of crowd excitement, then decay the level by 1
+UpdateCwdExcite	;called once per second. Track peak and running total of crowd excitement, then decay the level by 1
 	move.w	(CwdExciteLvl).w,d0
 	cmp.w	(MaxCwdExciteLvl).w,d0
 	bls.w	.0
@@ -1486,7 +1486,7 @@ UpdateCwdExcite	;(hockey94). called once per second. Track peak and running tota
 .1
 	rts
 
-updatesound	;(display94). move the crowd noise volume (psg noise channel, asv) toward crowdlevel. Called from DoGameFrame
+updatesound	;move the crowd noise volume (psg noise channel, asv) toward crowdlevel. Called from DoGameFrame
 	move.w	(crowdlevel).w,d0
 	asl.w	#3,d0
 	addi.w	#$400,d0
@@ -1514,7 +1514,7 @@ updatesound	;(display94). move the crowd noise volume (psg noise channel, asv) t
 	move.b	d0,(VDP_PSG).l
 	rts
 
-CheckPeriodEnd	;(hockey94). Called once per second. 3rd period: choose and play a song once at the random trigger time set by ResetClock
+CheckPeriodEnd	;Called once per second. 3rd period: choose and play a song once at the random trigger time set by ResetClock
 	cmpi.w	#2,(gsp).w
 	bne.w	.0
 	btst	#4,(gmode).w
@@ -1531,7 +1531,7 @@ CheckPeriodEnd	;(hockey94). Called once per second. 3rd period: choose and play 
 .0
 	rts
 
-sfx	;(video94). play sound effect number, one word passed on stack. 95: through SfxTable to a sound driver song (command 4)
+sfx	;play sound effect number, one word passed on stack. 95: through SfxTable to a sound driver song (command 4)
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.l	d0
 	move.w	$40(sp),d0	;$40 = 16*4
@@ -1541,7 +1541,7 @@ sfx	;(video94). play sound effect number, one word passed on stack. 95: through 
 	addq.w	#2,sp
 	rts
 
-sfxplay	;95 only: play sound d0 ($32-$55 are songs, PlayingSong; below, SfxTable). Sound $2D / $2E: a nop. song branches here
+sfxplay	;play sound d0 ($32-$55 are songs, PlayingSong; below, SfxTable). Sound $2D / $2E: a nop. song branches here
 	cmp.w	#$2E,d0
 	beq.w	.0
 	cmp.w	#$2D,d0
@@ -1604,7 +1604,7 @@ sfxplay	;95 only: play sound d0 ($32-$55 are songs, PlayingSong; below, SfxTable
 	addq.w	#2,sp
 	rts
 
-SfxTable	;95 only: sound driver song for sound effects 0-$31 (sfx), $FF = none. $26 first stops the songs above $31
+SfxTable	;sound driver song for sound effects 0-$31 (sfx), $FF = none. $26 first stops the songs above $31
 	dc.b	$26,$1C,$1D,$17,$16,$FF,$09,$25	;sounds $00-$07
 	dc.b	$04,$FF,$FF,$10,$1E,$13,$20,$0E	;sounds $08-$0F
 	dc.b	$0B,$0B,$0B,$0B,$08,$08,$08,$08	;sounds $10-$17
@@ -1613,7 +1613,7 @@ SfxTable	;95 only: sound driver song for sound effects 0-$31 (sfx), $FF = none. 
 	dc.b	$18,$18,$18,$18,$11,$1A,$1A,$FF	;sounds $28-$2F
 	dc.b	$FF,$FF	;sounds $30-$31
 
-song	;(video94). play song number, one word passed on stack. 95: songs 0-3 through StartSong, the rest through sfxplay
+song	;play song number, one word passed on stack. 95: songs 0-3 through StartSong, the rest through sfxplay
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.l	d0
 	move.w	$40(sp),d0	;$40 = 16*4
@@ -1636,7 +1636,7 @@ song	;(video94). play song number, one word passed on stack. 95: songs 0-3 throu
 	addq.w	#2,sp
 	rts
 
-StartSong	;95 only: stop the song (play_new_song), then song d0 (command 4, tempo $100)
+StartSong	;stop the song (play_new_song), then song d0 (command 4, tempo $100)
 	tst.w	d0
 	bmi.w	rtsfx
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1663,7 +1663,7 @@ play_new_song	;Stop the song in progress (PlayingSong, sound driver command 5)
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-play_new_song2	;No xref. 95 only: a copy of play_new_song that skips the saving when no song plays
+play_new_song2	;No xref. a copy of play_new_song that skips the saving when no song plays
 	tst.w	(PlayingSong).w
 	bmi.w	.0	;no song playing
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1676,7 +1676,7 @@ play_new_song2	;No xref. 95 only: a copy of play_new_song that skips the saving 
 .0
 	rts
 
-KillCrowd	;(display94). silence the crowd noise (psg)
+KillCrowd	;silence the crowd noise (psg)
 	move.b	#$E7,(VDP_PSG).l
 	move.b	#$DF,(VDP_PSG).l
 	move.b	#$C8,(VDP_PSG).l
@@ -1684,14 +1684,14 @@ KillCrowd	;(display94). silence the crowd noise (psg)
 	move.b	#$FF,(VDP_PSG).l
 	rts
 
-SoundOff	;95 only (94 p_turnoff): sound driver command $F, every song off
+SoundOff	;(94 p_turnoff): sound driver command $F, every song off
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$F,d0
 	bsr.w	SoundCmd
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ChooseSong	;(title94). SongNum = byte SongIndex of the 6 song bytes of team HmTeam (TeamSongs), or one of the 8 of RandomSongs
+ChooseSong	;SongNum = byte SongIndex of the 6 song bytes of team HmTeam (TeamSongs), or one of the 8 of RandomSongs
 	;at random when 0; $FFFF with gmode bit 4
 	movem.l	d0-d1/a0-a1,-(sp)
 	btst	#4,(gmode).w
@@ -1718,7 +1718,7 @@ ChooseSong	;(title94). SongNum = byte SongIndex of the 6 song bytes of team HmTe
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
 
-TeamSongs	;(title94). 6 song bytes per team (TeamList order), by SongIndex. 0 = a RandomSongs song
+TeamSongs	;6 song bytes per team (TeamList order), by SongIndex. 0 = a RandomSongs song
 	dc.b	$3A,$40,$49,$54,$46,$00	;0 ANH
 	dc.b	$51,$42,$40,$00,$46,$51	;1 BOS
 	dc.b	$33,$32,$32,$33,$46,$00	;2 BUF
@@ -1747,12 +1747,12 @@ TeamSongs	;(title94). 6 song bytes per team (TeamList order), by SongIndex. 0 = 
 	dc.b	$32,$3F,$55,$00,$46,$00	;25 WPG
 	dc.b	$51,$42,$32,$00,$46,$00	;26 ASE
 	dc.b	$51,$42,$32,$00,$46,$00	;27 ASW
-RandomSongs	;(title94). 8 songs ChooseSong picks from at random
+RandomSongs	;8 songs ChooseSong picks from at random
 	dc.b	$33,$3D,$3E,$41,$33,$47,$4E,$4F
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;The 94 sound driver as 95 keeps it ($67AD0-$682AF, nothing calls it). The 94 source (sound94) with the 95 changes
+;The 94 sound driver as 95 keeps it ($67AD0-$682AF, nothing calls it). The 94 source with the 95 changes
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -2057,7 +2057,7 @@ UpdateChannelFrequencyAndVolume	;Set the frequency of channel struct a2 from its
 	dc.w	$EAC0,$EB9A,$EC74,$ED4F,$EE2A,$EF07,$EFE4,$F0C2,$F1A1,$F281
 	dc.w	$F361,$F443,$F525,$F608,$F6EC,$F7D0,$F8B6,$F99C,$FA83,$FB6B
 	dc.w	$FC54,$FD3E,$FE28,$FF13,$FF13
-SetChannelVolume	;94 only. Set the volume of channel struct a2: note volume (+2) * the voice volume (voice table +4) / 128. FM: attenuation from
+SetChannelVolume	;Set the volume of channel struct a2: note volume (+2) * the voice volume (voice table +4) / 128. FM: attenuation from
 	;veltab (volume / 8); PCM: Z80 RAM $83 (Z80_RAM+$83, at least 3). Called from handle_command_10 and handle_command_30
 	movem.l	d0,-(sp)
 	clr.w	d0
@@ -2125,7 +2125,7 @@ handle_command_60	;Event $6x: set the pitch bend of channel +1 bits 3-0 of track
 	addq.w	#8,a2
 	dbf	d0,.loop
 	rts
-handle_command_30	;94 only: event $3x, controller +2 = +3 on channel +1 bits 3-0 of track d7. Only controller 7
+handle_command_30	;event $3x, controller +2 = +3 on channel +1 bits 3-0 of track d7. Only controller 7
 	;(volume) is used: set the voice volume (voice table +5) and update the volume of every channel with that key (SetChannelVolume)
 	cmpi.b	#7,2(a0)
 	beq.w	.0
@@ -2196,7 +2196,7 @@ ClearAllTrackAndSFXSlots	;95 cuts it down to PlayingSong = -1 (94 freed the 8 tr
 	move.w	#$FFFF,(PlayingSong).w
 	rts
 
-newcheck	;(collide94). start a new check sound: one of 4 sounds $1C-$1F, never the last one again. Called from checkcx and FallDown
+newcheck	;start a new check sound: one of 4 sounds $1C-$1F, never the last one again. Called from checkcx and FallDown
 	move.l	d0,-(sp)
 	moveq	#3,d0
 	jsr	(randomd0).l	;94: bsr.w

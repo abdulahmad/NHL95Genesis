@@ -4,7 +4,7 @@
 ;	The files of engine\ in ROM order, included by nhl95.asm. No org: nhl95.asm sets org 0.
 ;	Each file has its own stub next to it (engine\<file>_stub.asm) to build and verify it alone.
 ;
-;	sound\z80old95.asm sits between fourway95 and pause95 in the ROM, so it is included here.
+;	sound\z80old95.asm sits between fourway95 and in the ROM, so it is included here.
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	include	engine\video95.asm		; $079902  VDP helpers, DMA, palettes, sprite frames, rink scroll, the decompressor, vblank, pads

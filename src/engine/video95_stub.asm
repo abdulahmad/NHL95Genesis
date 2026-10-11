@@ -14,14 +14,14 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $079902-$07A7B3, read from lst/nhl95.bin.
-SoundCmd = $676D8		;sound95
-sfx = $677AC		;sound95
-find3d = $7C5EE		;middle95
-Rinktilelist = $C4A7C		;Rink map (graphics95)
-Sprites = $CA56A		;Sprite frames and tiles (graphics95)
-Framermap = $14C148		;graphics95
-Framermap2 = $14C308		;#. Second framer map, tiles at +8 (graphics95)
-RevRinkTilelist = $16060E		;Reverse angle rink map (graphics95)
+SoundCmd = $676D8
+sfx = $677AC
+find3d = $7C5EE
+Rinktilelist = $C4A7C		;Rink map
+Sprites = $CA56A		;Sprite frames and tiles
+Framermap = $14C148
+Framermap2 = $14C308		;#. Second framer map, tiles at +8
+RevRinkTilelist = $16060E		;Reverse angle rink map
 
 ; Main segment code
 	include	engine\video95.asm

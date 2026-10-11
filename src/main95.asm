@@ -1,6 +1,6 @@
 ;NHL 95 main segment. Retail $000000-$000771 (1906 bytes), from the lst/nhl95.bin.lst.
 ;	Vectors, cartridge header (sega\SegaIDTable95.asm) and SegaInit (sega\SegaInit.asm) as in main94.asm. 95 then adds a region
-;	lock (CHECK_VDP to .regionHang), keeps the checksum call, and holds Begin itself (94 Begin is in hockey94). TeamList (teamdata95)
+;	lock (CHECK_VDP to.regionHang), keeps the checksum call, and holds Begin itself (94 Begin is). TeamList
 ;	starts at $772.
 	include	macros\genesis.mac
 
@@ -266,7 +266,7 @@ RegionFont	;8 x 8, 1 bit per pixel, characters $20-$5A
 
 RegionOK	;The region is listed: checksum, then the game
 	IF CHECKSUM=1
-		jsr	(ValidationRoutine).l	;(checksum95). jsr (x).l, 4EB9. Red screen and hang if the ROM sum is wrong
+		jsr	(ValidationRoutine).l	;jsr (x).l, 4EB9. Red screen and hang if the ROM sum is wrong
 	ELSE
 		nop
 		nop
@@ -274,10 +274,10 @@ RegionOK	;The region is listed: checksum, then the game
 	ENDIF
 	bra.w	Begin
 
-ZeroLong	;A zero long: the empty palette list / menu list pointer. 94 has the same long at $30A, the start of teamdata94
+ZeroLong	;A zero long: the empty palette list / menu list pointer. 94 has the same long at $30A, the start
 	dc.l	0
 
-;exception vectors 2-5. 95 returns; 94 printed the error (AddError, Illinst, ZeroDiv in data94) and hung
+;exception vectors 2-5. 95 returns; 94 printed the error (AddError, Illinst, ZeroDiv) and hung
 BusErr	;Vector 2
 	rts
 AdrErr	;Vector 3
@@ -289,7 +289,7 @@ DivBy0	;Vector 5
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	Begin. 94 has it in hockey94
+;	Begin. 94 has it
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -329,7 +329,7 @@ Begin	;cold start, entered from RegionOK. Clear RAM, init sound and menus, go to
 	jsr	(InitSaveRAM).l
 	jsr	(HiScoreScreen).l	;94 calls ReadLineData first
 	jsr	(ReadLineData).l
-	jsr	(DefaultMenus).l	;hockey94_09
+	jsr	(DefaultMenus).l
 	move.w	(OptLine).l,(TmpOptLine2).l
 	move.w	(OptPlayMode).l,(TempOptPlayMode).l
 	jsr	(orjoy).l		;clear any previous button presses

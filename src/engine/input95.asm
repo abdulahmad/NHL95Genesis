@@ -1,10 +1,10 @@
 ;	NHL 95 input95. Retail $083EB2-$084FE5 (4404 bytes).
-;	94 input94 doinput (95: its start is doinput; the mapped start doinput .0 is inside it), doinput_islocked, rtss7, faceoffinput,
-;	setpassmode, passmode, dopass, passtoa0, then onetimer94 OneTimerTarget and its tables and OneTimerPass (moved in), input94
-;	Findhittype, SetShotMode, ShotMode, prepshot, doshot, shotsets, shotdiradj, shotdirmath, onetimer94 puckvzadj and checks94
-;	compshoot (moved in). setup95 follows at $084FE6.
-;	The 94 doinput parts doinput_cbut ... doinput_ispc, getGoalieSCnum are in skate95; the goalie dive (doinput .33) is
-;	doinput_goaliedive (skate95); burst, Acheck, changeplayer (95 chgplayer), setc1player ... are in control95; SetLCmode, lineinput
+;	94 doinput (95: its start is doinput; the mapped start doinput.0 is inside it), doinput_islocked, rtss7, faceoffinput
+;	setpassmode, passmode, dopass, passtoa0, then OneTimerTarget and its tables and OneTimerPass (moved in)
+;	Findhittype, SetShotMode, ShotMode, prepshot, doshot, shotsets, shotdiradj, shotdirmath, puckvzadj
+;	compshoot (moved in). follows at $084FE6.
+;	The 94 doinput parts doinput_cbut ... doinput_ispc, getGoalieSCnum are; the goalie dive (doinput.33) is
+;	doinput_goaliedive; burst, Acheck, changeplayer (95 chgplayer), setc1player ... are; SetLCmode, lineinput
 ;	in lines95.
 ;except puckvzadj and compshoot (dc.b, read from the retail bytes) and the dead / data bytes noted below. Local labels are
 ;numbered; the names are not kept.
@@ -742,7 +742,7 @@ passtoa0	;Pass to player a0
 	move.w	d1,(puckvy).w
 	rts
 
-OneTimerTarget	;onetimer94 OneTimerTarget (moved in). One-timer pass target for receiver a3: an offset by facing from
+OneTimerTarget	;One-timer pass target for receiver a3: an offset by facing from
 	;OneTimerNearTbl / OneTimerFarTbl (skater, near or far from the goal) or OneTimerGoalieTbl
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#2,(sflags6).w
@@ -830,7 +830,7 @@ OneTimerGoalieTbl	;OneTimerTarget target offsets (x, y) by facing, goalie
 	dc.w	$FFFB,$FFF4,$32,$FFF4,$32,$FFF4,$32,$FFF4	;94 $FFF7
 	dc.w	$FFFB,$FFF4,$FFCE,$FFF4,$FFCE,$FFF4,$FFCE,$FFF4
 
-OneTimerPass	;onetimer94 OneTimerPass (moved in). One-timer pass: puckvz = sqrt(12 * onetimerheight), then puckvx / puckvy
+OneTimerPass	;One-timer pass: puckvz = sqrt(12 * onetimerheight), then puckvx / puckvy
 	;toward the target onetimertargetx / onetimertargety in puckvz
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$C,d0
@@ -1256,7 +1256,7 @@ CalcAngleOffset	;shotdiradj helper
 	divs.w	d2,d4	;divide d2 into d4
 	rts
 
-puckvzadj	;onetimer94 puckvzadj (moved in). Set puckvz for a top shelf shot from the distance to the goal
+puckvzadj	;Set puckvz for a top shelf shot from the distance to the goal
 	;line ($10B; 94 $108) over puckvy, at most $7FFF. Called from doshot
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(pucky).w,d0	;move pucky into d0
@@ -1308,8 +1308,8 @@ puckvzadj	;onetimer94 puckvzadj (moved in). Set puckvz for a top shelf shot from
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-compshoot	;checks94 compshoot (moved in). Computer player shoots: drop the caller's return, temp2 from the
-	;distance to the goal line, then assshoot. Jumped to from asspuckc, chk4shot (logic95) and AutoLineChange (lines95)
+compshoot	;Computer player shoots: drop the caller's return, temp2 from the
+	;distance to the goal line, then assshoot. Jumped to from asspuckc, chk4shot and AutoLineChange
 	addq.w	#4,sp
 	move.w	(pucky).w,d0
 	btst	#7,pflags(a3)

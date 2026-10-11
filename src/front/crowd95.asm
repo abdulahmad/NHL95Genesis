@@ -1,11 +1,11 @@
 ; $0A0B3E  Adapted from hockey94.asm and display94.asm: the crowd meter
-;	hockey94 updatecrowdf, the 95 crowd frame table (CrowdFrameTbl), display94 showcrowd ... rtsShowCrowd.
-;	summary95 follows at $0A0D1A.
+;	updatecrowdf, the 95 crowd frame table (CrowdFrameTbl), showcrowd ... rtsShowCrowd.
+;	follows at $0A0D1A.
 
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-updatecrowdf	;hockey94 updatecrowdf. Every game loop, d7 = elapsed frames: the crowd level falls (faster when loud); every $10 frames the next crowd frame of CrowdFrameTbl (crowdtblidx) in crowdframe.
+updatecrowdf	;Every game loop, d7 = elapsed frames: the crowd level falls (faster when loud); every $10 frames the next crowd frame of CrowdFrameTbl (crowdtblidx) in crowdframe.
 	;95: a frame table instead of the 94 random frame / time pairs
 	cmpi.w	#$15E,(crowdlevel).w
 	blt.w	.0
@@ -35,7 +35,7 @@ updatecrowdf	;hockey94 updatecrowdf. Every game loop, d7 = elapsed frames: the c
 .3
 	rts
 
-CrowdFrameTbl	;95 only. updatecrowdf crowd animation frames, -1 wraps
+CrowdFrameTbl	;updatecrowdf crowd animation frames, -1 wraps
 	dc.b	1,2,3,4,5,6,5,6,5,9,$A,4,3,4,3,4
 	dc.b	5,4,3,4,5,6,7,8,9,$A,$B,$C,9,$A,8,7
 	dc.b	6,5,4,$C,9,$A,5,6,7,8,1,2,3,4,5,6
@@ -44,7 +44,7 @@ CrowdFrameTbl	;95 only. updatecrowdf crowd animation frames, -1 wraps
 	dc.b	4,5,4,3,2,3,4,5,4,5,$B,$C,6,7,8,9
 	dc.b	$FF,$FF
 
-showcrowd	;display94 showcrowd. Crowd sprites (CrowdFrameList): up to 3 frames per PBnum nibble (ShowCrowdPb), then the crowdframe frame (ShowCrowdFrame);
+showcrowd	;Crowd sprites (CrowdFrameList): up to 3 frames per PBnum nibble (ShowCrowdPb), then the crowdframe frame (ShowCrowdFrame)
 	;none in a reverse angle replay (sflags4 bit 4). a6 = sprite table, d6 = link counter
 	btst	#4,(sflags4).w	;check if reverse angle replay
 	bne.w	rtsShowCrowd
@@ -63,7 +63,7 @@ showcrowd	;display94 showcrowd. Crowd sprites (CrowdFrameList): up to 3 frames p
 	move.b	(crowdframe+1).w,d0
 	bra.w	ShowCrowdFrame
 
-ShowCrowdPb	;display94 showcrowd .pb. d2 = the count (PBnum nibble, at most 3), d3 = the first frame (ShowCrowdFrame)
+ShowCrowdPb	;pb. d2 = the count (PBnum nibble, at most 3), d3 = the first frame (ShowCrowdFrame)
 	andi.w	#$F,d2
 	cmp.w	#3,d2
 	bls.w	.0
@@ -78,7 +78,7 @@ ShowCrowdPb	;display94 showcrowd .pb. d2 = the count (PBnum nibble, at most 3), 
 	dbf	d2,.1
 	rts
 
-ShowCrowdFrame	;display94 showcrowd .sc. Crowd frame d0 (0 = none): its sprites in view as sprite table entries at a6 (at most $40)
+ShowCrowdFrame	;sc. Crowd frame d0 (0 = none): its sprites in view as sprite table entries at a6 (at most $40)
 	ext.w	d0
 	beq.w	rtsShowCrowd
 	cmp.w	#$40,d6

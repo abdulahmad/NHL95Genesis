@@ -14,16 +14,16 @@
 
 ; External addresses outside $0836AC-$083EB1, read from lst/nhl95.bin.
 TeamList = $772			;main95
-ReadSRAM = $9952		;sram95
-randomd0s = $7C62E		;middle95
-GetPeriodTime = $7D4CA		;middle95
-chkpk2 = $7D894			;middle95
-Setplass = $81540		;logic95
-assinsert = $81570		;logic95
-SetSPA = $8BC9A			;skate95
-GetRosterName = $9649E		;trade95
-GetJerseyNumber = $965A8	;trade95
-SetSeasonInjuries = $9F144	;95 only: mark the season injuries (tmpdst -4) of team a2 from save RAM (injury95)
+ReadSRAM = $9952
+randomd0s = $7C62E
+GetPeriodTime = $7D4CA
+chkpk2 = $7D894
+Setplass = $81540
+assinsert = $81570
+SetSPA = $8BC9A
+GetRosterName = $9649E
+GetJerseyNumber = $965A8
+SetSeasonInjuries = $9F144	;mark the season injuries (tmpdst -4) of team a2 from save RAM
 
 ; Main segment code
 	include	engine\players95.asm

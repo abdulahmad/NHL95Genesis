@@ -1,10 +1,10 @@
 ;	NHL 95 players95. Retail $0836AC-$083EB1 (2054 bytes).
-;	The 95 PuckcIsGoalie, then collide94 SetPersonel, SetPlList, TryAddPlayerToList, forcepldata, stats94 GetPlayerCount (moved in;
-;	95: by team number, GetPlayerCountD7), collide94 setplayer, ClampNibble, the 95 StickHandTable and BoostAttribute, crowd94
-;	AttributeCalc (moved in), hockey94 restoreteams (moved in), collide94 ResetBench, setup94 resetplstuff (moved in), data94 priolist and
-;	sublist (moved in), crowd94 Create_HotCold_Table / HotColdLoop (moved in).
-;	The start moved to $0836AC: CPgoalie .0 ... $0836AB is the end of CPgoalie (logic95). The end moved to $083EB1: doinput is the
-;	start of 95 doinput (input95; doinput .0, the mapped start, is inside it).
+;	The 95 PuckcIsGoalie, then SetPersonel, SetPlList, TryAddPlayerToList, forcepldata, GetPlayerCount (moved in
+;	95: by team number, GetPlayerCountD7), setplayer, ClampNibble, the 95 StickHandTable and BoostAttribute
+;	AttributeCalc (moved in), restoreteams (moved in), ResetBench, resetplstuff (moved in), priolist and
+;	sublist (moved in), Create_HotCold_Table / HotColdLoop (moved in).
+;	The start moved to $0836AC: CPgoalie.0 ... $0836AB is the end of CPgoalie. The end moved to $083EB1: doinput is the
+;	start of 95 doinput (doinput.0; the mapped start; is inside it).
 ;PuckcIsGoalie, forcepldata, resetplstuff and the tables as dc.b; they are code / data here, read from the retail bytes.
 ;	95 changes: SetPersonel marks the season injuries first (GameFlags bit 3, SetSeasonInjuries); setplayer reads the roster by team
 ;	number (rosterteam, GetRosterName / GetJerseyNumber), maps the stick handling nibble through StickHandTable and pulls some ratings
@@ -13,8 +13,7 @@
 ;	cmp encoding after assembly.
 
 
-PuckcIsGoalie	;95 only. Z set (eq) when the puck carrier is a goalie (a minus puckc returns ne). Called from assdefo
-	;(logic95)
+PuckcIsGoalie	;Z set (eq) when the puck carrier is a goalie (a minus puckc returns ne). Called from assdefo
 	movem.l	d0/a0,-(sp)
 	move.w	(puckc).w,d0
 	bmi.w	.x
@@ -26,7 +25,7 @@ PuckcIsGoalie	;95 only. Z set (eq) when the puck carrier is a goalie (a minus pu
 	movem.l	(sp)+,d0/a0
 	rts
 
-setpersonel	;(93 setpersonel) Set personnel on team a2 by PlList (SetPlList): players already on the ice stay,
+setpersonel	;Set personnel on team a2 by PlList (SetPlList): players already on the ice stay
 	;the others take the free sort objects. 95: SetSeasonInjuries first with GameFlags bit 3
 	movem.l	d0-d5/a0-a4,-(sp)
 	btst	#3,(GameFlags).w
@@ -216,14 +215,14 @@ forcepldata	;no skating on/off: force players to correct data (for faceoffs only
 	movem.l	(sp)+,d0-d4/a0-a3
 	rts
 
-GetPlayerCount	;stats94 GetPlayerCount (moved in). d0 = players on team a2. 95: by team number ($28 of the team struct, GetPlayerCountD7)
+GetPlayerCount	;d0 = players on team a2. 95: by team number ($28 of the team struct, GetPlayerCountD7)
 	movem.l	d7-a0,-(sp)
 	move.w	Xvel(a2),d7
 	bsr.w	GetPlayerCountD7
 	movem.l	(sp)+,d7-a0
 	rts
 
-GetPlayerCountD7	;95 only. d0 = players on team d7: in a season (sflags11 bit 6 clear) the sum of three save RAM bytes
+GetPlayerCountD7	;d0 = players on team d7: in a season (sflags11 bit 6 clear) the sum of three save RAM bytes
 	;(ReadSRAM at $1B80 + $38 * team), else from the roster in TeamList (records until a length word of 2)
 	btst	#6,(sflags11).w
 	bne.w	.0
@@ -473,11 +472,11 @@ ClampNibble	;Clamp byte d3 to 0-$1E. Called by setplayer
 .1
 	rts
 
-StickHandTable	;95 only. setplayer: the stick handling nibble 0-15 to 0-6, before AttributeCalc
+StickHandTable	;setplayer: the stick handling nibble 0-15 to 0-6, before AttributeCalc
 	dc.b	0,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6	;Stk nibble 0-15 to 0-6
-	dc.b	0,1,3,6,9,$C,$F,$FF	;create95 CrScaleTable (StickHandTable+$10)
+	dc.b	0,1,3,6,9,$C,$F,$FF	;CrScaleTable (StickHandTable+$10)
 
-BoostAttribute	;95 only. d3 += ($1E - d3) / 4, kept in $F ... $1E. setplayer runs it on some ratings
+BoostAttribute	;d3 += ($1E - d3) / 4, kept in $F ... $1E. setplayer runs it on some ratings
 	movem.w	d0,-(sp)
 	move.b	#$1E,d0
 	sub.b	d3,d0
@@ -493,7 +492,7 @@ BoostAttribute	;95 only. d3 += ($1E - d3) / 4, kept in $F ... $1E. setplayer run
 	movem.w	(sp)+,d0
 	rts
 
-AttributeCalc	;crowd94 AttributeCalc (moved in). Attribute d3 of player a3 * 5 plus his hot / cold value / 3
+AttributeCalc	;Attribute d3 of player a3 * 5 plus his hot / cold value / 3
 	;limited to 0 ... $1E
 	movem.l	d0-d2/a1,-(sp)
 	move.w	(TempWord2).w,d1
@@ -526,7 +525,7 @@ AttributeCalc	;crowd94 AttributeCalc (moved in). Attribute d3 of player a3 * 5 p
 	movem.l	(sp)+,d0-d2/a1
 	rts
 
-restoreteams	;hockey94 restoreteams (moved in). Put both teams' rosters on the bench (tmap 6, every tmpdst -2)
+restoreteams	;Put both teams' rosters on the bench (tmap 6, every tmpdst -2)
 	movea.w	#(tmstruct-M68K_RAM),a2	;team 1
 	bsr.w	.0
 	adda.w	#tmsize,a2
@@ -572,7 +571,7 @@ ResetBench	;Remove all players from penalty box / put all players on their own b
 	bpl.s	.1
 	rts
 
-resetplstuff	;setup94 resetplstuff (moved in). Reset team variables and players on both teams. 95 SPA $B5C
+resetplstuff	;Reset team variables and players on both teams. 95 SPA $B5C
 	;(94 $50C)
 	movem.l	d0-d2/a0-a3,-(sp)
 	movea.w	#(tmstruct-M68K_RAM),a2
@@ -599,11 +598,11 @@ resetplstuff	;setup94 resetplstuff (moved in). Reset team variables and players 
 	dbf	d2,.loop
 	rts
 
-priolist	;data94 priolist (moved in). Positions in order of importance. Used by SetPlList
+priolist	;Positions in order of importance. Used by SetPlList
 	dc.b	0,1,2,4,3,5,6
 	dc.b	$FF	;pad
 
-sublist	;data94 sublist (moved in). Substitution lists by position (goalie, LD, RD, LW, C, RW, extra attacker), word
+sublist	;Substitution lists by position (goalie, LD, RD, LW, C, RW, extra attacker), word
 	;offsets from sublist. Used by SetPlList
 	dc.w	.defl-sublist		;goalie
 	dc.w	.defl-sublist
@@ -627,7 +626,7 @@ sublist	;data94 sublist (moved in). Substitution lists by position (goalie, LD, 
 	dc.b	0+5,8+5,16+5,24+5,32+5,40+5,48+5
 	dc.b	-1
 
-Create_HotCold_Table	;crowd94 Create_HotCold_Table (moved in). Fill the hot / cold table at $1A4 of team struct a0 (94
+Create_HotCold_Table	;Fill the hot / cold table at $1A4 of team struct a0 (94
 	;$1A2) with 416 random values
 	movem.l	d0-d7,-(sp)
 	move.w	#$19F,d1	;$19F = 415. Loop will run 416 times.

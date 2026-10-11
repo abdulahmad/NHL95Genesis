@@ -5,7 +5,7 @@
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $08A056  From input94.asm: line changes
-;	94 input94 SetLCmode, SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2, with penalty94 linebar,
+;	94 SetLCmode, SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2, with linebar
 ;	getlinee and AvgCline moved in. CompLine follows at $08A3FE.
 ;except AvgCline (dc.b, read from the retail bytes). a printz String as instructions; it is String here. Local labels
 ;are numbered; the names are not kept.
@@ -13,7 +13,7 @@
 
 
 
-SetLCmode	;(input94) Open the line change box for team of player a3 (loadTeamStruct): not with line changes off (OptLine) or
+SetLCmode	;Open the line change box for team of player a3 (loadTeamStruct): not with line changes off (OptLine) or
 	;sflags7 bit 4, once (tmflags bit 1); sets pflags2 bit 3 (line change mode) and falls into SetLCmode2
 	tst.w	(OptLine).w
 	bne.w	rtslc
@@ -29,7 +29,7 @@ SetLCmode	;(input94) Open the line change box for team of player a3 (loadTeamStr
 	bclr	#3,(sflags).w
 	bset	#3,pflags2(a3)
 
-SetLCmode2	;(input94) 93 name. a2 = team struct. Draw the line change box (box, Framer) with the line names (linelist) and their
+SetLCmode2	;93 name. a2 = team struct. Draw the line change box (box, Framer) with the line names (linelist) and their
 	;energy bars (linebar)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	setlccords
@@ -78,7 +78,7 @@ SetLCmode2	;(input94) 93 name. a2 = team struct. Draw the line change box (box, 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-setlccords	;(input94) Set printx / printy for the line change box of team a2
+setlccords	;Set printx / printy for the line change box of team a2
 	clr.w	d0
 	cmpa.w	#(tmstruct-M68K_RAM),a2
 	bne.w	.0
@@ -102,14 +102,14 @@ setlccords	;(input94) Set printx / printy for the line change box of team a2
 	moveq	#9,d0
 	rts
 
-getlchoice	;(input94) d0 = the line for button d0 of team a2 (getlchoice2)
+getlchoice	;d0 = the line for button d0 of team a2 (getlchoice2)
 	movem.l	d1-d2,-(sp)
 	move.w	$38A(a2),d2
 	cmpa.w	#(tmstruct-M68K_RAM),a2
 	beq.w	getlchoice2
 	move.w	-$342(a2),d2
 
-getlchoice2	;(input94) The line for choice d0 by the player difference (tmap of the two teams) and the current line (tmline); .tab
+getlchoice2	;The line for choice d0 by the player difference (tmap of the two teams) and the current line (tmline);.tab
 	sub.w	tmap(a2),d2
 	beq.w	.0
 	addi.w	#$15,d0
@@ -132,7 +132,7 @@ getlchoice2	;(input94) The line for choice d0 by the player difference (tmap of 
 	dc.b	$FF,4,3,$FF,3,4,$FF,3,4,$FF,5,6,$FF,5,6,$FF
 	dc.b	5,6,$FF,5,6,$FF,5,6,$FF,5,6,$FF,6,5,$FF,$FF
 
-lineinput	;(input94) Process input for line changes: d1 = new button presses (passmode first with sflags5 bit 3)
+lineinput	;Process input for line changes: d1 = new button presses (passmode first with sflags5 bit 3)
 	movem.l	d1-d3/a0,-(sp)
 	movea.l	#LineHoldFlag,a0
 	btst	#6,d2
@@ -188,7 +188,7 @@ lineinput	;(input94) Process input for line changes: d1 = new button presses (pa
 .6
 	rts
 
-lcfound	;(input94) Line d2 was picked: store it ($2E), set tmline (getlchoice) and the players (SetPersonel); falls into lcfound2
+lcfound	;Line d2 was picked: store it ($2E), set tmline (getlchoice) and the players (SetPersonel); falls into lcfound2
 	move.w	d2,d0
 	move.w	d2,$2E(a2)
 	bsr.w	getlchoice	;translate choice 0-2 into line number 0-6
@@ -201,7 +201,7 @@ lcfound	;(input94) Line d2 was picked: store it ($2E), set tmline (getlchoice) a
 	move.w	d0,tmline(a2)
 	jsr	(setpersonel).l
 
-lcfound2	;(input94) Erase the line change box (eraser) and redraw the scores (PrintScores1)
+lcfound2	;Erase the line change box (eraser) and redraw the scores (PrintScores1)
 	btst	#7,(sflags).w
 	bne.w	rtslc
 	bsr.w	setlccords
@@ -218,7 +218,7 @@ lcfound2	;(input94) Erase the line change box (eraser) and redraw the scores (Pr
 rtslc	;The shared rts of the line change routines (94 rtss2)
 	rts
 
-linebar	;(penalty94) 93 name. Draw the energy bar of line d0 for team a2 at printx / printy (EnergyBarMap, 16 steps)
+linebar	;93 name. Draw the energy bar of line d0 for team a2 at printx / printy (EnergyBarMap, 16 steps)
 	movem.l	d0-d5/a0-a2,-(sp)
 	bsr.w	getlinee
 	move.w	(printa).w,-(sp)
@@ -244,7 +244,7 @@ linebar	;(penalty94) 93 name. Draw the energy bar of line d0 for team a2 at prin
 	movem.l	(sp)+,d0-d5/a0-a2
 	rts
 
-getlinee	;(penalty94) d0 = line number, a2 = team struct. Return d0 = energy level of this line
+getlinee	;d0 = line number, a2 = team struct. Return d0 = energy level of this line
 	movem.l	d1-d5/a0-a3,-(sp)
 	lea	$16C(a2),a1
 	asl.w	#3,d0
@@ -269,7 +269,7 @@ getlinee	;(penalty94) d0 = line number, a2 = team struct. Return d0 = energy lev
 	movem.l	(sp)+,d1-d5/a0-a3
 	rts
 
-AvgCline	;(penalty94) 93 name. Return d0 = average energy of the current line on team a2
+AvgCline	;93 name. Return d0 = average energy of the current line on team a2
 	movem.l	d1-d3/a0,-(sp)
 	clr.l	d0
 	clr.w	d1
@@ -295,9 +295,9 @@ AvgCline	;(penalty94) 93 name. Return d0 = average energy of the current line on
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $08A3FE  From checks94.asm: computer line changes, saved lines, team screens
-;	checks94 CompLine and AutoLineChange, with moved in: penalty94 SetupTeamForIntermission, chkatop and ChkShotStat, attract94
-;	EASportsScreen, period94 updatePPTeamTime; and 95 only code: the saved line set routines (DefaultLineData, LoadTeamLines,
-;	CheckTeamLines ...) and six DrawTeamScreen variants. Each routine comment names its 94 file or says 95 only. skate95 follows at
+;	CompLine and AutoLineChange, with moved in: SetupTeamForIntermission, chkatop and ChkShotStat
+;	EASportsScreen, updatePPTeamTime; andcode: the saved line set routines (DefaultLineData, LoadTeamLines
+;	CheckTeamLines ...) and six DrawTeamScreen variants. follows at
 ;	$08B4E0 (goalieacc).
 ;CompLine, AutoLineChange, ReadTeamSRAM, FixSavedLines, the LineSlotFixTbl handlers and the DrawTeamScreen variants as dc.b
 ;or as wrong code; they are read from the retail bytes. printz Strings and DecompressGraphicsWithCallback remap bytes as
@@ -305,7 +305,7 @@ AvgCline	;(penalty94) 93 name. Return d0 = average energy of the current line on
 
 
 
-CompLine	;(checks94) The computer picks a line for team a2 (a1 = other team): on a power play or penalty kill the better
+CompLine	;The computer picks a line for team a2 (a1 = other team): on a power play or penalty kill the better
 	;of lines 3 / 4 or 5 / 6 by energy (getlinee); else from the tables by the other team's line and the score in period 3
 	;(gsp 2), the first with energy above $C00
 	movem.l	d0-d2/a0,-(sp)
@@ -379,7 +379,7 @@ CompLine	;(checks94) The computer picks a line for team a2 (a1 = other team): on
 	dc.w	0,2,1
 	dc.w	0,1,0
 
-chk4lc	;(checks94) Computer line change on the fly: puck in the player's own end (pucky 0-$56, 94 $58), one frame in 4
+chk4lc	;Computer line change on the fly: puck in the player's own end (pucky 0-$56, 94 $58), one frame in 4
 	;not in line change mode, and the line tired (AvgCline $C00 or less): CompLine, SetPersonel, PrintScores1, then compshoot
 	btst	#4,(sflags7).w
 	bne.w	rtslc
@@ -411,14 +411,14 @@ chk4lc	;(checks94) Computer line change on the fly: puck in the player's own end
 	jsr	(printscores1).l
 	jmp	compshoot
 
-SetupTeamForIntermission	;(penalty94) 93 name. Reset the bench (ResetBench), then for each team SetupTeamLine. Called from hockey95
+SetupTeamForIntermission	;93 name. Reset the bench (ResetBench), then for each team SetupTeamLine.
 	bsr.w	ResetBench
 	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a3
 	bsr.w	SetupTeamLine
 	exg	a2,a3	;falls in for the other team
 
-SetupTeamLine	;95 only. Team a3 (a2 = other team): ResetTeamEnergy, line 0, and with line changes on the power play line 3
+SetupTeamLine	;Team a3 (a2 = other team): ResetTeamEnergy, line 0, and with line changes on the power play line 3
 	;or penalty kill line 5 when the players on ice (tmap) differ
 	jsr	(reenergizeteam).l
 	clr.w	tmline(a3)
@@ -434,7 +434,7 @@ SetupTeamLine	;95 only. Team a3 (a2 = other team): ResetTeamEnergy, line 0, and 
 .0
 	rts
 
-ReadTeamSRAM	;95 only, no xref. Read $39 bytes of team d7 (0-$1B) from save RAM offset d0 to a0
+ReadTeamSRAM	;no xref. Read $39 bytes of team d7 (0-$1B) from save RAM offset d0 to a0
 	movem.l	d0/d7/a0,-(sp)
 	cmp.w	#$1B,d7
 	bgt.w	.0
@@ -447,8 +447,7 @@ ReadTeamSRAM	;95 only, no xref. Read $39 bytes of team d7 (0-$1B) from save RAM 
 	movem.l	(sp)+,d0/d7/a0
 	rts
 
-DefaultLineData	;95 only. Copy the default line sets of the 28 teams (TeamList + 6, 8 x 8 bytes, then $64) to M68K_RAM+SRLines, the RAM copy of the save RAM lines.
-	;Called from sram95
+DefaultLineData	;Copy the default line sets of the 28 teams (TeamList + 6, 8 x 8 bytes, then $64) to M68K_RAM+SRLines, the RAM copy of the save RAM lines.
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#M68K_RAM+SRLines,a0
 	movea.l	#TeamList,a3
@@ -476,8 +475,8 @@ DefaultLineData	;95 only. Copy the default line sets of the 28 teams (TeamList +
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LoadTeamLines	;95 only. The line sets of team struct a2 ($16C): from save RAM (SRLines + team * $41) when there is save RAM and
-	;line changes are on, else from the team data. Jumped to from InitTeamSructure (control95)
+LoadTeamLines	;The line sets of team struct a2 ($16C): from save RAM (SRLines + team * $41) when there is save RAM and
+	;line changes are on, else from the team data. Jumped to from InitTeamSructure
 	tst.w	(OptLine).w
 	beq.w	.3
 	tst.w	(ValidSRAM).w
@@ -532,7 +531,7 @@ LoadTeamLines	;95 only. The line sets of team struct a2 ($16C): from save RAM (S
 	dbf	d0,.6
 	rts
 
-FixSavedLines	;95 only, no xref. Clamp the saved line slots of team d7 in the 4 TeamRecordSRAM records into the goalie /
+FixSavedLines	;no xref. Clamp the saved line slots of team d7 in the 4 TeamRecordSRAM records into the goalie /
 	;defense / forward ranges (ReadAttributeNibbleD7, GetDefenseStartD7, GetPlayerCountD7) and write them back
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(ReadAttributeNibbleD7).l
@@ -609,7 +608,7 @@ FixSavedLines	;95 only, no xref. Clamp the saved line slots of team d7 in the 4 
 	subq.b	#1,(a0)
 	bra.s	.9
 
-CheckSavedLines	;95 only. CheckTeamLines for tradeteam1 and tradeteam2. Called from the trade code
+CheckSavedLines	;CheckTeamLines for tradeteam1 and tradeteam2. Called from the trade code
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(tradeteam1).w,d7
 	bsr.w	CheckTeamLines
@@ -618,7 +617,7 @@ CheckSavedLines	;95 only. CheckTeamLines for tradeteam1 and tradeteam2. Called f
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CheckTeamLines	;95 only. Check the saved lines of team d7 in the 4 TeamRecordSRAM records ($64 marks a valid one): each slot
+CheckTeamLines	;Check the saved lines of team d7 in the 4 TeamRecordSRAM records ($64 marks a valid one): each slot
 	;with bit 7 set is refilled by LineSlotFixTbl (slot & 7), then written back (WriteSRAM, MakeSRAMChecksum)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#3,d6
@@ -662,7 +661,7 @@ CheckTeamLines	;95 only. Check the saved lines of team d7 in the 4 TeamRecordSRA
 	movem.l	(sp)+,d0-d1/a0
 	bra.s	.3
 
-LineSlotFixTbl	;95 only. CheckTeamLines slot handlers by slot & 7: goalie (the best one), defense, defense, forward, forward,
+LineSlotFixTbl	;CheckTeamLines slot handlers by slot & 7: goalie (the best one), defense, defense, forward, forward
 	;forward, extra, none
 	dc.l	.0,.4,.4,.20,.20,.20,.33,.3
 .0
@@ -884,7 +883,7 @@ LineSlotFixTbl	;95 only. CheckTeamLines slot handlers by slot & 7: goalie (the b
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-EASportsScreen	;(attract94) Called from Begin (main95). Show the EA Sports screen (EASportsMap) until a button, or $50 x 4
+EASportsScreen	;Called from Begin (main95). Show the EA Sports screen (EASportsMap) until a button, or $50 x 4
 	;frames
 	move.l	#vb2,(vbint).w	;vblank handler
 	bclr	#1,(disflags).w
@@ -932,7 +931,7 @@ EASportsScreen	;(attract94) Called from Begin (main95). Show the EA Sports scree
 	jsr	(forceblack).l
 	rts
 
-chkatop	;(penalty94) Attack time of possession stat update. Called once a second from updatepentime
+chkatop	;Attack time of possession stat update. Called once a second from updatepentime
 	moveq	#0,d1
 	move.w	(pucky).w,d0
 	cmp.w	#$56,d0
@@ -951,7 +950,7 @@ chkatop	;(penalty94) Attack time of possession stat update. Called once a second
 .2
 	rts
 
-updatePPTeamTime	;(period94) Power play time of the teams, once a second. Called from updatepentime
+updatePPTeamTime	;Power play time of the teams, once a second. Called from updatepentime
 	btst	#5,(sflags2).w	;check if PP
 	beq.w	.1
 	movea.l	#tmstruct,a2	;move home team struct into a2
@@ -963,7 +962,7 @@ updatePPTeamTime	;(period94) Power play time of the teams, once a second. Called
 .1
 	rts
 
-ChkShotStat	;(penalty94) Determine if a shot was taken and add it to the stats (crowd, team, shooter and goalie)
+ChkShotStat	;Determine if a shot was taken and add it to the stats (crowd, team, shooter and goalie)
 	btst	#0,(gmode).w	;gmclock: clock stopped
 	bne.w	.10
 	btst	#4,(gmode).w	;gmhl: highlight
@@ -1043,7 +1042,7 @@ ChkShotStat	;(penalty94) Determine if a shot was taken and add it to the stats (
 .10
 	rts
 
-DrawTeamScreen2	;95 only. A DrawTeamScreen (setup95) for the season / stats screens: screenarg is the background bitmap; the
+DrawTeamScreen2	;A DrawTeamScreen for the season / stats screens: screenarg is the background bitmap; the
 	;team block tiles (setupTeamBlocksMap), RosterFont at smallfontchars ... smallfont4chars with four remaps, BigFontMap2. d0 / d1 =
 	;first row / row count of the bitmap
 	movem.l	d0-d1/a2,-(sp)
@@ -1134,7 +1133,7 @@ DrawTeamScreen2	;95 only. A DrawTeamScreen (setup95) for the season / stats scre
 	movem.l	(sp)+,d0-d1/a2
 	rts
 
-DrawTeamScreen3	;95 only. The same with SmallFontMap
+DrawTeamScreen3	;The same with SmallFontMap
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
 .0
@@ -1222,11 +1221,11 @@ DrawTeamScreen3	;95 only. The same with SmallFontMap
 	movem.l	(sp)+,d0-d1/a2
 	rts
 
-DrawTeamScreen4NoSetup	;95 only. DrawTeamScreen4 without the screen setup (forceblack, scroll, vdp registers)
+DrawTeamScreen4NoSetup	;DrawTeamScreen4 without the screen setup (forceblack, scroll, vdp registers)
 	movem.l	d0-d1/a2,-(sp)
 	bra.w	DrawTeamScreen4Body
 
-DrawTeamScreen4	;95 only. The same as DrawTeamScreen3, the team block tiles with dma (Teamblocksmap+8)
+DrawTeamScreen4	;The same as DrawTeamScreen3, the team block tiles with dma (Teamblocksmap+8)
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
 .0
@@ -1316,7 +1315,7 @@ DrawTeamScreen4Body	;DrawTeamScreen4 after the screen setup; DrawTeamScreen4NoSe
 	movem.l	(sp)+,d0-d1/a2
 	rts
 
-DrawTeamScreen5	;95 only. DrawTeamScreen4 with three small fonts and palette word $A00
+DrawTeamScreen5	;DrawTeamScreen4 with three small fonts and palette word $A00
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
 .0
@@ -1401,7 +1400,7 @@ DrawTeamScreen5	;95 only. DrawTeamScreen4 with three small fonts and palette wor
 	movem.l	(sp)+,d0-d1/a2
 	rts
 
-DrawTeamScreen6	;95 only. The team blocks (screen6chars1), the bitmap, Screen6Tiles1 / 2 (screen6chars2 / 3), three small fonts,
+DrawTeamScreen6	;The team blocks (screen6chars1), the bitmap, Screen6Tiles1 / 2 (screen6chars2 / 3), three small fonts
 	;the big font and the framer (Framermap)
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l

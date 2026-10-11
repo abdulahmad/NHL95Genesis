@@ -5,15 +5,15 @@
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $07C512  From video94.asm and many other 94 files: display helpers
-;	Helpers from many 94 files: video94 sroot, checks94 vtoa, display94 find3d, video94
-;	randomd0s / randomd0, checks94 GetHot, menu94 vcountwait, video94 printz2, printsmall (ControlCodeJumpTable and the control codes),
-;	printz, print, eraser, display94 showclock (95: big digits when paused, PutClockDigit), data94 PerLabels / PenShotPenalties2, collide94
-;	makepde / getpde, title94 ReadGoaliePulled, stats94 ReadAttributeNibble / GetDefenseStart / ProcessNibble (95: season data versions),
-;	data94 player name formatting (95: by team struct a2 or team number d7), cards94 CalcAttrib and its weight lists, video94 PushTime,
-;	PushNumber, PushNumberWidth, appendz, appstring, setup94 setupTeamBlocksMap / CopyTeamBlockMapData, video94 DoDMA_nd2, TeamLogoBitmaps,
-;	hockey94 ResetClock / GetPeriodTime, penalty94 ClrHor, the 95 AssignPads, video94 waitx, penalty94 PrintScores1 / PrintTeamNameAndScore,
-;	checks94 chkpk / chkpk2, video94 printbigz ... PutBigTile, data94 bfasciicon, title94 UnpackPicture, penalty94 RestoreTeamEnergy,
-;	checks94 WeightedRandomSelect, cards94 AppendTeamName ... TrimSpaces, then setup94 setupice. LoadHomeTeamGfx follows at $7DEA0.
+;	Helpers from many 94 files: sroot, vtoa, find3d
+;	randomd0s / randomd0, GetHot, vcountwait, printz2, printsmall (ControlCodeJumpTable and the control codes)
+;	printz, print, eraser, showclock (95: big digits when paused, PutClockDigit), PerLabels / PenShotPenalties2
+;	makepde / getpde, ReadGoaliePulled, ReadAttributeNibble / GetDefenseStart / ProcessNibble (95: season data versions)
+;	player name formatting (95: by team struct a2 or team number d7), CalcAttrib and its weight lists, PushTime
+;	PushNumber, PushNumberWidth, appendz, appstring, setupTeamBlocksMap / CopyTeamBlockMapData, DoDMA_nd2, TeamLogoBitmaps
+;	ResetClock / GetPeriodTime, ClrHor, the 95 AssignPads, waitx, PrintScores1 / PrintTeamNameAndScore
+;	chkpk / chkpk2, printbigz ... PutBigTile, bfasciicon, UnpackPicture, RestoreTeamEnergy
+;	WeightedRandomSelect, AppendTeamName ... TrimSpaces, then setupice. LoadHomeTeamGfx follows at $7DEA0.
 ;	written as instructions: the ControlCodeJumpTable code, GetDefenseStart, GetForwards, ProcessNibble ... getnameD7,
 ;	FormatPlayerNameLast ... FormatLastName, FormatLastNameAlt, PushNumberWidthZero, GetTeamLogo, DrawTeamLogo, ClrHor, AssignPads,
 ;ReAddFramer, ReAddSmallFont, chkpk, printbigz2, printbig2, RestoreTeamEnergy, AppendTeamName ... TrimSpaces. the printz Strings
@@ -190,7 +190,7 @@ GetHot	;Push long address of structure to get hot spot from; hot spot x/y return
 	move.l	(sp)+,(sp)
 	rts
 
-vcountwait	;(93 MenuWaitVblank): waits till vcount changes, then resyncs vcount. Saves d0. 94 reads oldvcount twice. Called from PauseMode, sram94,
+vcountwait	;(93 MenuWaitVblank): waits till vcount changes, then resyncs vcount. Saves d0. 94 reads oldvcount twice. Called from PauseMode
 	;hockey94_02 and the stats code
 	move.w	d0,-(sp)
 	move.w	(oldvcount).w,d0
@@ -201,7 +201,7 @@ vcountwait	;(93 MenuWaitVblank): waits till vcount changes, then resyncs vcount.
 	move.w	(sp)+,d0
 	rts
 
-printsmallz	;printsmall with the String after the call (93 printsmallz)
+printsmallz	;printsmall with the String after the call
 	move.l	a1,-(sp)
 	movea.l	4(sp),a1
 	bsr.w	printsmall
@@ -411,7 +411,7 @@ eraser	;fill a d0 x d1 rectangle with char d2 at printx / printy / printm
 	movem.l	(sp)+,d0-d2/a0
 	rts
 
-showclock	;put the game clock on screen. Called from setvideo (display95) and PauseMode. 95: paused (sfpz), the clock is drawn
+showclock	;put the game clock on screen. Called from setvideo and PauseMode. 95: paused (sfpz), the clock is drawn
 	;as big digits with PutClockDigit at printz position $10, 4 (no colon when under 10 minutes); else showclockdma
 	btst	#sfpz,(sflags).w
 	beq.w	showclockdma
@@ -455,7 +455,7 @@ showclock	;put the game clock on screen. Called from setvideo (display95) and Pa
 	String	-(TXPRI+TXMAP3),$D,5,0
 	rts
 
-PutClockDigit	;95 only. Draw big clock digit d0 (0-9, $A the colon) at printx / printy from ClockDigitsBitmap (dobitmap, chars clockdigitchars), then printx + 2
+PutClockDigit	;Draw big clock digit d0 (0-9, $A the colon) at printx / printy from ClockDigitsBitmap (dobitmap, chars clockdigitchars), then printx + 2
 	movem.w	d0-d7,-(sp)
 	movea.l	#ClockDigitsBitmap,a0
 	movea.l	a0,a1
@@ -541,7 +541,7 @@ PerLabels	;(dc.b). 93 name. text list for periods; 94 ' F' (93 'Final'). Used by
 	String	'OT'
 	String	' F'
 
-PenShotPenalties2	;(dc.b). 94 only: the same with a blank last entry. Used by PrintScores1
+PenShotPenalties2	;(dc.b). the same with a blank last entry. Used by PrintScores1
 	String	'1',$12
 	String	'2',$13
 	String	'3',$14
@@ -577,7 +577,7 @@ getpde	;get player a3's energy level into d0. Return a2 = his team struct, d1 = 
 	move.w	tmpde(a2,d1.w),d0
 	rts
 
-loadTeamStruct	;95 only. a2 = team struct of player a3, a1 = the other team
+loadTeamStruct	;a2 = team struct of player a3, a1 = the other team
 	movea.w	#(tmstruct-M68K_RAM),a2
 	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a1
@@ -587,8 +587,8 @@ loadTeamStruct	;95 only. a2 = team struct of player a3, a1 = the other team
 .0
 	rts
 
-ReadGoaliePulled	;(and comments) 94 only: Z clear when the team of a3 pulled its goalie ($26 of the team struct). Called from doshot (logic94_1), assdefo
-	;(logic94_2), asspuckc (logic94_3) and assnearest (logic94_4)
+ReadGoaliePulled	;(and comments) Z clear when the team of a3 pulled its goalie ($26 of the team struct). Called from doshot, assdefo
+	;asspuckc and assnearest
 	movem.l	a1,-(sp)
 	movea.l	#tmstruct,a1
 	btst	#6,pflags(a3)
@@ -599,15 +599,15 @@ ReadGoaliePulled	;(and comments) 94 only: Z clear when the team of a3 pulled its
 	movem.l	(sp)+,a1
 	rts
 
-PrintListItem	;95 only. printz String d0 of the list a1 (SkipStrings)
+PrintListItem	;printz String d0 of the list a1 (SkipStrings)
 	bsr.w	AdvanceStringPtr
 	jmp	print
 
-PrintSmallListItem	;95 only. printsmall String d0 of the list a1 (SkipStrings)
+PrintSmallListItem	;printsmall String d0 of the list a1 (SkipStrings)
 	bsr.w	AdvanceStringPtr
 	jmp	printsmall
 
-AdvanceStringPtr	;95 only. a1 = String d0 of a String list
+AdvanceStringPtr	;a1 = String d0 of a String list
 	bra.w	.1
 .0
 	adda.w	(a1),a1
@@ -622,7 +622,7 @@ ReadAttributeNibble	;d0 = goalies on team a2 (ReadAttributeNibbleD7 with d7 = th
 	movem.l	(sp)+,d7-a0
 	rts
 
-ReadAttributeNibbleD7	;95 only. d0 = goalies on team d7: from the season data in save RAM (SRRosters+$34 + team * $38), or with sflags11 bit 6 from the team data nibbles
+ReadAttributeNibbleD7	;d0 = goalies on team d7: from the season data in save RAM (SRRosters+$34 + team * $38), or with sflags11 bit 6 from the team data nibbles
 	btst	#6,(sflags11).w
 	bne.w	.0
 	movem.l	d1-d7/a0,-(sp)
@@ -651,14 +651,14 @@ ReadAttributeNibbleD7	;95 only. d0 = goalies on team d7: from the season data in
 	movem.l	(sp)+,d1/d7-a0
 	rts
 
-GetDefenseStartD7	;95 only. GetDefenseStart for team d7
+GetDefenseStartD7	;GetDefenseStart for team d7
 	jsr	(ReadAttributeNibbleD7).l
 	move.w	d0,-(sp)
 	jsr	(ProcessNibbleD7).l
 	add.w	(sp)+,d0
 	rts
 
-GetDefenseStart	;94 GetDefenseStart: d0 = goalies + forwards of team a2, the roster index of the first defenseman. 95: from the
+GetDefenseStart	;d0 = goalies + forwards of team a2, the roster index of the first defenseman. 95: from the
 	;season data unless sflags11 bit 6 (Regular Game)
 	btst	#6,(sflags11).w
 	bne.w	.team
@@ -680,18 +680,18 @@ GetDefenseStart	;94 GetDefenseStart: d0 = goalies + forwards of team a2, the ros
 	movem.l	(sp)+,a0
 	rts
 
-ProcessNibbleD7	;95 only. d0 = forwards on team d7 from the season data (save RAM SRRosters+$36 + team * $38)
+ProcessNibbleD7	;d0 = forwards on team d7 from the season data (save RAM SRRosters+$36 + team * $38)
 	movem.l	d1-d7/a0,-(sp)
 	move.w	d7,d0
 	bra.w	ProcessNibbleSeason
 
-GetForwards	;95 only. d0 = forwards on team a2: ProcessNibble (team data) with sflags11 bit 6, else from the season data
+GetForwards	;d0 = forwards on team a2: ProcessNibble (team data) with sflags11 bit 6, else from the season data
 	btst	#6,(sflags11).w
 	bne.w	ProcessNibble
 	movem.l	d1-d7/a0,-(sp)
 	move.w	Xvel(a2),d0
 
-ProcessNibbleSeason	;95 only. Shared tail of GetForwards / ProcessNibbleD7: read the save RAM byte for team d0
+ProcessNibbleSeason	;Shared tail of GetForwards / ProcessNibbleD7: read the save RAM byte for team d0
 	mulu.w	#$38,d0
 	addi.l	#SRRosters+$36,d0
 	moveq	#1,d1
@@ -711,7 +711,7 @@ ProcessNibble	;d0 = forwards on team a2 (high nibble of team data byte 3 at +8)
 	andi.w	#$F,d0
 	movem.l	(sp)+,a0
 	rts
-GetPlayerName	;93 GetPlayerName. a1 = mesarea "NN First Last" (getname) for player TempPlOffset (bit 15 set: away team)
+GetPlayerName	;a1 = mesarea "NN First Last" (getname) for player TempPlOffset (bit 15 set: away team)
 	movem.l	d0/a2,-(sp)
 	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	(TempPlOffset).w,d0
@@ -722,12 +722,12 @@ GetPlayerName	;93 GetPlayerName. a1 = mesarea "NN First Last" (getname) for play
 	bsr.w	getname
 	movem.l	(sp)+,d0/a2
 	rts
-getnameD7	;95 only. getname for player d0 of team number d7
+getnameD7	;getname for player d0 of team number d7
 	movem.l	d0-d3/d7-a0/a2-a3,-(sp)
 	bsr.w	getplayernameD7
 	bra.w	getnamebody
 
-getname	;(93 getname) a1 = mesarea "NN First Last" for player d0 of team struct a2. 95 reads the number with GetJerseyNumber
+getname	;a1 = mesarea "NN First Last" for player d0 of team struct a2. 95 reads the number with GetJerseyNumber
 	movem.l	d0-d3/d7-a0/a2-a3,-(sp)
 	move.w	Xvel(a2),d7
 	bsr.w	GetPlayerNamePointer	;get to start of player name
@@ -748,7 +748,7 @@ getnamebody	;getnameD7 joins here
 	movem.l	(sp)+,d0-d3/d7-a0/a2-a3
 	rts
 
-GetPlayerNameWithAttrib	;95 only. GetTempPlayerName with FormatPlayerNameWithAttrib ("NN F. Last")
+GetPlayerNameWithAttrib	;GetTempPlayerName with FormatPlayerNameWithAttrib ("NN F. Last")
 	movem.l	d0/a2,-(sp)
 	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	(TempPlOffset).w,d0
@@ -760,7 +760,7 @@ GetPlayerNameWithAttrib	;95 only. GetTempPlayerName with FormatPlayerNameWithAtt
 	movem.l	(sp)+,d0/a2
 	rts
 
-FormatPlayerInitialD7	;95 only. a1 = mesarea "F. Last" for player d0 of team d7
+FormatPlayerInitialD7	;a1 = mesarea "F. Last" for player d0 of team d7
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	bsr.w	getplayernameD7
 	move.l	a0,-(sp)
@@ -783,7 +783,7 @@ FormatPlayerInitialD7	;95 only. a1 = mesarea "F. Last" for player d0 of team d7
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
 
-FormatPlayerNameWithAttribD7	;95 only. FormatPlayerNameWithAttrib for team d7
+FormatPlayerNameWithAttribD7	;FormatPlayerNameWithAttrib for team d7
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	bsr.w	getplayernameD7
 	bra.w	NameWithAttrib
@@ -817,7 +817,7 @@ NameWithAttrib	;shared body of FormatPlayerNameWithAttrib
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
 
-FormatPlayerNameD7	;95 only. FormatPlayerName for team d7
+FormatPlayerNameD7	;FormatPlayerName for team d7
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	bsr.w	getplayernameD7
 	move.l	a0,-(sp)
@@ -866,7 +866,7 @@ FormatPlayerName	;a1 = mesarea string "NN Last" for player d0 of team a2, built 
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
 
-FormatPlayerNameLast	;94 only. FormatPlayerNameShort without the leading space ("Last", space padded). Branches into FormatLastName
+FormatPlayerNameLast	;FormatPlayerNameShort without the leading space ("Last", space padded). Branches into FormatLastName
 	movem.l	d0-d3/a0/a2,-(sp)
 	bsr.w	GetPlayerNamePointer
 	movea.w	#(TextBuffer-M68K_RAM),a1
@@ -898,7 +898,7 @@ FormatLastName	;Skip the first name, copy the last name, pad; branched to from F
 	movem.l	(sp)+,d0-d3/a0/a2
 	rts
 
-FormatFirstNameD7	;95 only. a1 = mesarea "First" for player d0 of team d7
+FormatFirstNameD7	;a1 = mesarea "First" for player d0 of team d7
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	bsr.w	getplayernameD7
 	movea.w	#(TextBuffer-M68K_RAM),a1
@@ -911,7 +911,7 @@ FormatFirstNameD7	;95 only. a1 = mesarea "First" for player d0 of team d7
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
 
-FormatLastNameAlt	;95 only. FormatLastNameD7 with the name string from GetCreatedName
+FormatLastNameAlt	;FormatLastNameD7 with the name string from GetCreatedName
 	movem.l	d0-d3/d7/a0/a2,-(sp)
 	movem.l	d0/d7/a2,-(sp)
 	jsr	(GetCreatedName).l
@@ -919,7 +919,7 @@ FormatLastNameAlt	;95 only. FormatLastNameD7 with the name string from GetCreate
 	movem.l	(sp)+,d0/d7/a2
 	bra.w	formatlastbody
 
-FormatLastNameD7	;95 only. a1 = mesarea "Last" for player d0 of team d7
+FormatLastNameD7	;a1 = mesarea "Last" for player d0 of team d7
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	bsr.w	getplayernameD7
 formatlastbody	;FormatLastNameAlt joins here
@@ -953,11 +953,11 @@ FinalizeTextBuffer	;mesarea length word = a1 - mesarea, with a 0 pad byte when o
 	move.w	d0,(a1)
 	rts
 
-getplayernameD7	;95 only. getplayername for team d7
+getplayernameD7	;getplayername for team d7
 	movem.l	d0/d7/a2,-(sp)
 	bra.w	getnamea0
 
-GetPlayerNamePointer	;(93 GetPlayerNamePointer) loops through team roster to get to d0 player: a0 = name string of player d0 (roster offset) of team struct a2. Each
+GetPlayerNamePointer	;loops through team roster to get to d0 player: a0 = name string of player d0 (roster offset) of team struct a2. Each
 	;record is a length word String and 8 more bytes
 	movem.l	d0/d7/a2,-(sp)
 	move.w	Xvel(a2),d7
@@ -968,7 +968,7 @@ getnamea0	;shared tail of getplayername: GetRosterName, a0 = the name
 	movem.l	(sp)+,d0/d7/a2
 	rts
 
-ConverByteToDigits	;(93 ConverByteToDigits) converts decimal number in d0 to ascii: two ascii digits of bcd byte d0 to (a1)+, a leading 0 becomes a space ($F0 + '0')
+ConverByteToDigits	;converts decimal number in d0 to ascii: two ascii digits of bcd byte d0 to (a1)+, a leading 0 becomes a space ($F0 + '0')
 	move.w	d0,-(sp)	;push to stack
 	lsr.b	#4,d0	;divide by 16 (get upper digit in d0)
 	bne.w	.0
@@ -982,8 +982,8 @@ ConverByteToDigits	;(93 ConverByteToDigits) converts decimal number in d0 to asc
 	move.b	d0,(a1)+	;move d0 into a1 and increment
 	rts
 
-CalcAttrib	;(and comments) 94 only: the overall rating of player d0: his attributes weighted by OvrPlayerWgtList (skaters) or OvrGoalWgtList (goalies), and by
-	;AttribWgtList. Called from getNameandAttrib (stats94) and PrintOverallRating
+CalcAttrib	;(and comments) the overall rating of player d0: his attributes weighted by OvrPlayerWgtList (skaters) or OvrGoalWgtList (goalies), and by
+	;AttribWgtList. Called from getNameandAttrib and PrintOverallRating
 	move.l	a6,-(sp)	;push a6 to stack
 	clr.w	(attribsum).w
 	clr.w	(attribcount).w
@@ -1013,7 +1013,7 @@ CalcAttrib	;(and comments) 94 only: the overall rating of player d0: his attribu
 	movea.l	(sp)+,a6
 	rts
 
-CalcAttribRating	;95 only. The rating sum of CalcAttrib: d0 / d1 = weighted sum of the attributes in d4 bits (weights a6), d1 the maximum. With AttribWgtList (create
+CalcAttribRating	;The rating sum of CalcAttrib: d0 / d1 = weighted sum of the attributes in d4 bits (weights a6), d1 the maximum. With AttribWgtList (create
 	;player) it clamps the attribute to 0-$63 and adjusts CreatePoints
 	clr.w	(attribsum).w
 	clr.w	(attribcount).w
@@ -1231,7 +1231,7 @@ PushNumberWidth	;Right-justified number
 	movem.l	(sp)+,d0-d3	;push from stack
 	rts
 
-PushNumberWidthZero	;95 only. PushNumberWidth with leading zeros: d0 as d1 digits to PushWidthBuf (a String)
+PushNumberWidthZero	;PushNumberWidth with leading zeros: d0 as d1 digits to PushWidthBuf (a String)
 	movem.l	d0-d3,-(sp)
 	movea.w	#(PushWidthBuf+2-M68K_RAM),a1
 	moveq	#1,d2
@@ -1307,7 +1307,7 @@ appstring	;Append String a1 to String a3 (the 0 pad byte dropped, the result pad
 	movem.l	(sp)+,d0/a0
 	rts
 
-AttribAdjust	;95 only. d0 below $32: d0 / 2 + $19
+AttribAdjust	;d0 below $32: d0 / 2 + $19
 	cmp.w	#$32,d0
 	bge.w	.0
 	asr.w	#1,d0
@@ -1315,7 +1315,7 @@ AttribAdjust	;95 only. d0 below $32: d0 / 2 + $19
 .0
 	rts
 
-PrintTeamData	;95 only. Draw team block d0 (TeamBlockMaps, teamblockwidth wide, 2 rows) at printx / printy
+PrintTeamData	;Draw team block d0 (TeamBlockMaps, teamblockwidth wide, 2 rows) at printx / printy
 	movem.l	d0-d2/a0-a1,-(sp)
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
@@ -1447,7 +1447,7 @@ DoDMA_nd2	;vram to vram copy by dma, protected from vblank
 	movem.l	(sp)+,d0-d3/a1
 	rts
 
-GetTeamLogo	;94 hockey94_07 name. a0 = logo bitmap of team d3 (TeamLogoBitmaps); returns d3 = team * 4
+GetTeamLogo	;a0 = logo bitmap of team d3 (TeamLogoBitmaps); returns d3 = team * 4
 	asl.w	#2,d3
 	movea.l	#TeamLogoBitmaps,a0
 	movea.l	0(a0,d3.w),a0
@@ -1458,7 +1458,7 @@ TeamLogoBitmaps	;(dc.b). Team logo bitmaps by team number (TeamList order)
 	dc.l	logoFLA,logoHFD,logoLA,logoMTL,logoNJ,logoNYI,logoNYR,logoOTW
 	dc.l	logoPHI,logoPIT,logoQUE,logoSJ,logoSTL,logoTB,logoTOR,logoVAN
 	dc.l	logoWSH,logoWPG,logoASE,logoASW
-DrawTeamLogo	;94 DrawTeamLogo (optsetup94) body: draw logo a0 (GetTeamLogo, d3 = team * 4) at printx / printy, 6 x 6, palette
+DrawTeamLogo	;body: draw logo a0 (GetTeamLogo, d3 = team * 4) at printx / printy, 6 x 6, palette
 	;TeamLogoPalettes + team * 8 - $20 (d5 = 4) or - $40 (d5 = 2), through dobitmap
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1481,7 +1481,7 @@ DrawTeamLogo	;94 DrawTeamLogo (optsetup94) body: draw logo a0 (GetTeamLogo, d3 =
 	jmp	(dobitmap).l
 
 ResetClock	;gameclock = PerTimeTotal = the period length (GetPeriodTime; $258 in overtime unless OptPlayMode), clock stopped
-	;(gmclock). Called from StartPer (hockey95)
+	;(gmclock). Called from StartPer
 	bsr.w	GetPeriodTime	;d0 = period length in seconds
 	cmpi.w	#3,(gsp).w	;overtime?
 	blt.w	.0
@@ -1503,7 +1503,7 @@ GetPeriodTime	;Return d0 = period length in seconds for the period length option
 .times	;period length in seconds by OptPerlen
 	dc.w	$12C,$258,$4B0,$1E
 
-ClrHor	;No xref. 94 ClrHor (penalty94): revert the graphics back to vertical ice rink mode: the rink tiles, LoadHomeTeamGfx
+ClrHor	;No xref. 94 ClrHor: revert the graphics back to vertical ice rink mode: the rink tiles, LoadHomeTeamGfx
 	;and the EASN map at their chars, SprSort, and unless paused clear the screen (eraser). 95 no longer prints the scores here
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#7,(sflags).w
@@ -1527,7 +1527,7 @@ ClrHor	;No xref. 94 ClrHor (penalty94): revert the graphics back to vertical ice
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-AssignPads	;No xref. 95 only. Clear c1playernum-c4playernum, then give each pad on a team a player: in Practice Mode
+AssignPads	;No xref. Clear c1playernum-c4playernum, then give each pad on a team a player: in Practice Mode
 	;(sflags9 bit 7) with its team's goalie control (homegoaliectl / awaygoaliectl) clear, the team's goalie (getGoalieSCnum, setc1player ...),
 	;else chgplayer
 	move.w	#$FFFF,(c1playernum).w
@@ -1648,7 +1648,7 @@ AssignPads	;No xref. 95 only. Clear c1playernum-c4playernum, then give each pad 
 .x
 	rts
 
-setupIceRinkMap	;95 only. Copy the rink palette (16 longs at the Rinktilelist header) to palfadenew
+setupIceRinkMap	;Copy the rink palette (16 longs at the Rinktilelist header) to palfadenew
 	movea.l	#Rinktilelist,a0
 	adda.l	(a0),a0
 	moveq	#$F,d0
@@ -1700,7 +1700,7 @@ GetPeriodTimeRemaining	;Return d0 = (gsp << 14 | PerTimeTotal) - gameclock
 	sub.w	(gameclock).w,d0
 	rts
 
-printscores1	;93 printscores1. Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; period name gsp of PerLabels, or name 4
+printscores1	;Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; period name gsp of PerLabels, or name 4
 	;of PenShotPenalties2 with gmode2 bit 1) and EASNLogo, then unless sflags3 bit 0 the score box (Framer 8 x 5 at $17, $17) with both team
 	;names and scores (PrintTeamNameAndScore). sflags5 bit 7 sets crowdnoisedelay = $78. 95 has no horizontal rink scoreboard
 	movem.l	d0-d2/a0-a3,-(sp)
@@ -1757,14 +1757,14 @@ PrintTeamNameAndScore	;Print the team name of team a2 at printx/printy, then its
 	bsr.w	PushNumberWidth
 	bra.w	print
 
-ReAddFramer	;No xref. 95 only. AddFramer again at framercset
+ReAddFramer	;No xref. AddFramer again at framercset
 	move.w	(framercset).w,d4
 	jmp	(AddFramer).l
-ReAddSmallFont	;No xref. 95 only. AddSmallFont again at smallfontchars
+ReAddSmallFont	;No xref. AddSmallFont again at smallfontchars
 	move.w	(smallfontchars).w,d4
 	jmp	(AddSmallFont).l
 
-AddFonts	;95 only. Load the small font at d4 (smallfontchars, smallfontptr = SmallFontMap2) and the big font after it
+AddFonts	;Load the small font at d4 (smallfontchars, smallfontptr = SmallFontMap2) and the big font after it
 	;(BigFontChars, BigFontMap). Called from setupice
 	move.w	d4,(smallfontchars).w
 	movea.l	#SmallFontMap2+8,a2
@@ -1792,7 +1792,7 @@ chkpk2	;Z set when a3's team is on the power play (sflags2 bit 6 against pfteam)
 	movem.l	(sp)+,d0-d1
 	rts
 
-CheckNewCarrier	;95 only: clear GameFlags bits 0-1 when puckc changes (lastpuckc)
+CheckNewCarrier	;clear GameFlags bits 0-1 when puckc changes (lastpuckc)
 	move.w	(lastpuckc).w,d0
 	cmp.w	(puckc).w,d0
 	beq.w	.0
@@ -1810,7 +1810,7 @@ printbigz	;String macro follows the call
 	movea.l	(sp)+,a1
 	rts
 
-printbigz2	;No xref. 95 only. printbigz with the third big font (printbig2). String macro follows the call
+printbigz2	;No xref. printbigz with the third big font (printbig2). String macro follows the call
 	move.l	a1,-(sp)
 	movea.l	4(sp),a1
 	bsr.w	printbig2
@@ -1818,7 +1818,7 @@ printbigz2	;No xref. 95 only. printbigz with the third big font (printbig2). Str
 	movea.l	(sp)+,a1
 	rts
 
-printbigz1	;95 only. printbigz with BigFontMap (printbig1)
+printbigz1	;printbigz with BigFontMap (printbig1)
 	move.l	a1,-(sp)
 	movea.l	4(sp),a1
 	bsr.w	printbig1
@@ -1826,7 +1826,7 @@ printbigz1	;95 only. printbigz with BigFontMap (printbig1)
 	movea.l	(sp)+,a1
 	rts
 
-printbig1	;95 only. printbig with BigFontMap (the AddFonts big font)
+printbig1	;printbig with BigFontMap (the AddFonts big font)
 	move.l	#BigFontMap,(bigfontptr).l
 	bra.w	printbigtext
 
@@ -1834,7 +1834,7 @@ printbig	;print String a1 with the big font at printx / printy. 95: BigFontMap2 
 	move.l	#BigFontMap2,(bigfontptr).l
 	bra.w	printbigtext
 
-printbig2	;95 only. printbig with BigFontMap3. Falls into printbigtext
+printbig2	;printbig with BigFontMap3. Falls into printbigtext
 	move.l	#BigFontMap3,(bigfontptr).l
 
 printbigtext	;the 94 printbig body, with the font map at bigfontptr. Lower case is printed as upper case
@@ -1941,8 +1941,8 @@ bfasciicon	;(dc.b). Char definitions for the big font, indexed by ascii - $20 (P
 	dc.b	$4A,$00,$02,$04,$06,$08,$0A,$0C,$0E,$F0,$11,$13,$15,$17,$19,$1B
 	dc.b	$1D,$1F,$21,$23,$25,$27,$29,$2B,$2D,$2F,$31,$FF
 
-UnpackPicture	;94 only. Unpack a picture a2: count.w, then 3 bytes per row of 8 pixels to 4 bit pixels + 5 at picturebuf (count first). Called from DrawPictureBox
-	;(high94_2), DrawMatchupPicture (hockey94_07) and PlayerCardScreen (hockey94_08)
+UnpackPicture	;Unpack a picture a2: count.w, then 3 bytes per row of 8 pixels to 4 bit pixels + 5 at picturebuf (count first). Called from DrawPictureBox
+	;DrawMatchupPicture and PlayerCardScreen
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#picturebuf,a0
 	movea.l	#picturebits,a1
@@ -2024,7 +2024,7 @@ UpdateLineChange	;(periodicevents, once a second). Unless OptLine: bench players
 .3
 	rts
 
-RestoreTeamEnergy	;No xref. 94 only. a2 = team: max energy (tmpde $1000) for every player. The skip needs tmpdst to be both -3 and
+RestoreTeamEnergy	;No xref. a2 = team: max energy (tmpde $1000) for every player. The skip needs tmpdst to be both -3 and
 	;-4, so it never happens
 	moveq	#$32,d0	;(MaxRos-1)*2
 .loop
@@ -2040,7 +2040,7 @@ RestoreTeamEnergy	;No xref. 94 only. a2 = team: max energy (tmpde $1000) for eve
 	bpl.s	.loop
 	rts
 
-reenergizeteam	;95 only. a2 = team: full energy for every player not injured for the game (tmpdst -4); period injuries (-3) go back to the bench (-2)
+reenergizeteam	;a2 = team: full energy for every player not injured for the game (tmpdst -4); period injuries (-3) go back to the bench (-2)
 	moveq	#$32,d0
 .0
 	cmpi.w	#$FFFC,$68(a2,d0.w)
@@ -2062,7 +2062,7 @@ setpde	;d1 = rostnum of player * 2, a2 = team struct, d0 = new energy level (0 i
 	move.w	d0,$34(a2,d1.w)
 	rts
 
-SeasonPlayerOut	;95 only. Unless sflags11 bit 6: Z set when player d0 of team d7 is out in the season data (save RAM SRRosters, low 5 bits $1E)
+SeasonPlayerOut	;Unless sflags11 bit 6: Z set when player d0 of team d7 is out in the season data (save RAM SRRosters, low 5 bits $1E)
 	btst	#6,(sflags11).w
 	bne.w	.0
 	movem.l	d0/d7-a0,-(sp)
@@ -2099,7 +2099,7 @@ WeightedRandomSelect	;d0 = number of word weights at nibblebuffer: return a weig
 	movem.l	(sp)+,d1/a1
 	rts
 
-AppendTeamName	;94 only. Append the city name of team d0 (TeamList block Strings) to a1 (appstring)
+AppendTeamName	;Append the city name of team d0 (TeamList block Strings) to a1 (appstring)
 	movem.l	d0/a0-a3,-(sp)
 	ext.w	d0
 	asl.w	#2,d0
@@ -2114,7 +2114,7 @@ AppendTeamName	;94 only. Append the city name of team d0 (TeamList block Strings
 	jsr	(appstring).l
 	movem.l	(sp)+,d0/a0-a3
 	rts
-StartText	;94 only. Copy String a1 (length word first) to a3
+StartText	;Copy String a1 (length word first) to a3
 	movem.l	d0,-(sp)
 	move.w	(a1),d0
 	subq.w	#1,d0
@@ -2123,7 +2123,7 @@ StartText	;94 only. Copy String a1 (length word first) to a3
 	dbf	d0,.loop
 	movem.l	(sp)+,d0
 	rts
-AppendUserName	;94 only. Append user name d2 (12 bytes of the name log at namelog, spaces for 0) to a1, or NoNameTxt when d2 is 0;
+AppendUserName	;Append user name d2 (12 bytes of the name log at namelog, spaces for 0) to a1, or NoNameTxt when d2 is 0
 	;trailing spaces trimmed (TrimSpaces)
 	movem.l	d0-d3/a0-a3,-(sp)
 	movea.l	a1,a2
@@ -2159,9 +2159,9 @@ AppendUserName	;94 only. Append user name d2 (12 bytes of the name log at namelo
 .x
 	movem.l	(sp)+,d0-d3/a0-a3
 	rts
-NoNameTxt	;An empty String (94 NoNameTxt)
+NoNameTxt	;An empty String
 	dc.w	2
-TrimSpaces	;94 only. Trim the trailing spaces of String a2 and pad it to an even length
+TrimSpaces	;Trim the trailing spaces of String a2 and pad it to an even length
 	movem.l	a3,-(sp)
 	movea.l	a2,a3
 	adda.w	(a2),a3
@@ -2178,7 +2178,7 @@ TrimSpaces	;94 only. Trim the trailing spaces of String a2 and pad it to an even
 	movem.l	(sp)+,a3
 	rts
 
-setupice	;set all variables, send non purgeable graphics, build sprite frame lists for ice rink (94 setup94 setupice). 95 has no reverse rink tiles, loads AddFramer2 and
+setupice	;set all variables, send non purgeable graphics, build sprite frame lists for ice rink (94 setupice). 95 has no reverse rink tiles, loads AddFramer2 and
 	;AddFonts, and clears c3playernum / c4playernum too
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#1,(disflags).w
@@ -2261,7 +2261,7 @@ setupice	;set all variables, send non purgeable graphics, build sprite frame lis
 	move.l	a5,(DMAlistend).w
 	jsr	(DoDMAList).l
 	move.w	(sp)+,(disflags).w
-	move.l	#VBlank,(vbint).w	;video94_1
+	move.l	#VBlank,(vbint).w
 	bclr	#0,(disflags).w
 	bclr	#2,(disflags).w
 	move	#$2300,sr
@@ -2270,13 +2270,13 @@ setupice	;set all variables, send non purgeable graphics, build sprite frame lis
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $07DEA0  From title94.asm, penalty94.asm and video94.asm: home team graphics, EASN logo, clock text
-;	title94 LoadHomeTeamGfx and TeamGfxList, penalty94 EASNLogo and setupEASNmap, video94 FormatAndPrintTime and
-;	PeriodLabelTable. fourway95 follows at $7DFAC. Written as instructions: TeamGfxList, FormatAndPrintTime, PeriodLabelTable.
+;	LoadHomeTeamGfx and TeamGfxList, EASNLogo and setupEASNmap, FormatAndPrintTime and
+;	PeriodLabelTable. follows at $7DFAC. Written as instructions: TeamGfxList, FormatAndPrintTime, PeriodLabelTable.
 ;the printz String in EASNLogo as instructions.
 
 
-LoadHomeTeamGfx	;(title94). Load the HomeTeam graphics of TeamGfxList to VRAM d4 - $18 (DoDMA_clearCallbackPointer). Called from setupice
-	;and ClrHor (middle95)
+LoadHomeTeamGfx	;Load the HomeTeam graphics of TeamGfxList to VRAM d4 - $18 (DoDMA_clearCallbackPointer). Called from setupice
+	;and ClrHor
 	move.w	d0,-(sp)
 	subi.w	#$18,d4
 	movea.l	#TeamGfxList,a2
@@ -2296,8 +2296,8 @@ TeamGfxList	;(dc.b). LoadHomeTeamGfx: one address per team (TeamList order) in t
 	dc.l	ArenaGfxBank+$39BE,ArenaGfxBank+$3CC8,ArenaGfxBank+$3FD2,ArenaGfxBank+$42DC
 	dc.l	ArenaGfxBank+$45E6,ArenaGfxBank+$48F0,ArenaGfxBank+$4F04,ArenaGfxBank+$4F04
 
-EASNLogo	;(penalty94). 93 name. Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertical ice rink if no power play. Called
-	;from PrintScores1 (middle95)
+EASNLogo	;93 name. Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertical ice rink if no power play.
+	;from PrintScores1
 	btst	#5,(sflags2).w	;sf2pwrplay
 	bne.w	.x
 	bsr.w	printz
@@ -2315,7 +2315,7 @@ EASNLogo	;(penalty94). 93 name. Draw the EASN logo map at x 2, y $19 (94: x 1) o
 .x
 	rts
 
-setupEASNmap	;(penalty94 EASNLogo+$14). Load the EASN logo tiles at EASNcset. Called from setupice and ClrHor (middle95)
+setupEASNmap	;(EASNLogo+$14). Load the EASN logo tiles at EASNcset. Called from setupice and ClrHor
 	move.w	(EASNcset).w,d4
 	movea.l	#EASNmap+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l

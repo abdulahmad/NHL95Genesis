@@ -14,18 +14,18 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $09F012-$09F58F, read from lst/nhl95.bin.
-MakeSRAMChecksum = $9908		;sram95
-sfx = $677AC		;sound95
-Framer = $7A270		;video95
-randomd0 = $7C63A		;middle95
-printz = $7C810		;middle95
-print = $7C822		;middle95
-GetPlayerNameWithAttrib = $7CCD2		;middle95
-PushTime = $7D0BC		;middle95
-PushNumberWidth = $7D154		;middle95
-appendz = $7D20C		;middle95
-appstring = $7D214		;middle95
-EASNLogo = $7DF32		;middle95
+MakeSRAMChecksum = $9908
+sfx = $677AC
+Framer = $7A270
+randomd0 = $7C63A
+printz = $7C810
+print = $7C822
+GetPlayerNameWithAttrib = $7CCD2
+PushTime = $7D0BC
+PushNumberWidth = $7D154
+appendz = $7D20C
+appstring = $7D214
+EASNLogo = $7DF32
 
 ; Main segment code
 	include	front\injury95.asm

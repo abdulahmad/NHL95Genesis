@@ -1,7 +1,7 @@
 ; $0A1A5A  Adapted from graphics94.asm and title94.asm: player pictures, rink, sprites, fonts, screen maps, logo palettes, arena graphics
 ;	3 parts in ROM order, each under its banner below. Retail $0A1A5A-$1A6C27 (1069518 bytes). incbin only (plus the two
 ;	FeaturedPictures tables), no gap and no overlap. Each file is a slice of lst/nhl95.bin written by npm run extractassets
-;	(extractAssets95.js) into Extracted\NHL95\Graphics. credits95 follows at $1A6C28.
+;	(extractAssets95.js) into Extracted\NHL95\Graphics. follows at $1A6C28.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $0A1A5A  From graphics94.asm: player pictures, rink, sprites, fonts, screen maps, team logos
@@ -10,7 +10,7 @@
 ;	(Card<player>, the line 1 starter of the first team that lists it). A map starts with its 8-byte header (palette and map offsets):
 ;	a reference to its tiles is Label+8.
 
-PicturePalette	;94 PicturePalette: the player picture palette, then the picture of a player with none (DrawMatchupPicture, PlayerCardScreen)
+PicturePalette	;the player picture palette, then the picture of a player with none (DrawMatchupPicture, PlayerCardScreen)
 	incbin	..\Extracted\NHL95\Graphics\NoPlayerPicture.map.jim
 NoPicSkater2	;generic skater picture (GetPlayerPicture, hand bit 0 set)
 	incbin	..\Extracted\NHL95\Graphics\NoPicSkater2.bin
@@ -402,15 +402,15 @@ FeaturedPictures	;The 160 player pictures (GetPlayerPicture)
 	dc.l	CardKevinHatcher,CardSylvainCote,CardTimCheveldae,CardAlexeiZhamnov
 	dc.l	CardKeithTkachuk,CardTeemuSelanne,CardTeppoNumminen,CardDaveManson
 	dc.l	NoPicSkater2,NoPicSkater1,NoPicGoalie1,NoPicGoalie2
-Rinktilelist	;the ice rink map (94 Rinktilelist, 93 IceRinkMap); Rinktilelist+8 = the rink tiles
+Rinktilelist	;the ice rink map (93 IceRinkMap); Rinktilelist+8 = the rink tiles
 	incbin	..\Extracted\NHL95\Graphics\Rinktilelist.map.jim
 Sprites	;the sprite header (94 / 93 Sprites; addframe2): long offsets from here $6730A and $6738A (to frameSprData), then a word
 	incbin	..\Extracted\NHL95\Graphics\Sprites.bin
-Spritetiles	;the sprite tiles (94 Spritetiles, 93 Sprites+$A; addframe2 adds the frame tile offset)
+Spritetiles	;the sprite tiles (93 Sprites+$A; addframe2 adds the frame tile offset)
 	incbin	..\Extracted\NHL95\Graphics\Spritetiles.bin
-frameSprData	;the sprite frame data at Sprites + $6738A (94 frameSprData)
+frameSprData	;the sprite frame data at Sprites + $6738A
 	incbin	..\Extracted\NHL95\Graphics\frameSprData.bin
-Hotlist	;the hot spot byte pair of each frame (94 Hotlist; GetHot)
+Hotlist	;the hot spot byte pair of each frame (GetHot)
 	incbin	..\Extracted\NHL95\Graphics\HotSpotList.bin
 RosterFont	;data
 	incbin	..\Extracted\NHL95\Graphics\RosterFont.bin
@@ -584,7 +584,7 @@ ColdIconMap	;the ColdIconMap map
 	incbin	..\Extracted\NHL95\Graphics\ColdIconMap.map.jim
 RonBarrMap	;the RonBarrMap map
 	incbin	..\Extracted\NHL95\Graphics\RonBarrMap.map.jim
-CrowdFrameList	;the crowd sprites (94 CrowdFrameList, 93 CrowdSprites; showcrowd); +8 the tiles
+CrowdFrameList	;the crowd sprites (93 CrowdSprites; showcrowd); +8 the tiles
 	incbin	..\Extracted\NHL95\Graphics\CrowdFrameList.map.jim
 TitleScreenImg	;the TitleScreenImg map
 	incbin	..\Extracted\NHL95\Graphics\TitleScreenImg.map.jim
@@ -656,7 +656,7 @@ logoASW	;team logo (TeamLogoBitmaps)
 ;	Mapped to title94 (100%): TeamLogoPalettes, one 32 byte palette per team in TeamList order. 25 are the same bytes as the 94 files
 ;	and keep their 94 names; DAL, ASE and ASW differ and are the 94 stem with 95 added.
 
-TeamLogoPalettes	;title94 TeamLogoPalettes. Team logo palettes, 16 colors per team (DrawMatchupLogo, NameEntryScreen, DrawTeamBitmap)
+TeamLogoPalettes	;Team logo palettes, 16 colors per team (DrawMatchupLogo, NameEntryScreen, DrawTeamBitmap)
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalANHA.pal	;ANH, 94 file, same bytes
 	incbin	..\Extracted\NHL95\Graphics\Pals\TeamLogoPalBOS.pal	;BOS, 94 file, same bytes
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalBUFA.pal	;BUF, 94 file, same bytes
@@ -688,10 +688,10 @@ TeamLogoPalettes	;title94 TeamLogoPalettes. Team logo palettes, 16 colors per te
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $1A1A1A  From graphics94.asm: ArenaGfxBank, the home team graphics
-;	ArenaGfxBank (94 graphics94 ArenaGfxBank): the home team graphics LoadHomeTeamGfx loads, $30A bytes per team, read through
-;	TeamGfxList (middle95, TeamList order; ASE and ASW share one). One incbin per team in bank order (extractAssets95.js).
+;	ArenaGfxBank (94 ArenaGfxBank): the home team graphics LoadHomeTeamGfx loads, $30A bytes per team, read through
+;	TeamGfxList (TeamList order; ASE and ASW share one). One incbin per team in bank order (extractAssets95.js).
 
-ArenaGfxBank	;retail $1A1A1A-$1A6C27. LoadHomeTeamGfx: one block of $30A bytes per team (TeamGfxList)
+ArenaGfxBank	;LoadHomeTeamGfx: one block of $30A bytes per team (TeamGfxList)
 	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxANH.bin	;$1A1A1A, ANH (ArenaGfxBank+$0)
 	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxBUF.bin	;$1A1D24, BUF (ArenaGfxBank+$30A)
 	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxCGY.bin	;$1A202E, CGY (ArenaGfxBank+$614)

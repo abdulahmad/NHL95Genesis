@@ -255,5 +255,5 @@ SeasonSchedule	;move.b (x).l, movea.l #x (PickSeasonStartDay, BuildSeasonTeamLis
 	Day	NYR,BUF,  PHI,NJ,   WSH,WPG,  FLA,QUE,  TOR,CHI,  DAL,STL                                                              ;day 190
 	Day	OTW,BOS,  TB, NYI,  DET,MTL,  SJ, EDM,  LA, CGY,  ANH,VAN                                                              ;day 191
 	Day	BOS,HFD,  BUF,WSH,  NYR,PHI,  NJ, OTW,  TB, QUE,  FLA,NYI,  CHI,TOR,  STL,WPG,  DAL,DET,  LA, EDM                      ;day 192
-SeasonScheduleEnd	;season95 CountTeamGames stops its scan here (cmpa.l #x,a0)
-	dc.b	$FF	;$9721. Pad to the even address of InitSaveRAM (94 InitSaveRAM, sram95)
+SeasonScheduleEnd	;CountTeamGames stops its scan here (cmpa.l #x,a0)
+	dc.b	$FF	;$9721. Pad to the even address of InitSaveRAM (94 InitSaveRAM)

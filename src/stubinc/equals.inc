@@ -13,7 +13,7 @@ FIFO_EMPTY equ 9
 ; ----------------------------------
 ; Structure and flag equates. Empty until the first segment confirms the 95 values.
 
-;the sort object structure (SCstruct = $80 bytes each, from SortCords). 93 / 94 names; hockey95 updateplayers confirms these 95 values
+;the sort object structure (SCstruct = $80 bytes each, from SortCords). 93 / 94 names; updateplayers confirms these 95 values
 SCstruct equ $80
 puckscnum equ $E	;the puck sort object (SortCords + puckscnum * SCstruct = puckx); the shadow is puckscnum+1
 Xpos equ $0
@@ -47,7 +47,7 @@ Wallcos equ $4E		;cos of angle of last collision
 Wallsin equ $50		;sin of angle of last collision
 SCnum equ $52		;index number for this struct
 facedir equ $54		;direction of facing
-SPA equ $58		;animation (frames95 SPA offset)
+SPA equ $58		;animation (SPA offset)
 SPAnum equ $5A		;index into animation
 SPAcnt equ $5C		;count down to next frame of animation
 nopuck equ $5E		;no puck coll until zero
@@ -121,7 +121,7 @@ sf2pwrtm equ 6		;0 for team 1 in power play
 sf2offsig equ 7		;offsides little ref on
 sf3rmplay equ 1		;play mode on for replay (sflags3)
 
-;team variables (HmShots / AwShots = the home / away team struct). 94 names; setup95_01 confirms these 95 values
+;team variables (HmShots / AwShots = the home / away team struct). 94 names; confirms these 95 values
 tmshots equ $0		;shots stat (94 names and offsets $0-$A)
 tmPwrGoals equ $2		;power play goals stat
 tmPwrPlays equ $4		;power plays stat

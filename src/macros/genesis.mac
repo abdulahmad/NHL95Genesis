@@ -112,7 +112,7 @@ PIX     MACRO
             ENDIF
         ENDIF
     ENDM
-; SoundBanks item (sound95): type (SB_PATCH / SB_SAMPLE / SB_SONG / SB_LIST), id, size word
+; SoundBanks item: type (SB_PATCH / SB_SAMPLE / SB_SONG / SB_LIST), id, size word
 SndItem MACRO
 	dc.b	\1,\2
 	dc.w	\3

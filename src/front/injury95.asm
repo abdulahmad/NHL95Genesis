@@ -1,11 +1,11 @@
 ; $09F012  Adapted from collide94.asm, title94.asm, hockey94.asm and penalty94.asm: injuries, the power play box
-;	collide94 setInjuryType, the 95 season injuries (SetSeasonInjuries ... GetInjuryGames), title94 getFgtbyte / chkFgtBit1,
-;	hockey94 CheckInjury, the 95 InsertInjurySlot / DeleteInjurySlot, then the power play box: penalty94 updatepwrplay, the 95
-;	ClearPowerPlay / rtsPowerPlay, penalty94 GetLowestPen. scout95 follows at $09F590.
+;	setInjuryType, the 95 season injuries (SetSeasonInjuries ... GetInjuryGames), getFgtbyte / chkFgtBit1
+;	CheckInjury, the 95 InsertInjurySlot / DeleteInjurySlot, then the power play box: updatepwrplay, the 95
+;	ClearPowerPlay / rtsPowerPlay, GetLowestPen. follows at $09F590.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-setInjuryType	;collide94 setInjuryType. a2 injured: out for the period ($FFFD) or the game ($FFFC); in a season a random games count (SetInjuryGames)
+setInjuryType	;a2 injured: out for the period ($FFFD) or the game ($FFFC); in a season a random games count (SetInjuryGames)
 	bclr	#1,(sflags12).w
 	move.w	d0,-(sp)
 	bset	#2,pflags2(a2)
@@ -84,7 +84,7 @@ setInjuryType	;collide94 setInjuryType. a2 injured: out for the period ($FFFD) o
 	move.w	(sp)+,d0
 	rts
 
-SetSeasonInjuries	;95 only. The players of team a2 with injury games left (save RAM SRInjuries) are out ($FFFC)
+SetSeasonInjuries	;The players of team a2 with injury games left (save RAM SRInjuries) are out ($FFFC)
 	movem.l	d0-d3/a0/a2,-(sp)
 	movea.l	#SaveRAM+2*SRInjuries,a0
 	move.w	Xvel(a2),d0
@@ -113,7 +113,7 @@ SetSeasonInjuries	;95 only. The players of team a2 with injury games left (save 
 	movem.l	(sp)+,d0-d3/a0/a2
 	rts
 
-TickTeamInjuries	;95 only. A game played: one injury game off for teams d0 and d1 (TickInjuries), save RAM checksum
+TickTeamInjuries	;A game played: one injury game off for teams d0 and d1 (TickInjuries), save RAM checksum
 	movem.l	d2-d4/a0,-(sp)
 	bsr.w	TickInjuries
 	move.w	d1,d0
@@ -122,7 +122,7 @@ TickTeamInjuries	;95 only. A game played: one injury game off for teams d0 and d
 	movem.l	(sp)+,d2-d4/a0
 	rts
 
-TickInjuries	;95 only. One game off every injury of team d0 (save RAM SRInjuries, a nibble per player)
+TickInjuries	;One game off every injury of team d0 (save RAM SRInjuries, a nibble per player)
 	movea.l	#SaveRAM+2*SRInjuries,a0
 	mulu.w	#$1C,d0
 	adda.l	d0,a0
@@ -146,7 +146,7 @@ TickInjuries	;95 only. One game off every injury of team d0 (save RAM SRInjuries
 	dbf	d2,.0
 	rts
 
-SetInjuryGames	;95 only. Injury games d0 for player d1 of team d7 (save RAM SRInjuries); sflags12 bit 1 and injurygames
+SetInjuryGames	;Injury games d0 for player d1 of team d7 (save RAM SRInjuries); sflags12 bit 1 and injurygames
 	movem.l	d0-d7/a0-a7,-(sp)
 	bset	#1,(sflags12).w
 	move.w	d0,(injurygames).w
@@ -171,7 +171,7 @@ SetInjuryGames	;95 only. Injury games d0 for player d1 of team d7 (save RAM SRIn
 	movem.l	(sp)+,d0-d7/a0-a7
 	rts
 
-GetInjuryGames	;95 only. d0 = the injury games of player d1 of team d7 (save RAM SRInjuries)
+GetInjuryGames	;d0 = the injury games of player d1 of team d7 (save RAM SRInjuries)
 	movem.l	d1-d7/a0,-(sp)
 	movea.l	#SaveRAM+2*SRInjuries,a0
 	mulu.w	#$1C,d7
@@ -188,13 +188,13 @@ GetInjuryGames	;95 only. d0 = the injury games of player d1 of team d7 (save RAM
 	movem.l	(sp)+,d1-d7/a0
 	rts
 
-getFgtbyte	;title94 getFgtbyte. d0 = $74(a2) / 4
+getFgtbyte	;d0 = $74(a2) / 4
 	clr.w	d0	;clear d0
 	move.b	fighting(a2),d0	;move H/F bit into d0 (this is always even)
 	lsr.w	#2,d0	;shift 2 right (divide by 4)
 	rts
 
-chkFgtBit1	;title94 chkFgtBit1. 95: Z from bit 1 of a random 0-99 (94 tested bit 1 of $74(a2))
+chkFgtBit1	;95: Z from bit 1 of a random 0-99 (94 tested bit 1 of $74(a2))
 	movem.w	d0,-(sp)
 	move.w	#$64,d0
 	jsr	(randomd0).l
@@ -202,7 +202,7 @@ chkFgtBit1	;title94 chkFgtBit1. 95: Z from bit 1 of a random 0-99 (94 tested bit
 	movem.w	(sp)+,d0
 	rts
 
-CheckInjury	;95 only. The injury message when its timer runs out: "Injury to:" the player, "Out for period", "game" or n "games"
+CheckInjury	;The injury message when its timer runs out: "Injury to:" the player, "Out for period", "game" or n "games"
 	subq.w	#1,(InjCntDown).w
 	beq.w	.0
 	rts
@@ -255,7 +255,7 @@ CheckInjury	;95 only. The injury message when its timer runs out: "Injury to:" t
 	movem.l	(sp)+,d0-d2/a0-a4
 	rts
 
-InsertInjurySlot	;95 only. Open an injury slot at player d1 of team d7 (the later nibbles up one); a player traded in
+InsertInjurySlot	;Open an injury slot at player d1 of team d7 (the later nibbles up one); a player traded in
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SaveRAM+2*SRInjuries,a0
 	mulu.w	#$1C,d7
@@ -287,7 +287,7 @@ InsertInjurySlot	;95 only. Open an injury slot at player d1 of team d7 (the late
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DeleteInjurySlot	;95 only. Remove the injury slot of player d1 of team d7 (the later nibbles down one); a player traded out
+DeleteInjurySlot	;Remove the injury slot of player d1 of team d7 (the later nibbles down one); a player traded out
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SaveRAM+2*SRInjuries,a0
 	mulu.w	#$1C,d7
@@ -319,7 +319,7 @@ DeleteInjurySlot	;95 only. Remove the injury slot of player d1 of team d7 (the l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-updatepwrplay	;penalty94 updatepwrplay. The power play box: the team and the time left (GetLowestPen)
+updatepwrplay	;The power play box: the team and the time left (GetLowestPen)
 	btst	#1,(gmode2).w
 	bne.w	rtsPowerPlay
 	movea.w	#(tmstruct-M68K_RAM),a2
@@ -367,17 +367,17 @@ updatepwrplay	;penalty94 updatepwrplay. The power play box: the team and the tim
 	movea.w	a3,a1
 	jmp	(print).l
 
-ClearPowerPlay	;95 only. Clear the power play box (sflags2 bit 5)
+ClearPowerPlay	;Clear the power play box (sflags2 bit 5)
 	bclr	#5,(sflags2).w
 	beq.w	rtsPowerPlay
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$1,$19,' '
 	jmp	(EASNLogo).l
 
-rtsPowerPlay	;95 only. Shared rts of updatepwrplay / ClearPowerPlay
+rtsPowerPlay	;Shared rts of updatepwrplay / ClearPowerPlay
 	rts
 
-GetLowestPen	;penalty94 GetLowestPen. a2 = shorthanded team, a3 = team on the power play. d0 = power play time left from the penalty box times
+GetLowestPen	;a2 = shorthanded team, a3 = team on the power play. d0 = power play time left from the penalty box times
 	clr.w	d0
 	clr.w	d3
 	lea	$9C(a2),a0

@@ -5,11 +5,11 @@
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $079902  From video94.asm and display94.asm: VDP helpers, DMA, palettes, sprite frames, rink scroll, decompressor, vblank, pads
-;	Three runs in ROM order: the video94 VDP helpers with the display94 vblank transfers ($79902), the display94 sprite frames and rink
-;	scroll ($79D80), then the video94 decompressor, the vblank handlers and the pad reads ($7A02A).
-;	The 94 middle94_1 / middle94_2 vdp helpers in a new order: DoFill, setvram, setVram_0, Vmaddr, dobitmap, DoDMA_clearCallbackPointer,
+;	Three runs in ROM order: the VDP helpers with the vblank transfers ($79902), the sprite frames and rink
+;	scroll ($79D80), then the decompressor, the vblank handlers and the pad reads ($7A02A).
+;	The 94 middle94_1 / vdp helpers in a new order: DoFill, setvram, setVram_0, Vmaddr, dobitmap, DoDMA_clearCallbackPointer
 ;	DecompressGraphics (95: no packed graphics), DoDMApro, WaitDMA, forcefade, cramfade, CopyPaletteToCRAM, xyVmMap, remap; then the
-;	display94 vblank transfers DumpSprites, DumpSprites2, DoDMAlist (ends at the shared rts rtss2), SetScroll2; then DoDMA (95: no Z80
+;	vblank transfers DumpSprites, DumpSprites2, DoDMAlist (ends at the shared rts rtss2), SetScroll2; then DoDMA (95: no Z80
 ;bus request). cramfade ($79B54) and DumpSprites ($79C94) are written as instructions.
 
 
@@ -17,7 +17,7 @@
 ; d0 = bytes to fill
 ; d1 = vram address
 ; d2 = data to fill with
-DoFill	;Called from pause95, middle95. 95 writes the long straight to the vdp (94 went through dmaram)
+DoFill	;Called, middle95. 95 writes the long straight to the vdp (94 went through dmaram)
 	movem.l	d3/a1,-(sp)
 	movea.l	#VDP_DATA,a1
 	andi.l	#$FFFF,d1
@@ -47,7 +47,7 @@ setvram	;Fade every colour to d0, then fall into setVram_0
 	move.w	#$18,(palcount).w
 	bsr.w	forcefade
 setVram_0	;second half of 92 setVram (no fade): clear vram and set the VDP registers from disflags, Map1col
-	;VmMap1-3, VSPRITES and VSCRLPM. Falls in from setvram, called from EASportsScreen (lines95), pause95, title95
+	;VmMap1-3, VSPRITES and VSCRLPM. Falls in from setvram, called from EASportsScreen
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
 	move.w	#VDPR_AUTOINC+$02,(VDP_CTRL).l
@@ -274,7 +274,7 @@ cramfade	;No xref in the listing
 	rts
 
 CopyPaletteToCRAM	;Copy all 64 palfadenew colours to colour ram (dfng set), then palcount = -1. Called from
-	;cramfade and EASportsScreen (lines95). 95 writes cram straight (94 waited for the dma and the Z80 bus)
+	;cramfade and EASportsScreen. 95 writes cram straight (94 waited for the dma and the Z80 bus)
 	movem.l	d0/a0-a1,-(sp)
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -337,15 +337,15 @@ remap	;Write d0 chars at a0 to vram d1, each pixel through the colour map at a1.
 	move.w	(sp)+,(disflags).w
 	rts
 
-DumpSprites	;(display94). Transfer (by dma) scroll stuff, sprite table, vram data in dmalist. No xref in the listing.
+DumpSprites	;Transfer (by dma) scroll stuff, sprite table, vram data in dmalist. No xref in the listing.
 	;Falls into DumpSprites2
 	bsr.w	SetScroll2
-DumpSprites2	;(display94). Transfer sprite table, then the dma list. Falls into DoDMAlist
+DumpSprites2	;Transfer sprite table, then the dma list. Falls into DoDMAlist
 	movea.w	#(Satt-M68K_RAM),a0
 	move.w	(Sattsize).w,d0	;93 Sattsize: words
 	move.w	(VSPRITES).w,d1
 	bsr.w	DoDMA
-DoDMAList	;(display94). Transfer data from dmalist. Also called from middle95
+DoDMAList	;Transfer data from dmalist. Also called
 	movea.l	(DMAlistend).w,a6
 	cmpa.l	#DMAList,a6
 	beq.w	rtss2	;list empty
@@ -356,11 +356,11 @@ DoDMAList	;(display94). Transfer data from dmalist. Also called from middle95
 	bsr.w	DoDMA
 	cmpa.l	#DMAList,a6
 	bne.s	.0
-rtss2	;Shared rts (93 rtss; 94 kept it in collide94), branched to from cramfade, collide95, updatescroll (below), playoff95,
-	;middle95, and movea.l #x in setup95
+rtss2	;Shared rts (93 rtss; 94 kept it), branched to from cramfade, updatescroll (below)
+	;middle95, and movea.l #x
 	rts
 
-SetScroll2	;(display94); 93 Write Hscroll / Vscroll to the vdp. Called from DumpSprites, checks95
+SetScroll2	;93 Write Hscroll / Vscroll to the vdp. Called from DumpSprites
 	move.w	(VSCRLPM).w,d0
 	addq.w	#2,d0
 	bsr.w	Vmaddr
@@ -432,11 +432,11 @@ DoDMA	;95 drops the 94 Z80 bus request, the sr save and the last word fix for a 
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $079D80  From display94.asm: sprite frames, rink scroll
-;	94 addframe, addframe2, then sizetab (94 kept it in data94), then updatescroll. 95 reads a new 8 byte sprite record (Y, size /
+;	94 addframe, addframe2, then sizetab (94 kept it), then updatescroll. 95 reads a new 8 byte sprite record (Y, size /
 ;	tile high bits, tile / flags, X) and has no horizontal rink case.
 
 addframe	;a3 = sort cord object. Project it with find3d, then addframe2. a5 = dma trans, a6 = sprite attribute table.
-	;Called from setsortcords (display95)
+	;Called from setsortcords
 	movem.l	d0-d2,-(sp)
 	move.w	(a3),d0	;Xpos into d0
 	move.w	Ypos(a3),d1	;Ypos into d1
@@ -451,7 +451,7 @@ addframe	;a3 = sort cord object. Project it with find3d, then addframe2. a5 = dm
 	rts
 
 addframe2	;d0/d1 = x/y coord on screen, a3 = object, a5 = dma trans, a6 = sprite attribute table, d6 = link counter. Queue the sprite tiles of
-	;the frame (once per frame change, sharing tiles already sent) and write its sprites. Also jumped to from setffo (display95).
+	;the frame (once per frame change, sharing tiles already sent) and write its sprites. Also jumped to from setffo.
 	;95 sprite record: 0 Y global, 2 size byte (low nibble) and tile bits 11-14 (high nibble), 4 tile (11 bits) and flags (top 5), 6 X global
 	move.w	attribute(a3),-(sp)	;push attribute to stack
 	movem.l	d0-d5/a0-a2,-(sp)	;push to stack
@@ -594,11 +594,11 @@ addframe2	;d0/d1 = x/y coord on screen, a3 = object, a5 = dma trans, a6 = sprite
 	move.w	(sp)+,attribute(a3)
 	rts
 
-sizetab	;sprite size code to tile count. 92 video.asm sizetab, used by addframe2 (94 kept it in data94)
+sizetab	;sprite size code to tile count. 92 video.asm sizetab, used by addframe2 (94 kept it)
 	dc.b	1,2,3,4,2,4,6,8,3,6,9,$C,4,8,$C,$10
 
 updatescroll	;92 name; 93 show_rink. Using hpos and vpos set scroll cords; queue rink map rows on the dma list (a5) when vertical
-	;scrolling needs new rows. Called from setvideo (display95). Rows from Rinktilelist, or RevRinkTilelist in a reverse angle replay
+	;scrolling needs new rows. Called from setvideo. Rows from Rinktilelist, or RevRinkTilelist in a reverse angle replay
 	;(sflags4 bit 4). 95 has no horizontal rink check
 	moveq	#-$40,d0	;-192+128 (#$FFFFFFC0)
 	sub.w	(Hpos).w,d0
@@ -667,9 +667,9 @@ updatescroll	;92 name; 93 show_rink. Using hpos and vpos set scroll cords; queue
 ;------------------------------------------------------------------------------------------------------------------------
 ; $07A02A  From video94.asm: the decompressor, vblank, pads
 ;	94 forceblack, forceblack2, the graphics decompressor (DecompressBytecode, jump_table, the Opcode_* handlers, FlushOutputBuffer; no
-;	caller in 95), AddSmallFont, DecompressGraphicsWithCallback, Framer, AddFramer, the 95 AddFramer2; moved in: hockey94 VBjsr,
-;	display94 VBlank, sound94 p_music_vblank (95: pads, then SoundCmd 1), display94 vb2 and IRQ7, attract94 VBlank_SetOptions; then
-;	orjoy, the 95 orjoy4way, nodiag, ReadJoy1-4, ReadJoy, jdtab, sound94 ReadJoyData ... ResetZ80Bus (95 pauses the sound driver
+;	caller in 95), AddSmallFont, DecompressGraphicsWithCallback, Framer, AddFramer, the 95 AddFramer2; moved in: VBjsr
+;	VBlank, p_music_vblank (95: pads, then SoundCmd 1), vb2 and IRQ7, VBlank_SetOptions; then
+;	orjoy, the 95 orjoy4way, nodiag, ReadJoy1-4, ReadJoy, jdtab, ReadJoyData ... ResetZ80Bus (95 pauses the sound driver
 ;	around the pad reads), then the 95 ReadMenuJoy.
 ;	written as instructions: forceblack2 ... AddSmallFont ($7A054-$7A263), AddFramer ($7A2EC), VBlank, vb2, VBlank_SetOptions,
 ;	ReadJoyData ... ResetZ80Bus ($7A55A-$7A6A9).
@@ -905,7 +905,7 @@ FlushOutputBuffer	;Write the full ring buffer to vram
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
 
-AddSmallFont	;Jumped to from ReAddSmallFont (middle95). 95 loads the map at the address in smallfontptr (94: SmallFontMap)
+AddSmallFont	;Jumped to from ReAddSmallFont. 95 loads the map at the address in smallfontptr (94: SmallFontMap)
 	move.w	d4,(smallfontchars).w
 	movea.l	(smallfontptr).w,a2
 	addq.w	#8,a2
@@ -962,7 +962,7 @@ Framer	;Draw a d0 x d1 frame at printx / printy from the framer map. 95 takes th
 	move.w	d3,(a0)
 	rts
 
-AddFramer	;Jumped to from ReAddFramer (middle95). Load the framer tiles at char d4 through DecompressGraphicsWithCallback with the remap table
+AddFramer	;Jumped to from ReAddFramer. Load the framer tiles at char d4 through DecompressGraphicsWithCallback with the remap table
 	;after the jsr (colour 7 to 1); 95 also stores the map address in framermapptr
 	movea.l	#Framermap+8,a2
 	move.w	d4,(framercset).w
@@ -971,18 +971,18 @@ AddFramer	;Jumped to from ReAddFramer (middle95). Load the framer tiles at char 
 	dc.b	$01,$23,$45,$61,$89,$AB,$CD,$EF	;remap table: colour n to n, except 7 to 1
 	rts
 
-AddFramer2	;95 only. AddFramer for the second framer map, no remap
+AddFramer2	;AddFramer for the second framer map, no remap
 	movea.l	#Framermap2+8,a2
 	move.l	#Framermap2,(framermapptr).l
 	move.w	d4,(framercset).w
 	jsr	(DoDMA_clearCallbackPointer).l
 	rts
 
-VBjsr	;(hockey94) Vertical blank interrupt (vector $78), jumps through the vbint RAM vector
+VBjsr	;Vertical blank interrupt (vector $78), jumps through the vbint RAM vector
 	move.l	(vbint).w,-(sp)	;push handler address
 	rts	;and "return" into it
 
-VBlank	;(display94). 93 name; 93 Main vblank code for game play (vbint target). DumpSprites when dfok is set
+VBlank	;93 name; 93 Main vblank code for game play (vbint target). DumpSprites when dfok is set
 	;cramfade, then the game clock. gmode2 bit 2 keeps the clock running after the whistle, and with gmode2 bit 1 (penalty shot /
 	;shootout) shootoutclock counts down instead (shootoutjiffy jiffies, not while gmode2 bit 7 is set)
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1031,14 +1031,14 @@ VBlank	;(display94). 93 name; 93 Main vblank code for game play (vbint target). 
 	subq.w	#1,(shootoutclock).w
 	bra.s	.c
 
-p_music_vblank	;(sound94). Read the pads (ReadJoyData), then SoundCmd 1: the 95 sound driver's vblank update. Called from the
+p_music_vblank	;Read the pads (ReadJoyData), then SoundCmd 1: the 95 sound driver's vblank update. Called from the
 	;vblank handlers
 	bsr.w	ReadJoyData
 	move.w	#1,d0
 	jsr	(SoundCmd).l
 	rts
 
-vb2	;(display94). 93 name. Vblank used for palfades only, no dmas (vbint target). No rte here: falls into IRQ7
+vb2	;93 name. Vblank used for palfades only, no dmas (vbint target). No rte here: falls into IRQ7
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w
 	bne.w	.nograph
@@ -1050,7 +1050,7 @@ vb2	;(display94). 93 name. Vblank used for palfades only, no dmas (vbint target)
 IRQ7	;rte only. vb2 falls in; the vector table ($60, $64, ...) points here
 	rte
 
-VBlank_SetOptions	;(attract94; 93 hockey93_08 name). vbint handler stored by the menus: 92 vb2 (cramfade unless dfng), plus
+VBlank_SetOptions	;vbint handler stored by the menus: 92 vb2 (cramfade unless dfng), plus
 	;DumpSprites2 when dfok is set
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w
@@ -1074,7 +1074,7 @@ orjoy	;Pads 1 and 2 (95: no four way case here, see orjoy4way)
 	or.w	(sp)+,d1
 	rts
 
-orjoy4way	;95 only. orjoy for pads 1-4 (3 and 4 with FourWayPlay), d1 new presses and d3 held buttons of all pads.
+orjoy4way	;orjoy for pads 1-4 (3 and 4 with FourWayPlay), d1 new presses and d3 held buttons of all pads.
 	;Jumped to from ReadMenuJoy
 	bsr.w	ReadJoy1
 	move.w	d1,-(sp)
@@ -1150,7 +1150,7 @@ ReadJoy3	;95: nothing pressed (NoJoy) without FourWayPlay
 	eor.w	d1,d2
 	and.w	d2,d1
 	rts
-NoJoy	;95 only. No buttons, direction 8 (none)
+NoJoy	;No buttons, direction 8 (none)
 	clr.w	d1
 	clr.w	d2
 	clr.w	d3
@@ -1183,7 +1183,7 @@ jdtab	dc.b	8
 	;convert button l,r,d,u into directions 0-7,8
 	dc.b	0,4,8,6,7,5,8,2,1,3,8,8,8,8,8
 
-ReadJoyData	;(sound94). Read the pads every vblank (p_music_vblank). With FourWayPlay, pads 1-4 through the 4 way adaptor
+ReadJoyData	;Read the pads every vblank (p_music_vblank). With FourWayPlay, pads 1-4 through the 4 way adaptor
 	;(ReadPad4Way1 ... ReadPad4Way4) to pad4way1-pad4way4, else pads 1 and 2 (ReadPad1, ReadPad2)
 	movem.l	d1/a0,-(sp)
 	tst.w	(FourWayPlay).w
@@ -1286,7 +1286,7 @@ ResetZ80Bus	;Reset the Z80 and wait for its bus. No caller in 95
 	bne.s	.loop
 	rts
 
-ReadMenuJoy	;95 only. Read the menu pad: with sflags12 bit 0 clear, pad menupadnum (ReadJoy1-4). Else, with no pad on a team,
+ReadMenuJoy	;Read the menu pad: with sflags12 bit 0 clear, pad menupadnum (ReadJoy1-4). Else, with no pad on a team
 	;all pads (orjoy4way); otherwise the first pad on a team that has buttons down becomes menupadnum
 	btst	#0,(sflags12).w
 	bne.w	.any
@@ -1343,10 +1343,10 @@ ReadMenuJoy	;95 only. Read the menu pad: with sflags12 bit 0 clear, pad menupadn
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $07A762  From video94.asm and stats94.asm: ProcessInputWithRepeat, WaitVSyncAndReadInput
-;video94 ProcessInputWithRepeat and stats94 WaitVSyncAndReadInput, which 95 put in front of the collision code
-;	(collide95 starts at $7A7B4). WaitVSyncAndReadInput is written as instructions.
+;ProcessInputWithRepeat and WaitVSyncAndReadInput, which 95 put in front of the collision code
+;	(starts at $7A7B4). WaitVSyncAndReadInput is written as instructions.
 
-ProcessInputWithRepeat	;(video94). 93 name. nodiag, then key repeat on d1-d3. 95: first repeat after $19 frames, then every 4 (every $14 with sflags12
+ProcessInputWithRepeat	;93 name. nodiag, then key repeat on d1-d3. 95: first repeat after $19 frames, then every 4 (every $14 with sflags12
 	;bit 0)
 	bsr.w	nodiag
 	tst.w	d3
@@ -1367,7 +1367,7 @@ ProcessInputWithRepeat	;(video94). 93 name. nodiag, then key repeat on d1-d3. 95
 .2
 	rts
 
-WaitVSyncAndReadInput	;(stats94). Wait for the next vblank, read the menu pad (ReadMenuJoy, nodiag) until a new button press
+WaitVSyncAndReadInput	;Wait for the next vblank, read the menu pad (ReadMenuJoy, nodiag) until a new button press
 	move.w	(vcount).w,d1
 .0
 	cmp.w	(vcount).w,d1

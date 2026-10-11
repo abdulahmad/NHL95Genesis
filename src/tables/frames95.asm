@@ -9,19 +9,19 @@
 ;	The frames are written as SPF base + n, as 94.
 
 ; Sprite Frame (SPF) base indices, in frame sheet order, with the 94 name and value where 95 has the group. 95 moves
-; the plain skating frames first and gives the skating groups 8 frames per direction (94: 5); a "95 only" group is new
-; frames. Names for the 95 only groups follow the 94 tables that use them, or the 95 PC animation names (SPFblock).
-; display95 sets the arrow, star, replay cursor, net and puck frames, which no table uses. SPFglovel2 is inferred from
+; the plain skating frames first and gives the skating groups 8 frames per direction (94: 5); a "New in 95" group is new
+; frames. Names for the new 95 groups follow the 94 tables that use them, or the 95 PC animation names (SPFblock).
+; sets the arrow, star, replay cursor, net and puck frames, which no table uses. SPFglovel2 is inferred from
 ; 94 (the 4 frames after gdive). Frames 115-120, 670-673, 886-889 and 970-999 are not used by a 95 table or the code.
 SPFskate	=	1	; 1 (94: 41)
-SPFglide	=	SPFskate+64	; 65 95 only. glide, and the first frame of the falls
+SPFglide	=	SPFskate+64	; 65 glide, and the first frame of the falls
 SPFstop	=	SPFglide+8	; 73 (94: 145)
 SPFturnr	=	SPFstop+16	; 89 (94: 89, after turnl)
 SPFturnl	=	SPFturnr+8	; 97 (94: 81)
 SPFarrow	=	SPFturnl+8	; 105 not used by a 95 table (94: 384)
 SPFpad	=	SPFarrow+6	; 111 not used by a 95 table (94: 390): joypad 1 and 2 stars, puck star
 SPFreplay	=	SPFpad+3	; 114 not used by a 95 table (94: 393)
-SPFpad34	=	SPFreplay+7	; 121 95 only, not used by a 95 table: joypad 3 and 4 stars
+SPFpad34	=	SPFreplay+7	; 121 not used by a 95 table: joypad 3 and 4 stars
 SPFshoulderl	=	SPFpad34+2	; 123 (94: 241)
 SPFshoulderr	=	SPFshoulderl+8	; 131 (94: 249)
 SPFhook	=	SPFshoulderr+8	; 139 (94: 593)
@@ -30,51 +30,51 @@ SPFsweep	=	SPFhold+8	; 163 (94: 257)
 SPFfallfwd	=	SPFsweep+16	; 179 (94: 305)
 SPFfallback	=	SPFfallfwd+48	; 227 (94: 273)
 
-SPFburst	=	SPFfallback+40	; 267 95 only. burst, skate, skateturn
+SPFburst	=	SPFfallback+40	; 267 burst, skate, skateturn
 SPFskatewp	=	SPFburst+64	; 331 (94: 1)
-SPFglidewp	=	SPFskatewp+64	; 395 95 only
-SPFstopwp	=	SPFglidewp+8	; 403 95 only
-SPFturnrwp	=	SPFstopwp+16	; 419 95 only
-SPFturnlwp	=	SPFturnrwp+8	; 427 95 only
+SPFglidewp	=	SPFskatewp+64	; 395
+SPFstopwp	=	SPFglidewp+8	; 403
+SPFturnrwp	=	SPFstopwp+16	; 419
+SPFturnlwp	=	SPFturnrwp+8	; 427
 SPFpuck	=	SPFturnlwp+8	; 435 (94: 394)
 SPFgoal	=	SPFpuck+11	; 446 not used by a 95 table (94: 405)
 SPFswing	=	SPFgoal+2	; 448 (94: 97)
 SPFskateb	=	SPFswing+48	; 496 (94: 161)
 SPFstumble	=	SPFskateb+48	; 544 (94: 609)
-SPFswingb	=	SPFstumble+32	; 576 95 only. The backhand pass and shot (94 passb and shotb use SPFswing)
+SPFswingb	=	SPFstumble+32	; 576 The backhand pass and shot (94 passb and shotb use SPFswing)
 SPFflip	=	SPFswingb+24	; 600 (94: 633)
 
 SPFGoalie	=	SPFflip+6	; 606 (94: 407): gready, gglovel, gglover, gstickl, gstickr
 SPFgdive	=	SPFGoalie+40	; 646 (94: 519)
 SPFglovel2	=	SPFgdive+24	; 670 not used by a 95 table (94: 535), inferred; 95 has no gglovel2
-SPFblock	=	SPFglovel2+4	; 674 95 only. The shot block (95 PC blockfront ...)
+SPFblock	=	SPFglovel2+4	; 674 The shot block (95 PC blockfront ...)
 SPFSiren	=	SPFblock+24	; 698 (94: 563)
-SPFgstack	=	SPFSiren+14	; 712 95 only (94 gstackr, gstackl, gswing use SPFGoalie)
-SPFboard	=	SPFgstack+40	; 752 95 only. boardtop, boardright, boardbot, boardleft
-SPFboardchk	=	SPFboard+56	; 808 95 only
+SPFgstack	=	SPFSiren+14	; 712(94 gstackr, gstackl, gswing use SPFGoalie)
+SPFboard	=	SPFgstack+40	; 752 boardtop, boardright, boardbot, boardleft
+SPFboardchk	=	SPFboard+56	; 808
 SPFcatch	=	SPFboardchk+8	; 816 (94: 577)
-SPFshoulder2	=	SPFcatch+16	; 832 95 only. shoulderchkl2, shoulderchkr2
+SPFshoulder2	=	SPFcatch+16	; 832 shoulderchkl2, shoulderchkr2
 SPFcelebrate	=	SPFshoulder2+4	; 836 (94: 185)
-SPFgskate	=	SPFcelebrate+16	; 852 95 only (94 gskate uses SPFGoalie)
-SPFgextra2	=	SPFgskate+24	; 876 95 only
-SPFgstackalt	=	SPFgextra2+4	; 880 95 only. gstackalt1, gstackalt2
+SPFgskate	=	SPFcelebrate+16	; 852(94 gskate uses SPFGoalie)
+SPFgextra2	=	SPFgskate+24	; 876
+SPFgstackalt	=	SPFgextra2+4	; 880 gstackalt1, gstackalt2
 SPFinjury1	=	SPFgstackalt+10	; 890 (94: 641)
-SPFgslamtop	=	SPFinjury1+8	; 898 95 only (94 gslamtop uses SPFGoalie)
+SPFgslamtop	=	SPFinjury1+8	; 898(94 gslamtop uses SPFGoalie)
 SPFgready	=	SPFgslamtop+6	; 904 (94: 539)
 SPFpump	=	SPFgready+18	; 922 (94: 201)
 SPFcup	=	SPFpump+16	; 938 (94: 217)
-SPFpump2	=	SPFcup+16	; 954 95 only
+SPFpump2	=	SPFcup+16	; 954
 SPFbglass	=	SPFpump2+46	; 1000 (94: 653)
 SPFPen	=	SPFbglass+5	; 1005 (94: 377)
-SPFboardmid	=	SPFPen+7	; 1012 95 only. boardmidl, boardmidr
-SPFgextra1	=	SPFboardmid+28	; 1040 95 only
-SPFgslambot	=	SPFgextra1+4	; 1044 95 only
-SPFfaceoff	=	SPFgslambot+6	; 1050 95 only. The last frame a 95 table uses is 1055
+SPFboardmid	=	SPFPen+7	; 1012 boardmidl, boardmidr
+SPFgextra1	=	SPFboardmid+28	; 1040
+SPFgslambot	=	SPFgextra1+4	; 1044
+SPFfaceoff	=	SPFgslambot+6	; 1050 The last frame a 95 table uses is 1055
 
 SPAlist	;movea.l #SPAlist (#$5A34) in the replay and input code
 	dc.w	0
 
-SPAskate	=	*-SPAlist	; 94 SPAskate ($5D0): noturn0 move.w #2,d1. Table 0 in 95 (94 put gready here)
+SPAskate	=	*-SPAlist	; noturn0 move.w #2,d1. Table 0 in 95 (94 put gready here)
 SPAskate_table:	;Frames 1-330
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -112,7 +112,7 @@ SPAskate_table:	;Frames 1-330
 	dc.w	SPFskate+56,7,SPFskate+57,7,SPFskate+58,7,SPFskate+59,7,SPFskate+60,7,SPFskate+61,7,SPFskate+62,7,SPFskate+63,7
 	dc.w	SPFburst+56,6,SPFburst+57,6,SPFburst+58,6,SPFburst+59,6,SPFburst+60,6,SPFburst+61,6,SPFburst+62,6,SPFburst+63,-6
 
-SPAskateturn	=	*-SPAlist	; 95 only. noturn0 .8 sets it in place of the skate tables when the current SPA is a turn
+SPAskateturn	=	*-SPAlist	; noturn0.8 sets it in place of the skate tables when the current SPA is a turn
 SPAskateturn_table:	;Frames 267-330
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -134,7 +134,7 @@ SPAskateturn_table:	;Frames 267-330
 .6	dc.w	SPFburst+48,6,SPFburst+49,6,SPFburst+50,6,SPFburst+51,6,SPFburst+52,6,SPFburst+53,6,SPFburst+54,6,SPFburst+55,-6
 .7	dc.w	SPFburst+56,6,SPFburst+57,6,SPFburst+58,6,SPFburst+59,6,SPFburst+60,6,SPFburst+61,6,SPFburst+62,6,SPFburst+63,-6
 
-SPAskate2	=	*-SPAlist	; 95 only. noturn0 uses it in place of SPAskate when sflags bit 7 is set
+SPAskate2	=	*-SPAlist	; noturn0 uses it in place of SPAskate when sflags bit 7 is set
 SPAskate2_table:	;Frames 1-64
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -172,7 +172,7 @@ SPAskate2_table:	;Frames 1-64
 	dc.w	SPFskate+56,7,SPFskate+57,7,SPFskate+58,7,SPFskate+59,7,SPFskate+60,7,SPFskate+61,7,SPFskate+62,7,SPFskate+63,7
 	dc.w	SPFskate+56,6,SPFskate+57,6,SPFskate+58,6,SPFskate+59,6,SPFskate+60,6,SPFskate+61,6,SPFskate+62,6,SPFskate+63,-6
 
-SPAskatewp	=	*-SPAlist	; 94 SPAskatewp ($53E): noturn0 for the puck carrier. input burst.anim compares it
+SPAskatewp	=	*-SPAlist	; noturn0 for the puck carrier. input burst.anim compares it
 SPAskatewp_table:	;Frames 331-394
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -210,7 +210,7 @@ SPAskatewp_table:	;Frames 331-394
 	dc.w	SPFskatewp+56,7,SPFskatewp+57,7,SPFskatewp+58,7,SPFskatewp+59,7,SPFskatewp+60,7,SPFskatewp+61,7,SPFskatewp+62,7,SPFskatewp+63,7
 	dc.w	SPFskatewp+56,6,SPFskatewp+57,6,SPFskatewp+58,6,SPFskatewp+59,6,SPFskatewp+60,6,SPFskatewp+61,6,SPFskatewp+62,6,SPFskatewp+63,-6
 
-SPAskatewp2	=	*-SPAlist	; 95 only. No reference found; frames 331-394 as SPAskatewp (the with puck partner of SPAskate2)
+SPAskatewp2	=	*-SPAlist	; No reference found; frames 331-394 as SPAskatewp (the with puck partner of SPAskate2)
 SPAskatewp2_table:	;Frames 331-394
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -232,7 +232,7 @@ SPAskatewp2_table:	;Frames 331-394
 .6	dc.w	SPFskatewp+48,6,SPFskatewp+49,6,SPFskatewp+50,6,SPFskatewp+51,6,SPFskatewp+52,6,SPFskatewp+53,6,SPFskatewp+54,6,SPFskatewp+55,-6
 .7	dc.w	SPFskatewp+56,6,SPFskatewp+57,6,SPFskatewp+58,6,SPFskatewp+59,6,SPFskatewp+60,6,SPFskatewp+61,6,SPFskatewp+62,6,SPFskatewp+63,-6
 
-SPAglide	=	*-SPAlist	; 94 SPAglide ($50C): doplayeracc, dostop
+SPAglide	=	*-SPAlist	; doplayeracc, dostop
 SPAglide_table:	;Frames 65-72
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -254,7 +254,7 @@ SPAglide_table:	;Frames 65-72
 .6	dc.w	SPFglide+6,-8
 .7	dc.w	SPFglide+7,-8
 
-SPAglidewp	=	*-SPAlist	; 95 only. SPAglide for the puck carrier (SCnum = puckc): doplayeracc, dostop, doshot
+SPAglidewp	=	*-SPAlist	; SPAglide for the puck carrier (SCnum = puckc): doplayeracc, dostop, doshot
 SPAglidewp_table:	;Frames 395-402
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -276,7 +276,7 @@ SPAglidewp_table:	;Frames 395-402
 .6	dc.w	SPFglidewp+6,-8
 .7	dc.w	SPFglidewp+7,-8
 
-SPAturnl	=	*-SPAlist	; 94 SPAturnl ($662): doplayeracc SPAturnr eori -$52
+SPAturnl	=	*-SPAlist	; doplayeracc SPAturnr eori -$52
 SPAturnl_table:	;Frames 97-104
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -298,7 +298,7 @@ SPAturnl_table:	;Frames 97-104
 .6	dc.w	SPFturnl+6,4,SPFturnl+6,-4
 .7	dc.w	SPFturnl+7,4,SPFturnl+7,-4
 
-SPAturnr	=	*-SPAlist	; 94 SPAturnr ($694): doplayeracc addi.w #SPAturnr
+SPAturnr	=	*-SPAlist	; doplayeracc addi.w #SPAturnr
 SPAturnr_table:	;Frames 89-96
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -320,7 +320,7 @@ SPAturnr_table:	;Frames 89-96
 .6	dc.w	SPFturnr+6,4,SPFturnr+6,-4
 .7	dc.w	SPFturnr+7,4,SPFturnr+7,-4
 
-SPAturnlwp	=	*-SPAlist	; 95 only. SPAturnl + $A4 for the puck carrier (doplayeracc)
+SPAturnlwp	=	*-SPAlist	; SPAturnl + $A4 for the puck carrier (doplayeracc)
 SPAturnlwp_table:	;Frames 427-434
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -342,7 +342,7 @@ SPAturnlwp_table:	;Frames 427-434
 .6	dc.w	SPFturnlwp+6,4,SPFturnlwp+6,-4
 .7	dc.w	SPFturnlwp+7,4,SPFturnlwp+7,-4
 
-SPAturnrwp	=	*-SPAlist	; 95 only. SPAturnr + $A4 for the puck carrier (doplayeracc)
+SPAturnrwp	=	*-SPAlist	; SPAturnr + $A4 for the puck carrier (doplayeracc)
 SPAturnrwp_table:	;Frames 419-426
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -364,7 +364,7 @@ SPAturnrwp_table:	;Frames 419-426
 .6	dc.w	SPFturnrwp+6,4,SPFturnrwp+6,-4
 .7	dc.w	SPFturnrwp+7,4,SPFturnrwp+7,-4
 
-SPAstop	=	*-SPAlist	; 94 SPAstop ($6C6): dostop
+SPAstop	=	*-SPAlist	; dostop
 SPAstop_table:	;Frames 73-88
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -386,7 +386,7 @@ SPAstop_table:	;Frames 73-88
 .6	dc.w	SPFstop+12,4,SPFstop+13,-4
 .7	dc.w	SPFstop+14,4,SPFstop+15,-4
 
-SPAstopwp	=	*-SPAlist	; 95 only. SPAstop for the puck carrier (dostop)
+SPAstopwp	=	*-SPAlist	; SPAstop for the puck carrier (dostop)
 SPAstopwp_table:	;Frames 403-418
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -408,7 +408,7 @@ SPAstopwp_table:	;Frames 403-418
 .6	dc.w	SPFstopwp+12,4,SPFstopwp+13,-4
 .7	dc.w	SPFstopwp+14,4,SPFstopwp+15,-4
 
-SPAshoulderchkl	=	*-SPAlist	; 94 SPAshoulderchkl ($B96). checkinglist ($7AF06) uses it for the 94 shoulderchkl and hipchkl slots
+SPAshoulderchkl	=	*-SPAlist	; checkinglist ($7AF06) uses it for the 94 shoulderchkl and hipchkl slots
 SPAshoulderchkl_table:	;Frames 123-130
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -430,7 +430,7 @@ SPAshoulderchkl_table:	;Frames 123-130
 .6	dc.w	SPFshoulderl+6,-24
 .7	dc.w	SPFshoulderl+7,-24
 
-SPAshoulderchkr	=	*-SPAlist	; 94 SPAshoulderchkr ($BC8). checkinglist ($7AF06) uses it for the 94 shoulderchkr and hipchkr slots
+SPAshoulderchkr	=	*-SPAlist	; checkinglist ($7AF06) uses it for the 94 shoulderchkr and hipchkr slots
 SPAshoulderchkr_table:	;Frames 131-138
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -452,7 +452,7 @@ SPAshoulderchkr_table:	;Frames 131-138
 .6	dc.w	SPFshoulderr+6,-24
 .7	dc.w	SPFshoulderr+7,-24
 
-SPAHold	=	*-SPAlist	; 94 SPAHold ($C90): Acheck, holdcheck, CCStart
+SPAHold	=	*-SPAlist	; Acheck, holdcheck, CCStart
 SPAHold_table:	;Frames 155-162
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -474,7 +474,7 @@ SPAHold_table:	;Frames 155-162
 .6	dc.w	SPFhold+6,-30
 .7	dc.w	SPFhold+7,-30
 
-SPAHold2	=	*-SPAlist	; 94 SPAHold2 ($CC2): holdcheck
+SPAHold2	=	*-SPAlist	; holdcheck
 SPAHold2_table:	;Frames 155-162
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -496,7 +496,7 @@ SPAHold2_table:	;Frames 155-162
 .6	dc.w	SPFhold+6,-55
 .7	dc.w	SPFhold+7,-55
 
-SPAhook	=	*-SPAlist	; 94 SPAhook ($1122): holdplayer, Acheck, CCStart
+SPAhook	=	*-SPAlist	; holdplayer, Acheck, CCStart
 SPAhook_table:	;Frames 139-153
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -518,7 +518,7 @@ SPAhook_table:	;Frames 139-153
 .6	dc.w	SPFhook+12,-30
 .7	dc.w	SPFhook+14,-30
 
-SPAhook2	=	*-SPAlist	; 94 SPAhook2 ($1154): holdcheck
+SPAhook2	=	*-SPAlist	; holdcheck
 SPAhook2_table:	;Frames 139-154
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -540,7 +540,7 @@ SPAhook2_table:	;Frames 139-154
 .6	dc.w	SPFhook+12,12,SPFhook+13,12,SPFhook+12,12,SPFhook+13,-12
 .7	dc.w	SPFhook+14,12,SPFhook+15,12,SPFhook+14,12,SPFhook+15,-12
 
-SPAsweepchk	=	*-SPAlist	; 94 SPAsweepchk ($B24): CCStart, B check
+SPAsweepchk	=	*-SPAlist	; CCStart, B check
 SPAsweepchk_table:	;Frames 163-178
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -562,7 +562,7 @@ SPAsweepchk_table:	;Frames 163-178
 .6	dc.w	SPFsweep+12,4,SPFsweep+13,8,SPFsweep+12,-4
 .7	dc.w	SPFsweep+14,4,SPFsweep+15,8,SPFsweep+14,-4
 
-SPAfallfwd	=	*-SPAlist	; 94 SPAfallfwd ($D26): FallDown
+SPAfallfwd	=	*-SPAlist	; FallDown
 SPAfallfwd_table:	;Frames 65-226
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -584,7 +584,7 @@ SPAfallfwd_table:	;Frames 65-226
 .6	dc.w	SPFfallfwd+36,6,SPFfallfwd+37,6,SPFfallfwd+38,8,SPFfallfwd+39,100,SPFfallfwd+40,8,SPFfallfwd+41,8,SPFglide+6,-8
 .7	dc.w	SPFfallfwd+42,6,SPFfallfwd+43,6,SPFfallfwd+44,8,SPFfallfwd+45,100,SPFfallfwd+46,8,SPFfallfwd+47,8,SPFglide+7,-8
 
-SPAfallback	=	*-SPAlist	; 94 SPAfallback ($DD8): FallDown
+SPAfallback	=	*-SPAlist	; FallDown
 SPAfallback_table:	;Frames 65-266
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -606,7 +606,7 @@ SPAfallback_table:	;Frames 65-266
 .6	dc.w	SPFfallback+30,6,SPFfallback+31,6,SPFfallback+32,8,SPFfallback+33,100,SPFfallback+34,8,SPFfallfwd+16,8,SPFfallfwd+17,8,SPFglide+2,-8
 .7	dc.w	SPFfallback+35,6,SPFfallback+36,6,SPFfallback+37,8,SPFfallback+38,100,SPFfallback+39,8,SPFfallfwd+22,8,SPFfallfwd+23,8,SPFglide+3,-8
 
-SPAburst	=	*-SPAlist	; 94 SPAburst ($C5E): burst .skate, CCStart
+SPAburst	=	*-SPAlist	; burst.skate, CCStart
 SPAburst_table:	;Frames 267-330
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -628,7 +628,7 @@ SPAburst_table:	;Frames 267-330
 .6	dc.w	SPFburst+48,3,SPFburst+49,3,SPFburst+50,3,SPFburst+51,3,SPFburst+52,-3,SPFburst+53,3,SPFburst+54,3,SPFburst+55,-3
 .7	dc.w	SPFburst+56,3,SPFburst+57,3,SPFburst+58,3,SPFburst+59,3,SPFburst+60,-3,SPFburst+61,3,SPFburst+62,3,SPFburst+63,-3
 
-SPApflip	=	*-SPAlist	; 94 SPApflip ($46A): puckflip
+SPApflip	=	*-SPAlist	; puckflip
 SPApflip_table:	;Frames 436-445
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -650,7 +650,7 @@ SPApflip_table:	;Frames 436-445
 .6	dc.w	SPFpuck+5,-4096
 .7	dc.w	SPFpuck+5,-4096
 
-SPApassf	=	*-SPAlist	; 94 SPApassf ($718): dopass
+SPApassf	=	*-SPAlist	; dopass
 SPApassf_table:	;Frames 451-495
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -672,7 +672,7 @@ SPApassf_table:	;Frames 451-495
 .6	dc.w	SPFswing+39,4,SPFswing+40,4,SPFswing+41,-20
 .7	dc.w	SPFswing+45,4,SPFswing+46,4,SPFswing+47,-20
 
-SPApassf2	=	*-SPAlist	; 95 only. The drop pass: dopass uses it in place of SPApassf when GameFlags bit 1 is set (A with the dpad back)
+SPApassf2	=	*-SPAlist	; The drop pass: dopass uses it in place of SPApassf when GameFlags bit 1 is set (A with the dpad back)
 SPApassf2_table:	;Frames 450-493
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -694,7 +694,7 @@ SPApassf2_table:	;Frames 450-493
 .6	dc.w	SPFswing+38,4,SPFswing+39,-20
 .7	dc.w	SPFswing+44,4,SPFswing+45,-20
 
-SPApassb	=	*-SPAlist	; 94 SPApassb ($78A): dopass after Findhittype
+SPApassb	=	*-SPAlist	; dopass after Findhittype
 SPApassb_table:	;Frames 576-599
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -716,7 +716,7 @@ SPApassb_table:	;Frames 576-599
 .6	dc.w	SPFswingb+18,4,SPFswingb+19,4,SPFswingb+20,-20
 .7	dc.w	SPFswingb+21,4,SPFswingb+22,4,SPFswingb+23,-20
 
-SPApassb2	=	*-SPAlist	; 95 only. The backhand drop pass: see SPApassf2
+SPApassb2	=	*-SPAlist	; The backhand drop pass: see SPApassf2
 SPApassb2_table:	;Frames 576-598
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -738,7 +738,7 @@ SPApassb2_table:	;Frames 576-598
 .6	dc.w	SPFswingb+18,4,SPFswingb+19,4,SPFswingb+19,-10
 .7	dc.w	SPFswingb+21,4,SPFswingb+22,4,SPFswingb+22,-10
 
-SPAshotf	=	*-SPAlist	; 94 SPAshotf ($7FC): SetShotMode
+SPAshotf	=	*-SPAlist	; SetShotMode
 SPAshotf_table:	;Frames 448-495
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -768,7 +768,7 @@ SPAshotf_table:	;Frames 448-495
 .7	dc.w	SPFswing+44,4,SPFswing+43,4,SPFswing+42,4,SPFswing+42,4,SPFswing+43,4,SPFswing+44,4,SPFswing+45,4,SPFswing+46,4
 	dc.w	SPFswing+47,-20
 
-SPAfakeshotf	=	*-SPAlist	; 95 only, 95 PC name. The fake shot: SetShotMode uses it in place of SPAshotf when GameFlags bit 0 is set
+SPAfakeshotf	=	*-SPAlist	; 95 PC name. The fake shot: SetShotMode uses it in place of SPAshotf when GameFlags bit 0 is set
 SPAfakeshotf_table:	;Frames 448-495
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -798,7 +798,7 @@ SPAfakeshotf_table:	;Frames 448-495
 .7	dc.w	SPFswing+44,3,SPFswing+43,3,SPFswing+42,3,SPFswing+42,3,SPFswing+43,3,SPFswing+44,3,SPFswing+45,3,SPFswing+46,3
 	dc.w	SPFswing+47,-8
 
-SPAshotb	=	*-SPAlist	; 94 SPAshotb ($92E): SetShotMode, doshot
+SPAshotb	=	*-SPAlist	; SetShotMode, doshot
 SPAshotb_table:	;Frames 576-599
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -828,7 +828,7 @@ SPAshotb_table:	;Frames 576-599
 .7	dc.w	SPFswingb+21,2,SPFswingb+21,2,SPFswingb+21,2,SPFswingb+21,2,SPFswingb+21,2,SPFswingb+21,2,SPFswingb+22,2,SPFswingb+23,2
 	dc.w	SPFswingb+23,-10
 
-SPAfakeshotb	=	*-SPAlist	; 95 only, 95 PC name. The backhand fake shot: see SPAfakeshotf
+SPAfakeshotb	=	*-SPAlist	; 95 PC name. The backhand fake shot: see SPAfakeshotf
 SPAfakeshotb_table:	;Frames 449-495
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -858,7 +858,7 @@ SPAfakeshotb_table:	;Frames 449-495
 .7	dc.w	SPFswing+45,3,SPFswing+46,3,SPFswing+47,3,SPFswing+47,3,SPFswing+47,3,SPFswing+46,3,SPFswing+45,3,SPFswing+44,3
 	dc.w	SPFswing+43,-8
 
-SPAskateback	=	*-SPAlist	; 94 SPAskateback ($A92): noturn0 when skating backwards
+SPAskateback	=	*-SPAlist	; noturn0 when skating backwards
 SPAskateback_table:	;Frames 496-543
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -880,7 +880,7 @@ SPAskateback_table:	;Frames 496-543
 .6	dc.w	SPFskateb+36,8,SPFskateb+37,8,SPFskateb+38,8,SPFskateb+39,8,SPFskateb+40,8,SPFskateb+41,-8
 .7	dc.w	SPFskateb+42,8,SPFskateb+43,8,SPFskateb+44,8,SPFskateb+45,8,SPFskateb+46,8,SPFskateb+47,-8
 
-SPAstumble	=	*-SPAlist	; 94 SPAstumble ($11E6): FallDown
+SPAstumble	=	*-SPAlist	; FallDown
 SPAstumble_table:	;Frames 544-575
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -902,7 +902,7 @@ SPAstumble_table:	;Frames 544-575
 .6	dc.w	SPFstumble+24,8,SPFstumble+25,8,SPFstumble+26,8,SPFstumble+27,-6
 .7	dc.w	SPFstumble+28,8,SPFstumble+29,8,SPFstumble+30,8,SPFstumble+31,-6
 
-SPAfaceoff	=	*-SPAlist	; 94 SPAfaceoff ($FEA): faceoffinput
+SPAfaceoff	=	*-SPAlist	; faceoffinput
 SPAfaceoff_table:	;Frames 1050-1055
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -924,7 +924,7 @@ SPAfaceoff_table:	;Frames 1050-1055
 .6
 .7	dc.w	SPFfaceoff+3,2,SPFfaceoff+4,10,SPFfaceoff+5,-6
 
-SPAfaceoffr	=	*-SPAlist	; 94 SPAfaceoffr ($1014): faceoffinput
+SPAfaceoffr	=	*-SPAlist	; faceoffinput
 SPAfaceoffr_table:	;Frames 334-366
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -946,7 +946,7 @@ SPAfaceoffr_table:	;Frames 334-366
 .6
 .7	dc.w	SPFskatewp+35,-5
 
-SPAgready	=	*-SPAlist	; 94 SPAgready ($2): the goalie ready anim (GoalieReadySPA) near the puck or when gmode bit 0 is set
+SPAgready	=	*-SPAlist	; the goalie ready anim (GoalieReadySPA) near the puck or when gmode bit 0 is set
 SPAgready_table:	;Frames 606-921
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -968,7 +968,7 @@ SPAgready_table:	;Frames 606-921
 .6	dc.w	SPFGoalie+6,-700
 .7	dc.w	SPFGoalie+7,180,SPFgready+15,10,SPFgready+16,10,SPFgready+17,10,SPFGoalie+7,340,SPFgready+17,10,SPFgready+16,10,SPFgready+15,-10
 
-SPAgready2	=	*-SPAlist	; 94 SPAgready2 ($114): the goalie ready anim (GoalieReadySPA) otherwise
+SPAgready2	=	*-SPAlist	; the goalie ready anim (GoalieReadySPA) otherwise
 SPAgready2_table:	;Frames 606-613
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -990,7 +990,7 @@ SPAgready2_table:	;Frames 606-613
 .6	dc.w	SPFGoalie+6,-700
 .7	dc.w	SPFGoalie+7,-700
 
-SPAgglover	=	*-SPAlist	; 94 SPAgglover ($146): goaliesave .saveanim 0 and 6
+SPAgglover	=	*-SPAlist	; goaliesave.saveanim 0 and 6
 SPAgglover_table:	;Frames 622-629
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1012,7 +1012,7 @@ SPAgglover_table:	;Frames 622-629
 .6	dc.w	SPFGoalie+22,-32
 .7	dc.w	SPFGoalie+23,-32
 
-SPAgglovel	=	*-SPAlist	; 94 SPAgglovel ($178): goaliesave .saveanim 1 and 7
+SPAgglovel	=	*-SPAlist	; goaliesave.saveanim 1 and 7
 SPAgglovel_table:	;Frames 614-621
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1034,7 +1034,7 @@ SPAgglovel_table:	;Frames 614-621
 .6	dc.w	SPFGoalie+14,-32
 .7	dc.w	SPFGoalie+15,-32
 
-SPAgstickr	=	*-SPAlist	; 94 SPAgstickr ($1EC): goaliesave .saveanim 4 and 8
+SPAgstickr	=	*-SPAlist	; goaliesave.saveanim 4 and 8
 SPAgstickr_table:	;Frames 638-645
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1056,7 +1056,7 @@ SPAgstickr_table:	;Frames 638-645
 .6	dc.w	SPFGoalie+38,-36
 .7	dc.w	SPFGoalie+39,-36
 
-SPAgstickl	=	*-SPAlist	; 94 SPAgstickl ($21E): goaliesave .saveanim 5 and 9
+SPAgstickl	=	*-SPAlist	; goaliesave.saveanim 5 and 9
 SPAgstickl_table:	;Frames 630-637
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1078,7 +1078,7 @@ SPAgstickl_table:	;Frames 630-637
 .6	dc.w	SPFGoalie+30,-36
 .7	dc.w	SPFGoalie+31,-36
 
-SPAgdive	=	*-SPAlist	; 94 SPAgdive ($2F4): doinput (doinput_goaliedive)
+SPAgdive	=	*-SPAlist	; doinput (doinput_goaliedive)
 SPAgdive_table:	;Frames 646-669
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1100,7 +1100,7 @@ SPAgdive_table:	;Frames 646-669
 .6	dc.w	SPFgdive+18,8,SPFgdive+19,8,SPFgdive+20,48,SPFgdive+18,-8
 .7	dc.w	SPFgdive+21,8,SPFgdive+22,8,SPFgdive+23,48,SPFgdive+21,-8
 
-SPAwallright	=	*-SPAlist	; 94 SPAwallright ($F6E): asspenalty (penalty box door)
+SPAwallright	=	*-SPAlist	; asspenalty (penalty box door)
 SPAwallright_table:	;Frames 1005-1011
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1122,7 +1122,7 @@ SPAwallright_table:	;Frames 1005-1011
 .6
 .7	dc.w	SPFPen+6,8,SPFPen+5,8,SPFPen+4,8,SPFPen+3,8,SPFPen+2,8,SPFPen+1,8,SPFPen,-8
 
-SPAwallleft	=	*-SPAlist	; 94 SPAwallleft ($FAC): assbench, asseben, assepen (penalty box door)
+SPAwallleft	=	*-SPAlist	; assbench, asseben, assepen (penalty box door)
 SPAwallleft_table:	;Frames 1005-1008
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1144,7 +1144,7 @@ SPAwallleft_table:	;Frames 1005-1008
 .6	dc.w	SPFPen,8,SPFPen+1,8,SPFPen+2,8,SPFPen+3,-8
 .7	dc.w	SPFPen,8,SPFPen+1,8,SPFPen+2,8,SPFPen+3,-8
 
-SPAblock	=	*-SPAlist	; 95 only. The shot block (95 PC has blockleft, blockright, blockfront, blockknee): check4check and
+SPAblock	=	*-SPAlist	; The shot block (95 PC has blockleft, blockright, blockfront, blockknee): check4check and
 	;check4check2 for a joystick player (CanBlock), chkblock in place of SPAhook
 SPAblock_table:	;Frames 183-697
 .t	;offset to each direction of animation (0-7)
@@ -1167,7 +1167,7 @@ SPAblock_table:	;Frames 183-697
 .6	dc.w	SPFblock+18,4,SPFblock+19,4,SPFblock+20,40,SPFfallfwd+46,8,SPFfallfwd+41,-8
 .7	dc.w	SPFblock+21,4,SPFblock+22,4,SPFblock+23,40,SPFfallfwd+4,8,SPFfallfwd+47,-8
 
-SPAsiren	=	*-SPAlist	; 94 SPAsiren ($102E): checkgoal, on the struct after the goal (Goal .27)
+SPAsiren	=	*-SPAlist	; checkgoal, on the struct after the goal (Goal.27)
 SPAsiren_table:	;Frames 698-711
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1190,7 +1190,7 @@ SPAsiren_table:	;Frames 698-711
 .7	dc.w	SPFSiren,3,SPFSiren+1,3,SPFSiren+2,3,SPFSiren+3,3,SPFSiren+4,3,SPFSiren+5,3,SPFSiren+6,3,SPFSiren+7,3
 	dc.w	SPFSiren+8,3,SPFSiren+9,3,SPFSiren+10,3,SPFSiren+11,3,SPFSiren+12,3,SPFSiren+13,-3
 
-SPAflail	=	*-SPAlist	; 94 SPAflail ($CF4): holdcheck
+SPAflail	=	*-SPAlist	; holdcheck
 SPAflail_table:	;Frames 1-36
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1212,7 +1212,7 @@ SPAflail_table:	;Frames 1-36
 .6	dc.w	SPFskate+30,-40
 .7	dc.w	SPFskate+35,-40
 
-SPAgswing	=	*-SPAlist	; 94 SPAgswing ($366): dopass for the goalie
+SPAgswing	=	*-SPAlist	; dopass for the goalie
 SPAgswing_table:	;Frames 736-751
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1234,7 +1234,7 @@ SPAgswing_table:	;Frames 736-751
 .6	dc.w	SPFgstack+36,5,SPFgstack+37,8,SPFgstack+36,-16
 .7	dc.w	SPFgstack+38,5,SPFgstack+39,8,SPFgstack+38,-16
 
-SPAgstackl	=	*-SPAlist	; 94 SPAgstackl ($2A2): goaliesave .saveanim 3
+SPAgstackl	=	*-SPAlist	; goaliesave.saveanim 3
 SPAgstackl_table:	;Frames 724-735
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1256,7 +1256,7 @@ SPAgstackl_table:	;Frames 724-735
 .6	dc.w	SPFgstack+20,8,SPFgstack+21,-32
 .7	dc.w	SPFgstack+22,8,SPFgstack+23,-32
 
-SPAgstackr	=	*-SPAlist	; 94 SPAgstackr ($250): goaliesave .saveanim 2
+SPAgstackr	=	*-SPAlist	; goaliesave.saveanim 2
 SPAgstackr_table:	;Frames 712-723
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1278,7 +1278,7 @@ SPAgstackr_table:	;Frames 712-723
 .6	dc.w	SPFgstack+8,8,SPFgstack+9,-32
 .7	dc.w	SPFgstack+10,8,SPFgstack+11,-32
 
-SPAboardtop	=	*-SPAlist	; 94 SPAboardtop ($1776): FallDown .FallList
+SPAboardtop	=	*-SPAlist	; FallDown.FallList
 SPAboardtop_table:	;Frames 183-766
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1300,7 +1300,7 @@ SPAboardtop_table:	;Frames 183-766
 .6
 .7	dc.w	SPFboard+12,6,SPFboard+13,6,SPFboard+14,6,SPFfallfwd+40,68,SPFfallfwd+41,-8
 
-SPAboardright	=	*-SPAlist	; 94 SPAboardright ($17E8): FallDown .FallList
+SPAboardright	=	*-SPAlist	; FallDown.FallList
 SPAboardright_table:	;Frames 195-781
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1322,7 +1322,7 @@ SPAboardright_table:	;Frames 195-781
 .6
 .7	dc.w	SPFboard+26,6,SPFboard+27,6,SPFboard+28,6,SPFboard+29,60,SPFfallback+34,6,SPFfallfwd+16,6,SPFfallfwd+17,-6
 
-SPAboardbot	=	*-SPAlist	; 94 SPAboardbot ($185A): FallDown .FallList
+SPAboardbot	=	*-SPAlist	; FallDown.FallList
 SPAboardbot_table:	;Frames 183-793
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1344,7 +1344,7 @@ SPAboardbot_table:	;Frames 183-793
 .6
 .7	dc.w	SPFboard+39,6,SPFboard+40,6,SPFboard+41,6,SPFfallfwd+40,60,SPFfallfwd+41,-8
 
-SPAboardleft	=	*-SPAlist	; 94 SPAboardleft ($18CC): FallDown .FallList
+SPAboardleft	=	*-SPAlist	; FallDown.FallList
 SPAboardleft_table:	;Frames 189-807
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1366,7 +1366,7 @@ SPAboardleft_table:	;Frames 189-807
 .6
 .7	dc.w	SPFboard+53,6,SPFboard+54,6,SPFboard+55,6,SPFboard+29,60,SPFfallback+34,6,SPFfallfwd+16,6,SPFfallfwd+17,-6
 
-SPAboardchk	=	*-SPAlist	; 94 SPAboardchk ($1AC2): FallDown, on the hitter
+SPAboardchk	=	*-SPAlist	; FallDown, on the hitter
 SPAboardchk_table:	;Frames 808-815
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1388,7 +1388,7 @@ SPAboardchk_table:	;Frames 808-815
 .6	dc.w	SPFboardchk+6,-24
 .7	dc.w	SPFboardchk+7,-24
 
-SPAgskate	=	*-SPAlist	; 94 SPAgskate ($3D8): goalieacc
+SPAgskate	=	*-SPAlist	; goalieacc
 SPAgskate_table:	;Frames 852-875
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1410,7 +1410,7 @@ SPAgskate_table:	;Frames 852-875
 .6	dc.w	SPFgskate+18,12,SPFgskate+19,8,SPFgskate+20,12,SPFgskate+19,-8
 .7	dc.w	SPFgskate+21,12,SPFgskate+22,8,SPFgskate+23,12,SPFgskate+22,-8
 
-SPAcelebrate	=	*-SPAlist	; 94 SPAcelebrate ($E8A): the 94 assscore step
+SPAcelebrate	=	*-SPAlist	; the 94 assscore step
 SPAcelebrate_table:	;Frames 836-851
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1432,7 +1432,7 @@ SPAcelebrate_table:	;Frames 836-851
 .6	dc.w	SPFcelebrate+12,12,SPFcelebrate+13,40,SPFcelebrate+12,-5
 .7	dc.w	SPFcelebrate+14,12,SPFcelebrate+15,40,SPFcelebrate+14,-5
 
-SPAgstackalt1	=	*-SPAlist	; 95 only. goaliesave: a pad stack save becomes this or SPAgstackalt2 (random) when sflags bit 3 is set
+SPAgstackalt1	=	*-SPAlist	; goaliesave: a pad stack save becomes this or SPAgstackalt2 (random) when sflags bit 3 is set
 SPAgstackalt1_table:	;Frames 880-883
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1454,7 +1454,7 @@ SPAgstackalt1_table:	;Frames 880-883
 .4
 .5	dc.w	SPFgstackalt+2,20,SPFgstackalt+3,20,SPFgstackalt+2,-8
 
-SPAgstackalt2	=	*-SPAlist	; 95 only. goaliesave: see SPAgstackalt1
+SPAgstackalt2	=	*-SPAlist	; goaliesave: see SPAgstackalt1
 SPAgstackalt2_table:	;Frames 884-885
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1476,7 +1476,7 @@ SPAgstackalt2_table:	;Frames 884-885
 .4
 .5	dc.w	SPFgstackalt+5,-40
 
-SPAcatch	=	*-SPAlist	; 94 SPAcatch ($10D0): puckbody
+SPAcatch	=	*-SPAlist	; puckbody
 SPAcatch_table:	;Frames 816-831
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1498,7 +1498,7 @@ SPAcatch_table:	;Frames 816-831
 .6	dc.w	SPFcatch+12,6,SPFcatch+13,-6
 .7	dc.w	SPFcatch+14,6,SPFcatch+15,-6
 
-SPAinjuryfall	=	*-SPAlist	; 94 SPAinjuryfall ($145C): FallDown
+SPAinjuryfall	=	*-SPAlist	; FallDown
 SPAinjuryfall_table:	;Frames 227-896
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1520,7 +1520,7 @@ SPAinjuryfall_table:	;Frames 227-896
 .5
 .6	dc.w	SPFfallback+20,6,SPFfallback+21,6,SPFfallback+22,8,SPFinjury1+4,6,SPFinjury1+5,6,SPFinjury1+6,-6
 
-SPAinjury1	=	*-SPAlist	; 94 SPAinjury1 ($1AF4): FallDown
+SPAinjury1	=	*-SPAlist	; FallDown
 SPAinjury1_table:	;Frames 227-896
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1542,7 +1542,7 @@ SPAinjury1_table:	;Frames 227-896
 .5
 .6	dc.w	SPFfallback+20,6,SPFfallback+21,6,SPFfallback+22,8,SPFinjury1+4,6,SPFinjury1+5,6,SPFinjury1+6,-1000
 
-SPAinjury2	=	*-SPAlist	; 95 only. FallDown uses it in place of SPAinjury1 when sflags12 bit 1 is set
+SPAinjury2	=	*-SPAlist	; FallDown uses it in place of SPAinjury1 when sflags12 bit 1 is set
 SPAinjury2_table:	;Frames 227-897
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1564,7 +1564,7 @@ SPAinjury2_table:	;Frames 227-897
 .5
 .6	dc.w	SPFfallback+20,6,SPFfallback+21,6,SPFfallback+22,8,SPFinjury1+7,-1024
 
-SPAbglass	=	*-SPAlist	; 94 SPAbglass ($1078): wallcollb
+SPAbglass	=	*-SPAlist	; wallcollb
 SPAbglass_table:	;Frames 1000-1004
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1586,7 +1586,7 @@ SPAbglass_table:	;Frames 1000-1004
 .6
 .7	dc.w	SPFbglass,8,SPFbglass+1,8,SPFbglass+2,8,SPFbglass+3,8,SPFbglass+4,-1000
 
-SPAshoulderchkl2	=	*-SPAlist	; 95 only. The second checking list ($7AF16) left check; FallDown skips the flip after it
+SPAshoulderchkl2	=	*-SPAlist	; The second checking list ($7AF16) left check; FallDown skips the flip after it
 SPAshoulderchkl2_table:	;Frames 832-834
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1608,7 +1608,7 @@ SPAshoulderchkl2_table:	;Frames 832-834
 .4
 .5	dc.w	SPFshoulder2+2,-24
 
-SPAshoulderchkr2	=	*-SPAlist	; 95 only. The second checking list ($7AF16) right check; FallDown skips the flip after it
+SPAshoulderchkr2	=	*-SPAlist	; The second checking list ($7AF16) right check; FallDown skips the flip after it
 SPAshoulderchkr2_table:	;Frames 833-835
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1630,7 +1630,7 @@ SPAshoulderchkr2_table:	;Frames 833-835
 .4
 .5	dc.w	SPFshoulder2+3,-24
 
-SPAglideback	=	*-SPAlist	; 94 SPAglideback ($A60): doplayeracc when skating backwards
+SPAglideback	=	*-SPAlist	; doplayeracc when skating backwards
 SPAglideback_table:	;Frames 496-538
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1652,7 +1652,7 @@ SPAglideback_table:	;Frames 496-538
 .6	dc.w	SPFskateb+36,-8
 .7	dc.w	SPFskateb+42,-8
 
-SPAflip	=	*-SPAlist	; 94 SPAflip ($136A): FallDown
+SPAflip	=	*-SPAlist	; FallDown
 SPAflip_table:	;Frames 183-605
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1682,7 +1682,7 @@ SPAflip_table:	;Frames 183-605
 .7	dc.w	SPFfallback+35,6,SPFflip,6,SPFflip,6,SPFflip+1,6,SPFflip+2,6,SPFfallback+38,100,SPFfallback+39,8,SPFfallfwd+46,8
 	dc.w	SPFfallfwd+47,-8
 
-SPAboardmidl	=	*-SPAlist	; 94 SPAboardmidl ($193E): FallDown
+SPAboardmidl	=	*-SPAlist	; FallDown
 SPAboardmidl_table:	;Frames 67-1025
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1707,7 +1707,7 @@ SPAboardmidl_table:	;Frames 67-1025
 .7	dc.w	SPFboard+53,6,SPFboardmid+10,6,SPFboardmid+11,6,SPFboardmid+12,6,SPFboardmid+13,80,SPFboardmid+12,6,SPFboardmid+11,6,SPFboardmid+10,6
 	dc.w	SPFglide+6,-8
 
-SPAboardmidr	=	*-SPAlist	; 94 SPAboardmidr ($1A00): FallDown
+SPAboardmidr	=	*-SPAlist	; FallDown
 SPAboardmidr_table:	;Frames 66-1039
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1732,7 +1732,7 @@ SPAboardmidr_table:	;Frames 66-1039
 .6
 .7	dc.w	SPFboardmid+24,6,SPFboardmid+25,6,SPFboardmid+26,6,SPFboardmid+27,80,SPFboardmid+26,6,SPFboardmid+24,6,SPFglide+6,-8
 
-SPApump	=	*-SPAlist	; 94 SPApump ($EFC), inferred: the word list at $83564 after SPAcelebrate (label), with SPApump2
+SPApump	=	*-SPAlist	; inferred: the word list at $83564 after SPAcelebrate (label), with SPApump2
 SPApump_table:	;Frames 922-937
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1754,7 +1754,7 @@ SPApump_table:	;Frames 922-937
 .6	dc.w	SPFpump+12,12,SPFpump+13,12,SPFpump+12,12,SPFpump+13,12,SPFpump+12,12,SPFpump+13,-12
 .7	dc.w	SPFpump+14,12,SPFpump+15,12,SPFpump+14,12,SPFpump+15,12,SPFpump+14,12,SPFpump+15,-12
 
-SPAstanley	=	*-SPAlist	; 94 SPAstanley ($109E), inferred: set at $834C0 (label), before the celebrate step
+SPAstanley	=	*-SPAlist	; inferred: set at $834C0 (label), before the celebrate step
 SPAstanley_table:	;Frames 938-953
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1776,7 +1776,7 @@ SPAstanley_table:	;Frames 938-953
 .6	dc.w	SPFcup+12,12,SPFcup+13,12,SPFcup+12,12,SPFcup+13,12,SPFcup+12,12,SPFcup+13,-12
 .7	dc.w	SPFcup+14,12,SPFcup+15,12,SPFcup+14,12,SPFcup+15,12,SPFcup+14,12,SPFcup+15,-12
 
-SPApump2	=	*-SPAlist	; 95 only, inferred: the word list at $83564 alternates it with SPApump
+SPApump2	=	*-SPAlist	; inferred: the word list at $83564 alternates it with SPApump
 SPApump2_table:	;Frames 954-969
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1798,7 +1798,7 @@ SPApump2_table:	;Frames 954-969
 .6	dc.w	SPFpump2+12,12,SPFpump2+13,12,SPFpump2+12,12,SPFpump2+13,12,SPFpump2+12,12,SPFpump2+13,-12
 .7	dc.w	SPFpump2+14,12,SPFpump2+15,12,SPFpump2+14,12,SPFpump2+15,12,SPFpump2+14,12,SPFpump2+15,-12
 
-SPAgslamtop	=	*-SPAlist	; 94 SPAgslamtop ($1596): checkanim
+SPAgslamtop	=	*-SPAlist	; checkanim
 SPAgslamtop_table:	;Frames 898-903
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1822,7 +1822,7 @@ SPAgslamtop_table:	;Frames 898-903
 .5	dc.w	SPFgslamtop+3,8,SPFgslamtop+4,8,SPFgslamtop+5,8,SPFgslamtop+4,8,SPFgslamtop+3,8,SPFgslamtop+3,8,SPFgslamtop+4,8,SPFgslamtop+5,8
 	dc.w	SPFgslamtop+4,8,SPFgslamtop+3,-8
 
-SPAgextra1	=	*-SPAlist	; 95 only. goaliesave .26: with SPAgextra2, picked by the goalie side of the puck and the glove hand ($76 bit 0)
+SPAgextra1	=	*-SPAlist	; goaliesave.26: with SPAgextra2, picked by the goalie side of the puck and the glove hand ($76 bit 0)
 SPAgextra1_table:	;Frames 1040-1043
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1844,7 +1844,7 @@ SPAgextra1_table:	;Frames 1040-1043
 .4
 .5	dc.w	SPFgextra1+2,4,SPFgextra1+3,-24,SPFgextra1+2,-4
 
-SPAgextra2	=	*-SPAlist	; 95 only. goaliesave .26: see SPAgextra1. puckgoalie compares SPAgextra1
+SPAgextra2	=	*-SPAlist	; goaliesave.26: see SPAgextra1. puckgoalie compares SPAgextra1
 SPAgextra2_table:	;Frames 876-879
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1866,7 +1866,7 @@ SPAgextra2_table:	;Frames 876-879
 .4
 .5	dc.w	SPFgextra2+2,4,SPFgextra2+3,-24,SPFgextra2+2,-4
 
-SPAgslambot	=	*-SPAlist	; 94 SPAgslambot ($1684): checkanim
+SPAgslambot	=	*-SPAlist	; checkanim
 SPAgslambot_table:	;Frames 1044-1049
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1890,7 +1890,7 @@ SPAgslambot_table:	;Frames 1044-1049
 
 ; End of animation list
 
-revframetbl	;(94 kept it at the end of graphics94). One word per sprite frame (1057, frame 0-1056)
-	;the frame for a reverse angle replay. RestoreReplayFrame (replay95) movea.l #revframetbl,a6
+revframetbl	;(94 kept it at the end). One word per sprite frame (1057, frame 0-1056)
+	;the frame for a reverse angle replay. RestoreReplayFrame movea.l #revframetbl,a6
 	incbin	..\Extracted\NHL95\Graphics\revframetbl.bin
 	even

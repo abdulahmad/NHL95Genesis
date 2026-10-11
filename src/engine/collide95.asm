@@ -1,7 +1,7 @@
 ; $07A7B4  Adapted from collide94.asm: checks, falls, walls, puck and goal collisions
-;	The 94 collide94 collision code in a new order: checkcoll, checkwallcoll, wallcollb, wallcoll, checkplcoll, checkcx, checkcheck, CCStart (checkinglist, the 95
+;	The 94 collision code in a new order: checkcoll, checkwallcoll, wallcollb, wallcoll, checkplcoll, checkcx, checkcheck, CCStart (checkinglist, the 95
 ;	checkinglist2, Bcheck, holdcheck, the 95 Sweepcheck), FallDown, checkpuckcoll, puckstick, puckglue, puckbody, rtspuck (the 94 rtss2 place),
-;	deflect, checkpuckcoll_sfx, checkgoal (the 94 .goal code is elsewhere: Goal), checkgoalp, CheckBump, cards94 wallcollduringcheck, crowd94
+;	deflect, checkpuckcoll_sfx, checkgoal (the 94.goal code is elsewhere: Goal), checkgoalp, CheckBump, wallcollduringcheck
 ;	checkcornercoll94 / cornercollb94, puckgoalie, checkint, the 95 DropPuck. middle95 (94 sroot) follows at $7C512.
 ;	written as instructions: a second rts after checkwallcoll ($7A976), checkpuckcoll ... checkpuckcoll_sfx ($7B51A-$7BD8B) and
 ;	puckgoalie ($7C154-$7C3FB).
@@ -545,7 +545,7 @@ CCStart	;Player a3 is checking player a2. Holds (95 SPA $E10, $E74) go to holdch
 	beq.w	.7
 	cmp.w	#$14,d4	;d4 = impact value
 	blt.w	.7
-	moveq	#$78,d0	;NHL92 uses 60 decimal, this is 120 decimal (most likely due to change in attribute math)
+	moveq	#$78,d0	;uses 60 decimal, this is 120 decimal (most likely due to change in attribute math)
 	btst	#pfjoycon,pflags(a3)
 	beq.w	.3
 	subi.w	#$20,d0
@@ -584,7 +584,7 @@ CCStart	;Player a3 is checking player a2. Holds (95 SPA $E10, $E74) go to holdch
 	move.b	(VDP_CNTR).l,d0	;HVcount
 	andi.w	#2,d0
 	addi.w	#$16,d0	;#PenCharging
-	jsr	(PenShotChk).l	;penalty shot on a breakaway (penalty94_1)
+	jsr	(PenShotChk).l	;penalty shot on a breakaway
 	jmp	(AddPenalty).l
 .5
 	jsr	(checkagr).l
@@ -593,7 +593,7 @@ CCStart	;Player a3 is checking player a2. Holds (95 SPA $E10, $E74) go to holdch
 	move.b	(VDP_CNTR).l,d0	;HVcount
 	andi.w	#2,d0
 	addi.w	#$1A,d0	;#PenRoughing2
-	jsr	(PenShotChk).l	;penalty shot on a breakaway (penalty94_1)
+	jsr	(PenShotChk).l	;penalty shot on a breakaway
 	jsr	(AddPenalty).l
 .6
 	bra.w	FallDown
@@ -603,7 +603,7 @@ CCStart	;Player a3 is checking player a2. Holds (95 SPA $E10, $E74) go to holdch
 checkinglist	;Check anim by direction from a3 to a2, SPA offsets
 	dc.w	$DAC,$DDE,$DDE,$DDE,$DDE,$DAC,$DAC,$DAC
 
-checkinglist2	;95 only. Check anims for two players facing each other
+checkinglist2	;Check anims for two players facing each other
 	dc.w	$2530,$254A,$254A,$254A,$254A,$2530,$2530,$2530
 
 Bcheck	;a2 = player that is B checking (SPA $F38), a3 = player being checked. Entered from CCStart. If OptPen is 0 and a2 is
@@ -709,7 +709,7 @@ holdcheck	;player a2 is in a hold animation looking to hold opponent a3. Entered
 .4
 	rts
 
-Sweepcheck	;95 only. Lock a3 in SPA $F38 (the sweep check). Jumped to from chgplayer (control95)
+Sweepcheck	;Lock a3 in SPA $F38 (the sweep check). Jumped to from chgplayer
 	bset	#pfalock,pflags(a3)
 	move.w	#$F38,d1
 	jmp	(SetSPA).l
@@ -1821,8 +1821,8 @@ CheckBump	;supply minimum separation velocity for coll with walls/goal/net. a2 =
 .2
 	rts
 
-wallcollduringcheck	;(cards94). during a check, a skater a2 (not a goalie) near the wall: test the wall at his position with his size +
-	;$17 (checkcornercoll94). Called from CCStart and FallDown
+wallcollduringcheck	;during a check, a skater a2 (not a goalie) near the wall: test the wall at his position with his size +
+	;$17. Called from CCStart and FallDown
 	tst.w	position(a2)
 	beq.w	.0
 	movem.l	d0-d7,-(sp)
@@ -1841,7 +1841,7 @@ wallcollduringcheck	;(cards94). during a check, a skater a2 (not a goalie) near 
 .0
 	rts
 
-checkcornercoll94	;(crowd94). Corner circles and side walls for object a3 at d2 / d3 (wcradiusx / wcradiusy); a hit goes to
+checkcornercoll94	;Corner circles and side walls for object a3 at d2 / d3 (wcradiusx / wcradiusy); a hit goes to
 	;cornercollb94. 95: end boards $128
 	bclr	#pf3wall,pflags3(a3)	;clears bit 4 in pflags3 (not used in 92)
 	move.w	#$98,d4
@@ -1915,7 +1915,7 @@ checkcornercoll94	;(crowd94). Corner circles and side walls for object a3 at d2 
 .3
 	rts
 
-cornercollb94	;(crowd94). 95: straight to wallcollb
+cornercollb94	;95: straight to wallcollb
 	jmp	(wallcollb).l
 
 
@@ -2146,7 +2146,7 @@ checkint	;check for interference penalty. player a2 interferes with a3 or vice-v
 .7
 	rts
 
-DropPuck	;95 only. a2 loses the puck (puckc = -1 if he had it) and cannot touch it for $1E frames. Called from FallDown
+DropPuck	;a2 loses the puck (puckc = -1 if he had it) and cannot touch it for $1E frames. Called from FallDown
 	move.w	d0,-(sp)
 	move.w	SCnum(a2),d0
 	cmp.w	(puckc).w,d0

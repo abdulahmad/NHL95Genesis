@@ -5,19 +5,19 @@
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $087BA2  From setup94.asm: PlayoffScreen
-;	94 setup94 PlayoffScreen, HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, FormatScore,
+;	94 PlayoffScreen, HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, FormatScore
 ;	DrawPlayoffBracket, DrawTeamBlocks, PlayoffScreenDataTable and PlayoffScreenText. PlayoffTreeSetup follows at $088046.
 ;except PlayoffScreenDataTable (dc.b, read from the retail bytes). the printz / printz2 Strings and the
 ;DecompressGraphicsWithCallback remap bytes as instructions; they are String / dc.b here. Local labels are numbered; the
 ;	names are not kept.
 ;	95 changes: PlayoffScreen returns at once in Shootout (gmode2 bit 0) and also runs for sflags11 bit 2; the shared rts is
-;	rtsLineData (setup95, 94 rtss2). AddTeamBlock and AddSmallFont are inline, the title uses printbig with the BigFontMap2
+;	rtsLineData (94 rtss2). AddTeamBlock and AddSmallFont are inline, the title uses printbig with the BigFontMap2
 ;	tiles, HandlePlayoffInput reads all four pads, the song is 3 (94 $79), the map chars start at $69A (94 $30A).
 
 
 
 PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; OptPlayMode nonzero or sflags11 bit 2).
-	;Called from Opening2 (hockey95) and PlayoffTreeScreen (awards95). Runs its own vblank (PlayoffScreenDataTable) and scrolls the tree a page ($70
+	;Called from Opening2 and PlayoffTreeScreen. Runs its own vblank (PlayoffScreenDataTable) and scrolls the tree a page ($70
 	;pixels) at a time. Returns when start is pressed (PlayoffScreenExit)
 	btst	#0,(gmode2).w
 	bne.s	rtsLineData
@@ -326,13 +326,13 @@ PlayoffScreenText	;Round titles by gamelevel, printbig Strings with their positi
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $088046  From data94.asm, title94.asm and display94.asm: the playoff tree
-;	data94 PlayoffTreeSetup, title94 DrawPlayoffSprite and display94 SetSframe (its only caller is DrawPlayoffSprite).
-;	faceoff95 follows at $08827C (UpdateScores).
+;	PlayoffTreeSetup, DrawPlayoffSprite and SetSframe (its only caller is DrawPlayoffSprite).
+;	follows at $08827C (UpdateScores).
 
 
 
-PlayoffTreeSetup	;(data94). 93 name. Playoff tree layout by gamelevel, the same bytes as 94. Used by PlayoffScreen
-	;(playoff95). Per level: teams-1 then x,y per team (DrawTeamBlocks), arrows-1 then x,d0 per arrow (DrawPlayoffBracket), scores-1
+PlayoffTreeSetup	;93 name. Playoff tree layout by gamelevel, the same bytes as 94. Used by PlayoffScreen
+	;Per level: teams-1 then x,y per team (DrawTeamBlocks), arrows-1 then x,d0 per arrow (DrawPlayoffBracket), scores-1
 	;then x,y per score (FormatScore, negative: none)
 	dc.w	.l0-PlayoffTreeSetup
 	dc.w	.l1-PlayoffTreeSetup
@@ -391,7 +391,7 @@ PlayoffTreeSetup	;(data94). 93 name. Playoff tree layout by gamelevel, the same 
 	dc.b	-1;no scores
 	dc.b	$FF;pad (93 $47)
 
-DrawPlayoffSprite	;(title94). The PlayoffSprite sprite at playoffspritex / playoffspritey (SetSframe) in Satt, then end the
+DrawPlayoffSprite	;The PlayoffSprite sprite at playoffspritex / playoffspritey (SetSframe) in Satt, then end the
 	;list and set Sattsize. 95 animates it: frame picturebits 0-4, the next one every $A calls (pausetimeout). Called from PlayoffScreen
 	movea.w	#(Satt-M68K_RAM),a6
 	moveq	#1,d6
@@ -423,7 +423,7 @@ DrawPlayoffSprite	;(title94). The PlayoffSprite sprite at playoffspritex / playo
 	move.w	d0,(Sattsize).w
 	rts
 
-SetSframe	;(display94). Draw one sprite frame. a0 = framelist, d0/d1 = x/y cords, d2 = frame, d3 = start char,
+SetSframe	;Draw one sprite frame. a0 = framelist, d0/d1 = x/y cords, d2 = frame, d3 = start char
 	;a6 = Satt pointer, d6 = link counter. 95 builds the attribute word from the frame entry's flags and char
 	cmp.w	#$40,d6	;MaxSprites
 	bge.w	.2

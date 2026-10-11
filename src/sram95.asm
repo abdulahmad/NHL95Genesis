@@ -2,7 +2,7 @@
 ;	NHL 95 segment $9722-$9AC7, from lst/nhl95.bin.lst. The battery save RAM: 95 keeps $8000 bytes (94: $2000) on the odd bytes at
 ;	SaveRAM, copies them to M68K_RAM at power on (InitSaveRAM) and protects them with a sum / complement checksum in bytes $7FFE-$7FFF.
 ;	94 InitSaveRAM, SRAMWaitVblank, VBcount, ValidateSRAM, ClearSRAM, WriteSRAM, MakeSRAMChecksum, ReadSRAM, then three routines new in 95
-;	that build the season leader lists from the save RAM stats. Opening (hockey95) follows at $9AC8.
+;	that build the season leader lists from the save RAM stats. Opening follows at $9AC8.
 ;95 addresses RAM with (x).l here where 94 used (x).w, and indexes the save RAM with a long (d0.l). The at $981E (VBcount)
 ;	and $9972-$9AC7 (the leader list routines, no xref) are written as instructions.
 
@@ -135,10 +135,10 @@ ClearSRAM	;Clear the $8000 bytes of RAM and save RAM: zero M68K_RAM $0-$7FFF, pu
 .loop
 	move.l	d1,(a0)+
 	dbf	d0,.loop
-	jsr	(DefaultRosters).l	;95 only
-	jsr	(DefaultLineData).l	;95 only
-	jsr	(ClearCreatedPlayers).l	;95 only
-	jsr	(NullSaveClear).l	;95 only, an rts
+	jsr	(DefaultRosters).l
+	jsr	(DefaultLineData).l
+	jsr	(ClearCreatedPlayers).l
+	jsr	(NullSaveClear).l	;an rts
 	moveq	#0,d0
 	move.l	#SRAMSize,d1
 	movea.l	#M68K_RAM,a0
@@ -208,14 +208,14 @@ ReadSRAM	;move into a0 location and increment: copy d1 save RAM bytes from byte 
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;Season leader lists. New in 95 ( no xref). The Individual Leaders screen (stats95) runs one of these through a5
+;Season leader lists. New in 95 ( no xref). The Individual Leaders screen runs one of these through a5
 ;	(movea.l #x,a5 at $949EC-$94A46). Save RAM stats are words (2 save RAM bytes, the odd bytes of 2 words) at byte d0 + 2 * player.
 ;	In: d0 = first save RAM byte of the stat, d1 = 2 * players ($548: 26 teams of 26), a0 = value list, a3 = player number list,
 ;	a2 = count word. Out: one value / player number pair per listed player, (a2) = the number listed
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-BuildLeaderList	;95 only. One stat: list each player whose stat is above 0 (goals SRGoals, assists SRAssists)
+BuildLeaderList	;One stat: list each player whose stat is above 0 (goals SRGoals, assists SRAssists)
 	movem.l	d0-d3/a0-a3,-(sp)
 	movea.l	#SaveRAM,a1
 	add.l	d0,d0	;save RAM byte -> word offset
@@ -240,7 +240,7 @@ BuildLeaderList	;95 only. One stat: list each player whose stat is above 0 (goal
 	movem.l	(sp)+,d0-d3/a0-a3
 	rts
 
-BuildLeaderListSum	;95 only. Two stats added: the stat at d0 (a negative one counts 0) plus the stat $57C save RAM bytes on
+BuildLeaderListSum	;Two stats added: the stat at d0 (a negative one counts 0) plus the stat $57C save RAM bytes on
 	;(goals SRGoals + assists SRAssists = points). Lists each player whose sum is not 0
 	movem.l	d0-d5/a0-a3,-(sp)
 	movea.l	#SaveRAM,a1
@@ -276,7 +276,7 @@ BuildLeaderListSum	;95 only. Two stats added: the stat at d0 (a negative one cou
 	movem.l	(sp)+,d0-d5/a0-a3
 	rts
 
-BuildLeaderListPct	;95 only. A ratio: 100 * the stat $2BE0 save RAM bytes after d0 (low 15 bits) / the stat $1074 bytes after d0. A player is
+BuildLeaderListPct	;A ratio: 100 * the stat $2BE0 save RAM bytes after d0 (low 15 bits) / the stat $1074 bytes after d0. A player is
 	;listed when the stat word at d0 is negative (bit 15 set), the stat $15F0 bytes after d0 (low 15 bits) is not 0, and the divisor is not 0 and
 	;at least the minimum: (SeasonDay - SeasonStartDay) * 25 / (SeasonLength * 84)
 	movem.l	d0-d7/a0-a3,-(sp)

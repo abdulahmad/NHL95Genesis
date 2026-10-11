@@ -13,7 +13,7 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $07E0E0-$07E36B, read from lst/nhl95.bin.
-fm_instrument_patches = $79502	;the Z80 ld bc / ld a bytes (sound95)
+fm_instrument_patches = $79502	;the Z80 ld bc / ld a bytes
 
 ; Main segment code
 	include	sound\z80old95.asm

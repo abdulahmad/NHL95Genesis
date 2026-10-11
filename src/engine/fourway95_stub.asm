@@ -14,7 +14,7 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $07DFAC-$07E0DF, read from lst/nhl95.bin.
-ReadJoy = $7A52A		;video95
+ReadJoy = $7A52A
 
 ; Main segment code
 	include	engine\fourway95.asm

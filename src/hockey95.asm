@@ -1,8 +1,8 @@
 ; $009AC8  Adapted from hockey94.asm: game flow
 ;	NHL 95 segment $9AC8-$A203, from lst/nhl95.bin.lst. The game flow from the title screen to the game loop. 95 runs it as one
-;	stretch of code: 94 Opening and Opening2 (setup94), the 95 main menu exits (season, trades, create player), StartGame and StartPer
-;	(hockey94) without a jump between them, the 95 IntermissionMenu, the game loop, DoGameFrame with 94 periodicevents written in
-;	line, and 94 updateplayers (replay94). setvideo (display95) follows at $A204.
+;	stretch of code: 94 Opening and Opening2, the 95 main menu exits (season, trades, create player), StartGame and StartPer
+;	without a jump between them, the 95 IntermissionMenu, the game loop, DoGameFrame with 94 periodicevents written in
+;	line, and 94 updateplayers. setvideo follows at $A204.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -104,7 +104,7 @@ StartGame	;reset game state for a new game, then start the first period. 95 has 
 .hotcold
 	move.l	a2,-(sp)
 	movea.l	#tmstruct,a2
-	jsr	(reenergizeteam).l	;95 only
+	jsr	(reenergizeteam).l
 	movea.l	#AwShots,a2
 	jsr	(reenergizeteam).l
 	movea.l	(sp)+,a2
@@ -145,7 +145,7 @@ StartGame	;reset game state for a new game, then start the first period. 95 has 
 	move.b	#1,(VDP_PSG).l
 	jsr	(setupice).l
 
-IntermissionStart	;94 setup94 name: the PeriodOver tail. goal95 PeriodOver jumps here after forceblack: reset the
+IntermissionStart	;the PeriodOver tail. PeriodOver jumps here after forceblack: reset the
 	;clock, restart the sound driver, UpdateScores, IntermissionMenu, then GameOver or StartPer
 	jsr	(ResetClock).l	;hockey94_01
 	move.w	d0,-(sp)
@@ -271,11 +271,11 @@ DoGameFrame	;wait for at least one vblank, then run one frame of game logic. 94 
 	sub.w	(oldvcount).w,d7	;number of frames since last loop
 	beq.s	DoGameFrame
 	move.w	(vcount).w,(oldvcount).w
-	tst.w	(ShotTimer).w	;95 only
+	tst.w	(ShotTimer).w
 	bmi.w	.periodic
 	sub.w	d7,(ShotTimer).w
 .periodic	;94 periodicevents
-	jsr	(CheckNewCarrier).l	;95 only
+	jsr	(CheckNewCarrier).l
 	jsr	(PenaltyManager).l
 	jsr	(updatecrowdf).l
 	jsr	(updatesound).l
@@ -306,7 +306,7 @@ DoGameFrame	;wait for at least one vblank, then run one frame of game logic. 94 
 	jmp	(setvideo).l
 	rts	;Not reached
 
-IntermissionMenu	;95 only. Before the period: at game over (gsp 4) the records (UpdateRecords); outside a shootout the auto line
+IntermissionMenu	;Before the period: at game over (gsp 4) the records (UpdateRecords); outside a shootout the auto line
 	;change and every sort object's Xpos to 0; then the pause menu (Pausemode with sflags12 bit 0). Called from StartGame
 	cmpi.w	#4,(gsp).w
 	bne.w	.0
@@ -437,7 +437,7 @@ updateplayers	;this routine calls all collision/animation/assignment code for al
 	beq.w	.done
 	cmpi.w	#SPAinjury2,SPA(a3)
 	beq.w	.done	;branch if d0 is 0
-	jsr	(updatevel).l	;95 only: 94 does this in line
+	jsr	(updatevel).l	;94 does this in line
 .done
 	move.w	SCnum(a3),d6	;SCnum
 	cmp.w	(puckc).w,d6	;check if puck carrier
@@ -457,7 +457,7 @@ updateplayers	;this routine calls all collision/animation/assignment code for al
 	move.w	#$1111,(bholdtimer).w
 	move.w	#$1111,(bholdtimer34).w
 .tp2
-	jsr	(updatepadinput).l	;95 only: 94 does the pads in line
+	jsr	(updatepadinput).l	;94 does the pads in line
 	adda.w	#SCstruct,a3	;SCstruct size
 	cmpi.w	#$F,SCnum-SCstruct(a3)	;compare Sortobjs-1 to SCnum-SCstruct
 	blt.w	.top	;loop for all Sort objects

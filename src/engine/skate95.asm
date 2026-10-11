@@ -1,11 +1,11 @@
 ; $08B4E0  Adapted from checks94.asm and input94.asm: goalie and skater movement
-;	checks94 goalieacc, the input94 goalie dive, doinput_cbut ... getGoalieSCnum, the 95 GoalieReadySPA, checks94 dirtab
-;	(and the 95 dirtab2), MaxSpeed ... stopna, the 95 updatevel, SetSPA, crowd94 stopna2, checks94 doplayeracc ... playeracc,
-;	title94 PlaceBoardFall. Each routine comment names its 94 file or says 95 only. goal95 follows at $08C304.
+;	goalieacc, the goalie dive, doinput_cbut ... getGoalieSCnum, the 95 GoalieReadySPA, dirtab
+;	(and the 95 dirtab2), MaxSpeed ... stopna, the 95 updatevel, SetSPA, stopna2, doplayeracc ... playeracc
+;	follows at $08C304.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-goalieacc	;(checks94) Goalie movement: a pad goalie near his crease faces the puck and gets the ready SPA (GoalieReadySPA),
+goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets the ready SPA (GoalieReadySPA)
 	;turning (AdjustFacingDirection); stopna2 deep in the crease; then playeracc. A computer goalie keeps or turns its facing
 	btst	#3,pflags(a3)
 	beq.w	.9
@@ -157,8 +157,8 @@ goalieacc	;(checks94) Goalie movement: a pad goalie near his crease faces the pu
 	jmp	playeracc
 	rts	;unused
 
-doinput_goaliedive	;(input94 doinput .33) The goalie dive on button A (bit 6): face TempWord1, nopuck 8, the dive SPA $1D4E, crowd
-	;+$96. Jumped to from doinput (input95)
+doinput_goaliedive	;(doinput.33) The goalie dive on button A (bit 6): face TempWord1, nopuck 8, the dive SPA $1D4E, crowd
+	;+$96. Jumped to from doinput
 	btst	#6,d1
 	beq.w	doinput_cbut
 	move.w	(TempWord1).w,d0
@@ -177,12 +177,12 @@ rtss15	;The rts of doinput_goaliedive
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $08B734  From input94.asm: doinput_cbut, ClampTargetY, doinput_chkanim, getGoalieSCnum
-;	94 input94 doinput_cbut, ClampTargetY (with the 10 SPA offsets after it), doinput_chkanim and getGoalieSCnum (95 getGoalieSCnum).
+;	94 doinput_cbut, ClampTargetY (with the 10 SPA offsets after it), doinput_chkanim and getGoalieSCnum (95 getGoalieSCnum).
 ;doinput_onetimer / doinput_ispc are not in 95 here; doinput_islocked is in input95.
 ;	95 changes: the y limits $106 / $FEFA, the goalie box in doinput_chkanim, the 95 SPA values.
 
 
-doinput_cbut	;(input94) Global: doinput branches here across the global rtss15. Button C (bit 5): new press: face the puck
+doinput_cbut	;Global: doinput branches here across the global rtss15. Button C (bit 5): new press: face the puck
 	;(vtoa) and go on below; held: hold the SPA frame (SPAcnt $A) at the end of a frame list (SPAlist)
 	btst	#5,d1
 	bne.w	.2
@@ -285,7 +285,7 @@ doinput_cbut	;(input94) Global: doinput branches here across the global rtss15. 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ClampTargetY	;(input94) Clamp target y d1 to $106 / $FEFA (94 $103 / $FEFD), then d1 - d3; d0 = 0 for the puck carrier.
+ClampTargetY	;Clamp target y d1 to $106 / $FEFA (94 $103 / $FEFD), then d1 - d3; d0 = 0 for the puck carrier.
 	;10 SPA offsets follow
 	move.w	(puckc).w,d2
 	cmp.w	SCnum(a3),d2
@@ -306,7 +306,7 @@ ClampTargetY	;(input94) Clamp target y d1 to $106 / $FEFA (94 $103 / $FEFD), the
 	;SPAgstickl, then SPAgglover, SPAgglovel, SPAgstickr, SPAgstickl where 94 has SPAghighr, SPAghighl, SPAgstick2r, SPAgstick2l
 	dc.w	$1C86,$1CB8,$205E,$200C,$1CEA,$1D1C,$1C86,$1CB8,$1CEA,$1D1C
 
-doinput_chkanim	;(input94) Global: doinput branches here across ClampTargetY. Animation in progress (pflags2 bit 1): rts. A
+doinput_chkanim	;Global: doinput branches here across ClampTargetY. Animation in progress (pflags2 bit 1): rts. A
 	;goalie (position 0) is held inside x $24 / y $E7 of his net (BA_PS_flags bit 1), then playeracc with TempWord1
 	btst	#1,pflags2(a3)
 	beq.w	.0
@@ -352,7 +352,7 @@ doinput_chkanim	;(input94) Global: doinput branches here across ClampTargetY. An
 	move.w	(TempWord1).w,d0
 	jmp	doplayeracc
 
-getGoalieSCnum	;(input94 getGoalieSCnum) 95: d0 = SCnum of the goalie of the team of player d0 (the first position 0 going down
+getGoalieSCnum	;(getGoalieSCnum) 95: d0 = SCnum of the goalie of the team of player d0 (the first position 0 going down
 	;from player d0), -1 none
 	movem.l	d1/a0,-(sp)
 	movea.l	#SortCords,a0
@@ -374,15 +374,15 @@ getGoalieSCnum	;(input94 getGoalieSCnum) 95: d0 = SCnum of the goalie of the tea
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $08B9A8  From checks94.asm: player movement, SetSPA, the goal, the controller setup screen
-;	checks94 dirtab, MaxSpeed, dostop, stopna, SetSPA, doplayeracc, noturn0, noturn, playeracc and the goal code, with moved in: crowd94
-;	stopna2, penalty94 PenGoalStuff, data94 box / DisplayPlayerAttributeMenu / GoalBigTxt / PPGoalBigTxt, title94 PrintPlayerAssists /
-;	PrintPlayerGoals / PrintParenNumber, replay94 checkwindow, setup94 PeriodOver / GameOver / ExitToOpening, hockey94 clockcont_0 /
+;	dirtab, MaxSpeed, dostop, stopna, SetSPA, doplayeracc, noturn0, noturn, playeracc and the goal code, with moved in: crowd94
+;	stopna2, PenGoalStuff, box / DisplayPlayerAttributeMenu / GoalBigTxt / PPGoalBigTxt, PrintPlayerAssists /
+;	PrintPlayerGoals / PrintParenNumber, checkwindow, PeriodOver / GameOver / ExitToOpening, clockcont_0 /
 ;	clockcont; and the 95 controller setup screen (SetContTeams ... ReadAllPads).
 ;SetGoaliesCtl and PeriodOver as dc.b and the last four routines as wrong code; they and the tables are read from the
 ;retail bytes. printz Strings and DecompressGraphicsWithCallback remap bytes as instructions; they are String / dc.b here.
 
 
-GoalieReadySPA	;95 only. d1 = the goalie ready SPA: $1B7A near the puck (within $56 in y) or in a shootout, else $1C54
+GoalieReadySPA	;d1 = the goalie ready SPA: $1B7A near the puck (within $56 in y) or in a shootout, else $1C54
 	move.w	d0,-(sp)
 	move.w	#$1C54,d1
 	btst	#0,(gmode).w
@@ -400,17 +400,17 @@ GoalieReadySPA	;95 only. d1 = the goalie ready SPA: $1B7A near the puck (within 
 	move.w	(sp)+,d0
 	rts
 
-dirtab	;(checks94) X / Y acc speed for each direction 0-7. 95 runspeed $F0 ($A9 = runspeed / sqrt(2); 94 $C8 / $8D)
+dirtab	;X / Y acc speed for each direction 0-7. 95 runspeed $F0 ($A9 = runspeed / sqrt(2); 94 $C8 / $8D)
 	dc.w	0,$F0,$A9,$A9,$F0,0,$A9,$FF57
 	dc.w	0,$FF10,$FF57,$FF57,$FF10,0,$FF57,$A9
 	dc.w	0,0
 
-dirtab2	;95 only: the same with runspeed $E4 / $A1
+dirtab2	;the same with runspeed $E4 / $A1
 	dc.w	0,$E4,$A1,$A1,$E4,0,$A1,$FF5F
 	dc.w	0,$FF1C,$FF5F,$FF5F,$FF1C,0,$FF5F,$A1
 	dc.w	0,0
 
-MaxSpeed	;(checks94) Max speed values for each rating level 0-$F: ((n+20)*325)^2 (94 275)
+MaxSpeed	;Max speed values for each rating level 0-$F: ((n+20)*325)^2 (94 275)
 	dc.l	((0+20)*325)*((0+20)*325)
 	dc.l	((1+20)*325)*((1+20)*325)
 	dc.l	((2+20)*325)*((2+20)*325)
@@ -428,7 +428,7 @@ MaxSpeed	;(checks94) Max speed values for each rating level 0-$F: ((n+20)*325)^2
 	dc.l	((14+20)*325)*((14+20)*325)
 	dc.l	((15+20)*325)*((15+20)*325)
 
-dostop	;(checks94) Stop player a3: under $1000 speed in x and y the velocities are cleared, else slowed
+dostop	;Stop player a3: under $1000 speed in x and y the velocities are cleared, else slowed
 	cmpi.w	#$1000,Xvel(a3)
 	bgt.w	.0
 	cmpi.w	#$F000,Xvel(a3)
@@ -483,7 +483,7 @@ dostop	;(checks94) Stop player a3: under $1000 speed in x and y the velocities a
 .6
 	bsr.w	SetSPA
 
-stopna	;(checks94) Slow player a3 by $96 in x and y toward 0, no animation change
+stopna	;Slow player a3 by $96 in x and y toward 0, no animation change
 	tst.w	Xvel(a3)
 	beq.w	.1
 	bpl.w	.0
@@ -508,7 +508,7 @@ stopna	;(checks94) Slow player a3 by $96 in x and y toward 0, no animation chang
 .3
 	rts
 
-updatevel	;95 only. The velocity update 94 updateplayers does in line
+updatevel	;The velocity update 94 updateplayers does in line
 	cmpi.w	#$E,SCnum(a3)
 	bne.w	.1
 	cmpi.w	#$150,Ypos(a3)
@@ -607,7 +607,7 @@ updatevel	;95 only. The velocity update 94 updateplayers does in line
 .12
 	rts
 
-SetSPA	;(checks94) Set animation d1 for player a3 unless it is already running
+SetSPA	;Set animation d1 for player a3 unless it is already running
 	cmp.w	SPA(a3),d1
 	beq.w	.0
 	clr.w	SPAnum(a3)
@@ -616,7 +616,7 @@ SetSPA	;(checks94) Set animation d1 for player a3 unless it is already running
 .0
 	rts
 
-stopna2	;(crowd94) Stop, keeping the animation (goalies)
+stopna2	;Stop, keeping the animation (goalies)
 	tst.w	Xvel(a3)
 	bpl.w	.0
 	addi.w	#$7D0,Xvel(a3)
@@ -639,7 +639,7 @@ stopna2	;(crowd94) Stop, keeping the animation (goalies)
 .3
 	rts
 
-doplayeracc	;(checks94) Player acceleration toward direction d0 by his speed rating (dirtab, MaxSpeed, TempRawSpd / TempMaxSpd),
+doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab, MaxSpeed, TempRawSpd / TempMaxSpd)
 	;with the turning (turnstep) and the skating animations
 	tst.w	position(a3)
 	bne.w	.0
@@ -833,7 +833,7 @@ doplayeracc	;(checks94) Player acceleration toward direction d0 by his speed rat
 	dc.w	0,$10,$10,$10,0,$FFF0,$FFF0,$FFF0
 	rts;unused
 
-noturn0	;(checks94) doplayeracc: no turn
+noturn0	;doplayeracc: no turn
 	moveq	#2,d4
 	btst	#4,pflags(a3)
 	beq.w	.0
@@ -899,12 +899,12 @@ noturn0	;(checks94) doplayeracc: no turn
 	bne.w	noturn
 	bsr.w	SetSPA
 
-noturn	;(checks94) doplayeracc: no turn, d2 = facedir
+noturn	;doplayeracc: no turn, d2 = facedir
 	btst	#4,pflags(a3)
 	beq.w	playeracc
 	eori.w	#4,d2
 
-playeracc	;(checks94) Player acceleration with facing d2 (doplayeracc entry used by the goalie and input code)
+playeracc	;Player acceleration with facing d2 (doplayeracc entry used by the goalie and input code)
 	asl.w	#2,d2
 	lea	dirtab(pc),a0
 	move.w	2(a0,d2.w),d1	;Y Inc
@@ -1022,7 +1022,7 @@ playeracc	;(checks94) Player acceleration with facing d2 (doplayeracc entry used
 .9
 	rts
 
-PlaceBoardFall	;95 only. Board fall animations (SPA $26C8, $276A, $220E ...): place player a3 against the boards
+PlaceBoardFall	;Board fall animations (SPA $26C8, $276A, $220E ...): place player a3 against the boards
 	cmpi.w	#$26C8,SPA(a3)
 	beq.w	.12
 	cmpi.w	#$276A,SPA(a3)
