@@ -1449,7 +1449,7 @@ GetTeamLogo	;94 hockey94_07 name. a0 = logo bitmap of team d3 (TeamLogoBitmaps);
 	rts
 
 TeamLogoBitmaps	;(dc.b). Team logo bitmaps by team number (TeamList order)
-	dc.l	logoANA,logoBOS,logoBUF,logoCGY,logoCHI,logoDAL,logoDET,logoEDM
+	dc.l	logoANH,logoBOS,logoBUF,logoCGY,logoCHI,logoDAL,logoDET,logoEDM
 	dc.l	logoFLA,logoHFD,logoLA,logoMTL,logoNJ,logoNYI,logoNYR,logoOTW
 	dc.l	logoPHI,logoPIT,logoQUE,logoSJ,logoSTL,logoTB,logoTOR,logoVAN
 	dc.l	logoWSH,logoWPG,logoASE,logoASW

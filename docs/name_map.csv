@@ -64,8 +64,8 @@ $002762,LosAngeles,,,teamdata95
 $002A24,Dallas,,,teamdata95
 $002CF8,Montreal,,,teamdata95
 $002FE8,NewJersey,,,teamdata95
-$0032DA,LongIsland,,,teamdata95
-$0035C6,NewYork,,,teamdata95
+$0032DA,NYIslanders,,,teamdata95
+$0035C6,NYRangers,,,teamdata95
 $0038A8,Ottawa,,,teamdata95
 $003B9E,Philadelphia,,,teamdata95
 $003E7C,Pittsburgh,,,teamdata95
@@ -2165,7 +2165,7 @@ $18DAA8,TitleScreenImg,unk_18DAA8,,graphics95_01
 $1960D6,TitleImg,,,graphics95_01
 $196C4C,StanleyCupImg,,,graphics95_01
 $19A0FA,CupSprites,unk_19A0FA,,graphics95_01
-$19A992,logoANA,,,graphics95_01
+$19A992,logoANH,,,graphics95_01
 $19AE28,logoBOS,,,graphics95_01
 $19B17E,logoBUF,,,graphics95_01
 $19B4D4,logoCGY,,,graphics95_01

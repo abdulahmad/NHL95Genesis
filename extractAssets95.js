@@ -488,7 +488,7 @@ const assets = [
     { name: 'TitleImg.map.jim', folder: 'NHL95/Graphics', start: 0x001960D6, end: 0x00196C4C }, // TitleImg
     { name: 'StanleyCupImg.map.jim', folder: 'NHL95/Graphics', start: 0x00196C4C, end: 0x0019A0FA }, // StanleyCupImg
     { name: 'CupSprites.map.jim', folder: 'NHL95/Graphics', start: 0x0019A0FA, end: 0x0019A992 }, // CupSprites
-    { name: 'logoANA.map.jim', folder: 'NHL95/Graphics', start: 0x0019A992, end: 0x0019AE28 }, // logoANA
+    { name: 'logoANA.map.jim', folder: 'NHL95/Graphics', start: 0x0019A992, end: 0x0019AE28 }, // logoANH
     { name: 'logoBOS.map.jim', folder: 'NHL95/Graphics', start: 0x0019AE28, end: 0x0019B17E }, // logoBOS
     { name: 'logoBUF.map.jim', folder: 'NHL95/Graphics', start: 0x0019B17E, end: 0x0019B4D4 }, // logoBUF
     { name: 'logoCGY.map.jim', folder: 'NHL95/Graphics', start: 0x0019B4D4, end: 0x0019B96A }, // logoCGY

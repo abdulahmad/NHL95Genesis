@@ -17,8 +17,8 @@ TeamList	;(94 $30E). IDA: no label. Team number = index (ANH 0 ... WPG 25, ASE 2
 	dc.l	LosAngeles	;10 LA
 	dc.l	Montreal	;11 MTL
 	dc.l	NewJersey	;12 NJ
-	dc.l	LongIsland	;13 NYI
-	dc.l	NewYork	;14 NYR
+	dc.l	NYIslanders	;13 NYI
+	dc.l	NYRangers	;14 NYR
 	dc.l	Ottawa	;15 OTW
 	dc.l	Philadelphia	;16 PHI
 	dc.l	Pittsburgh	;17 PIT
@@ -945,7 +945,7 @@ NewJersey	;NJ, $2FE8 (94 $2740)
 .ar	;arena
 	String	'Brendan Byrne Arena'
 
-LongIsland	;NYI, $32DA (94 $2A58)
+NYIslanders	;NYI, $32DA (94 $2A58)
 .0
 	dc.w	.pld-.0
 	dc.w	.pad-.0
@@ -1004,7 +1004,7 @@ LongIsland	;NYI, $32DA (94 $2A58)
 .ar	;arena
 	String	'Nassau Coliseum'
 
-NewYork	;NYR, $35C6 (94 $2D5C)
+NYRangers	;NYR, $35C6 (94 $2D5C)
 .0
 	dc.w	.pld-.0
 	dc.w	.pad-.0

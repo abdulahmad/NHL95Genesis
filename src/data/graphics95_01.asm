@@ -589,7 +589,7 @@ StanleyCupImg	;the StanleyCupImg map
 	incbin	..\Extracted\NHL95\Graphics\StanleyCupImg.map.jim
 CupSprites	;the CupSprites map
 	incbin	..\Extracted\NHL95\Graphics\CupSprites.map.jim
-logoANA	;team logo (TeamLogoBitmaps)
+logoANH	;team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoANA.map.jim
 logoBOS	;team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoBOS.map.jim
