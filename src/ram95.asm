@@ -269,7 +269,7 @@ ScoreSumbytes	equ	$FFFFC02C	;94 $FFFFC472
 ScoreSum	equ	$FFFFC02E	;94 $FFFFC474. Goal summary, 6 bytes per goal (ScoreSumbytes)
 PenSumLength	equ	$FFFFC196	;94 $FFFFC5DC
 PenSum	equ	$FFFFC198	;94 $FFFFC5DE. Penalty summary, 4 bytes per penalty (PenSumLength)
-HmShots	equ	$FFFFC288	;94 $FFFFC6CE. Home team struct
+tmstruct	equ	$FFFFC288	;94 $FFFFC6CE. Home team struct (was: HmShots)
 HmGoals	equ	$FFFFC294	;94 $FFFFC6DA. Home team struct goals
 HomeTeamRosterPtr	equ	$FFFFC2A6	;94 $FFFFC6EC. HmShots+$1E: the team data address (TeamList entry)
 AttribDeltas	equ	$FFFFC42C	;95 only. Modify Ratings: the attribute changes (16 bytes)
@@ -341,7 +341,7 @@ OptLine	equ	$FFFFCC5C	;94 $FFFFD058
 goaliemode1	equ	$FFFFCC5E	;94 $FFFFD05A
 goaliemode2	equ	$FFFFCC60	;94 $FFFFD05C
 demoflag	equ	$FFFFCC68	;94 $FFFFD064
-RNGseed	equ	$FFFFCC6A	;94 $FFFFD066
+seed	equ	$FFFFCC6A	;94 $FFFFD066 (was: RNGseed)
 dmaram	equ	$FFFFCC6E	;94 $FFFFD06A. Dma command long, written to the vdp as two words
 music_global_tick_counter	equ	$FFFFCC72	;94 $FFFFD06E. Begin stores the VDP PAL bit here
 TmpOptLine2	equ	$FFFFCC76	;94 $FFFFD072

@@ -49,11 +49,11 @@ TeamRosterScreen	;93 name (94 stats94). "Team Roster" screen for team a2: DrawTe
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),$E,1,0
 	clr.w	d0
-	cmpa.w	#(HmShots-M68K_RAM),a2
+	cmpa.w	#(tmstruct-M68K_RAM),a2
 	beq.w	.1
 	move.w	#$2C,d0
 .1
-	jsr	(PutTeamBlock).l
+	jsr	(PrintTeamData).l
 	jsr	(printsmallz).l
 	dc.w	$5A
 	dc.b	$F8,$4,$2,$1,$B,$F9,$2,$5E,$23,$5E,$5E,$50
@@ -129,7 +129,7 @@ TeamRosterScreen	;93 name (94 stats94). "Team Roster" screen for team a2: DrawTe
 	lea	tmsize(a2),a2
 	cmpa.w	#(AwShots-M68K_RAM),a2
 	beq.w	.0
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	bra.w	.0
 	rts	;unused
 	clr.w	(PlayerScrollCtr).w	;unused
@@ -142,7 +142,7 @@ DisplayPlayerList	;93 name (94 stats94). Draw roster page SelectedPlayerIdx: the
 	String	TXS_ALL,4,3,2,8,TXS_FONT,1,0
 	move.w	(SelectedPlayerIdx).w,d0
 	lea	PlayerStatMenuTxt(pc),a1
-	jsr	(SkipStrings).l
+	jsr	(AdvanceStringPtr).l
 	jsr	(printsmall).l
 	tst.w	(SelectedPlayerIdx).w
 	beq.w	.1
@@ -432,7 +432,7 @@ AttribRating	;94 name. d0 * 100 / d1; 95 scales it (ScaleAttrib, 94 AttribAdjust
 	jsr	(SeasonPlayerOut).l
 	movem.l	(sp)+,d0/d7
 	beq.w	AttribPrintPct
-	jsr	(ScaleAttrib).l
+	jsr	(AttribAdjust).l
 
 AttribPrintPct	;93 name. Print d0 4 wide, then 4 blanks
 	moveq	#4,d1
@@ -816,8 +816,8 @@ GameSetUp	;(94 optsetup94). The game setup screen, rewritten for 95: ReadLineDat
 	bra.w	.8
 .23
 	clr.w	(demoflag).w
-	move.w	(VDP_CNTR).l,(RNGseed).w
-	move.w	(VDP_CNTR).l,(RNGseed+2).w
+	move.w	(VDP_CNTR).l,(seed).w
+	move.w	(VDP_CNTR).l,(seed+2).w
 	clr.w	(OptPlayMode).w
 	clr.w	(OptNOP).w
 	clr.w	(OptLine).w
@@ -2500,7 +2500,7 @@ DisplayTeamStatsForPlayoffs	;(93 DisplayTeamStatsForPlayoffs). Add the po team's
 	movea.w	#(potree-M68K_RAM),a0
 	move.w	(potreeteam).w,d2
 	move.b	(a0,d2.w),d2
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	cmp.w	Xvel(a2),d2
 	beq.w	.0
 	adda.w	#tmsize,a2

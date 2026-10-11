@@ -14,10 +14,10 @@ ScoringSummaryScreen	;stats94 ScoringSummaryScreen (93 name). "Scoring Summary":
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP3),6,1,'Scoring',-(TXPRI+TXMAP3),$14,1,'Summary',-(TXPRI+TXMAP3),7,4,0
 	move.w	#$2C,d0
-	jsr	(PutTeamBlock).l
+	jsr	(PrintTeamData).l
 	addq.w	#3,(printx).w
 	clr.w	d0
-	jsr	(PutTeamBlock).l
+	jsr	(PrintTeamData).l
 	jsr	(printsmallz).l
 	String	TXS_ALL,4,3,0,7,TXS_FONT,3,'^^Per^^Time^^Tm^^Goal/Assist^^^^^^P/S^^^',TXS_FONT,0
 	clr.l	d0
@@ -143,7 +143,7 @@ DisplayGameStatEntry	;stats94 DisplayGameStatEntry. Goal entry d3: the time, the
 	move.w	0(a0,d3.w),d0
 	move.w	#2,(printx).w
 	jsr	(FormatAndPrintTime).l
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	btst	#7,2(a0,d3.w)
 	beq.w	.0
 	adda.w	#tmsize,a2
@@ -222,10 +222,10 @@ PenaltySummaryScreen	;stats94 PenaltySummaryScreen (93 name). "Penalties": one 3
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP3),$B,$1,'Penalties',-(TXPRI+TXMAP3),$7,$4,$0
 	move.w	#$2C,d0
-	jsr	(PutTeamBlock).l
+	jsr	(PrintTeamData).l
 	addq.w	#3,(printx).w
 	clr.w	d0
-	jsr	(PutTeamBlock).l
+	jsr	(PrintTeamData).l
 	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$3,$0,$7,TXS_FONT,$3,'^^Per^^Time^^Tm^^Player/Penalty^^^min^^^',TXS_FONT,$0,$0
 	clr.l	d0
@@ -357,7 +357,7 @@ DisplayPenaltyEntry	;stats94 DisplayPenaltyEntry (93 name). PenSum entry d3: tim
 	move.w	(a0,d3.w),d0
 	move.w	#2,(printx).w
 	jsr	(FormatAndPrintTime).l
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	btst	#7,2(a0,d3.w)
 	beq.w	.0
 	adda.w	#tmsize,a2
@@ -369,7 +369,7 @@ DisplayPenaltyEntry	;stats94 DisplayPenaltyEntry (93 name). PenSum entry d3: tim
 	jsr	(print).l
 	move.b	2(a0,d3.w),d0
 	andi.w	#$7F,d0
-	movea.l	#PenaltyList,a3
+	movea.l	#Penaltylist,a3
 	adda.w	(a3,d0.w),a3
 	clr.w	d0
 	move.b	1(a3),d0

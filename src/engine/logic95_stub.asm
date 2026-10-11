@@ -48,13 +48,13 @@ compshoot = $84FB6		;input95
 puckfaceoff = $883C8		;asstab entry 3 (faceoff95)
 puckfaceoff2 = $886AE		;asstab entry 4 (faceoff95)
 assfaceoff = $88AF6		;faceoff95
-assfaceoffp1 = $88B0C		;faceoff95
+assfaceoffpl = $88B0C		;faceoff95
 AddPenalty = $89140		;penalty95
 AddPenalty2 = $8916E		;penalty95
 puckIChk = $89ADA		;penalty95
 ChkOffsides = $89B3A		;penalty95
 checkob = $89F5C		;penalty95
-AutoLineChange = $8A4FC		;lines95
+chk4lc = $8A4FC		;lines95
 GoalieReadySPA = $8B9A8		;95 only: d1 = the goalie ready animation by the puck distance (skate95)
 stopna = $8BB1A		;skate95
 SetSPA = $8BC9A		;skate95

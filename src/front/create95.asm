@@ -1101,7 +1101,7 @@ CreateRatingsGfx	;95 only. set up the create player screen: VDP setup, decompres
 	moveq	#$1C,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
-	jsr	(SetRinkPalette).l
+	jsr	(setupIceRinkMap).l
 	jsr	(printz).l
 	String	-TXMAP2,$0,$0,$0
 	movea.l	#ControllerBgMap,a0
@@ -1310,7 +1310,7 @@ ModifyRatings	;95 only. Create Player "Modify Ratings" screen: load graphics/tex
 	moveq	#$1C,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
-	jsr	(SetRinkPalette).l
+	jsr	(setupIceRinkMap).l
 	jsr	(printz).l
 	String	-TXMAP2,$0,$0,$0
 	movea.l	#ControllerBgMap,a0

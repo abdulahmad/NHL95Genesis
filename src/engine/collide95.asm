@@ -758,7 +758,7 @@ FallDown	;player a2 falls down, player a3 is the hitting player. Skips a2 in som
 .0
 	tst.w	position(a3)	;check for goalie
 	beq.w	.2
-	movea.w	#(HmShots-M68K_RAM),a0	;Start of Home Team Stats Struct
+	movea.w	#(tmstruct-M68K_RAM),a0	;Start of Home Team Stats Struct
 	btst	#pfteam,pflags(a3)
 	beq.w	.1
 	adda.w	#tmsize,a0	;Change to Away Team Stats
@@ -1412,7 +1412,7 @@ puckglue	;93 name. Player a2 takes the puck (92 puckstick .glue): faceoff and pa
 	move.w	SCnum(a2),d0	;move SCnum into d0
 	move.w	d0,(puckc).w	;move d0 into puckc
 	bset	#7,pflags2(a2)
-	movea.w	#(HmShots-M68K_RAM),a0	;Move Home Stats struct into a0
+	movea.w	#(tmstruct-M68K_RAM),a0	;Move Home Stats struct into a0
 	lea	tmsize(a0),a1	;tmsize
 	btst	#pfteam,pflags(a2)	;check if player is home or away
 	bne.w	.tm	;branch if away
@@ -1426,7 +1426,7 @@ puckglue	;93 name. Player a2 takes the puck (92 puckstick .glue): faceoff and pa
 	addq.w	#1,$E(a1)	;add 1 to faceoff won
 	addi.w	#$C8,(crowdlevel).w	;add to crowdlevel
 	move.w	#$C,(sp)	;move C to stack
-	cmpa.w	#(HmShots-M68K_RAM),a1	;compare if a1 is home
+	cmpa.w	#(tmstruct-M68K_RAM),a1	;compare if a1 is home
 	bne.w	.snd	;branch if not
 	addi.w	#$A,(CwdExciteLvl).w	;add to CwdExciteLvl
 	move.w	#$B,(sp)	;Move B into stack

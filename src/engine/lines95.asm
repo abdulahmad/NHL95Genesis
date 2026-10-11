@@ -80,7 +80,7 @@ SetLCmode2	;(input94) 93 name. a2 = team struct. Draw the line change box (box, 
 
 setlccords	;(input94) Set printx / printy for the line change box of team a2
 	clr.w	d0
-	cmpa.w	#(HmShots-M68K_RAM),a2
+	cmpa.w	#(tmstruct-M68K_RAM),a2
 	bne.w	.0
 	eori.w	#$16,d0
 .0
@@ -105,7 +105,7 @@ setlccords	;(input94) Set printx / printy for the line change box of team a2
 getlchoice	;(input94) d0 = the line for button d0 of team a2 (getlchoice2)
 	movem.l	d1-d2,-(sp)
 	move.w	$38A(a2),d2
-	cmpa.w	#(HmShots-M68K_RAM),a2
+	cmpa.w	#(tmstruct-M68K_RAM),a2
 	beq.w	getlchoice2
 	move.w	-$342(a2),d2
 
@@ -141,7 +141,7 @@ lineinput	;(input94) Process input for line changes: d1 = new button presses (pa
 	bne.w	.0
 	clr.w	(a0,d4.w)
 .0
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	btst	#6,pflags(a3)
 	beq.w	.1
 	adda.w	#tmsize,a2
@@ -331,7 +331,7 @@ CompLine	;(checks94) The computer picks a line for team a2 (a1 = other team): on
 	movem.l	(sp)+,d0-d2/a0
 	rts
 .3
-	cmpa.w	#(HmShots-M68K_RAM),a2
+	cmpa.w	#(tmstruct-M68K_RAM),a2
 	bne.w	.6
 	moveq	#2,d1
 	lea	.5(pc),a0
@@ -379,7 +379,7 @@ CompLine	;(checks94) The computer picks a line for team a2 (a1 = other team): on
 	dc.w	0,2,1
 	dc.w	0,1,0
 
-AutoLineChange	;(checks94) Computer line change on the fly: puck in the player's own end (pucky 0-$56, 94 $58), one frame in 4,
+chk4lc	;(checks94) Computer line change on the fly: puck in the player's own end (pucky 0-$56, 94 $58), one frame in 4, (was: AutoLineChange)
 	;not in line change mode, and the line tired (AvgCline $C00 or less): CompLine, SetPersonel, PrintScores1, then compshoot
 	btst	#4,(sflags7).w
 	bne.w	rtslc
@@ -397,7 +397,7 @@ AutoLineChange	;(checks94) Computer line change on the fly: puck in the player's
 	bne.w	rtslc
 	btst	#3,pflags2(a3)
 	bne.w	rtslc
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a1
 	btst	#6,pflags(a3)
 	beq.w	.1
@@ -413,14 +413,14 @@ AutoLineChange	;(checks94) Computer line change on the fly: puck in the player's
 
 SetupTeamForIntermission	;(penalty94) 93 name. Reset the bench (ResetBench), then for each team SetupTeamLine. Called from hockey95
 	bsr.w	ResetBench
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a3
 	bsr.w	SetupTeamLine
 	exg	a2,a3	;falls in for the other team
 
 SetupTeamLine	;95 only. Team a3 (a2 = other team): ResetTeamEnergy, line 0, and with line changes on the power play line 3
 	;or penalty kill line 5 when the players on ice (tmap) differ
-	jsr	(ResetTeamEnergy).l
+	jsr	(reenergizeteam).l
 	clr.w	tmline(a3)
 	tst.w	(OptLine).w
 	bne.w	.0
@@ -919,13 +919,13 @@ EASportsScreen	;(attract94) Called from Begin (main95). Show the EA Sports scree
 	jsr	(dobitmap).l
 	move.w	#$18,(palcount).w	;fade in
 	move	#$2500,sr	;vblank on
-	move.w	#$50,(RNGseed).w	;frame count down in the random seed word
+	move.w	#$50,(seed).w	;frame count down in the random seed word
 .1
 	moveq	#4,d0
 	jsr	(waitx).l
 	tst.w	d1
 	bne.w	.2
-	subq.w	#1,(RNGseed).w
+	subq.w	#1,(seed).w
 	bpl.s	.1
 .2
 	move	#$2700,sr
@@ -946,7 +946,7 @@ chkatop	;(penalty94) Attack time of possession stat update. Called once a second
 	beq.w	.1
 	eori.w	#tmsize,d1
 .1
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	addq.w	#1,tmATOP(a2,d1.w)	;attack time
 .2
 	rts
@@ -954,7 +954,7 @@ chkatop	;(penalty94) Attack time of possession stat update. Called once a second
 updatePPTeamTime	;(period94) Power play time of the teams, once a second. Called from updatepentime
 	btst	#5,(sflags2).w	;check if PP
 	beq.w	.1
-	movea.l	#HmShots,a2	;move home team struct into a2
+	movea.l	#tmstruct,a2	;move home team struct into a2
 	btst	#6,(sflags2).w	;check who's on PP
 	beq.w	.0	;branch if home (team 1)
 	movea.l	#AwShots,a2	;move away team struct into a2
@@ -981,7 +981,7 @@ ChkShotStat	;(penalty94) Determine if a shot was taken and add it to the stats (
 	move.l	a4,-(sp)
 	movea.l	#ChkCnt,a4
 	adda.w	(ScoreSumbytes).w,a4
-	movea.l	#HmShots,a2	;home team
+	movea.l	#tmstruct,a2	;home team
 	btst	#7,2(a4)	;entry flag: visitors
 	beq.w	.1
 	adda.w	#tmsize,a2

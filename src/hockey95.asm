@@ -103,13 +103,13 @@ StartGame	;reset game state for a new game, then start the first period. 95 has 
 	beq.w	.2
 .hotcold
 	move.l	a2,-(sp)
-	movea.l	#HmShots,a2
-	jsr	(ResetTeamEnergy).l	;95 only
+	movea.l	#tmstruct,a2
+	jsr	(reenergizeteam).l	;95 only
 	movea.l	#AwShots,a2
-	jsr	(ResetTeamEnergy).l
+	jsr	(reenergizeteam).l
 	movea.l	(sp)+,a2
 	move.l	a0,-(sp)
-	movea.l	#HmShots,a0
+	movea.l	#tmstruct,a0
 	jsr	(Create_HotCold_Table).l
 	movea.l	#AwShots,a0
 	jsr	(Create_HotCold_Table).l

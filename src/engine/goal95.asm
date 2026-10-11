@@ -61,7 +61,7 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 	jsr	(sfx).l
 	jsr	(LockScroll).l
 	addi.w	#$1F4,(crowdlevel).w
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a1
 	tst.w	Ypos(a3)
 	bpl.w	.9
@@ -92,7 +92,7 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 	addq.w	#1,$358(a2)
 	bra.w	.15
 .14
-	cmpa.l	#HmShots,a2
+	cmpa.l	#tmstruct,a2
 	beq.s	.13
 .15
 	movem.l	d0/a2,-(sp)
@@ -105,7 +105,7 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 	beq.w	.16
 	addq.w	#1,$360(a2)
 .16
-	cmpa.w	#(HmShots-M68K_RAM),a2
+	cmpa.w	#(tmstruct-M68K_RAM),a2
 	bne.w	.17
 	move.w	(HomeTeam).w,(HmTeam).w
 	move.w	#3,(SongIndex).w
@@ -128,7 +128,7 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 	sub.w	$24(a1),d0
 	move.b	d0,(a0)+
 	addi.w	#$1E,(CwdExciteLvl).w
-	cmpa.w	#(HmShots-M68K_RAM),a2
+	cmpa.w	#(tmstruct-M68K_RAM),a2
 	beq.w	.19
 	subi.w	#$14,(CwdExciteLvl).w
 	bset	#7,-1(a0)
@@ -263,7 +263,7 @@ PenGoalStuff	;(penalty94) 93 name. Do this stuff after a goal: a1 = scored on te
 	bset	#0,(sflags9).w
 	addq.w	#1,$24(a1)
 	addq.w	#1,2(a2)
-	bset	#0,(HmShots+tmflags).w	;home tmflags: tmflcc
+	bset	#0,(tmstruct+tmflags).w	;home tmflags: tmflcc
 	bset	#0,(AwShots+tmflags).w	;visitors tmflags: tmflcc
 .3
 	movem.l	(sp)+,d0-d2/a0
@@ -284,7 +284,7 @@ DisplayPlayerAttributeMenu	;(data94) 93 name. Goal box: close both line change b
 	beq.w	.0
 	bset	#2,(sflags2).w
 .0
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	jsr	(lcfound2).l	;close lc box
 	adda.w	#tmsize,a2
 	jsr	(lcfound2).l
@@ -303,7 +303,7 @@ DisplayPlayerAttributeMenu	;(data94) 93 name. Goal box: close both line change b
 .1
 	jsr	(Framer).l
 	jsr	(CountGoalies).l
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	(homegoalies).w,(recwins).w
 	btst	#7,2(a4)
 	beq.w	.2
@@ -664,7 +664,7 @@ clockcont_0	;(hockey94) The clock ran out in overtime / the game: game over hand
 	bne.w	.5
 .2
 	bset	#2,(sflags13).w
-	move.w	(HmShots+$28).w,(cupwinner).w
+	move.w	(tmstruct+$28).w,(cupwinner).w
 	move.w	(HmGoals).w,d2
 	cmp.w	(AwGoals).w,d2
 	bgt.w	.3

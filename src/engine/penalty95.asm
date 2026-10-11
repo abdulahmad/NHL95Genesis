@@ -58,7 +58,7 @@ LeadSong	;(title94) Not in a shootout (gmode2 bit 1) and one team has more playe
 	move.w	(sflags2).w,-(sp)
 	btst	#1,(gmode2).w
 	bne.w	LeadSongExit
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a3
 	move.w	tmap(a2),d0
 	sub.w	tmap(a3),d0
@@ -78,7 +78,7 @@ LeadSong	;(title94) Not in a shootout (gmode2 bit 1) and one team has more playe
 .1
 	bset	#5,(sflags2).w
 	bne.w	LeadSongExit
-	cmpa.w	#(HmShots-M68K_RAM),a3
+	cmpa.w	#(tmstruct-M68K_RAM),a3
 	bne.w	.3
 	move.w	(HomeTeam).w,(HmTeam).w
 	move.w	#1,(SongIndex).w
@@ -225,7 +225,7 @@ AddPenalty2	;(penalty94) Forced penalties like faceoff and game over. d0 = penal
 	bne.w	.5
 	move.b	$53(a3),-(a1)
 	move.b	d0,-(a1)
-	movea.l	#PenaltyList,a0
+	movea.l	#Penaltylist,a0
 	adda.w	(a0,d0.w),a0
 	tst.b	1(a0)	;penalty minutes
 	beq.w	.5
@@ -294,7 +294,7 @@ chkprogress	;(penalty94) Control the progress of the ref and the game through pe
 	beq.w	rtspen
 	clr.w	d0
 	move.b	-2(a0),d0
-	movea.l	#PenaltyList,a1
+	movea.l	#Penaltylist,a1
 	adda.w	(a1,d0.w),a1
 	tst.b	1(a1)	;penalty minutes
 	beq.s	.4
@@ -354,7 +354,7 @@ InProgress	;(penalty94) Ref in progress: update the graphics, stats and penalty 
 .2
 	clr.w	d0
 	move.b	(a0),d0
-	movea.l	#PenaltyList,a1
+	movea.l	#Penaltylist,a1
 	adda.w	(a1,d0.w),a1
 	bclr	#5,(sflags5).w
 	clr.w	d2
@@ -381,7 +381,7 @@ InProgress	;(penalty94) Ref in progress: update the graphics, stats and penalty 
 	movea.w	#(SortCords-M68K_RAM),a3
 	adda.w	d1,a3
 	clr.w	d0
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a1	;tmsize: visitors
 	btst	#6,pflags(a3)
 	beq.w	.5
@@ -446,7 +446,7 @@ InProgress	;(penalty94) Ref in progress: update the graphics, stats and penalty 
 	bsr.w	SetPA
 	bra.w	.14
 .11
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	bsr.w	coinsearch
 	adda.w	#tmsize,a2
 	bsr.w	coinsearch
@@ -498,7 +498,7 @@ updatepentime	;(penalty94) Update the time remaining on all penalized players, o
 	bset	#6,(sflags3).w	;one second tick
 	jsr	(chkatop).l
 	jsr	(updatePPTeamTime).l
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	bsr.w	ProcessPenaltyList
 	adda.w	#tmsize,a2
 
@@ -579,7 +579,7 @@ releasepl	;(penalty94) 93 name. The player's penalty time is up, so let him out 
 	lsr.w	#1,d3
 	move.w	tmap(a2),d1
 	addq.w	#1,tmap(a2)
-	bset	#0,(HmShots+tmflags).w	;home tmflags: tmflcc
+	bset	#0,(tmstruct+tmflags).w	;home tmflags: tmflcc
 	bset	#0,(AwShots+tmflags).w	;visitors tmflags: tmflcc
 	movea.l	#priolist,a0
 	tst.w	tmgoalie(a2)
@@ -605,7 +605,7 @@ checkfornewpen	;(penalty94) Look for a new penalty (entered through AddPenalty /
 	bne.w	.2
 	clr.w	d0
 	move.b	-2(a0),d0
-	movea.l	#PenaltyList,a1
+	movea.l	#Penaltylist,a1
 	adda.w	(a1,d0.w),a1
 	tst.b	1(a1)	;time for penalty
 	beq.w	.1
@@ -624,7 +624,7 @@ checkfornewpen	;(penalty94) Look for a new penalty (entered through AddPenalty /
 	bne.s	.0
 	clr.w	d0
 	move.b	-2(a0),d0	;penalty called
-	movea.l	#PenaltyList,a1
+	movea.l	#Penaltylist,a1
 	adda.w	(a1,d0.w),a1
 	clr.w	d1
 	move.b	(a1),d1	;delay for stopping action
@@ -688,7 +688,7 @@ SetPA2	;(penalty94) IDA: setPA2 (94). Update the ref animation: next frame / del
 	move.w	(RefStep).w,d0
 	addq.w	#2,(RefStep).w
 	move.w	(RefPen).w,d1
-	movea.l	#PenaltyList,a0
+	movea.l	#Penaltylist,a0
 	adda.w	(a0,d1.w),a0
 	addq.w	#2,a0
 	adda.w	(a0),a0
@@ -773,7 +773,7 @@ prefmes	;(penalty94) Print the message for penalty d0 (negative clears it) under
 .0
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),5,$A,0
-	movea.l	#PenaltyList,a1
+	movea.l	#Penaltylist,a1
 	adda.w	(a1,d0.w),a1
 	addq.w	#2,a1
 	move.w	(a1),d0
@@ -800,7 +800,7 @@ prefmes	;(penalty94) Print the message for penalty d0 (negative clears it) under
 	bmi.w	.4
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$11,$B,$0
-	movea.l	#PenaltyList,a1
+	movea.l	#Penaltylist,a1
 	adda.w	(a1,d0.w),a1
 	addq.w	#2,a1
 	move.w	(a1),d0
@@ -933,7 +933,7 @@ ClearPenalties	;(title94) Clear the penalties: PBnum, Penaltytimer, Pencntdwn, P
 .0
 	clr.l	(a0)+
 	dbf	d0,.0
-	movea.l	#HmShots,a0
+	movea.l	#tmstruct,a0
 	bsr.w	clrTmPdst
 	movea.l	#AwShots,a0
 	bsr.w	clrTmPdst
@@ -985,7 +985,7 @@ ChkOffsides	;(checks94) Offsides: clear the flag of a team that is all back onsi
 	beq.w	.3
 	btst	#2,(BA_PS_flags).w
 	bne.w	.3
-	movea.w	#(HmShots-M68K_RAM),a1
+	movea.w	#(tmstruct-M68K_RAM),a1
 	lea	tmsize(a1),a2
 	bsr.w	.8
 	exg	a1,a2
@@ -1058,39 +1058,39 @@ ChkOffsides	;(checks94) Offsides: clear the flag of a team that is all back onsi
 	bclr	#4,tmflags(a2)
 	rts
 
-PenaltyList	;(data94) 92 Penaltylist, 94 PenaltyList. Penalty number = word offset into this table; the same entries as 94.
+Penaltylist	;(data94) 92 Penaltylist, 94 PenaltyList. Penalty number = word offset into this table; the same entries as 94. (was: PenaltyList)
 	;Used by AddPenalty, SetPA2, prefmes, PenaltyShotBox
 	dc.w	$0000
-	dc.w	.eop-PenaltyList;$2 period over
-	dc.w	.eog-PenaltyList;$4 game over
-	dc.w	.ghold-PenaltyList;$6
-	dc.w	.ghold-PenaltyList;$8
-	dc.w	.whistle-PenaltyList;$A whistle
-	dc.w	.ice-PenaltyList;$C icing
-	dc.w	.goal-PenaltyList;$E goal
-	dc.w	.offsides-PenaltyList;$10 offsides
-	dc.w	.rough2-PenaltyList;$12 roughing, slow down time $A
-	dc.w	.p14-PenaltyList;$14 no text
-	dc.w	.charge-PenaltyList;$16
-	dc.w	.slash-PenaltyList;$18
-	dc.w	.rough-PenaltyList;$1A
-	dc.w	.cross-PenaltyList;$1C
-	dc.w	.hook-PenaltyList;$1E
-	dc.w	.trip-PenaltyList;$20
-	dc.w	.int-PenaltyList;$22
-	dc.w	.hold-PenaltyList;$24
-	dc.w	.fight-PenaltyList;$26
-	dc.w	.fight2-PenaltyList;$28
-	dc.w	.inst-PenaltyList;$2A
-	dc.w	.delay-PenaltyList;$2C delay
-	dc.w	.hookps-PenaltyList;$2E penalty shot
-	dc.w	.tripps-PenaltyList;$30 penalty shot
-	dc.w	.ghold2-PenaltyList;$32 face off, no slow down
-	dc.w	.intps-PenaltyList;$34 penalty shot
-	dc.w	.roughps-PenaltyList;$36 penalty shot
-	dc.w	.chargeps-PenaltyList;$38 penalty shot
-	dc.w	.crossps-PenaltyList;$3A penalty shot
-	dc.w	.slashps-PenaltyList;$3C penalty shot
+	dc.w	.eop-Penaltylist;$2 period over
+	dc.w	.eog-Penaltylist;$4 game over
+	dc.w	.ghold-Penaltylist;$6
+	dc.w	.ghold-Penaltylist;$8
+	dc.w	.whistle-Penaltylist;$A whistle
+	dc.w	.ice-Penaltylist;$C icing
+	dc.w	.goal-Penaltylist;$E goal
+	dc.w	.offsides-Penaltylist;$10 offsides
+	dc.w	.rough2-Penaltylist;$12 roughing, slow down time $A
+	dc.w	.p14-Penaltylist;$14 no text
+	dc.w	.charge-Penaltylist;$16
+	dc.w	.slash-Penaltylist;$18
+	dc.w	.rough-Penaltylist;$1A
+	dc.w	.cross-Penaltylist;$1C
+	dc.w	.hook-Penaltylist;$1E
+	dc.w	.trip-Penaltylist;$20
+	dc.w	.int-Penaltylist;$22
+	dc.w	.hold-Penaltylist;$24
+	dc.w	.fight-Penaltylist;$26
+	dc.w	.fight2-Penaltylist;$28
+	dc.w	.inst-Penaltylist;$2A
+	dc.w	.delay-Penaltylist;$2C delay
+	dc.w	.hookps-Penaltylist;$2E penalty shot
+	dc.w	.tripps-Penaltylist;$30 penalty shot
+	dc.w	.ghold2-Penaltylist;$32 face off, no slow down
+	dc.w	.intps-Penaltylist;$34 penalty shot
+	dc.w	.roughps-Penaltylist;$36 penalty shot
+	dc.w	.chargeps-Penaltylist;$38 penalty shot
+	dc.w	.crossps-Penaltylist;$3A penalty shot
+	dc.w	.slashps-Penaltylist;$3C penalty shot
 .eop	dc.w	$0100
 	String	'Period Over'
 	dc.w	-$0510

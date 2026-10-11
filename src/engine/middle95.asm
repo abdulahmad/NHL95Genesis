@@ -145,9 +145,9 @@ randomd0s	;d0 = random number from -d0 to d0-1 (randomd0(d0*2) - d0)
 
 randomd0	;d0 = random number 0 to d0-1 (RNGseed * $BB40E62D + 1)
 	movem.l	d0-d2,-(sp)
-	move.w	(RNGseed+2).w,d0
+	move.w	(seed+2).w,d0
 	move.w	d0,d1
-	move.w	(RNGseed).w,d2
+	move.w	(seed).w,d2
 	mulu.w	#$E62D,d0
 	mulu.w	#$BB40,d1
 	mulu.w	#$E62D,d2
@@ -156,7 +156,7 @@ randomd0	;d0 = random number 0 to d0-1 (RNGseed * $BB40E62D + 1)
 	add.w	d1,d0
 	swap	d0
 	addq.l	#1,d0
-	move.l	d0,(RNGseed).w
+	move.l	d0,(seed).w
 	asr.l	#8,d0
 	mulu.w	2(sp),d0
 	swap	d0
@@ -566,7 +566,7 @@ makepde	;pass d0 as value to be scaled by player a0's energy level (full energy 
 	rts
 
 getpde	;get player a3's energy level into d0. Return a2 = his team struct, d1 = pnum*2
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	btst	#6,pflags(a3)
 	beq.w	.0
 	adda.w	#tmsize,a2	;team is away
@@ -578,8 +578,8 @@ getpde	;get player a3's energy level into d0. Return a2 = his team struct, d1 = 
 	rts
 
 loadTeamStruct	;95 only. a2 = team struct of player a3, a1 = the other team
-	movea.w	#(HmShots-M68K_RAM),a2
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a1
 	btst	#6,pflags(a3)
 	beq.w	.0
@@ -590,7 +590,7 @@ loadTeamStruct	;95 only. a2 = team struct of player a3, a1 = the other team
 ReadGoaliePulled	;(and comments) 94 only: Z clear when the team of a3 pulled its goalie ($26 of the team struct). Called from doshot (logic94_1), assdefo
 	;(logic94_2), asspuckc (logic94_3) and assnearest (logic94_4)
 	movem.l	a1,-(sp)
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	btst	#6,pflags(a3)
 	beq.w	.0
 	movea.l	#AwShots,a1
@@ -600,14 +600,14 @@ ReadGoaliePulled	;(and comments) 94 only: Z clear when the team of a3 pulled its
 	rts
 
 PrintListItem	;95 only. printz String d0 of the list a1 (SkipStrings)
-	bsr.w	SkipStrings
+	bsr.w	AdvanceStringPtr
 	jmp	print
 
 PrintSmallListItem	;95 only. printsmall String d0 of the list a1 (SkipStrings)
-	bsr.w	SkipStrings
+	bsr.w	AdvanceStringPtr
 	jmp	printsmall
 
-SkipStrings	;95 only. a1 = String d0 of a String list
+AdvanceStringPtr	;95 only. a1 = String d0 of a String list (was: SkipStrings)
 	bra.w	.1
 .0
 	adda.w	(a1),a1
@@ -711,9 +711,9 @@ ProcessNibble	;93 name. d0 = forwards on team a2 (high nibble of team data byte 
 	andi.w	#$F,d0
 	movem.l	(sp)+,a0
 	rts
-GetTempPlayerName	;93 GetPlayerName. a1 = mesarea "NN First Last" (getname) for player TempPlOffset (bit 15 set: away team)
+GetPlayerName	;93 GetPlayerName. a1 = mesarea "NN First Last" (getname) for player TempPlOffset (bit 15 set: away team) (was: GetTempPlayerName)
 	movem.l	d0/a2,-(sp)
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	(TempPlOffset).w,d0
 	bpl.w	.0
 	andi.w	#$FF,d0
@@ -748,9 +748,9 @@ getnamebody	;getnameD7 joins here
 	movem.l	(sp)+,d0-d3/d7-a0/a2-a3
 	rts
 
-GetTempPlayerNameAttrib	;95 only. GetTempPlayerName with FormatPlayerNameWithAttrib ("NN F. Last")
+GetPlayerNameWithAttrib	;95 only. GetTempPlayerName with FormatPlayerNameWithAttrib ("NN F. Last") (was: GetTempPlayerNameAttrib)
 	movem.l	d0/a2,-(sp)
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	(TempPlOffset).w,d0
 	bpl.w	.0
 	andi.w	#$FF,d0
@@ -1307,7 +1307,7 @@ appstring	;Append String a1 to String a3 (the 0 pad byte dropped, the result pad
 	movem.l	(sp)+,d0/a0
 	rts
 
-ScaleAttrib	;95 only. d0 below $32: d0 / 2 + $19
+AttribAdjust	;95 only. d0 below $32: d0 / 2 + $19 (was: ScaleAttrib)
 	cmp.w	#$32,d0
 	bge.w	.0
 	asr.w	#1,d0
@@ -1315,7 +1315,7 @@ ScaleAttrib	;95 only. d0 below $32: d0 / 2 + $19
 .0
 	rts
 
-PutTeamBlock	;95 only. Draw team block d0 (TeamBlockMaps, teamblockwidth wide, 2 rows) at printx / printy
+PrintTeamData	;95 only. Draw team block d0 (TeamBlockMaps, teamblockwidth wide, 2 rows) at printx / printy (was: PutTeamBlock)
 	movem.l	d0-d2/a0-a1,-(sp)
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
@@ -1648,7 +1648,7 @@ AssignPads	;No xref. 95 only. Clear c1playernum-c4playernum, then give each pad 
 .x
 	rts
 
-SetRinkPalette	;95 only. Copy the rink palette (16 longs at the Rinktilelist header) to palfadenew
+setupIceRinkMap	;95 only. Copy the rink palette (16 longs at the Rinktilelist header) to palfadenew (was: SetRinkPalette)
 	movea.l	#Rinktilelist,a0
 	adda.l	(a0),a0
 	moveq	#$F,d0
@@ -1736,7 +1736,7 @@ printscores1	;93 printscores1. Draw scoreboard: the period box (Framer 9 x 5 at 
 	bsr.w	Framer
 	bsr.w	printz
 	String	-(TXPRI+TXMAP1),$18,$1A,0
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	bsr.w	PrintTeamNameAndScore
 	bsr.w	printz
 	String	-(TXPRI+TXMAP1),$18,$18,0
@@ -2006,7 +2006,7 @@ UnpackPicture	;94 only. Unpack a picture a2: count.w, then 3 bytes per row of 8 
 UpdateLineChange	;94 name (periodicevents, once a second). Unless OptLine: bench players (tmpdst -2) of both teams get 9 energy, up to $1000 (.team)
 	tst.w	(OptLine).w
 	bne.w	.3
-	movea.w	#(HmShots-M68K_RAM),a2	;team 1
+	movea.w	#(tmstruct-M68K_RAM),a2	;team 1
 	bsr.w	.0
 	lea	tmsize(a2),a2	;team 2 (tmsize)
 .0
@@ -2040,7 +2040,7 @@ RestoreTeamEnergy	;No xref. 94 only. a2 = team: max energy (tmpde $1000) for eve
 	bpl.s	.loop
 	rts
 
-ResetTeamEnergy	;95 only. a2 = team: full energy for every player not injured for the game (tmpdst -4); period injuries (-3) go back to the bench (-2)
+reenergizeteam	;95 only. a2 = team: full energy for every player not injured for the game (tmpdst -4); period injuries (-3) go back to the bench (-2) (was: ResetTeamEnergy)
 	moveq	#$32,d0
 .0
 	cmpi.w	#$FFFC,$68(a2,d0.w)
@@ -2218,7 +2218,7 @@ setupice	;set all variables, send non purgeable graphics, build sprite frame lis
 	jsr	(DoDMA_clearCallbackPointer).l
 	move.w	d4,(spritechars).w
 	jsr	(defaultsprites).l
-	jsr	(SetRinkPalette).l
+	jsr	(setupIceRinkMap).l
 	move.w	d4,(framerchars).w
 	jsr	(AddFramer2).l
 	jsr	(AddFonts).l

@@ -38,7 +38,7 @@ getname = $7CC90		;middle95
 FormatPlayerNameWithAttrib = $7CD38		;middle95
 FormatPlayerNameShort = $7CE16		;middle95
 PushNumberWidth = $7D154		;middle95
-PutTeamBlock = $7D268		;middle95
+PrintTeamData = $7D268		;middle95
 AssignPads = $7D540		;middle95
 printbigz = $7D8D2		;middle95
 printbigz1 = $7D8F6		;middle95
@@ -60,7 +60,7 @@ GAttribOverall = $85996		;setup95
 Stop4Pen = $8901C		;penalty95
 AddPenalty2 = $8916E		;penalty95
 prefmes = $89898		;penalty95
-PenaltyList = $89C2E		;penalty95
+Penaltylist = $89C2E		;penalty95
 PenShotPenalties = $89FFC		;penalty95
 DrawTeamScreen6 = $8B32A		;lines95
 getGoalieSCnum = $8B974		;95: d0 = SCnum of the goalie of the team of player d0

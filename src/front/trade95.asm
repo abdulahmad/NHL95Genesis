@@ -1323,7 +1323,7 @@ DrawTradeTeam	;95 only. Set up the trade rosters of HomeTeam and VisTeam
 	clr.w	d0
 	move.b	2(a2),d0
 	move.w	d0,(screenarg).w
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	cmp.w	(HomeTeam).w,d7
 	beq.w	.2
 	movea.l	#AwShots,a2
@@ -1341,7 +1341,7 @@ DrawTradeTeam	;95 only. Set up the trade rosters of HomeTeam and VisTeam
 	jsr	(SeasonPlayerOut).l
 	movem.l	(sp)+,d0
 	beq.w	.4
-	jsr	(ScaleAttrib).l
+	jsr	(AttribAdjust).l
 .4
 	movea.l	(sp)+,a2
 	move.b	d0,3(a2)

@@ -164,7 +164,7 @@ puckfaceoff	;(checks94). Puck assignment 3: start a faceoff. Shootout: stop the 
 	st	temp2(a3)
 	tst.w	(OptLine).w
 	bne.w	WaitForFaceoffLineChanges
-	bclr	#1,(HmShots+tmflags).w
+	bclr	#1,(tmstruct+tmflags).w
 	bclr	#1,(AwShots+tmflags).w
 	movea.w	#(SortCords-M68K_RAM),a0
 	moveq	#$B,d0
@@ -212,7 +212,7 @@ puckfaceoff	;(checks94). Puck assignment 3: start a faceoff. Shootout: stop the 
 	bmi.w	.9
 	bsr.w	StartFaceoffLineChange
 .9
-	movea.w	#(HmShots-M68K_RAM),a1
+	movea.w	#(tmstruct-M68K_RAM),a1
 	lea	tmsize(a1),a2
 	moveq	#2,d0
 	bsr.w	SetFaceoffComputerLine
@@ -278,7 +278,7 @@ WaitForFaceoffLineChanges	;(checks94). Lock the pads (padcont -1), run both line
 	bpl.s	rtsfaceoff
 	tst.w	temp2(a3)
 	bpl.s	rtsfaceoff
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a1
 	moveq	#1,d0
 	bsr.w	SetFaceoffComputerLine
@@ -292,7 +292,7 @@ UpdateFaceoffLineChangeTimer	;(checks94). Line change timer d0 (temp1 / temp2 of
 	move.w	4(a3,d0.w),d1
 	asl.w	#7,d1
 	movea.w	#(SortCords-M68K_RAM),a0
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	btst	#6,pflags(a0,d1.w)
 	beq.w	.0
 	adda.w	#tmsize,a2
@@ -413,7 +413,7 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 	dbf	d4,.9
 	move.w	#$3C,(yleader).w
 	jsr	(ResetBench).l
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	jsr	(setpersonel).l
 	jsr	(forcepldata).l
 	adda.w	#tmsize,a2
@@ -437,7 +437,7 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 	moveq	#$10,d0
 	cmp.w	#4,d1	;find the center (position 4)
 	bne.w	.13
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	btst	#6,pflags(a3)
 	beq.w	.12
 	adda.w	#tmsize,a2
@@ -452,7 +452,7 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 .13
 	jsr	(assinsert).l
 .14
-	move.w	(HmShots+tmap).w,d4
+	move.w	(tmstruct+tmap).w,d4
 	btst	#6,pflags(a3)
 	beq.w	.15
 	move.w	(AwShots+tmap).w,d4
@@ -591,7 +591,7 @@ assfaceoff	;(assign94). Assignment $10: wait for the faceoff to end (sflags2 bit
 .0
 	rts
 
-assfaceoffp1	;(assign94). Assignment $11, the faceoff player: set his fofdata2 frame from his stick hand and goal,
+assfaceoffpl	;(assign94). Assignment $11, the faceoff player: set his fofdata2 frame from his stick hand and goal, (was: assfaceoffp1)
 	;and start the faceoff SPA ($1B36, or $1B60 at random once the puck temp1 is above $10). After the faceoff: nopuck $14 and assexit
 	btst	#5,pflags(a3)
 	bne.w	.7
@@ -880,7 +880,7 @@ DrawFaceoffWindow	;95 only (94 puckfaceoff2 .drawfaceoffwindow). The faceoff win
 	moveq	#$C,d0
 	moveq	#3,d1
 	jsr	(Framer).l
-	move.w	(HmShots+tmline).w,d0
+	move.w	(tmstruct+tmline).w,d0
 	move.w	(AwShots+tmline).w,d1
 	btst	#1,(gmode).w
 	bne.w	.1

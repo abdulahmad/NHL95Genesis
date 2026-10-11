@@ -405,12 +405,12 @@ restorepl	;(input94; 93 restorepl). d1 = old player (back to the computer), d0 =
 
 clearTeamStats	;clear both team structs (2 x tmsize) but keep the first $1A0 bytes of each hot / cold table (HmShots+$1A4 /
 	;AwShots+$1A4, saved to homehotcoldsave / awayhotcoldsave and back) and HmShots+tmgoalie / AwShots+tmgoalie. Falls into setteams
-	move.w	(HmShots+tmgoalie).w,-(sp)
+	move.w	(tmstruct+tmgoalie).w,-(sp)
 	move.w	(AwShots+tmgoalie).w,-(sp)
 	movem.l	a1-a3,-(sp)
 	move.w	#$19F,d0
 	movea.l	#AwShots+$1A4,a1	;Hot/Cold table Away Team (94: +$1A2)
-	movea.l	#HmShots+$1A4,a0	;Hot/Cold table Home Team
+	movea.l	#tmstruct+$1A4,a0	;Hot/Cold table Home Team
 	movea.l	#homehotcoldsave,a2
 	movea.l	#awayhotcoldsave,a3
 .loop
@@ -419,7 +419,7 @@ clearTeamStats	;clear both team structs (2 x tmsize) but keep the first $1A0 byt
 	dbf	d0,.loop
 	movem.l	(sp)+,a1-a3
 	move.l	#tmsize-1,d0
-	movea.w	#(HmShots-M68K_RAM),a0
+	movea.w	#(tmstruct-M68K_RAM),a0
 .loop2
 	clr.b	(a0)+
 	dbf	d0,.loop2
@@ -431,7 +431,7 @@ clearTeamStats	;clear both team structs (2 x tmsize) but keep the first $1A0 byt
 	movem.l	a1-a3,-(sp)
 	move.w	#$19F,d0
 	movea.l	#AwShots+$1A4,a1
-	movea.l	#HmShots+$1A4,a0
+	movea.l	#tmstruct+$1A4,a0
 	movea.l	#homehotcoldsave,a2
 	movea.l	#awayhotcoldsave,a3
 .loop4
@@ -440,12 +440,12 @@ clearTeamStats	;clear both team structs (2 x tmsize) but keep the first $1A0 byt
 	dbf	d0,.loop4
 	movem.l	(sp)+,a1-a3
 	move.w	(sp)+,(AwShots+tmgoalie).w
-	move.w	(sp)+,(HmShots+tmgoalie).w
-	st	(HmShots+tmpdst+$34).w
+	move.w	(sp)+,(tmstruct+tmgoalie).w
+	st	(tmstruct+tmpdst+$34).w
 	st	(AwShots+tmpdst+$34).w
 setteams	;93 name. Use hometeam/visteam to set team structures (InitTeamSructure for each). Falls in from clearTeamStats
 	movem.l	d0/a0-a2,-(sp)
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	(HomeTeam).w,d0
 	move.w	#(SortCords-M68K_RAM),tmsort(a2)
 	bsr.w	InitTeamSructure
@@ -467,7 +467,7 @@ InitTeamSructure	;93 name. Set up team struct a2 for team d0: store the team num
 setplayercolors	;(94 IDA: SetTeamColors). Copy in correct color data for each team: .team for the home team, then falls in for
 	;the visitors. Called from setupice and others
 	clr.w	d1
-	movea.w	#(HmShots-M68K_RAM),a0
+	movea.w	#(tmstruct-M68K_RAM),a0
 	bsr.w	.team
 	moveq	#$20,d1
 	adda.w	#tmsize,a0

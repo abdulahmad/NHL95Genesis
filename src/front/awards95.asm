@@ -20,7 +20,7 @@ GetTeamUser	;95 only. (recuser1) = the name log entry of the pad on team a1 (HmS
 	bra.w	.5
 .0
 	move.w	#1,d0
-	cmpa.l	#HmShots,a1
+	cmpa.l	#tmstruct,a1
 	beq.w	.1
 	move.w	#2,d0
 .1
@@ -89,7 +89,7 @@ PrintAwardTitle	;95 only. Print award AwardIndex: name, description and second l
 	rts
 
 PrintCentered	;95 only. Print String d0 of the list a1 (SkipStrings) centred on the 40 columns
-	jsr	(SkipStrings).l
+	jsr	(AdvanceStringPtr).l
 	move.w	(a1),d0
 	subq.w	#2,d0
 	lsr.w	#1,d0

@@ -135,11 +135,11 @@ DisplayTeamStatsScreen	;period94 DisplayTeamStatsScreen (93 name). Team blocks (
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),3,6,0
 	move.w	#$2C,d0
-	jsr	(PutTeamBlock).l
+	jsr	(PrintTeamData).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),$1A,6,0
 	moveq	#0,d0
-	jsr	(PutTeamBlock).l
+	jsr	(PrintTeamData).l
 	bsr.w	SetStatScroll
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),0,0,0
@@ -158,7 +158,7 @@ DisplayTeamStatsScreen	;period94 DisplayTeamStatsScreen (93 name). Team blocks (
 	jsr	(print).l
 	movea.l	a1,a0
 	move.w	#$22,(printx).w
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	bsr.w	FormatStatValue
 	move.w	#9,(printx).w
 	lea	tmsize(a2),a2
@@ -378,11 +378,11 @@ DisplayAttributeScreen	;stats94 DisplayAttributeScreen (93 name). Stats screen f
 	String	-(TXPRI+TXMAP3),8,4,'Player',-(TXPRI+TXMAP3),$15,4,'Stats',-(TXPRI+TXMAP3),$E,1
 .team
 	clr.w	d0
-	cmpa.w	#(HmShots-M68K_RAM),a2
+	cmpa.w	#(tmstruct-M68K_RAM),a2
 	beq.w	.home
 	move.w	#$2C,d0
 .home
-	jsr	(PutTeamBlock).l
+	jsr	(PrintTeamData).l
 	bsr.w	DisplayAttributeMenu
 	bsr.w	DrawScrollArrowsAttribute
 .loop
@@ -428,7 +428,7 @@ DisplayAttributeScreen	;stats94 DisplayAttributeScreen (93 name). Stats screen f
 	lea	tmsize(a2),a2
 	cmpa.w	#(AwShots-M68K_RAM),a2
 	beq.w	.redraw
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	bra.w	.redraw
 
 UpdateAttributeScroll	;(stats94; 93 name) Stats screen per frame: scroll 0 ... SelectedPlayerIdx, stop on a 16 line boundary, draw
@@ -824,7 +824,7 @@ InitSeasonStats	;95 only. New season: clear the player stat blocks (SRGoals on, 
 SaveSimGame	;95 only. Save a finished season game: the cup winner, SimFlags bit 0 when a user team won, player stats, highlights, both team
 	;records and the injury ticks
 	movem.l	d0-d7/a0-a6,-(sp)
-	move.w	(HmShots+$28).w,(SaveRAM+2*SRCupWinner).l
+	move.w	(tmstruct+$28).w,(SaveRAM+2*SRCupWinner).l
 	move.w	(HmGoals).w,d7
 	cmp.w	(AwGoals).w,d7
 	bgt.w	.0
@@ -857,21 +857,21 @@ SaveSimGame	;95 only. Save a finished season game: the cup winner, SimFlags bit 
 	subq.w	#1,d6
 	add.w	d6,d6
 	move.w	d7,d0
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	bsr.w	AddPlayerSeasonStats
 	move.w	(VisTeam).w,d0
 	movea.l	#AwShots,a1
 	bsr.w	AddPlayerSeasonStats
 	bsr.w	SaveGameHighlights
 	move.w	(HomeTeam).w,d0
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	movea.l	#AwShots,a2
 	bsr.w	AddTeamSeasonStats
 	move.w	(VisTeam).w,d0
 	movea.l	#AwShots,a1
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	bsr.w	AddTeamSeasonStats
-	move.w	(HmShots+$28).w,d0
+	move.w	(tmstruct+$28).w,d0
 	move.w	(AwShots+$28).w,d1
 	jsr	(TickTeamInjuries).l
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1058,7 +1058,7 @@ SaveGameHighlights	;95 only. Pick today's highlight of HomeTeam's game (most goa
 	movea.l	#StatBuf,a0
 	clr.w	(a0)
 	bclr	#1,(BA_PS_flags).w
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	movea.l	#AwShots,a3
 	move.w	(HmGoals).w,d0
 	cmp.w	(AwGoals).w,d0
@@ -1068,7 +1068,7 @@ SaveGameHighlights	;95 only. Pick today's highlight of HomeTeam's game (most goa
 	bra.w	.1
 .0
 	movea.l	#AwShots,a2
-	movea.l	#HmShots,a3
+	movea.l	#tmstruct,a3
 .1
 	movem.l	a2-a3,-(sp)
 	bsr.w	MostGoals
@@ -3258,7 +3258,7 @@ PeriodStatsColumns	;period94 PeriodStatsScreen tail (+$25A): print both teams' p
 	movea.l	#AwShots,a2
 	move.w	#$B,(printy).w
 	bsr.w	PeriodStatsTeam
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	move.w	#$12,(printy).w
 	bsr.w	PeriodStatsTeam
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -3635,11 +3635,11 @@ DrawLineEditorScreen	;stats94 DrawTeamScreen: clear, print the "Line Editor" tit
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP2),$A,$4,'Line  Editor',-(TXPRI+TXMAP2),$E,$1
 	clr.w	d0
-	cmpa.w	#(HmShots-M68K_RAM),a2
+	cmpa.w	#(tmstruct-M68K_RAM),a2
 	beq.w	.0
 	move.w	#$2C,d0
 .0
-	jmp	(PutTeamBlock).l
+	jmp	(PrintTeamData).l
 
 ClearAttributeArea2	;stats94 ClearAttributeArea2: erase 40 x 10 at the top of map 2
 	jsr	(printz).l
@@ -3945,7 +3945,7 @@ FindMaxAttributeTEam	;(data94; 93 name) Take the highest of the 52 star scores a
 	move.w	a1,d0
 	subi.w	#(ThreeStars-M68K_RAM),d0
 	lsr.w	#2,d0	;entry number
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	cmp.w	#$1A,d0
 	blt.w	.3
 	subi.w	#$1A,d0
@@ -3960,7 +3960,7 @@ CalculateTeamAttributes	;(data94; 93 name) Star score for every roster slot of b
 	jsr	(GetPeriodTime).l
 	move.w	d0,d5
 	add.w	d2,d5
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a3
 	bsr.w	CalculateTeamAttributeValues	;home
 	movea.w	a3,a2

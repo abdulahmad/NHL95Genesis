@@ -145,7 +145,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	String	TXS_ALL,0,1,$41,1,0
 	lea	PlayoffScreenText(pc),a1
 	move.w	(gamelevel).w,d0
-	jsr	(SkipStrings).l
+	jsr	(AdvanceStringPtr).l
 	jsr	(printbig).l
 	tst.w	(gamelevel).w
 	beq.w	.6

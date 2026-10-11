@@ -19,7 +19,7 @@ setInjuryType	;collide94 setInjuryType. a2 injured: out for the period ($FFFD) o
 	move.w	Ypos(a2),(yc1).w
 	bset	#6,(sflags).w
 	clr.w	d1	;clear d1
-	movea.w	#(HmShots-M68K_RAM),a0	;move Home team Struct to a0
+	movea.w	#(tmstruct-M68K_RAM),a0	;move Home team Struct to a0
 	btst	#6,pflags(a2)
 	beq.w	.0	;branch if home
 	move.w	#$8000,d1
@@ -245,7 +245,7 @@ CheckInjury	;95 only. The injury message when its timer runs out: "Injury to:" t
 	jsr	(printz).l
 	String	' games',-(TXPRI+TXMAP1),$C,$5,$0
 .6
-	jsr	(GetTempPlayerNameAttrib).l
+	jsr	(GetPlayerNameWithAttrib).l
 	jsr	(print).l
 	btst	#0,(puck_pflags2).w
 	beq.w	.7
@@ -322,7 +322,7 @@ DeleteInjurySlot	;95 only. Remove the injury slot of player d1 of team d7 (the l
 updatepwrplay	;penalty94 updatepwrplay. The power play box: the team and the time left (GetLowestPen)
 	btst	#1,(gmode2).w
 	bne.w	rtsPowerPlay
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a3
 	move.w	tmap(a2),d0
 	sub.w	tmap(a3),d0
@@ -343,7 +343,7 @@ updatepwrplay	;penalty94 updatepwrplay. The power play box: the team and the tim
 	bset	#5,(sflags2).w
 	bne.w	.4
 	addq.w	#1,4(a3)
-	cmpa.w	#(HmShots-M68K_RAM),a3
+	cmpa.w	#(tmstruct-M68K_RAM),a3
 	bne.w	.3
 .2
 	bra.w	.4

@@ -24,11 +24,11 @@ eraser = $7C8CC		;middle95
 PrintSmallListItem = $7CB38		;middle95
 FormatPlayerNameWithAttrib = $7CD38		;middle95
 PushNumber = $7D120		;middle95
-PutTeamBlock = $7D268		;middle95
+PrintTeamData = $7D268		;middle95
 printbigz = $7D8D2		;middle95
 FormatAndPrintTime = $7DF7C		;middle95
 ExitAttributeScreen2 = $8546E		;setup95
-PenaltyList = $89C2E		;penalty95
+Penaltylist = $89C2E		;penalty95
 DrawTeamScreen2 = $8ACEC		;lines95
 ControllerBgMap = $164AC8		;graphics95
 

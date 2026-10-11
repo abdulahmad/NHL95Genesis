@@ -571,7 +571,7 @@ SimGameStats	;95 only. Fill the team structs for a simulated game a0 (teams, sco
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(vcount).w,d0
 	jsr	(randomd0).l
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	move.w	#$365,d0
 .0
 	clr.w	(a1)+
@@ -582,7 +582,7 @@ SimGameStats	;95 only. Fill the team structs for a simulated game a0 (teams, sco
 	clr.w	d0
 	move.b	1(a0),d0
 	move.w	d0,(VisTeam).w
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	movea.l	#AwShots,a2
 	move.w	(HomeTeam).w,$28(a1)
 	move.w	(VisTeam).w,Xvel(a2)
@@ -619,7 +619,7 @@ SimGameStats	;95 only. Fill the team structs for a simulated game a0 (teams, sco
 .1
 	ext.l	d1
 	divu.w	#$64,d1
-	move.w	d1,(HmShots+8).w
+	move.w	d1,(tmstruct+8).w
 	movea.l	#SimTeamTbl,a0
 	move.w	(VisTeam).w,d0
 	add.w	d0,d0
@@ -647,12 +647,12 @@ SimTeamTbl	;95 only. A word per team: SimGameStats adds random +-$258 and stores
 SimGoalieStats	;95 only. SimGoalie for the home and the away team
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(HomeTeam).w,d7
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	movea.l	#AwShots,a2
 	bsr.w	SimGoalie
 	move.w	(VisTeam).w,d7
 	movea.l	#AwShots,a1
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	bsr.w	SimGoalie
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -1001,7 +1001,7 @@ SeasonGameOver	;95 only. After a human season game: copy the scores into its Sea
 	dbf	d0,.0
 	bra.w	.3
 .2
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	move.b	$D(a1),2(a0)
 	adda.w	#tmsize,a1
 	move.b	$D(a1),3(a0)

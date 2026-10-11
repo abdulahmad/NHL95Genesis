@@ -109,7 +109,7 @@ SetupPauseScreen	;(dc.b). Draw routine for the pause menu (92 Pausemode .pall / 
 ;	(the 40 byte menu box String as dc.w / dc.b, the String macro takes 15 values).
 seta2	;(hockey94). Set a2 to the team struct of the pause pad (menupadnum: cont1team ... cont4team). Called from Pausemode and
 	;HandleMenuInput
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	tst.w	(menupadnum).w
 	beq.w	.2
 	cmpi.w	#1,(menupadnum).w
@@ -471,10 +471,10 @@ PauseScreenDraw	;95 only. Draw the pause screen (SetupPauseScreen): wait out the
 	move.w	#$30,d0
 	move.w	#2,(printx).w
 	move.w	#4,(printy).w
-	jsr	(PutTeamBlock).l
+	jsr	(PrintTeamData).l
 	move.w	#$1A,(printx).w
 	clr.w	d0
-	jsr	(PutTeamBlock).l
+	jsr	(PrintTeamData).l
 	jsr	(ClearInfoTab).l
 	jsr	(ClearStatsTab).l
 	jsr	(ClearPauseTab).l
@@ -507,7 +507,7 @@ ShowPenaltyBoxes	;95 only. The pause screen penalty boxes: home at $1F, $E, away
 	movem.l	d0-d7/a0-a3,-(sp)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$1F,$E,0
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	bsr.w	ShowPenaltyBox
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),2,$E,0
@@ -594,7 +594,7 @@ RestoreGameScreen	;95 only (in the 94 Pausemode ClrHor place). Rebuild the game 
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	(printfontset).w
 	bclr	#5,(sflags9).w
-	clr.w	(HmShots+$32).w
+	clr.w	(tmstruct+$32).w
 	clr.w	(AwShots+$32).w
 	move.l	#VBlank,(vbint).w
 	bset	#1,(disflags).w
@@ -612,7 +612,7 @@ RestoreGameScreen	;95 only (in the 94 Pausemode ClrHor place). Rebuild the game 
 	clr.l	(a0)+
 	dbf	d1,.0
 	jsr	(setplayercolors).l
-	jsr	(SetRinkPalette).l
+	jsr	(setupIceRinkMap).l
 	jsr	(setVram_0).l
 	jsr	(ClearOldFrames).l
 	move.w	#$800,d0
@@ -661,7 +661,7 @@ RestoreGameScreen	;95 only (in the 94 Pausemode ClrHor place). Rebuild the game 
 	jsr	(DoDMA_clearCallbackPointer).l
 	jsr	(LoadHomeTeamGfx).l
 	jsr	(setplayercolors).l
-	jsr	(SetRinkPalette).l
+	jsr	(setupIceRinkMap).l
 	move.w	(sp)+,(disflags).w
 	bclr	#0,(disflags).w
 	bclr	#2,(disflags).w
@@ -953,7 +953,7 @@ ShowPenaltyMessages	;95 only. Every $78 frames show the next queued penalty (pen
 	subq.l	#4,a0
 	clr.w	d0
 	move.b	(a0),d0
-	movea.l	#PenaltyList,a1
+	movea.l	#Penaltylist,a1
 	adda.w	(a1,d0.w),a1
 	clr.w	d2
 	move.b	1(a1),d2
@@ -972,7 +972,7 @@ ShowPenaltyMessages	;95 only. Every $78 frames show the next queued penalty (pen
 	sub.w	d0,(printx).w
 	jsr	(print).l
 	move.w	(sp),d0
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	bclr	#7,d0
 	beq.w	.2
 	adda.l	#tmsize,a2
@@ -1442,11 +1442,11 @@ DisplayPlayerSelectMenu	;stats94 DisplayPlayerSelectMenu. Draw the goalie list a
 	move.w	d0,d2
 	subq.w	#1,d2
 	move.w	d2,(TempPlOffset).w
-	cmpa.l	#HmShots,a2
+	cmpa.l	#tmstruct,a2
 	beq.w	.2
 	st	(TempPlOffset).w
 .2
-	jsr	(GetTempPlayerNameAttrib).l
+	jsr	(GetPlayerNameWithAttrib).l
 	move.w	#$C,(printx).w
 	bsr.w	printsmall
 .next
@@ -1472,7 +1472,7 @@ TimeoutMenu	;stats94 TimeoutMenu. Pause menu TIMEOUT for team a2: drop the item 
 	lsr.w	#1,d0
 	sub.w	d0,(printx).w
 	bsr.w	printsmall
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	jsr	(RestoreTeamEnergy).l
 	adda.w	#tmsize,a2
 	jsr	(RestoreTeamEnergy).l
@@ -1486,7 +1486,7 @@ PauseScores	;95 only. The two scores in big digits on the pause screen (PutScore
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$1E,6,0
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	move.w	tmscore(a2),d0
 	ext.l	d0
 	divu.w	#$A,d0

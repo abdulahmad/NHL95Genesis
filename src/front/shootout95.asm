@@ -337,7 +337,7 @@ PlayoffRoundScreen	;records94 PlayoffRoundScreen. Shootout round box: "SHOOTOUT 
 	lea	RoundBigTxt(pc),a1
 	jsr	(printbig1).l
 	move.w	(BA_Skater_Offset).w,d0
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	tst.w	(BA_Team).w
 	beq.w	.0
 	movea.l	#AwShots,a2
@@ -359,13 +359,13 @@ PlayoffRoundScreen	;records94 PlayoffRoundScreen. Shootout round box: "SHOOTOUT 
 	movea.l	#AwShots,a2
 	tst.w	(BA_Team).w
 	beq.w	.1
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 .1
 	jsr	(FormatPlayerNameWithAttrib).l
 	jsr	(print).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$4,$9,$0
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	movea.l	tmdata(a1),a1
 	adda.w	4(a1),a1
 	jsr	(print).l
@@ -468,7 +468,7 @@ ShooterSelectList	;shootout94 ShooterSelectList. Shootout shooters: the "{Select
 	;goalies for slot 5)
 	move.w	#$C000,d7
 	movea.l	#homeshooters,a0
-	cmpa.l	#HmShots,a2
+	cmpa.l	#tmstruct,a2
 	beq.w	.0
 	movea.l	#awayshooters,a0
 .0
@@ -566,7 +566,7 @@ ShooterSelectList	;shootout94 ShooterSelectList. Shootout shooters: the "{Select
 	move.b	(a3),d0
 	move.w	(TestList).w,d2
 	movea.l	#homeshooters,a0
-	cmpa.l	#HmShots,a2
+	cmpa.l	#tmstruct,a2
 	beq.w	.11
 	movea.l	#awayshooters,a0
 .11
@@ -669,11 +669,11 @@ ShootersBackground	;shootout94 ShootersBackground. Shootout shooters: "Shootout"
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP2),$A,$4,'  Shootout  ',-(TXPRI+TXMAP2),$F,$1
 	clr.w	d0
-	cmpa.w	#HmShots&$FFFF,a2
+	cmpa.w	#tmstruct&$FFFF,a2
 	beq.w	.0
 	move.w	#$2C,d0
 .0
-	jmp	(PutTeamBlock).l
+	jmp	(PrintTeamData).l
 ClearShooterScreen	;shootout94 ClearShooterScreen. Shootout shooters: erase the top of the screen
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$0,$0,$0
@@ -713,7 +713,7 @@ PrintShooterBox	;shootout94 PrintShooterBox. Shootout shooters: the selected pla
 	jsr	(printsmallz).l
 	String	TXS_X,$15,TXS_Y,$7
 	movea.l	#homeshooters,a1
-	cmpa.l	#HmShots,a2
+	cmpa.l	#tmstruct,a2
 	beq.w	.0
 	movea.l	#awayshooters,a1
 .0
@@ -735,7 +735,7 @@ PrintShooterNames	;shootout94 PrintShooterNames. Shootout shooters: the shooters
 	String	TXS_X,$6,TXS_Y,$E,TXS_ATTR,$6,TXS_FONT,$0
 	move.w	#0,d1
 	movea.l	#homeshooters,a0
-	cmpa.l	#HmShots,a2
+	cmpa.l	#tmstruct,a2
 	beq.w	.loop
 	movea.l	#awayshooters,a0
 .loop
@@ -791,7 +791,7 @@ puckshootout	;checks94 puckshootout. Start a penalty shot or shootout attempt: t
 .0
 	jsr	(StartShootoutPath).l
 	move.l	a2,-(sp)
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	tst.w	(BA_Team).w
 	beq.w	.1
 	movea.l	#AwShots,a2
@@ -885,13 +885,13 @@ puckshootout	;checks94 puckshootout. Start a penalty shot or shootout attempt: t
 	move.w	d0,(BA_Goalie_SCnum).w
 .14
 	movem.w	(sp)+,d1-d2
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	#$20,d0
 	jmp	(assreplace).l
 
 SelectPenaltyShotSkater	;checks94 SelectPenaltyShotSkater. The best rated free skater of the shooting team (9 rating nibbles) in BA_Skater_Offset, a3 his sort object; d0 = 1, or -1 with none
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#HmShots,a0
+	movea.l	#tmstruct,a0
 	tst.w	(BA_Team).w
 	beq.w	.0
 	movea.l	#AwShots,a0
@@ -1047,7 +1047,7 @@ puckpenshot	;checks94 puckpenshot. Penalty shot / shootout face-off: rink, puck 
 	dbf	d4,.2
 	move.w	#$3C,(yleader).w
 	jsr	(ResetBench).l
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	jsr	(setpersonel).l
 	bsr.w	SetupPenaltyShot
 	adda.w	#tmsize,a2
@@ -1332,7 +1332,7 @@ PenaltyShotBox	;data94 PenaltyShotBox. In a shootout PlayoffRoundScreen; else th
 	adda.w	d0,a2
 	clr.w	d0
 	move.b	$66(a2),d0	;roster slot
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	tst.w	(BA_Team).w
 	beq.w	.1
 	movea.l	#AwShots,a2
@@ -1343,7 +1343,7 @@ PenaltyShotBox	;data94 PenaltyShotBox. In a shootout PlayoffRoundScreen; else th
 	String	-(TXPRI+TXMAP1),$4,$7,$0
 	movem.l	a1/a3,-(sp)
 	move.w	(pspenalty).w,d0
-	movea.l	#PenaltyList,a1
+	movea.l	#Penaltylist,a1
 	adda.w	(a1,d0.w),a1
 	lea	2(a1),a1
 	jsr	(print).l
@@ -1354,7 +1354,7 @@ PenaltyShotBox	;data94 PenaltyShotBox. In a shootout PlayoffRoundScreen; else th
 	movea.l	#AwShots,a2
 	tst.w	(BA_Team).w
 	beq.w	.2
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 .2
 	jsr	(FormatPlayerNameWithAttrib).l
 	jsr	(print).l

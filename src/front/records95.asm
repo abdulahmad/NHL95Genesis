@@ -876,7 +876,7 @@ PlayoffStatsScreen	;95 only. Pause menu PLAYOFF STATS: the playoff stats (Displa
 	movea.l	#potree,a0
 	move.w	(potreeteam).w,d0
 	move.b	(a0,d0.w),d0
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	cmp.w	Xvel(a2),d0
 	beq.w	.0
 	adda.w	#tmsize,a2
@@ -1342,7 +1342,7 @@ UpdateRecords	;cards94 UpdateRecords. With save RAM (ValidSRAM) and user records
 	move.w	(HomeTeam).w,d1
 	ext.l	d1
 	movea.l	#ThreeStars,a0
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	move.w	(homegoalies).w,d5
 	move.w	(VisTeam).w,d6
 	bsr.w	UpdatePlayerRecords
@@ -1355,13 +1355,13 @@ UpdateRecords	;cards94 UpdateRecords. With save RAM (ValidSRAM) and user records
 	btst	#7,(sflags11).w
 	beq.w	.0
 	clr.w	d7
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	bsr.w	GetTeamUser
 	move.w	(recuser1).w,d4
 	movea.l	#AwShots,a1
 	bsr.w	GetTeamUser
 	move.w	(recuser1).w,d5
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	move.w	(HomeTeam).w,d1
 	move.w	(VisTeam).w,d2
 	move.w	(homegoalies).w,d6
@@ -1371,7 +1371,7 @@ UpdateRecords	;cards94 UpdateRecords. With save RAM (ValidSRAM) and user records
 	movea.l	#AwShots,a1
 	bsr.w	GetTeamUser
 	move.w	(recuser1).w,d4
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	bsr.w	GetTeamUser
 	move.w	(recuser1).w,d5
 	movea.l	#AwShots,a1
@@ -1565,7 +1565,7 @@ UpdatePlayerRecords	;cards94 UpdatePlayerRecords. For the 26 players of team a2,
 .2
 	move.l	a4,-(sp)
 	move.w	#1,d0
-	cmpa.l	#HmShots,a2
+	cmpa.l	#tmstruct,a2
 	bne.w	.3
 	move.w	#2,d0
 .3
@@ -1610,7 +1610,7 @@ UpdateUserRecord	;95 only. Team record block d1 (a pad's name log entry) for the
 	;with no team, the team no pad plays (none when both have pads)
 	tst.w	d0
 	bne.w	.2
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	cmpi.w	#1,(cont1team).w
 	beq.w	.0
 	cmpi.w	#1,(cont2team).w
@@ -1633,12 +1633,12 @@ UpdateUserRecord	;95 only. Team record block d1 (a pad's name log entry) for the
 .1
 	bra.w	.3
 .2
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	cmp.w	#2,d0
 	bne.w	.3
 	movea.l	#AwShots,a1
 .3
-	cmpa.l	#HmShots,a1
+	cmpa.l	#tmstruct,a1
 	bne.w	.5
 	movea.l	#AwShots,a2
 	move.w	(HomeTeam).w,d3
@@ -1650,7 +1650,7 @@ UpdateUserRecord	;95 only. Team record block d1 (a pad's name log entry) for the
 	exg	a1,a2
 	bra.w	.6
 .5
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	move.w	(VisTeam).w,d3
 	move.w	(HomeTeam).w,d4
 	bra.s	.4
@@ -1729,7 +1729,7 @@ PlayerRecordOffsets	;cards94 PlayerRecordOffsets. The first player record of eac
 	dc.w	$2D8
 CountGoalies	;cards94 CountGoalies. homegoalies / awaygoalies = goalies of the home / away team (ReadAttributeNibble)
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	jsr	(ReadAttributeNibble).l
 	move.w	d0,(homegoalies).w
 	movea.l	#AwShots,a2
@@ -1739,7 +1739,7 @@ CountGoalies	;cards94 CountGoalies. homegoalies / awaygoalies = goalies of the h
 	rts
 CountPlayers	;cards94 CountPlayers. homeplayers / awayplayers = players of the home / away team (GetPlayerCount)
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	jsr	(GetPlayerCount).l
 	move.w	d0,(homeplayers).w
 	movea.l	#AwShots,a2

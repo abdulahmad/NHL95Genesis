@@ -39,7 +39,7 @@ ScoutingReport	;scout94 ScoutingReport (93 name). Pregame scouting report: the R
 	move.l	#vb2,(vbint).w
 	jsr	(clearTeamStats).l
 	move.l	a0,-(sp)
-	movea.l	#HmShots,a0
+	movea.l	#tmstruct,a0
 	jsr	(Create_HotCold_Table).l	;new random hot / cold tables ($1A2(a0))
 	movea.l	#AwShots,a0
 	jsr	(Create_HotCold_Table).l
@@ -128,7 +128,7 @@ ScoutingReport	;scout94 ScoutingReport (93 name). Pregame scouting report: the R
 	move.w	#$18,(palcount).w	;24
 	move.l	#vb2,(vbint).w
 	move	#$2500,sr
-	jsr	(StartScoutText).l
+	jsr	(InitScoutingDisplay).l
 	cmpi.w	#$1A,(HomeTeam).w
 	beq.w	.1	;same team: one hot / cold paragraph
 	cmpi.w	#$1B,(HomeTeam).w
@@ -220,7 +220,7 @@ ScoutingReport	;scout94 ScoutingReport (93 name). Pregame scouting report: the R
 	beq.w	.13
 	st	(asv).w
 .13
-	jsr	(ScoutTextPlayer).l
+	jsr	(UpdateScoutingDisplay).l
 	subq.w	#1,(screentimer).w
 	bpl.w	.7
 	tst.w	(OptNOP).w
@@ -435,7 +435,7 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 	String	-TXMAP1,$0,$19,'                                        ',$0
 	jsr	(printz).l
 	String	-TXMAP1,'!',$18,$0
-	movea.l	#HmShots,a0
+	movea.l	#tmstruct,a0
 	movea.l	#AwShots,a2
 	bsr.w	PrintMatchupRating	;home
 	move.w	d0,(homerating).w
@@ -460,7 +460,7 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 	jsr	(printsmall).l
 	move.w	#$18,(printy).w
 	move.w	#2,(printfontset).w
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	move.l	(PAttribOverallMask).l,d4	;skater rating weights
 	tst.w	(matchupslot).w	;line slot 0: goalie
 	bne.w	.6
@@ -475,7 +475,7 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 	jsr	(CalcAttrib).l
 	mulu.w	#$64,d0	;* 100
 	divu.w	d1,d0
-	jsr	(ScaleAttrib).l
+	jsr	(AttribAdjust).l
 	move.w	#2,d1
 	move.w	d0,(homerating).w
 	jsr	(PushNumberWidth).l
@@ -496,7 +496,7 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 	jsr	(CalcAttrib).l
 	mulu.w	#$64,d0	;* 100
 	divu.w	d1,d0
-	jsr	(ScaleAttrib).l
+	jsr	(AttribAdjust).l
 	move.w	d0,(visrating).w
 	move.w	#2,d1
 	jsr	(PushNumberWidth).l
@@ -518,7 +518,7 @@ MatchupPosNames	;scout94 MatchupPosNames. Position names of matchups 1-6
 GetMatchupPlayers	;scout94 GetMatchupPlayers. matchuphome / matchupvis = the home / visitors player of the matchup (GetMatchupPlayer)
 	movem.l	d0/a0-a1,-(sp)
 .0
-	movea.l	#HmShots,a0
+	movea.l	#tmstruct,a0
 	btst	#6,(sflags11).w
 	beq.w	.1
 	movea.l	tmdata(a0),a0
@@ -646,7 +646,7 @@ BuildHotColdLists	;crowd94 BuildHotColdLists. The hot / cold player lists of bot
 	clr.w	(awayhotidx).w
 	clr.w	(homehotidx).w
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#HmShots,a0
+	movea.l	#tmstruct,a0
 	bsr.w	SortHotColdStarters
 	movea.l	#homehotplayer,a0
 	bsr.w	CopyHottestPlayer
@@ -726,7 +726,7 @@ SortHotColdStarters	;crowd94 SortHotColdStarters. Sum the hot / cold values of t
 ;	Local labels are numbered; the IDA local names are not kept.
 
 
-StartScoutText	;setup94 StartScoutText. Start the text player ScoutTextPlayer: VertLineScrolling = -1, PlayerScrollCtr = -1, clear SelectedPlayerIdx / typedelay; a0 = TestList (the script line list)
+InitScoutingDisplay	;setup94 StartScoutText. Start the text player ScoutTextPlayer: VertLineScrolling = -1, PlayerScrollCtr = -1, clear SelectedPlayerIdx / typedelay; a0 = TestList (the script line list) (was: StartScoutText)
 	move.w	#$FFFF,(VertLineScrolling).w
 	st	(PlayerScrollCtr).w
 	clr.w	(SelectedPlayerIdx).w
@@ -734,7 +734,7 @@ StartScoutText	;setup94 StartScoutText. Start the text player ScoutTextPlayer: V
 	movea.l	#setupvalues,a0
 	rts
 
-ScoutTextPlayer	;setup94 ScoutTextPlayer. Text player of ScoutingReport: types the ScoutTextScript lines of TestList word by word with a
+UpdateScoutingDisplay	;setup94 ScoutTextPlayer. Text player of ScoutingReport: types the ScoutTextScript lines of TestList word by word with a (was: ScoutTextPlayer)
 	;typing delay (typedelay, longer after , and .); $D ends a line; the special characters insert Strings (team names, arena, hot / cold players,
 	;user names); line breaks scroll the text box (ScoutTextNextLine)
 	cmpi.w	#$1000,(typedelay).w
@@ -757,7 +757,7 @@ ScoutTextPlayer	;setup94 ScoutTextPlayer. Text player of ScoutingReport: types t
 	move.w	#$1E0,(screentimer).w
 	rts
 .1
-	bsr.w	ScoutTextNextLine
+	bsr.w	ScrollDisplayUp
 	movea.l	a1,a2
 	bra.w	.3
 .2
@@ -837,7 +837,7 @@ ScoutTextPlayer	;setup94 ScoutTextPlayer. Text player of ScoutingReport: types t
 .11
 	cmp.w	#$18,d0
 	ble.w	.12
-	bsr.w	ScoutTextNextLine
+	bsr.w	ScrollDisplayUp
 .12
 	jsr	(printz).l
 	String	-TXMAP1,$B,$6,$0
@@ -858,7 +858,7 @@ rtsScoutText	equ	*	;setup94 rtss2. Shared rts of ScoutTextPlayer / ScoutTextNext
 	bra.w	.36
 .16
 	move.l	a2,-(sp)
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	jsr	(GetTeamNickname).l
 	movea.l	(sp)+,a2
 	bra.w	.36
@@ -870,7 +870,7 @@ rtsScoutText	equ	*	;setup94 rtss2. Shared rts of ScoutTextPlayer / ScoutTextNext
 	bra.w	.36
 .18
 	move.l	a2,-(sp)
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	jsr	(GetTeamArena).l
 	movea.l	(sp)+,a2
 	bra.w	.36
@@ -893,7 +893,7 @@ rtsScoutText	equ	*	;setup94 rtss2. Shared rts of ScoutTextPlayer / ScoutTextNext
 	jsr	(NextAwayColdPlayer).l
 	bra.w	.29
 .24
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	tst.w	(awayhotter).w
 	beq.w	.25
 	movea.l	#AwShots,a1
@@ -905,7 +905,7 @@ rtsScoutText	equ	*	;setup94 rtss2. Shared rts of ScoutTextPlayer / ScoutTextNext
 	movea.w	#(AwShots-M68K_RAM),a1
 	bra.w	.28
 .27
-	movea.w	#(HmShots-M68K_RAM),a1
+	movea.w	#(tmstruct-M68K_RAM),a1
 .28
 	move.w	tmgoalie(a1),d1
 .29
@@ -940,7 +940,7 @@ rtsScoutText	equ	*	;setup94 rtss2. Shared rts of ScoutTextPlayer / ScoutTextNext
 	subq.w	#1,d1
 	bra.w	.11
 
-ScoutTextNextLine	;setup94 ScoutTextNextLine. Next text line of ScoutTextPlayer; at 7 lines scroll the 8 rows up
+ScrollDisplayUp	;setup94 ScoutTextNextLine. Next text line of ScoutTextPlayer; at 7 lines scroll the 8 rows up (was: ScoutTextNextLine)
 	clr.w	(DispAttribCtr).w
 	addq.w	#1,(VertLineScrolling).w
 	cmpi.w	#7,(VertLineScrolling).l
@@ -962,7 +962,7 @@ ScoutTextNextLine	;setup94 ScoutTextNextLine. Next text line of ScoutTextPlayer;
 
 CompareHotColdTotals	;crowd94 CompareHotColdTotals. Compare the hot / cold totals of the teams (GetHotColdTotal): d0 = $22 / $23 (the better team, awayhotter) when they differ enough, else -1
 	movem.l	d1-d7/a0-a6,-(sp)
-	movea.l	#HmShots,a0
+	movea.l	#tmstruct,a0
 	bsr.w	GetHotColdTotal
 	move.w	d1,(TempWord1).w
 	movea.l	#AwShots,a0
@@ -1036,7 +1036,7 @@ HotColdIcon	;title94 HotColdIcon. The hot or cold icon by player iconplayer of t
 	movem.l	d0/a0-a1,-(sp)
 	movea.l	#awayhotplayer,a0
 	move.w	#1,(iconplayer+$2).w
-	cmpa.l	#HmShots,a2
+	cmpa.l	#tmstruct,a2
 	bne.w	.0
 	movea.l	#homehotplayer,a0
 	move.w	#$1C,(iconplayer+$2).w
@@ -1048,7 +1048,7 @@ HotColdIcon	;title94 HotColdIcon. The hot or cold icon by player iconplayer of t
 	beq.w	.4
 	dbf	d0,.1
 	movea.l	#awaycoldplayer,a0
-	cmpa.l	#HmShots,a2
+	cmpa.l	#tmstruct,a2
 	bne.w	.2
 	movea.l	#homecoldplayer,a0
 .2
@@ -1101,7 +1101,7 @@ NextHomeHotPlayer	;crowd94 NextHomeHotPlayer. d1 = the next home hot player (hom
 	addq.w	#1,(homehotidx).w
 .0
 	movem.l	(sp)+,d0/a0
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	rts
 
 NextAwayHotPlayer	;crowd94 NextAwayHotPlayer. The same for the away team (awayhotidx, awayhotplayer)
@@ -1129,7 +1129,7 @@ NextHomeColdPlayer	;crowd94 NextHomeColdPlayer. d1 = the next home cold player (
 	addq.w	#1,(homecoldidx).w
 .0
 	movem.l	(sp)+,d0/a0
-	movea.l	#HmShots,a1
+	movea.l	#tmstruct,a1
 	rts
 
 NextAwayColdPlayer	;crowd94 NextAwayColdPlayer. The same for the away team (awaycoldidx, awaycoldplayer)
@@ -1167,7 +1167,7 @@ GetTeamNickname	;scout94 GetTeamNickname. a1 = the nickname String of team a2, o
 	cmpi.w	#2,(a1)	;empty String?
 	bne.w	.0
 	movea.l	#HomeTxt,a1
-	cmpa.l	#HmShots,a2
+	cmpa.l	#tmstruct,a2
 	beq.w	.0
 	movea.l	#VisitorsTxt,a1
 .0

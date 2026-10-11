@@ -2200,3 +2200,20 @@ $1A6C6A,CreditsList,,,credits95
 $1A72C0,ValidationRoutine,sub_1A72C0,,checksum95
 $FFFFD0F6,namelogsel,word_FFD0F6,CreateListRow,front/records95 front/scout95
 $FFFFD0F8,namelogarrows,word_FFD0F8,CreateListOldRow,front/records95 front/scout95
+RNGseed,seed,92G/93G/94G
+HmShots,tmstruct,92G/93G/94G
+assfaceoffp1,assfaceoffpl,92G/94G
+assnothing,donothing,92G/94G
+PenaltyList,Penaltylist,92G/94G
+GetTempPlayerName,GetPlayerName,93G/94G
+AutoLineChange,chk4lc,92G/94G
+TitleVBlank,VBlank_TitleScreen,93G/94G
+StartScoutText,InitScoutingDisplay,93G/94G
+ScoutTextPlayer,UpdateScoutingDisplay,93G/94G
+ScoutTextNextLine,ScrollDisplayUp,93G/94G
+SetRinkPalette,setupIceRinkMap,93G/94G
+ResetTeamEnergy,reenergizeteam,93G/94G
+PutTeamBlock,PrintTeamData,93G/94G
+ScaleAttrib,AttribAdjust,94G
+GetTempPlayerNameAttrib,GetPlayerNameWithAttrib,94G
+SkipStrings,AdvanceStringPtr,93G/94G

@@ -31,7 +31,7 @@ asstab	;Jump table of the player logic assignments (92 / 93 / 94 asstab). 95 kee
 	dc.l	assnearest	;$E (94 $11)
 	dc.l	asspuckc	;$F (94 $10)
 	dc.l	assfaceoff	;$10 (94 $16)
-	dc.l	assfaceoffp1	;$11 (94 $17)
+	dc.l	assfaceoffpl	;$11 (94 $17)
 	dc.l	assbench	;$12 (94 $B)
 	dc.l	asseben		;$13 (94 9)
 	dc.l	assgoalietopuck	;$14 (94 $F)
@@ -478,7 +478,7 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	bpl.s	.de5
 	btst	#2,(iflags).w
 	bne.w	.de5
-	movea.w	#(HmShots-M68K_RAM),a1
+	movea.w	#(tmstruct-M68K_RAM),a1
 	lea	tmsize(a1),a2
 	btst	#6,pflags(a3)
 	beq.w	.23
@@ -813,7 +813,7 @@ assgoalietopuck	;asstab entry $14. The same as 94
 	eori	#8,ccr
 .dir
 	bmi.w	assexit
-	movea.w	#(HmShots-M68K_RAM),a1	;load home team struct into a1
+	movea.w	#(tmstruct-M68K_RAM),a1	;load home team struct into a1
 	lea	tmsize(a1),a2	;load away team struct into a2
 	btst	#6,pflags(a3)	;check if player is home or away
 	beq.w	.t0	;branch if home
@@ -840,7 +840,7 @@ assdefd	;asstab entry 7
 	btst	#5,pflags(a3)	;check if locked in animiation
 	bne.w	rtss21	;exit if so (94 rtss6)
 	btst	#0,(gmode).w	;check if clock running
-	bne.w	assnothing	;assnothing if no clock
+	bne.w	donothing	;assnothing if no clock
 	bsr.w	check4bench	;check if going to bench
 	btst	#3,pflags(a3)	;check if joystick controlled
 	bne.w	rtss21	;exit if so
@@ -908,7 +908,7 @@ assdefd	;asstab entry 7
 	eor.w	d1,d2
 	bpl.w	.de01	;branch if puckc on same team
 	move.w	(HmDefMode).w,d0
-	cmpa.l	#HmShots,a2
+	cmpa.l	#tmstruct,a2
 	beq.w	.de02
 	move.w	(AwDefMode).w,d0
 .de02
@@ -1003,7 +1003,7 @@ asswingd	;asstab entry 8
 	btst	#5,pflags(a3)	;check if locked in animation
 	bne.s	rtss21	;exit if so
 	btst	#0,(gmode).w	;check if clock is running
-	bne.w	assnothing	;assnothing if its stopped
+	bne.w	donothing	;assnothing if its stopped
 	bsr.w	check4bench	;check if going to bench
 	btst	#3,pflags(a3)	;check if joystick controlled
 	bne.s	rtss21	;exit if so
@@ -1033,7 +1033,7 @@ asswingd	;asstab entry 8
 	tst.w	(puckc).w	;95: with a carrier and the team defense mode at 1: .cover
 	bmi.w	.2
 	move.w	(HmDefMode).w,d0
-	cmpa.l	#HmShots,a2
+	cmpa.l	#tmstruct,a2
 	beq.w	.3
 	move.w	(AwDefMode).w,d0
 .3
@@ -1168,7 +1168,7 @@ asswingo	;asstab entry 9. Winger on offense: a random spot in the puck zone (.de
 	btst	#pfalock,pflags(a3)	;check if locked in animation
 	bne.w	rtss21	;exit if so
 	btst	#gmclock,(gmode).w	;check game clock
-	bne.w	assnothing	;assnothing if stopped
+	bne.w	donothing	;assnothing if stopped
 	bsr.w	check4bench	;check if player going to bench
 	btst	#pfjoycon,pflags(a3)	;check if joystick controlled
 	bne.w	rtss21	;exit if so
@@ -1289,7 +1289,7 @@ asscenterd	;asstab entry $A. Center on defense. 95: with the team defense mode a
 	btst	#5,pflags(a3)	;pfalock - locked animation
 	bne.s	rtss11	;exit if locked
 	btst	#0,(gmode).w	;gmclock - check if clock is running
-	bne.w	assnothing	;exit if stoppage
+	bne.w	donothing	;exit if stoppage
 	bsr.w	check4bench
 	btst	#3,pflags(a3)	;pfjoycon - check if joystick controlled
 	bne.s	rtss11	;exit if joystick controlled
@@ -1319,7 +1319,7 @@ asscenterd	;asstab entry $A. Center on defense. 95: with the team defense mode a
 	tst.w	(puckc).w	;95: with a carrier and the team defense mode at 1: .cover
 	bmi.w	.2
 	move.w	(HmDefMode).w,d0
-	cmpa.l	#HmShots,a2
+	cmpa.l	#tmstruct,a2
 	beq.w	.3
 	move.w	(AwDefMode).w,d0
 .3
@@ -1410,7 +1410,7 @@ asscentero	;asstab entry $B. Center on offense: a random spot in the puck zone
 	btst	#5,pflags(a3)	;pfalock
 	bne.w	rtss11	;exit if anim locked
 	btst	#0,(gmode).w	;#gmclock
-	bne.w	assnothing	;do nothing
+	bne.w	donothing	;do nothing
 	bsr.w	check4bench
 	btst	#3,pflags(a3)	;pfjoycon - check if joystick controlled
 	bne.w	rtss11	;exit if controlled
@@ -1511,7 +1511,7 @@ assdefo	;asstab entry $C. assign94 assdefo (moved in). Defenseman on offense. 95
 	btst	#5,pflags(a3)
 	bne.w	rtsskate
 	btst	#0,(gmode).w	;#gmclock
-	bne.w	assnothing	;Whistle blown, do nothing
+	bne.w	donothing	;Whistle blown, do nothing
 	bsr.w	check4bench	;check if player should go to bench
 	btst	#3,pflags(a3)	;#pfjoycon - is player joystick controlled
 	bne.w	rtsskate	;yes, then exit
@@ -1643,7 +1643,7 @@ assdefo	;asstab entry $C. assign94 assdefo (moved in). Defenseman on offense. 95
 	rts
 ; player a3 is defensive player on defense
 
-assnothing	;assign94 assnothing (moved in): no assignment, just skate (doplayeracc 8)
+donothing	;assign94 assnothing (moved in): no assignment, just skate (doplayeracc 8) (was: assnothing)
 	btst	#5,pflags(a3)	;#pfalock
 	bne.w	rtss21
 	btst	#3,pflags(a3)	;#pfjoycon
@@ -1825,7 +1825,7 @@ a2touchpuck	;Player a2 touched the puck: last touch, scorer / assist slots, offs
 	move.w	(a2),(ltx).w	;move Xpos to last touch X
 	move.w	Ypos(a2),(lty).w	;move Ypos to last touch Y
 	move.w	SCnum(a2),(ltplayer).w	;move SCnum to last touch player
-	movea.w	#(HmShots-M68K_RAM),a0	;move Home Shots into a0
+	movea.w	#(tmstruct-M68K_RAM),a0	;move Home Shots into a0
 	btst	#pfteam,pflags(a2)	;check if home or away
 	beq.w	.t	;branch if home
 	lea	tmsize(a0),a0	;add to a0 if away
@@ -1884,7 +1884,7 @@ a2touchpuck	;Player a2 touched the puck: last touch, scorer / assist slots, offs
 	neg.w	d0	;negate d0
 .0
 	bmi.w	.x	;exit if minus
-	move.w	(HmShots+tmap).w,d0	;IDA (tmap).w
+	move.w	(tmstruct+tmap).w,d0	;IDA (tmap).w
 	sub.w	(AwShots+tmap).w,d0	;IDA (tmsize).w
 	btst	#pfteam,pflags(a2)	;check home or away
 	beq.w	.1	;branch if home
@@ -2229,7 +2229,7 @@ asspassrec	;asstab entry $D. Catch a pass; a one timer (assonetimer) for a compu
 	btst	#pfalock,pflags(a3)	;pfalock - animation lock
 	bne.w	rtss6	;exit if locked
 	btst	#gmclock,(gmode).w	;gmclock - check if clock running
-	bne.w	assnothing	;exit if clock stopped
+	bne.w	donothing	;exit if clock stopped
 	btst	#pfjoycon,pflags(a3)	;pfjoycon - joystick controlled?
 	bne.w	assexit	;exit if controlled
 	bclr	#pfna,pflags(a3)	;#pfna - clear new assignment
@@ -2341,7 +2341,7 @@ assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates 
 	btst	#pf3break,pflags3(a3)	;check if breakaway
 	beq.w	.nobreak	;jump if not
 	movem.l	a2,-(sp)	;push a2 to stack
-	movea.l	#HmShots,a2	;put Home Team Struct into a2
+	movea.l	#tmstruct,a2	;put Home Team Struct into a2
 	btst	#6,pflags(a3)	;pfteam - check home or away
 	beq.w	.addcrowd	;jump if home
 	movea.l	#AwShots,a2	;put Away Team Struct into a2
@@ -2503,7 +2503,7 @@ assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates 
 	beq.w	.nodec2	;jump if not set
 .gmclock	;IDA: gmclock (a 92 equate name; local so it does not split assnearest or clash with the equate)
 	btst	#0,(gmode).w	;check if clock running
-	bne.w	assnothing	;branch if not
+	bne.w	donothing	;branch if not
 .nodec2
 	btst	#pfjoycon,pflags(a3)	;pfjoycon - check if controlled
 	bne.w	rtsskate	;jump if controlled
@@ -2741,7 +2741,7 @@ breakaway	;Breakaway for the carrier
 	move.w	#SFXbeep1,-(sp)	;ding SFX
 	jsr	(sfx).l
 	movem.l	a2,-(sp)	;push a2 on stack
-	movea.l	#HmShots,a2	;move Home Team Struct into a2
+	movea.l	#tmstruct,a2	;move Home Team Struct into a2
 	btst	#6,pflags(a3)	;pfteam - check if home or away
 	beq.w	.c0	;jump if home
 	movea.l	#AwShots,a2	;move Away Team Struct into a2
@@ -2872,7 +2872,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	btst	#2,(BA_PS_flags).w
 	bne.w	.3
 	btst	#0,(gmode).w
-	bne.w	assnothing
+	bne.w	donothing
 .3
 	btst	#3,pflags(a3)
 	bne.w	assexit
@@ -2886,7 +2886,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	btst	#pf3break,pflags3(a3)
 	beq.w	.6
 	movem.l	a2,-(sp)
-	movea.l	#HmShots,a2
+	movea.l	#tmstruct,a2
 	btst	#6,pflags(a3)
 	beq.w	.5
 	movea.l	#AwShots,a2
@@ -2919,7 +2919,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	btst	#0,(gmode2).w
 	bne.w	.12
 	jsr	(checkob).l
-	jsr	(AutoLineChange).l
+	jsr	(chk4lc).l
 	btst	#0,(gmode2).w
 	bne.w	.12
 	btst	#2,(BA_PS_flags).w
@@ -3407,7 +3407,7 @@ assbench	;asstab entry $12. Player a3 goes to the bench: skate to the bench door
 	clr.w	d0
 	move.b	pnum(a3),d0
 	add.w	d0,d0
-	movea.l	#HmShots,a0
+	movea.l	#tmstruct,a0
 	btst	#6,pflags(a3)
 	beq.w	.t0
 	adda.w	#tmsize,a0
@@ -3847,7 +3847,7 @@ onetimershot	;94 IDA name. Do the one-timer shot (doshot), credit the last two p
 	move.w	#4,(passdir).w
 	jsr	(doshot).l
 	movem.l	d0/a0,-(sp)
-	movea.l	#HmShots,a0	;Home Stats
+	movea.l	#tmstruct,a0	;Home Stats
 	btst	#6,pflags(a3)	;check if home or away
 	beq.w	.home	;branch if home
 	lea	tmsize(a0),a0	;add if away
@@ -4033,7 +4033,7 @@ a2offsides	;Offsides on a2 (AddPenalty $10) when his team is offside and the puc
 .0
 	cmp.w	#$6A,d0	;94 $68
 	blt.w	.x
-	movea.w	#(HmShots-M68K_RAM),a0
+	movea.w	#(tmstruct-M68K_RAM),a0
 	btst	#pfteam,pflags(a2)
 	beq.w	.1
 	adda.w	#tmsize,a0
@@ -4367,7 +4367,7 @@ assgoaliebreakwait	;asstab entry $1D (94 $20). assign94 assgoaliebreakwait (move
 ChkGoalies	;A computer team down with its goalie in: pull him on a delayed penalty, else CPgoalie. Called from DoGameFrame (hockey95)
 	btst	#gmclock,(gmode).w	;check if clock running
 	bne.w	rtsskate
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a1
 	moveq	#1,d0
 	bsr.w	.chkgoalie
@@ -4379,7 +4379,7 @@ ChkGoalies	;A computer team down with its goalie in: pull him on a delayed penal
 	move.w	(puckc).w,d1	;move puck carrier SCnum into d1
 	bmi.w	rtsskate
 	subq.w	#6,d1
-	cmpa.w	#(HmShots-M68K_RAM),a2
+	cmpa.w	#(tmstruct-M68K_RAM),a2
 	beq.w	.chkpen
 	not.w	d1	;makes d1 negative if away team
 .chkpen
@@ -4398,7 +4398,7 @@ ChkGoalies	;A computer team down with its goalie in: pull him on a delayed penal
 	bra.w	CPgoalie
 
 ReturnGoalies	;If the computer pulled its goalie, see if it should return him (CPgoalie on foy)
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a1
 	moveq	#1,d0
 	bsr.w	.r

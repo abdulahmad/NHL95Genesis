@@ -260,7 +260,7 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	;Reads the roster bytes through AttributeCalc (attribute number in TempWord2), adds the PP / PK, home / away and third period bonuses
 	;and clamps them (ClampNibble). 95: the name / jersey number by team number (rosterteam), StickHandTable, BoostAttribute
 	bclr	#6,pflags2(a3)	;clear line change mode? (I believe pflags2 are 1 off because of fighting missing)
-	movea.w	#(HmShots-M68K_RAM),a0	;Start of Team Struct
+	movea.w	#(tmstruct-M68K_RAM),a0	;Start of Team Struct
 	btst	#6,pflags(a3)
 	beq.w	.0
 	adda.w	#tmsize,a0
@@ -317,7 +317,7 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	cmp.w	(gameclock).w,d0	;compare to game clock
 	bgt.w	.9
 .6
-	move.w	(HmShots+tmscore).w,d0
+	move.w	(tmstruct+tmscore).w,d0
 	sub.w	(AwShots+tmscore).w,d0
 	beq.w	.8
 	btst	#6,pflags(a3)
@@ -497,7 +497,7 @@ AttributeCalc	;crowd94 AttributeCalc (moved in; IDA name). Attribute d3 of playe
 	;limited to 0 ... $1E
 	movem.l	d0-d2/a1,-(sp)
 	move.w	(TempWord2).w,d1
-	movea.l	#HmShots,a1	;Start of Home Team struct
+	movea.l	#tmstruct,a1	;Start of Home Team struct
 	btst	#6,pflags(a3)
 	beq.w	.0
 	adda.l	#tmsize,a1
@@ -527,7 +527,7 @@ AttributeCalc	;crowd94 AttributeCalc (moved in; IDA name). Attribute d3 of playe
 	rts
 
 restoreteams	;hockey94 restoreteams (moved in). Put both teams' rosters on the bench (tmap 6, every tmpdst -2)
-	movea.w	#(HmShots-M68K_RAM),a2	;team 1
+	movea.w	#(tmstruct-M68K_RAM),a2	;team 1
 	bsr.w	.0
 	adda.w	#tmsize,a2
 .0
@@ -543,7 +543,7 @@ ResetBench	;Remove all players from penalty box / put all players on their own b
 	;players left in the box in PBnum (home in the high nibble)
 	clr.b	(PBnum).w	;PBnum = HV00
 	moveq	#$10,d1
-	movea.w	#(HmShots-M68K_RAM),a0
+	movea.w	#(tmstruct-M68K_RAM),a0
 	bsr.w	.0
 	moveq	#1,d1
 	adda.w	#tmsize,a0	;change to Away Team
@@ -575,7 +575,7 @@ ResetBench	;Remove all players from penalty box / put all players on their own b
 resetplstuff	;setup94 resetplstuff (moved in). Reset team variables and players on both teams. 95 SPA $B5C
 	;(94 $50C)
 	movem.l	d0-d2/a0-a3,-(sp)
-	movea.w	#(HmShots-M68K_RAM),a2
+	movea.w	#(tmstruct-M68K_RAM),a2
 	bsr.w	.top
 	movea.w	#(AwShots-M68K_RAM),a2
 	bsr.w	.top

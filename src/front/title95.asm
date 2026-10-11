@@ -11,9 +11,9 @@
 
 newTitleScreen	;title94 newTitleScreen. The title screen (TitleScreenImg, TitleImg) with the vblank TitleVBlank and the song, then the scrolling credits (Credits, CreditsList, CreditsPrintRow) until start
 	move	#$2700,sr
-	move.w	(VDP_CNTR).l,(RNGseed).w
-	move.w	(VDP_CNTR).l,(RNGseed+2).w
-	move.l	#TitleVBlank,(vbint).l
+	move.w	(VDP_CNTR).l,(seed).w
+	move.w	(VDP_CNTR).l,(seed+2).w
+	move.l	#VBlank_TitleScreen,(vbint).l
 	bset	#1,(disflags).w
 	move.w	#5,(Map3col1).w
 	move.w	#$A000,(VmMap2).w
@@ -205,7 +205,7 @@ CreditsWait	;title94 CreditsWait. Credits: wait one frame, run the clampcounter 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-TitleVBlank	;title94 TitleVBlank. newTitleScreen vblank: the line scroll table and Vscroll, the sprites, cramfade, CreditsScrollStep, the music; rte
+VBlank_TitleScreen	;title94 TitleVBlank. newTitleScreen vblank: the line scroll table and Vscroll, the sprites, cramfade, CreditsScrollStep, the music; rte (was: TitleVBlank)
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#2,(disflags).w
 	bne.w	.1
@@ -335,13 +335,13 @@ HiScoreScreen	;title94 HiScoreScreen. vb2, the HiScoreBgMap and HiScoreImg bitma
 	jsr	(dobitmap).l
 	move.w	#$18,(palcount).w
 	move	#$2500,sr
-	move.w	#$50,(RNGseed).w
+	move.w	#$50,(seed).w
 .1
 	moveq	#4,d0
 	jsr	(waitx).l
 	tst.w	d1
 	bne.w	.2
-	subq.w	#1,(RNGseed).w
+	subq.w	#1,(seed).w
 	bpl.s	.1
 .2
 	move	#$2700,sr
