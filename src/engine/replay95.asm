@@ -64,7 +64,7 @@ chkblock	;Called with d1 = SPAhook for a player a3 about to check: d1 becomes th
 .rts
 	rts
 
-CanBlock	;ne when joystick player a3 may block the shot (SPAblock): pfalock clear, sflags sfssdir
+CanBlock	;Ne when joystick player a3 may block the shot (SPAblock): pfalock clear, sflags sfssdir
 	;set and GameFlags bit 2 clear (one block per shot; cleared while sfssdir is clear), a3 at y $56 or more toward the goal it shoots
 	;at, the puck carrier on the other team, the direction (vtoa) from a3 to the puck the same as from the goal at
 	;y $10B to the puck, a3 on the puck's side of x 0 and within y $B2 of it, and a3 facing that direction or one

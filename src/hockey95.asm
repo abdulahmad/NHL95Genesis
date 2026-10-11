@@ -4,7 +4,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-Opening	;title screen (newTitleScreen), then into Opening2. Jumped to from Begin
+Opening	;Title screen (newTitleScreen), then into Opening2. Jumped to from Begin
 	jsr	(KillCrowd).l
 	jsr	(newTitleScreen).l
 	bset	#7,(sflags12).w	;Opening2 skips the sound restart
@@ -74,7 +74,7 @@ Opening2	;Restart the sound (unless coming from Opening), reset the stack and cl
 	jsr	(UserNameEntry).l
 	jsr	(PlayoffScreen).l
 
-StartGame	;reset game state for a new game, then start the first period. 95 has no jump from Opening2 (94 jmp (StartGame).w)
+StartGame	;Reset game state for a new game, then start the first period. 95 has no jump from Opening2 (94 jmp (StartGame).w)
 	move.l	#vb2,(vbint).l
 	move	#$2500,sr
 	jsr	(ReadJoy1).l	;pad 1 = $E0 at game start forces 30 second periods
@@ -143,7 +143,7 @@ StartGame	;reset game state for a new game, then start the first period. 95 has 
 	move.b	#1,(VDP_PSG).l
 	jsr	(setupice).l
 
-IntermissionStart	;the PeriodOver tail. PeriodOver jumps here after forceblack: reset the
+IntermissionStart	;The PeriodOver tail. PeriodOver jumps here after forceblack: reset the
 	;clock, restart the sound driver, UpdateScores, IntermissionMenu, then GameOver or StartPer
 	jsr	(ResetClock).l
 	move.w	d0,-(sp)
@@ -190,7 +190,7 @@ IntermissionStart	;the PeriodOver tail. PeriodOver jumps here after forceblack: 
 	bne.w	StartPer
 	bset	#1,(sflags7).w	;overtime
 
-StartPer	;start a period: reset stack, rink and clock, face off, run the game loop
+StartPer	;Start a period: reset stack, rink and clock, face off, run the game loop
 	movea.w	#(Stack-M68K_RAM),sp
 	jsr	(SoundOff).l	;sound off
 	jsr	(setupice).l
@@ -264,7 +264,7 @@ Gameloop	;Main loop for game
 	move.b	#1,(VDP_PSG).l
 	bra.s	Gameloop
 
-DoGameFrame	;wait for at least one vblank, then run one frame of game logic. in 94 this is written in line
+DoGameFrame	;Wait for at least one vblank, then run one frame of game logic. in 94 this is written in line
 	move.w	(vcount).w,d7
 	sub.w	(oldvcount).w,d7	;number of frames since last loop
 	beq.s	DoGameFrame
@@ -326,7 +326,7 @@ IntermissionMenu	;Before the period: at game over (gsp 4) the records (UpdateRec
 	bclr	#0,(sflags12).w
 	rts
 
-updateplayers	;this routine calls all collision/animation/assignment code for all players. d7 = elapsed frames.
+updateplayers	;This routine calls all collision/animation/assignment code for all players. d7 = elapsed frames.
 	;94 ; 95 has no puckz or crowd record checks here, and moves the velocity update (updatevel) and the pad input
 	;(updatepadinput) out
 	ori.l	#$F,(PadControlBits).w	;ori.w #$F

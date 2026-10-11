@@ -116,7 +116,7 @@ CHECK_VDP	;Hot start lands here. Match the console region to the CountryCode let
 	move.b	(a0)+,d0		;column
 	bsr.w	RegionPrint
 	lea	(CountryCode).l,a1
-.letter	;one line for each country code letter, up to the first space
+.letter	;One line for each country code letter, up to the first space
 	cmpi.b	#$20,(a1)
 	beq.s	.done
 	lea	RegionSystems(pc),a2
@@ -291,7 +291,7 @@ DivBy0	;Vector 5
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-Begin	;cold start, entered from RegionOK. Clear RAM, init sound and menus, go to title
+Begin	;Cold start, entered from RegionOK. Clear RAM, init sound and menus, go to title
 	move	#$2700,sr		;interrupts off
 	movea.w	#(Stack-M68K_RAM),sp	;stack pointer to RAM $FDFA (94: $FFFE)
 	movea.w	#(VSCRLPM-M68K_RAM),a0	;clear out ram

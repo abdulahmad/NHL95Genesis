@@ -9,7 +9,7 @@
 ;	95 has 6 pad objects and no glove object (94: 7 with glovestruct), and keeps the pad nibbles in one long (PadControlBits).
 
 
-setvideo	;this is not vblank code but sets up ram for vblank transfers. Called once per game frame (DoGameFrame, Pausemode, ...).
+setvideo	;This is not vblank code but sets up ram for vblank transfers. Called once per game frame (DoGameFrame, Pausemode, ...).
 	;95 has no showzam, AddArenaAnimSprite or Crowd_Noise here, and no clock while paused
 	movem.l	d0-d7/a0-a6,-(sp)
 .p
@@ -44,7 +44,7 @@ setvideo	;this is not vblank code but sets up ram for vblank transfers. Called o
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-setsortcords	;setup sort cord graphics: addframe for the 16 objects in OOlist order. a5 = dmalist, a6 = sprite attribute table,
+setsortcords	;Setup sort cord graphics: addframe for the 16 objects in OOlist order. a5 = dmalist, a6 = sprite attribute table,
 	;d6 = link counter
 	movea.w	#(OOlist-M68K_RAM),a4	;move OOlist into a4
 	move.w	#$F,d0	;sortobj-1 (15 dec)
@@ -59,7 +59,7 @@ setsortcords	;setup sort cord graphics: addframe for the 16 objects in OOlist or
 rtssdisp	;checksso .ca branches here
 	rts
 
-checksso	;do graphics for sso structure: arrows for the players when they are off screen. Called from setvideo. a5 = dma list,
+checksso	;Do graphics for sso structure: arrows for the players when they are off screen. Called from setvideo. a5 = dma list,
 	;a6 = sprite table, d6 = link counter. Returns on the horizontal rink. Pads 3 and 4 when cont3team / cont4team. Falls into .ca for the last one
 	btst	#sfhor,(sflags).w
 	bne.w	.x
@@ -161,7 +161,7 @@ checksso	;do graphics for sso structure: arrows for the players when they are of
 	dc.w	-$74,0,2,$0800
 	dc.w	-$74,$64,1,$0800
 
-setffo	;draw the 6 objects tied to icerink scrolling (the pads; 94: 7 with the gloves), moving each by its x offset. Called from setvideo
+setffo	;Draw the 6 objects tied to icerink scrolling (the pads; 94: 7 with the gloves), moving each by its x offset. Called from setvideo
 	bsr.w	uppads
 	move.w	#5,d0	;ffo obj -1 (94: 6)
 	movea.w	#(pads-M68K_RAM),a3	;move start of struct into a3
@@ -178,7 +178,7 @@ setffo	;draw the 6 objects tied to icerink scrolling (the pads; 94: 7 with the g
 	dbf	d0,.top
 	rts
 
-uppads	;update the 6 pad objects and queue new pad labels (FormatControllerDisplay). The pad players come from the
+uppads	;Update the 6 pad objects and queue new pad labels (FormatControllerDisplay). The pad players come from the
 	;PadControlBits nibbles ($E = no change, $F = none). 95 has no glove object and takes all 6 nibbles from one long
 	move.w	#5,d4
 	movea.w	#(pads-M68K_RAM),a0
@@ -272,7 +272,7 @@ ButtonLabelCharTable	;Third label character by bits 10-8 of the label code
 
 ;------------------------------------------------------------------------------------------------------------------------
 
-updateanim	;frame switch control on struct a3. Called from updateplayers. 95: no horizontal rink case, and an
+updateanim	;Frame switch control on struct a3. Called from updateplayers. 95: no horizontal rink case, and an
 	;animation whose flag has bits 0 and 1 set loops back to the pair in the flag's high byte (SPAskate $1003)
 	tst.w	SPA(a3)	;test SPA
 	bne.w	.ia	;branch if not 0
@@ -325,7 +325,7 @@ updateanim	;frame switch control on struct a3. Called from updateplayers. 95: no
 	bclr	#pf2aip,pflags2(a3)
 	bclr	#pf3fall,pflags3(a3)
 	bra.w	.1
-.end	;the animation is over
+.end	;The animation is over
 	clr.w	d0
 	clr.w	SPAnum(a3)
 	bclr	#pfalock,pflags(a3)
@@ -357,7 +357,7 @@ updateanim	;frame switch control on struct a3. Called from updateplayers. 95: no
 ;	defaultsprites, defaultsprites2 and SprSort.
 
 
-defaultsprites	;allocate vram and assign char area for graphic structures. d4 = char area for data. Sets up the sso (4) and
+defaultsprites	;Allocate vram and assign char area for graphic structures. d4 = char area for data. Sets up the sso (4) and
 	;ffo (6; 94: 7 with the gloves) objects from .listsso / .listffo, then defaultsprites2. Called from setupice
 	movea.l	#.listsso,a2
 	movea.w	#(sso-M68K_RAM),a3
@@ -387,12 +387,12 @@ defaultsprites	;allocate vram and assign char area for graphic structures. d4 = 
 	adda.w	#$1C,a3	;#ffosize
 	dbf	d0,.ffotop
 	bra.w	defaultsprites2
-.listsso	;xcord,ycord,frame,attribute,vram char size
+.listsso	;Xcord,ycord,frame,attribute,vram char size
 	dc.w	0,0,0,0,9
 	dc.w	0,0,0,0,9
 	dc.w	0,0,0,0,9
 	dc.w	0,0,0,0,9
-.listffo	;xcord,ycord,zpos,frame,attribute,vram char size
+.listffo	;Xcord,ycord,zpos,frame,attribute,vram char size
 	dc.w	0,0,$FFFF,$71,0,7	;SPFpad+2 frame (puck poss. star)
 	dc.w	0,0,$FFFF,$6F,0,7	;SPFpad+0 frame (joypad 1 star)
 	dc.w	0,0,$FFFF,$70,0,7	;SPFpad+1 frame (joypad 2 star)
@@ -400,7 +400,7 @@ defaultsprites	;allocate vram and assign char area for graphic structures. d4 = 
 	dc.w	0,0,$FFFF,$7A,0,7	;SPFpad34+1 frame (joypad 4 star)
 	dc.w	0,0,$FFFF,$72,$8000,7	;SPFreplay frame (replay cursor)
 
-defaultsprites2	;objects which are tied to screen scrolling and have velocity: the 16 SortCords objects from .list (players,
+defaultsprites2	;Objects which are tied to screen scrolling and have velocity: the 16 SortCords objects from .list (players,
 	;puck, puck shadow, goal nets ...), the OOlist and OOlistpos; then SprSort. 95 clears $78 bytes of each (94: $80) and faces the
 	;away team down
 	clr.w	d6
@@ -443,7 +443,7 @@ defaultsprites2	;objects which are tied to screen scrolling and have velocity: t
 	cmp.w	#$10,d6
 	bne.s	.0
 	bra.w	SprSort
-.list	;xcord,ycord,zcord,frame,att,crsize,radx,rady,asslist,pflags
+.list	;Xcord,ycord,zcord,frame,att,crsize,radx,rady,asslist,pflags
 	dc.w	0,$FFC4,0,$41,0,$14,8,4,0,$80	;SCnum 0 (home skaters)
 	dc.w	$32,$FFF6,0,$41,0,$14,8,4,0,$80	;SCnum 1
 	dc.w	0,$FFF1,0,$41,0,$14,8,4,0,$80	;SCnum 2
@@ -461,7 +461,7 @@ defaultsprites2	;objects which are tied to screen scrolling and have velocity: t
 	dc.w	0,0,0,$1B4,0,1,5,5,1,1	;SCnum 14 (puck), SPFpuck+1 frame
 	dc.w	0,0,0,$1B3,0,$18,3,3,2,4	;SCnum 15 (puck shadow), SPFpuck frame
 
-SprSort	;sort objects in struct SortObj and set corresponding tables for keeping them sorted later (Ylist, OOlist,
+SprSort	;Sort objects in struct SortObj and set corresponding tables for keeping them sorted later (Ylist, OOlist,
 	;OOlistpos). 95 has no horizontal rink case
 	movem.l	d0-d4/a0-a2,-(sp)
 	movea.l	#OOlistpos,a2

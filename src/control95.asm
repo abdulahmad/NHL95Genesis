@@ -3,7 +3,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-updatepadinput	;the end of, called from updateplayers with a3 =
+updatepadinput	;The end of, called from updateplayers with a3 =
 	;object, d6 = SCnum. The pad (1-4) controlling a3 reads its buttons and runs doinput, with d4 = 0 / 2 / 4 / 6 (94 swaps the pad 3 /
 	;4 variables into pads 1 / 2). Then the assignment, collisions and the impact decay
 	cmp.w	(c1playernum).w,d6	;check if cont 1 is puck carrier
@@ -92,7 +92,7 @@ Acheck	;Hold check for a3 on player a0 (the CPU jumps in here): SPAHold (stick i
 	jmp	(SetSPA).l
 
 ; c button press check/speed
-burstchk	;no burst while the animation is locked. Jumped to from doinput
+burstchk	;No burst while the animation is locked. Jumped to from doinput
 	btst	#pfalock,pflags(a3)
 	beq.w	burst
 	rts
@@ -159,7 +159,7 @@ setpads	;Put SCnum of a3 in the d4 nibble of PadControlBits ; d4 = -2 puck carri
 	movem.l	(sp)+,d0-d1
 	rts
 
-chgplayer	;the pad d4 takes the nearest free skater to where the puck is going (not a goalie, not locked or
+chgplayer	;The pad d4 takes the nearest free skater to where the puck is going (not a goalie, not locked or
 	;unavailable; in a penalty shot / shootout only BA_Sktr_SCnum or BA_Goalie_SCnum), or sweep checks when it is the same one. 95:
 	;with no skater found and no player on the pad, a second pass that also takes the goalie. Jumped to from doinput
 	btst	#6,(sflags5).w	;Check bit 6
@@ -250,7 +250,7 @@ chgplayer	;the pad d4 takes the nearest free skater to where the puck is going (
 	movem.l	(sp)+,d0-d6/a0-a1
 .exit
 	rts
-.pass2	;as.top, but a goalie (position 0) may be taken
+.pass2	;As.top, but a goalie (position 0) may be taken
 	moveq	#-1,d5
 	movea.w	#(SortCords-M68K_RAM),a0
 	movea.w	#(cont1team-M68K_RAM),a1
@@ -314,10 +314,10 @@ chgplayer	;the pad d4 takes the nearest free skater to where the puck is going (
 	btst	#pfalock,pflags(a3)	;no sweep check while locked
 	beq.w	.swpchk
 	rts
-.swpchk	;94 swpchk. Sweepcheck
+.swpchk	;Sweepcheck
 	jmp	(Sweepcheck).l
 
-setcplayer	;give pad d4 (0 / 2 / 4 / 6) player d0: restorepl the old one, then
+setcplayer	;Give pad d4 (0 / 2 / 4 / 6) player d0: restorepl the old one, then
 	;c1playernum + d4 = d0. Jumped to from chgplayer
 	movem.l	d0/a0-a1,-(sp)
 	movea.l	#c1playernum,a0
@@ -401,7 +401,7 @@ restorepl	;d1 = old player (back to the computer), d0 = new player (joystick con
 	movem.l	(sp)+,a0
 	rts
 
-clearTeamStats	;clear both team structs (2 x tmsize) but keep the first $1A0 bytes of each hot / cold table (HmShots+$1A4 /
+clearTeamStats	;Clear both team structs (2 x tmsize) but keep the first $1A0 bytes of each hot / cold table (HmShots+$1A4 /
 	;AwShots+$1A4, saved to homehotcoldsave / awayhotcoldsave and back) and HmShots+tmgoalie / AwShots+tmgoalie. Falls into setteams
 	move.w	(tmstruct+tmgoalie).w,-(sp)
 	move.w	(AwShots+tmgoalie).w,-(sp)

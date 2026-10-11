@@ -288,7 +288,7 @@ DrawTeamBlocks	;Draw team block d1 (team * 2) from Teamblocksmap at printx / pri
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-PlayoffScreenDataTable	;dc.b. The PlayoffScreen vblank handler (vbint): dma the sprite table, write
+PlayoffScreenDataTable	;The PlayoffScreen vblank handler (vbint): dma the sprite table, write
 	;$FEA0+DispAttribCtr to the hscroll, cramfade. Always vcount+1, p_music_vblank, rte
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#2,(disflags).w

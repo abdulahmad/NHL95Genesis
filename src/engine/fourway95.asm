@@ -12,7 +12,7 @@ AnyPadAssigned	;Z clear when any pad is on a team (cont1team ... cont4team).
 	movem.w	(sp)+,d0
 	rts
 
-Detect4WayPlay	;detect the 4 way play adaptor (EA 4 Way Play) on port 2: FourWayPlay = 1 when found. Called from Begin
+Detect4WayPlay	;Detect the 4 way play adaptor (EA 4 Way Play) on port 2: FourWayPlay = 1 when found. Called from Begin
 	move.w	#0,(IO_Z80RES).l
 	move.b	#$40,(IO_CT1_CTRL+1).l
 	move.b	#$43,(IO_CT2_CTRL+1).l
@@ -36,25 +36,25 @@ Detect4WayPlay	;detect the 4 way play adaptor (EA 4 Way Play) on port 2: FourWay
 	move.w	#$100,(IO_Z80RES).l
 	rts
 
-Read4WayPad1	;No xref. unused: read 4 way play pad 1
+Read4WayPad1	;Unreferenced. Read 4 way play pad 1
 	move.b	#0,(IO_CT2_DATA+1).l	;4 way play: select pad
 	move.w	(pad4waysave1).w,(pad4wayword).w
 	jsr	(Read4WayPort1).l
 	move.w	(pad4wayword).w,(pad4waysave1).w
 	rts
-Read4WayPad2	;No xref. unused: the same for pad 2
+Read4WayPad2	;Unreferenced. The same for pad 2
 	move.b	#$10,(IO_CT2_DATA+1).l	;4 way play: select pad
 	move.w	(pad4waysave2).w,(pad4wayword).w
 	jsr	(Read4WayPort1).l
 	move.w	(pad4wayword).w,(pad4waysave2).w
 	rts
-Read4WayPad3	;No xref. unused: the same for pad 3
+Read4WayPad3	;Unreferenced. The same for pad 3
 	move.b	#$20,(IO_CT2_DATA+1).l	;4 way play: select pad
 	move.w	(pad4waysave3).w,(pad4wayword).w
 	jsr	(Read4WayPort1).l
 	move.w	(pad4wayword).w,(pad4waysave3).w
 	rts
-Read4WayPad4	;No xref. unused: the same for pad 4
+Read4WayPad4	;Unreferenced. The same for pad 4
 	move.b	#$30,(IO_CT2_DATA+1).l	;4 way play: select pad
 	move.w	(pad4waysave4).w,(pad4wayword).w
 	jsr	(Read4WayPort1).l
@@ -71,7 +71,7 @@ Read4WayPort1	;ReadJoy1 for the pad on port 1 (a0 = its data port): d1 = new pre
 	eor.w	d1,d2
 	and.w	d2,d1
 	rts
-Read4WayPort2	;No xref. The same for port 2, against pad4wayword2
+Read4WayPort2	;Unreferenced. The same for port 2, against pad4wayword2
 	move.l	a0,-(sp)
 	movea.l	#IO_CT2_DATA+1,a0
 	bsr.w	ReadJoyJmp
@@ -82,5 +82,5 @@ Read4WayPort2	;No xref. The same for port 2, against pad4wayword2
 	eor.w	d1,d2
 	and.w	d2,d1
 	rts
-ReadJoyJmp	;jmp ReadJoy
+ReadJoyJmp	;Jmp ReadJoy
 	jmp	(ReadJoy).l

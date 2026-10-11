@@ -635,7 +635,7 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 	subq.w	#2,d0
 	bsr.w	.9
 	bra.w	.18
-.9	;pad stack: slide the goalie 6 toward the middle, d0 by net and hand
+.9	;Pad stack: slide the goalie 6 toward the middle, d0 by net and hand
 	move.w	d1,-(sp)
 	move.w	#$1000,d1
 	move.w	d1,Xvel(a3)
@@ -1089,7 +1089,7 @@ asswingd	;asstab entry 8
 	move.w	#$FF4E,d1
 	move.w	#$64,d0
 	bra.w	.go
-.carrier	;skate at the carrier: puckx, and pucky (or $64 toward his goal from it when the carrier is the goalie)
+.carrier	;Skate at the carrier: puckx, and pucky (or $64 toward his goal from it when the carrier is the goalie)
 	move.w	(puckc).w,d0
 	asl.w	#7,d0
 	movea.l	#SortCords,a0
@@ -2284,9 +2284,9 @@ SkateToTempTarget	;Skate to temp3 / temp4
 	move.w	temp4(a3),d1		;temp4
 	lea	rtss6(pc),a0
 	jmp	(skateto).l
-rtss6	;the SkateToTempTarget exit, also asspassrec's and assdefo's
+rtss6	;The SkateToTempTarget exit, also asspassrec's and assdefo's
 	rts
-rtsskate	;a second rts. assgoaliecpu, AdjustFacingDirection, assdefo and others branch here
+rtsskate	;A second rts. assgoaliecpu, AdjustFacingDirection, assdefo and others branch here
 	rts
 
 assbreakaway	;asstab entry $21. Breakaway; falls into assnearest
@@ -2490,7 +2490,7 @@ assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates 
 	beq.w	.gmclock	;jump if not set
 	btst	#5,(BA_PS_flags).w	;check bit 5
 	beq.w	.nodec2	;jump if not set
-.gmclock	;clock running?
+.gmclock	;Clock running?
 	btst	#0,(gmode).w	;check if clock running
 	bne.w	donothing	;branch if not
 .nodec2
@@ -2751,7 +2751,7 @@ breakaway	;Breakaway for the carrier
 .yvel0
 	move.w	#$FFFF,d1
 	bra.s	.exit
-BreakawayOffsidesFlagSet	;the breakaway / offsides flags of a3 ($64 bits 1 and 0)
+BreakawayOffsidesFlagSet	;The breakaway / offsides flags of a3 ($64 bits 1 and 0)
 	btst	#1,pflags(a3)	;check for new assignment
 	beq.w	.loadYpos	;branch if no new assignment
 	bclr	#pf3oside,pflags3(a3)	;clear player offsides flag
@@ -3500,7 +3500,7 @@ asspenalty	;asstab entry $15. Player a3 goes to the penalty box and hops in, the
 	move.w	temp4(a3),d1
 	movea.l	#rtsskate,a0
 	bra.w	skateto
-.clrplayer	;take the joystick off player a3
+.clrplayer	;Take the joystick off player a3
 	btst	#3,pflags(a3)
 	beq.w	rtsskate
 	clr.w	d4
@@ -4311,7 +4311,7 @@ assscore	;asstab entry $1C (94 7). Players after a goal: skate to the scoring en
 	beq.w	skateto
 .x
 	rts
-.pumps	;scorer pump SPAs
+.pumps	;Scorer pump SPAs
 	dc.w	$29B0,$280C,$29B0,$280C
 
 assgoaliebreakwait	;asstab entry $1D (94 $20). Goalie waits for the breakaway skater

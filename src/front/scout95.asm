@@ -1329,7 +1329,7 @@ UserNameString	;a1 = NameEntryBuf: the name of name log entry d1 (GetLogName) as
 NullSaveClear	;Does nothing (calls it)
 	rts
 
-GetPlayerPicture	;only the picture: a0 = the picture of player d0 of team d1 (the team picture by jersey number, else a generic one)
+GetPlayerPicture	;Only the picture: a0 = the picture of player d0 of team d1 (the team picture by jersey number, else a generic one)
 	movem.l	d0-d7/a1-a6,-(sp)
 	btst	#6,(sflags11).w
 	beq.w	.0

@@ -1468,7 +1468,7 @@ SoundCmd	;Send command d0 to the 95 sound driver (SndDriver, above). Called from
 .0
 	rts
 
-UpdateCwdExcite	;called once per second. Track peak and running total of crowd excitement, then decay the level by 1
+UpdateCwdExcite	;Called once per second. Track peak and running total of crowd excitement, then decay the level by 1
 	move.w	(CwdExciteLvl).w,d0
 	cmp.w	(MaxCwdExciteLvl).w,d0
 	bls.w	.0
@@ -1483,7 +1483,7 @@ UpdateCwdExcite	;called once per second. Track peak and running total of crowd e
 .1
 	rts
 
-updatesound	;move the crowd noise volume (psg noise channel, asv) toward crowdlevel. Called from DoGameFrame
+updatesound	;Move the crowd noise volume (psg noise channel, asv) toward crowdlevel. Called from DoGameFrame
 	move.w	(crowdlevel).w,d0
 	asl.w	#3,d0
 	addi.w	#$400,d0
@@ -1528,7 +1528,7 @@ CheckPeriodEnd	;Called once per second. 3rd period: choose and play a song once 
 .0
 	rts
 
-sfx	;play sound effect number, one word passed on stack. 95: through SfxTable to a sound driver song (command 4)
+sfx	;Play sound effect number, one word passed on stack. 95: through SfxTable to a sound driver song (command 4)
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.l	d0
 	move.w	$40(sp),d0	;$40 = 16*4
@@ -1538,7 +1538,7 @@ sfx	;play sound effect number, one word passed on stack. 95: through SfxTable to
 	addq.w	#2,sp
 	rts
 
-sfxplay	;play sound d0 ($32-$55 are songs, PlayingSong; below, SfxTable). Sound $2D / $2E: a nop. song branches here
+sfxplay	;Play sound d0 ($32-$55 are songs, PlayingSong; below, SfxTable). Sound $2D / $2E: a nop. song branches here
 	cmp.w	#$2E,d0
 	beq.w	.0
 	cmp.w	#$2D,d0
@@ -1601,7 +1601,7 @@ sfxplay	;play sound d0 ($32-$55 are songs, PlayingSong; below, SfxTable). Sound 
 	addq.w	#2,sp
 	rts
 
-SfxTable	;sound driver song for sound effects 0-$31 (sfx), $FF = none. $26 first stops the songs above $31
+SfxTable	;Sound driver song for sound effects 0-$31 (sfx), $FF = none. $26 first stops the songs above $31
 	dc.b	$26,$1C,$1D,$17,$16,$FF,$09,$25	;sounds $00-$07
 	dc.b	$04,$FF,$FF,$10,$1E,$13,$20,$0E	;sounds $08-$0F
 	dc.b	$0B,$0B,$0B,$0B,$08,$08,$08,$08	;sounds $10-$17
@@ -1610,7 +1610,7 @@ SfxTable	;sound driver song for sound effects 0-$31 (sfx), $FF = none. $26 first
 	dc.b	$18,$18,$18,$18,$11,$1A,$1A,$FF	;sounds $28-$2F
 	dc.b	$FF,$FF	;sounds $30-$31
 
-song	;play song number, one word passed on stack. 95: songs 0-3 through StartSong, the rest through sfxplay
+song	;Play song number, one word passed on stack. 95: songs 0-3 through StartSong, the rest through sfxplay
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.l	d0
 	move.w	$40(sp),d0	;$40 = 16*4
@@ -1633,7 +1633,7 @@ song	;play song number, one word passed on stack. 95: songs 0-3 through StartSon
 	addq.w	#2,sp
 	rts
 
-StartSong	;stop the song, then song d0 (command 4, tempo $100)
+StartSong	;Stop the song, then song d0 (command 4, tempo $100)
 	tst.w	d0
 	bmi.w	rtsfx
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1660,7 +1660,7 @@ play_new_song	;Stop the song in progress (PlayingSong, sound driver command 5)
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-play_new_song2	;No xref. a copy of play_new_song that skips the saving when no song plays
+play_new_song2	;Unreferenced. A copy of play_new_song that skips the saving when no song plays
 	tst.w	(PlayingSong).w
 	bmi.w	.0	;no song playing
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1673,7 +1673,7 @@ play_new_song2	;No xref. a copy of play_new_song that skips the saving when no s
 .0
 	rts
 
-KillCrowd	;silence the crowd noise (psg)
+KillCrowd	;Silence the crowd noise (psg)
 	move.b	#$E7,(VDP_PSG).l
 	move.b	#$DF,(VDP_PSG).l
 	move.b	#$C8,(VDP_PSG).l
@@ -1681,7 +1681,7 @@ KillCrowd	;silence the crowd noise (psg)
 	move.b	#$FF,(VDP_PSG).l
 	rts
 
-SoundOff	;sound driver command $F, every song off
+SoundOff	;Sound driver command $F, every song off
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$F,d0
 	bsr.w	SoundCmd
@@ -1847,7 +1847,7 @@ ClearZ80SpecialEffectsFlags	;Clear Z80 RAM $8E (Z80_RAM+$8E, the PCM rate byte w
 	move.w	(sp)+,d0
 	clr.b	(Z80_RAM+$8E).l
 	clr.w	(IO_Z80BUS).l
-rtsfx	;the shared rts (94 had it in play_sfx_or_music_track, not in 95). ProcessOneMusicTrack, handle_command_00 and StartSong branch here
+rtsfx	;The shared rts (94 had it in play_sfx_or_music_track, not in 95). ProcessOneMusicTrack, handle_command_00 and StartSong branch here
 	rts
 handle_command_10	;Event $1x: key on note +2 at volume +3 on channel +1 bits 3-0 of track d7 (volume 0 = key off). An FM
 	;patch takes a free channel or the oldest one; a PCM patch ($60 up) sets the sample start / end (pcm_sample_table) in Z80 RAM
@@ -2012,7 +2012,7 @@ UpdateChannelFrequencyAndVolume	;Set the frequency of channel struct a2 from its
 	clr.w	(IO_Z80BUS).l
 .x
 	rts
-.fnum	;frequency number of each note in the octave
+.fnum	;Frequency number of each note in the octave
 	dc.w	$0146,$0159,$016E,$0184,$019B,$01B3,$01CD,$01E8,$0205,$0224,$0245,$0268
 .bendtab	;385 factors, entry $C0 = $8000 (no bend)
 	dc.w	$4000,$403B,$4076,$40B2,$40EE,$412A,$4166,$41A3,$41E0,$421D
@@ -2077,7 +2077,7 @@ SetChannelVolume	;Set the volume of channel struct a2: note volume (+2) * the vo
 	st	(music_needs_z80_update).w
 	movem.l	(sp)+,d0
 	rts
-.veltab	;attenuation by volume / 8
+.veltab	;Attenuation by volume / 8
 	dc.b	$1A,$18,$16,$14,$12,$10,$0E,$0C,$0A,$08,$06,$04,$03,$02,$01,$00
 .0
 	move.w	d0,-(sp)	;pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
@@ -2122,7 +2122,7 @@ handle_command_60	;Event $6x: set the pitch bend of channel +1 bits 3-0 of track
 	addq.w	#8,a2
 	dbf	d0,.loop
 	rts
-handle_command_30	;event $3x, controller +2 = +3 on channel +1 bits 3-0 of track d7. Only controller 7
+handle_command_30	;Event $3x, controller +2 = +3 on channel +1 bits 3-0 of track d7. Only controller 7
 	;(volume) is used: set the voice volume (voice table +5) and update the volume of every channel with that key (SetChannelVolume)
 	cmpi.b	#7,2(a0)
 	beq.w	.0
@@ -2193,7 +2193,7 @@ ClearAllTrackAndSFXSlots	;95 cuts it down to PlayingSong = -1 (94 freed the 8 tr
 	move.w	#$FFFF,(PlayingSong).w
 	rts
 
-newcheck	;start a new check sound: one of 4 sounds $1C-$1F, never the last one again. Called from checkcx and FallDown
+newcheck	;Start a new check sound: one of 4 sounds $1C-$1F, never the last one again. Called from checkcx and FallDown
 	move.l	d0,-(sp)
 	moveq	#3,d0
 	jsr	(randomd0).l	;bsr.w

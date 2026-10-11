@@ -173,7 +173,7 @@ TryAddPlayerToList	;d0 = player number (1 based), d4 = PlList slot. Put d0 in th
 	clr.w	d1
 	rts
 
-forcepldata	;no skating on/off: force players to correct data (for faceoffs only). a2 = team struct. 95: no
+forcepldata	;No skating on/off: force players to correct data (for faceoffs only). a2 = team struct. 95: no
 	;Set4WayPlayerStub call (its SCnum push / pop stays)
 	movem.l	d0-d4/a0-a3,-(sp)
 	movea.w	tmsort(a2),a3	;22 offset of team struct is tmsort (address of first sort obj)

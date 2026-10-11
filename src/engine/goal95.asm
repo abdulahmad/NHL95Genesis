@@ -721,7 +721,7 @@ GameOver	;EncodePW, the Stanley Cup screen (sflags13 bit 2), SeasonGameOver, the
 .0
 	jsr	(SeasonGameOver).l
 
-ExitToOpening	;jmp to the opening
+ExitToOpening	;Jmp to the opening
 	jmp	Opening2
 
 clockcont	;Clock continue: when the clock is at 0 stop the play (sfx 4) and go to clockcont_0

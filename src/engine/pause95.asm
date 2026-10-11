@@ -92,7 +92,7 @@ Pausemode	;(PauseMode). Game is in pause mode now: fade out, stop the sound (unl
 	move.w	(sp)+,(smallfontchars).w
 	rts
 
-SetupPauseScreen	;(dc.b). Draw routine for the pause menu: PauseScreenDraw, then KillCrowd
+SetupPauseScreen	;Draw routine for the pause menu: PauseScreenDraw, then KillCrowd
 	jsr	(PauseScreenDraw).l
 	jsr	(KillCrowd).l
 	rts
@@ -321,19 +321,19 @@ startpause	;Pause on (sfpz)
 	bset	#0,(sflags).w	;sfpz
 	rts
 
-startpause1	;pause initiated by cont 1
+startpause1	;Pause initiated by cont 1
 	clr.w	(menupadnum).w
 	bra.s	startpause
 
-startpause2	;pause initiated by cont 2
+startpause2	;Pause initiated by cont 2
 	move.w	#1,(menupadnum).w
 	bra.s	startpause
 
-startpause3	;pause initiated by cont 3 (4 way play)
+startpause3	;Pause initiated by cont 3 (4 way play)
 	move.w	#2,(menupadnum).w
 	bra.s	startpause
 
-startpause4	;pause initiated by cont 4 (4 way play)
+startpause4	;Pause initiated by cont 4 (4 way play)
 	move.w	#3,(menupadnum).w
 	bra.s	startpause
 
@@ -536,7 +536,7 @@ ShowPenaltyBox	;The players in the penalty box list of team a2 ($9C, -1 ends; wi
 	bsr.w	ShowPenaltyBoxPlayer
 	bra.s	.3
 
-ListPenaltyBox	;No xref. ShowPenaltyBox without the count: every player in the box list of team a2
+ListPenaltyBox	;Unreferenced. ShowPenaltyBox without the count: every player in the box list of team a2
 	lea	$9C(a2),a0
 .0
 	clr.w	d0
@@ -676,7 +676,7 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ClearOldFrames	;oldframe = -1 for the 16 sort objects, the 4 sso and the 6 pads, so addframe2 sends their tiles again
+ClearOldFrames	;Oldframe = -1 for the 16 sort objects, the 4 sso and the 6 pads, so addframe2 sends their tiles again
 	movem.l	d0-d1/a0-a3,-(sp)
 	movea.l	#SortCords,a0
 	move.w	#$80,d0
@@ -895,7 +895,7 @@ DrawMenuInfo	;With no menu list: clear the box and run draw routine menuitem of 
 	andi	#$FB,ccr
 	rts
 
-MenuInfoList	;(dc.b). The info page draw routines for DrawMenuInfo (0 ends)
+MenuInfoList	;The info page draw routines for DrawMenuInfo (0 ends)
 	dc.l	PauseInfo,0
 PauseInfo	;The info page: a bitmap at $11, $B (a0 is whatever printz left: the vdp data port) and
 	;PauseInfoText
@@ -1102,7 +1102,7 @@ DrawTab	;The plain tab: $D x 3 of TabBitmap at printx / printy (chars tabchars)
 	jmp	(dobitmap).l
 	rts	;a second rts, unreferenced
 
-InfoMenus	;(dc.b). The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0, $7E, $D0): a String header, then items of a
+InfoMenus	;The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0, $7E, $D0): a String header, then items of a
 	;String and a routine (y = the play / resume item, x = the manual goalie toggle; PrintMenuItem), ended by a $FF String
 	String	$FE,0,$F9,0
 	String	$FE,0,$F9,1
@@ -1137,7 +1137,7 @@ InfoMenus	;(dc.b). The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0,
 	String	' RECORD HOLDERS '
 	dc.l	RecordHoldersScreen
 	String	$FF,0
-StatsMenus	;(dc.b). The pause STATS tab lists (SetStatsMenuItems: menuitemoffset 0, $66, $74, $F0)
+StatsMenus	;The pause STATS tab lists (SetStatsMenuItems: menuitemoffset 0, $66, $74, $F0)
 	String	$FE,0
 	String	$FE,0,$F9,1
 	String	'y  PLAY GAME    '
@@ -1183,7 +1183,7 @@ StatsMenus	;(dc.b). The pause STATS tab lists (SetStatsMenuItems: menuitemoffset
 	String	'  SEASON TEAMS  '
 	dc.l	SeasonTeamsScreen
 	String	$FF,0
-PauseMenus	;(dc.b). The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0, $AA, $13E, $1D2, $23A, $2CE)
+PauseMenus	;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0, $AA, $13E, $1D2, $23A, $2CE)
 	String	$FE,0
 	String	$FE,0,$F9,1
 	String	'y   PLAY GAME   '

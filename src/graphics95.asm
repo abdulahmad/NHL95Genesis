@@ -7,15 +7,15 @@
 ;	(Card<player>, the line 1 starter of the first team that lists it). A map starts with its 8-byte header (palette and map offsets):
 ;	a reference to its tiles is Label+8.
 
-PicturePalette	;the player picture palette, then the picture of a player with none (DrawMatchupPicture, PlayerCardScreen)
+PicturePalette	;The player picture palette, then the picture of a player with none (DrawMatchupPicture, PlayerCardScreen)
 	incbin	..\Extracted\NHL95\Graphics\NoPlayerPicture.map.jim
-NoPicSkater2	;generic skater picture (GetPlayerPicture, hand bit 0 set)
+NoPicSkater2	;Generic skater picture (GetPlayerPicture, hand bit 0 set)
 	incbin	..\Extracted\NHL95\Graphics\NoPicSkater2.bin
-NoPicSkater1	;generic skater picture (GetPlayerPicture, hand bit 0 clear)
+NoPicSkater1	;Generic skater picture (GetPlayerPicture, hand bit 0 clear)
 	incbin	..\Extracted\NHL95\Graphics\NoPicSkater1.bin
-NoPicGoalie2	;generic goalie picture (GetPlayerPicture, hand bit 0 clear)
+NoPicGoalie2	;Generic goalie picture (GetPlayerPicture, hand bit 0 clear)
 	incbin	..\Extracted\NHL95\Graphics\NoPicGoalie2.bin
-NoPicGoalie1	;generic goalie picture (GetPlayerPicture, hand bit 0 set)
+NoPicGoalie1	;Generic goalie picture (GetPlayerPicture, hand bit 0 set)
 	incbin	..\Extracted\NHL95\Graphics\NoPicGoalie1.bin
 CardGuyHebert	;Guy Hebert player picture (FeaturedPictures ANH 0)
 	incbin	..\Extracted\NHL95\Graphics\PlayerCards\CardGuyHebert.bin
@@ -399,253 +399,253 @@ FeaturedPictures	;The 160 player pictures (GetPlayerPicture)
 	dc.l	CardKevinHatcher,CardSylvainCote,CardTimCheveldae,CardAlexeiZhamnov
 	dc.l	CardKeithTkachuk,CardTeemuSelanne,CardTeppoNumminen,CardDaveManson
 	dc.l	NoPicSkater2,NoPicSkater1,NoPicGoalie1,NoPicGoalie2
-Rinktilelist	;the ice rink map; Rinktilelist+8 = the rink tiles
+Rinktilelist	;The ice rink map; Rinktilelist+8 = the rink tiles
 	incbin	..\Extracted\NHL95\Graphics\Rinktilelist.map.jim
-Sprites	;the sprite header: long offsets from here and (to frameSprData), then a word
+Sprites	;The sprite header: long offsets from here and (to frameSprData), then a word
 	incbin	..\Extracted\NHL95\Graphics\Sprites.bin
-Spritetiles	;the sprite tiles
+Spritetiles	;The sprite tiles
 	incbin	..\Extracted\NHL95\Graphics\Spritetiles.bin
 frameSprData
 	incbin	..\Extracted\NHL95\Graphics\frameSprData.bin
-HotList	;the hot spot byte pair of each frame
+HotList	;The hot spot byte pair of each frame
 	incbin	..\Extracted\NHL95\Graphics\HotSpotList.bin
-RosterFont	;data
+RosterFont	;Data
 	incbin	..\Extracted\NHL95\Graphics\RosterFont.bin
-SmallFontMap	;the SmallFontMap map
+SmallFontMap	;The SmallFontMap map
 	incbin	..\Extracted\NHL95\Graphics\SmallFontMap.map.jim
-SmallFontMap2	;the SmallFontMap2 map
+SmallFontMap2	;The SmallFontMap2 map
 	incbin	..\Extracted\NHL95\Graphics\SmallFontMap2.map.jim
-PauseBgBitmap	;the PauseBgBitmap map
+PauseBgBitmap	;The PauseBgBitmap map
 	incbin	..\Extracted\NHL95\Graphics\PauseBgBitmap.map.jim
-PeriodNumberBitmap	;the PeriodNumberBitmap map
+PeriodNumberBitmap	;The PeriodNumberBitmap map
 	incbin	..\Extracted\NHL95\Graphics\PeriodNumberBitmap.map.jim
-TabBitmap	;the TabBitmap map
+TabBitmap	;The TabBitmap map
 	incbin	..\Extracted\NHL95\Graphics\TabBitmap.map.jim
-PauseFontMap	;the PauseFontMap map
+PauseFontMap	;The PauseFontMap map
 	incbin	..\Extracted\NHL95\Graphics\PauseFontMap.map.jim
-ClockDigitsBitmap	;the ClockDigitsBitmap map
+ClockDigitsBitmap	;The ClockDigitsBitmap map
 	incbin	..\Extracted\NHL95\Graphics\ClockDigitsBitmap.map.jim
-RosterBitmap	;the RosterBitmap map
+RosterBitmap	;The RosterBitmap map
 	incbin	..\Extracted\NHL95\Graphics\RosterBitmap.map.jim
-Teamblocksmap	;the Teamblocksmap map
+Teamblocksmap	;The Teamblocksmap map
 	incbin	..\Extracted\NHL95\Graphics\Teamblocksmap.map.jim
-PauseTeamBlocksMap	;the PauseTeamBlocksMap map
+PauseTeamBlocksMap	;The PauseTeamBlocksMap map
 	incbin	..\Extracted\NHL95\Graphics\PauseTeamBlocksMap.map.jim
-FaceOffMap	;the face-off map; +8 the tiles
+FaceOffMap	;The face-off map; +8 the tiles
 	incbin	..\Extracted\NHL95\Graphics\FaceOffMap.map.jim
 FaceoffTiles	equ	FaceOffMap	;the same address
-FaceOffSprites	;the face-off sprites; +8 the tiles
+FaceOffSprites	;The face-off sprites; +8 the tiles
 	incbin	..\Extracted\NHL95\Graphics\FaceOffSprites.map.jim
 FaceoffTiles2	equ	FaceOffSprites	;the same address
-Framermap	;the Framermap map
+Framermap	;The Framermap map
 	incbin	..\Extracted\NHL95\Graphics\Framermap.map.jim
-Framermap2	;the Framermap2 map
+Framermap2	;The Framermap2 map
 	incbin	..\Extracted\NHL95\Graphics\Framermap2.map.jim
-EnergyBarMap	;the EnergyBarMap map
+EnergyBarMap	;The EnergyBarMap map
 	incbin	..\Extracted\NHL95\Graphics\EnergyBarMap.map.jim
-EASportsMap	;the EASportsMap map
+EASportsMap	;The EASportsMap map
 	incbin	..\Extracted\NHL95\Graphics\EASportsMap.map.jim
-RefTiles	;the RefTiles map
+RefTiles	;The RefTiles map
 	incbin	..\Extracted\NHL95\Graphics\RefTiles.map.jim
-RefTilesHor	;the RefTilesHor map
+RefTilesHor	;The RefTilesHor map
 	incbin	..\Extracted\NHL95\Graphics\RefTilesHor.map.jim
-SetupFont	;the SetupFont map
+SetupFont	;The SetupFont map
 	incbin	..\Extracted\NHL95\Graphics\SetupFont.map.jim
-SetupBgMap2	;the SetupBgMap2 map
+SetupBgMap2	;The SetupBgMap2 map
 	incbin	..\Extracted\NHL95\Graphics\SetupBgMap2.map.jim
-SetupBgMap1	;the SetupBgMap1 map
+SetupBgMap1	;The SetupBgMap1 map
 	incbin	..\Extracted\NHL95\Graphics\SetupBgMap1.map.jim
-TeamBitmaps	;the TeamBitmaps map
+TeamBitmaps	;The TeamBitmaps map
 	incbin	..\Extracted\NHL95\Graphics\TeamBitmaps.map.jim
-BigFontMap3	;the BigFontMap3 map
+BigFontMap3	;The BigFontMap3 map
 	incbin	..\Extracted\NHL95\Graphics\BigFontMap3.map.jim
-BigFontMap	;the BigFontMap map
+BigFontMap	;The BigFontMap map
 	incbin	..\Extracted\NHL95\Graphics\BigFontMap.map.jim
-BigFontMap2	;the BigFontMap2 map
+BigFontMap2	;The BigFontMap2 map
 	incbin	..\Extracted\NHL95\Graphics\BigFontMap2.map.jim
-RevRinkTilelist	;data
+RevRinkTilelist	;Data
 	incbin	..\Extracted\NHL95\Graphics\RevRinkTilelist.bin
-ReplayMap	;the ReplayMap map
+ReplayMap	;The ReplayMap map
 	incbin	..\Extracted\NHL95\Graphics\ReplayMap.map.jim
-ReplayIconMap	;the ReplayIconMap map
+ReplayIconMap	;The ReplayIconMap map
 	incbin	..\Extracted\NHL95\Graphics\ReplayIconMap.map.jim
-HiScoreBgMap	;the HiScoreBgMap map
+HiScoreBgMap	;The HiScoreBgMap map
 	incbin	..\Extracted\NHL95\Graphics\HiScoreBgMap.map.jim
-HiScoreImg	;the HiScoreImg map
+HiScoreImg	;The HiScoreImg map
 	incbin	..\Extracted\NHL95\Graphics\HiScoreImg.map.jim
-ControllerBgMap	;the ControllerBgMap map
+ControllerBgMap	;The ControllerBgMap map
 	incbin	..\Extracted\NHL95\Graphics\ControllerBgMap.map.jim
-GamesTodayLogoMap	;the GamesTodayLogoMap map
+GamesTodayLogoMap	;The GamesTodayLogoMap map
 	incbin	..\Extracted\NHL95\Graphics\GamesTodayLogoMap.map.jim
-GamesTodayMap1	;the GamesTodayMap1 map
+GamesTodayMap1	;The GamesTodayMap1 map
 	incbin	..\Extracted\NHL95\Graphics\GamesTodayMap1.map.jim
-GamesTodayMap2	;the GamesTodayMap2 map
+GamesTodayMap2	;The GamesTodayMap2 map
 	incbin	..\Extracted\NHL95\Graphics\GamesTodayMap2.map.jim
-GamesTodayMap3	;the GamesTodayMap3 map
+GamesTodayMap3	;The GamesTodayMap3 map
 	incbin	..\Extracted\NHL95\Graphics\GamesTodayMap3.map.jim
-CalendarBgMap	;the CalendarBgMap map
+CalendarBgMap	;The CalendarBgMap map
 	incbin	..\Extracted\NHL95\Graphics\CalendarBgMap.map.jim
-CalOpponentMap	;the CalOpponentMap map
+CalOpponentMap	;The CalOpponentMap map
 	incbin	..\Extracted\NHL95\Graphics\CalOpponentMap.map.jim
-CalDayMap	;the CalDayMap map
+CalDayMap	;The CalDayMap map
 	incbin	..\Extracted\NHL95\Graphics\CalDayMap.map.jim
-CalMonthMap	;the CalMonthMap map
+CalMonthMap	;The CalMonthMap map
 	incbin	..\Extracted\NHL95\Graphics\CalMonthMap.map.jim
-CalCheckMap	;data
+CalCheckMap	;Data
 	incbin	..\Extracted\NHL95\Graphics\CalCheckMap.bin
-CalResultMap	;the CalResultMap map
+CalResultMap	;The CalResultMap map
 	incbin	..\Extracted\NHL95\Graphics\CalResultMap.map.jim
-ControllerTitleMap	;the ControllerTitleMap map
+ControllerTitleMap	;The ControllerTitleMap map
 	incbin	..\Extracted\NHL95\Graphics\ControllerTitleMap.map.jim
-PadCursorMap	;the PadCursorMap map
+PadCursorMap	;The PadCursorMap map
 	incbin	..\Extracted\NHL95\Graphics\PadCursorMap.map.jim
-PadIconMap1	;the PadIconMap1 map
+PadIconMap1	;The PadIconMap1 map
 	incbin	..\Extracted\NHL95\Graphics\PadIconMap1.map.jim
-PadIconMap2	;the PadIconMap2 map
+PadIconMap2	;The PadIconMap2 map
 	incbin	..\Extracted\NHL95\Graphics\PadIconMap2.map.jim
-PadIconMap3	;the PadIconMap3 map
+PadIconMap3	;The PadIconMap3 map
 	incbin	..\Extracted\NHL95\Graphics\PadIconMap3.map.jim
-PadIconMap4	;the PadIconMap4 map
+PadIconMap4	;The PadIconMap4 map
 	incbin	..\Extracted\NHL95\Graphics\PadIconMap4.map.jim
-PlayerStatsBgMap	;the PlayerStatsBgMap map
+PlayerStatsBgMap	;The PlayerStatsBgMap map
 	incbin	..\Extracted\NHL95\Graphics\PlayerStatsBgMap.map.jim
-PlayerStatsTitleMap	;the PlayerStatsTitleMap map
+PlayerStatsTitleMap	;The PlayerStatsTitleMap map
 	incbin	..\Extracted\NHL95\Graphics\PlayerStatsTitleMap.map.jim
-PeriodStatsMap	;the PeriodStatsMap map
+PeriodStatsMap	;The PeriodStatsMap map
 	incbin	..\Extracted\NHL95\Graphics\PeriodStatsMap.map.jim
-HighlightsBgMap	;the HighlightsBgMap map
+HighlightsBgMap	;The HighlightsBgMap map
 	incbin	..\Extracted\NHL95\Graphics\HighlightsBgMap.map.jim
-WaitBoxMap	;the WaitBoxMap map
+WaitBoxMap	;The WaitBoxMap map
 	incbin	..\Extracted\NHL95\Graphics\WaitBoxMap.map.jim
-LineEditorBgMap	;the LineEditorBgMap map
+LineEditorBgMap	;The LineEditorBgMap map
 	incbin	..\Extracted\NHL95\Graphics\LineEditorBgMap.map.jim
 Screen6Tiles1	equ	LineEditorBgMap+8	;the tiles
-PlayerSelectMap2	;the PlayerSelectMap2 map
+PlayerSelectMap2	;The PlayerSelectMap2 map
 	incbin	..\Extracted\NHL95\Graphics\PlayerSelectMap2.map.jim
 Screen6Tiles2	equ	PlayerSelectMap2+8	;the tiles
-PlayerSelectMap1	;the PlayerSelectMap1 map
+PlayerSelectMap1	;The PlayerSelectMap1 map
 	incbin	..\Extracted\NHL95\Graphics\PlayerSelectMap1.map.jim
-CreateBgMap	;the CreateBgMap map
+CreateBgMap	;The CreateBgMap map
 	incbin	..\Extracted\NHL95\Graphics\CreateBgMap.map.jim
-TradeBgMap	;the TradeBgMap map
+TradeBgMap	;The TradeBgMap map
 	incbin	..\Extracted\NHL95\Graphics\TradeBgMap.map.jim
-AwardsBgMap	;the AwardsBgMap map
+AwardsBgMap	;The AwardsBgMap map
 	incbin	..\Extracted\NHL95\Graphics\AwardsBgMap.map.jim
-FinalistsPanelMap	;the FinalistsPanelMap map
+FinalistsPanelMap	;The FinalistsPanelMap map
 	incbin	..\Extracted\NHL95\Graphics\FinalistsPanelMap.map.jim
-WinnerPanelMap	;the WinnerPanelMap map
+WinnerPanelMap	;The WinnerPanelMap map
 	incbin	..\Extracted\NHL95\Graphics\WinnerPanelMap.map.jim
-HartPic	;the HartPic map
+HartPic	;The HartPic map
 	incbin	..\Extracted\NHL95\Graphics\HartPic.map.jim
-NorrisPic	;the NorrisPic map
+NorrisPic	;The NorrisPic map
 	incbin	..\Extracted\NHL95\Graphics\NorrisPic.map.jim
-VezinaPic	;the VezinaPic map
+VezinaPic	;The VezinaPic map
 	incbin	..\Extracted\NHL95\Graphics\VezinaPic.map.jim
-ArtRossPic	;the ArtRossPic map
+ArtRossPic	;The ArtRossPic map
 	incbin	..\Extracted\NHL95\Graphics\ArtRossPic.map.jim
-SelkePic	;the SelkePic map
+SelkePic	;The SelkePic map
 	incbin	..\Extracted\NHL95\Graphics\SelkePic.map.jim
-JenningsPic	;the JenningsPic map
+JenningsPic	;The JenningsPic map
 	incbin	..\Extracted\NHL95\Graphics\JenningsPic.map.jim
-PresidentsPic	;the PresidentsPic map
+PresidentsPic	;The PresidentsPic map
 	incbin	..\Extracted\NHL95\Graphics\PresidentsPic.map.jim
-ConnSmythePic	;the ConnSmythePic map
+ConnSmythePic	;The ConnSmythePic map
 	incbin	..\Extracted\NHL95\Graphics\ConnSmythePic.map.jim
-PearsonPic	;the PearsonPic map
+PearsonPic	;The PearsonPic map
 	incbin	..\Extracted\NHL95\Graphics\PearsonPic.map.jim
-EASNmap	;the EASNmap map
+EASNmap	;The EASNmap map
 	incbin	..\Extracted\NHL95\Graphics\EASNmap.map.jim
-GMDecisionMap	;the GMDecisionMap map
+GMDecisionMap	;The GMDecisionMap map
 	incbin	..\Extracted\NHL95\Graphics\GMDecisionMap.map.jim
-FreeAgentMap2	;the FreeAgentMap2 map
+FreeAgentMap2	;The FreeAgentMap2 map
 	incbin	..\Extracted\NHL95\Graphics\FreeAgentMap2.map.jim
-FreeAgentMap1	;the FreeAgentMap1 map
+FreeAgentMap1	;The FreeAgentMap1 map
 	incbin	..\Extracted\NHL95\Graphics\FreeAgentMap1.map.jim
-TradeAdvantageMap2	;the TradeAdvantageMap2 map
+TradeAdvantageMap2	;The TradeAdvantageMap2 map
 	incbin	..\Extracted\NHL95\Graphics\TradeAdvantageMap2.map.jim
-TradeAdvantageMap1	;the TradeAdvantageMap1 map
+TradeAdvantageMap1	;The TradeAdvantageMap1 map
 	incbin	..\Extracted\NHL95\Graphics\TradeAdvantageMap1.map.jim
-NameEntryBgMap	;the NameEntryBgMap map
+NameEntryBgMap	;The NameEntryBgMap map
 	incbin	..\Extracted\NHL95\Graphics\NameEntryBgMap.map.jim
-Arrowsmap	;the Arrowsmap map
+Arrowsmap	;The Arrowsmap map
 	incbin	..\Extracted\NHL95\Graphics\Arrowsmap.map.jim
-ScoutMap	;the ScoutMap map
+ScoutMap	;The ScoutMap map
 	incbin	..\Extracted\NHL95\Graphics\ScoutMap.map.jim
-PlayoffSprite	;the PlayoffSprite map
+PlayoffSprite	;The PlayoffSprite map
 	incbin	..\Extracted\NHL95\Graphics\PlayoffSprite.map.jim
-ScoutReportMap	;the ScoutReportMap map
+ScoutReportMap	;The ScoutReportMap map
 	incbin	..\Extracted\NHL95\Graphics\ScoutReportMap.map.jim
-HotIconMap	;the HotIconMap map
+HotIconMap	;The HotIconMap map
 	incbin	..\Extracted\NHL95\Graphics\HotIconMap.map.jim
-ColdIconMap	;the ColdIconMap map
+ColdIconMap	;The ColdIconMap map
 	incbin	..\Extracted\NHL95\Graphics\ColdIconMap.map.jim
-RonBarrMap	;the RonBarrMap map
+RonBarrMap	;The RonBarrMap map
 	incbin	..\Extracted\NHL95\Graphics\RonBarrMap.map.jim
-CrowdFrameList	;the crowd sprites; +8 the tiles
+CrowdFrameList	;The crowd sprites; +8 the tiles
 	incbin	..\Extracted\NHL95\Graphics\CrowdFrameList.map.jim
-TitleScreenImg	;the TitleScreenImg map
+TitleScreenImg	;The TitleScreenImg map
 	incbin	..\Extracted\NHL95\Graphics\TitleScreenImg.map.jim
-TitleImg	;the TitleImg map
+TitleImg	;The TitleImg map
 	incbin	..\Extracted\NHL95\Graphics\TitleImg.map.jim
-StanleyCupImg	;the StanleyCupImg map
+StanleyCupImg	;The StanleyCupImg map
 	incbin	..\Extracted\NHL95\Graphics\StanleyCupImg.map.jim
-CupSprites	;the CupSprites map
+CupSprites	;The CupSprites map
 	incbin	..\Extracted\NHL95\Graphics\CupSprites.map.jim
-logoANH	;team logo (TeamLogoBitmaps)
+logoANH	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoANA.map.jim
-logoBOS	;team logo (TeamLogoBitmaps)
+logoBOS	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoBOS.map.jim
-logoBUF	;team logo (TeamLogoBitmaps)
+logoBUF	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoBUF.map.jim
-logoCGY	;team logo (TeamLogoBitmaps)
+logoCGY	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoCGY.map.jim
-logoCHI	;team logo (TeamLogoBitmaps)
+logoCHI	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoCHI.map.jim
-logoDET	;team logo (TeamLogoBitmaps)
+logoDET	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoDET.map.jim
-logoEDM	;team logo (TeamLogoBitmaps)
+logoEDM	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoEDM.map.jim
-logoFLA	;team logo (TeamLogoBitmaps)
+logoFLA	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoFLA.map.jim
-logoHFD	;team logo (TeamLogoBitmaps)
+logoHFD	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoHFD.map.jim
-logoNYI	;team logo (TeamLogoBitmaps)
+logoNYI	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoNYI.map.jim
-logoLA	;team logo (TeamLogoBitmaps)
+logoLA	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoLA.map.jim
-logoDAL	;team logo (TeamLogoBitmaps)
+logoDAL	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoDAL.map.jim
-logoMTL	;team logo (TeamLogoBitmaps)
+logoMTL	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoMTL.map.jim
-logoNJ	;team logo (TeamLogoBitmaps)
+logoNJ	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoNJ.map.jim
-logoNYR	;team logo (TeamLogoBitmaps)
+logoNYR	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoNYR.map.jim
-logoOTW	;team logo (TeamLogoBitmaps)
+logoOTW	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoOTW.map.jim
-logoPHI	;team logo (TeamLogoBitmaps)
+logoPHI	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoPHI.map.jim
-logoPIT	;team logo (TeamLogoBitmaps)
+logoPIT	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoPIT.map.jim
-logoQUE	;team logo (TeamLogoBitmaps)
+logoQUE	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoQUE.map.jim
-logoSJ	;team logo (TeamLogoBitmaps)
+logoSJ	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoSJ.map.jim
-logoSTL	;team logo (TeamLogoBitmaps)
+logoSTL	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoSTL.map.jim
-logoTB	;team logo (TeamLogoBitmaps)
+logoTB	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoTB.map.jim
-logoTOR	;team logo (TeamLogoBitmaps)
+logoTOR	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoTOR.map.jim
-logoVAN	;team logo (TeamLogoBitmaps)
+logoVAN	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoVAN.map.jim
-logoWSH	;team logo (TeamLogoBitmaps)
+logoWSH	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoWSH.map.jim
-logoWPG	;team logo (TeamLogoBitmaps)
+logoWPG	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoWPG.map.jim
-logoASE	;team logo (TeamLogoBitmaps)
+logoASE	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoASE.map.jim
-logoASW	;team logo (TeamLogoBitmaps)
+logoASW	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoASW.map.jim
 
 ;------------------------------------------------------------------------------------------------------------------------

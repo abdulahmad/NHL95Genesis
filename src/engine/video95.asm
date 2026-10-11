@@ -44,7 +44,7 @@ setVram	;Fade every colour to d0, then fall into setVram_0
 	dbf	d1,.0
 	move.w	#$18,(palcount).w
 	bsr.w	forcefade
-setVram_0	;second half of setVram without the fade: clear vram and set the VDP registers from disflags, Map1col
+setVram_0	;Second half of setVram without the fade: clear vram and set the VDP registers from disflags, Map1col
 	;VmMap1-3, VSPRITES and VSCRLPM. Falls in from setVram, called from EASportsScreen
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -591,7 +591,7 @@ addframe2	;d0/d1 = x/y coord on screen, a3 = object, a5 = dma trans, a6 = sprite
 	move.w	(sp)+,attribute(a3)
 	rts
 
-sizetab	;sprite size code to tile count. sizetab, used by addframe2 (94 kept it)
+sizetab	;Sprite size code to tile count. sizetab, used by addframe2 (94 kept it)
 	dc.b	1,2,3,4,2,4,6,8,3,6,9,$C,4,8,$C,$10
 
 updatescroll	;Using hpos and vpos set scroll cords; queue rink map rows on the dma list (a5) when vertical
@@ -685,7 +685,7 @@ forceblack	;Called from most screens
 	movem.l	(sp)+,d0/a0
 	rts
 
-forceblack2	;No xref. forceblack with palcount $64 (one step, CopyPaletteToCRAM)
+forceblack2	;Unreferenced. Forceblack with palcount $64 (one step, CopyPaletteToCRAM)
 	movem.l	d0/a0,-(sp)
 	movea.w	#(palfadenew-M68K_RAM),a0
 	moveq	#$1F,d0
@@ -738,7 +738,7 @@ jump_table	;DecompressBytecode handler offsets, one per opcode high nibble
 	dc.w	Opcode_CopyBackwardReverseShort-jump_table	;D
 	dc.w	Opcode_CopyBackwardReverseMedium-jump_table	;E
 	dc.w	Opcode_CopyBackwardReverseLong-jump_table	;F
-Opcode_CopyLiteral	;opcodes 0-1, copy (low 5 bits)+1 bytes from the data
+Opcode_CopyLiteral	;Opcodes 0-1, copy (low 5 bits)+1 bytes from the data
 	move.b	-1(a0),d0
 	andi.w	#$1F,d0
 .loop
@@ -749,7 +749,7 @@ Opcode_CopyLiteral	;opcodes 0-1, copy (low 5 bits)+1 bytes from the data
 .next
 	dbf	d0,.loop
 	rts
-Opcode_ClearBytes	;opcode 2, write (low 4 bits)+1 zero bytes
+Opcode_ClearBytes	;Opcode 2, write (low 4 bits)+1 zero bytes
 	move.b	-1(a0),d0
 	andi.w	#$F,d0
 .loop
@@ -760,7 +760,7 @@ Opcode_ClearBytes	;opcode 2, write (low 4 bits)+1 zero bytes
 .next
 	dbf	d0,.loop
 	rts
-Opcode_Fillbytes	;opcode 3, write the next data byte (low 4 bits)+3 times
+Opcode_Fillbytes	;Opcode 3, write the next data byte (low 4 bits)+3 times
 	move.b	-1(a0),d0
 	andi.w	#$F,d0
 	addq.w	#2,d0
@@ -773,7 +773,7 @@ Opcode_Fillbytes	;opcode 3, write the next data byte (low 4 bits)+3 times
 .next
 	dbf	d0,.loop
 	rts
-Opcode_CopyBackwardShort	;opcodes 4-7, copy from back in the output buffer
+Opcode_CopyBackwardShort	;Opcodes 4-7, copy from back in the output buffer
 	move.b	-1(a0),d0
 	andi.w	#7,d0
 	addq.w	#1,d0
@@ -781,7 +781,7 @@ Opcode_CopyBackwardShort	;opcodes 4-7, copy from back in the output buffer
 	lsr.w	#3,d2
 	andi.w	#7,d2
 	addq.w	#1,d2
-CopyBackwardRun	;shared copy loop, d0 = count-1, d2 = distance back
+CopyBackwardRun	;Shared copy loop, d0 = count-1, d2 = distance back
 	neg.b	d2
 	add.b	d1,d2
 .loop
@@ -793,13 +793,13 @@ CopyBackwardRun	;shared copy loop, d0 = count-1, d2 = distance back
 .next
 	dbf	d0,.loop
 	rts
-Opcode_CopyBackwardMedium	;opcode 8
+Opcode_CopyBackwardMedium	;Opcode 8
 	move.b	-1(a0),d0
 	andi.w	#$F,d0
 	addq.w	#2,d0
 	move.b	(a0)+,d2
 	bra.s	CopyBackwardRun
-Opcode_CopyBackwardLong	;opcode 9
+Opcode_CopyBackwardLong	;Opcode 9
 	move.b	(a0),d0
 	asl.b	#1,d0
 	move.b	-1(a0),d0
@@ -810,7 +810,7 @@ Opcode_CopyBackwardLong	;opcode 9
 	andi.w	#$7F,d2
 	addq.w	#1,d2
 	bra.s	CopyBackwardRun
-Opcode_CopyBackwardExtended1	;opcode A
+Opcode_CopyBackwardExtended1	;Opcode A
 	move.b	-1(a0),d0
 	asl.w	#8,d0
 	move.b	(a0),d0
@@ -821,7 +821,7 @@ Opcode_CopyBackwardExtended1	;opcode A
 	andi.w	#$3F,d2
 	addq.w	#1,d2
 	bra.s	CopyBackwardRun
-Opcode_CopyBackwardExtended2	;opcode B
+Opcode_CopyBackwardExtended2	;Opcode B
 	move.b	-1(a0),d0
 	asl.w	#8,d0
 	move.b	(a0),d0
@@ -832,7 +832,7 @@ Opcode_CopyBackwardExtended2	;opcode B
 	andi.w	#$1F,d2
 	addq.w	#1,d2
 	bra.s	CopyBackwardRun
-Opcode_CopyBackwardReverseShort	;opcodes C-D, copy backwards through the source
+Opcode_CopyBackwardReverseShort	;Opcodes C-D, copy backwards through the source
 	move.b	-1(a0),d0
 	andi.w	#3,d0
 	addq.w	#1,d0
@@ -840,7 +840,7 @@ Opcode_CopyBackwardReverseShort	;opcodes C-D, copy backwards through the source
 	lsr.w	#2,d2
 	andi.w	#7,d2
 	addq.w	#1,d2
-CopyBackwardReverseRun	;shared reverse copy loop
+CopyBackwardReverseRun	;Shared reverse copy loop
 	neg.b	d2
 	add.b	d1,d2
 .loop
@@ -852,7 +852,7 @@ CopyBackwardReverseRun	;shared reverse copy loop
 .next
 	dbf	d0,.loop
 	rts
-Opcode_CopyBackwardReverseMedium	;opcode E. Distance 0 is the end code
+Opcode_CopyBackwardReverseMedium	;Opcode E. Distance 0 is the end code
 	move.b	-1(a0),d0
 	andi.w	#$F,d0
 	addq.w	#2,d0
@@ -865,7 +865,7 @@ Opcode_CopyBackwardReverseMedium	;opcode E. Distance 0 is the end code
 	addq.w	#4,sp
 	movem.l	(sp)+,d0-d3/a0-a2
 	rts
-Opcode_CopyBackwardReverseLong	;opcode F
+Opcode_CopyBackwardReverseLong	;Opcode F
 	move.b	(a0),d0
 	asl.b	#1,d0
 	move.b	-1(a0),d0
@@ -1040,7 +1040,7 @@ vb2	;Vblank used for palfades only, no dmas (vbint target). No rte here: falls i
 	addq.w	#1,(vcount).w
 	jsr	(p_music_vblank).l
 	movem.l	(sp)+,d0-d7/a0-a6
-IRQ7	;rte only. vb2 falls in; the vector table ($60, $64, ...) points here
+IRQ7	;Rte only. vb2 falls in; the vector table ($60, $64, ...) points here
 	rte
 
 VBlank_SetOptions	;vbint handler stored by the menus: cramfade unless dfng, plus
@@ -1132,7 +1132,7 @@ ReadJoy2
 	eor.w	d1,d2
 	and.w	d2,d1
 	rts
-ReadJoy3	;nothing pressed (NoJoy) without FourWayPlay
+ReadJoy3	;Nothing pressed (NoJoy) without FourWayPlay
 	tst.w	(FourWayPlay).w
 	beq.w	NoJoy
 	move.b	(pad4way3).w,d0

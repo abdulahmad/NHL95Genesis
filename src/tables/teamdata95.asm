@@ -113,13 +113,13 @@ AllStarsEast	;ASE, $7E2 (94 $37E)
 	Player	'Al Iafrate',	43B4,4446,49A2,3344	;22
 	Player	'Larry Murphy',	55A4,3554,3C92,5152	;23
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'All Stars East'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'ASE'
-.tm	;nickname. 94 left it empty for the all star teams
+.tm	;Nickname. 94 left it empty for the all star teams
 	String	'All Stars East'
-.ar	;arena
+.ar	;Arena
 	String	'San Jose Arena'
 
 AllStarsWest	;ASW, $AB2 (94 $674)
@@ -169,13 +169,13 @@ AllStarsWest	;ASW, $AB2 (94 $674)
 	Player	'Chris Chelios',	0774,4465,4AA2,6245	;20
 	Player	'Paul Coffey',	7796,5434,2BC2,5163	;21
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'All Stars West'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'ASW'
-.tm	;nickname. 94 left it empty for the all star teams
+.tm	;Nickname. 94 left it empty for the all star teams
 	String	'All Stars West'
-.ar	;arena
+.ar	;Arena
 	String	'San Jose Arena'
 
 Anaheim	;ANH, $D66 (94 $5330)
@@ -227,13 +227,13 @@ Anaheim	;ANH, $D66 (94 $5330)
 	Player	'Mark Ferner',	0382,1222,2732,2322	;22
 	Player	'Randy Ladouceur',	29B3,2141,3971,4514	;23
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Anaheim'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'ANH'
-.tm	;nickname
+.tm	;Nickname
 	String	'Mighty Ducks'
-.ar	;arena
+.ar	;Arena
 	String	'Arrowhead Pond'
 
 Boston	;BOS, $102A (94 $966)
@@ -286,13 +286,13 @@ Boston	;BOS, $102A (94 $966)
 	Player	'Gordie Roberts',	1473,2131,3723,3023	;23
 	Player	'Glen Feathrston',	06B3,3122,4743,2325	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Boston'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'BOS'
-.tm	;nickname
+.tm	;Nickname
 	String	'Bruins'
-.ar	;arena
+.ar	;Arena
 	String	'Boston Garden'
 
 Buffalo	;BUF, $1304 (94 $C4C)
@@ -345,13 +345,13 @@ Buffalo	;BUF, $1304 (94 $C4C)
 	Player	'Petr Svoboda',	0754,4243,3970,4033	;23
 	Player	'Richard Smehlik',	42A3,2344,3D63,3332	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Buffalo'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'BUF'
-.tm	;nickname
+.tm	;Nickname
 	String	'Sabres'
-.ar	;arena
+.ar	;Arena
 	String	'Memorial Auditorium'
 
 Calgary	;CGY, $15E0 (94 $F3A)
@@ -404,13 +404,13 @@ Calgary	;CGY, $15E0 (94 $F3A)
 	Player	'Kevin Dahl',	0473,2141,3461,3132	;23
 	Player	'Chris Dahlquist',	0583,2142,3971,3323	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Calgary'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'CGY'
-.tm	;nickname
+.tm	;Nickname
 	String	'Flames'
-.ar	;arena
+.ar	;Arena
 	String	'Olympic Saddledome'
 
 Chicago	;CHI, $18BE (94 $1234)
@@ -463,13 +463,13 @@ Chicago	;CHI, $18BE (94 $1234)
 	Player	'Gary Suter',	0675,4444,47A2,5244	;23
 	Player	'Cam Russell',	0853,3132,3951,3525	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Chicago'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'CHI'
-.tm	;nickname
+.tm	;Nickname
 	String	'Blackhawks'
-.ar	;arena
+.ar	;Arena
 	String	'United Center'
 
 Detroit	;DET, $1B9E (94 $152E)
@@ -522,13 +522,13 @@ Detroit	;DET, $1B9E (94 $152E)
 	Player	'Vladimir Konstantov',	1664,4243,4A71,4235	;23
 	Player	'Bob Halkidis',	2191,2122,3742,3224	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Detroit'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'DET'
-.tm	;nickname
+.tm	;Nickname
 	String	'Red Wings'
-.ar	;arena
+.ar	;Arena
 	String	'Joe Louis Sports Arena'
 
 Edmonton	;EDM, $1E9C (94 $1848)
@@ -581,13 +581,13 @@ Edmonton	;EDM, $1E9C (94 $1848)
 	Player	'Luke Richardson',	22B3,3132,4970,2434	;23
 	Player	'Boris Mironov',	2064,3223,3871,2323	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Edmonton'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'EDM'
-.tm	;nickname
+.tm	;Nickname
 	String	'Oilers'
-.ar	;arena
+.ar	;Arena
 	String	'Northlands Coliseum'
 
 Florida	;FLA, $218E (94 $50E6)
@@ -640,13 +640,13 @@ Florida	;FLA, $218E (94 $50E6)
 	Player	'Keith Brown',	0472,2232,3441,3433	;23
 	Player	'Peter Andersson',	0693,3322,2992,3342	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Florida'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'FLA'
-.tm	;nickname
+.tm	;Nickname
 	String	'Panthers'
-.ar	;arena
+.ar	;Arena
 	String	'Miami Arena'
 
 Hartford	;HFD, $246E (94 $1B44)
@@ -699,13 +699,13 @@ Hartford	;HFD, $246E (94 $1B44)
 	Player	'Chris Pronger',	4473,3332,3BA2,3334	;23
 	Player	'Ted Crowley',	3373,3232,2872,3322	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Hartford'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'HFD'
-.tm	;nickname
+.tm	;Nickname
 	String	'Whalers'
-.ar	;arena
+.ar	;Arena
 	String	'Hartford Civic Center'
 
 LosAngeles	;LA, $2762 (94 $1E52)
@@ -757,13 +757,13 @@ LosAngeles	;LA, $2762 (94 $1E52)
 	Player	'Doug Houda',	0672,2122,3631,2414	;22
 	Player	'Tim Watters',	0562,2121,2510,2122	;23
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Los Angeles'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'LA'
-.tm	;nickname
+.tm	;Nickname
 	String	'Kings'
-.ar	;arena
+.ar	;Arena
 	String	'The Great Western Forum'
 
 Dallas	;DAL, $2A24 (94 $214E)
@@ -816,13 +816,13 @@ Dallas	;DAL, $2A24 (94 $214E)
 	Player	'Grant Ledyard',	1294,3331,3960,2232	;23
 	Player	'Paul Cavallini',	14A3,3243,3962,3532	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Dallas'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'DAL'
-.tm	;nickname
+.tm	;Nickname
 	String	'Stars'
-.ar	;arena
+.ar	;Arena
 	String	'Reunion Arena'
 
 Montreal	;MTL, $2CF8 (94 $243E)
@@ -875,13 +875,13 @@ Montreal	;MTL, $2CF8 (94 $243E)
 	Player	'Lyle Odelein',	2493,2243,4B52,3425	;23
 	Player	'Peter Popovic',	34A2,2123,3661,2211	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Montreal'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'MTL'
-.tm	;nickname
+.tm	;Nickname
 	String	'Canadiens'
-.ar	;arena
+.ar	;Arena
 	String	'Montreal Forum'
 
 NewJersey	;NJ, $2FE8 (94 $2740)
@@ -934,13 +934,13 @@ NewJersey	;NJ, $2FE8 (94 $2740)
 	Player	'Tommy Albelin',	0673,2232,2960,3232	;23
 	Player	'Jaroslav Modry',	0583,3132,2961,3221	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'New Jersey'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'NJ'
-.tm	;nickname
+.tm	;Nickname
 	String	'Devils'
-.ar	;arena
+.ar	;Arena
 	String	'Brendan Byrne Arena'
 
 NYIslanders	;NYI, $32DA (94 $2A58)
@@ -993,13 +993,13 @@ NYIslanders	;NYI, $32DA (94 $2A58)
 	Player	'Dennis Vaske',	37A1,1212,2741,1113	;23
 	Player	'Richard Pilon',	4794,2023,3571,2515	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'New York'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'NYI'
-.tm	;nickname
+.tm	;Nickname
 	String	'Islanders'
-.ar	;arena
+.ar	;Arena
 	String	'Nassau Coliseum'
 
 NYRangers	;NYR, $35C6 (94 $2D5C)
@@ -1052,13 +1052,13 @@ NYRangers	;NYR, $35C6 (94 $2D5C)
 	Player	'Doug Lidster',	0693,3233,3A61,4142	;23
 	Player	'Jay Wells',	24A2,2132,4B40,2124	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'New York'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'NYR'
-.tm	;nickname
+.tm	;Nickname
 	String	'Rangers'
-.ar	;arena
+.ar	;Arena
 	String	'Madison Square Garden'
 
 Ottawa	;OTW, $38A8 (94 $3054)
@@ -1111,13 +1111,13 @@ Ottawa	;OTW, $38A8 (94 $3054)
 	Player	'Dimitri Filmanov',	5593,2122,2661,2221	;23
 	Player	'Gord Dineen',	0681,1221,2A30,2513	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Ottawa'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'OTW'
-.tm	;nickname
+.tm	;Nickname
 	String	'Senators'
-.ar	;arena
+.ar	;Arena
 	String	'Ottawa Civic Centre'
 
 Philadelphia	;PHI, $3B9E (94 $3348)
@@ -1170,13 +1170,13 @@ Philadelphia	;PHI, $3B9E (94 $3348)
 	Player	'Rob Ramage',	0592,2133,4641,3424	;23
 	Player	'Ryan McGill',	2782,2232,3841,3414	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Philadelphia'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'PHI'
-.tm	;nickname
+.tm	;Nickname
 	String	'Flyers'
-.ar	;arena
+.ar	;Arena
 	String	'The Spectrum'
 
 Pittsburgh	;PIT, $3E7C (94 $3646)
@@ -1229,13 +1229,13 @@ Pittsburgh	;PIT, $3E7C (94 $3646)
 	Player	'Greg Hawgood',	0473,3323,2962,3132	;23
 	Player	'Grant Jennings',	0392,2132,3970,2414	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Pittsburgh'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'PIT'
-.tm	;nickname
+.tm	;Nickname
 	String	'Penguins'
-.ar	;arena
+.ar	;Arena
 	String	'Pittsburgh Civic Arena'
 
 Quebec	;QUE, $416C (94 $393C)
@@ -1288,13 +1288,13 @@ Quebec	;QUE, $416C (94 $393C)
 	Player	'Steven Finn',	2982,2233,3B72,3424	;23
 	Player	'Tommy Sjodin',	0264,3324,2892,3331	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Quebec'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'QUE'
-.tm	;nickname
+.tm	;Nickname
 	String	'Nordiques'
-.ar	;arena
+.ar	;Arena
 	String	'Colisee de Quebec'
 
 SanJose	;SJ, $4452 (94 $3C42)
@@ -1346,13 +1346,13 @@ SanJose	;SJ, $4452 (94 $3C42)
 	Player	'Mike Rathje',	4083,2132,3971,3323	;22
 	Player	'Jay More',	0473,2133,4642,3534	;23
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'San Jose'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'SJ'
-.tm	;nickname
+.tm	;Nickname
 	String	'Sharks'
-.ar	;arena
+.ar	;Arena
 	String	'San Jose Arena'
 
 StLouis	;STL, $4716 (94 $3F30)
@@ -1405,13 +1405,13 @@ StLouis	;STL, $4716 (94 $3F30)
 	Player	'Tom Tilley',	2072,2121,2832,2421	;23
 	Player	'Alexei Kasatonov',	07A4,3233,3761,3142	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'St. Louis'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'STL'
-.tm	;nickname
+.tm	;Nickname
 	String	'Blues'
-.ar	;arena
+.ar	;Arena
 	String	'St. Louis Arena'
 
 TampaBay	;TB, $49FE (94 $4216)
@@ -1462,13 +1462,13 @@ TampaBay	;TB, $49FE (94 $4216)
 	Player	'Enrico Ciccone',	3992,1121,2921,3415	;21
 	Player	'Eric Charron',	0382,1121,2911,2414	;22
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Tampa Bay'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'TB'
-.tm	;nickname
+.tm	;Nickname
 	String	'Lightning'
-.ar	;arena
+.ar	;Arena
 	String	'Thunderdome'
 
 Toronto	;TOR, $4CB6 (94 $4518)
@@ -1521,13 +1521,13 @@ Toronto	;TOR, $4CB6 (94 $4518)
 	Player	'Sylvain Lefebvre',	0292,2131,3D70,4433	;23
 	Player	'Matt Martin',	3372,2222,2962,3232	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Toronto'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'TOR'
-.tm	;nickname
+.tm	;Nickname
 	String	'Maple Leafs'
-.ar	;arena
+.ar	;Arena
 	String	'Maple Leaf Gardens'
 
 Vancouver	;VAN, $4FA8 (94 $481C)
@@ -1580,13 +1580,13 @@ Vancouver	;VAN, $4FA8 (94 $481C)
 	Player	'Dana Murzyn',	0592,2234,3B61,4423	;23
 	Player	'Gerald Diduck',	0494,4132,4871,3234	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Vancouver'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'VAN'
-.tm	;nickname
+.tm	;Nickname
 	String	'Canucks'
-.ar	;arena
+.ar	;Arena
 	String	'General Motors Place'
 
 Winnipeg	;WPG, $528E (94 $4B0A)
@@ -1638,13 +1638,13 @@ Winnipeg	;WPG, $528E (94 $4B0A)
 	Player	'Dave Manson',	0394,4325,4981,5434	;22
 	Player	'Dean Kennedy',	2692,2132,3840,4423	;23
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Winnipeg'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'WPG'
-.tm	;nickname
+.tm	;Nickname
 	String	'Jets'
-.ar	;arena
+.ar	;Arena
 	String	'Winnipeg Arena'
 
 Washington	;WSH, $5556 (94 $4DFC)
@@ -1697,13 +1697,13 @@ Washington	;WSH, $5556 (94 $4DFC)
 	Player	'Shawn Anderson',	3692,2122,3961,2321	;23
 	Player	'Jon Slaney',	2873,3223,2963,2521	;24
 	dc.w	2	;end of the player list: an empty String
-.tn	;city
+.tn	;City
 	String	'Washington'
-.ta	;abbreviation
+.ta	;Abbreviation
 	String	'WSH'
-.tm	;nickname
+.tm	;Nickname
 	String	'Capitals'
-.ar	;arena
+.ar	;Arena
 	String	'US Air Arena'
 
 playoffseats	;Playoff seeding: 32 rows of 16 team numbers (NewPO, MakeTree)

@@ -399,7 +399,7 @@ dirtab	;X / Y acc speed for each direction 0-7. runspeed $F0 ($A9 = runspeed / s
 	dc.w	0,$FF10,$FF57,$FF57,$FF10,0,$FF57,$A9
 	dc.w	0,0
 
-dirtab2	;the same with runspeed $E4 / $A1
+dirtab2	;The same with runspeed $E4 / $A1
 	dc.w	0,$E4,$A1,$A1,$E4,0,$A1,$FF5F
 	dc.w	0,$FF1C,$FF5F,$FF5F,$FF1C,0,$FF5F,$A1
 	dc.w	0,0

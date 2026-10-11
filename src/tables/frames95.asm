@@ -69,12 +69,12 @@ SPFgextra1	=	SPFboardmid+28	; 1040
 SPFgslambot	=	SPFgextra1+4	; 1044
 SPFfaceoff	=	SPFgslambot+6	; 1050 The last frame a 95 table uses is 1055
 
-SPAlist	;movea.l #SPAlist (#$5A34) in the replay and input code
+SPAlist	;Movea.l #SPAlist (#$5A34) in the replay and input code
 	dc.w	0
 
 SPAskate	=	*-SPAlist	; noturn0 move.w #2,d1. Table 0 in 95 (94 put gready here)
 SPAskate_table:	;Frames 1-330
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -112,7 +112,7 @@ SPAskate_table:	;Frames 1-330
 
 SPAskateturn	=	*-SPAlist	; noturn0.8 sets it in place of the skate tables when the current SPA is a turn
 SPAskateturn_table:	;Frames 267-330
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -134,7 +134,7 @@ SPAskateturn_table:	;Frames 267-330
 
 SPAskate2	=	*-SPAlist	; noturn0 uses it in place of SPAskate when sflags bit 7 is set
 SPAskate2_table:	;Frames 1-64
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -172,7 +172,7 @@ SPAskate2_table:	;Frames 1-64
 
 SPAskatewp	=	*-SPAlist	; noturn0 for the puck carrier. input burst.anim compares it
 SPAskatewp_table:	;Frames 331-394
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -210,7 +210,7 @@ SPAskatewp_table:	;Frames 331-394
 
 SPAskatewp2	=	*-SPAlist	; No reference found; frames 331-394 as SPAskatewp (the with puck partner of SPAskate2)
 SPAskatewp2_table:	;Frames 331-394
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -232,7 +232,7 @@ SPAskatewp2_table:	;Frames 331-394
 
 SPAglide	=	*-SPAlist	; doplayeracc, dostop
 SPAglide_table:	;Frames 65-72
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -254,7 +254,7 @@ SPAglide_table:	;Frames 65-72
 
 SPAglidewp	=	*-SPAlist	; SPAglide for the puck carrier (SCnum = puckc): doplayeracc, dostop, doshot
 SPAglidewp_table:	;Frames 395-402
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -276,7 +276,7 @@ SPAglidewp_table:	;Frames 395-402
 
 SPAturnl	=	*-SPAlist	; doplayeracc SPAturnr eori -$52
 SPAturnl_table:	;Frames 97-104
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -298,7 +298,7 @@ SPAturnl_table:	;Frames 97-104
 
 SPAturnr	=	*-SPAlist	; doplayeracc addi.w #SPAturnr
 SPAturnr_table:	;Frames 89-96
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -320,7 +320,7 @@ SPAturnr_table:	;Frames 89-96
 
 SPAturnlwp	=	*-SPAlist	; SPAturnl + $A4 for the puck carrier (doplayeracc)
 SPAturnlwp_table:	;Frames 427-434
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -342,7 +342,7 @@ SPAturnlwp_table:	;Frames 427-434
 
 SPAturnrwp	=	*-SPAlist	; SPAturnr + $A4 for the puck carrier (doplayeracc)
 SPAturnrwp_table:	;Frames 419-426
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -364,7 +364,7 @@ SPAturnrwp_table:	;Frames 419-426
 
 SPAstop	=	*-SPAlist	; dostop
 SPAstop_table:	;Frames 73-88
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -386,7 +386,7 @@ SPAstop_table:	;Frames 73-88
 
 SPAstopwp	=	*-SPAlist	; SPAstop for the puck carrier (dostop)
 SPAstopwp_table:	;Frames 403-418
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -408,7 +408,7 @@ SPAstopwp_table:	;Frames 403-418
 
 SPAshoulderchkl	=	*-SPAlist	; checkinglist uses it for the 94 shoulderchkl and hipchkl slots
 SPAshoulderchkl_table:	;Frames 123-130
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -430,7 +430,7 @@ SPAshoulderchkl_table:	;Frames 123-130
 
 SPAshoulderchkr	=	*-SPAlist	; checkinglist uses it for the 94 shoulderchkr and hipchkr slots
 SPAshoulderchkr_table:	;Frames 131-138
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -452,7 +452,7 @@ SPAshoulderchkr_table:	;Frames 131-138
 
 SPAHold	=	*-SPAlist	; Acheck, holdcheck, CCStart
 SPAHold_table:	;Frames 155-162
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -474,7 +474,7 @@ SPAHold_table:	;Frames 155-162
 
 SPAHold2	=	*-SPAlist	; holdcheck
 SPAHold2_table:	;Frames 155-162
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -496,7 +496,7 @@ SPAHold2_table:	;Frames 155-162
 
 SPAhook	=	*-SPAlist	; holdplayer, Acheck, CCStart
 SPAhook_table:	;Frames 139-153
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -518,7 +518,7 @@ SPAhook_table:	;Frames 139-153
 
 SPAhook2	=	*-SPAlist	; holdcheck
 SPAhook2_table:	;Frames 139-154
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -540,7 +540,7 @@ SPAhook2_table:	;Frames 139-154
 
 SPAsweepchk	=	*-SPAlist	; CCStart, B check
 SPAsweepchk_table:	;Frames 163-178
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -562,7 +562,7 @@ SPAsweepchk_table:	;Frames 163-178
 
 SPAfallfwd	=	*-SPAlist	; FallDown
 SPAfallfwd_table:	;Frames 65-226
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -584,7 +584,7 @@ SPAfallfwd_table:	;Frames 65-226
 
 SPAfallback	=	*-SPAlist	; FallDown
 SPAfallback_table:	;Frames 65-266
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -606,7 +606,7 @@ SPAfallback_table:	;Frames 65-266
 
 SPAburst	=	*-SPAlist	; burst.skate, CCStart
 SPAburst_table:	;Frames 267-330
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -628,7 +628,7 @@ SPAburst_table:	;Frames 267-330
 
 SPApflip	=	*-SPAlist	; puckflip
 SPApflip_table:	;Frames 436-445
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -650,7 +650,7 @@ SPApflip_table:	;Frames 436-445
 
 SPApassf	=	*-SPAlist	; dopass
 SPApassf_table:	;Frames 451-495
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -672,7 +672,7 @@ SPApassf_table:	;Frames 451-495
 
 SPApassf2	=	*-SPAlist	; The drop pass: dopass uses it in place of SPApassf when GameFlags bit 1 is set (A with the dpad back)
 SPApassf2_table:	;Frames 450-493
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -694,7 +694,7 @@ SPApassf2_table:	;Frames 450-493
 
 SPApassb	=	*-SPAlist	; dopass after Findhittype
 SPApassb_table:	;Frames 576-599
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -716,7 +716,7 @@ SPApassb_table:	;Frames 576-599
 
 SPApassb2	=	*-SPAlist	; The backhand drop pass: see SPApassf2
 SPApassb2_table:	;Frames 576-598
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -738,7 +738,7 @@ SPApassb2_table:	;Frames 576-598
 
 SPAshotf	=	*-SPAlist	; SetShotMode
 SPAshotf_table:	;Frames 448-495
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -768,7 +768,7 @@ SPAshotf_table:	;Frames 448-495
 
 SPAfakeshotf	=	*-SPAlist	; 95 PC name. The fake shot: SetShotMode uses it in place of SPAshotf when GameFlags bit 0 is set
 SPAfakeshotf_table:	;Frames 448-495
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -798,7 +798,7 @@ SPAfakeshotf_table:	;Frames 448-495
 
 SPAshotb	=	*-SPAlist	; SetShotMode, doshot
 SPAshotb_table:	;Frames 576-599
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -828,7 +828,7 @@ SPAshotb_table:	;Frames 576-599
 
 SPAfakeshotb	=	*-SPAlist	; 95 PC name. The backhand fake shot: see SPAfakeshotf
 SPAfakeshotb_table:	;Frames 449-495
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -858,7 +858,7 @@ SPAfakeshotb_table:	;Frames 449-495
 
 SPAskateback	=	*-SPAlist	; noturn0 when skating backwards
 SPAskateback_table:	;Frames 496-543
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -880,7 +880,7 @@ SPAskateback_table:	;Frames 496-543
 
 SPAstumble	=	*-SPAlist	; FallDown
 SPAstumble_table:	;Frames 544-575
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -902,7 +902,7 @@ SPAstumble_table:	;Frames 544-575
 
 SPAfaceoff	=	*-SPAlist	; faceoffinput
 SPAfaceoff_table:	;Frames 1050-1055
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -924,7 +924,7 @@ SPAfaceoff_table:	;Frames 1050-1055
 
 SPAfaceoffr	=	*-SPAlist	; faceoffinput
 SPAfaceoffr_table:	;Frames 334-366
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -946,7 +946,7 @@ SPAfaceoffr_table:	;Frames 334-366
 
 SPAgready	=	*-SPAlist	; the goalie ready anim (GoalieReadySPA) near the puck or when gmode bit 0 is set
 SPAgready_table:	;Frames 606-921
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -968,7 +968,7 @@ SPAgready_table:	;Frames 606-921
 
 SPAgready2	=	*-SPAlist	; the goalie ready anim (GoalieReadySPA) otherwise
 SPAgready2_table:	;Frames 606-613
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -990,7 +990,7 @@ SPAgready2_table:	;Frames 606-613
 
 SPAgglover	=	*-SPAlist	; goaliesave.saveanim 0 and 6
 SPAgglover_table:	;Frames 622-629
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1012,7 +1012,7 @@ SPAgglover_table:	;Frames 622-629
 
 SPAgglovel	=	*-SPAlist	; goaliesave.saveanim 1 and 7
 SPAgglovel_table:	;Frames 614-621
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1034,7 +1034,7 @@ SPAgglovel_table:	;Frames 614-621
 
 SPAgstickr	=	*-SPAlist	; goaliesave.saveanim 4 and 8
 SPAgstickr_table:	;Frames 638-645
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1056,7 +1056,7 @@ SPAgstickr_table:	;Frames 638-645
 
 SPAgstickl	=	*-SPAlist	; goaliesave.saveanim 5 and 9
 SPAgstickl_table:	;Frames 630-637
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1078,7 +1078,7 @@ SPAgstickl_table:	;Frames 630-637
 
 SPAgdive	=	*-SPAlist	; doinput
 SPAgdive_table:	;Frames 646-669
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1100,7 +1100,7 @@ SPAgdive_table:	;Frames 646-669
 
 SPAwallright	=	*-SPAlist	; asspenalty (penalty box door)
 SPAwallright_table:	;Frames 1005-1011
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1122,7 +1122,7 @@ SPAwallright_table:	;Frames 1005-1011
 
 SPAwallleft	=	*-SPAlist	; assbench, asseben, assepen (penalty box door)
 SPAwallleft_table:	;Frames 1005-1008
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1145,7 +1145,7 @@ SPAwallleft_table:	;Frames 1005-1008
 SPAblock	=	*-SPAlist	; The shot block (95 PC has blockleft, blockright, blockfront, blockknee): check4check and
 	;check4check2 for a joystick player (CanBlock), chkblock in place of SPAhook
 SPAblock_table:	;Frames 183-697
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1167,7 +1167,7 @@ SPAblock_table:	;Frames 183-697
 
 SPAsiren	=	*-SPAlist	; checkgoal, on the struct after the goal (Goal.27)
 SPAsiren_table:	;Frames 698-711
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1190,7 +1190,7 @@ SPAsiren_table:	;Frames 698-711
 
 SPAflail	=	*-SPAlist	; holdcheck
 SPAflail_table:	;Frames 1-36
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1212,7 +1212,7 @@ SPAflail_table:	;Frames 1-36
 
 SPAgswing	=	*-SPAlist	; dopass for the goalie
 SPAgswing_table:	;Frames 736-751
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1234,7 +1234,7 @@ SPAgswing_table:	;Frames 736-751
 
 SPAgstackl	=	*-SPAlist	; goaliesave.saveanim 3
 SPAgstackl_table:	;Frames 724-735
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1256,7 +1256,7 @@ SPAgstackl_table:	;Frames 724-735
 
 SPAgstackr	=	*-SPAlist	; goaliesave.saveanim 2
 SPAgstackr_table:	;Frames 712-723
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1278,7 +1278,7 @@ SPAgstackr_table:	;Frames 712-723
 
 SPAboardtop	=	*-SPAlist	; FallDown.FallList
 SPAboardtop_table:	;Frames 183-766
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1300,7 +1300,7 @@ SPAboardtop_table:	;Frames 183-766
 
 SPAboardright	=	*-SPAlist	; FallDown.FallList
 SPAboardright_table:	;Frames 195-781
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1322,7 +1322,7 @@ SPAboardright_table:	;Frames 195-781
 
 SPAboardbot	=	*-SPAlist	; FallDown.FallList
 SPAboardbot_table:	;Frames 183-793
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1344,7 +1344,7 @@ SPAboardbot_table:	;Frames 183-793
 
 SPAboardleft	=	*-SPAlist	; FallDown.FallList
 SPAboardleft_table:	;Frames 189-807
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1366,7 +1366,7 @@ SPAboardleft_table:	;Frames 189-807
 
 SPAboardchk	=	*-SPAlist	; FallDown, on the hitter
 SPAboardchk_table:	;Frames 808-815
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1388,7 +1388,7 @@ SPAboardchk_table:	;Frames 808-815
 
 SPAgskate	=	*-SPAlist	; goalieacc
 SPAgskate_table:	;Frames 852-875
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1410,7 +1410,7 @@ SPAgskate_table:	;Frames 852-875
 
 SPAcelebrate	=	*-SPAlist	; the 94 step
 SPAcelebrate_table:	;Frames 836-851
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1432,7 +1432,7 @@ SPAcelebrate_table:	;Frames 836-851
 
 SPAgstackalt1	=	*-SPAlist	; goaliesave: a pad stack save becomes this or SPAgstackalt2 (random) when sflags bit 3 is set
 SPAgstackalt1_table:	;Frames 880-883
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1454,7 +1454,7 @@ SPAgstackalt1_table:	;Frames 880-883
 
 SPAgstackalt2	=	*-SPAlist	; goaliesave: see SPAgstackalt1
 SPAgstackalt2_table:	;Frames 884-885
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1476,7 +1476,7 @@ SPAgstackalt2_table:	;Frames 884-885
 
 SPAcatch	=	*-SPAlist	; puckbody
 SPAcatch_table:	;Frames 816-831
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1498,7 +1498,7 @@ SPAcatch_table:	;Frames 816-831
 
 SPAinjuryfall	=	*-SPAlist	; FallDown
 SPAinjuryfall_table:	;Frames 227-896
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1520,7 +1520,7 @@ SPAinjuryfall_table:	;Frames 227-896
 
 SPAinjury1	=	*-SPAlist	; FallDown
 SPAinjury1_table:	;Frames 227-896
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1542,7 +1542,7 @@ SPAinjury1_table:	;Frames 227-896
 
 SPAinjury2	=	*-SPAlist	; FallDown uses it in place of SPAinjury1 when sflags12 bit 1 is set
 SPAinjury2_table:	;Frames 227-897
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1564,7 +1564,7 @@ SPAinjury2_table:	;Frames 227-897
 
 SPAbglass	=	*-SPAlist	; wallcollb
 SPAbglass_table:	;Frames 1000-1004
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1586,7 +1586,7 @@ SPAbglass_table:	;Frames 1000-1004
 
 SPAshoulderchkl2	=	*-SPAlist	; The second checking list left check; FallDown skips the flip after it
 SPAshoulderchkl2_table:	;Frames 832-834
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1608,7 +1608,7 @@ SPAshoulderchkl2_table:	;Frames 832-834
 
 SPAshoulderchkr2	=	*-SPAlist	; The second checking list right check; FallDown skips the flip after it
 SPAshoulderchkr2_table:	;Frames 833-835
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1630,7 +1630,7 @@ SPAshoulderchkr2_table:	;Frames 833-835
 
 SPAglideback	=	*-SPAlist	; doplayeracc when skating backwards
 SPAglideback_table:	;Frames 496-538
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1652,7 +1652,7 @@ SPAglideback_table:	;Frames 496-538
 
 SPAflip	=	*-SPAlist	; FallDown
 SPAflip_table:	;Frames 183-605
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1682,7 +1682,7 @@ SPAflip_table:	;Frames 183-605
 
 SPAboardmidl	=	*-SPAlist	; FallDown
 SPAboardmidl_table:	;Frames 67-1025
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1707,7 +1707,7 @@ SPAboardmidl_table:	;Frames 67-1025
 
 SPAboardmidr	=	*-SPAlist	; FallDown
 SPAboardmidr_table:	;Frames 66-1039
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1732,7 +1732,7 @@ SPAboardmidr_table:	;Frames 66-1039
 
 SPApump	=	*-SPAlist	; inferred: the word list after SPAcelebrate (label), with SPApump2
 SPApump_table:	;Frames 922-937
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1754,7 +1754,7 @@ SPApump_table:	;Frames 922-937
 
 SPAstanley	=	*-SPAlist	; inferred: set (label), before the celebrate step
 SPAstanley_table:	;Frames 938-953
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1776,7 +1776,7 @@ SPAstanley_table:	;Frames 938-953
 
 SPApump2	=	*-SPAlist	; inferred: the word list alternates it with SPApump
 SPApump2_table:	;Frames 954-969
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1798,7 +1798,7 @@ SPApump2_table:	;Frames 954-969
 
 SPAgslamtop	=	*-SPAlist	; checkanim
 SPAgslamtop_table:	;Frames 898-903
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1822,7 +1822,7 @@ SPAgslamtop_table:	;Frames 898-903
 
 SPAgextra1	=	*-SPAlist	; goaliesave.26: with SPAgextra2, picked by the goalie side of the puck and the glove hand ($76 bit 0)
 SPAgextra1_table:	;Frames 1040-1043
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1844,7 +1844,7 @@ SPAgextra1_table:	;Frames 1040-1043
 
 SPAgextra2	=	*-SPAlist	; goaliesave.26: see SPAgextra1. puckgoalie compares SPAgextra1
 SPAgextra2_table:	;Frames 876-879
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t
@@ -1866,7 +1866,7 @@ SPAgextra2_table:	;Frames 876-879
 
 SPAgslambot	=	*-SPAlist	; checkanim
 SPAgslambot_table:	;Frames 1044-1049
-.t	;offset to each direction of animation (0-7)
+.t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
 	dc.w	.2-.t

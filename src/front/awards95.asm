@@ -268,7 +268,7 @@ PrintFinalists	;"FINALISTS:" and the 3 finalists (player names, or teams for a t
 	cmp.w	#4,d1
 	ble.w	.2
 	rts
-.6	;blank String (12 spaces)
+.6	;Blank String (12 spaces)
 	String	'            '
 .7
 	move.w	(a0,d1.w),d0
