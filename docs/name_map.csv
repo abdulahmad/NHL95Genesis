@@ -2233,3 +2233,5 @@ TXS_ALL,CC_SetMapAndPosition,93G
 .bad,VDPErrorSetup,earlier rename (source comment)
 .fill,VRAMWriteLoop,earlier rename (source comment)
 .halt,Halt,earlier rename (source comment)
+$FFCC50,Opt1team,,Opt1Team,ram95
+$FFCC52,Opt2team,,Opt2Team,ram95

@@ -56,7 +56,7 @@ rtsdemo	;shared rts of demoread / HandleJoy1
 	rts
 
 RandomSetupTeams	;(SetupDemo picks random teams). Step the two setup team values by a random 0-27 and copy them
-	;to Opt1Team / Opt2Team, set OptUserRec, clear OptPlayMode and GameFlags bits 3, 4 (season), OptPen = random 0 / 1
+	;to Opt1team / Opt2team, set OptUserRec, clear OptPlayMode and GameFlags bits 3, 4 (season), OptPen = random 0 / 1
 	move.w	#$1C,d0
 	jsr	(randomd0).l
 	add.b	d0,(setupvalues+1).w
@@ -64,7 +64,7 @@ RandomSetupTeams	;(SetupDemo picks random teams). Step the two setup team values
 	blt.w	.0
 	subi.b	#$1C,(setupvalues+1).w
 .0
-	move.b	(setupvalues+1).w,(Opt1Team+1).w
+	move.b	(setupvalues+1).w,(Opt1team+1).w
 	move.w	#$1C,d0
 	jsr	(randomd0).l
 	add.b	d0,(setupvalues+2).w
@@ -72,7 +72,7 @@ RandomSetupTeams	;(SetupDemo picks random teams). Step the two setup team values
 	blt.w	.1
 	subi.b	#$1C,(setupvalues+2).w
 .1
-	move.b	(setupvalues+2).w,(Opt2Team+1).w
+	move.b	(setupvalues+2).w,(Opt2team+1).w
 	move.w	#1,(OptUserRec).w
 	clr.w	(OptPlayMode).w
 	bclr	#3,(GameFlags).w

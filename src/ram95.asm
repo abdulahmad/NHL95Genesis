@@ -331,8 +331,8 @@ pad4user	equ	$FFFFCC48	;Name log entry picked by pad 4
 FourWayPlay	equ	$FFFFCC4A	;94 $FFFFD046. Four way adaptor in use
 OptPlayMode	equ	$FFFFCC4C	;94 $FFFFD048. Start of the menu options
 OptNOP	equ	$FFFFCC4E	;94 $FFFFD04A. Options menu: number of players
-Opt1Team	equ	$FFFFCC50	;94 $FFFFD04C
-Opt2Team	equ	$FFFFCC52	;94 $FFFFD04E
+Opt1team	equ	$FFFFCC50	;94 $FFFFD04C
+Opt2team	equ	$FFFFCC52	;94 $FFFFD04E
 OptPerlen	equ	$FFFFCC54	;94 $FFFFD050
 OptGoalie	equ	$FFFFCC56	;94 $FFFFD052
 OptUserRec	equ	$FFFFCC58	;94 $FFFFD054. 0 = On

@@ -667,10 +667,10 @@ GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the 
 	move.w	#$FFFF,(setupdir).w
 	movea.l	#setupvalues,a0
 	jsr	(StepSeasonTeam).l
-	clr.w	(Opt1Team).w
-	clr.w	(Opt2Team).w
-	move.b	1(a0),(Opt1Team+1).w
-	move.b	2(a0),(Opt2Team+1).w
+	clr.w	(Opt1team).w
+	clr.w	(Opt2team).w
+	move.b	1(a0),(Opt1team+1).w
+	move.b	2(a0),(Opt2team+1).w
 .0
 	tst.w	(demoflag).w
 	bmi.w	.1
@@ -1040,11 +1040,11 @@ FixModeOptions	;(rewritten). Set setuplines / setupshown for the mode in setupva
 	cmpi.w	#2,(SelectedPlayerIdx).w
 	bne.w	.13
 	move.b	d0,2(a0)
-	move.b	d0,(Opt2Team+1).w
+	move.b	d0,(Opt2team+1).w
 	bra.w	.14
 .13
 	move.b	d0,1(a0)
-	move.b	d0,(Opt1Team+1).w
+	move.b	d0,(Opt1team+1).w
 .14
 	movem.w	(sp)+,d0
 .15
@@ -1505,7 +1505,7 @@ defmenuoptions	;Mode 0, players 0, teams $E and $17, length 1, goalies 0, user r
 	dc.w	$1
 
 GetSetupValues	;setupvalues from the options: line 0 from ModeToSetupMode(OptPlayMode); in Regular Game (sflags11 bit 6) all 8
-	;from Opt1Team ... OptLine
+	;from Opt1team ... OptLine
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(OptPlayMode).w,d0
 	movea.l	#ModeToSetupMode,a0
@@ -1515,8 +1515,8 @@ GetSetupValues	;setupvalues from the options: line 0 from ModeToSetupMode(OptPla
 	beq.w	.0
 	move.b	#1,(setupvalues).w
 .0
-	move.b	(Opt1Team+1).w,(setupvalues+1).w
-	move.b	(Opt2Team+1).w,(setupvalues+2).w
+	move.b	(Opt1team+1).w,(setupvalues+1).w
+	move.b	(Opt2team+1).w,(setupvalues+2).w
 	move.b	(OptPerlen+1).w,(setupvalues+3).w
 	move.b	(OptGoalie+1).w,(setupvalues+4).w
 	move.b	(OptUserRec+1).w,(setupvalues+4+1).w
@@ -1592,14 +1592,14 @@ SetupStart	;93 setoptions.ex. Store setupvalues in the options: OptPlayMode, the
 	bset	#3,(GameFlags).w
 	bclr	#4,(GameFlags).w
 .9
-	clr.w	(Opt1Team).w
-	clr.w	(Opt2Team).w
-	move.b	1(a1),(Opt1Team+1).w
-	move.b	2(a1),(Opt2Team+1).w
+	clr.w	(Opt1team).w
+	clr.w	(Opt2team).w
+	move.b	1(a1),(Opt1team+1).w
+	move.b	2(a1),(Opt2team+1).w
 	tst.w	(OptPlayMode).w
 	bne.w	.10
-	move.w	(Opt1Team).w,(HomeTeam).w
-	move.w	(Opt2Team).w,(VisTeam).w
+	move.w	(Opt1team).w,(HomeTeam).w
+	move.w	(Opt2team).w,(VisTeam).w
 .10
 	move.b	3(a1),(OptPerlen+1).w
 	tst.w	(demoflag).w
@@ -1747,13 +1747,13 @@ FigureJoy	;Set cont1team ... cont4team. In the playoffs (not Shootout, gmode2 bi
 	beq.w	.2
 	move.w	#5,d0
 .2
-	move.w	(a1),(Opt2Team).w
-	move.w	2(a1),(Opt1Team).w
+	move.w	(a1),(Opt2team).w
+	move.w	2(a1),(Opt1team).w
 	bra.w	.4
 .3
 	clr.w	d0
-	move.w	2(a1),(Opt2Team).w
-	move.w	(a1),(Opt1Team).w
+	move.w	2(a1),(Opt2team).w
+	move.w	(a1),(Opt1team).w
 .4
 	add.w	(pojoy).w,d0
 	move.w	d1,(gamenum).w
@@ -2730,7 +2730,7 @@ ContinuePlayoffs	;Continue playoffs: read the saved bits (ReadPassBits from pwdd
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-NewPO	;New playoff tree with Opt1Team (a random
+NewPO	;New playoff tree with Opt1team (a random
 	;playoffseats row that has it), bosgames 7 and MakeTree for OptPlayMode 2; otherwise bosgames 0, the gsstruct wins cleared, and falls into MakeTree
 	moveq	#$20,d0	;' '   ; 20 = 32 decimal
 	jsr	(randomd0).l
@@ -2742,7 +2742,7 @@ NewPO	;New playoff tree with Opt1Team (a random
 	adda.w	d0,a0	;use d0 as offset
 	lsr.w	#4,d0	;divide d0 by 16
 	moveq	#$F,d1	;move 15 into d1
-	move.w	(Opt1Team).w,d2	;Team 1 on menu
+	move.w	(Opt1team).w,d2	;Team 1 on menu
 	cmp.w	#$19,d2	;compares #NumOfTeams-3 to d2 (25 decimal)
 	bls.w	.1
 	moveq	#$19,d2
