@@ -1308,7 +1308,7 @@ AttribAdjust	;d0 below $32: d0 / 2 + $19
 .0
 	rts
 
-PrintTeamData	;Draw team block d0 (TeamBlockMaps, teamblockwidth wide, 2 rows) at printx / printy
+PutTeamBlock	;Draw team block d0 (TeamBlockMaps, teamblockwidth wide, 2 rows) at printx / printy
 	movem.l	d0-d2/a0-a1,-(sp)
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w

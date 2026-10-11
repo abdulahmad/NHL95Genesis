@@ -11,10 +11,10 @@ ScoringSummaryScreen	;"Scoring Summary": one 4 row entry per goal (6 bytes each 
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP3),6,1,'Scoring',-(TXPRI+TXMAP3),$14,1,'Summary',-(TXPRI+TXMAP3),7,4,0
 	move.w	#$2C,d0
-	jsr	(PrintTeamData).l
+	jsr	(PutTeamBlock).l
 	addq.w	#3,(printx).w
 	clr.w	d0
-	jsr	(PrintTeamData).l
+	jsr	(PutTeamBlock).l
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,4,3,0,7,CC_SetFont,3,'^^Per^^Time^^Tm^^Goal/Assist^^^^^^P/S^^^',CC_SetFont,0
 	clr.l	d0
@@ -30,7 +30,7 @@ ScoringSummaryScreen	;"Scoring Summary": one 4 row entry per goal (6 bytes each 
 	move.w	(VertLineScrolling).w,d0
 .1
 	jsr	(vcountwait).l
-	bsr.w	UpdateGameStatScroll
+	bsr.w	UpdateScoringScroll
 	move.w	(VertLineScrolling).w,d0
 	subq.w	#2,d0
 	cmp.w	(SelectedPlayerIdx).w,d0
@@ -52,18 +52,18 @@ ScoringSummaryScreen	;"Scoring Summary": one 4 row entry per goal (6 bytes each 
 .4
 	move.w	d0,(PlayerScrollCtr).w
 .5
-	bsr.w	CheckGameStatScroll
+	bsr.w	CheckScoringScroll
 	bra.s	.2
 
-CheckGameStatScroll	;Add the scroll speed (PlayerScrollCtr) to the scroll position within 0 ... SelectedPlayerIdx, then UpdateGameStatScroll
+CheckScoringScroll	;Add the scroll speed (PlayerScrollCtr) to the scroll position within 0 ... SelectedPlayerIdx, then UpdateScoringScroll
 	move.w	(PlayerScrollCtr).w,d0
-	beq.w	rtsGameStatScroll
+	beq.w	rtsScoringScroll
 	add.w	(VertLineScrolling).w,d0
-	bmi.w	rtsGameStatScroll
+	bmi.w	rtsScoringScroll
 	cmp.w	(SelectedPlayerIdx).w,d0
-	bgt.w	rtsGameStatScroll
+	bgt.w	rtsScoringScroll
 
-UpdateGameStatScroll	;Scroll to d0: on an entry boundary the arrows (DrawScrollArrowsPenalty) and stop; the entry coming into view; VSRAM = position - $50
+UpdateScoringScroll	;Scroll to d0: on an entry boundary the arrows (DrawScrollArrowsPenalty) and stop; the entry coming into view; VSRAM = position - $50
 	move.w	(VertLineScrolling).w,d1
 	move.w	d0,(VertLineScrolling).w
 	ext.l	d0
@@ -79,12 +79,12 @@ UpdateGameStatScroll	;Scroll to d0: on an entry boundary the arrows (DrawScrollA
 	move.l	d0,-(sp)
 	cmp.w	#$1E,d0
 	bne.w	.1
-	bsr.w	DisplayGameStatLineUp
+	bsr.w	DrawScoringRowUp
 .1
 	move.l	(sp)+,d0
 	cmp.w	#2,d0
 	bne.w	.2
-	bsr.w	DisplayGameStatLineDown
+	bsr.w	DrawScoringRowDown
 .2
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
@@ -96,7 +96,7 @@ UpdateGameStatScroll	;Scroll to d0: on an entry boundary the arrows (DrawScrollA
 	move.w	(sp)+,(disflags).w
 	rts
 
-DisplayGameStatLineUp	;The goal entry in the high word of d0 at the top of the window
+DrawScoringRowUp	;The goal entry in the high word of d0 at the top of the window
 	move.l	d0,-(sp)
 	swap	d0
 	moveq	#6,d3
@@ -108,11 +108,11 @@ DisplayGameStatLineUp	;The goal entry in the high word of d0 at the top of the w
 	subq.w	#3,d0
 	andi.w	#$1F,d0
 	move.w	d0,(printy).w
-	bsr.w	DisplayGameStatEntry
+	bsr.w	DrawScoringRow
 	move.l	(sp)+,d0
 	rts
 
-DisplayGameStatLineDown	;Goal entry + 4 at the bottom of the window
+DrawScoringRowDown	;Goal entry + 4 at the bottom of the window
 	move.l	d0,-(sp)
 	swap	d0
 	addq.w	#4,d0
@@ -125,11 +125,11 @@ DisplayGameStatLineDown	;Goal entry + 4 at the bottom of the window
 	addi.w	#$10,d0
 	andi.w	#$1F,d0
 	move.w	d0,(printy).w
-	bsr.w	DisplayGameStatEntry
+	bsr.w	DrawScoringRow
 	move.l	(sp)+,d0
 	rts
 
-DisplayGameStatEntry	;Goal entry d3: the time, the team, the goal type (GoalTypeTbl), the scorer and the assists (PrintPeriodTime)
+DrawScoringRow	;Goal entry d3: the time, the team, the goal type (GoalTypeTbl), the scorer and the assists (PrintScorerName)
 	move.w	(printy).w,-(sp)
 	moveq	#$28,d0
 	moveq	#4,d1
@@ -157,18 +157,18 @@ DisplayGameStatEntry	;Goal entry d3: the time, the team, the goal type (GoalType
 	jsr	(PrintSmallListItem).l
 	move.w	#$11,(printx).w
 	move.b	3(a0,d3.w),d0
-	bsr.w	PrintPeriodTime
+	bsr.w	PrintScorerName
 	move.w	#4,(printfontset).w
 	move.w	#$13,(printx).w
 	move.b	4(a0,d3.w),d0
-	bsr.w	PrintPeriodTime
+	bsr.w	PrintScorerName
 	move.w	#$13,(printx).w
 	move.b	5(a0,d3.w),d0
-	bsr.w	PrintPeriodTime
+	bsr.w	PrintScorerName
 	clr.w	(printfontset).w
 	rts
 
-PrintPeriodTime	;Print player d0 (byte, negative = none) and go down a row
+PrintScorerName	;Print player d0 (byte, negative = none) and go down a row
 	ext.w	d0
 	bmi.w	.0
 	jsr	(FormatPlayerNumInitial).l
@@ -176,7 +176,7 @@ PrintPeriodTime	;Print player d0 (byte, negative = none) and go down a row
 .0
 	addq.w	#1,(printy).w
 
-rtsGameStatScroll	;Shared rts of CheckGameStatScroll
+rtsScoringScroll	;Shared rts of CheckScoringScroll
 	rts
 
 GoalTypeTbl	;ScoreSum byte 2 & $7F: SH2, SH, even, PP, PP2
@@ -219,10 +219,10 @@ PenaltySummaryScreen	;"Penalties": one 3 row entry per penalty (4 bytes each fro
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP3),$B,$1,'Penalties',-(TXPRI+TXMAP3),$7,$4,$0
 	move.w	#$2C,d0
-	jsr	(PrintTeamData).l
+	jsr	(PutTeamBlock).l
 	addq.w	#3,(printx).w
 	clr.w	d0
-	jsr	(PrintTeamData).l
+	jsr	(PutTeamBlock).l
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$4,$3,$0,$7,CC_SetFont,$3,'^^Per^^Time^^Tm^^Player/Penalty^^^min^^^',CC_SetFont,$0,$0
 	clr.l	d0
@@ -263,7 +263,7 @@ PenaltySummaryScreen	;"Penalties": one 3 row entry per penalty (4 bytes each fro
 	bsr.w	CheckPenaltyScroll
 	bra.s	.2
 
-CheckPenaltyScroll	;As CheckGameStatScroll for the penalty summary
+CheckPenaltyScroll	;As CheckScoringScroll for the penalty summary
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsPenaltyScroll
 	add.w	(VertLineScrolling).w,d0

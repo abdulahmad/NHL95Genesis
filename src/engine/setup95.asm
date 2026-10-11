@@ -47,7 +47,7 @@ TeamRosterScreen	;"Team Roster" screen for team a2: DrawTeamScreen, then the pla
 	beq.w	.1
 	move.w	#$2C,d0
 .1
-	jsr	(PrintTeamData).l
+	jsr	(PutTeamBlock).l
 	jsr	(printsmallz).l
 	dc.w	$5A
 	dc.b	$F8,$4,$2,$1,$B,$F9,$2,$5E,$23,$5E,$5E,$50

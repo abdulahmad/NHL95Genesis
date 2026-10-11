@@ -574,7 +574,7 @@ engine/pause95.asm,$07F958,30,AbortGame,code,new in 95,header
 engine/pause95.asm,$07F976,8,PlayGame,code,new in 95,header
 engine/pause95.asm,$07F97E,232,ManualGoalieMenu,code,goalie94,name
 engine/pause95.asm,$07FA66,158,SelectGoalieMenu,code,stats94,name
-engine/pause95.asm,$07FB04,144,DisplayPlayerSelectMenu,code,stats94,name
+engine/pause95.asm,$07FB04,144,DrawGoalieSelectList,code,stats94,name
 engine/pause95.asm,$07FB94,112,TimeoutMenu,code,stats94,name
 engine/pause95.asm,$07FC04,122,PauseScores,code,new in 95,header
 engine/pause95.asm,$07FC7E,60,PutScoreDigit,code,new in 95,header
@@ -1157,7 +1157,7 @@ front/stats95.asm,$092200,12,StatScrollRowEnd,code,period94,name
 front/stats95.asm,$09220C,2,rtsStatScroll,code,period94,fingerprint rtsStatScroll
 front/stats95.asm,$09220E,122,PrintStatScrollArrows,code,period94,name
 front/stats95.asm,$092288,144,DisplayTeamStatsScreen,code,period94,name
-front/stats95.asm,$092318,246,FormatStatValue,code,period94,name
+front/stats95.asm,$092318,246,PrintStatValue,code,period94,name
 front/stats95.asm,$09240E,238,TeamStatTextTbl,data,period94,name
 front/stats95.asm,$0924FC,178,TeamStatTextTblNoPen,data,period94,name
 front/stats95.asm,$0925AE,2,rtsStatTables,code,period94,header names period94
@@ -1271,16 +1271,16 @@ front/stats95.asm,$095220,40,LineEditor,code,stats94,name
 front/stats95.asm,$095248,12,LineEditorRedraw,code,stats94,name
 front/stats95.asm,$095254,38,LineEditorReturn,code,new in 95,header
 front/stats95.asm,$09527A,126,LineEditorMenu,code,stats94,name
-front/stats95.asm,$0952F8,348,SelectAttributeItem,code,stats94,name
+front/stats95.asm,$0952F8,348,SelectLinePlayer,code,stats94,name
 front/stats95.asm,$095454,180,PrintAttribHeader,code,stats94,name
 front/stats95.asm,$095508,174,DrawLineIcons,code,stats94,name
 front/stats95.asm,$0955B6,8,LineIconGroups,data,stats94,name
-front/stats95.asm,$0955BE,158,DrawMenuIcon,code,stats94,name
+front/stats95.asm,$0955BE,158,DrawLineIcon,code,stats94,name
 front/stats95.asm,$09565C,108,ClearLineArea,code,stats94,name
 front/stats95.asm,$0956C8,68,DrawLineEditorScreen,code,stats94,header names stats94
 front/stats95.asm,$09570C,26,ClearLineEditorTop,code,stats94,name
 front/stats95.asm,$095726,16,ClearMenuFlags,code,stats94,name
-front/stats95.asm,$095736,44,MenuIconPosTable,data,stats94,name
+front/stats95.asm,$095736,44,LineIconPosTable,data,stats94,name
 front/stats95.asm,$095762,72,LineCursorTable,data,stats94,name
 front/stats95.asm,$0957AA,494,LineEditorExit,code,stats94,name
 front/stats95.asm,$095998,76,LineEditorBg,code,stats94,follows LineEditorExit
@@ -1798,13 +1798,13 @@ front/crowd95.asm,$0A0C34,32,ShowCrowdPb,code,display94,header names display94
 front/crowd95.asm,$0A0C54,196,ShowCrowdFrame,code,display94,header names display94
 front/crowd95.asm,$0A0D18,2,rtsShowCrowd,code,display94,header names display94
 front/summary95.asm,$0A0D1A,248,ScoringSummaryScreen,code,stats94,name
-front/summary95.asm,$0A0E12,24,CheckGameStatScroll,code,stats94,name
-front/summary95.asm,$0A0E2A,104,UpdateGameStatScroll,code,stats94,name
-front/summary95.asm,$0A0E92,44,DisplayGameStatLineUp,code,stats94,name
-front/summary95.asm,$0A0EBE,48,DisplayGameStatLineDown,code,stats94,name
-front/summary95.asm,$0A0EEE,160,DisplayGameStatEntry,code,stats94,name
-front/summary95.asm,$0A0F8E,22,PrintPeriodTime,code,stats94,name
-front/summary95.asm,$0A0FA4,2,rtsGameStatScroll,code,stats94,header names stats94
+front/summary95.asm,$0A0E12,24,CheckScoringScroll,code,stats94,name
+front/summary95.asm,$0A0E2A,104,UpdateScoringScroll,code,stats94,name
+front/summary95.asm,$0A0E92,44,DrawScoringRowUp,code,stats94,name
+front/summary95.asm,$0A0EBE,48,DrawScoringRowDown,code,stats94,name
+front/summary95.asm,$0A0EEE,160,DrawScoringRow,code,stats94,name
+front/summary95.asm,$0A0F8E,22,PrintScorerName,code,stats94,name
+front/summary95.asm,$0A0FA4,2,rtsScoringScroll,code,stats94,header names stats94
 front/summary95.asm,$0A0FA6,24,GoalTypeTbl,data,stats94,name
 front/summary95.asm,$0A0FBE,60,DrawScrollArrowsPenalty,code,stats94,name
 front/summary95.asm,$0A0FFA,40,ScrollArrowTbl,data,stats94,name

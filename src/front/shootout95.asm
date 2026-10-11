@@ -667,7 +667,7 @@ ShootersBackground	;Shootout shooters: "Shootout" title and the team block (PutT
 	beq.w	.0
 	move.w	#$2C,d0
 .0
-	jmp	(PrintTeamData).l
+	jmp	(PutTeamBlock).l
 ClearShooterScreen	;Shootout shooters: erase the top of the screen
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$0,$0,$0

@@ -4,7 +4,7 @@
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	GameStatisticsScreen, its scroll step, SetStatScroll, StatScrollRow / StatScrollRowEnd, PrintStatScrollArrows,
-;	DisplayTeamStatsScreen, FormatStatValue, TeamStatTextTbl and TeamStatTextTblNoPen.
+;	DisplayTeamStatsScreen, PrintStatValue, TeamStatTextTbl and TeamStatTextTblNoPen.
 
 
 	include	macros\genesis.mac	;String
@@ -123,16 +123,16 @@ PrintStatScrollArrows	;Scroll arrows (printz2): up ($7B) when VertLineScrolling 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 DisplayTeamStatsScreen	;Team blocks (PutTeamBlock), then each TeamStatTextTbl row
-	;(TeamStatTextTblNoPen when penalties are off, OptPen) centred, with the home value at x $22 and the visitors' at x 9 (FormatStatValue);
+	;(TeamStatTextTblNoPen when penalties are off, OptPen) centred, with the home value at x $22 and the visitors' at x 9 (PrintStatValue);
 	;SetStatScroll first
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),3,6,0
 	move.w	#$2C,d0
-	jsr	(PrintTeamData).l
+	jsr	(PutTeamBlock).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),$1A,6,0
 	moveq	#0,d0
-	jsr	(PrintTeamData).l
+	jsr	(PutTeamBlock).l
 	bsr.w	SetStatScroll
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),0,0,0
@@ -152,15 +152,15 @@ DisplayTeamStatsScreen	;Team blocks (PutTeamBlock), then each TeamStatTextTbl ro
 	movea.l	a1,a0
 	move.w	#$22,(printx).w
 	movea.w	#(tmstruct-M68K_RAM),a2
-	bsr.w	FormatStatValue
+	bsr.w	PrintStatValue
 	move.w	#9,(printx).w
 	lea	tmsize(a2),a2
-	bsr.w	FormatStatValue
+	bsr.w	PrintStatValue
 	lea	4(a0),a1
 	addq.w	#2,(printy).w
 	dbf	d6,.loop
 	rts
-FormatStatValue	;Print TeamStatTextTbl entry a0 for team a2 centred at printx: the
+PrintStatValue	;Print TeamStatTextTbl entry a0 for team a2 centred at printx: the
 	;value (offsets $A and $354 are times, PushTime), "/second" if any, " (pct%)" for passing; offset $FFFF is the shooting percentage
 	;(goals $C * 100 / shots 0), printed with a "%"
 	movea.w	#(mesarea-M68K_RAM),a3
@@ -371,7 +371,7 @@ PlayerStatsList	;Stats screen for team a2, d7 = 0 game / 1 playoff
 	beq.w	.home
 	move.w	#$2C,d0
 .home
-	jsr	(PrintTeamData).l
+	jsr	(PutTeamBlock).l
 	bsr.w	DrawStatsList
 	bsr.w	DrawStatsListArrows
 .loop
@@ -3339,7 +3339,7 @@ LineEditorMenu	;Slot cursor loop; start exits, C picks a player, d-pad moves via
 	btst	#7,d1
 	bne.w	LineEditorExit
 	btst	#5,d1
-	bne.w	SelectAttributeItem
+	bne.w	SelectLinePlayer
 	moveq	#1,d0
 	btst	#1,d1
 	bne.w	.1
@@ -3366,7 +3366,7 @@ LineEditorMenu	;Slot cursor loop; start exits, C picks a player, d-pad moves via
 	jsr	(DrawLineIcons).l
 	bra.s	.0
 
-SelectAttributeItem	;Build the list of players for the slot and let the user pick one (SetLineSlot)
+SelectLinePlayer	;Build the list of players for the slot and let the user pick one (SetLineSlot)
 	jsr	(GetGoalieCount).l
 	move.w	d0,d1
 	jsr	(GetForwards).l
@@ -3527,7 +3527,7 @@ DrawLineIcons	;Draw the line icons for the cursor's line, then the selected play
 .1
 	btst	d5,(redrawicons).w
 	beq.w	.2
-	bsr.w	DrawMenuIcon
+	bsr.w	DrawLineIcon
 .2
 	dbf	d5,.1
 	jsr	(printsmallz).l
@@ -3550,10 +3550,10 @@ DrawLineIcons	;Draw the line icons for the cursor's line, then the selected play
 LineIconGroups	;Per line, bit mask of the lines drawn together
 	dc.b	7,7,7,$18,$18,$60,$60,$FF
 
-DrawMenuIcon	;Draw line d5 (name, then its player slots) at MenuIconPosTable
+DrawLineIcon	;Draw line d5 (name, then its player slots) at LineIconPosTable
 	moveq	#6,d0
 	mulu.w	d5,d0
-	lea	MenuIconPosTable(pc),a0
+	lea	LineIconPosTable(pc),a0
 	adda.w	d0,a0
 	tst.w	(OptLine).w
 	beq.w	.0
@@ -3601,11 +3601,11 @@ ClearLineArea	;Erase the line area and print the position header (LD RD LW C RW)
 	moveq	#$12,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
-	move.w	(MenuIconPosTable+2).l,(printy).l
-	move.w	(MenuIconPosTable).l,(printx).l
+	move.w	(LineIconPosTable+2).l,(printy).l
+	move.w	(LineIconPosTable).l,(printx).l
 	tst.w	(OptLine).w
 	beq.w	.0
-	move.w	(MenuIconPosTable-6).l,(printx).l
+	move.w	(LineIconPosTable-6).l,(printx).l
 .0
 	jsr	(printsmallz).l
 	dc.w	$22	;String length
@@ -3628,7 +3628,7 @@ DrawLineEditorScreen	;Clear, print the "Line Editor" title and the team logo (95
 	beq.w	.0
 	move.w	#$2C,d0
 .0
-	jmp	(PrintTeamData).l
+	jmp	(PutTeamBlock).l
 
 ClearLineEditorTop	;Erase 40 x 10 at the top of map 2
 	jsr	(printz).l
@@ -3642,9 +3642,9 @@ ClearMenuFlags	;Clear palfadenew+$5A and palfadenew+$7A
 	clr.w	(palfadenew+$5A).w
 	clr.w	(palfadenew+$7A).w
 	rts
-	dc.w	$10,$C,4	;MenuIconPosTable-6: the entry used with OptLine set
+	dc.w	$10,$C,4	;LineIconPosTable-6: the entry used with OptLine set
 
-MenuIconPosTable	;Line icons x, y, slot count - 1
+LineIconPosTable	;Line icons x, y, slot count - 1
 	dc.w	4,$C,4
 	dc.w	$10,$C,4
 	dc.w	$1C,$C,4

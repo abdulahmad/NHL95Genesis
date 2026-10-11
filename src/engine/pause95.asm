@@ -467,10 +467,10 @@ PauseScreenDraw	;Draw the pause screen (SetupPauseScreen): wait out the dma, pla
 	move.w	#$30,d0
 	move.w	#2,(printx).w
 	move.w	#4,(printy).w
-	jsr	(PrintTeamData).l
+	jsr	(PutTeamBlock).l
 	move.w	#$1A,(printx).w
 	clr.w	d0
-	jsr	(PrintTeamData).l
+	jsr	(PutTeamBlock).l
 	jsr	(ClearInfoTab).l
 	jsr	(ClearStatsTab).l
 	jsr	(ClearPauseTab).l
@@ -1287,7 +1287,7 @@ PlayGame	;Pause menu PLAY GAME: sflags9 bit 3 ends the pause menu (HandleMenuInp
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	ManualGoalieMenu, SelectGoalieMenu / DisplayPlayerSelectMenu / TimeoutMenu (the three tab pause menu),
+;	ManualGoalieMenu, SelectGoalieMenu / DrawGoalieSelectList / TimeoutMenu (the three tab pause menu),
 ;	PauseScores / PutScoreDigit, SetMenuPadSide and padteams.
 
 
@@ -1359,7 +1359,7 @@ ManualGoalieMenu	;Pause menu MANUAL GOALIE / AUTO GOALIE: with OptNOP set, toggl
 	rts
 
 SelectGoalieMenu	;Pause menu CHANGE GOALIE: pick team a2's goalie (or no goalie) from a list
-	;(DisplayPlayerSelectMenu) with up / down, C or start; sets tmgoalie and SetPersonel. 95 clears the menu box first (ClearMenuBox) and
+	;(DrawGoalieSelectList) with up / down, C or start; sets tmgoalie and SetPersonel. 95 clears the menu box first (ClearMenuBox) and
 	;redraws the menu after (RedrawMenu), where 94 drew a frame
 	move.w	(menuitem).w,-(sp)
 	move.w	(menuitem+2).w,-(sp)
@@ -1374,7 +1374,7 @@ SelectGoalieMenu	;Pause menu CHANGE GOALIE: pick team a2's goalie (or no goalie)
 	addq.w	#1,d0
 	move.w	d0,(menuitem).w
 .loop
-	bsr.w	DisplayPlayerSelectMenu
+	bsr.w	DrawGoalieSelectList
 .pad
 	bsr.w	WaitVSyncAndReadInput
 	btst	#7,d1
@@ -1411,7 +1411,7 @@ SelectGoalieMenu	;Pause menu CHANGE GOALIE: pick team a2's goalie (or no goalie)
 	jsr	(RedrawMenu).l
 	rts
 
-DisplayPlayerSelectMenu	;Draw the goalie list at row $E, x $C, row menuitem in
+DrawGoalieSelectList	;Draw the goalie list at row $E, x $C, row menuitem in
 	;font set 2: "no goalie", then each goalie by name (GetTempPlayerNameAttrib for TempPlOffset, -1 for the away team; 94 printed
 	;the roster name and the two digit number)
 	move.w	#$E,(printy).w

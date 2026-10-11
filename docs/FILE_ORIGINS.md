@@ -321,7 +321,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **menu94** (628 bytes): SetMenuPrintX, UpdateMenuSelection, PrintMenuItem
 - **new in 95** (2398 bytes): ClearMenuBox, DrawMenuInfo, PauseInfo, PrintLines, ShowPenaltyMessages, SelectInfoTab, ClearInfoTab, SelectStatsTab, ClearStatsTab, SelectPauseTab, ClearPauseTab, DrawTabSelected, DrawTab, AbortGame, PlayGame
 - **goalie94** (232 bytes): ManualGoalieMenu
-- **stats94** (414 bytes): SelectGoalieMenu, DisplayPlayerSelectMenu, TimeoutMenu
+- **stats94** (414 bytes): SelectGoalieMenu, DrawGoalieSelectList, TimeoutMenu
 - **new in 95** (248 bytes): PauseScores, PutScoreDigit, SetMenuPadSide
 
 ### engine/logic95
@@ -496,7 +496,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 ### front/stats95
 
-- **period94** (1234 bytes): GameStatisticsScreen, StatScrollStep, SetStatScroll, StatScrollRow, StatScrollRowEnd, PrintStatScrollArrows, DisplayTeamStatsScreen, FormatStatValue
+- **period94** (1234 bytes): GameStatisticsScreen, StatScrollStep, SetStatScroll, StatScrollRow, StatScrollRowEnd, PrintStatScrollArrows, DisplayTeamStatsScreen, PrintStatValue
 - **stats94** (1228 bytes): PlayerStatsScreen, PlayerStatsList, UpdateStatsListScroll, SetStatsListScrollReg, DrawStatsRowUp, DrawStatsRowDown, DrawStatsList, DrawStatsRow, GetStatColumn, ReadStatColumn, SkipStatColumn
 - **new in 95** (20 bytes): GetPlayoffStat
 - **stats94** (348 bytes): GetStatsValue, DrawStatsListArrows
@@ -512,7 +512,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **period94** (846 bytes): PeriodStatsScreen, PeriodStatsCaption, PeriodStatsColumns, PeriodStatsTeam, PeriodStatsValue
 - **stats94** (52 bytes): LineEditor, LineEditorRedraw
 - **new in 95** (38 bytes): LineEditorReturn
-- **stats94** (2070 bytes): LineEditorMenu, SelectAttributeItem, PrintAttribHeader, DrawLineIcons, DrawMenuIcon, ClearLineArea, DrawLineEditorScreen, ClearLineEditorTop, ClearMenuFlags, LineEditorExit, LineEditorBg, PlayerSelectBg, SetLineSlot
+- **stats94** (2070 bytes): LineEditorMenu, SelectLinePlayer, PrintAttribHeader, DrawLineIcons, DrawLineIcon, ClearLineArea, DrawLineEditorScreen, ClearLineEditorTop, ClearMenuFlags, LineEditorExit, LineEditorBg, PlayerSelectBg, SetLineSlot
 - **new in 95** (142 bytes): SaveTeamLines, CopyTeamLines
 - **data94** (1000 bytes): ShowThreeStars, TakeTopStarScore, CalcStarScores, CalcTeamStarScores, HighlightsScreen
 - **new in 95** (566 bytes): ReadAnyPad7, PrintHighlightsTitle, DrawHighlightPage, DrawHighlightEntry, PrintStatHighlight
@@ -603,7 +603,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 ### front/summary95
 
-- **stats94** (1424 bytes): ScoringSummaryScreen, CheckGameStatScroll, UpdateGameStatScroll, DisplayGameStatLineUp, DisplayGameStatLineDown, DisplayGameStatEntry, PrintPeriodTime, DrawScrollArrowsPenalty, PenaltySummaryScreen, CheckPenaltyScroll, UpdatePenaltyScroll, DisplayPenaltyLineUp, DisplayPenaltyLineDown, DisplayPenaltyEntry
+- **stats94** (1424 bytes): ScoringSummaryScreen, CheckScoringScroll, UpdateScoringScroll, DrawScoringRowUp, DrawScoringRowDown, DrawScoringRow, PrintScorerName, DrawScrollArrowsPenalty, PenaltySummaryScreen, CheckPenaltyScroll, UpdatePenaltyScroll, DisplayPenaltyLineUp, DisplayPenaltyLineDown, DisplayPenaltyEntry
 
 ### front/title95
 
