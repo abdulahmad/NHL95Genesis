@@ -19,6 +19,7 @@ The source follows [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis): i
 | `src/<file>_stub.asm` | One per segment: the segment org, the equates, equates for the outside addresses the segment uses, then `include <file>.asm`. A stub builds and verifies one segment by itself. |
 | `docs/name_map.csv` | Every label: address, current name, the IDA name, the old name if it was renamed, and the file. |
 | `docs/WHY_95_MOVED.md` | Why 95 reordered 94's routines (SNES banking, locality and re-filing weighed against the code), and the subsystem files the 95 source probably had. |
+| `docs/PROPOSAL_D_SUBSYSTEMS.md` | Proposal D: one file per 95 subsystem with the names Lesser probably used, in folders with nested include lists, no sections (scratch build tested). |
 
 Files included by `nhl95.asm` have no `org`. Assembler paths are relative to `src/` (`incbin ..\Extracted\...`). Graphics and sound are incbins of `Extracted/`.
 

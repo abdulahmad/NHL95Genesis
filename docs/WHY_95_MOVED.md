@@ -126,6 +126,8 @@ The assembler writes code in source order, so the ROM is a direct picture of Les
 
 Items 6-17 are the single engine assembly. The front-end modules each stand alone. NHL92 had the same shape: a root `hockey.asm` including `main`, `teamdata`, `frames` and `ram`, then the game flow, then `logic`, `middle`, `penalty` and `video`. 95 looks like Lesser going back to that idea with finer subsystems, rather than keeping 94's accreted files.
 
+`docs/PROPOSAL_D_SUBSYSTEMS.md` turns this table into a file layout with guessed names, folders and nested include lists.
+
 This is close to the subject names in `docs/PROPOSAL_NAMING.md` (`video95_vdp`, `video95_text`, `checks95_lines`, `checks95_skate`, ...). The difference is that those names keep the 94 file as a prefix, while the table above names the 95 subsystem alone.
 
 ## How to test the SNES idea
