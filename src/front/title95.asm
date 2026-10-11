@@ -31,13 +31,13 @@ newTitleScreen	;title94 newTitleScreen. The title screen (TitleScreenImg, TitleI
 	move.w	#VDPR_MODE3+$03,vdpctrl(a0)
 	clr.w	(Vscroll).w
 	jsr	(printz).l
-	String	$FF,0,0,0
+	String	-TXMAP1,0,0,0
 	move.l	#$80,d0
 	moveq	#$20,d1
 	move.l	#$7FF,d2
 	jsr	(eraser).l
 	jsr	(printz).l
-	String	$FE,0,0,0
+	String	-TXMAP2,0,0,0
 	move.l	#$80,d0
 	moveq	#$20,d1
 	move.l	#$7FF,d2
@@ -45,7 +45,7 @@ newTitleScreen	;title94 newTitleScreen. The title screen (TitleScreenImg, TitleI
 	clr.w	d4
 	move.w	d4,-(sp)
 	jsr	(printz).l
-	String	$FD,0,0,0
+	String	-TXMAP3,0,0,0
 	movea.l	#TitleScreenImg,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -60,7 +60,7 @@ newTitleScreen	;title94 newTitleScreen. The title screen (TitleScreenImg, TitleI
 	move.w	d4,(TempWord1).w
 	move.w	(sp)+,d4
 	jsr	(printz).l
-	String	$FE,0,$17,0
+	String	-TXMAP2,0,$17,0
 	movea.l	#TitleScreenImg,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -76,7 +76,7 @@ newTitleScreen	;title94 newTitleScreen. The title screen (TitleScreenImg, TitleI
 	bclr	#0,(sflags6).w
 	move.w	(TempWord1).w,d4
 	jsr	(printz).l
-	String	$BE,1,$A,0
+	String	-(TXPRI+TXMAP2),1,$A,0
 	movea.l	#TitleImg,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -98,7 +98,7 @@ newTitleScreen	;title94 newTitleScreen. The title screen (TitleScreenImg, TitleI
 	dc.b	$0D,$10,$45,$67,$89,$AB,$CD,$EF;remap bytes
 	clr.w	(TempWord1).w
 	jsr	(printz).l
-	String	$EF,0,0,0
+	String	-(TXPAL1+TXMAP1),0,0,0
 	movea.l	#Credits,a1	;start of credits for scrolling
 	jsr	(CreditsPrintRow).l
 	addi.w	#$20,(Vscroll).w
@@ -136,7 +136,7 @@ newTitleScreen	;title94 newTitleScreen. The title screen (TitleScreenImg, TitleI
 	jsr	(CreditsWait).l
 	dbf	d3,.1
 	jsr	(printz).l
-	String	$EF,0,0,0
+	String	-(TXPAL1+TXMAP1),0,0,0
 	movea.l	#CreditsList,a1
 .2
 	jsr	(CreditsPrintRow).l
@@ -307,7 +307,7 @@ HiScoreScreen	;title94 HiScoreScreen. vb2, the HiScoreBgMap and HiScoreImg bitma
 	dbf	d1,.0
 	jsr	(setVram_0).l
 	jsr	(printz).l
-	String	$BE,$E,$3,$0
+	String	-(TXPRI+TXMAP2),$E,$3,$0
 	movea.l	#HiScoreBgMap,a2
 	movea.l	a2,a0
 	movea.l	a2,a1
@@ -321,7 +321,7 @@ HiScoreScreen	;title94 HiScoreScreen. vb2, the HiScoreBgMap and HiScoreImg bitma
 	moveq	#$F,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	$BE,$10,$10,$0
+	String	-(TXPRI+TXMAP2),$10,$10,$0
 	movea.l	#HiScoreImg,a2
 	movea.l	a2,a0
 	movea.l	a2,a1
@@ -372,7 +372,7 @@ StanleyCupScreen	;95 only. The Stanley Cup screen: the vblank CupVBlank, the cup
 	move.w	d4,(energybarchars).w
 	jsr	(DoDMA_clearCallbackPointer).l
 	jsr	(printz).l
-	String	$FE,$0,$0,$0
+	String	-TXMAP2,$0,$0,$0
 	movea.l	#StanleyCupImg,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -458,7 +458,7 @@ CupVBlank	;95 only. StanleyCupScreen vblank: the sprites (Sattsize), cramfade, v
 CupDrawTeam	;95 only. StanleyCupScreen: the team block of the winner (cupwinner, Teamblocksmap)
 	movem.l	d0-d7/a0-a3,-(sp)
 	jsr	(printz).l
-	String	$FE,$17,$16,$0
+	String	-TXMAP2,$17,$16,$0
 	move.w	(cupwinner).w,d1
 	add.w	d1,d1
 	movea.l	#Teamblocksmap,a1

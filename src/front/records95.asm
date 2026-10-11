@@ -31,7 +31,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
 	jsr	(printz).l
-	String	$8F,$1B,$8,$0
+	String	-(TXPRI+TXPAL3+TXMAP1),$1B,$8,$0
 	move.w	(HomeTeam).w,d3
 	tst.w	(nameentryvis).w
 	beq.w	.0
@@ -56,7 +56,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	move.w	(homepicchars).w,d4
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	$BF,$1E,$6,$0
+	String	-(TXPRI+TXMAP1),$1E,$6,$0
 	move.w	(HomeTeam).w,d0
 	tst.w	(nameentryvis).w
 	beq.w	.1
@@ -72,7 +72,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	sub.w	d0,(printx).w
 	jsr	(printsmall).l
 	jsr	(printbigz).l
-	String	$BF,$A,$2,'NAME   ENTRY',$0
+	String	-(TXPRI+TXMAP1),$A,$2,'NAME   ENTRY',$0
 	movea.l	(sp)+,a5
 	bsr.w	ReadNameLog
 	clr.w	(namelogarrows).w
@@ -83,7 +83,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	bsr.w	GetLogName
 	bsr.w	PrintNameLog
 	jsr	(printz).l
-	String	$BF,$C,$6,'Name Log',$0
+	String	-(TXPRI+TXMAP1),$C,$6,'Name Log',$0
 	clr.w	d4
 	bsr.w	SyncLetterCursor
 	bsr.w	PrintNameCursor
@@ -104,7 +104,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 .3
 	bsr.w	GetNameLength
 	jsr	(printz).l
-	String	$BF,$A,$7,$0
+	String	-(TXPRI+TXMAP1),$A,$7,$0
 	move.w	(namelogsel).w,d0
 	add.w	d0,(printy).w
 	tst.w	(NameEntryMode).w
@@ -206,7 +206,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	bra.w	.3
 .17
 	jsr	(printz).l
-	String	$BF,$4,$13,$0
+	String	-(TXPRI+TXMAP1),$4,$13,$0
 	add.w	d4,(printx).w
 	jsr	(printz).l
 	String	'   ',$0
@@ -280,7 +280,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 NameLetterGrid	;Name entry: letter grid and its key help (cards94 NameLetterGrid); on the second call the name log help (NameEntryHelp)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	$BF,$18,$12,$0
+	String	-(TXPRI+TXMAP1),$18,$12,$0
 	move.w	#$16,d0
 	move.w	#7,d1
 	move.w	#$7FF,d2
@@ -288,7 +288,7 @@ NameLetterGrid	;Name entry: letter grid and its key help (cards94 NameLetterGrid
 	bchg	#0,(NameEntryMode+1).w
 	bne.w	.3
 	jsr	(printz).l
-	String	$BF,$A,$11,$0
+	String	-(TXPRI+TXMAP1),$A,$11,$0
 	movea.l	#LetterGrid,a0
 	moveq	#4,d0
 .0
@@ -306,7 +306,7 @@ NameLetterGrid	;Name entry: letter grid and its key help (cards94 NameLetterGrid
 	dbf	d0,.0
 	jsr	(ClearNameHelp).l
 	jsr	(printz).l
-	String	$BF,$18,$11,$0
+	String	-(TXPRI+TXMAP1),$18,$11,$0
 	jsr	(printz2).l
 	dc.w	$44;String length
 	dc.b	'{}[]',$FA,$1,$FD,$18,'=Select letter',$FA,$2
@@ -326,7 +326,7 @@ NameLetterGrid	;Name entry: letter grid and its key help (cards94 NameLetterGrid
 	jsr	(eraser).l
 .4
 	jsr	(printz).l
-	String	$FE,$18,$12,$0
+	String	-TXMAP2,$18,$12,$0
 	moveq	#$16,d0
 	moveq	#7,d1
 	bsr.w	NameEntryHelp
@@ -336,7 +336,7 @@ NameEntryHelp	;Name entry: name log key help text (cards94 NameEntryHelp)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(ClearNameHelp).l
 	jsr	(printz).l
-	String	$BF,$18,$11,$0
+	String	-(TXPRI+TXMAP1),$18,$11,$0
 	jsr	(printz2).l
 	dc.w	$42;String length
 	dc.b	'{}=Select',$FA,$1,$FD,$1B,'name',$FA,$2
@@ -396,7 +396,7 @@ FindLetter	;d0 = index of letter d0 in the letter grid, $1E when not found (card
 
 PrintNameCursor	;Name entry: position the name cursor (95 prints no " < "; cards94 PrintNameCursor)
 	jsr	(printz).l
-	String	$BF,5,$12,$0
+	String	-(TXPRI+TXMAP1),5,$12,$0
 	add.w	d4,(printx).w
 	tst.w	(NameEntryMode).w
 	beq.w	rtsNameCursor
@@ -417,7 +417,7 @@ PrintCurLetter	;Name entry: print grid letter d5 when the cursor is on (cards94 
 
 LetterGridPos	;Name entry: printx/printy of grid letter d5 (6 a row, 2 cells apart), d0/d1 = 3x3 box (cards94 LetterGridPos)
 	jsr	(printz).l
-	String	$BF,9,$10,$0
+	String	-(TXPRI+TXMAP1),9,$10,$0
 	move.w	d5,d0
 	ext.l	d0
 	divu.w	#6,d0
@@ -441,7 +441,7 @@ PrintNameLog	;Name entry: print the 7-row name log list (cards94 PrintNameLog)
 	move.w	(NameEntryLen).w,-(sp)
 	move.w	(namelogsel).w,-(sp)
 	jsr	(printz).l
-	String	$BF,$A,8,$0
+	String	-(TXPRI+TXMAP1),$A,8,$0
 	move.w	#6,d7
 	move.w	#1,(namelogsel).w
 	movea.l	#linemarkbuf,a1
@@ -475,7 +475,7 @@ PrintLogArrows	;Name entry: print the two arrow Strings at a1 on name log row na
 	tst.w	(namelogarrows).w
 	beq.w	.0
 	jsr	(printz).l
-	String	$BF,8,8,$0
+	String	-(TXPRI+TXMAP1),8,8,$0
 	move.w	(namelogarrows).w,d0
 	subq.w	#1,d0
 	add.w	d0,(printy).w
@@ -543,15 +543,15 @@ PrintNameField	;Name entry: print the 12-char name field at a1 ("-" pads) and th
 	move.b	(a0,d4.w),2(a1)
 	move.b	#0,3(a1)
 	jsr	(printz2).l
-	String	$F9,1
+	String	TXS_FONT,1
 	cmpi.b	#$20,2(a1)
 	bne.w	.2
 	jsr	(printz2).l
-	String	$F9,3
+	String	TXS_FONT,3
 .2
 	jsr	(printsmall).l
 	jsr	(printz2).l
-	String	$F9,0
+	String	TXS_FONT,0
 	movem.l	(sp)+,a0-a1
 .3
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -862,7 +862,7 @@ NameLogIO	;cards94 NameLogIO. Read or write (sflags6 bit 6) the name log
 ClearNameHelp	;95 only. Name entry: erase the help text area ($16 x 8 at 24,17)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	$BF,$18,$11,$0
+	String	-(TXPRI+TXMAP1),$18,$11,$0
 	moveq	#$16,d0
 	moveq	#8,d1
 	move.w	#$7FF,d2
@@ -898,15 +898,15 @@ RecordHoldersScreen	;records94 RecordHoldersScreen. Pause menu RECORD HOLDERS: t
 	move.w	#$1A,d1
 	jsr	(SetupScreen).l
 	jsr	(printz).l
-	String	$FD,$0,$0,$0
+	String	-TXMAP3,$0,$0,$0
 	move.w	#$7FF,d2
 	move.w	#$28,d0
 	move.w	#$1C,d1
 	jsr	(eraser).l
 	jsr	(printbigz).l
-	String	$BD,$7,$2,'Record Holders',$BD,$1,$9
+	String	-(TXPRI+TXMAP3),$7,$2,'Record Holders',-(TXPRI+TXMAP3),$1,$9
 	jsr	(printz2).l
-	String	$F8,$4,$3,$5,$8,$F9,$1,'Name',$F9,$0,$0
+	String	TXS_ALL,$4,$3,$5,$8,TXS_FONT,$1,'Name',TXS_FONT,$0,$0
 	bsr.w	PrintRecordTitles
 	bsr.w	PrintWinRecords
 .loop
@@ -982,7 +982,7 @@ PrintWinRecords	;records94 PrintWinRecords. Record Holders page 0: name (PrintRe
 	;in winsort order
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz2).l
-	String	$F8,$4,$3,$2,$A,$F9,$0,$0
+	String	TXS_ALL,$4,$3,$2,$A,TXS_FONT,$0,$0
 	move.w	#6,d7
 	movea.l	#winsort,a0
 	movea.l	#winpcts,a2
@@ -1049,7 +1049,7 @@ ClearRecordArea	;records94 ClearRecordArea. Record Holders: erase the record row
 	move.w	(printy).w,-(sp)
 	move.w	(printm).w,-(sp)
 	jsr	(printz2).l
-	String	$F8,$4,$3,$0,$A,$0
+	String	TXS_ALL,$4,$3,$0,$A,$0
 	move.w	#$28,d0
 	move.w	#$12,d1
 	move.w	#$7FF,d2
@@ -1063,7 +1063,7 @@ PrintPlayerRecords	;records94 PrintPlayerRecords. Record Holders pages 1 (goals,
 	;"by TEAM vs. TEAM" of the 7 rows
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz2).l
-	String	$F8,$4,$3,$2,$A,$F9,$0,$0
+	String	TXS_ALL,$4,$3,$2,$A,TXS_FONT,$0,$0
 	move.w	#6,d7
 	movea.l	#recsort1,a0
 	cmpi.w	#1,(TempWord1).w
@@ -1775,7 +1775,7 @@ SetupScreen	;stats94 SetupScreen (93 name). Common start of the stats screens: b
 	bclr	#1,(disflags).w
 	move.w	#1,d4
 	jsr	(printz).l
-	String	$FE,$0,$0,$0
+	String	-TXMAP2,$0,$0,$0
 	movem.l	(sp),d0-d1/a2
 	movea.l	#ControllerBgMap,a0
 	movea.l	a0,a1
@@ -1805,7 +1805,7 @@ SetupScreen	;stats94 SetupScreen (93 name). Common start of the stats screens: b
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
 	jsr	(printz).l
-	String	$FF,$0,$0,$0
+	String	-TXMAP1,$0,$0,$0
 	moveq	#$40,d0
 	moveq	#$20,d1
 	move.w	#$7FF,d2

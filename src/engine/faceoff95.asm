@@ -663,7 +663,7 @@ updatefaceoff	;(checks94). Faceoff count down: fofdata frame from temp1; at 0 er
 .2
 	bclr	#4,(disflags).w
 	jsr	(printz).l
-	String	$BF,0,0,0
+	String	-(TXPRI+TXMAP1),0,0,0
 	move.w	(fodropx).w,d0
 	subi.w	#$2E,d0
 	asr.w	#3,d0
@@ -844,7 +844,7 @@ checkfo	;(display94). Check for faceoff sprites: the 3 fofdata2 entries (frame, 
 DrawFaceoffWindow	;95 only (94 puckfaceoff2 .drawfaceoffwindow). The faceoff window (FaceOffMap) at x $36 or $BE,
 	;y $5C, and with line changes on the two line names (linelist)
 	jsr	(printz).l
-	String	$FF,0,0,0
+	String	-TXMAP1,0,0,0
 	moveq	#$36,d0
 	tst.w	(fox).w
 	bpl.w	.0
@@ -876,7 +876,7 @@ DrawFaceoffWindow	;95 only (94 puckfaceoff2 .drawfaceoffwindow). The faceoff win
 	tst.w	(OptLine).w
 	bne.w	.2
 	jsr	(printz2).l
-	String	$FA,$A,$FE,4
+	String	TXS_ADDY,$A,TXS_ATTR,4
 	moveq	#$C,d0
 	moveq	#3,d1
 	jsr	(Framer).l
@@ -887,7 +887,7 @@ DrawFaceoffWindow	;95 only (94 puckfaceoff2 .drawfaceoffwindow). The faceoff win
 	exg	d0,d1
 .1
 	jsr	(printz2).l
-	String	$FB,1,$FA,$FE
+	String	TXS_ADDX,1,TXS_ADDY,$FE
 	movea.l	#linelist,a1
 	jsr	(PrintSmallListItem).l
 	addq.w	#4,(printx).w

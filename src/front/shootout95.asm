@@ -330,7 +330,7 @@ PlayoffRoundScreen	;records94 PlayoffRoundScreen. Shootout round box: "SHOOTOUT 
 	move.w	#$FFFF,d0
 	jsr	(prefmes).l
 	jsr	(printz).l
-	String	$BF,$3,$2,$0
+	String	-(TXPRI+TXMAP1),$3,$2,$0
 	moveq	#$1B,d0
 	moveq	#$C,d1
 	jsr	(Framer).l
@@ -349,7 +349,7 @@ PlayoffRoundScreen	;records94 PlayoffRoundScreen. Shootout round box: "SHOOTOUT 
 	addq.w	#1,(printy).w
 	addq.w	#6,(printx).w
 	jsr	(printz).l
-	String	' vs.',$BF,$4,$7,$0
+	String	' vs.',-(TXPRI+TXMAP1),$4,$7,$0
 	move.w	(BA_Goalie_SCnum).w,d0
 	asl.w	#7,d0
 	movea.l	#SortCords,a2
@@ -364,7 +364,7 @@ PlayoffRoundScreen	;records94 PlayoffRoundScreen. Shootout round box: "SHOOTOUT 
 	jsr	(FormatPlayerNameWithAttrib).l
 	jsr	(print).l
 	jsr	(printz).l
-	String	$BF,$4,$9,$0
+	String	-(TXPRI+TXMAP1),$4,$9,$0
 	movea.l	#HmShots,a1
 	movea.l	tmdata(a1),a1
 	adda.w	4(a1),a1
@@ -375,7 +375,7 @@ PlayoffRoundScreen	;records94 PlayoffRoundScreen. Shootout round box: "SHOOTOUT 
 	jsr	(PushNumberWidth).l
 	jsr	(print).l
 	jsr	(printz).l
-	String	$BF,$4,$A,$0
+	String	-(TXPRI+TXMAP1),$4,$A,$0
 	movea.l	#AwShots,a1
 	movea.l	tmdata(a1),a1
 	adda.w	4(a1),a1
@@ -386,7 +386,7 @@ PlayoffRoundScreen	;records94 PlayoffRoundScreen. Shootout round box: "SHOOTOUT 
 	jsr	(PushNumberWidth).l
 	jsr	(print).l
 	jsr	(printz).l
-	String	$BF,$4,$C,'Round ',$0
+	String	-(TXPRI+TXMAP1),$4,$C,'Round ',$0
 	move.w	(playoffround).w,d0
 	move.w	#2,d1
 	jsr	(PushNumberWidth).l
@@ -398,12 +398,12 @@ RoundBigTxt	;records94 RoundBigTxt. PlayoffRoundScreen big text
 ShootoutWonBy	;shootout94 ShootoutWonBy. Shootout: "SHOOTOUT WON BY" and the winning team (printbig1)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	$BF,$1,$D,$0
+	String	-(TXPRI+TXMAP1),$1,$D,$0
 	move.w	#6,d1
 	move.w	#$1E,d0
 	jsr	(Framer).l
 	jsr	(printbigz1).l
-	String	$BF,$2,$E,'SHOOTOUT WON BY'
+	String	-(TXPRI+TXMAP1),$2,$E,'SHOOTOUT WON BY'
 	addq.w	#2,(printy).w
 	move.w	(HomeTeam).w,d1
 	move.w	(sohomegoals).w,d0
@@ -429,7 +429,7 @@ ShootoutShooters	;shootout94 ShootoutShooters. Pause menu SHOOTOUT SETUP: pick t
 	clr.w	(DispAttribCtr).w
 	clr.w	(PlayerScrollCtr).w
 	jsr	(printz2).l
-	String	$FF,$2,$FD,$0,$FC,$0
+	String	TXS_MAP,$2,TXS_X,$0,TXS_Y,$0
 	moveq	#$28,d0
 	moveq	#$1C,d1
 	move.w	#$7FF,d2
@@ -503,15 +503,15 @@ ShooterSelectList	;shootout94 ShooterSelectList. Shootout shooters: the "{Select
 	jsr	(PlayerSelectBg).l
 	jsr	(ClearShooterScreen).l
 	jsr	(printz2).l
-	String	$F8,$0,$3,$1,$0,$0
+	String	TXS_ALL,$0,$3,$1,$0,$0
 	moveq	#$12,d0
 	moveq	#3,d1
 	jsr	(printz2).l
-	String	$FD,$15,$FC,$0
+	String	TXS_X,$15,TXS_Y,$0
 	moveq	#$12,d0
 	moveq	#3,d1
 	jsr	(printz2).l
-	String	$F8,$4,$2,$2,$1,'{Select  Player}',$0
+	String	TXS_ALL,$4,$2,$2,$1,'{Select  Player}',$0
 	clr.w	d0
 	bra.w	.6
 .loop2
@@ -577,7 +577,7 @@ ShooterSelectList	;shootout94 ShooterSelectList. Shootout shooters: the "{Select
 PrintShooterList	;shootout94 PrintShooterList. Shootout shooters: the player list rows (getNameandAttrib); the selected row in
 	;printa d7 ($E000 with BA_PS_flags bit 1)
 	jsr	(printz).l
-	String	$BE,$16,$1,$0
+	String	-(TXPRI+TXMAP2),$16,$1,$0
 .loop
 	movea.l	#PAttribOverall,a1
 	cmpi.w	#5,(TestList).w
@@ -617,7 +617,7 @@ PrintShooterList	;shootout94 PrintShooterList. Shootout shooters: the player lis
 	move.w	#2,(printy).w
 .loop3
 	jsr	(printz2).l
-	String	$FE,$4,$FD,$5,$FA,$1,'                      ',$FD,$5
+	String	TXS_ATTR,$4,TXS_X,$5,TXS_ADDY,$1,'                      ',TXS_X,$5
 	cmp.w	(VertLineScrolling).w,d2
 	bne.w	.6
 	move.w	d7,(printa).w
@@ -663,11 +663,11 @@ ShootersSelect	;shootout94 ShootersSelect. Shootout shooters: TestList = d0, red
 ShootersBackground	;shootout94 ShootersBackground. Shootout shooters: "Shootout" title and the team block (PutTeamBlock)
 	bsr.w	ClearShooterScreen
 	jsr	(printz).l
-	String	$BE,$7,$1,$0
+	String	-(TXPRI+TXMAP2),$7,$1,$0
 	moveq	#$1A,d0
 	moveq	#6,d1
 	jsr	(printbigz).l
-	String	$BE,$A,$4,'  Shootout  ',$BE,$F,$1
+	String	-(TXPRI+TXMAP2),$A,$4,'  Shootout  ',-(TXPRI+TXMAP2),$F,$1
 	clr.w	d0
 	cmpa.w	#HmShots&$FFFF,a2
 	beq.w	.0
@@ -676,7 +676,7 @@ ShootersBackground	;shootout94 ShootersBackground. Shootout shooters: "Shootout"
 	jmp	(PutTeamBlock).l
 ClearShooterScreen	;shootout94 ClearShooterScreen. Shootout shooters: erase the top of the screen
 	jsr	(printz).l
-	String	$BE,$0,$0,$0
+	String	-(TXPRI+TXMAP2),$0,$0,$0
 	moveq	#$28,d0
 	moveq	#$A,d1
 	move.w	#$7FF,d2
@@ -687,31 +687,31 @@ ResetShooterScroll	;shootout94 ResetShooterScroll. Clear the list scroll words p
 	rts
 PrintShooterSlots	;shootout94 PrintShooterSlots. Shootout shooters: "Shooters" 1. ... 5. and "Goalie"
 	jsr	(printz2).l
-	String	$F9,$0,$FF,$2,$FD,$0,$FC,$A
+	String	TXS_FONT,$0,TXS_MAP,$2,TXS_X,$0,TXS_Y,$A
 	jsr	(printz2).l
-	String	$FE,$4
+	String	TXS_ATTR,$4
 	jsr	(printz2).l
-	String	$FD,$7,$FC,$C,'Shooters'
+	String	TXS_X,$7,TXS_Y,$C,'Shooters'
 	jsr	(printz2).l
-	String	$FD,$3,$FC,$E,'1. ',$0
+	String	TXS_X,$3,TXS_Y,$E,'1. ',$0
 	jsr	(printz2).l
-	String	$FD,$3,$FC,$10,'2. ',$0
+	String	TXS_X,$3,TXS_Y,$10,'2. ',$0
 	jsr	(printz2).l
-	String	$FD,$3,$FC,$12,'3. ',$0
+	String	TXS_X,$3,TXS_Y,$12,'3. ',$0
 	jsr	(printz2).l
-	String	$FD,$3,$FC,$14,'4. ',$0
+	String	TXS_X,$3,TXS_Y,$14,'4. ',$0
 	jsr	(printz2).l
-	String	$FD,$3,$FC,$16,'5. ',$0
+	String	TXS_X,$3,TXS_Y,$16,'5. ',$0
 	jsr	(printz2).l
-	String	$FD,$1A,$FC,$C,'Goalie'
+	String	TXS_X,$1A,TXS_Y,$C,'Goalie'
 	rts
 PrintShooterBox	;shootout94 PrintShooterBox. Shootout shooters: the selected player (getname), centred
 	jsr	(printz2).l
-	String	$F8,$4,$2,$8,$7,$F9,$1,$0
+	String	TXS_ALL,$4,$2,$8,$7,TXS_FONT,$1,$0
 	jsr	(printz2).l
-	String	$FD,$0,$FC,$7,'                                       ',$0
+	String	TXS_X,$0,TXS_Y,$7,'                                       ',$0
 	jsr	(printz2).l
-	String	$FD,$15,$FC,$7
+	String	TXS_X,$15,TXS_Y,$7
 	movea.l	#homeshooters,a1
 	cmpa.l	#HmShots,a2
 	beq.w	.0
@@ -732,7 +732,7 @@ PrintShooterNames	;shootout94 PrintShooterNames. Shootout shooters: the shooters
 	;highlighted
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz2).l
-	String	$FD,$6,$FC,$E,$FE,$6,$F9,$0
+	String	TXS_X,$6,TXS_Y,$E,TXS_ATTR,$6,TXS_FONT,$0
 	move.w	#0,d1
 	movea.l	#homeshooters,a0
 	cmpa.l	#HmShots,a2
@@ -1320,7 +1320,7 @@ PenaltyShotBox	;data94 PenaltyShotBox. In a shootout PlayoffRoundScreen; else th
 	move.w	#$FFFF,d0
 	jsr	(prefmes).l	;d0 = -1
 	jsr	(printz).l
-	String	$BF,$3,$2,$0
+	String	-(TXPRI+TXMAP1),$3,$2,$0
 	moveq	#$1B,d0
 	moveq	#8,d1
 	jsr	(Framer).l
@@ -1340,7 +1340,7 @@ PenaltyShotBox	;data94 PenaltyShotBox. In a shootout PlayoffRoundScreen; else th
 	jsr	(FormatPlayerNameWithAttrib).l
 	jsr	(print).l
 	jsr	(printz).l
-	String	$BF,$4,$7,$0
+	String	-(TXPRI+TXMAP1),$4,$7,$0
 	movem.l	a1/a3,-(sp)
 	move.w	(pspenalty).w,d0
 	movea.l	#PenaltyList,a1
@@ -1349,7 +1349,7 @@ PenaltyShotBox	;data94 PenaltyShotBox. In a shootout PlayoffRoundScreen; else th
 	jsr	(print).l
 	movem.l	(sp)+,a1/a3
 	jsr	(printz).l
-	String	' by',$BF,$4,$8
+	String	' by',-(TXPRI+TXMAP1),$4,$8
 	move.w	(BA_Checker_Offset).w,d0
 	movea.l	#AwShots,a2
 	tst.w	(BA_Team).w

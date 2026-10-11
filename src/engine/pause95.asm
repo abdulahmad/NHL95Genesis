@@ -145,7 +145,7 @@ DrawMenuScreen	;93 name. Call the draw routine, clear the menu box, print the it
 	bsr.w	ClearMenuBox
 RedrawMenu	;95 only, no IDA label. Print the menu items and fade in. Called from the menu items below (ManualGoalieMenu, SelectGoalieMenu, TimeoutMenu) after they clear the box
 	jsr	(printz2).l
-	String	$FE,4,$FC,$C
+	String	TXS_ATTR,4,TXS_Y,$C
 	jsr	(SetMenuPrintX).l
 	jsr	(UpdateMenuSelection).l
 	move.w	#$18,(palcount).w
@@ -373,7 +373,7 @@ PauseScreenDraw	;95 only. Draw the pause screen (SetupPauseScreen): wait out the
 	move.w	#$7FF,d2
 	jsr	(DoFill).l
 	jsr	(printz).l
-	String	$BE,0,0,0
+	String	-(TXPRI+TXMAP2),0,0,0
 	movea.l	#PauseBgBitmap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -388,7 +388,7 @@ PauseScreenDraw	;95 only. Draw the pause screen (SetupPauseScreen): wait out the
 	jsr	(dobitmap).l
 	move.w	d4,-(sp)
 	jsr	(printz).l
-	String	$BE,0,3,0
+	String	-(TXPRI+TXMAP2),0,3,0
 	movea.l	#PauseBgBitmap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -403,7 +403,7 @@ PauseScreenDraw	;95 only. Draw the pause screen (SetupPauseScreen): wait out the
 	movea.l	#ZeroLong,a2	;a zero long: no palettes
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	$BE,0,$19,0
+	String	-(TXPRI+TXMAP2),0,$19,0
 	movea.l	#PauseBgBitmap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -419,7 +419,7 @@ PauseScreenDraw	;95 only. Draw the pause screen (SetupPauseScreen): wait out the
 	jsr	(dobitmap).l
 	move.w	(sp)+,d4
 	jsr	(printz).l
-	String	$9E,$10,7,0
+	String	-(TXPRI+TXPAL2+TXMAP2),$10,7,0
 	btst	#0,(gmode2).w	;shootout: no period number
 	bne.w	.fonts
 	cmpi.w	#3,(gsp).w
@@ -498,7 +498,7 @@ PauseScreenDraw	;95 only. Draw the pause screen (SetupPauseScreen): wait out the
 	jsr	(PauseScores).l
 	bsr.w	ShowPenaltyBoxes
 	jsr	(printz).l
-	String	$FE,0,0,0
+	String	-TXMAP2,0,0,0
 	move.w	#$18,(palcount).w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -506,11 +506,11 @@ PauseScreenDraw	;95 only. Draw the pause screen (SetupPauseScreen): wait out the
 ShowPenaltyBoxes	;95 only. The pause screen penalty boxes: home at $1F, $E, away at 2, $E (ShowPenaltyBox)
 	movem.l	d0-d7/a0-a3,-(sp)
 	jsr	(printz).l
-	String	$BE,$1F,$E,0
+	String	-(TXPRI+TXMAP2),$1F,$E,0
 	movea.l	#HmShots,a2
 	bsr.w	ShowPenaltyBox
 	jsr	(printz).l
-	String	$BE,2,$E,0
+	String	-(TXPRI+TXMAP2),2,$E,0
 	movea.l	#AwShots,a2
 	bsr.w	ShowPenaltyBox
 	movem.l	(sp)+,d0-d7/a0-a3
@@ -770,11 +770,11 @@ UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to s
 	move.w	(menuitem+2).w,d0
 	beq.w	.8
 	jsr	(printz2).l	;more items above
-	String	$FE,0,$F9,0,$FB,1,$FA,1,$7B,$FA,$FF,0	;the up arrow
+	String	TXS_ATTR,0,TXS_FONT,0,TXS_ADDX,1,TXS_ADDY,1,$7B,TXS_ADDY,$FF,0	;the up arrow
 .8
 	bsr.w	SetMenuPrintX
 	jsr	(printz2).l	;start of an item row
-	String	$F9,0,$FB,2,$FA,2
+	String	TXS_FONT,0,TXS_ADDX,2,TXS_ADDY,2
 	move.l	a1,-(sp)
 	movea.l	(menulist).w,a1
 	adda.l	(menuitemoffset).w,a1
@@ -794,7 +794,7 @@ UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to s
 	addq.w	#1,(printy).w
 	move	sr,-(sp)
 	jsr	(printz2).l	;more items below
-	String	$FE,0,$FB,1
+	String	TXS_ATTR,0,TXS_ADDX,1
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#1,d0
 	move.w	#1,d1
@@ -808,7 +808,7 @@ UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to s
 	bsr.w	SetMenuPrintX
 	addq.w	#1,(printy).w
 	jsr	(printz2).l
-	String	$F9,0,$FE,0,$FB,1,$7D,0	;the down arrow
+	String	TXS_FONT,0,TXS_ATTR,0,TXS_ADDX,1,$7D,0	;the down arrow
 	subq.w	#1,(printy).w
 .11
 	rts
@@ -868,7 +868,7 @@ PrintMenuItem	;93 name. printsmall item String a1 (advanced past it). y: START G
 
 ClearMenuBox	;95 only. eraser $12 x $C at $B, $B
 	jsr	(printz2).l
-	String	$FE,4,$FD,$B,$FC,$B
+	String	TXS_ATTR,4,TXS_X,$B,TXS_Y,$B
 	moveq	#$12,d0
 	moveq	#$C,d1
 	move.w	#$7FF,d2
@@ -904,7 +904,7 @@ MenuInfoList	;(dc.b). 95 only. The info page draw routines for DrawMenuInfo (0 e
 PauseInfo	;95 only. The info page: a bitmap at $11, $B (a0 is whatever printz left: the vdp data port) and
 	;PauseInfoText (PrintLines)
 	jsr	(printz).l
-	String	$BE,$11,$B,0
+	String	-(TXPRI+TXMAP2),$11,$B,0
 	movea.l	a0,a1
 	movea.l	a0,a2
 	adda.l	(a2)+,a0
@@ -943,9 +943,9 @@ ShowPenaltyMessages	;95 only. Every $78 frames show the next queued penalty (pen
 	beq.w	.7
 	move.l	a0,-(sp)
 	jsr	(printz).l
-	String	$BF,$A,$F,'                    '	;clear the two message lines
+	String	-(TXPRI+TXMAP1),$A,$F,'                    '	;clear the two message lines
 	jsr	(printz).l
-	String	$BF,$A,$11,'                    '
+	String	-(TXPRI+TXMAP1),$A,$11,'                    '
 	movea.l	(sp)+,a0
 .1
 	tst.w	(a0)+
@@ -965,7 +965,7 @@ ShowPenaltyMessages	;95 only. Every $78 frames show the next queued penalty (pen
 	move.w	d0,-(sp)
 	addq.l	#2,a1
 	jsr	(printz).l
-	String	$BF,$14,$F,0
+	String	-(TXPRI+TXMAP1),$14,$F,0
 	move.w	(a1),d0
 	subq.w	#2,d0
 	lsr.w	#1,d0
@@ -980,7 +980,7 @@ ShowPenaltyMessages	;95 only. Every $78 frames show the next queued penalty (pen
 	move.l	a2,-(sp)
 	jsr	(FormatPlayerNameWithAttrib).l
 	jsr	(printz).l
-	String	$BF,$14,$11,0
+	String	-(TXPRI+TXMAP1),$14,$11,0
 	move.w	(a1),d0
 	subq.w	#2,d0
 	lsr.w	#1,d0
@@ -1022,7 +1022,7 @@ SelectInfoTab	;95 only. Draw the INFO tab selected (x 1), the others plain
 	bsr.w	ClearStatsTab
 	bsr.w	ClearPauseTab
 	jsr	(printz).l
-	String	$BE,1,1,0
+	String	-(TXPRI+TXMAP2),1,1,0
 	move.w	#1,d0
 	bsr.w	DrawTabSelected
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1031,7 +1031,7 @@ SelectInfoTab	;95 only. Draw the INFO tab selected (x 1), the others plain
 ClearInfoTab	;95 only. Draw the INFO tab plain
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	$BE,1,1,0
+	String	-(TXPRI+TXMAP2),1,1,0
 	move.w	#1,d0
 	bsr.w	DrawTab
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1042,7 +1042,7 @@ SelectStatsTab	;95 only. Draw the STATS tab selected (x $E), the others plain
 	bsr.s	ClearInfoTab
 	bsr.w	ClearPauseTab
 	jsr	(printz).l
-	String	$BE,$E,1,0
+	String	-(TXPRI+TXMAP2),$E,1,0
 	move.w	#$E,d0
 	bsr.w	DrawTabSelected
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1051,7 +1051,7 @@ SelectStatsTab	;95 only. Draw the STATS tab selected (x $E), the others plain
 ClearStatsTab	;95 only. Draw the STATS tab plain
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	$BE,$E,1,0
+	String	-(TXPRI+TXMAP2),$E,1,0
 	move.w	#$E,d0
 	bsr.w	DrawTab
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1062,7 +1062,7 @@ SelectPauseTab	;95 only. Draw the PAUSE tab selected (x $1B), the others plain
 	bsr.s	ClearStatsTab
 	bsr.s	ClearInfoTab
 	jsr	(printz).l
-	String	$BE,$1B,1,0
+	String	-(TXPRI+TXMAP2),$1B,1,0
 	move.w	#$1B,d0
 	bsr.w	DrawTabSelected
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1071,7 +1071,7 @@ SelectPauseTab	;95 only. Draw the PAUSE tab selected (x $1B), the others plain
 ClearPauseTab	;95 only. Draw the PAUSE tab plain
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	$BE,$1B,1,0
+	String	-(TXPRI+TXMAP2),$1B,1,0
 	move.w	#$1B,d0
 	bsr.w	DrawTab
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1465,7 +1465,7 @@ TimeoutMenu	;stats94 TimeoutMenu. Pause menu TIMEOUT for team a2: drop the item 
 	bset	#2,tmflags(a2)
 	move.w	#0,(printfontset).w
 	bsr.w	printz2
-	String	$FD,$10,$FC,$E,'Timeout',$FD,$14,$FC,$10	;$FD x, $FC y
+	String	TXS_X,$10,TXS_Y,$E,'Timeout',TXS_X,$14,TXS_Y,$10	;$FD x, $FC y
 	movea.l	tmdata(a2),a1
 	adda.w	4(a1),a1	;team name String
 	move.w	(a1),d0
@@ -1485,7 +1485,7 @@ PauseScores	;95 only. The two scores in big digits on the pause screen (PutScore
 	;$1E, 6, away at 6, 6; no tens digit under 10. Called from PauseScreenDraw (pause95)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	$BE,$1E,6,0
+	String	-(TXPRI+TXMAP2),$1E,6,0
 	movea.l	#HmShots,a2
 	move.w	tmscore(a2),d0
 	ext.l	d0
@@ -1502,7 +1502,7 @@ PauseScores	;95 only. The two scores in big digits on the pause screen (PutScore
 	swap	d0
 	bsr.w	PutScoreDigit
 	jsr	(printz).l
-	String	$BE,6,6,0
+	String	-(TXPRI+TXMAP2),6,6,0
 	movea.l	#AwShots,a2
 	move.w	tmscore(a2),d0
 	ext.l	d0

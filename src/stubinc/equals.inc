@@ -138,3 +138,24 @@ tmpde equ $34		;energy level of each roster player (94: $32)
 tmpdst equ $68		;-2=bench/-1=ice/0+=penalty box (94: $66)
 tmflags equ $30		;flags
 tmsize equ $366		;94: $364
+
+;text control codes in Strings
+;print / printz / printbig / printbigz: a negative byte -(TXPRI+TXPALn+TXVF+TXHF+TXMAPn), then x, y (printa = the bits << 9, printm = map)
+TXMAP1 equ 1		;plane map 1
+TXMAP2 equ 2
+TXMAP3 equ 3
+TXHF equ 4		;h flip
+TXVF equ 8		;v flip
+TXPAL1 equ $10		;palette 1
+TXPAL2 equ $20
+TXPAL3 equ $30
+TXPRI equ $40		;high priority
+;printsmall / printz2 (ControlCodeJumpTable, -byte): the code, then its argument bytes
+TXS_MAP equ $FF		;-1: map
+TXS_ATTR equ $FE		;-2: palette/priority (printa)
+TXS_X equ $FD		;-3: printx
+TXS_Y equ $FC		;-4: printy
+TXS_ADDX equ $FB		;-5: add signed byte to printx
+TXS_ADDY equ $FA		;-6: add signed byte to printy
+TXS_FONT equ $F9		;-7: char set
+TXS_ALL equ $F8		;-8: attribute, map, x, y

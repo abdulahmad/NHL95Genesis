@@ -59,7 +59,7 @@ CreateScreenGfx	;95 only. set up VDP planes and load create-player graphics/pale
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF
 	jsr	(printz).l
-	String	$FE,0,0,0
+	String	-TXMAP2,0,0,0
 	movea.l	#CreateBgMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -90,7 +90,7 @@ CreatePlayer	;95 only. Create Player screen entry: load graphics, draw title, in
 
 .createPlayerRedraw	;(re)draw "Create Player" title and player list
 	jsr	(printbigz).l
-	String	$BF,7,2,'Create Player'
+	String	-(TXPRI+TXMAP1),7,2,'Create Player'
 	bsr.w	ReadCreatedPlayers
 	clr.w	(CreateListOldRow).w
 	move.w	#1,(CreateListRow).w
@@ -132,11 +132,11 @@ CreatePlayer	;95 only. Create Player screen entry: load graphics, draw title, in
 .createPlayerLoop	;main input loop: list mode scrolls players, edit mode moves name/char cursors
 	bsr.w	CountNameLength
 	jsr	(printz).l
-	String	$BF,5,$12,0
+	String	-(TXPRI+TXMAP1),5,$12,0
 	tst.w	(NameEntryMode).w
 	beq.w	.4
 	jsr	(printz).l
-	String	$BF,9,5,0
+	String	-(TXPRI+TXMAP1),9,5,0
 	move.w	(CreateListRow).w,d0
 	sub.w	(CreateListTop).l,d0
 	add.w	d0,(printy).w
@@ -227,7 +227,7 @@ CreatePlayer	;95 only. Create Player screen entry: load graphics, draw title, in
 	bra.w	.createPlayerLoop
 .12
 	jsr	(printz).l
-	String	$BF,4,$13,0
+	String	-(TXPRI+TXMAP1),4,$13,0
 	add.w	d4,(printx).w
 	jsr	(printz).l
 	String	'   ',0
@@ -303,7 +303,7 @@ CreatePlayer	;95 only. Create Player screen entry: load graphics, draw title, in
 	jmp	(ModifyRatings).l
 .14
 	jsr	(printz).l
-	String	$FF,0,0,0
+	String	-TXMAP1,0,0,0
 	moveq	#$28,d0
 	moveq	#$1C,d1
 	move.w	#$7FF,d2
@@ -318,7 +318,7 @@ CreatePlayer	;95 only. Create Player screen entry: load graphics, draw title, in
 NameEntry	;95 only. Create Player name entry: toggle grid/edit mode, draw letter grid + help text, or the name list + arrow help
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	$BF,$0,$D,$0
+	String	-(TXPRI+TXMAP1),$0,$D,$0
 	move.w	#$28,d0
 	move.w	#9,d1
 	move.w	#$7FF,d2
@@ -327,7 +327,7 @@ NameEntry	;95 only. Create Player name entry: toggle grid/edit mode, draw letter
 	bne.w	NameListMode
 	bsr.w	NameEntryBg
 	jsr	(printz).l
-	String	$BF,$A,$F,$0
+	String	-(TXPRI+TXMAP1),$A,$F,$0
 	movea.l	#CreateLetterGrid,a0
 	moveq	#4,d0
 .0
@@ -344,17 +344,17 @@ NameEntry	;95 only. Create Player name entry: toggle grid/edit mode, draw letter
 	subi.w	#$C,(printx).w
 	dbf	d0,.0
 	jsr	(printz).l
-	String	$FE,$16,$E,$0
+	String	-TXMAP2,$16,$E,$0
 	moveq	#$16,d0
 	moveq	#7,d1
 	jsr	(printz2).l
-	String	$F9,$2
+	String	TXS_FONT,$2
 	jsr	(printz).l
-	String	$BF,$17,$F,$0
+	String	-(TXPRI+TXMAP1),$17,$F,$0
 	jsr	(printz2).l
 	String	'D-Pad to a   ',$0
 	jsr	(printz).l
-	String	$BF,$17,$10,$0
+	String	-(TXPRI+TXMAP1),$17,$10,$0
 	jsr	(printz2).l
 	String	'letter.      ',$0
 	move.w	#$17,(printx).w
@@ -386,7 +386,7 @@ NameEntry	;95 only. Create Player name entry: toggle grid/edit mode, draw letter
 	String	'done.         '
 .4
 	jsr	(printz2).l
-	String	$F9,$2
+	String	TXS_FONT,$2
 
 NameEntryDone	;95 only. NameEntry: return
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -397,7 +397,7 @@ NameEntryBg	;95 only. Draw name entry background graphic (NameEntryBgMap) at the
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(spritechars).w,d4
 	jsr	(printz).l
-	String	$FF,$16,$E,$0
+	String	-TXMAP1,$16,$E,$0
 .0
 	movea.l	#NameEntryBgMap,a0
 	movea.l	a0,a1
@@ -426,7 +426,7 @@ NameListMode	;95 only. NameEntry: name list mode (list and arrow help)
 	move.w	#$7FF,d2
 	jsr	(eraser).l
 	jsr	(printz).l
-	String	$FE,$16,$E,$0
+	String	-TXMAP2,$16,$E,$0
 	moveq	#$16,d0
 	moveq	#7,d1
 	bsr.w	DrawCreateList
@@ -436,13 +436,13 @@ NameListMode	;95 only. NameEntry: name list mode (list and arrow help)
 NameListHelp	;95 only. Print help text for name list mode (D-Pad up/down / START exit / B edit)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz2).l
-	String	$F9,$2
+	String	TXS_FONT,$2
 	jsr	(printz).l
-	String	$BF,$17,$F,$0
+	String	-(TXPRI+TXMAP1),$17,$F,$0
 	jsr	(printz2).l
 	String	'D-Pad up/down '
 	jsr	(printz).l
-	String	$BF,$17,$10,$0
+	String	-(TXPRI+TXMAP1),$17,$10,$0
 	jsr	(printz2).l
 	String	'moves arrows. '
 	move.w	#$17,(printx).w
@@ -464,7 +464,7 @@ NameListHelp	;95 only. Print help text for name list mode (D-Pad up/down / START
 	jsr	(printz2).l
 	String	'edit.         '
 	jsr	(printz2).l
-	String	$F9,$0
+	String	TXS_FONT,$0
 	movem.l	(sp)+,d0-d7/a0-a6
 .1
 	rts
@@ -519,7 +519,7 @@ PrintGridLetter	;95 only. If grid mode, print letter d5 of the grid table (curso
 
 GridLetterPos	;95 only. Set print position for letter grid cell d5 (6 per row), d0/d1 = frame size
 	jsr	(printz).l
-	String	$BF,$9,$E,$0
+	String	-(TXPRI+TXMAP1),$9,$E,$0
 	move.w	d5,d0
 	ext.l	d0
 	divu.w	#6,d0
@@ -537,7 +537,7 @@ DrawCreateList	;95 only. Draw list of up to 6 player names starting at player Cr
 	move.w	(NameEntryLen).w,-(sp)
 	move.w	(CreateListRow).w,-(sp)
 	jsr	(printz).l
-	String	$BF,$9,$6,$0
+	String	-(TXPRI+TXMAP1),$9,$6,$0
 	move.w	#6,d7
 	cmp.w	(createdcount).l,d7
 	blt.w	.0
@@ -577,7 +577,7 @@ PrintListMarkers	;95 only. Print the 2 strings at a1 on old list row (left and x
 	tst.w	(CreateListOldRow).w
 	beq.w	.0
 	jsr	(printz).l
-	String	$BF,$7,$6,$0
+	String	-(TXPRI+TXMAP1),$7,$6,$0
 	move.w	(CreateListOldRow).w,d0
 	subq.w	#1,d0
 	sub.w	(CreateListTop).l,d0
@@ -665,7 +665,7 @@ PrintEditName	;95 only. Print 18-char name from a1 with - padding, highlight cur
 	clr.b	3(a0)
 	movea.l	a0,a1
 	jsr	(printz2).l
-	String	$F9,$1
+	String	TXS_FONT,$1
 	add.w	d4,d7
 	cmp.w	#8,d4
 	blt.w	.5
@@ -674,7 +674,7 @@ PrintEditName	;95 only. Print 18-char name from a1 with - padding, highlight cur
 	move.w	d7,(printx).w
 	jsr	(printsmall).l
 	jsr	(printz2).l
-	String	$F9,$0
+	String	TXS_FONT,$0
 .6
 	move.w	(sp)+,(NameEntryLen).w
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -819,7 +819,7 @@ SaveNameEnd	;95 only. SaveCreateName: done, d0 = 0
 
 InvalidName	;95 only. SaveCreateName: "Invalid Name. Make sure player has both a first and last name." box
 	jsr	(printz).l
-	String	$BF,$5,$5,$0
+	String	-(TXPRI+TXMAP1),$5,$5,$0
 	move.w	#$1E,d0
 	move.w	#$F,d1
 	jsr	(Framer).l
@@ -839,7 +839,7 @@ InvalidName	;95 only. SaveCreateName: "Invalid Name. Make sure player has both a
 
 InvalidNameWait	;95 only. SaveCreateName: wait for a key, close the box
 	jsr	(printz2).l
-	String	$F9,$0
+	String	TXS_FONT,$0
 	move.w	#$FFFF,d0
 	bra.w	SaveNameRet
 
@@ -1096,14 +1096,14 @@ CreateRatingsGfx	;95 only. set up the create player screen: VDP setup, decompres
 	dc.b	$BB,$23,$44,$67,$89,$AB,$CD,$EF
 	move.l	#SmallFontMap,(smallfontptr).l
 	jsr	(printz).l
-	String	$FF,$0,$0,$0
+	String	-TXMAP1,$0,$0,$0
 	moveq	#$28,d0
 	moveq	#$1C,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
 	jsr	(SetRinkPalette).l
 	jsr	(printz).l
-	String	$FE,$0,$0,$0
+	String	-TXMAP2,$0,$0,$0
 	movea.l	#ControllerBgMap,a0
 	btst	#1,(BA_PS_flags).w
 	beq.w	.0
@@ -1305,14 +1305,14 @@ ModifyRatings	;95 only. Create Player "Modify Ratings" screen: load graphics/tex
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$BB,$23,$44,$67,$89,$AB,$CD,$EF
 	jsr	(printz).l
-	String	$FF,$0,$0,$0
+	String	-TXMAP1,$0,$0,$0
 	moveq	#$28,d0
 	moveq	#$1C,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
 	jsr	(SetRinkPalette).l
 	jsr	(printz).l
-	String	$FE,$0,$0,$0
+	String	-TXMAP2,$0,$0,$0
 	movea.l	#ControllerBgMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1329,7 +1329,7 @@ ModifyRatings	;95 only. Create Player "Modify Ratings" screen: load graphics/tex
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF
 	jsr	(printbigz).l
-	String	$BF,$7,$2,'Modify Ratings',$0
+	String	-(TXPRI+TXMAP1),$7,$2,'Modify Ratings',$0
 	jsr	(printz2).l
 	dc.w	$44;String length
 	dc.b	$F9,$1,$FD,$9,$FC,$19,'{}[] = Select Rating',$FA
@@ -1438,7 +1438,7 @@ ModifyRatings	;95 only. Create Player "Modify Ratings" screen: load graphics/tex
 PrintCreateName	;95 only. prints Name First:/Last: from CreateRecord+2 (split at the space) via mesarea
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	$BF,$4,$6,'Name',$BF,$4,$7,'First:',$BF,$4,$8,'Last:'
+	String	-(TXPRI+TXMAP1),$4,$6,'Name',-(TXPRI+TXMAP1),$4,$7,'First:',-(TXPRI+TXMAP1),$4,$8,'Last:'
 	movea.l	#TextBuffer,a0
 	movea.l	#CreateRecord+$2,a1
 	move.w	#2,(mesarea).w
@@ -1455,7 +1455,7 @@ PrintCreateName	;95 only. prints Name First:/Last: from CreateRecord+2 (split at
 	andi.w	#$FFFE,(mesarea).w
 	movea.l	#mesarea,a1
 	jsr	(printz).l
-	String	$BF,$A,$7,$0
+	String	-(TXPRI+TXMAP1),$A,$7,$0
 	jsr	(print).l
 	movea.l	#TextBuffer,a0
 	movea.l	#CreateRecord+$2,a1
@@ -1476,7 +1476,7 @@ PrintCreateName	;95 only. prints Name First:/Last: from CreateRecord+2 (split at
 	andi.w	#$FFFE,(mesarea).w
 	movea.l	#mesarea,a1
 	jsr	(printz).l
-	String	$BF,$A,$8,$0
+	String	-(TXPRI+TXMAP1),$A,$8,$0
 	jsr	(print).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -1506,7 +1506,7 @@ rtsCreate3	;95 only. empty stub (called from DrawRatings)
 
 PrintOverallRating	;unreferenced: prints OVERALL RTG. (player overall from CalcAttribRating, *100/d1)
 	jsr	(printz2).l
-	String	$F9,$0,$FD,$4,$FC,$16,'OVERALL RTG.',$FD,$13
+	String	TXS_FONT,$0,TXS_X,$4,TXS_Y,$16,'OVERALL RTG.',TXS_X,$13
 	movea.l	#CreateRecord,a0
 	adda.w	(a0),a0
 	addq.w	#8,a0
@@ -1528,7 +1528,7 @@ PrintOverallRating	;unreferenced: prints OVERALL RTG. (player overall from CalcA
 
 PrintUnallocated	;95 only. prints "Maximum Unallocated Points" and its value CreatePoints
 	jsr	(printz2).l
-	String	$F9,$0,$FD,$4,$FC,$17,'Maximum Unallocated Points',$FD,'"'
+	String	TXS_FONT,$0,TXS_X,$4,TXS_Y,$17,'Maximum Unallocated Points',TXS_X,'"'
 	move.w	(CreatePoints).l,d0
 	move.w	#4,d1
 	jsr	(PushNumberWidth).l
@@ -1795,7 +1795,7 @@ FieldPos	;95 only. field Pos.: print G/F/D indexed by CreateType
 
 FieldDone	;95 only. common field exit: reset text color (printz2 $F9,0)
 	jsr	(printz2).l
-	String	$F9,0
+	String	TXS_FONT,0
 	rts
 
 PosText	;95 only. G, F, D
@@ -1805,13 +1805,13 @@ PosText	;95 only. G, F, D
 
 FieldHighlight	;95 only. set normal text color, highlight if (d6,d7) is the cursor (CreateCursorX/2)
 	jsr	(printz2).l
-	String	$F9,0
+	String	TXS_FONT,0
 	cmp.w	(CreateCursorX).l,d6
 	bne.w	.0
 	cmp.w	(CreateCursorY).l,d7
 	bne.w	.0
 	jsr	(printz2).l
-	String	$F9,1
+	String	TXS_FONT,1
 .0
 	rts
 
@@ -1859,13 +1859,13 @@ PrintFieldLabel	;95 only. print field label: pick skater/goalie label list, high
 	move.w	d7,d0
 	movem.l	d0/a1,-(sp)
 	jsr	(printz2).l
-	String	$F9,0
+	String	TXS_FONT,0
 	cmp.w	(CreateCursorX).l,d6
 	bne.w	.1
 	cmp.w	(CreateCursorY).l,d7
 	bne.w	.1
 	jsr	(printz2).l
-	String	$F9,1
+	String	TXS_FONT,1
 .1
 	movem.l	(sp)+,d0/a1
 	jsr	(PrintSmallListItem).l
@@ -2220,7 +2220,7 @@ LoadCreateTemplate	;95 only. copy 32-word player template (index CreateIndex) fr
 ClearCreateArea	;95 only. print control string ($BF,0,5,0) then call eraser with d0=$28,d1=$14,d2=$7FF (clear/draw a text area)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	$BF,0,5,0
+	String	-(TXPRI+TXMAP1),0,5,0
 	move.w	#$28,d0
 	move.w	#$14,d1
 	move.w	#$7FF,d2
@@ -2366,7 +2366,7 @@ SignFreeAgents	;95 only. Sign Free Agents screen: draw, input loop
 	jsr	(forceblack).l
 	jsr	(TradeGfx).l
 	jsr	(printz).l
-	String	$FE,$9,$6,$0
+	String	-TXMAP2,$9,$6,$0
 	movea.l	#FreeAgentMap1,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -2379,7 +2379,7 @@ SignFreeAgents	;95 only. Sign Free Agents screen: draw, input loop
 	moveq	#0,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	$FE,$9,$15,$0
+	String	-TXMAP2,$9,$15,$0
 	movea.l	#FreeAgentMap2,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -2392,13 +2392,13 @@ SignFreeAgents	;95 only. Sign Free Agents screen: draw, input loop
 	moveq	#0,d5
 	jsr	(dobitmap).l
 	jsr	(printbigz).l
-	String	$BF,$7,$2,'Sign Free Agent'
+	String	-(TXPRI+TXMAP1),$7,$2,'Sign Free Agent'
 	jsr	(printz2).l
 	dc.w	$18;String length
 	dc.b	$F9,$1,$FD,$7,$FC,$19,'A,B',$FD
 	dc.b	$17,'C',$FD,$1F,'Start',$FA,$1,$0
 	jsr	(printz2).l
-	String	$FD,$3,'Switch Team',$FD,$12,'Sign Player',$FD,' Exit',$F9,$0
+	String	TXS_X,$3,'Switch Team',TXS_X,$12,'Sign Player',TXS_X,' Exit',TXS_FONT,$0
 	move.w	#3,d0
 	movea.l	#AttribDeltas,a0
 .0
@@ -2559,7 +2559,7 @@ FreeAgentLoop	;95 only. SignFreeAgents: input loop
 	move.w	(sp)+,(TempWord2).w
 	move.w	(sp)+,(TempWord1).w
 	jsr	(printz).l
-	String	$BF,$B,$9,$0
+	String	-(TXPRI+TXMAP1),$B,$9,$0
 	move.w	#$7FF,d2
 	move.w	#$1C,d0
 	move.w	#$B,d1
@@ -2603,16 +2603,16 @@ CheckMaxDefense	;95 only. compare GetPlayerCountD7 - GetDefenseStartD7 with $F
 FreeAgentArrows	;95 only. draw scroll up/down arrows for the list
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz2).l
-	String	$F9,$1
+	String	TXS_FONT,$1
 	move.w	(TradeData+$4).l,d0
 	add.w	(TradeData).l,d0
 	beq.w	.0
 	jsr	(printz2).l
-	String	$FD,$9,$FC,$9,'{',$0
+	String	TXS_X,$9,TXS_Y,$9,'{',$0
 	bra.w	.1
 .0
 	jsr	(printz2).l
-	String	$FD,$9,$FC,$9,' ',$0
+	String	TXS_X,$9,TXS_Y,$9,' ',$0
 .1
 	move.w	(TradeData).l,d1
 	add.w	(TradeData+$4).l,d1
@@ -2622,43 +2622,43 @@ FreeAgentArrows	;95 only. draw scroll up/down arrows for the list
 	cmp.w	d0,d1
 	bge.w	.2
 	jsr	(printz2).l
-	String	$FD,$9,$FC,$13,'}',$0
+	String	TXS_X,$9,TXS_Y,$13,'}',$0
 	bra.w	.3
 .2
 	jsr	(printz2).l
-	String	$FD,$9,$FC,$13,' ',$0
+	String	TXS_X,$9,TXS_Y,$13,' ',$0
 .3
 	jsr	(printz2).l
-	String	$F9,$0
+	String	TXS_FONT,$0
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
 FreeAgentViolation	;95 only. show VIOLATION OF ROSTER RULES message, wait, erase
 	jsr	(printz).l
-	String	$BF,$5,$A,$0
+	String	-(TXPRI+TXMAP1),$5,$A,$0
 	move.w	#$1F,d0
 	move.w	#$E,d1
 	jsr	(Framer).l
 	jsr	(printz2).l
-	String	$F9,$3,$FD,$7,$FC,$B,'VIOLATION OF ROSTER RULES',$0
+	String	TXS_FONT,$3,TXS_X,$7,TXS_Y,$B,'VIOLATION OF ROSTER RULES',$0
 	movea.l	#TradeRulesText,a1
 	jsr	(printsmall).l
 	bsr.w	ReadFreeAgentPads
 	move.w	#$7FF,d2
 	jsr	(printz).l
-	String	$BF,$5,$A,$0
+	String	-(TXPRI+TXMAP1),$5,$A,$0
 	move.w	#$1F,d0
 	move.w	#$E,d1
 	jsr	(eraser).l
 	jsr	(printz2).l
-	String	$F9,$0
+	String	TXS_FONT,$0
 	bra.w	FreeAgentLoop
 
 FreeAgentTeamBlock	;95 only. draw team header (DrawTradeLogo) for team TradeData+$C
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(TradeData+$C).l,d1
 	jsr	(printz).l
-	String	$BF,$19,$15,$0
+	String	-(TXPRI+TXMAP1),$19,$15,$0
 	jsr	(DrawTradeLogo).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -2672,7 +2672,7 @@ DrawFreeAgents	;95 only. draw visible free agent rows (pos, name, rating)
 	move.w	#$1C,d7
 	move.w	(printy).w,-(sp)
 	jsr	(printz).l
-	String	$BF,$0,$0,$0
+	String	-(TXPRI+TXMAP1),$0,$0,$0
 	move.w	(sp)+,(printy).w
 	clr.w	d6
 	move.w	(a5),d0
@@ -2682,14 +2682,14 @@ DrawFreeAgents	;95 only. draw visible free agent rows (pos, name, rating)
 	adda.l	d0,a3
 .0
 	jsr	(printz2).l
-	String	$FD,$0,'                                       ',$0
+	String	TXS_X,$0,'                                       ',$0
 	move.w	#$B,(printx).w
 	jsr	(printz2).l
-	String	$F9,$0
+	String	TXS_FONT,$0
 	cmp.w	d5,d6
 	bne.w	.1
 	jsr	(printz2).l
-	String	$F9,$1
+	String	TXS_FONT,$1
 .1
 	move.w	(a3)+,d0
 	move.w	#$1C,d7
@@ -2774,7 +2774,7 @@ FreeAgentsEmpty	;95 only. "Free agent list is now empty." message box, wait for 
 .freeAgentMessage	;Show message box (string list FreeAgentMsgText, index d0), wait for key, exit via FreeAgentExit
 	move.w	d0,-(sp)
 	jsr	(printz).l
-	String	$BF,5,$A,0
+	String	-(TXPRI+TXMAP1),5,$A,0
 	move.w	#$1F,d0
 	move.w	#$E,d1
 	jsr	(Framer).l
@@ -2825,13 +2825,13 @@ ReleasePlayers	;95 only. Release Player screen: up/down scroll roster, switch te
 	jsr	(forceblack).l
 	jsr	(TradeGfx).l
 	jsr	(printbigz).l
-	String	$BF,7,2,'Release Player',0
+	String	-(TXPRI+TXMAP1),7,2,'Release Player',0
 	jsr	(printz2).l
-	String	$F9,1,$FD,6,$FC,$19,'A,B',$FD,$16,'C',$FD,' Start',$FA,1,0
+	String	TXS_FONT,1,TXS_X,6,TXS_Y,$19,'A,B',TXS_X,$16,'C',TXS_X,' Start',TXS_ADDY,1,0
 	jsr	(printz2).l
-	String	$FD,2,'Switch Team',$FD,$10,'Release Player',$FD,'!Exit',$F9,0,0
+	String	TXS_X,2,'Switch Team',TXS_X,$10,'Release Player',TXS_X,'!Exit',TXS_FONT,0,0
 	jsr	(printz2).l
-	String	$F9,2,$FD,$1B,$FC,7,'POS.',$FD,' RTG.',$F9,0
+	String	TXS_FONT,2,TXS_X,$1B,TXS_Y,7,'POS.',TXS_X,' RTG.',TXS_FONT,0
 	clr.w	(TradeData+$C).l
 	clr.w	(TradeData).l
 	move.w	#0,(HomeTeam).w
@@ -3022,7 +3022,7 @@ ReleaseLoop	;95 only. ReleasePlayers: input loop
 	addq.w	#1,(SaveRAM+2*SRFreeAgentCount).l
 	jsr	(MakeSRAMChecksum).l
 	jsr	(printz).l
-	String	$BF,$B,9,0
+	String	-(TXPRI+TXMAP1),$B,9,0
 	move.w	#$7FF,d2
 	move.w	#$1C,d0
 	move.w	#6,d1
@@ -3060,16 +3060,16 @@ CheckMinDefense	;95 only. Position 2 (D): GetPlayerCountD7 roster size minus Get
 ReleaseArrows	;95 only. Draw scroll arrows ({ above / } below) beside the roster list
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz2).l
-	String	$F9,1
+	String	TXS_FONT,1
 	move.w	(TradeData+$4).l,d0
 	add.w	(TradeData).l,d0
 	beq.w	.0
 	jsr	(printz2).l
-	String	$FD,9,$FC,9,'{',0
+	String	TXS_X,9,TXS_Y,9,'{',0
 	bra.w	.1
 .0
 	jsr	(printz2).l
-	String	$FD,9,$FC,9,' ',0
+	String	TXS_X,9,TXS_Y,9,' ',0
 .1
 	move.w	(TradeData).l,d1
 	add.w	(TradeData+$4).l,d1
@@ -3079,43 +3079,43 @@ ReleaseArrows	;95 only. Draw scroll arrows ({ above / } below) beside the roster
 	cmp.w	d0,d1
 	bge.w	.2
 	jsr	(printz2).l
-	String	$FD,9,$FC,$15,'}',0
+	String	TXS_X,9,TXS_Y,$15,'}',0
 	bra.w	.3
 .2
 	jsr	(printz2).l
-	String	$FD,9,$FC,$15,' ',0
+	String	TXS_X,9,TXS_Y,$15,' ',0
 .3
 	jsr	(printz2).l
-	String	$F9,0
+	String	TXS_FONT,0
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
 ReleaseViolation	;95 only. "VIOLATION OF ROSTER RULES" message box, wait for key, close it, back to the screen loop
 	jsr	(printz).l
-	String	$BF,5,$A,0
+	String	-(TXPRI+TXMAP1),5,$A,0
 	move.w	#$1E,d0
 	move.w	#$E,d1
 	jsr	(Framer).l
 	jsr	(printz2).l
-	String	$F9,3,$FD,7,$FC,$B,'VIOLATION OF ROSTER RULES',0
+	String	TXS_FONT,3,TXS_X,7,TXS_Y,$B,'VIOLATION OF ROSTER RULES',0
 	movea.l	#TradeRulesText,a1
 	jsr	(printsmall).l
 	bsr.w	ReadReleasePads
 	move.w	#$7FF,d2
 	jsr	(printz).l
-	String	$BF,5,$A,0
+	String	-(TXPRI+TXMAP1),5,$A,0
 	move.w	#$1E,d0
 	move.w	#$E,d1
 	jsr	(eraser).l
 	jsr	(printz2).l
-	String	$F9,0
+	String	TXS_FONT,0
 	bra.w	ReleaseLoop
 
 ReleaseTeamBlock	;95 only. Print team block for team TradeData+$C (DrawTradeLogo)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(TradeData+$C).l,d1
 	jsr	(printz).l
-	String	$BF,$B,6,0
+	String	-(TXPRI+TXMAP1),$B,6,0
 	jsr	(DrawTradeLogo).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -3128,7 +3128,7 @@ DrawReleaseRoster	;95 only. Draw the visible roster rows (pos letter, name, rati
 	move.w	(TradeData+$C).l,d7
 	move.w	(printy).w,-(sp)
 	jsr	(printz).l
-	String	$BF,0,0,0
+	String	-(TXPRI+TXMAP1),0,0,0
 	move.w	(sp)+,(printy).w
 	clr.w	d6
 	move.w	(a5),d0
@@ -3137,14 +3137,14 @@ DrawReleaseRoster	;95 only. Draw the visible roster rows (pos letter, name, rati
 	adda.l	d0,a4
 .0
 	jsr	(printz2).l
-	String	$FD,0,'                                       ',0
+	String	TXS_X,0,'                                       ',0
 	move.w	#$B,(printx).w
 	jsr	(printz2).l
-	String	$F9,0
+	String	TXS_FONT,0
 	cmp.w	d5,d6
 	bne.w	.1
 	jsr	(printz2).l
-	String	$F9,1
+	String	TXS_FONT,1
 .1
 	clr.w	d0
 	move.b	2(a4),d0
@@ -3225,7 +3225,7 @@ FreeAgentsFull	;95 only. "Free agent list is full." message box, wait for key, t
 .releaseMessage	;Show message box (string list ReleaseMsgText, index d0), wait for key, exit via ReleaseExit
 	move.w	d0,-(sp)
 	jsr	(printz).l
-	String	$BF,5,$A,0
+	String	-(TXPRI+TXMAP1),5,$A,0
 	move.w	#$1E,d0
 	move.w	#$E,d1
 	jsr	(Framer).l

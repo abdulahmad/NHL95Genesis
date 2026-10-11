@@ -39,13 +39,13 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	move.w	#0,d0
 	jsr	(setvram).l
 	jsr	(printz).l
-	String	$FF,0,0,0
+	String	-TXMAP1,0,0,0
 	move.l	#$80,d0
 	moveq	#$1C,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
 	jsr	(printz).l
-	String	$FD,0,0,0
+	String	-TXMAP3,0,0,0
 	moveq	#$28,d0
 	moveq	#2,d1
 	move.w	#$7FF,d2
@@ -67,7 +67,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	move.w	d4,(ExtraChars).w
 	jsr	(DoDMA_clearCallbackPointer).l
 	jsr	(printz).l
-	String	$CE,0,0,0
+	String	-(TXPAL3+TXMAP2),0,0,0
 	movea.l	#ScoutMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -106,7 +106,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	move.b	(a0)+,d4
 .2
 	jsr	(printz).l
-	String	$FF,0,0,0
+	String	-TXMAP1,0,0,0
 	move.b	(a0)+,(printx+1).w
 	move.b	(a0)+,(printy+1).w
 	clr.w	d1
@@ -118,14 +118,14 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	move.b	(a0)+,d4
 .3
 	jsr	(printz).l
-	String	$FF,0,2,0
+	String	-TXMAP1,0,2,0
 	move.b	(a0)+,(printx+1).w
 	clr.w	d0
 	move.b	(a0)+,d0
 	jsr	(DrawPlayoffBracket).l
 	dbf	d4,.3
 	jsr	(printz).l
-	String	$EF,0,0,0
+	String	-(TXPAL1+TXMAP1),0,0,0
 	cmpi.w	#7,(bosgames).w	;best of 7
 	beq.w	.5
 	clr.w	d4
@@ -136,13 +136,13 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	move.b	(a0)+,(printx+1).w
 	move.b	(a0)+,(printy+1).w
 	jsr	(printz2).l
-	String	$FE,3
+	String	TXS_ATTR,3
 	jsr	(FormatScore).l
 	adda.w	#$10,a2
 	dbf	d4,.4
 .5
 	jsr	(printz2).l
-	String	$F8,0,1,$41,1,0
+	String	TXS_ALL,0,1,$41,1,0
 	lea	PlayoffScreenText(pc),a1
 	move.w	(gamelevel).w,d0
 	jsr	(SkipStrings).l
@@ -150,7 +150,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	tst.w	(gamelevel).w
 	beq.w	.6
 	jsr	(printz).l
-	String	$CD,$A,1,'Press [ or ] to page'
+	String	-(TXPAL3+TXMAP3),$A,1,'Press [ or ] to page'
 .6
 	move.w	#$18,(palcount).w
 	move.w	#3,-(sp)

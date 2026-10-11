@@ -213,7 +213,7 @@ CheckInjury	;95 only. The injury message when its timer runs out: "Injury to:" t
 .1
 	movem.l	d0-d2/a0-a4,-(sp)
 	jsr	(printz).l
-	String	$BF,$B,$3,$0
+	String	-(TXPRI+TXMAP1),$B,$3,$0
 	moveq	#$12,d0
 	moveq	#5,d1
 	jsr	(Framer).l
@@ -222,15 +222,15 @@ CheckInjury	;95 only. The injury message when its timer runs out: "Injury to:" t
 	btst	#5,(sflags7).w
 	bne.w	.2
 	jsr	(printz).l
-	String	$BF,$C,$4,'Injury to:',$BF,$C,$6,'Out for period',$BF,$C,$5,$0
+	String	-(TXPRI+TXMAP1),$C,$4,'Injury to:',-(TXPRI+TXMAP1),$C,$6,'Out for period',-(TXPRI+TXMAP1),$C,$5,$0
 	bra.w	.6
 .2
 	jsr	(printz).l
-	String	$BF,$C,$4,'Injury to:',$BF,$C,$6,'Out for game',$BF,$C,$5,$0
+	String	-(TXPRI+TXMAP1),$C,$4,'Injury to:',-(TXPRI+TXMAP1),$C,$6,'Out for game',-(TXPRI+TXMAP1),$C,$5,$0
 	bra.w	.6
 .3
 	jsr	(printz).l
-	String	$BF,$C,$4,'Injury to:',$BF,$C,$6,'Out for '
+	String	-(TXPRI+TXMAP1),$C,$4,'Injury to:',-(TXPRI+TXMAP1),$C,$6,'Out for '
 	move.w	(injurygames).w,d0
 	move.w	#1,d1
 	jsr	(PushNumberWidth).l
@@ -239,18 +239,18 @@ CheckInjury	;95 only. The injury message when its timer runs out: "Injury to:" t
 	cmpi.w	#1,(injurygames).w
 	bgt.w	.5
 	jsr	(printz).l
-	String	' game',$BF,$C,$5
+	String	' game',-(TXPRI+TXMAP1),$C,$5
 	bra.w	.6
 .5
 	jsr	(printz).l
-	String	' games',$BF,$C,$5,$0
+	String	' games',-(TXPRI+TXMAP1),$C,$5,$0
 .6
 	jsr	(GetTempPlayerNameAttrib).l
 	jsr	(print).l
 	btst	#0,(puck_pflags2).w
 	beq.w	.7
 	jsr	(printz).l
-	String	$BF,$14,$6,'the game',$0
+	String	-(TXPRI+TXMAP1),$14,$6,'the game',$0
 .7
 	movem.l	(sp)+,d0-d2/a0-a4
 	rts
@@ -351,7 +351,7 @@ updatepwrplay	;penalty94 updatepwrplay. The power play box: the team and the tim
 	bra.s	.2
 .4
 	jsr	(printz).l
-	String	$BF,$1,$19,'   ',$16,$17,$18,$19,$BF,$1,$1A,'  ',$0
+	String	-(TXPRI+TXMAP1),$1,$19,'   ',$16,$17,$18,$19,-(TXPRI+TXMAP1),$1,$1A,'  ',$0
 	bsr.w	GetLowestPen
 	jsr	(PushTime).l
 	jsr	(print).l
@@ -371,7 +371,7 @@ ClearPowerPlay	;95 only. Clear the power play box (sflags2 bit 5)
 	bclr	#5,(sflags2).w
 	beq.w	rtsPowerPlay
 	jsr	(printz).l
-	String	$BF,$1,$19,' '
+	String	-(TXPRI+TXMAP1),$1,$19,' '
 	jmp	(EASNLogo).l
 
 rtsPowerPlay	;95 only. Shared rts of updatepwrplay / ClearPowerPlay

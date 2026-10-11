@@ -529,7 +529,7 @@ ReplayMode	;Instant replay play-back control and display code (94 ReplayMode). C
 ShowReplayIcon	;(replay94) Show the replay icon and start the $F0 frame replayicontimer timer. 95: the icon is $A x 5 at 0,0 from ReplayIconChars
 	move.w	#$F0,(replayicontimer).w
 	jsr	(printz).l
-	String	$BD,2,2,0
+	String	-(TXPRI+TXMAP3),2,2,0
 	moveq	#0,d0
 	moveq	#0,d1
 	moveq	#$A,d2
@@ -543,7 +543,7 @@ ShowReplayIcon	;(replay94) Show the replay icon and start the $F0 frame replayic
 
 EraseReplayIcon	;(replay94) Erase the $A x 5 replay icon (replayicontimer ran out)
 	jsr	(printz).l
-	String	$BD,2,2,0
+	String	-(TXPRI+TXMAP3),2,2,0
 	move.w	#$A,d0
 	move.w	#5,d1
 	move.w	#$7FF,d2
@@ -552,7 +552,7 @@ EraseReplayIcon	;(replay94) Erase the $A x 5 replay icon (replayicontimer ran ou
 ShowReplayBanner	;(replay94) Show the replay banner at 0,0 and stop the replayicontimer timer. 95: $A x 6 from ExtraChars
 	st	(replayicontimer).w
 	jsr	(printz).l
-	String	$BD,2,2,0
+	String	-(TXPRI+TXMAP3),2,2,0
 	moveq	#0,d0
 	moveq	#0,d1
 	moveq	#$A,d2
@@ -566,7 +566,7 @@ ShowReplayBanner	;(replay94) Show the replay banner at 0,0 and stop the replayic
 
 EraseReplayBanner	;(replay94) Erase the $A x 6 area ShowReplayBanner drew
 	jsr	(printz).l
-	String	$BD,2,2,0
+	String	-(TXPRI+TXMAP3),2,2,0
 	move.w	#$A,d0
 	move.w	#6,d1
 	move.w	#$7FF,d2

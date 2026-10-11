@@ -89,7 +89,7 @@ setlccords	;(input94) Set printx / printy for the line change box of team a2
 	eori.w	#$16,d0
 .1
 	jsr	(printz).l
-	String	$BF,$16,0,0
+	String	-(TXPRI+TXMAP1),$16,0,0
 	add.w	d0,(printy).w
 	moveq	#2,d0
 	bsr.w	getlchoice
@@ -904,7 +904,7 @@ EASportsScreen	;(attract94) Called from Begin (main95). Show the EA Sports scree
 	jsr	(CopyPaletteToCRAM).l
 	jsr	(setVram_0).l
 	jsr	(printz).l
-	String	$FE,0,0,0
+	String	-TXMAP2,0,0,0
 	movea.l	#EASportsMap,a2
 	movea.l	a2,a0
 	movea.l	a2,a1
@@ -1076,7 +1076,7 @@ DrawTeamScreen2	;95 only. A DrawTeamScreen (setup95) for the season / stats scre
 	jsr	(setupTeamBlocksMap).l
 	movem.l	(sp)+,a0-a6
 	jsr	(printz).l
-	String	$BD,0,0,0
+	String	-(TXPRI+TXMAP3),0,0,0
 	movea.l	(screenarg).w,a1
 	adda.l	4(a1),a1
 	movea.w	#ZeroLong,a2
@@ -1087,7 +1087,7 @@ DrawTeamScreen2	;95 only. A DrawTeamScreen (setup95) for the season / stats scre
 	moveq	#0,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	$FD,0,0,0
+	String	-TXMAP3,0,0,0
 	movem.l	(sp),d0-d1/a2
 	add.w	d0,(printy).w
 	movea.l	(screenarg).w,a0
@@ -1125,7 +1125,7 @@ DrawTeamScreen2	;95 only. A DrawTeamScreen (setup95) for the season / stats scre
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF;remap table
 	jsr	(printz).l
-	String	$FE,0,0,0
+	String	-TXMAP2,0,0,0
 	moveq	#$40,d0
 	moveq	#$20,d1
 	move.w	#$7FF,d2
@@ -1165,7 +1165,7 @@ DrawTeamScreen3	;95 only. The same with SmallFontMap
 	jsr	(setupTeamBlocksMap).l
 	movem.l	(sp)+,a0-a6
 	jsr	(printz).l
-	String	$BD,0,0,0
+	String	-(TXPRI+TXMAP3),0,0,0
 	movea.l	(screenarg).w,a1
 	adda.l	4(a1),a1
 	movea.w	#ZeroLong,a2
@@ -1176,7 +1176,7 @@ DrawTeamScreen3	;95 only. The same with SmallFontMap
 	moveq	#0,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	$FD,0,0,0
+	String	-TXMAP3,0,0,0
 	movem.l	(sp),d0-d1/a2
 	add.w	d0,(printy).w
 	movea.l	(screenarg).w,a0
@@ -1213,7 +1213,7 @@ DrawTeamScreen3	;95 only. The same with SmallFontMap
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF;remap table
 	jsr	(printz).l
-	String	$FE,0,0,0
+	String	-TXMAP2,0,0,0
 	moveq	#$40,d0
 	moveq	#$20,d1
 	move.w	#$7FF,d2
@@ -1259,7 +1259,7 @@ DrawTeamScreen4Body	;DrawTeamScreen4 after the screen setup; DrawTeamScreen4NoSe
 	jsr	(DoDMA_clearCallbackPointer).l
 	movem.l	(sp)+,a0-a6
 	jsr	(printz).l
-	String	$BD,0,0,0
+	String	-(TXPRI+TXMAP3),0,0,0
 	movea.l	(screenarg).w,a1
 	adda.l	4(a1),a1
 	movea.w	#ZeroLong,a2
@@ -1270,7 +1270,7 @@ DrawTeamScreen4Body	;DrawTeamScreen4 after the screen setup; DrawTeamScreen4NoSe
 	moveq	#0,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	$FD,0,0,0
+	String	-TXMAP3,0,0,0
 	movem.l	(sp),d0-d1/a2
 	add.w	d0,(printy).w
 	movea.l	(screenarg).w,a0
@@ -1307,7 +1307,7 @@ DrawTeamScreen4Body	;DrawTeamScreen4 after the screen setup; DrawTeamScreen4NoSe
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF;remap table
 	jsr	(printz).l
-	String	$FE,0,0,0
+	String	-TXMAP2,0,0,0
 	moveq	#$40,d0
 	moveq	#$20,d1
 	move.w	#$7FF,d2
@@ -1347,7 +1347,7 @@ DrawTeamScreen5	;95 only. DrawTeamScreen4 with three small fonts and palette wor
 	jsr	(DoDMA_clearCallbackPointer).l
 	movem.l	(sp)+,a0-a6
 	jsr	(printz).l
-	String	$BD,0,0,0
+	String	-(TXPRI+TXMAP3),0,0,0
 	movea.l	(screenarg).w,a1
 	adda.l	4(a1),a1
 	movea.w	#ZeroLong,a2
@@ -1358,7 +1358,7 @@ DrawTeamScreen5	;95 only. DrawTeamScreen4 with three small fonts and palette wor
 	moveq	#0,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	$FD,0,0,0
+	String	-TXMAP3,0,0,0
 	movem.l	(sp),d0-d1/a2
 	add.w	d0,(printy).w
 	movea.l	(screenarg).w,a0
@@ -1391,7 +1391,7 @@ DrawTeamScreen5	;95 only. DrawTeamScreen4 with three small fonts and palette wor
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF;remap table
 	jsr	(printz).l
-	String	$FE,0,0,0
+	String	-TXMAP2,0,0,0
 	moveq	#$40,d0
 	moveq	#$20,d1
 	move.w	#$7FF,d2
@@ -1435,7 +1435,7 @@ DrawTeamScreen6	;95 only. The team blocks (screen6chars1), the bitmap, Screen6Ti
 	movem.l	(sp)+,a0-a6
 	move.w	d4,(screen6chars1).w
 	jsr	(printz).l
-	String	$BD,0,0,0
+	String	-(TXPRI+TXMAP3),0,0,0
 	movea.l	(screenarg).w,a1
 	adda.l	4(a1),a1
 	movea.w	#ZeroLong,a2
@@ -1446,7 +1446,7 @@ DrawTeamScreen6	;95 only. The team blocks (screen6chars1), the bitmap, Screen6Ti
 	moveq	#0,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	$FD,0,0,0
+	String	-TXMAP3,0,0,0
 	movem.l	(sp),d0-d1/a2
 	add.w	d0,(printy).w
 	movea.l	(screenarg).w,a0
@@ -1489,7 +1489,7 @@ DrawTeamScreen6	;95 only. The team blocks (screen6chars1), the bitmap, Screen6Ti
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$07,$89,$A5,$6B,$89,$AB,$CD,$EF;remap table
 	jsr	(printz).l
-	String	$FE,0,0,0
+	String	-TXMAP2,0,0,0
 	moveq	#$40,d0
 	moveq	#$20,d1
 	move.w	#$7FF,d2

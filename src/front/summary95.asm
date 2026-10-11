@@ -12,14 +12,14 @@ ScoringSummaryScreen	;stats94 ScoringSummaryScreen (93 name). "Scoring Summary":
 	move.l	#ControllerBgMap,(screenarg).l
 	jsr	(DrawTeamScreen2).l
 	jsr	(printbigz).l
-	String	$BD,6,1,'Scoring',$BD,$14,1,'Summary',$BD,7,4,0
+	String	-(TXPRI+TXMAP3),6,1,'Scoring',-(TXPRI+TXMAP3),$14,1,'Summary',-(TXPRI+TXMAP3),7,4,0
 	move.w	#$2C,d0
 	jsr	(PutTeamBlock).l
 	addq.w	#3,(printx).w
 	clr.w	d0
 	jsr	(PutTeamBlock).l
 	jsr	(printz2).l
-	String	$F8,4,3,0,7,$F9,3,'^^Per^^Time^^Tm^^Goal/Assist^^^^^^P/S^^^',$F9,0
+	String	TXS_ALL,4,3,0,7,TXS_FONT,3,'^^Per^^Time^^Tm^^Goal/Assist^^^^^^P/S^^^',TXS_FONT,0
 	clr.l	d0
 	move.w	(ScoreSumbytes).w,d0
 	divu.w	#6,d0
@@ -105,7 +105,7 @@ DisplayGameStatLineUp	;stats94 DisplayGameStatLineUp. The goal entry in the high
 	moveq	#6,d3
 	mulu.w	d0,d3
 	jsr	(printz).l
-	String	$BE,0,0
+	String	-(TXPRI+TXMAP2),0,0
 	move.w	(VertLineScrolling).w,d0
 	lsr.w	#3,d0
 	subq.w	#3,d0
@@ -122,7 +122,7 @@ DisplayGameStatLineDown	;stats94 DisplayGameStatLineDown. Goal entry + 4 at the 
 	moveq	#6,d3
 	mulu.w	d0,d3
 	jsr	(printz).l
-	String	$BE,0,0
+	String	-(TXPRI+TXMAP2),0,0
 	move.w	(VertLineScrolling).w,d0
 	lsr.w	#3,d0
 	addi.w	#$10,d0
@@ -192,7 +192,7 @@ GoalTypeTbl	;stats94 GoalTypeTbl (93 name). ScoreSum byte 2 & $7F: SH2, SH, even
 DrawScrollArrowsPenalty	;stats94 DrawScrollArrowsPenalty (93 name). Summary screen up / down arrows (ScrollArrowTbl). Saves d0-d1/a1
 	movem.l	d0-d1/a1,-(sp)
 	jsr	(printz2).l
-	String	$F8,$4,$3,$1,$9,$F9,$1,$0
+	String	TXS_ALL,$4,$3,$1,$9,TXS_FONT,$1,$0
 	clr.w	d0
 	move.w	(VertLineScrolling).w,d1
 	tst.w	d1
@@ -220,14 +220,14 @@ PenaltySummaryScreen	;stats94 PenaltySummaryScreen (93 name). "Penalties": one 3
 	move.l	#ControllerBgMap,(screenarg).l
 	jsr	(DrawTeamScreen2).l
 	jsr	(printbigz).l
-	String	$BD,$B,$1,'Penalties',$BD,$7,$4,$0
+	String	-(TXPRI+TXMAP3),$B,$1,'Penalties',-(TXPRI+TXMAP3),$7,$4,$0
 	move.w	#$2C,d0
 	jsr	(PutTeamBlock).l
 	addq.w	#3,(printx).w
 	clr.w	d0
 	jsr	(PutTeamBlock).l
 	jsr	(printz2).l
-	String	$F8,$4,$3,$0,$7,$F9,$3,'^^Per^^Time^^Tm^^Player/Penalty^^^min^^^',$F9,$0,$0
+	String	TXS_ALL,$4,$3,$0,$7,TXS_FONT,$3,'^^Per^^Time^^Tm^^Player/Penalty^^^min^^^',TXS_FONT,$0,$0
 	clr.l	d0
 	move.w	(PenSumLength).w,d0
 	lsr.w	#2,d0
@@ -319,7 +319,7 @@ DisplayPenaltyLineUp	;stats94 DisplayPenaltyLineUp. The penalty entry in the hig
 	move.w	d0,d3
 	asl.w	#2,d3
 	jsr	(printz).l
-	String	$BE,$0,$0,$0
+	String	-(TXPRI+TXMAP2),$0,$0,$0
 	move.w	(VertLineScrolling).w,d0
 	lsr.w	#3,d0
 	subq.w	#2,d0
@@ -336,7 +336,7 @@ DisplayPenaltyLineDown	;stats94 DisplayPenaltyLineDown. Penalty entry + 5 at the
 	move.w	d0,d3
 	asl.w	#2,d3
 	jsr	(printz).l
-	String	$BE,$0,$0,$0
+	String	-(TXPRI+TXMAP2),$0,$0,$0
 	move.w	(VertLineScrolling).w,d0
 	lsr.w	#3,d0
 	addi.w	#$F,d0

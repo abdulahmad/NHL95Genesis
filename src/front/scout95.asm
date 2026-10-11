@@ -70,7 +70,7 @@ ScoutingReport	;scout94 ScoutingReport (93 name). Pregame scouting report: the R
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF
 	jsr	(printz).l
-	String	$FE,0,0,0
+	String	-TXMAP2,0,0,0
 	movea.l	#ScoutReportMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -84,21 +84,21 @@ ScoutingReport	;scout94 ScoutingReport (93 name). Pregame scouting report: the R
 	jsr	(dobitmap).l
 	move.w	#0,(printfontset).w	;char set 0
 	jsr	(printz).l
-	String	$FF,$10,$11,'ADVANTAGE:',0
+	String	-TXMAP1,$10,$11,'ADVANTAGE:',0
 	jsr	(printz).l
-	String	$DE,6,3,0
+	String	-(TXPAL2+TXMAP2),6,3,0
 	moveq	#$21,d0	;33 x 9 text box frame
 	moveq	#9,d1
 	jsr	(printz).l
-	String	$DE,3,$10,0
+	String	-(TXPAL2+TXMAP2),3,$10,0
 	move.w	#8,d0	;8 x 8 frame: visitors picture
 	move.w	#8,d1
 	jsr	(printz).l
-	String	$DE,$1E,$10,0
+	String	-(TXPAL2+TXMAP2),$1E,$10,0
 	move.w	#8,d0	;8 x 8 frame: home picture
 	move.w	#8,d1
 	jsr	(printz).l
-	String	$FF,0,0,0
+	String	-TXMAP1,0,0,0
 	movea.l	#RonBarrMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -117,7 +117,7 @@ ScoutingReport	;scout94 ScoutingReport (93 name). Pregame scouting report: the R
 	move.w	d4,(coldiconchars).w	;tiles: 1st vram char
 	jsr	(DoDMA_clearCallbackPointer).l
 	jsr	(printbigz).l
-	String	$BF,9,2,'Scouting Report'
+	String	-(TXPRI+TXMAP1),9,2,'Scouting Report'
 	clr.w	(matchup).w	;matchup 0: the teams
 	clr.w	(scoutunused).w
 	move.w	#$10D,(matchuptimer).l	;frames to the next matchup
@@ -407,7 +407,7 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 	tst.w	(matchup).w
 	bne.w	.3
 	jsr	(printz2).l
-	String	$F8,$0,$1,$16,$16,$F9,$1,$0
+	String	TXS_ALL,$0,$1,$16,$16,TXS_FONT,$1,$0
 	lea	StatsText(pc),a1
 	move.w	#0,d7
 .0
@@ -432,16 +432,16 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 	bpl.s	.0
 	move.w	#2,(printfontset).w
 	jsr	(printz).l
-	String	$FF,$0,$19,'                                        ',$0
+	String	-TXMAP1,$0,$19,'                                        ',$0
 	jsr	(printz).l
-	String	$FF,'!',$18,$0
+	String	-TXMAP1,'!',$18,$0
 	movea.l	#HmShots,a0
 	movea.l	#AwShots,a2
 	bsr.w	PrintMatchupRating	;home
 	move.w	d0,(homerating).w
 	move.w	#2,(printfontset).w
 	jsr	(printz).l
-	String	$FF,$6,$18,$0
+	String	-TXMAP1,$6,$18,$0
 	exg	a0,a2
 	bsr.w	PrintMatchupRating	;visitors
 	move.w	d0,(visrating).w
@@ -456,7 +456,7 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 .5
 	dbf	d0,.4
 	jsr	(printz2).l
-	String	$F8,$0,$1,$C,$13,$F9,$1,$0
+	String	TXS_ALL,$0,$1,$C,$13,TXS_FONT,$1,$0
 	jsr	(printsmall).l
 	move.w	#$18,(printy).w
 	move.w	#2,(printfontset).w
@@ -468,9 +468,9 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 .6
 	move.w	(matchuphome).w,d0	;home player
 	jsr	(printz).l
-	String	$FF,$0,$19,'                                        ',$0
+	String	-TXMAP1,$0,$19,'                                        ',$0
 	jsr	(printz).l
-	String	$FF,'"',$19,$0
+	String	-TXMAP1,'"',$19,$0
 	bsr.w	PrintPlayerNameRight	;print the name, moved left to fit the line
 	jsr	(CalcAttrib).l
 	mulu.w	#$64,d0	;* 100
@@ -480,7 +480,7 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 	move.w	d0,(homerating).w
 	jsr	(PushNumberWidth).l
 	jsr	(printz).l
-	String	$FF,'!',$18,$0
+	String	-TXMAP1,'!',$18,$0
 	bsr.w	PrintTwoSpaces
 	jsr	(printsmall).l
 	movea.l	#AwShots,a2
@@ -491,7 +491,7 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 .7
 	move.w	(matchupvis).w,d0	;visitors player
 	jsr	(printz).l
-	String	$FF,$2,$19,$0
+	String	-TXMAP1,$2,$19,$0
 	bsr.w	PrintPlayerNameRight
 	jsr	(CalcAttrib).l
 	mulu.w	#$64,d0	;* 100
@@ -501,7 +501,7 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 	move.w	#2,d1
 	jsr	(PushNumberWidth).l
 	jsr	(printz).l
-	String	$FF,$6,$18,$0
+	String	-TXMAP1,$6,$18,$0
 	bsr.w	PrintTwoSpaces
 	jsr	(printsmall).l
 .8
@@ -600,7 +600,7 @@ PrintAdvantageMarks	;scout94 PrintAdvantageMarks. Every frame: the advantage mar
 .3
 	move.w	#2,(printfontset).w
 	jsr	(printz).l
-	String	$FF,$13,$18,$0
+	String	-TXMAP1,$13,$18,$0
 	jsr	(printsmall).l
 	move.w	#0,(printfontset).w
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -840,7 +840,7 @@ ScoutTextPlayer	;setup94 ScoutTextPlayer. Text player of ScoutingReport: types t
 	bsr.w	ScoutTextNextLine
 .12
 	jsr	(printz).l
-	String	$FF,$B,$6,$0
+	String	-TXMAP1,$B,$6,$0
 	move.w	(DispAttribCtr).w,d0
 	add.w	d0,(printx).w
 	move.w	(VertLineScrolling).w,d0

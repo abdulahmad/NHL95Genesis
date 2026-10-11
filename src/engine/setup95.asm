@@ -35,7 +35,7 @@ TeamRosterScreen	;93 name (94 stats94). "Team Roster" screen for team a2: DrawTe
 	move.w	Xvel(a2),d3
 	jsr	(GetTeamLogo).l
 	jsr	(printz).l
-	String	$8D,2,1,0
+	String	-(TXPRI+TXPAL3+TXMAP3),2,1,0
 	move.w	(homepicchars).w,d4
 	move.w	#4,d5
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -47,7 +47,7 @@ TeamRosterScreen	;93 name (94 stats94). "Team Roster" screen for team a2: DrawTe
 	movem.l	(sp)+,a0-a6
 	clr.w	(rosterscroll).w
 	jsr	(printz).l
-	String	$BD,$E,1,0
+	String	-(TXPRI+TXMAP3),$E,1,0
 	clr.w	d0
 	cmpa.w	#(HmShots-M68K_RAM),a2
 	beq.w	.1
@@ -65,7 +65,7 @@ TeamRosterScreen	;93 name (94 stats94). "Team Roster" screen for team a2: DrawTe
 	dc.b	$20,$20,$43,$2D,$50,$6F,$73,$69,$74,$69,$6F,$6E
 	dc.b	$73,$F9,$0,$0
 	jsr	(printz).l
-	String	$BD,1,8,0
+	String	-(TXPRI+TXMAP3),1,8,0
 	bsr.w	DisplayPlayerList
 	clr.w	(VertLineScrolling).w
 	clr.w	(PlayerScrollCtr).w
@@ -139,7 +139,7 @@ DisplayPlayerList	;93 name (94 stats94). Draw roster page SelectedPlayerIdx: the
 	;(PAttribColumns, or GAttribColumns for goalies) and up to 5 rows from rosterscroll: getNameandAttrib, then the lines the player
 	;is on (PrintPlayerLines); the first row is highlighted
 	jsr	(printz2).l
-	String	$F8,4,3,2,8,$F9,1,0
+	String	TXS_ALL,4,3,2,8,TXS_FONT,1,0
 	move.w	(SelectedPlayerIdx).w,d0
 	lea	PlayerStatMenuTxt(pc),a1
 	jsr	(SkipStrings).l
@@ -171,15 +171,15 @@ DisplayPlayerList	;93 name (94 stats94). Draw roster page SelectedPlayerIdx: the
 	cmp.w	#1,d0
 	ble.w	.3
 	jsr	(printz2).l
-	String	$FD,$10,$7D,0
+	String	TXS_X,$10,$7D,0
 .3
 	tst.w	(rosterscroll).w
 	beq.w	.4
 	jsr	(printz2).l
-	String	$FD,3,$7B,0
+	String	TXS_X,3,$7B,0
 .4
 	jsr	(printz2).l
-	String	$FD,$16,$FC,8
+	String	TXS_X,$16,TXS_Y,8
 .5
 	movea.l	#PAttribColumns,a1
 	move.w	(DispAttribCtr).w,d0
@@ -200,7 +200,7 @@ DisplayPlayerList	;93 name (94 stats94). Draw roster page SelectedPlayerIdx: the
 	jsr	(printsmall).l
 	move.l	(a1),d4
 	jsr	(printz2).l
-	String	$F8,4,2,0,0,$F9,0,0
+	String	TXS_ALL,4,2,0,0,TXS_FONT,0,0
 	move.w	#$E,(printy).w
 	move.w	(printy).w,-(sp)
 	moveq	#$28,d0
@@ -225,14 +225,14 @@ DisplayPlayerList	;93 name (94 stats94). Draw roster page SelectedPlayerIdx: the
 	cmp.w	(recwins).w,d0
 	bne.w	.11
 	jsr	(printz2).l
-	String	$F9,2
+	String	TXS_FONT,2
 .11
 	jsr	(getNameandAttrib).l
 	move.w	#$17,(printx).w
 	bsr.w	PrintPlayerLines
 	movem.w	(sp)+,d0-d1
 	jsr	(printz2).l
-	String	$F9,0
+	String	TXS_FONT,0
 	addq.w	#1,d0
 	addq.w	#2,(printy).w
 	dbf	d1,.10
@@ -488,7 +488,7 @@ DrawTeamScreen	;93 name (94 stats94). Roster screen background: wait for the dma
 	move.w	(sp)+,(disflags).w
 	bclr	#1,(disflags).w
 	jsr	(printz).l
-	String	$BD,0,0,0
+	String	-(TXPRI+TXMAP3),0,0,0
 	movea.l	#RosterBitmap,a1
 	adda.l	4(a1),a1
 	movea.w	#ZeroLong,a2
@@ -500,7 +500,7 @@ DrawTeamScreen	;93 name (94 stats94). Roster screen background: wait for the dma
 	moveq	#0,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	$FD,0,0,0
+	String	-TXMAP3,0,0,0
 	movem.l	(sp),d0-d1/a2
 	add.w	d0,(printy).w
 	movea.l	#RosterBitmap,a0
@@ -527,7 +527,7 @@ DrawTeamScreen	;93 name (94 stats94). Roster screen background: wait for the dma
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$0C,$83,$45,$67,$89,$AB,$CD,$EF
 	jsr	(printz).l
-	String	$FE,0,0,0
+	String	-TXMAP2,0,0,0
 	moveq	#$40,d0
 	moveq	#$20,d1
 	move.w	#$7FF,d2
@@ -1260,13 +1260,13 @@ EraseCardText	;95 only. Erase the card text areas: 5 rows at $FF,8,3 and 1 row a
 	move.w	#$18,d0
 	move.w	#5,d1
 	jsr	(printz).l
-	String	$FF,$8,$3,$0
+	String	-TXMAP1,$8,$3,$0
 	bsr.w	GetBlankChar
 	jsr	(eraser).l
 	move.w	#$16,d0
 	move.w	#1,d1
 	jsr	(printz).l
-	String	$FF,$9,$9,$0
+	String	-TXMAP1,$9,$9,$0
 	bsr.w	GetBlankChar
 	jsr	(eraser).l
 	movem.l	(sp)+,d0-d2/a0
@@ -1469,7 +1469,7 @@ PrintSetupText	;95 only. Print String a1 at printx / printy with the SetupFont c
 	move.w	(printx).w,-(sp)
 	move.w	(printy).w,-(sp)
 	jsr	(printz).l
-	String	$FF,$0,$0,$0
+	String	-TXMAP1,$0,$0,$0
 	move.w	(sp)+,(printy).w
 	move.w	(sp)+,(printx).w
 	movem.l	(sp)+,a1
@@ -1485,7 +1485,7 @@ PrintSetupTextHi	;95 only. The same with the highlight chars (smallfont3chars)
 	move.w	(printx).w,-(sp)
 	move.w	(printy).w,-(sp)
 	jsr	(printz).l
-	String	$FF,$0,$0,$0
+	String	-TXMAP1,$0,$0,$0
 	move.w	(sp)+,(printy).w
 	move.w	(sp)+,(printx).w
 	movem.l	(sp)+,a1
@@ -1682,7 +1682,7 @@ setoptions	;options screen display (IDA comment, 94). Build the game setup scree
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EA;remap table
 	move.w	d4,(recwins).w
 	jsr	(printz).l
-	String	$FF,0,0,0
+	String	-TXMAP1,0,0,0
 	movea.l	#SetupBgMap1,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1695,7 +1695,7 @@ setoptions	;options screen display (IDA comment, 94). Build the game setup scree
 	moveq	#$F,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	$FE,0,0,0
+	String	-TXMAP2,0,0,0
 	movea.l	#SetupBgMap2,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1872,7 +1872,7 @@ DrawMatchupBitmaps	;94 only (attract94). For the modes after Practice draw the V
 	move.b	(setupvalues+2).w,(VisTeam+1).w
 .1
 	jsr	(printz).l
-	String	$DF,$8,$1,$0
+	String	-(TXPAL2+TXMAP1),$8,$1,$0
 	move.w	(VisTeam).w,d1
 	move.w	d1,d0
 	asl.w	#5,d0
@@ -1882,7 +1882,7 @@ DrawMatchupBitmaps	;94 only (attract94). For the modes after Practice draw the V
 	move.w	#2,d4
 	bsr.w	DrawTeamBitmap
 	jsr	(printz).l
-	String	$CF,$15,$1,$0
+	String	-(TXPAL3+TXMAP1),$15,$1,$0
 	move.w	(HomeTeam).w,d1
 	move.w	d1,d0
 	asl.w	#5,d0
@@ -1970,7 +1970,7 @@ DrawHomeBlock	;94 only (rewritten). Erase the right logo (setupcardflags bit 3 w
 	bclr	#3,(setupcardflags).w
 	beq.w	.0
 	jsr	(printz).l
-	String	$EF,$0,$0,$0
+	String	-(TXPAL1+TXMAP1),$0,$0,$0
 	move.w	#0,(printx).w
 	move.w	#0,(printy).w
 	moveq	#8,d0
@@ -1978,7 +1978,7 @@ DrawHomeBlock	;94 only (rewritten). Erase the right logo (setupcardflags bit 3 w
 	move.w	#$7FF,d2
 .0
 	jsr	(printz).l
-	String	$FF,$0,$0,$0
+	String	-TXMAP1,$0,$0,$0
 	move.w	#$21,(printx).w
 	bra.w	DrawSetupLogo
 
@@ -1988,7 +1988,7 @@ DrawVisBlock	;94 only (rewritten). Erase the left logo (setupcardflags bit 2 was
 	bclr	#2,(setupcardflags).w
 	beq.w	.0
 	jsr	(printz).l
-	String	$EF,$0,$0,$0
+	String	-(TXPAL1+TXMAP1),$0,$0,$0
 	move.w	#$20,(printx).w
 	move.w	#0,(printy).w
 	moveq	#8,d0
@@ -1996,7 +1996,7 @@ DrawVisBlock	;94 only (rewritten). Erase the left logo (setupcardflags bit 2 was
 	move.w	#$7FF,d2
 .0
 	jsr	(printz).l
-	String	$CF,$0,$0,$0
+	String	-(TXPAL3+TXMAP1),$0,$0,$0
 	move.w	#1,(printx).w
 
 DrawSetupLogo	;94 optsetup94 DrawTeamLogo. Draw the logo of team logoteam (TeamLogoBitmaps) at printx, 6 x 6, palette TeamLogoPalettes
@@ -2063,7 +2063,7 @@ PlayerCardTimer	;94 only. Player cards, called each frame from GameSetUp_2 while
 	movem.l	d0-d7/a0-a6,-(sp)
 	bchg	#1,(setupcardflags).w
 	jsr	(printz).l
-	String	$FF,$0,$0,$0
+	String	-TXMAP1,$0,$0,$0
 	move.w	#$21,(printx).w
 	btst	#1,(setupcardflags).w
 	bne.w	.3
@@ -2082,7 +2082,7 @@ PlayerCardTimer	;94 only. Player cards, called each frame from GameSetUp_2 while
 	addq.w	#1,(featuredplayer).w
 .5
 	jsr	(printz).l
-	String	$FF,$0,$0,$0
+	String	-TXMAP1,$0,$0,$0
 	cmpi.w	#6,(featuredplayer).l
 	blt.w	.6
 	clr.w	(featuredplayer).w
@@ -2195,7 +2195,7 @@ GetBlankChar	;95 only. d2 = the blank char of the setup font (recwins + $C)
 
 EraseCard	;94 only. Erase both card areas (6 x 6 at x $21 and x 1), then the card text (EraseCardText)
 	jsr	(printz).l
-	String	$FF,$0,$0,$0
+	String	-TXMAP1,$0,$0,$0
 	move.w	#$21,(printx).w
 	move.w	#1,(printy).w
 	move.w	#6,d0

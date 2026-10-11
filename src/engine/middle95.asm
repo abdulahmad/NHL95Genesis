@@ -417,7 +417,7 @@ showclock	;put the game clock on screen. Called from setvideo (display95) and Pa
 	beq.w	showclockdma
 	move.l	a1,-(sp)
 	jsr	(printz).l
-	String	$BE,$10,4,0
+	String	-(TXPRI+TXMAP2),$10,4,0
 	move.w	(gameclock).w,d0
 	ext.l	d0
 	divu.w	#$258,d0	;tens of minutes
@@ -452,7 +452,7 @@ showclock	;put the game clock on screen. Called from setvideo (display95) and Pa
 	jsr	(PutClockDigit).l	;seconds
 	movea.l	(sp)+,a1
 	jsr	(printz).l
-	String	$BD,$D,5,0
+	String	-(TXPRI+TXMAP3),$D,5,0
 	rts
 
 PutClockDigit	;95 only. Draw big clock digit d0 (0-9, $A the colon) at printx / printy from ClockDigitsBitmap (dobitmap, chars clockdigitchars), then printx + 2
@@ -1518,7 +1518,7 @@ ClrHor	;No xref. 94 ClrHor (penalty94): revert the graphics back to vertical ice
 	btst	#sfpz,(sflags).w
 	bne.w	.0
 	bsr.w	printz
-	String	$FF,0,0,0
+	String	-TXMAP1,0,0,0
 	moveq	#$20,d0	;32
 	moveq	#$1C,d1	;28
 	move.w	#$7FF,d2	;blank tile
@@ -1711,13 +1711,13 @@ PrintScores1	;93 printscores1. Draw scoreboard: the period box (Framer 9 x 5 at 
 	btst	#3,(sflags2).w
 	bne.w	.x
 	bsr.w	printz
-	String	$BF,0,$17,0
+	String	-(TXPRI+TXMAP1),0,$17,0
 	moveq	#9,d0
 	moveq	#5,d1
 	bsr.w	Framer
 	bset	#dfclock,(disflags).w
 	bsr.w	printz
-	String	$BF,1,$18,0
+	String	-(TXPRI+TXMAP1),1,$18,0
 	move.w	(gsp).w,d0	;period name
 	movea.l	#PerLabels,a1
 	btst	#1,(gmode2).w
@@ -1730,16 +1730,16 @@ PrintScores1	;93 printscores1. Draw scoreboard: the period box (Framer 9 x 5 at 
 	btst	#0,(sflags3).w
 	bne.w	.x
 	bsr.w	printz
-	String	$BF,$17,$17,0
+	String	-(TXPRI+TXMAP1),$17,$17,0
 	moveq	#8,d0
 	moveq	#5,d1
 	bsr.w	Framer
 	bsr.w	printz
-	String	$BF,$18,$1A,0
+	String	-(TXPRI+TXMAP1),$18,$1A,0
 	movea.w	#(HmShots-M68K_RAM),a2
 	bsr.w	PrintTeamNameAndScore
 	bsr.w	printz
-	String	$BF,$18,$18,0
+	String	-(TXPRI+TXMAP1),$18,$18,0
 	adda.w	#tmsize,a2
 	bsr.w	PrintTeamNameAndScore
 .x
@@ -2301,7 +2301,7 @@ EASNLogo	;(penalty94). 93 name. Draw the EASN logo map at x 2, y $19 (94: x 1) o
 	btst	#5,(sflags2).w	;sf2pwrplay
 	bne.w	.x
 	bsr.w	printz
-	String	$BF,2,$19	;IDA: ori.b / move.b d0,-(a4)
+	String	-(TXPRI+TXMAP1),2,$19	;IDA: ori.b / move.b d0,-(a4)
 	movea.l	#EASNmap,a1	;93 EASNmap
 	adda.l	4(a1),a1
 	movea.w	#ZeroLong,a2	;a zero long: no palettes

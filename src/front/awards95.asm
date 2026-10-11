@@ -74,7 +74,7 @@ SeasonAwards	;95 only. End of season awards: for each of the 9 awards the finali
 
 PrintAwardTitle	;95 only. Print award AwardIndex: name, description and second line (PrintCentered)
 	jsr	(printz2).l
-	String	$F9,$0,$FE,$1,$FF,$1,$FC,$2
+	String	TXS_FONT,$0,TXS_ATTR,$1,TXS_MAP,$1,TXS_Y,$2
 	move.w	(AwardIndex).w,d0
 	movea.l	#AwardNames,a1
 	bsr.w	PrintCentered
@@ -133,7 +133,7 @@ AwardDescs2	;95 only. PrintAwardTitle Strings: the second description lines
 
 DrawAwardPicture	;95 only. Draw the picture of award AwardIndex (AwardPictures) at AwardPictureX / AwardPictureY (dobitmap)
 	jsr	(printz).l
-	String	$FF,$0,$0,$0
+	String	-TXMAP1,$0,$0,$0
 	move.w	(AwardIndex).w,d0
 	add.w	d0,d0
 	movea.l	#AwardPictureX,a0
@@ -177,13 +177,13 @@ AwardPictureY	;95 only. DrawAwardPicture y of each award picture
 
 DrawFinalistsPanel	;95 only. Draw the finalists panel (FinalistsPanelMap) at 31,9
 	jsr	(printz).l
-	String	$FF,$1F,$9,$0
+	String	-TXMAP1,$1F,$9,$0
 	movea.l	#FinalistsPanelMap,a0
 	bra.w	DrawAwardPanel
 
 DrawWinnerPanel	;95 only. Draw the winner panel (WinnerPanelMap) at 29,9
 	jsr	(printz).l
-	String	$FF,$1D,$9,$0
+	String	-TXMAP1,$1D,$9,$0
 	movea.l	#WinnerPanelMap,a0
 	bra.w	DrawAwardPanel
 
@@ -207,7 +207,7 @@ PrintFinalists	;95 only. "FINALISTS:" and the 3 finalists (player names, or team
 	btst	#1,(BA_PS_flags).w
 	bne.w	.1
 	jsr	(printz2).l
-	String	$F9,$0,$FE,$1,$FF,$1,$FD,$11,$FC,$6,'FINALISTS:'
+	String	TXS_FONT,$0,TXS_ATTR,$1,TXS_MAP,$1,TXS_X,$11,TXS_Y,$6,'FINALISTS:'
 	move.w	(AwardFlashTimer).w,d0
 	ext.l	d0
 	divu.w	(AwardCycle).w,d0
@@ -228,7 +228,7 @@ PrintFinalists	;95 only. "FINALISTS:" and the 3 finalists (player names, or team
 	clr.w	(AwardHilite).w
 .1
 	jsr	(printz).l
-	String	$EF,$11,$8,$0
+	String	-(TXPAL1+TXMAP1),$11,$8,$0
 	clr.w	d1
 	movea.l	#AwardIds,a0
 .2
@@ -309,7 +309,7 @@ PrintFinalists	;95 only. "FINALISTS:" and the 3 finalists (player names, or team
 
 FlashWinnerCaption	;95 only. Flash "The Winner !" (AwardFlashTimer: on $1E frames, off to $3C)
 	jsr	(printz2).l
-	String	$F9,$0,$FE,$1,$FF,$1,$FD,$11,$FC,$6,'          '
+	String	TXS_FONT,$0,TXS_ATTR,$1,TXS_MAP,$1,TXS_X,$11,TXS_Y,$6,'          '
 	move.w	#2,(printfontset).w
 	move.w	(AwardFlashTimer).w,d0
 	cmp.w	#$1E,d0
@@ -320,7 +320,7 @@ FlashWinnerCaption	;95 only. Flash "The Winner !" (AwardFlashTimer: on $1E frame
 	clr.w	(AwardFlashTimer).w
 .0
 	jsr	(printz2).l
-	String	$FE,$1,$FF,$1,$FD,$12,$FC,$6,'The Winner !'
+	String	TXS_ATTR,$1,TXS_MAP,$1,TXS_X,$12,TXS_Y,$6,'The Winner !'
 	rts
 
 AwardsLoop	;95 only. Awards frames: finalists for $12C frames, then the winner to $258, then the next award; d1 = a pad button (exit), 0 after the last award or AwardWait frames
@@ -361,7 +361,7 @@ AwardsLoop	;95 only. Awards frames: finalists for $12C frames, then the winner t
 	rts
 .6
 	jsr	(printz).l
-	String	$FF,$0,$0,$0
+	String	-TXMAP1,$0,$0,$0
 	move.w	#$7FF,d2
 	move.w	#$28,d0
 	move.w	#$1C,d1
@@ -434,7 +434,7 @@ AwardsScreenSetup	;95 only. Awards screen setup: vram layout, the small font (tw
 	dc.b	$01,$23,$44,$67,$89,$AB,$CD,$EF
 	move.l	#SmallFontMap,(smallfontptr).l
 	jsr	(printz).l
-	String	$FE,$0,$0,$0
+	String	-TXMAP2,$0,$0,$0
 	movea.l	#AwardsBgMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2

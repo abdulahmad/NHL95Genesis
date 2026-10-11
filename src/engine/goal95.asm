@@ -271,7 +271,7 @@ PenGoalStuff	;(penalty94) 93 name. Do this stuff after a goal: a1 = scored on te
 
 box	;(data94) Fill a $13 x 8 rectangle at printz position $FF,$B,2 with char $7FF (eraser)
 	jsr	(printz).l
-	String	$FF,$B,2,0
+	String	-TXMAP1,$B,2,0
 	moveq	#$13,d0
 	moveq	#8,d1
 	move.l	#$7FF,d2
@@ -291,7 +291,7 @@ DisplayPlayerAttributeMenu	;(data94) 93 name. Goal box: close both line change b
 	movea.w	#(ChkCnt-M68K_RAM),a4	;+ ScoreSumbytes = last goal entry
 	adda.w	(ScoreSumbytes).w,a4
 	jsr	(printz).l
-	String	$BF,$B,2,0
+	String	-(TXPRI+TXMAP1),$B,2,0
 	moveq	#$13,d0
 	move.w	#5,d1	;5 rows: no assist
 	tst.b	4(a4)
@@ -357,7 +357,7 @@ DisplayPlayerAttributeMenu	;(data94) 93 name. Goal box: close both line change b
 	bclr	#5,(sflags4).w
 	bne.w	.7
 	jsr	(printz).l
-	String	$BF,$E,6,'Assist by:',$BF,$C,7
+	String	-(TXPRI+TXMAP1),$E,6,'Assist by:',-(TXPRI+TXMAP1),$C,7
 	move.w	d0,-(sp)
 	jsr	(FormatPlayerName).l
 	jsr	(print).l
@@ -367,7 +367,7 @@ DisplayPlayerAttributeMenu	;(data94) 93 name. Goal box: close both line change b
 	move.b	5(a4),d0	;second assist
 	bmi.w	.7
 	jsr	(printz).l
-	String	$BF,$C,8,0
+	String	-(TXPRI+TXMAP1),$C,8,0
 	move.w	d0,-(sp)
 	jsr	(FormatPlayerName).l
 	jsr	(print).l
@@ -921,7 +921,7 @@ DrawPadSetup	;95 only. Draw the pads, their icons (DrawPadIcon) and the cursor (
 	addq.w	#1,(printy).w
 	bsr.w	PrintSetupStr
 	jsr	(printz).l
-	String	$FF,0,0,0
+	String	-TXMAP1,0,0,0
 	move.w	(sp)+,(printy).w
 	move.w	#$F,(printx).w
 	tst.w	(a0)
@@ -1063,14 +1063,14 @@ ControllerSetupScreen	;95 only. Build the controller setup screen: vram, fonts, 
 	jsr	(DoDMA_clearCallbackPointer).l
 	move.w	(VisTeam).w,d1
 	jsr	(printz).l
-	String	$BF,2,6,0
+	String	-(TXPRI+TXMAP1),2,6,0
 	bsr.w	DrawSetupTeamBlock
 	move.w	(HomeTeam).w,d1
 	jsr	(printz).l
-	String	$BF,$1B,6,0
+	String	-(TXPRI+TXMAP1),$1B,6,0
 	bsr.w	DrawSetupTeamBlock
 	jsr	(printz).l
-	String	$FE,0,0,0
+	String	-TXMAP2,0,0,0
 	movea.l	#ControllerBgMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1083,7 +1083,7 @@ ControllerSetupScreen	;95 only. Build the controller setup screen: vram, fonts, 
 	moveq	#3,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	$FE,$E,6,0
+	String	-TXMAP2,$E,6,0
 	movea.l	#ControllerTitleMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1096,7 +1096,7 @@ ControllerSetupScreen	;95 only. Build the controller setup screen: vram, fonts, 
 	moveq	#0,d5
 	jsr	(dobitmap).l
 	jsr	(printbigz).l
-	String	$BF,5,2,'Controller SetUp'
+	String	-(TXPRI+TXMAP1),5,2,'Controller SetUp'
 	rts
 
 DrawSetupTeamBlock	;Wrong code in IDA. 95 only. Draw team block d1 (Teamblocksmap) at printx / printy
@@ -1120,7 +1120,7 @@ PrintSetupStr	;Wrong code in IDA. 95 only. Print String a1 (printz2 $FE,5,$FF,1,
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a1,-(sp)
 	jsr	(printz2).l
-	String	$FE,5,$FF,1,$F9,0
+	String	TXS_ATTR,5,TXS_MAP,1,TXS_FONT,0
 	movea.l	(sp)+,a1
 	jsr	(printsmall).l
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1130,7 +1130,7 @@ PrintSetupStrHi	;Wrong code in IDA. 95 only. The same highlighted ($F9,1)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a1,-(sp)
 	jsr	(printz2).l
-	String	$FE,5,$FF,1,$F9,1
+	String	TXS_ATTR,5,TXS_MAP,1,TXS_FONT,1
 	movea.l	(sp)+,a1
 	jsr	(printsmall).l
 	movem.l	(sp)+,d0-d7/a0-a6
