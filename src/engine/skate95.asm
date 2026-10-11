@@ -175,7 +175,7 @@ rtss15	;The rts of doinput_goaliedive
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	ClampTargetY (with the 10 SPA offsets after it), doinput_chkanim and getGoalieSCnum.
-;doinput_onetimer / doinput_ispc are not in 95 here; doinput_islocked is.
+;doinput_islocked follows.
 ;	95 changes: the y limits $106 / $FEFA, the goalie box in doinput_chkanim, the SPA values.
 
 
@@ -299,7 +299,7 @@ ClampTargetY	;Clamp target y d1 to $106 / $FEFA (94 $103 / $FEFD), then d1 - d3;
 .2
 	sub.w	d3,d1
 	rts
-	;10 SPA offsets, no reference in the listing (94 the same table): SPAgglover, SPAgglovel, SPAgstackr, SPAgstackl, SPAgstickr,
+	;10 SPA offsets, unreferenced: SPAgglover, SPAgglovel, SPAgstackr, SPAgstackl, SPAgstickr,
 	;SPAgstickl, then SPAgglover, SPAgglovel, SPAgstickr, SPAgstickl where 94 has SPAghighr, SPAghighl, SPAgstick2r, SPAgstick2l
 	dc.w	$1C86,$1CB8,$205E,$200C,$1CEA,$1D1C,$1C86,$1CB8,$1CEA,$1D1C
 

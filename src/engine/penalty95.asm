@@ -675,7 +675,7 @@ SetPA	;Start ref animation d0 (penalty number); from $2E up ignored. prefmes, go
 	beq.w	SetPA2
 	move.w	#$3C,(penmsgtimer).w	;60
 
-SetPA2	;(94). Update the ref animation: next frame / delay pair from the PenaltyList animation
+SetPA2	;Update the ref animation: next frame / delay pair from the PenaltyList animation
 	movem.l	d0-d2/a0-a1,-(sp)
 	moveq	#$40,d0	;clear ref window
 	tst.w	(RefStep).w
@@ -906,7 +906,7 @@ showref	;Ref window: when sflags2 bit 1 is set add the 8 RefRamMap rows to the d
 	dbf	d2,.2
 	rts
 
-ClearPenaltyBuffer	;(94). Clear PenBuf
+ClearPenaltyBuffer	;Clear PenBuf
 	moveq	#$1F,d0	;MaxPen-1
 	movea.w	#(PenBuf-M68K_RAM),a0
 .0
@@ -1230,7 +1230,7 @@ PenShotPenalties	;The penalty shot penalty number for penalty number d0 (word of
 	dc.w	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,$38,$3C
 	dc.w	$36,$3A,$2E,$30,$34,-1,-1,-1,-1,-1,-1,-1
 
-linelist	;(94). Text list for the line choices. Used by SetLCmode2 and DrawFaceoffWindow
+linelist	;Text list for the line choices. Used by SetLCmode2 and DrawFaceoffWindow
 	String	'Sc1'
 	String	'Sc2'
 	String	'Chk'

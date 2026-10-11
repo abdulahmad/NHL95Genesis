@@ -462,7 +462,7 @@ InitTeamSructure	;Set up team struct a2 for team d0: store the team number at $2
 	move.l	(a0,d0.w),tmdata(a2)
 	jmp	(LoadTeamLines).l
 
-setplayercolors	;(94 ). Copy in correct color data for each team:.team for the home team, then falls in for
+setplayercolors	;Copy in correct color data for each team: .team for the home team, then falls in for
 	;the visitors. Called from setupice and others
 	clr.w	d1
 	movea.w	#(tmstruct-M68K_RAM),a0

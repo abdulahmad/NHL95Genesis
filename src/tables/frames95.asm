@@ -8,7 +8,7 @@
 
 ; Sprite Frame (SPF) base indices, in frame sheet order, with the and value where 95 has the group. 95 moves the plain
 ; skating frames first and gives the skating groups 8 frames per direction (94: 5); a "New in 95" group is new frames.
-; Names for the new 95 groups follow the 94 tables that use them, or the 95 PC animation names (SPFblock). sets the
+; Names for the new groups follow the tables that use them, or the PC animation names (SPFblock). Sets the
 ; arrow, star, replay cursor, net and puck frames, which no table uses. SPFglovel2 is inferred from 94 (the 4 frames
 ; after gdive). Frames 115-120, 670-673, 886-889 and 970-999 are not used by a 95 table or the code.
 SPFskate	=	1	; 1 (94: 41)

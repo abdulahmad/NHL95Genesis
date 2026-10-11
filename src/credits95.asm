@@ -10,7 +10,7 @@ Credits	;Title screen scroller: the copyright and trademark lines
 	String	'Sega Enterprises, Ltd.'
 	String	-1
 
-CreditsList	;94 / 93 CreditsList. The credits after the copyright lines
+CreditsList	;The credits after the copyright lines
 	String	'NHL and NHL logo are'
 	String	'registered trademarks of the'
 	String	'National Hockey League.'

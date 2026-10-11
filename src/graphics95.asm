@@ -3,7 +3,7 @@
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	The player pictures (FeaturedPicIdx / FeaturedPictures), the rink, the sprites, the fonts and the screen maps and bitmaps, up to
-;	the team logos. One slice per asset referenced by the code (the names the code segments use), one per FeaturedPictures picture
+;	the team logos. One slice per asset referenced by the code (the names the code uses), one per FeaturedPictures picture
 ;	(Card<player>, the line 1 starter of the first team that lists it). A map starts with its 8-byte header (palette and map offsets):
 ;	a reference to its tiles is Label+8.
 
@@ -658,7 +658,7 @@ TeamLogoPalettes	;Team logo palettes, 16 colors per team (DrawMatchupLogo, NameE
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalBUFA.pal	;BUF, 94 file, same bytes
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalCGYA.pal	;CGY, 94 file, same bytes
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalCHIA.pal	;CHI, 94 file, same bytes
-	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalDALA95.pal	;DAL, differs from 94 MatchupPalDALA.pal
+	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalDALA95.pal	;DAL, new palette
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalDETA.pal	;DET, 94 file, same bytes
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalEDMA.pal	;EDM, 94 file, same bytes
 	incbin	..\Extracted\NHL95\Graphics\Pals\TeamLogoPalFLA.pal	;FLA, 94 file, same bytes
@@ -679,8 +679,8 @@ TeamLogoPalettes	;Team logo palettes, 16 colors per team (DrawMatchupLogo, NameE
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalVANA.pal	;VAN, 94 file, same bytes
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalWSHA.pal	;WSH, 94 file, same bytes
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalWPGA.pal	;WPG, 94 file, same bytes
-	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalASEA95.pal	;ASE, differs from 94 MatchupPalASEA.pal
-	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalASWA95.pal	;ASW, differs from 94 MatchupPalASWA.pal
+	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalASEA95.pal	;ASE, new palette
+	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalASWA95.pal	;ASW, new palette
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	ArenaGfxBank: the home team graphics LoadHomeTeamGfx loads, $30A bytes per team, read through

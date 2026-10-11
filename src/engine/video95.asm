@@ -218,7 +218,7 @@ forcefade	;Run the palette fade to the end: vbint = vb2 (fades only), interrupts
 
 ; fade from current color in color ram to color held in palfadenew
 ; this should be called during vblank because palette changes punch holes in video
-cramfade	;No xref in the listing
+cramfade	;Step the palette fade (palcount) and copy the palette to cram. Called from the vblank handlers
 	tst.w	(palcount).w
 	bmi.w	rtss2
 	cmpi.w	#$64,(palcount).w
@@ -335,7 +335,7 @@ remap	;Write d0 chars at a0 to vram d1, each pixel through the colour map at a1.
 	move.w	(sp)+,(disflags).w
 	rts
 
-DumpSprites	;Transfer (by dma) scroll stuff, sprite table, vram data in dmalist. No xref in the listing.
+DumpSprites	;Transfer (by dma) scroll stuff, sprite table, vram data in dmalist. Called from VBlank.
 	;Falls into DumpSprites2
 	bsr.w	SetScroll2
 DumpSprites2	;Transfer sprite table, then the dma list. Falls into DoDMAlist
@@ -358,7 +358,7 @@ rtss2	;Shared rts, branched to from cramfade, updatescroll (below)
 	;and movea.l #x
 	rts
 
-SetScroll2	;93 Write Hscroll / Vscroll to the vdp. Called from DumpSprites
+SetScroll2	;Write Hscroll / Vscroll to the vdp. Called from DumpSprites
 	move.w	(VSCRLPM).w,d0
 	addq.w	#2,d0
 	bsr.w	Vmaddr

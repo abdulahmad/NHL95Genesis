@@ -1703,7 +1703,7 @@ setoptions	;options screen display ( 94). Build the game setup screen: vbint VBl
 	jsr	(dobitmap).l
 	rts
 
-LoadSetupTiles	;Data and code (94). Load the TeamBitmaps+8 tiles from char d4 (2)
+LoadSetupTiles	;Load the TeamBitmaps+8 tiles from char d4 (2)
 	moveq	#2,d4
 	movea.l	#TeamBitmaps+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
@@ -1993,7 +1993,7 @@ DrawVisBlock	;(rewritten). Erase the left logo (setupcardflags bit 2 was set) an
 	String	-(TXPAL3+TXMAP1),$0,$0,$0
 	move.w	#1,(printx).w
 
-DrawSetupLogo	;94 DrawTeamLogo. Draw the logo of team logoteam at printx, 6 x 6, palette TeamLogoPalettes
+DrawSetupLogo	;Draw the logo of team logoteam at printx, 6 x 6, palette TeamLogoPalettes
 	;+ team * $20 - $20 (bit 2: home) or - $40. Branched to from DrawHomeBlock; the name DrawTeamLogo is 's
 	move.w	#1,(printy).w
 	move.w	(homepicchars).w,d4

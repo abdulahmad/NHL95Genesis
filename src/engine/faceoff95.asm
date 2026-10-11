@@ -82,7 +82,7 @@ SetScore	;Add to the score of the game in a0. After period 3 a game within one g
 	moveq	#4,d0	;4 weights
 	jmp	WeightedRandomSelect
 
-sctab	;93 SetScore.sctab. Weights for 0, 1, 2, 3 goals, 8 rows
+sctab	;Weights for 0, 1, 2, 3 goals, 8 rows
 	dc.w	$2B,$1E,$17,4
 	dc.w	$27,$20,$18,5
 	dc.w	$23,$21,$1A,6

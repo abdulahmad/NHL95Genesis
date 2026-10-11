@@ -52,7 +52,7 @@ SetLCmode2	;a2 = team struct. Draw the line change box (box, Framer) with the li
 	move.w	tmline(a2),d0
 .3
 	movea.w	#(mesarea-M68K_RAM),a1
-	move.l	#$44120,(a1)	;String length 4, 'A ' (94 the same)
+	move.l	#$44120,(a1)	;String length 4, 'A '
 	add.b	d4,2(a1)
 	jsr	(print).l
 	move.w	d0,-(sp)
