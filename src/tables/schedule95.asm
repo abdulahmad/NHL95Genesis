@@ -1,211 +1,285 @@
-;	NHL 95 season schedule. Retail $008DD8-$009721 (2378 bytes), from lst/nhl95.bin.lst (all dc.b there; SeasonSchedule is the first byte).
-;	New in 95 (94 has no season mode). The day count, then one record per day: the number of games (0-12), then two
-;	team numbers (TeamList index, ANH 0 ... WPG 25) per game, in the order the code copies them (which one is home is
-;	not confirmed). 192 days, 1092 games, 84 games for each team. Read by the season code (season95): PickSeasonStartDay picks
-;	a random day that has games; BuildSeasonTeamList and WriteDayGames skip to a day (one count byte plus 2 bytes per game) and copy
-;	its games. Ends with the retail $FF pad before InitSaveRAM.
-;	Dates: the schedule holds no dates. The date of a day comes from SeasonDay (days played, 0 = the first day) alone:
-;	season95 DayToDate / MakeDateString walk SeasonDay+4 through MonthDays (October ... April: 31, 30, 31, 31, 28, 31, 30
-;	days), so SeasonDay 0 is October 5 and SeasonDay 191 is April 14; DateToDay is the reverse, CalendarFirstXTbl the
-;	weekday column of each month's 1st. FindDayGames reads record (SeasonStartDay + SeasonDay) mod 192. Without the random
-;	schedule option SeasonStartDay is 0, so day n below is SeasonDay n-1 (day 1 October 5, day 192 April 14); with it,
-;	PickSeasonStartDay picks a random SeasonStartDay with games and the records rotate under the same dates. The calendar
-;	is 1993-94 (October 1 a Friday ... April 1 a Friday), and 192 days, 1092 games and 84 games a team are the 1993-94 NHL
-;	season (October 5, 1993 to April 14, 1994).
+;	NHL 95 season schedule. Retail $008DD8-$009721 (2378 bytes). New in 95 (94 has no season mode).
+;
+;	Layout: a day count (192), then one record per day: the number of games (0-12), then two team numbers per game
+;	(TeamList order, ANH 0 ... WPG 25). Which team is home is not confirmed. 1092 games, 84 per team.
+;	Ends with a $FF pad before InitSaveRAM.
+;
+;	Each day is written with the Day macro below: list the matchups as team abbreviations in pairs, and the macro
+;	emits the game count and the team numbers. A day with no games is just "Day".
+;
+;	Read by season95: PickSeasonStartDay picks a random day with games; BuildSeasonTeamList, WriteDayGames and
+;	FindDayGames skip to a day (1 count byte + 2 bytes per game) and copy its games.
+;
+;	Dates: the schedule stores no dates. DayToDate walks SeasonDay+4 through MonthDays (Oct-Apr: 31,30,31,31,28,31,30),
+;	so SeasonDay 0 is October 5 and 191 is April 14: the 1993-94 NHL season. FindDayGames reads record
+;	(SeasonStartDay + SeasonDay) mod 192. With the random schedule option off, SeasonStartDay is 0, so "day n" below
+;	is SeasonDay n-1. With it on, the records rotate under the same dates.
+
+;	Team numbers (TeamList order in teamdata95)
+ANH	=	0
+BOS	=	1
+BUF	=	2
+CGY	=	3
+CHI	=	4
+DAL	=	5
+DET	=	6
+EDM	=	7
+FLA	=	8
+HFD	=	9
+LA	=	10
+MTL	=	11
+NJ	=	12
+NYI	=	13
+NYR	=	14
+OTW	=	15
+PHI	=	16
+PIT	=	17
+QUE	=	18
+SJ	=	19
+STL	=	20
+TB	=	21
+TOR	=	22
+VAN	=	23
+WSH	=	24
+WPG	=	25
+
+;	Day: one schedule record. Args are team abbreviations in pairs (up to 12 games). Emits the game count, then the teams.
+Day	MACRO
+	IF NARG&1
+	FAIL	Day needs an even number of teams
+	ENDIF
+	dc.b	NARG/2
+	IF NARG>1
+	dc.b	\1,\2
+	ENDIF
+	IF NARG>3
+	dc.b	\3,\4
+	ENDIF
+	IF NARG>5
+	dc.b	\5,\6
+	ENDIF
+	IF NARG>7
+	dc.b	\7,\8
+	ENDIF
+	IF NARG>9
+	dc.b	\9,\10
+	ENDIF
+	IF NARG>11
+	dc.b	\11,\12
+	ENDIF
+	IF NARG>13
+	dc.b	\13,\14
+	ENDIF
+	IF NARG>15
+	dc.b	\15,\16
+	ENDIF
+	IF NARG>17
+	dc.b	\17,\18
+	ENDIF
+	IF NARG>19
+	dc.b	\19,\20
+	ENDIF
+	IF NARG>21
+	dc.b	\21,\22
+	ENDIF
+	IF NARG>23
+	dc.b	\23,\24
+	ENDIF
+	ENDM
 
 SeasonSchedule	;move.b (x).l, movea.l #x (PickSeasonStartDay, BuildSeasonTeamList, WriteDayGames, ...)
 	dc.b	192	;days
-	dc.b	4, 14,1, 16,17, 5,6, 3,13	;day 1
-	dc.b	7, 15,18, 11,9, 12,21, 4,8, 25,24, 7,19, 10,23	;day 2
-	dc.b	6, 1,2, 17,11, 14,21, 22,5, 20,8, 3,19	;day 3
-	dc.b	3, 24,12, 7,13, 0,6	;day 4
-	dc.b	11, 1,18, 9,16, 17,14, 11,2, 12,24, 21,8, 22,4, 20,15, 5,25, 23,3, 10,6	;day 5
-	dc.b	6, 2,9, 18,17, 16,22, 4,25, 10,19, 0,13	;day 6
-	dc.b	3, 1,11, 14,24, 23,7	;day 7
-	dc.b	5, 12,25, 16,2, 8,17, 5,4, 10,13	;day 8
-	dc.b	5, 9,11, 14,18, 22,24, 6,20, 0,7	;day 9
-	dc.b	5, 21,17, 8,15, 4,9, 19,3, 10,7	;day 10
-	dc.b	5, 2,14, 24,16, 22,6, 25,4, 0,1	;day 11
-	dc.b	11, 17,9, 11,18, 13,12, 16,14, 24,2, 21,15, 6,22, 5,20, 7,23, 19,1, 10,3	;day 12
-	dc.b	2, 8,21, 0,3	;day 13
-	dc.b	4, 2,6, 18,11, 4,5, 25,7	;day 14
-	dc.b	6, 13,17, 14,0, 8,10, 22,9, 23,1, 19,20	;day 15
-	dc.b	5, 9,18, 11,5, 12,0, 21,10, 7,3	;day 16
-	dc.b	7, 15,5, 16,13, 8,22, 6,25, 4,18, 20,19, 3,23	;day 17
-	dc.b	4, 2,17, 24,10, 21,14, 7,1	;day 18
-	dc.b	11, 9,2, 17,20, 11,0, 18,5, 13,15, 12,8, 16,25, 21,22, 4,6, 3,1, 19,23	;day 19
-	dc.b	3, 14,10, 7,24, 23,19	;day 20
-	dc.b	3, 15,0, 6,5, 3,24	;day 21
-	dc.b	6, 18,16, 13,10, 12,11, 8,25, 4,20, 19,7	;day 22
-	dc.b	6, 15,16, 21,25, 6,10, 5,9, 3,2, 23,24	;day 23
-	dc.b	7, 1,15, 17,18, 14,11, 8,13, 4,22, 20,9, 19,0	;day 24
-	dc.b	4, 21,13, 25,10, 7,2, 0,24	;day 25
-	dc.b	11, 1,20, 9,14, 17,4, 11,22, 18,6, 12,16, 8,21, 5,15, 3,7, 23,2, 19,24	;day 26
-	dc.b	4, 14,12, 4,16, 25,3, 0,19	;day 27
-	dc.b	2, 9,20, 5,22	;day 28
-	dc.b	5, 18,21, 13,23, 8,16, 6,1, 19,17	;day 29
-	dc.b	9, 9,3, 2,17, 11,21, 14,23, 22,8, 25,20, 7,15, 10,12, 0,5	;day 30
-	dc.b	4, 1,3, 16,18, 6,22, 4,13	;day 31
-	dc.b	4, 24,23, 25,15, 19,5, 0,12	;day 32
-	dc.b	7, 1,21, 11,3, 18,14, 13,9, 22,16, 20,7, 10,17	;day 33
-	dc.b	7, 2,1, 18,8, 16,23, 4,7, 5,25, 19,12, 0,17	;day 34
-	dc.b	1, 14,21	;day 35
-	dc.b	7, 13,25, 24,18, 6,7, 20,17, 3,10, 19,22, 0,5	;day 36
-	dc.b	6, 9,15, 2,16, 11,8, 14,25, 12,13, 23,10	;day 37
-	dc.b	8, 1,7, 15,8, 16,12, 21,24, 4,17, 20,22, 5,19, 3,0	;day 38
-	dc.b	0	;day 39
-	dc.b	12, 9,7, 17,6, 11,15, 13,1, 12,19, 16,2, 24,14, 21,18, 22,4, 25,5, 3,23, 10,20	;day 40
-	dc.b	4, 14,19, 8,18, 4,5, 23,0	;day 41
-	dc.b	3, 15,11, 22,7, 3,25	;day 42
-	dc.b	4, 17,16, 24,19, 8,14, 23,20	;day 43
-	dc.b	7, 9,1, 15,13, 11,7, 12,2, 5,21, 25,6, 0,22	;day 44
-	dc.b	8, 1,19, 17,24, 15,12, 11,13, 16,9, 8,4, 20,3, 10,22	;day 45
-	dc.b	3, 2,25, 21,14, 23,0	;day 46
-	dc.b	10, 1,16, 9,19, 11,17, 18,25, 12,6, 21,4, 8,24, 20,10, 5,3, 7,22	;day 47
-	dc.b	5, 2,19, 16,13, 20,6, 5,10, 7,0	;day 48
-	dc.b	3, 15,2, 3,0, 23,22	;day 49
-	dc.b	4, 18,12, 14,11, 8,9, 19,6	;day 50
-	dc.b	11, 17,1, 2,12, 15,14, 16,11, 24,20, 21,9, 5,13, 25,0, 3,22, 7,4, 23,6	;day 51
-	dc.b	1, 18,10	;day 52
-	dc.b	8, 1,8, 2,15, 16,21, 24,17, 20,12, 25,23, 3,4, 0,19	;day 53
-	dc.b	10, 9,8, 17,15, 11,10, 18,2, 13,14, 21,16, 22,1, 6,5, 7,23, 19,0	;day 54
-	dc.b	3, 13,6, 14,24, 20,25	;day 55
-	dc.b	4, 15,9, 22,2, 7,5, 23,4	;day 56
-	dc.b	5, 18,1, 13,24, 12,14, 3,5, 10,25	;day 57
-	dc.b	6, 9,6, 11,15, 21,2, 22,20, 7,16, 0,25	;day 58
-	dc.b	6, 1,13, 17,12, 8,2, 20,22, 23,16, 10,0	;day 59
-	dc.b	4, 13,18, 24,11, 6,15, 19,25	;day 60
-	dc.b	9, 1,11, 9,17, 15,24, 18,23, 12,4, 22,14, 20,5, 3,16, 10,21	;day 61
-	dc.b	6, 2,1, 14,12, 5,7, 25,6, 19,8, 0,21	;day 62
-	dc.b	3, 15,3, 11,23, 6,25	;day 63
-	dc.b	6, 18,3, 13,7, 24,9, 20,4, 19,21, 0,8	;day 64
-	dc.b	7, 9,23, 15,2, 11,12, 14,7, 22,25, 5,17, 10,8	;day 65
-	dc.b	5, 1,23, 12,18, 16,24, 6,20, 5,15	;day 66
-	dc.b	2, 2,3, 25,8	;day 67
-	dc.b	10, 1,4, 9,2, 11,24, 18,15, 13,16, 12,7, 21,17, 22,3, 6,19, 10,20	;day 68
-	dc.b	6, 1,9, 16,7, 4,19, 5,8, 25,22, 0,20	;day 69
-	dc.b	3, 15,10, 18,24, 14,2	;day 70
-	dc.b	5, 17,10, 13,12, 21,11, 6,0, 3,23	;day 71
-	dc.b	8, 14,9, 12,1, 21,15, 8,11, 22,0, 5,4, 7,23, 19,20	;day 72
-	dc.b	2, 17,2, 16,18	;day 73
-	dc.b	8, 2,10, 13,22, 24,15, 6,14, 5,0, 3,20, 7,19, 23,25	;day 74
-	dc.b	7, 9,24, 11,6, 18,12, 16,4, 21,1, 22,10, 3,25	;day 75
-	dc.b	9, 17,13, 2,21, 18,19, 14,15, 12,16, 8,1, 4,0, 7,20, 23,5	;day 76
-	dc.b	2, 25,0, 3,10	;day 77
-	dc.b	5, 17,21, 15,18, 16,24, 6,4, 23,7	;day 78
-	dc.b	6, 9,12, 11,13, 8,14, 22,19, 7,3, 0,5	;day 79
-	dc.b	11, 1,17, 2,11, 15,9, 12,22, 16,6, 24,14, 4,19, 20,21, 25,18, 23,3, 10,5	;day 80
-	dc.b	0	;day 81
-	dc.b	0	;day 82
-	dc.b	7, 9,15, 13,2, 14,12, 24,17, 21,8, 20,4, 0,10	;day 83
-	dc.b	5, 2,16, 15,1, 4,22, 5,6, 7,25	;day 84
-	dc.b	7, 17,16, 18,21, 13,0, 12,9, 24,8, 19,3, 10,23	;day 85
-	dc.b	5, 9,8, 20,14, 5,22, 25,4, 7,11	;day 86
-	dc.b	4, 15,21, 18,13, 24,0, 3,7	;day 87
-	dc.b	8, 1,16, 17,18, 2,14, 6,10, 4,5, 25,20, 3,11, 23,19	;day 88
-	dc.b	5, 15,12, 13,9, 24,21, 8,0, 22,10	;day 89
-	dc.b	9, 1,24, 9,17, 2,22, 21,0, 4,25, 20,3, 5,18, 7,19, 23,11	;day 90
-	dc.b	2, 15,17, 14,8	;day 91
-	dc.b	6, 12,13, 22,21, 20,6, 5,4, 19,11, 10,18	;day 92
-	dc.b	4, 9,25, 15,23, 18,11, 14,3	;day 93
-	dc.b	6, 1,25, 9,20, 22,15, 4,0, 5,16, 19,6	;day 94
-	dc.b	4, 2,17, 13,3, 12,8, 7,18	;day 95
-	dc.b	10, 1,8, 9,13, 17,3, 15,25, 11,14, 24,4, 21,16, 22,23, 20,0, 10,6	;day 96
-	dc.b	4, 2,23, 12,24, 4,7, 5,20	;day 97
-	dc.b	5, 1,22, 15,13, 11,25, 14,21, 0,6	;day 98
-	dc.b	7, 17,1, 16,15, 24,22, 4,2, 5,7, 3,18, 19,10	;day 99
-	dc.b	6, 11,12, 6,21, 25,2, 23,18, 10,9, 0,19	;day 100
-	dc.b	5, 17,8, 16,1, 22,5, 4,21, 20,7	;day 101
-	dc.b	6, 13,11, 14,16, 24,12, 6,5, 23,15, 0,9	;day 102
-	dc.b	10, 1,6, 17,7, 11,8, 18,24, 13,4, 12,10, 20,2, 25,22, 3,15, 19,9	;day 103
-	dc.b	5, 16,10, 4,14, 5,2, 25,21, 0,23	;day 104
-	dc.b	5, 1,9, 11,24, 13,8, 21,6, 19,3	;day 105
-	dc.b	5, 15,7, 18,17, 14,20, 22,0, 5,10	;day 106
-	dc.b	9, 9,22, 2,7, 11,1, 16,20, 21,13, 8,24, 6,0, 25,12, 23,3	;day 107
-	dc.b	0	;day 108
-	dc.b	0	;day 109
-	dc.b	0	;day 110
-	dc.b	0	;day 111
-	dc.b	7, 9,1, 21,2, 8,11, 5,12, 3,10, 7,23, 0,20	;day 112
-	dc.b	7, 17,15, 18,16, 24,1, 6,4, 23,20, 19,14, 10,25	;day 113
-	dc.b	6, 9,11, 21,8, 22,13, 3,5, 7,12, 0,25	;day 114
-	dc.b	6, 17,18, 2,24, 15,9, 4,6, 23,5, 10,14	;day 115
-	dc.b	5, 13,1, 8,19, 3,12, 7,20, 0,14	;day 116
-	dc.b	12, 1,13, 9,18, 11,2, 16,24, 21,19, 22,17, 6,25, 4,15, 3,20, 7,5, 23,12, 10,0	;day 117
-	dc.b	3, 2,8, 11,16, 24,6	;day 118
-	dc.b	4, 1,18, 15,4, 14,17, 23,10	;day 119
-	dc.b	4, 17,8, 18,9, 13,19, 20,22	;day 120
-	dc.b	10, 15,8, 11,9, 14,13, 12,2, 16,24, 21,6, 25,5, 7,10, 23,4, 0,3	;day 121
-	dc.b	3, 1,14, 16,19, 20,18	;day 122
-	dc.b	7, 12,15, 24,11, 8,2, 6,17, 25,9, 7,4, 0,23	;day 123
-	dc.b	8, 1,16, 15,11, 18,13, 12,17, 24,21, 22,6, 20,19, 10,3	;day 124
-	dc.b	6, 2,13, 8,1, 5,19, 7,25, 23,9, 0,4	;day 125
-	dc.b	4, 17,11, 14,24, 22,21, 3,7	;day 126
-	dc.b	6, 15,16, 18,1, 13,2, 6,23, 20,25, 19,4	;day 127
-	dc.b	4, 11,14, 5,25, 7,3, 10,4	;day 128
-	dc.b	6, 1,2, 17,13, 15,21, 12,23, 16,8, 20,24	;day 129
-	dc.b	7, 2,11, 14,18, 6,16, 25,22, 3,9, 19,4, 0,10	;day 130
-	dc.b	10, 1,12, 17,5, 15,14, 11,18, 13,8, 21,23, 20,6, 3,22, 7,9, 10,24	;day 131
-	dc.b	6, 2,5, 16,17, 21,12, 8,23, 7,0, 19,4	;day 132
-	dc.b	3, 18,14, 3,4, 10,1	;day 133
-	dc.b	6, 17,25, 13,21, 24,7, 22,6, 20,23, 19,16	;day 134
-	dc.b	4, 9,2, 6,8, 5,1, 0,16	;day 135
-	dc.b	5, 17,9, 21,11, 22,12, 4,23, 19,18	;day 136
-	dc.b	9, 2,8, 14,15, 24,13, 6,7, 20,1, 5,3, 25,4, 10,16, 0,18	;day 137
-	dc.b	6, 9,14, 11,17, 13,15, 12,21, 22,7, 19,10	;day 138
-	dc.b	6, 24,2, 21,1, 8,6, 4,12, 20,0, 25,3	;day 139
-	dc.b	6, 2,18, 13,24, 14,17, 16,11, 19,5, 10,22	;day 140
-	dc.b	2, 25,8, 23,3	;day 141
-	dc.b	6, 2,0, 11,19, 14,1, 6,12, 7,22, 10,5	;day 142
-	dc.b	9, 17,0, 15,19, 18,20, 12,14, 16,13, 8,24, 6,9, 4,25, 3,21	;day 143
-	dc.b	4, 2,4, 13,16, 25,1, 7,10	;day 144
-	dc.b	10, 9,12, 17,2, 15,20, 18,0, 24,8, 22,11, 6,19, 5,14, 3,10, 23,21	;day 145
-	dc.b	4, 9,24, 13,18, 4,1, 7,21	;day 146
-	dc.b	5, 15,22, 12,20, 8,17, 25,19, 10,11	;day 147
-	dc.b	5, 18,2, 13,20, 24,21, 6,3, 23,7	;day 148
-	dc.b	6, 9,10, 15,2, 14,16, 8,12, 25,5, 0,11	;day 149
-	dc.b	5, 1,10, 21,12, 4,3, 20,23, 19,7	;day 150
-	dc.b	8, 2,17, 15,25, 14,13, 24,16, 8,9, 6,22, 5,23, 0,7	;day 151
-	dc.b	6, 1,15, 18,22, 13,14, 12,3, 21,9, 20,11	;day 152
-	dc.b	7, 24,3, 21,16, 6,2, 4,10, 5,11, 25,17, 19,0	;day 153
-	dc.b	6, 1,24, 14,6, 12,18, 22,20, 25,13, 23,8	;day 154
-	dc.b	5, 17,1, 18,15, 16,5, 4,0, 19,2	;day 155
-	dc.b	9, 9,21, 11,20, 24,14, 22,5, 3,6, 7,8, 23,13, 10,4, 0,2	;day 156
-	dc.b	6, 1,14, 17,22, 18,11, 12,9, 16,15, 19,13	;day 157
-	dc.b	4, 25,23, 3,8, 7,6, 0,4	;day 158
-	dc.b	9, 9,5, 17,14, 11,16, 12,1, 24,18, 22,25, 20,13, 3,19, 10,2	;day 159
-	dc.b	5, 9,17, 12,5, 16,21, 4,23, 0,15	;day 160
-	dc.b	3, 11,1, 18,4, 8,14	;day 161
-	dc.b	5, 17,24, 13,12, 21,3, 6,23, 10,15	;day 162
-	dc.b	7, 11,4, 14,9, 21,7, 8,3, 22,23, 25,20, 0,10	;day 163
-	dc.b	5, 1,17, 2,12, 18,9, 6,13, 19,15	;day 164
-	dc.b	5, 13,2, 14,4, 8,7, 22,20, 5,24	;day 165
-	dc.b	6, 1,12, 17,23, 11,18, 16,9, 25,6, 10,19	;day 166
-	dc.b	9, 2,15, 18,7, 13,17, 21,24, 8,16, 22,3, 4,20, 5,23, 19,10	;day 167
-	dc.b	1, 8,12	;day 168
-	dc.b	8, 17,19, 18,1, 13,21, 24,9, 6,4, 20,16, 5,0, 3,14	;day 169
-	dc.b	6, 2,20, 15,6, 8,22, 25,11, 7,14, 10,23	;day 170
-	dc.b	6, 1,0, 17,15, 12,21, 16,8, 22,19, 4,11	;day 171
-	dc.b	6, 2,9, 6,24, 20,5, 25,19, 7,10, 23,14	;day 172
-	dc.b	6, 1,11, 9,0, 13,8, 12,16, 22,18, 3,17	;day 173
-	dc.b	10, 2,13, 12,18, 16,0, 24,1, 21,5, 4,6, 20,19, 25,14, 7,17, 23,10	;day 174
-	dc.b	3, 11,15, 8,5, 23,22	;day 175
-	dc.b	5, 12,11, 16,14, 24,13, 6,9, 19,25	;day 176
-	dc.b	6, 9,4, 2,21, 15,18, 8,20, 23,17, 10,0	;day 177
-	dc.b	6, 1,5, 16,3, 6,18, 4,24, 19,22, 0,7	;day 178
-	dc.b	6, 2,1, 13,11, 14,5, 24,12, 21,20, 23,25	;day 179
-	dc.b	9, 9,16, 11,13, 18,2, 12,14, 8,15, 6,3, 19,23, 10,7, 0,22	;day 180
-	dc.b	5, 17,1, 24,5, 6,20, 4,3, 10,7	;day 181
-	dc.b	3, 17,21, 14,8, 25,16	;day 182
-	dc.b	6, 18,8, 24,13, 20,4, 5,22, 23,6, 10,19	;day 183
-	dc.b	6, 9,13, 17,12, 15,24, 11,21, 25,7, 3,0	;day 184
-	dc.b	5, 1,15, 18,9, 16,8, 20,10, 23,19	;day 185
-	dc.b	7, 2,11, 13,5, 14,22, 12,17, 4,20, 3,19, 7,0	;day 186
-	dc.b	6, 1,21, 11,17, 24,15, 25,10, 3,6, 23,0	;day 187
-	dc.b	10, 9,21, 2,18, 13,14, 16,1, 8,12, 22,25, 4,10, 20,5, 7,6, 19,23	;day 188
-	dc.b	3, 9,11, 15,17, 0,3	;day 189
-	dc.b	6, 14,2, 16,12, 24,25, 8,18, 22,4, 5,20	;day 190
-	dc.b	6, 15,1, 21,13, 6,11, 19,7, 10,3, 0,23	;day 191
-	dc.b	10, 1,9, 2,24, 14,16, 12,15, 21,18, 8,13, 4,22, 20,25, 5,6, 10,7	;day 192
+	Day	NYR,BOS,  PHI,PIT,  DAL,DET,  CGY,NYI	;day 1, 4 games
+	Day	OTW,QUE,  MTL,HFD,  NJ,TB,  CHI,FLA,  WPG,WSH,  EDM,SJ,  LA,VAN	;day 2, 7 games
+	Day	BOS,BUF,  PIT,MTL,  NYR,TB,  TOR,DAL,  STL,FLA,  CGY,SJ	;day 3, 6 games
+	Day	WSH,NJ,  EDM,NYI,  ANH,DET	;day 4, 3 games
+	Day	BOS,QUE,  HFD,PHI,  PIT,NYR,  MTL,BUF,  NJ,WSH,  TB,FLA,  TOR,CHI,  STL,OTW,  DAL,WPG,  VAN,CGY,  LA,DET	;day 5, 11 games
+	Day	BUF,HFD,  QUE,PIT,  PHI,TOR,  CHI,WPG,  LA,SJ,  ANH,NYI	;day 6, 6 games
+	Day	BOS,MTL,  NYR,WSH,  VAN,EDM	;day 7, 3 games
+	Day	NJ,WPG,  PHI,BUF,  FLA,PIT,  DAL,CHI,  LA,NYI	;day 8, 5 games
+	Day	HFD,MTL,  NYR,QUE,  TOR,WSH,  DET,STL,  ANH,EDM	;day 9, 5 games
+	Day	TB,PIT,  FLA,OTW,  CHI,HFD,  SJ,CGY,  LA,EDM	;day 10, 5 games
+	Day	BUF,NYR,  WSH,PHI,  TOR,DET,  WPG,CHI,  ANH,BOS	;day 11, 5 games
+	Day	PIT,HFD,  MTL,QUE,  NYI,NJ,  PHI,NYR,  WSH,BUF,  TB,OTW,  DET,TOR,  DAL,STL,  EDM,VAN,  SJ,BOS,  LA,CGY	;day 12, 11 games
+	Day	FLA,TB,  ANH,CGY	;day 13, 2 games
+	Day	BUF,DET,  QUE,MTL,  CHI,DAL,  WPG,EDM	;day 14, 4 games
+	Day	NYI,PIT,  NYR,ANH,  FLA,LA,  TOR,HFD,  VAN,BOS,  SJ,STL	;day 15, 6 games
+	Day	HFD,QUE,  MTL,DAL,  NJ,ANH,  TB,LA,  EDM,CGY	;day 16, 5 games
+	Day	OTW,DAL,  PHI,NYI,  FLA,TOR,  DET,WPG,  CHI,QUE,  STL,SJ,  CGY,VAN	;day 17, 7 games
+	Day	BUF,PIT,  WSH,LA,  TB,NYR,  EDM,BOS	;day 18, 4 games
+	Day	HFD,BUF,  PIT,STL,  MTL,ANH,  QUE,DAL,  NYI,OTW,  NJ,FLA,  PHI,WPG,  TB,TOR,  CHI,DET,  CGY,BOS,  SJ,VAN	;day 19, 11 games
+	Day	NYR,LA,  EDM,WSH,  VAN,SJ	;day 20, 3 games
+	Day	OTW,ANH,  DET,DAL,  CGY,WSH	;day 21, 3 games
+	Day	QUE,PHI,  NYI,LA,  NJ,MTL,  FLA,WPG,  CHI,STL,  SJ,EDM	;day 22, 6 games
+	Day	OTW,PHI,  TB,WPG,  DET,LA,  DAL,HFD,  CGY,BUF,  VAN,WSH	;day 23, 6 games
+	Day	BOS,OTW,  PIT,QUE,  NYR,MTL,  FLA,NYI,  CHI,TOR,  STL,HFD,  SJ,ANH	;day 24, 7 games
+	Day	TB,NYI,  WPG,LA,  EDM,BUF,  ANH,WSH	;day 25, 4 games
+	Day	BOS,STL,  HFD,NYR,  PIT,CHI,  MTL,TOR,  QUE,DET,  NJ,PHI,  FLA,TB,  DAL,OTW,  CGY,EDM,  VAN,BUF,  SJ,WSH	;day 26, 11 games
+	Day	NYR,NJ,  CHI,PHI,  WPG,CGY,  ANH,SJ	;day 27, 4 games
+	Day	HFD,STL,  DAL,TOR	;day 28, 2 games
+	Day	QUE,TB,  NYI,VAN,  FLA,PHI,  DET,BOS,  SJ,PIT	;day 29, 5 games
+	Day	HFD,CGY,  BUF,PIT,  MTL,TB,  NYR,VAN,  TOR,FLA,  WPG,STL,  EDM,OTW,  LA,NJ,  ANH,DAL	;day 30, 9 games
+	Day	BOS,CGY,  PHI,QUE,  DET,TOR,  CHI,NYI	;day 31, 4 games
+	Day	WSH,VAN,  WPG,OTW,  SJ,DAL,  ANH,NJ	;day 32, 4 games
+	Day	BOS,TB,  MTL,CGY,  QUE,NYR,  NYI,HFD,  TOR,PHI,  STL,EDM,  LA,PIT	;day 33, 7 games
+	Day	BUF,BOS,  QUE,FLA,  PHI,VAN,  CHI,EDM,  DAL,WPG,  SJ,NJ,  ANH,PIT	;day 34, 7 games
+	Day	NYR,TB	;day 35, 1 game
+	Day	NYI,WPG,  WSH,QUE,  DET,EDM,  STL,PIT,  CGY,LA,  SJ,TOR,  ANH,DAL	;day 36, 7 games
+	Day	HFD,OTW,  BUF,PHI,  MTL,FLA,  NYR,WPG,  NJ,NYI,  VAN,LA	;day 37, 6 games
+	Day	BOS,EDM,  OTW,FLA,  PHI,NJ,  TB,WSH,  CHI,PIT,  STL,TOR,  DAL,SJ,  CGY,ANH	;day 38, 8 games
+	Day			;day 39, 0 games
+	Day	HFD,EDM,  PIT,DET,  MTL,OTW,  NYI,BOS,  NJ,SJ,  PHI,BUF,  WSH,NYR,  TB,QUE,  TOR,CHI,  WPG,DAL,  CGY,VAN,  LA,STL	;day 40, 12 games
+	Day	NYR,SJ,  FLA,QUE,  CHI,DAL,  VAN,ANH	;day 41, 4 games
+	Day	OTW,MTL,  TOR,EDM,  CGY,WPG	;day 42, 3 games
+	Day	PIT,PHI,  WSH,SJ,  FLA,NYR,  VAN,STL	;day 43, 4 games
+	Day	HFD,BOS,  OTW,NYI,  MTL,EDM,  NJ,BUF,  DAL,TB,  WPG,DET,  ANH,TOR	;day 44, 7 games
+	Day	BOS,SJ,  PIT,WSH,  OTW,NJ,  MTL,NYI,  PHI,HFD,  FLA,CHI,  STL,CGY,  LA,TOR	;day 45, 8 games
+	Day	BUF,WPG,  TB,NYR,  VAN,ANH	;day 46, 3 games
+	Day	BOS,PHI,  HFD,SJ,  MTL,PIT,  QUE,WPG,  NJ,DET,  TB,CHI,  FLA,WSH,  STL,LA,  DAL,CGY,  EDM,TOR	;day 47, 10 games
+	Day	BUF,SJ,  PHI,NYI,  STL,DET,  DAL,LA,  EDM,ANH	;day 48, 5 games
+	Day	OTW,BUF,  CGY,ANH,  VAN,TOR	;day 49, 3 games
+	Day	QUE,NJ,  NYR,MTL,  FLA,HFD,  SJ,DET	;day 50, 4 games
+	Day	PIT,BOS,  BUF,NJ,  OTW,NYR,  PHI,MTL,  WSH,STL,  TB,HFD,  DAL,NYI,  WPG,ANH,  CGY,TOR,  EDM,CHI,  VAN,DET	;day 51, 11 games
+	Day	QUE,LA	;day 52, 1 game
+	Day	BOS,FLA,  BUF,OTW,  PHI,TB,  WSH,PIT,  STL,NJ,  WPG,VAN,  CGY,CHI,  ANH,SJ	;day 53, 8 games
+	Day	HFD,FLA,  PIT,OTW,  MTL,LA,  QUE,BUF,  NYI,NYR,  TB,PHI,  TOR,BOS,  DET,DAL,  EDM,VAN,  SJ,ANH	;day 54, 10 games
+	Day	NYI,DET,  NYR,WSH,  STL,WPG	;day 55, 3 games
+	Day	OTW,HFD,  TOR,BUF,  EDM,DAL,  VAN,CHI	;day 56, 4 games
+	Day	QUE,BOS,  NYI,WSH,  NJ,NYR,  CGY,DAL,  LA,WPG	;day 57, 5 games
+	Day	HFD,DET,  MTL,OTW,  TB,BUF,  TOR,STL,  EDM,PHI,  ANH,WPG	;day 58, 6 games
+	Day	BOS,NYI,  PIT,NJ,  FLA,BUF,  STL,TOR,  VAN,PHI,  LA,ANH	;day 59, 6 games
+	Day	NYI,QUE,  WSH,MTL,  DET,OTW,  SJ,WPG	;day 60, 4 games
+	Day	BOS,MTL,  HFD,PIT,  OTW,WSH,  QUE,VAN,  NJ,CHI,  TOR,NYR,  STL,DAL,  CGY,PHI,  LA,TB	;day 61, 9 games
+	Day	BUF,BOS,  NYR,NJ,  DAL,EDM,  WPG,DET,  SJ,FLA,  ANH,TB	;day 62, 6 games
+	Day	OTW,CGY,  MTL,VAN,  DET,WPG	;day 63, 3 games
+	Day	QUE,CGY,  NYI,EDM,  WSH,HFD,  STL,CHI,  SJ,TB,  ANH,FLA	;day 64, 6 games
+	Day	HFD,VAN,  OTW,BUF,  MTL,NJ,  NYR,EDM,  TOR,WPG,  DAL,PIT,  LA,FLA	;day 65, 7 games
+	Day	BOS,VAN,  NJ,QUE,  PHI,WSH,  DET,STL,  DAL,OTW	;day 66, 5 games
+	Day	BUF,CGY,  WPG,FLA	;day 67, 2 games
+	Day	BOS,CHI,  HFD,BUF,  MTL,WSH,  QUE,OTW,  NYI,PHI,  NJ,EDM,  TB,PIT,  TOR,CGY,  DET,SJ,  LA,STL	;day 68, 10 games
+	Day	BOS,HFD,  PHI,EDM,  CHI,SJ,  DAL,FLA,  WPG,TOR,  ANH,STL	;day 69, 6 games
+	Day	OTW,LA,  QUE,WSH,  NYR,BUF	;day 70, 3 games
+	Day	PIT,LA,  NYI,NJ,  TB,MTL,  DET,ANH,  CGY,VAN	;day 71, 5 games
+	Day	NYR,HFD,  NJ,BOS,  TB,OTW,  FLA,MTL,  TOR,ANH,  DAL,CHI,  EDM,VAN,  SJ,STL	;day 72, 8 games
+	Day	PIT,BUF,  PHI,QUE	;day 73, 2 games
+	Day	BUF,LA,  NYI,TOR,  WSH,OTW,  DET,NYR,  DAL,ANH,  CGY,STL,  EDM,SJ,  VAN,WPG	;day 74, 8 games
+	Day	HFD,WSH,  MTL,DET,  QUE,NJ,  PHI,CHI,  TB,BOS,  TOR,LA,  CGY,WPG	;day 75, 7 games
+	Day	PIT,NYI,  BUF,TB,  QUE,SJ,  NYR,OTW,  NJ,PHI,  FLA,BOS,  CHI,ANH,  EDM,STL,  VAN,DAL	;day 76, 9 games
+	Day	WPG,ANH,  CGY,LA	;day 77, 2 games
+	Day	PIT,TB,  OTW,QUE,  PHI,WSH,  DET,CHI,  VAN,EDM	;day 78, 5 games
+	Day	HFD,NJ,  MTL,NYI,  FLA,NYR,  TOR,SJ,  EDM,CGY,  ANH,DAL	;day 79, 6 games
+	Day	BOS,PIT,  BUF,MTL,  OTW,HFD,  NJ,TOR,  PHI,DET,  WSH,NYR,  CHI,SJ,  STL,TB,  WPG,QUE,  VAN,CGY,  LA,DAL	;day 80, 11 games
+	Day			;day 81, 0 games
+	Day			;day 82, 0 games
+	Day	HFD,OTW,  NYI,BUF,  NYR,NJ,  WSH,PIT,  TB,FLA,  STL,CHI,  ANH,LA	;day 83, 7 games
+	Day	BUF,PHI,  OTW,BOS,  CHI,TOR,  DAL,DET,  EDM,WPG	;day 84, 5 games
+	Day	PIT,PHI,  QUE,TB,  NYI,ANH,  NJ,HFD,  WSH,FLA,  SJ,CGY,  LA,VAN	;day 85, 7 games
+	Day	HFD,FLA,  STL,NYR,  DAL,TOR,  WPG,CHI,  EDM,MTL	;day 86, 5 games
+	Day	OTW,TB,  QUE,NYI,  WSH,ANH,  CGY,EDM	;day 87, 4 games
+	Day	BOS,PHI,  PIT,QUE,  BUF,NYR,  DET,LA,  CHI,DAL,  WPG,STL,  CGY,MTL,  VAN,SJ	;day 88, 8 games
+	Day	OTW,NJ,  NYI,HFD,  WSH,TB,  FLA,ANH,  TOR,LA	;day 89, 5 games
+	Day	BOS,WSH,  HFD,PIT,  BUF,TOR,  TB,ANH,  CHI,WPG,  STL,CGY,  DAL,QUE,  EDM,SJ,  VAN,MTL	;day 90, 9 games
+	Day	OTW,PIT,  NYR,FLA	;day 91, 2 games
+	Day	NJ,NYI,  TOR,TB,  STL,DET,  DAL,CHI,  SJ,MTL,  LA,QUE	;day 92, 6 games
+	Day	HFD,WPG,  OTW,VAN,  QUE,MTL,  NYR,CGY	;day 93, 4 games
+	Day	BOS,WPG,  HFD,STL,  TOR,OTW,  CHI,ANH,  DAL,PHI,  SJ,DET	;day 94, 6 games
+	Day	BUF,PIT,  NYI,CGY,  NJ,FLA,  EDM,QUE	;day 95, 4 games
+	Day	BOS,FLA,  HFD,NYI,  PIT,CGY,  OTW,WPG,  MTL,NYR,  WSH,CHI,  TB,PHI,  TOR,VAN,  STL,ANH,  LA,DET	;day 96, 10 games
+	Day	BUF,VAN,  NJ,WSH,  CHI,EDM,  DAL,STL	;day 97, 4 games
+	Day	BOS,TOR,  OTW,NYI,  MTL,WPG,  NYR,TB,  ANH,DET	;day 98, 5 games
+	Day	PIT,BOS,  PHI,OTW,  WSH,TOR,  CHI,BUF,  DAL,EDM,  CGY,QUE,  SJ,LA	;day 99, 7 games
+	Day	MTL,NJ,  DET,TB,  WPG,BUF,  VAN,QUE,  LA,HFD,  ANH,SJ	;day 100, 6 games
+	Day	PIT,FLA,  PHI,BOS,  TOR,DAL,  CHI,TB,  STL,EDM	;day 101, 5 games
+	Day	NYI,MTL,  NYR,PHI,  WSH,NJ,  DET,DAL,  VAN,OTW,  ANH,HFD	;day 102, 6 games
+	Day	BOS,DET,  PIT,EDM,  MTL,FLA,  QUE,WSH,  NYI,CHI,  NJ,LA,  STL,BUF,  WPG,TOR,  CGY,OTW,  SJ,HFD	;day 103, 10 games
+	Day	PHI,LA,  CHI,NYR,  DAL,BUF,  WPG,TB,  ANH,VAN	;day 104, 5 games
+	Day	BOS,HFD,  MTL,WSH,  NYI,FLA,  TB,DET,  SJ,CGY	;day 105, 5 games
+	Day	OTW,EDM,  QUE,PIT,  NYR,STL,  TOR,ANH,  DAL,LA	;day 106, 5 games
+	Day	HFD,TOR,  BUF,EDM,  MTL,BOS,  PHI,STL,  TB,NYI,  FLA,WSH,  DET,ANH,  WPG,NJ,  VAN,CGY	;day 107, 9 games
+	Day			;day 108, 0 games
+	Day			;day 109, 0 games
+	Day			;day 110, 0 games
+	Day			;day 111, 0 games
+	Day	HFD,BOS,  TB,BUF,  FLA,MTL,  DAL,NJ,  CGY,LA,  EDM,VAN,  ANH,STL	;day 112, 7 games
+	Day	PIT,OTW,  QUE,PHI,  WSH,BOS,  DET,CHI,  VAN,STL,  SJ,NYR,  LA,WPG	;day 113, 7 games
+	Day	HFD,MTL,  TB,FLA,  TOR,NYI,  CGY,DAL,  EDM,NJ,  ANH,WPG	;day 114, 6 games
+	Day	PIT,QUE,  BUF,WSH,  OTW,HFD,  CHI,DET,  VAN,DAL,  LA,NYR	;day 115, 6 games
+	Day	NYI,BOS,  FLA,SJ,  CGY,NJ,  EDM,STL,  ANH,NYR	;day 116, 5 games
+	Day	BOS,NYI,  HFD,QUE,  MTL,BUF,  PHI,WSH,  TB,SJ,  TOR,PIT,  DET,WPG,  CHI,OTW,  CGY,STL,  EDM,DAL,  VAN,NJ,  LA,ANH	;day 117, 12 games
+	Day	BUF,FLA,  MTL,PHI,  WSH,DET	;day 118, 3 games
+	Day	BOS,QUE,  OTW,CHI,  NYR,PIT,  VAN,LA	;day 119, 4 games
+	Day	PIT,FLA,  QUE,HFD,  NYI,SJ,  STL,TOR	;day 120, 4 games
+	Day	OTW,FLA,  MTL,HFD,  NYR,NYI,  NJ,BUF,  PHI,WSH,  TB,DET,  WPG,DAL,  EDM,LA,  VAN,CHI,  ANH,CGY	;day 121, 10 games
+	Day	BOS,NYR,  PHI,SJ,  STL,QUE	;day 122, 3 games
+	Day	NJ,OTW,  WSH,MTL,  FLA,BUF,  DET,PIT,  WPG,HFD,  EDM,CHI,  ANH,VAN	;day 123, 7 games
+	Day	BOS,PHI,  OTW,MTL,  QUE,NYI,  NJ,PIT,  WSH,TB,  TOR,DET,  STL,SJ,  LA,CGY	;day 124, 8 games
+	Day	BUF,NYI,  FLA,BOS,  DAL,SJ,  EDM,WPG,  VAN,HFD,  ANH,CHI	;day 125, 6 games
+	Day	PIT,MTL,  NYR,WSH,  TOR,TB,  CGY,EDM	;day 126, 4 games
+	Day	OTW,PHI,  QUE,BOS,  NYI,BUF,  DET,VAN,  STL,WPG,  SJ,CHI	;day 127, 6 games
+	Day	MTL,NYR,  DAL,WPG,  EDM,CGY,  LA,CHI	;day 128, 4 games
+	Day	BOS,BUF,  PIT,NYI,  OTW,TB,  NJ,VAN,  PHI,FLA,  STL,WSH	;day 129, 6 games
+	Day	BUF,MTL,  NYR,QUE,  DET,PHI,  WPG,TOR,  CGY,HFD,  SJ,CHI,  ANH,LA	;day 130, 7 games
+	Day	BOS,NJ,  PIT,DAL,  OTW,NYR,  MTL,QUE,  NYI,FLA,  TB,VAN,  STL,DET,  CGY,TOR,  EDM,HFD,  LA,WSH	;day 131, 10 games
+	Day	BUF,DAL,  PHI,PIT,  TB,NJ,  FLA,VAN,  EDM,ANH,  SJ,CHI	;day 132, 6 games
+	Day	QUE,NYR,  CGY,CHI,  LA,BOS	;day 133, 3 games
+	Day	PIT,WPG,  NYI,TB,  WSH,EDM,  TOR,DET,  STL,VAN,  SJ,PHI	;day 134, 6 games
+	Day	HFD,BUF,  DET,FLA,  DAL,BOS,  ANH,PHI	;day 135, 4 games
+	Day	PIT,HFD,  TB,MTL,  TOR,NJ,  CHI,VAN,  SJ,QUE	;day 136, 5 games
+	Day	BUF,FLA,  NYR,OTW,  WSH,NYI,  DET,EDM,  STL,BOS,  DAL,CGY,  WPG,CHI,  LA,PHI,  ANH,QUE	;day 137, 9 games
+	Day	HFD,NYR,  MTL,PIT,  NYI,OTW,  NJ,TB,  TOR,EDM,  SJ,LA	;day 138, 6 games
+	Day	WSH,BUF,  TB,BOS,  FLA,DET,  CHI,NJ,  STL,ANH,  WPG,CGY	;day 139, 6 games
+	Day	BUF,QUE,  NYI,WSH,  NYR,PIT,  PHI,MTL,  SJ,DAL,  LA,TOR	;day 140, 6 games
+	Day	WPG,FLA,  VAN,CGY	;day 141, 2 games
+	Day	BUF,ANH,  MTL,SJ,  NYR,BOS,  DET,NJ,  EDM,TOR,  LA,DAL	;day 142, 6 games
+	Day	PIT,ANH,  OTW,SJ,  QUE,STL,  NJ,NYR,  PHI,NYI,  FLA,WSH,  DET,HFD,  CHI,WPG,  CGY,TB	;day 143, 9 games
+	Day	BUF,CHI,  NYI,PHI,  WPG,BOS,  EDM,LA	;day 144, 4 games
+	Day	HFD,NJ,  PIT,BUF,  OTW,STL,  QUE,ANH,  WSH,FLA,  TOR,MTL,  DET,SJ,  DAL,NYR,  CGY,LA,  VAN,TB	;day 145, 10 games
+	Day	HFD,WSH,  NYI,QUE,  CHI,BOS,  EDM,TB	;day 146, 4 games
+	Day	OTW,TOR,  NJ,STL,  FLA,PIT,  WPG,SJ,  LA,MTL	;day 147, 5 games
+	Day	QUE,BUF,  NYI,STL,  WSH,TB,  DET,CGY,  VAN,EDM	;day 148, 5 games
+	Day	HFD,LA,  OTW,BUF,  NYR,PHI,  FLA,NJ,  WPG,DAL,  ANH,MTL	;day 149, 6 games
+	Day	BOS,LA,  TB,NJ,  CHI,CGY,  STL,VAN,  SJ,EDM	;day 150, 5 games
+	Day	BUF,PIT,  OTW,WPG,  NYR,NYI,  WSH,PHI,  FLA,HFD,  DET,TOR,  DAL,VAN,  ANH,EDM	;day 151, 8 games
+	Day	BOS,OTW,  QUE,TOR,  NYI,NYR,  NJ,CGY,  TB,HFD,  STL,MTL	;day 152, 6 games
+	Day	WSH,CGY,  TB,PHI,  DET,BUF,  CHI,LA,  DAL,MTL,  WPG,PIT,  SJ,ANH	;day 153, 7 games
+	Day	BOS,WSH,  NYR,DET,  NJ,QUE,  TOR,STL,  WPG,NYI,  VAN,FLA	;day 154, 6 games
+	Day	PIT,BOS,  QUE,OTW,  PHI,DAL,  CHI,ANH,  SJ,BUF	;day 155, 5 games
+	Day	HFD,TB,  MTL,STL,  WSH,NYR,  TOR,DAL,  CGY,DET,  EDM,FLA,  VAN,NYI,  LA,CHI,  ANH,BUF	;day 156, 9 games
+	Day	BOS,NYR,  PIT,TOR,  QUE,MTL,  NJ,HFD,  PHI,OTW,  SJ,NYI	;day 157, 6 games
+	Day	WPG,VAN,  CGY,FLA,  EDM,DET,  ANH,CHI	;day 158, 4 games
+	Day	HFD,DAL,  PIT,NYR,  MTL,PHI,  NJ,BOS,  WSH,QUE,  TOR,WPG,  STL,NYI,  CGY,SJ,  LA,BUF	;day 159, 9 games
+	Day	HFD,PIT,  NJ,DAL,  PHI,TB,  CHI,VAN,  ANH,OTW	;day 160, 5 games
+	Day	MTL,BOS,  QUE,CHI,  FLA,NYR	;day 161, 3 games
+	Day	PIT,WSH,  NYI,NJ,  TB,CGY,  DET,VAN,  LA,OTW	;day 162, 5 games
+	Day	MTL,CHI,  NYR,HFD,  TB,EDM,  FLA,CGY,  TOR,VAN,  WPG,STL,  ANH,LA	;day 163, 7 games
+	Day	BOS,PIT,  BUF,NJ,  QUE,HFD,  DET,NYI,  SJ,OTW	;day 164, 5 games
+	Day	NYI,BUF,  NYR,CHI,  FLA,EDM,  TOR,STL,  DAL,WSH	;day 165, 5 games
+	Day	BOS,NJ,  PIT,VAN,  MTL,QUE,  PHI,HFD,  WPG,DET,  LA,SJ	;day 166, 6 games
+	Day	BUF,OTW,  QUE,EDM,  NYI,PIT,  TB,WSH,  FLA,PHI,  TOR,CGY,  CHI,STL,  DAL,VAN,  SJ,LA	;day 167, 9 games
+	Day	FLA,NJ	;day 168, 1 game
+	Day	PIT,SJ,  QUE,BOS,  NYI,TB,  WSH,HFD,  DET,CHI,  STL,PHI,  DAL,ANH,  CGY,NYR	;day 169, 8 games
+	Day	BUF,STL,  OTW,DET,  FLA,TOR,  WPG,MTL,  EDM,NYR,  LA,VAN	;day 170, 6 games
+	Day	BOS,ANH,  PIT,OTW,  NJ,TB,  PHI,FLA,  TOR,SJ,  CHI,MTL	;day 171, 6 games
+	Day	BUF,HFD,  DET,WSH,  STL,DAL,  WPG,SJ,  EDM,LA,  VAN,NYR	;day 172, 6 games
+	Day	BOS,MTL,  HFD,ANH,  NYI,FLA,  NJ,PHI,  TOR,QUE,  CGY,PIT	;day 173, 6 games
+	Day	BUF,NYI,  NJ,QUE,  PHI,ANH,  WSH,BOS,  TB,DAL,  CHI,DET,  STL,SJ,  WPG,NYR,  EDM,PIT,  VAN,LA	;day 174, 10 games
+	Day	MTL,OTW,  FLA,DAL,  VAN,TOR	;day 175, 3 games
+	Day	NJ,MTL,  PHI,NYR,  WSH,NYI,  DET,HFD,  SJ,WPG	;day 176, 5 games
+	Day	HFD,CHI,  BUF,TB,  OTW,QUE,  FLA,STL,  VAN,PIT,  LA,ANH	;day 177, 6 games
+	Day	BOS,DAL,  PHI,CGY,  DET,QUE,  CHI,WSH,  SJ,TOR,  ANH,EDM	;day 178, 6 games
+	Day	BUF,BOS,  NYI,MTL,  NYR,DAL,  WSH,NJ,  TB,STL,  VAN,WPG	;day 179, 6 games
+	Day	HFD,PHI,  MTL,NYI,  QUE,BUF,  NJ,NYR,  FLA,OTW,  DET,CGY,  SJ,VAN,  LA,EDM,  ANH,TOR	;day 180, 9 games
+	Day	PIT,BOS,  WSH,DAL,  DET,STL,  CHI,CGY,  LA,EDM	;day 181, 5 games
+	Day	PIT,TB,  NYR,FLA,  WPG,PHI	;day 182, 3 games
+	Day	QUE,FLA,  WSH,NYI,  STL,CHI,  DAL,TOR,  VAN,DET,  LA,SJ	;day 183, 6 games
+	Day	HFD,NYI,  PIT,NJ,  OTW,WSH,  MTL,TB,  WPG,EDM,  CGY,ANH	;day 184, 6 games
+	Day	BOS,OTW,  QUE,HFD,  PHI,FLA,  STL,LA,  VAN,SJ	;day 185, 5 games
+	Day	BUF,MTL,  NYI,DAL,  NYR,TOR,  NJ,PIT,  CHI,STL,  CGY,SJ,  EDM,ANH	;day 186, 7 games
+	Day	BOS,TB,  MTL,PIT,  WSH,OTW,  WPG,LA,  CGY,DET,  VAN,ANH	;day 187, 6 games
+	Day	HFD,TB,  BUF,QUE,  NYI,NYR,  PHI,BOS,  FLA,NJ,  TOR,WPG,  CHI,LA,  STL,DAL,  EDM,DET,  SJ,VAN	;day 188, 10 games
+	Day	HFD,MTL,  OTW,PIT,  ANH,CGY	;day 189, 3 games
+	Day	NYR,BUF,  PHI,NJ,  WSH,WPG,  FLA,QUE,  TOR,CHI,  DAL,STL	;day 190, 6 games
+	Day	OTW,BOS,  TB,NYI,  DET,MTL,  SJ,EDM,  LA,CGY,  ANH,VAN	;day 191, 6 games
+	Day	BOS,HFD,  BUF,WSH,  NYR,PHI,  NJ,OTW,  TB,QUE,  FLA,NYI,  CHI,TOR,  STL,WPG,  DAL,DET,  LA,EDM	;day 192, 10 games
 SeasonScheduleEnd	;season95 CountTeamGames stops its scan here (cmpa.l #x,a0)
 	dc.b	$FF	;$9721. Pad to the even address of InitSaveRAM (94 InitSaveRAM, sram95)
