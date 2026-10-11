@@ -4,6 +4,14 @@
 ;	not confirmed). 192 days, 1092 games, 84 games for each team. Read by the season code (season95): PickSeasonStartDay picks
 ;	a random day that has games; BuildSeasonTeamList and WriteDayGames skip to a day (one count byte plus 2 bytes per game) and copy
 ;	its games. Ends with the retail $FF pad before InitSaveRAM.
+;	Dates: the schedule holds no dates. The date of a day comes from SeasonDay (days played, 0 = the first day) alone:
+;	season95 DayToDate / MakeDateString walk SeasonDay+4 through MonthDays (October ... April: 31, 30, 31, 31, 28, 31, 30
+;	days), so SeasonDay 0 is October 5 and SeasonDay 191 is April 14; DateToDay is the reverse, CalendarFirstXTbl the
+;	weekday column of each month's 1st. FindDayGames reads record (SeasonStartDay + SeasonDay) mod 192. Without the random
+;	schedule option SeasonStartDay is 0, so day n below is SeasonDay n-1 (day 1 October 5, day 192 April 14); with it,
+;	PickSeasonStartDay picks a random SeasonStartDay with games and the records rotate under the same dates. The calendar
+;	is 1993-94 (October 1 a Friday ... April 1 a Friday), and 192 days, 1092 games and 84 games a team are the 1993-94 NHL
+;	season (October 5, 1993 to April 14, 1994).
 
 SeasonSchedule	;move.b (x).l, movea.l #x (PickSeasonStartDay, BuildSeasonTeamList, WriteDayGames, ...)
 	dc.b	192	;days
