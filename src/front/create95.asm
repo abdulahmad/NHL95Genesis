@@ -1552,7 +1552,7 @@ DrawRatingValue	;Call the cell routine for column d6 / row d7 from table SkaterF
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-FieldValue0	;Field: draw cursor, print rating from record via PAttribOverallMask+$42 (Speed)
+FieldSpeed	;Field: draw cursor, print rating from record via PAttribOverallMask+$42 (Speed)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$42).l,d4
@@ -1569,7 +1569,7 @@ FieldPrintSetup	;Set print target a4/a0 (record+8) and number-print table a6 for
 	movea.l	#AttribWgtList,a6
 	rts
 
-FieldValue1	;Field: draw cursor, print rating from record via PAttribOverallMask+$2C (Agility)
+FieldAgility	;Field: draw cursor, print rating from record via PAttribOverallMask+$2C (Agility)
 	bsr.w	FieldHighlight
 	bsr.s	FieldPrintSetup
 	move.l	(PAttribOverallMask+$2C).l,d4
@@ -1579,7 +1579,7 @@ FieldValue1	;Field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue2	;Field: draw cursor, print rating from record via PAttribOverallMask+$108 (Endurance)
+FieldEndurance	;Field: draw cursor, print rating from record via PAttribOverallMask+$108 (Endurance)
 	bsr.w	FieldHighlight
 	bsr.s	FieldPrintSetup
 	move.l	(PAttribOverallMask+$108).l,d4
@@ -1589,7 +1589,7 @@ FieldValue2	;Field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue3	;Field: draw cursor, print rating from record via PAttribOverallMask+$6E (Off. Awareness)
+FieldOffAware	;Field: draw cursor, print rating from record via PAttribOverallMask+$6E (Off. Awareness)
 	bsr.w	FieldHighlight
 	bsr.s	FieldPrintSetup
 	move.l	(PAttribOverallMask+$6E).l,d4
@@ -1599,7 +1599,7 @@ FieldValue3	;Field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue4	;Field: draw cursor, print rating from record via PAttribOverallMask+$84 (Def. Awareness)
+FieldDefAware	;Field: draw cursor, print rating from record via PAttribOverallMask+$84 (Def. Awareness)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$84).l,d4
@@ -1609,7 +1609,7 @@ FieldValue4	;Field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue5	;Field: draw cursor, print rating from record via PAttribOverallMask+$DC (Stick Handling)
+FieldStickhandling	;Field: draw cursor, print rating from record via PAttribOverallMask+$DC (Stick Handling)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$DC).l,d4
@@ -1631,7 +1631,7 @@ FieldWeight	;Field Wt.: print weight = value*8+140 (via PAttribOverallMask+$F2 (
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue6	;Field: draw cursor, print rating from record via PAttribOverallMask+$9A (Shot Power)
+FieldShotPower	;Field: draw cursor, print rating from record via PAttribOverallMask+$9A (Shot Power)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$9A).l,d4
@@ -1641,7 +1641,7 @@ FieldValue6	;Field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue7	;Field: draw cursor, print rating from record via PAttribOverallMask+$B0 (Shot Accuracy)
+FieldShotAcc	;Field: draw cursor, print rating from record via PAttribOverallMask+$B0 (Shot Accuracy)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$B0).l,d4
@@ -1651,7 +1651,7 @@ FieldValue7	;Field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue8	;Field: draw cursor, print rating from record via PAttribOverallMask+$C6 (Pass Accuracy)
+FieldPassAcc	;Field: draw cursor, print rating from record via PAttribOverallMask+$C6 (Pass Accuracy)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$C6).l,d4
@@ -1661,7 +1661,7 @@ FieldValue8	;Field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue9	;Field: draw cursor, print rating from record via PAttribOverallMask+$11E (Aggressiveness)
+FieldAggression	;Field: draw cursor, print rating from record via PAttribOverallMask+$11E (Aggressiveness)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$11E).l,d4
@@ -1671,7 +1671,7 @@ FieldValue9	;Field: draw cursor, print rating from record via PAttribOverallMask
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue10	;Field: draw cursor, print rating from record via PAttribOverallMask+$134 (Checking)
+FieldChecking	;Field: draw cursor, print rating from record via PAttribOverallMask+$134 (Checking)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(PAttribOverallMask+$134).l,d4
@@ -1703,7 +1703,7 @@ FieldJersey	;Field Unif.: print BCD jersey byte at (a2) as decimal
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue11	;Field: draw cursor, print rating from record via GAttribOverallMask+$16 (Agility)
+FieldGAgility	;Field: draw cursor, print rating from record via GAttribOverallMask+$16 (Agility)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$16).l,d4
@@ -1713,7 +1713,7 @@ FieldValue11	;Field: draw cursor, print rating from record via GAttribOverallMas
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue12	;Field: draw cursor, print rating from record via GAttribOverallMask+$58 (Def. Awareness)
+FieldGDefAware	;Field: draw cursor, print rating from record via GAttribOverallMask+$58 (Def. Awareness)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$58).l,d4
@@ -1723,7 +1723,7 @@ FieldValue12	;Field: draw cursor, print rating from record via GAttribOverallMas
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue13	;Field: draw cursor, print rating from record via GAttribOverallMask+$6E (Puck Control)
+FieldGPuckCtrl	;Field: draw cursor, print rating from record via GAttribOverallMask+$6E (Puck Control)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$6E).l,d4
@@ -1733,7 +1733,7 @@ FieldValue13	;Field: draw cursor, print rating from record via GAttribOverallMas
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue14	;Field: draw cursor, print rating from record via GAttribOverallMask+$84 (Stick Right)
+FieldGStickR	;Field: draw cursor, print rating from record via GAttribOverallMask+$84 (Stick Right)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$84).l,d4
@@ -1743,7 +1743,7 @@ FieldValue14	;Field: draw cursor, print rating from record via GAttribOverallMas
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue15	;Field: draw cursor, print rating from record via GAttribOverallMask+$9A (Stick Left)
+FieldGStickL	;Field: draw cursor, print rating from record via GAttribOverallMask+$9A (Stick Left)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$9A).l,d4
@@ -1753,7 +1753,7 @@ FieldValue15	;Field: draw cursor, print rating from record via GAttribOverallMas
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue16	;Field: draw cursor, print rating from record via GAttribOverallMask+$B0 (Glove Right)
+FieldGGloveR	;Field: draw cursor, print rating from record via GAttribOverallMask+$B0 (Glove Right)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$B0).l,d4
@@ -1763,7 +1763,7 @@ FieldValue16	;Field: draw cursor, print rating from record via GAttribOverallMas
 	jsr	(printsmall).l
 	bra.w	FieldDone
 
-FieldValue17	;Field: draw cursor, print rating from record via GAttribOverallMask+$C6 (Glove Left)
+FieldGGloveL	;Field: draw cursor, print rating from record via GAttribOverallMask+$C6 (Glove Left)
 	bsr.w	FieldHighlight
 	bsr.w	FieldPrintSetup
 	move.l	(GAttribOverallMask+$C6).l,d4
@@ -1814,28 +1814,28 @@ FieldHighlight	;Set normal text color, highlight if (d6,d7) is the cursor (Creat
 	rts
 
 SkaterFieldTbls	;Skater field-routine tables by column
-	dc.l	FieldTbl1,FieldTbl2,FieldTbl3,FieldTbl4
+	dc.l	SkaterFieldCol1,SkaterFieldCol2,FieldCol3,FieldCol4
 
 GoalieFieldTbls	;Goalie field-routine tables by column
-	dc.l	FieldTbl5,FieldTbl6,FieldTbl3,FieldTbl4
+	dc.l	GoalieFieldCol1,GoalieFieldCol2,FieldCol3,FieldCol4
 
-FieldTbl1	;Field routines of a column
-	dc.l	FieldValue0,FieldValue1,FieldValue2,FieldValue3,FieldValue4,FieldValue5
+SkaterFieldCol1	;Field routines of a column
+	dc.l	FieldSpeed,FieldAgility,FieldEndurance,FieldOffAware,FieldDefAware,FieldStickhandling
 
-FieldTbl2	;Field routines of a column
-	dc.l	FieldValue6,FieldValue7,FieldValue8,FieldValue9,FieldValue10
+SkaterFieldCol2	;Field routines of a column
+	dc.l	FieldShotPower,FieldShotAcc,FieldPassAcc,FieldAggression,FieldChecking
 
-FieldTbl3	;Field routines of a column
+FieldCol3	;Field routines of a column
 	dc.l	FieldPos,FieldWeight
 
-FieldTbl4	;Field routines of a column
+FieldCol4	;Field routines of a column
 	dc.l	FieldHand,FieldJersey
 
-FieldTbl5	;Field routines of a column
-	dc.l	FieldValue11,FieldValue12,FieldValue13
+GoalieFieldCol1	;Field routines of a column
+	dc.l	FieldGAgility,FieldGDefAware,FieldGPuckCtrl
 
-FieldTbl6	;Field routines of a column
-	dc.l	FieldValue14,FieldValue15,FieldValue16,FieldValue17
+GoalieFieldCol2	;Field routines of a column
+	dc.l	FieldGStickR,FieldGStickL,FieldGGloveR,FieldGGloveL
 
 DrawField	;Draw one Create Player field (d6=column,d7=row): label then value, all regs saved
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1944,50 +1944,50 @@ EditField	;Run the edit handler of the cursor field (CreateCursorX / CreateCurso
 	rts
 
 GoalieEditTbl	;Edit handlers for a goalie (CreateType 0): one list per column (CreateCursorX), indexed by row (CreateCursorY)
-	dc.l	EditRow1
-	dc.l	EditRow2
-	dc.l	EditRow3
-	dc.l	EditRow4
+	dc.l	GoalieEditCol1
+	dc.l	GoalieEditCol2
+	dc.l	EditCol3
+	dc.l	EditCol4
 
-EditRow1	;Goalie column 1: agility, awareness, puck control
-	dc.l	EditAttrib1
-	dc.l	EditAttrib2
-	dc.l	EditAttrib3
+GoalieEditCol1	;Goalie column 1: agility, awareness, puck control
+	dc.l	EditGAgility
+	dc.l	EditGDefAware
+	dc.l	EditGPuckCtrl
 
-EditRow2	;Goalie column 2: stick and glove sides
-	dc.l	EditAttrib4
-	dc.l	EditAttrib5
-	dc.l	EditAttrib6
-	dc.l	EditAttrib7
+GoalieEditCol2	;Goalie column 2: stick and glove sides
+	dc.l	EditGStickR
+	dc.l	EditGStickL
+	dc.l	EditGGloveR
+	dc.l	EditGGloveL
 
-EditRow3	;Column 3 (both): position, weight
+EditCol3	;Column 3 (both): position, weight
 	dc.l	EditPlayerType
-	dc.l	EditNibble
+	dc.l	EditWeight
 
-EditRow4	;Column 4 (both): hand, uniform number
+EditCol4	;Column 4 (both): hand, uniform number
 	dc.l	EditHand
 	dc.l	EditJersey
 
 SkaterEditTbl	;Edit handlers for a skater (CreateType 1 / 2), same layout
-	dc.l	EditRow5
-	dc.l	EditRow6
-	dc.l	EditRow3
-	dc.l	EditRow4
+	dc.l	SkaterEditCol1
+	dc.l	SkaterEditCol2
+	dc.l	EditCol3
+	dc.l	EditCol4
 
-EditRow5	;Skater column 1: skating, awareness, stickhandling
-	dc.l	EditAttrib8
-	dc.l	EditAttrib9
-	dc.l	EditAttrib10
-	dc.l	EditAttrib11
-	dc.l	EditAttrib12
-	dc.l	EditAttrib13
+SkaterEditCol1	;Skater column 1: skating, awareness, stickhandling
+	dc.l	EditSpeed
+	dc.l	EditAgility
+	dc.l	EditEndurance
+	dc.l	EditOffAware
+	dc.l	EditDefAware
+	dc.l	EditStickhandling
 
-EditRow6	;Skater column 2: shooting, passing, aggression, checking
-	dc.l	EditAttrib14
-	dc.l	EditAttrib15
-	dc.l	EditAttrib16
-	dc.l	EditAttrib17
-	dc.l	EditAttrib18
+SkaterEditCol2	;Skater column 2: shooting, passing, aggression, checking
+	dc.l	EditShotPower
+	dc.l	EditShotAcc
+	dc.l	EditPassAcc
+	dc.l	EditAggression
+	dc.l	EditChecking
 	dc.l	EditNone
 
 EditPlayerType	;Change the position (CreateType 0 G, 1 F, 2 D) by d0, clamped, reset attribute record when changed
@@ -2020,7 +2020,7 @@ EditPlayerType	;Change the position (CreateType 0 G, 1 F, 2 D) by d0, clamped, r
 	move.b	d0,$1F(a0)
 	rts
 
-EditAttrib1	;Adjust the goalie Agility rating (d4 = its nibble mask)
+EditGAgility	;Adjust the goalie Agility rating (d4 = its nibble mask)
 	move.l	(GAttribOverallMask+$16).l,d4
 
 AdjustAttrib	;Adjust attribute selected by d4 bit by d0, paying from points pool CreatePoints
@@ -2056,15 +2056,15 @@ AdjustAttrib	;Adjust attribute selected by d4 bit by d0, paying from points pool
 rtsAdjustAttrib	;rts of AdjustAttrib
 	rts
 
-EditAttrib2	;Adjust the goalie Def. Awareness rating (d4 = its nibble mask)
+EditGDefAware	;Adjust the goalie Def. Awareness rating (d4 = its nibble mask)
 	move.l	(GAttribOverallMask+$58).l,d4
 	bra.s	AdjustAttrib
 
-EditAttrib3	;Adjust the goalie Puck Control rating (d4 = its nibble mask)
+EditGPuckCtrl	;Adjust the goalie Puck Control rating (d4 = its nibble mask)
 	move.l	(GAttribOverallMask+$6E).l,d4
 	bra.s	AdjustAttrib
 
-EditNibble	;Adjust the weight (high nibble of record byte 1) by d0, 0-15
+EditWeight	;Adjust the weight (high nibble of record byte 1) by d0, 0-15
 	movea.l	#CreateRecord,a0
 	adda.w	(a0),a0
 	clr.w	d1
@@ -2082,19 +2082,19 @@ EditNibble	;Adjust the weight (high nibble of record byte 1) by d0, 0-15
 	move.b	d0,1(a0)
 	rts
 
-EditAttrib4	;Adjust the goalie Stick Right rating (d4 = its nibble mask)
+EditGStickR	;Adjust the goalie Stick Right rating (d4 = its nibble mask)
 	move.l	(GAttribOverallMask+$84).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib5	;Adjust the goalie Stick Left rating (d4 = its nibble mask)
+EditGStickL	;Adjust the goalie Stick Left rating (d4 = its nibble mask)
 	move.l	(GAttribOverallMask+$9A).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib6	;Adjust the goalie Glove Right rating (d4 = its nibble mask)
+EditGGloveR	;Adjust the goalie Glove Right rating (d4 = its nibble mask)
 	move.l	(GAttribOverallMask+$B0).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib7	;Adjust the goalie Glove Left rating (d4 = its nibble mask)
+EditGGloveL	;Adjust the goalie Glove Left rating (d4 = its nibble mask)
 	move.l	(GAttribOverallMask+$C6).l,d4
 	bra.w	AdjustAttrib
 
@@ -2140,47 +2140,47 @@ EditJersey	;Adjust BCD jersey number in record byte 0 by d0, wrap 1..99
 	move.b	d1,(a0)
 	rts
 
-EditAttrib8	;Adjust the skater Speed rating (d4 = its nibble mask)
+EditSpeed	;Adjust the skater Speed rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$42).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib9	;Adjust the skater Agility rating (d4 = its nibble mask)
+EditAgility	;Adjust the skater Agility rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$2C).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib10	;Adjust the skater Endurance rating (d4 = its nibble mask)
+EditEndurance	;Adjust the skater Endurance rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$108).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib11	;Adjust the skater Off. Awareness rating (d4 = its nibble mask)
+EditOffAware	;Adjust the skater Off. Awareness rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$6E).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib12	;Adjust the skater Def. Awareness rating (d4 = its nibble mask)
+EditDefAware	;Adjust the skater Def. Awareness rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$84).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib13	;Adjust the skater Stickhandling rating (d4 = its nibble mask)
+EditStickhandling	;Adjust the skater Stickhandling rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$DC).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib14	;Adjust the skater Shot Power rating (d4 = its nibble mask)
+EditShotPower	;Adjust the skater Shot Power rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$9A).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib15	;Adjust the skater Shot Accuracy rating (d4 = its nibble mask)
+EditShotAcc	;Adjust the skater Shot Accuracy rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$B0).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib16	;Adjust the skater Pass Accuracy rating (d4 = its nibble mask)
+EditPassAcc	;Adjust the skater Pass Accuracy rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$C6).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib17	;Adjust the skater Aggression rating (d4 = its nibble mask)
+EditAggression	;Adjust the skater Aggression rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$11E).l,d4
 	bra.w	AdjustAttrib
 
-EditAttrib18	;Adjust the skater Checking rating (d4 = its nibble mask)
+EditChecking	;Adjust the skater Checking rating (d4 = its nibble mask)
 	move.l	(PAttribOverallMask+$134).l,d4
 	bra.w	AdjustAttrib
 
