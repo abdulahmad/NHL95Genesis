@@ -323,7 +323,7 @@ TeamStatTextTblNoPen	;The rows without the power play ones, used when penalties 
 
 
 
-rtsStatTables	;rts (rtsStatTables)
+rtsStatTables	;Shared rts
 	rts
 
 PlayerStatsScreen	;Pause menu PLAYER STATS: DisplayAttributeScreen with d7 = 0 (this game)
@@ -420,7 +420,7 @@ DisplayAttributeScreen	;Stats screen for team a2, d7 = 0 game / 1 playoff
 	movea.w	#(tmstruct-M68K_RAM),a2
 	bra.w	.redraw
 
-UpdateAttributeScroll	; Stats screen per frame: scroll 0 ... SelectedPlayerIdx, stop on a 16 line boundary, draw
+UpdateAttributeScroll	;Stats screen per frame: scroll 0 ... SelectedPlayerIdx, stop on a 16 line boundary, draw
 	;the row coming into view
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsAttrib
@@ -460,18 +460,18 @@ SetAttribScrollReg	;VSRAM = VertLineScrolling - $68
 rtsAttrib	;rts (shared exit of the DisplayAttribute routines)
 	rts
 
-DisplayAttributeLineUp	;DisplayAttributeLineUp
+DisplayAttributeLineUp	;Draw the stats row at the top of the view (VertLineScrolling / 16)
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	bra.w	DisplayAttributeEntry
 
-DisplayAttributeLineDown	;DisplayAttributeLineDown
+DisplayAttributeLineDown	;Draw the stats row at the bottom of the view (VertLineScrolling / 16 + 6)
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	addq.w	#6,d3
 	bra.w	DisplayAttributeEntry
 
-DisplayAttributeMenu	;DisplayAttributeMenu
+DisplayAttributeMenu	;Draw the stats screen column headers (the selected column highlighted, DispAttribCtr), the title and the rows
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,4,3,4,9,CC_SetFont,1,'Player',CC_AddX,7,0
 	lea	AttributeMenuTxt(pc),a1
@@ -567,7 +567,7 @@ DisplayAttributeMenu	;DisplayAttributeMenu
 	dbf	d4,.ent
 	bra.w	SetAttribScrollReg
 
-DisplayAttributeEntry	; Stats screen row d3 of Satt: rank, name, then the 5 columns, or for goalies saves, shots
+DisplayAttributeEntry	;Stats screen row d3 of Satt: rank, name, then the 5 columns, or for goalies saves, shots
 	;and save %
 	movea.w	#(Satt-M68K_RAM),a4
 	adda.w	d3,a4
@@ -1425,7 +1425,7 @@ MarkSeasonRosters	;Set bit 15 of every player's goals and shots words in save RA
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SeasonPlayerStats	;95 season Player Stats screen: set the VRAM layout (VSCRLPM ... Map3col1), clear VRAM (setVram), then run the stats screen and return
+SeasonPlayerStats	;Season Player Stats screen: set the VRAM layout (VSCRLPM ... Map3col1), clear VRAM (setVram), then run the stats screen and return
 	bclr	#1,(disflags).w
 	move.w	#$C000,(VmMap2).w
 	move.w	#6,(Map2col1).w
@@ -1514,7 +1514,7 @@ SeasonAttributeDraw	;Draw the season player stats screen for team d7 (SeasonAttr
 	btst	#3,(sflags11).w
 	bne.w	.1
 	jsr	(printbigz).l
-	dc.w	$20;String length
+	dc.w	$20	;String length
 	dc.b	$BD,$2,$4,'Season',$BD,$F,$4,'Player'
 	dc.b	$BD,$1C,$4,'Stats',$BD,$E,$1,$0
 	bra.w	.2
@@ -1618,12 +1618,12 @@ SeasonAttribScrollReg	;VSRAM = VertLineScrolling - $68
 rtsSeasonAttrib	;rts (shared exit of the SeasonAttribute routines)
 	rts
 
-SeasonAttribLineUp	;DisplayAttributeLineUp
+SeasonAttribLineUp	;Draw the season stats row at the top of the view
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	bra.w	SeasonAttributeEntry
 
-SeasonAttribLineDown	;DisplayAttributeLineDown
+SeasonAttribLineDown	;Draw the season stats row at the bottom of the view
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	addq.w	#6,d3
@@ -1842,7 +1842,7 @@ SeasonGetAttribute	;d2 = sum of the season stat words (low 15 bits) at StatBuf +
 	bmi.w	.0
 	add.w	d0,d1
 	move.w	0(a2,d1.w),d3
-	andi.w	#$7FFF,d2;(sic: masks d2 again, not d3)
+	andi.w	#$7FFF,d2	;(sic: masks d2 again, not d3)
 	add.w	d3,d2
 .0
 	movem.w	(sp)+,d0
@@ -1914,7 +1914,7 @@ DrawTeamLogo1	;Draw bitmap Teamblocksmap via dobitmap with tile base $69A, d1 = 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SeasonTeamStats	;95 season TEAM STATS screen (sflags11 bit 3 = playoff "Playoff Teams"): d7 = team 0-$19, left/right (bits 6/4 of d1) change team, start exits
+SeasonTeamStats	;Season TEAM STATS screen (sflags11 bit 3 = playoff "Playoff Teams"): d7 = team 0-$19, left/right (bits 6/4 of d1) change team, start exits
 	bclr	#1,(disflags).w
 	move.w	#$C000,(VmMap2).w
 	move.w	#6,(Map2col1).w
@@ -2201,7 +2201,7 @@ DrawTeamLogo2	;draw team d0's logo: frame d0*2 of the bitmap set at Teamblocksma
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LeagueLeadersScreen	;95 League Leaders screen (season menu): team/individual stat leader lists, scroll and category select
+LeagueLeadersScreen	;League Leaders screen (season menu): team/individual stat leader lists, scroll and category select
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(MarkSeasonRosters).l
 	move.l	#PlayerStatsBgMap,(screenarg).l
@@ -2967,7 +2967,7 @@ PrintLeaderPct	;Print d0 3 wide followed by '%'
 	String	'%',$0
 	rts
 
-DrawPlayerLeaderRows	;Sorted list rows: rank, player name (team $772 table, d7 = value / 26 team, remainder player) and value from LeaderValues (category 3 as nn.nn); records the last row in StatWork+$A
+DrawPlayerLeaderRows	;Sorted list rows: rank, player name (TeamList, d7 = value / 26 team, remainder player) and value from LeaderValues (category 3 as nn.nn); records the last row in StatWork+$A
 	clr.w	d6
 	movea.l	#LeaderValues,a5
 	move.w	#9,(printy).w
@@ -3083,7 +3083,7 @@ DrawTeamLogo3	;Draw small team logo d1 from Teamblocksmap at printx / printy. Sa
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-BlankLine40	;String record (40 spaces) used by the League Leaders code before this range
+BlankLine40	;String record (40 spaces) used by the League Leaders code
 	String	'                                       ',0
 
 LeadersHelp	;League Leaders footer: printz2 "[]=Change Stats B=Team Leaders" or (StatWork set) "B=Individual Leaders"
@@ -3104,7 +3104,7 @@ LeadersHelp	;League Leaders footer: printz2 "[]=Change Stats B=Team Leaders" or 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PeriodStatsScreen	;PeriodStatsScreen: both team logos, goals/shots by period and total; left/right switch, start exits
+PeriodStatsScreen	;Both team logos, goals/shots by period and total; left/right switch, start exits
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	(matchup).w
 	moveq	#0,d0
@@ -3187,12 +3187,12 @@ PeriodStatsScreen	;PeriodStatsScreen: both team logos, goals/shots by period and
 	btst	#1,(sflags7).w
 	beq.w	.1
 	jsr	(printz).l
-	dc.w	$001C;String length: too many arguments for the String macro
+	dc.w	$001C	;String length: too many arguments for the String macro
 	dc.b	$BE,$C,7,'1',$BE,$11,7,'2',$BE,$16,7,'3',$BE,$1A,7,'OT',$BE,' ',7,'Total',0
 	bra.w	.2
 .1
 	jsr	(printz).l
-	dc.w	$0016;String length: too many arguments for the String macro
+	dc.w	$0016	;String length: too many arguments for the String macro
 	dc.b	$BE,$C,7,'1',$BE,$11,7,'2',$BE,$16,7,'3',$BE,' ',7,'Total'
 .2
 	bsr.w	PeriodStatsCaption
@@ -3225,7 +3225,7 @@ PeriodStatsScreen	;PeriodStatsScreen: both team logos, goals/shots by period and
 	movem.l	(sp)+,d0-d7/a0-a6
 	jmp	(ExitAttributeScreen2).l
 
-PeriodStatsCaption	;PeriodStatsScreen .5: caption "Shots" + "[ For Goals" or "Goals" + "For Shots ]" by matchup
+PeriodStatsCaption	;Caption "Shots" + "[ For Goals" or "Goals" + "For Shots ]" by matchup
 	tst.w	(matchup).w
 	beq.w	.0
 	jsr	(printz).l
@@ -3240,7 +3240,7 @@ PeriodStatsCaption	;PeriodStatsScreen .5: caption "Shots" + "[ For Goals" or "Go
 	String	CC_SetFont,1,'For Shots ]',CC_SetFont,0,0
 	rts
 
-PeriodStatsColumns	;PeriodStatsScreen tail (+$25A): print both teams' period columns (away row $B, home row $12) and the total
+PeriodStatsColumns	;Print both teams' period columns (away row $B, home row $12) and the total
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$0,$0,$0
@@ -3305,7 +3305,7 @@ PeriodStatsValue	;PeriodStatsScreen: print the next period value (a0)+ and add i
 	jsr	(PushNumberWidth).l
 	jmp	(print).l
 
-LineEditor	;LineEditor: "Line Editor" screen for team a2, slot cursor = 1
+LineEditor	;"Line Editor" screen for team a2, slot cursor = 1
 	bset	#0,$30(a2)
 	moveq	#0,d0
 	moveq	#$1C,d1
@@ -3315,7 +3315,7 @@ LineEditor	;LineEditor: "Line Editor" screen for team a2, slot cursor = 1
 	clr.w	(PlayerScrollCtr).w
 	move.w	#1,(setupvalues).w
 
-LineEditorRedraw	;LineEditorRedraw: clear and redraw the whole editor (also the exit menu's return point)
+LineEditorRedraw	;Clear and redraw the whole editor (also the exit menu's return point)
 	jsr	(LineEditorBg).l
 	jsr	(seta2).l
 
@@ -3329,7 +3329,7 @@ LineEditorReturn	;Line editor: back from the exit menu (load, copy or save lines
 	st	(redrawicons).w
 	jsr	(ClearMenuFlags).l
 
-LineEditorMenu	;LineEditorMenu: slot cursor loop; start exits, C picks a player, d-pad moves via LineCursorTable
+LineEditorMenu	;Slot cursor loop; start exits, C picks a player, d-pad moves via LineCursorTable
 	jsr	(DrawLineEditorScreen).l
 	jsr	(DrawAttributeMenu).l
 .0
@@ -3366,7 +3366,7 @@ LineEditorMenu	;LineEditorMenu: slot cursor loop; start exits, C picks a player,
 	jsr	(DrawAttributeMenu).l
 	bra.s	.0
 
-SelectAttributeItem	;SelectAttributeItem: build the list of players for the slot and let the user pick one (UpdatePlayerAttribute)
+SelectAttributeItem	;Build the list of players for the slot and let the user pick one (UpdatePlayerAttribute)
 	jsr	(ReadAttributeNibble).l
 	move.w	d0,d1
 	jsr	(GetForwards).l
@@ -3462,7 +3462,7 @@ SelectAttributeItem	;SelectAttributeItem: build the list of players for the slot
 	jsr	(LineEditorBg).l
 	bra.w	LineEditorMenu
 
-PrintAttribHeader	;PrintAttribHeader: player list column header (PAttribColumns page DispAttribCtr), then 6 rows of names, selected row highlighted
+PrintAttribHeader	;Player list column header (PAttribColumns page DispAttribCtr), then 6 rows of names, selected row highlighted
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$16,$1,$0
 .0
@@ -3509,7 +3509,7 @@ PrintAttribHeader	;PrintAttribHeader: player list column header (PAttribColumns 
 	dbf	d1,.5
 	rts
 
-DrawAttributeMenu	;DrawAttributeMenu: draw the line icons for the cursor's line, then the selected player box
+DrawAttributeMenu	;Draw the line icons for the cursor's line, then the selected player box
 	moveq	#6,d5
 	lea	AttributeMenuTable(pc),a0
 	move.w	(setupvalues).w,d0
@@ -3545,12 +3545,12 @@ DrawAttributeMenu	;DrawAttributeMenu: draw the line icons for the cursor's line,
 	jsr	(printsmall).l
 	clr.w	(printfontset).w
 	rts
-	dc.b	0,1;the entry before AttributeMenuTable (read with OptLine set)
+	dc.b	0,1	;the entry before AttributeMenuTable (read with OptLine set)
 
-AttributeMenuTable	;AttributeMenuTable: per line, bit mask of the lines drawn together
+AttributeMenuTable	;Per line, bit mask of the lines drawn together
 	dc.b	7,7,7,$18,$18,$60,$60,$FF
 
-DrawMenuIcon	;DrawMenuIcon: draw line d5 (name, then its player slots) at MenuIconPosTable
+DrawMenuIcon	;Draw line d5 (name, then its player slots) at MenuIconPosTable
 	moveq	#6,d0
 	mulu.w	d5,d0
 	lea	MenuIconPosTable(pc),a0
@@ -3594,7 +3594,7 @@ DrawMenuIcon	;DrawMenuIcon: draw line d5 (name, then its player slots) at MenuIc
 	dbf	d3,.1
 	rts
 
-ClearAttributeArea	;ClearAttributeArea: erase the line area and print the position header (LD RD LW C RW)
+ClearAttributeArea	;Erase the line area and print the position header (LD RD LW C RW)
 	jsr	(printsmallz).l
 	String	CC_SetMap,$2,CC_SetX,$0,CC_SetY,$A
 	moveq	#$28,d0
@@ -3608,14 +3608,14 @@ ClearAttributeArea	;ClearAttributeArea: erase the line area and print the positi
 	move.w	(MenuIconPosTable-6).l,(printx).l
 .0
 	jsr	(printsmallz).l
-	dc.w	$22;String length
+	dc.w	$22	;String length
 	dc.b	$FE,$4,$FB,$FD,$FA,$2,'LD',$FB
 	dc.b	$FE,$FA,$2,'RD',$FB,$FE,$FA,$2
 	dc.b	'LW',$FB,$FE,$FA,$2,'C ',$FB,$FE
 	dc.b	$FA,$2,'RW'
 	rts
 
-DrawLineEditorScreen	;DrawTeamScreen: clear, print the "Line Editor" title and the team logo (95: no ScoutMap bitmap / Framer)
+DrawLineEditorScreen	;Clear, print the "Line Editor" title and the team logo (95: no ScoutMap bitmap / Framer)
 	jsr	(ClearAttributeArea2).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$7,$1,$0
@@ -3630,7 +3630,7 @@ DrawLineEditorScreen	;DrawTeamScreen: clear, print the "Line Editor" title and t
 .0
 	jmp	(PrintTeamData).l
 
-ClearAttributeArea2	;ClearAttributeArea2: erase 40 x 10 at the top of map 2
+ClearAttributeArea2	;Erase 40 x 10 at the top of map 2
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$0,$0,$0
 	moveq	#$28,d0
@@ -3638,13 +3638,13 @@ ClearAttributeArea2	;ClearAttributeArea2: erase 40 x 10 at the top of map 2
 	move.w	#$7FF,d2
 	jmp	(eraser).l
 
-ClearMenuFlags	;ClearMenuFlags: clear palfadenew+$5A and palfadenew+$7A
+ClearMenuFlags	;Clear palfadenew+$5A and palfadenew+$7A
 	clr.w	(palfadenew+$5A).w
 	clr.w	(palfadenew+$7A).w
 	rts
-	dc.w	$10,$C,4;MenuIconPosTable-6: the entry used with OptLine set
+	dc.w	$10,$C,4	;MenuIconPosTable-6: the entry used with OptLine set
 
-MenuIconPosTable	;MenuIconPosTable: line icons x, y, slot count - 1
+MenuIconPosTable	;Line icons x, y, slot count - 1
 	dc.w	4,$C,4
 	dc.w	$10,$C,4
 	dc.w	$1C,$C,4
@@ -3654,7 +3654,7 @@ MenuIconPosTable	;MenuIconPosTable: line icons x, y, slot count - 1
 	dc.w	$10,$C,3
 	dc.w	$FFFF
 
-LineCursorTable	;LineCursorTable: the slot after a cursor move, indexed by slot + 8
+LineCursorTable	;The slot after a cursor move, indexed by slot + 8
 	dc.b	1,1,2,3,4,5,$19,1
 	dc.b	1,1,2,3,4,5,$19,1
 	dc.b	9,9,$A,$B,$C,$D,$21,1
@@ -3665,7 +3665,7 @@ LineCursorTable	;LineCursorTable: the slot after a cursor move, indexed by slot 
 	dc.b	$25,$31,$32,$33,$34,$34,1,1
 	dc.b	$25,$31,$32,$33,$34,$34,1,1
 
-ExitAttributeScreen	;ExitAttributeScreen (95 rewrite): exit box; Start leaves, A original lines, B load / C save team line (save RAM)
+ExitAttributeScreen	;Exit box (rewritten in 95): Start leaves, A original lines, B load / C save team line (save RAM)
 	jsr	(ClearMenuFlags).l
 	btst	#6,(sflags11).w
 	beq.w	.0
@@ -3675,7 +3675,7 @@ ExitAttributeScreen	;ExitAttributeScreen (95 rewrite): exit box; Start leaves, A
 	move.w	#9,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	dc.w	$32;String length
+	dc.w	$32	;String length
 	dc.b	$F8,$4,$2,$9,$B,$F9,$2,'Start = Exit'
 	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$F9,$0,$0
 	bra.w	.2
@@ -3693,7 +3693,7 @@ ExitAttributeScreen	;ExitAttributeScreen (95 rewrite): exit box; Start leaves, A
 	move.w	#9,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	dc.w	$5E;String length
+	dc.w	$5E	;String length
 	dc.b	$F8,$4,$2,$9,$B,$F9,$2,'Start = Exit'
 	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$FD,$9,$FC
 	dc.b	$F,'B = Load Team Line',$FD,$9,$FC,$11,'C = Save Team Line',$F9
@@ -3707,7 +3707,7 @@ ExitAttributeScreen	;ExitAttributeScreen (95 rewrite): exit box; Start leaves, A
 	move.w	#7,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	dc.w	$48;String length
+	dc.w	$48	;String length
 	dc.b	$F8,$4,$2,$9,$B,$F9,$2,'Start = Exit'
 	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$FD,$9,$FC
 	dc.b	$F,'C = Save Team Line',$F9,$0,$0
@@ -3803,7 +3803,7 @@ PlayerSelectBg	;draw the player select list background bitmaps (PlayerSelectMap1
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-UpdatePlayerAttribute	;UpdatePlayerAttribute: put player d0 in line slot d2 of team a2 (swap if already in that line)
+UpdatePlayerAttribute	;Put player d0 in line slot d2 of team a2 (swap if already in that line)
 	movem.l	d0-d2/a0-a1,-(sp)
 	lea	$16C(a2),a0
 	move.w	d2,d1
@@ -3866,7 +3866,7 @@ TeamLinesOffset	;d0 = save RAM offset of team a2's saved line ($39 bytes per tea
 	move.w	(sp)+,d1
 	rts
 
-DisplayPeriodOver	; End of game Stars of the Game box. Called from UpdatePA while RefPen is the game over penalty. Waits for RefCnt
+DisplayPeriodOver	;End of game Stars of the Game box. Called from UpdatePA while RefPen is the game over penalty. Waits for RefCnt
 	;<= $40 and runs once (gmode bit 7); then disflags bit 3 and a vblank. Frames the box, draws a bitmap, then the three best star
 	;scores (FindMaxAttributeTEam). 95: not with sflags9 bit 7
 	cmpi.w	#$40,(RefCnt).w
@@ -3909,14 +3909,14 @@ DisplayPeriodOver	; End of game Stars of the Game box. Called from UpdatePA whil
 	move.w	(HmGoals).w,d0
 	sub.w	(AwGoals).w,d0
 	ble.w	.3
-	move.w	#SFXhomewin,-(sp)	;song $F: home team won
+	move.w	#SFXhomewin,-(sp)	;home team won
 	jsr	(song).l
 .3
 	movem.l	(sp)+,d0-d5/a0-a4
 .4
 	rts
 
-FindMaxAttributeTEam	; Take the highest of the 52 star scores at ThreeStars (26 per team, home first) and clear it. Returns d0 = player
+FindMaxAttributeTEam	;Take the highest of the 52 star scores at ThreeStars (26 per team, home first) and clear it. Returns d0 = player
 	;slot, a2 = its team struct
 	movem.l	d1-d2/a1/a4,-(sp)
 .0
@@ -3943,7 +3943,7 @@ FindMaxAttributeTEam	; Take the highest of the 52 star scores at ThreeStars (26 
 	movem.l	(sp)+,d1-d2/a1/a4
 	rts
 
-CalculateTeamAttributes	; Star score for every roster slot of both teams to ThreeStars (26 longs per team, home first). d5 = GetPeriodTime
+CalculateTeamAttributes	;Star score for every roster slot of both teams to ThreeStars (26 longs per team, home first). d5 = GetPeriodTime
 	;+ d2, the goalie ice time needed. If gsp is 3 and the score is not tied, the scorer of the last goal gets $7FFFFFFF
 	movea.w	#(ThreeStars-M68K_RAM),a4
 	jsr	(GetPeriodTime).l
@@ -3973,7 +3973,7 @@ CalculateTeamAttributes	; Star score for every roster slot of both teams to Thre
 .1
 	rts
 
-CalculateTeamAttributeValues	; Star scores of team a2 (a3 = other team) to (a4)+, one long per roster slot. Each starts at the goal difference.
+CalculateTeamAttributeValues	;Star scores of team a2 (a3 = other team) to (a4)+, one long per roster slot. Each starts at the goal difference.
 	;Skaters: goals*11000 + assists*10100 + shots*10, or in a tied game shots*1000 + frames on ice. Goalies on ice at least d5 with
 	;shots against: +32000 if goals against*100/shots <= 4, +75000 more for a shutout. 95: the team stat arrays are 2 bytes on
 	movea.w	a2,a1
@@ -4031,7 +4031,7 @@ CalculateTeamAttributeValues	; Star scores of team a2 (a3 = other team) to (a4)+
 	dbf	d4,.0
 	rts
 
-HighlightsScreen	;95 season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left/right change day, up/down change game (rosterscroll), Start exits
+HighlightsScreen	;Season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left/right change day, up/down change game (rosterscroll), Start exits
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(ReadSeasonHeader).l
 	btst	#0,(sflags11).w
