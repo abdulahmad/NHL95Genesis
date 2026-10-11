@@ -422,23 +422,23 @@ engine/middle95.asm,$07CB0A,36,ReadGoaliePulled,code,title94,name
 engine/middle95.asm,$07CB2E,10,PrintListItem,code,new in 95,header
 engine/middle95.asm,$07CB38,10,PrintSmallListItem,code,new in 95,header
 engine/middle95.asm,$07CB42,12,SkipStrings,code,new in 95,header
-engine/middle95.asm,$07CB4E,18,ReadAttributeNibble,code,stats94,name
-engine/middle95.asm,$07CB60,86,ReadAttributeNibbleD7,code,new in 95,header
+engine/middle95.asm,$07CB4E,18,GetGoalieCount,code,stats94,name
+engine/middle95.asm,$07CB60,86,GetGoalieCountD7,code,new in 95,header
 engine/middle95.asm,$07CBB6,18,GetDefenseStartD7,code,new in 95,header
 engine/middle95.asm,$07CBC8,64,GetDefenseStart,code,stats94,name
-engine/middle95.asm,$07CC08,10,ProcessNibbleD7,code,new in 95,header
+engine/middle95.asm,$07CC08,10,GetForwardCountD7,code,new in 95,header
 engine/middle95.asm,$07CC12,18,GetForwards,code,new in 95,header
-engine/middle95.asm,$07CC24,34,ProcessNibbleSeason,code,new in 95,header
-engine/middle95.asm,$07CC46,28,ProcessNibble,code,stats94,name
+engine/middle95.asm,$07CC24,34,GetForwardCountSeason,code,new in 95,header
+engine/middle95.asm,$07CC46,28,GetForwardCount,code,stats94,name
 engine/middle95.asm,$07CC62,34,GetTempPlayerName,code,data94,name
 engine/middle95.asm,$07CC84,12,getnameD7,code,new in 95,header
 engine/middle95.asm,$07CC90,12,getname,code,data94,name
 engine/middle95.asm,$07CC9C,54,getnamebody,code,data94,follows getname
 engine/middle95.asm,$07CCD2,34,GetTempPlayerNameAttrib,code,new in 95,header
 engine/middle95.asm,$07CCF4,56,FormatPlayerInitialD7,code,new in 95,header
-engine/middle95.asm,$07CD2C,12,FormatPlayerNameWithAttribD7,code,new in 95,header
-engine/middle95.asm,$07CD38,12,FormatPlayerNameWithAttrib,code,data94,name
-engine/middle95.asm,$07CD44,62,NameWithAttrib,code,data94,fingerprint FormatPlayerNameWithAttrib
+engine/middle95.asm,$07CD2C,12,FormatPlayerNumInitialD7,code,new in 95,header
+engine/middle95.asm,$07CD38,12,FormatPlayerNumInitial,code,data94,name
+engine/middle95.asm,$07CD44,62,NumInitialBody,code,data94,fingerprint FormatPlayerNumInitial
 engine/middle95.asm,$07CD82,64,FormatPlayerNameD7,code,new in 95,header
 engine/middle95.asm,$07CDC2,68,FormatPlayerName,code,data94,name
 engine/middle95.asm,$07CE06,16,FormatPlayerNameLast,code,data94,name
@@ -1162,24 +1162,24 @@ front/stats95.asm,$09240E,238,TeamStatTextTbl,data,period94,name
 front/stats95.asm,$0924FC,178,TeamStatTextTblNoPen,data,period94,name
 front/stats95.asm,$0925AE,2,rtsStatTables,code,period94,header names period94
 front/stats95.asm,$0925B0,2,PlayerStatsScreen,code,stats94,name
-front/stats95.asm,$0925B2,370,DisplayAttributeScreen,code,stats94,name
-front/stats95.asm,$092724,84,UpdateAttributeScroll,code,stats94,name
-front/stats95.asm,$092778,38,SetAttribScrollReg,code,stats94,name
-front/stats95.asm,$09279E,2,rtsAttrib,code,stats94,fingerprint UpdateAttributeScroll
-front/stats95.asm,$0927A0,10,DisplayAttributeLineUp,code,stats94,name
-front/stats95.asm,$0927AA,12,DisplayAttributeLineDown,code,stats94,name
-front/stats95.asm,$0927B6,320,DisplayAttributeMenu,code,stats94,name
-front/stats95.asm,$0928F6,302,DisplayAttributeEntry,code,stats94,name
-front/stats95.asm,$092A24,36,CheckAttributeValid,code,stats94,name
-front/stats95.asm,$092A48,44,GetAttributeValue2,code,stats94,name
-front/stats95.asm,$092A74,8,SkipAttribute,code,stats94,fingerprint GetAttributeValue2
-front/stats95.asm,$092A7C,20,GetPlayoffAttribute,code,new in 95,header
+front/stats95.asm,$0925B2,370,PlayerStatsList,code,stats94,name
+front/stats95.asm,$092724,84,UpdateStatsListScroll,code,stats94,name
+front/stats95.asm,$092778,38,SetStatsListScrollReg,code,stats94,name
+front/stats95.asm,$09279E,2,rtsStatsList,code,stats94,fingerprint UpdateStatsListScroll
+front/stats95.asm,$0927A0,10,DrawStatsRowUp,code,stats94,name
+front/stats95.asm,$0927AA,12,DrawStatsRowDown,code,stats94,name
+front/stats95.asm,$0927B6,320,DrawStatsList,code,stats94,name
+front/stats95.asm,$0928F6,302,DrawStatsRow,code,stats94,name
+front/stats95.asm,$092A24,36,GetStatColumn,code,stats94,name
+front/stats95.asm,$092A48,44,ReadStatColumn,code,stats94,name
+front/stats95.asm,$092A74,8,SkipStatColumn,code,stats94,fingerprint ReadStatColumn
+front/stats95.asm,$092A7C,20,GetPlayoffStat,code,new in 95,header
 front/stats95.asm,$092A90,24,GetStatsValue,code,stats94,name
 front/stats95.asm,$092AA8,20,StatsOffsetTbl2,data,stats94,name
-front/stats95.asm,$092ABC,20,AttributeOffsetTbl2,data,stats94,name
-front/stats95.asm,$092AD0,52,AttributeMenuTxt,data,stats94,name
-front/stats95.asm,$092B04,132,AttributeTitleTxt,data,stats94,name
-front/stats95.asm,$092B88,60,DrawScrollArrowsAttribute,code,stats94,name
+front/stats95.asm,$092ABC,20,StatColumnOffsets,data,stats94,name
+front/stats95.asm,$092AD0,52,StatColumnHeaders,data,stats94,name
+front/stats95.asm,$092B04,132,StatSortTitles,data,stats94,name
+front/stats95.asm,$092B88,60,DrawStatsListArrows,code,stats94,name
 front/stats95.asm,$092BC4,40,ScrollArrowTbl2,data,stats94,name
 front/stats95.asm,$092BEC,194,InitSeasonStats,code,new in 95,header
 front/stats95.asm,$092CAE,216,SaveSimGame,code,new in 95,header
@@ -1199,21 +1199,21 @@ front/stats95.asm,$0932F8,210,WriteTeamPlayerStats,code,new in 95,header
 front/stats95.asm,$0933CA,192,ReadSeasonTeamRecord,code,new in 95,header
 front/stats95.asm,$09348A,66,SeasonPlayerStats,code,new in 95,no 94 match
 front/stats95.asm,$0934CC,162,SeasonPlayersScreen,code,new in 95,header
-front/stats95.asm,$09356E,42,SeasonAttributeScreen,code,stats94,header names stats94
-front/stats95.asm,$093598,370,SeasonAttributeDraw,code,new in 95,header
-front/stats95.asm,$09370A,84,SeasonAttribScroll,code,stats94,header names stats94
-front/stats95.asm,$09375E,38,SeasonAttribScrollReg,code,stats94,header names stats94
-front/stats95.asm,$093784,2,rtsSeasonAttrib,code,stats94,follows SeasonAttribScrollReg
-front/stats95.asm,$093786,10,SeasonAttribLineUp,code,stats94,header names stats94
-front/stats95.asm,$093790,12,SeasonAttribLineDown,code,stats94,header names stats94
-front/stats95.asm,$09379C,308,SeasonAttributeMenu,code,stats94,header names stats94
-front/stats95.asm,$0938D0,306,SeasonAttributeEntry,code,stats94,header names stats94
-front/stats95.asm,$093A02,36,SeasonCheckAttribute,code,stats94,header names stats94
-front/stats95.asm,$093A26,58,SeasonGetAttribute,code,stats94,header names stats94
-front/stats95.asm,$093A60,8,SeasonSkipAttribute,code,new in 95,header
-front/stats95.asm,$093A68,20,SeasonAttributeOffsets,data,stats94,header names stats94
-front/stats95.asm,$093A7C,60,SeasonAttributeMenuTxt,data,stats94,header names stats94
-front/stats95.asm,$093AB8,132,SeasonAttributeTitleTxt,data,stats94,header names stats94
+front/stats95.asm,$09356E,42,SeasonStatsList,code,stats94,header names stats94
+front/stats95.asm,$093598,370,SeasonStatsListDraw,code,new in 95,header
+front/stats95.asm,$09370A,84,SeasonStatsListScroll,code,stats94,header names stats94
+front/stats95.asm,$09375E,38,SeasonStatsListScrollReg,code,stats94,header names stats94
+front/stats95.asm,$093784,2,rtsSeasonStats,code,stats94,follows SeasonStatsListScrollReg
+front/stats95.asm,$093786,10,SeasonStatsRowUp,code,stats94,header names stats94
+front/stats95.asm,$093790,12,SeasonStatsRowDown,code,stats94,header names stats94
+front/stats95.asm,$09379C,308,DrawSeasonStatsList,code,stats94,header names stats94
+front/stats95.asm,$0938D0,306,DrawSeasonStatsRow,code,stats94,header names stats94
+front/stats95.asm,$093A02,36,SeasonGetStatColumn,code,stats94,header names stats94
+front/stats95.asm,$093A26,58,SeasonReadStatColumn,code,stats94,header names stats94
+front/stats95.asm,$093A60,8,SeasonSkipStatColumn,code,new in 95,header
+front/stats95.asm,$093A68,20,SeasonStatColumnOffsets,data,stats94,header names stats94
+front/stats95.asm,$093A7C,60,SeasonStatColumnHeaders,data,stats94,header names stats94
+front/stats95.asm,$093AB8,132,SeasonStatSortTitles,data,stats94,header names stats94
 front/stats95.asm,$093B3C,60,SeasonScrollArrows,code,stats94,header names stats94
 front/stats95.asm,$093B78,40,SeasonScrollArrowTbl,data,stats94,header names stats94
 front/stats95.asm,$093BA0,50,DrawTeamLogo1,code,new in 95,header

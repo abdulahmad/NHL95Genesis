@@ -521,9 +521,9 @@ LoadTeamLines	;The line sets of team struct a2 ($16C): from save RAM (SRLines + 
 	rts
 
 FixSavedLines	;Unreferenced. Clamp the saved line slots of team d7 in the 4 TeamRecordSRAM records into the goalie /
-	;defense / forward ranges (ReadAttributeNibbleD7, GetDefenseStartD7, GetPlayerCountD7) and write them back
+	;defense / forward ranges (GetGoalieCountD7, GetDefenseStartD7, GetPlayerCountD7) and write them back
 	movem.l	d0-d7/a0-a6,-(sp)
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	move.w	d0,d3
 	jsr	(GetDefenseStartD7).l
 	move.w	d0,d4
@@ -655,7 +655,7 @@ LineSlotFixTbl	;CheckTeamLines slot handlers by slot & 7: goalie (the best one),
 	dc.l	.0,.4,.4,.20,.20,.20,.33,.3
 .0
 	movem.l	d0-d7/a3,-(sp)
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	subq.w	#1,d0
 	move.w	d0,d1
 	clr.w	d0
@@ -780,7 +780,7 @@ LineSlotFixTbl	;CheckTeamLines slot handlers by slot & 7: goalie (the best one),
 	bclr	#6,(sflags6).w
 	jsr	(GetDefenseStartD7).l
 	move.w	d0,d2
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	clr.w	d1
 	movea.l	#linemarkbuf,a1
 .21
@@ -839,7 +839,7 @@ LineSlotFixTbl	;CheckTeamLines slot handlers by slot & 7: goalie (the best one),
 	move.b	d4,(a0,d5.w)
 	bra.w	.32
 .28
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 .29
 	addq.w	#1,d0
 	movem.w	d1/d5,-(sp)
@@ -860,7 +860,7 @@ LineSlotFixTbl	;CheckTeamLines slot handlers by slot & 7: goalie (the best one),
 	rts
 .33
 	movem.l	d0-d7/a0-a6,-(sp)
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 .34
 	bsr.w	.17
 	bne.w	.35

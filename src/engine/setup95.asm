@@ -149,7 +149,7 @@ DisplayPlayerList	;Draw roster page SelectedPlayerIdx: the title (PlayerStatMenu
 	sub.w	(sp)+,d0
 	bra.w	.2
 .0
-	jsr	(ReadAttributeNibble).l
+	jsr	(GetGoalieCount).l
 	move.w	d0,-(sp)
 	move.w	d0,(TempWord2).w
 	jsr	(GetDefenseStart).l
@@ -157,7 +157,7 @@ DisplayPlayerList	;Draw roster page SelectedPlayerIdx: the title (PlayerStatMenu
 	bra.w	.2
 .1
 	clr.w	(TempWord2).w
-	jsr	(ReadAttributeNibble).l
+	jsr	(GetGoalieCount).l
 .2
 	move.w	d0,(TempWord1).w
 	move.w	(TempWord1).w,d0

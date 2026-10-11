@@ -171,7 +171,7 @@ DisplayGameStatEntry	;Goal entry d3: the time, the team, the goal type (GoalType
 PrintPeriodTime	;Print player d0 (byte, negative = none) and go down a row
 	ext.w	d0
 	bmi.w	.0
-	jsr	(FormatPlayerNameWithAttrib).l
+	jsr	(FormatPlayerNumInitial).l
 	jsr	(printsmall).l
 .0
 	addq.w	#1,(printy).w
@@ -376,7 +376,7 @@ DisplayPenaltyEntry	;PenSum entry d3: time, team (bit 7 of byte 2 = away), minut
 	move.w	#$11,(printx).w
 	clr.w	d0
 	move.b	3(a0,d3.w),d0
-	jsr	(FormatPlayerNameWithAttrib).l
+	jsr	(FormatPlayerNumInitial).l
 	jsr	(print).l
 	addq.w	#1,(printy).w
 	move.w	#$14,(printx).w

@@ -862,7 +862,7 @@ ClearNameHelp	;Name entry: erase the help text area ($16 x 8 at 24,17)
 	jsr	(eraser).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-PlayoffStatsScreen	;Pause menu PLAYOFF STATS: the playoff stats (DisplayAttributeScreen, d7 1) of the team in the playoff
+PlayoffStatsScreen	;Pause menu PLAYOFF STATS: the playoff stats (PlayerStatsList, d7 1) of the team in the playoff
 	;tree slot potreeteam (home or away team struct)
 	movem.l	a2,-(sp)
 	jsr	(ReadTeamStats).l
@@ -875,7 +875,7 @@ PlayoffStatsScreen	;Pause menu PLAYOFF STATS: the playoff stats (DisplayAttribut
 	adda.w	#tmsize,a2
 .0
 	moveq	#1,d7
-	jsr	(DisplayAttributeScreen).l
+	jsr	(PlayerStatsList).l
 	movem.l	(sp)+,a2
 	rts
 RecordHoldersScreen	;Pause menu RECORD HOLDERS: the save RAM records (PrintRecordTitles ... ReadTeamRecords)
@@ -1718,13 +1718,13 @@ PlayerRecordOffsets	;The first player record of each team (26 per team), ReadPla
 	dc.w	0,$1A,$34,$4E,$68,$82,$9C,$B6,$D0,$EA,$104,$11E,$138,$152
 	dc.w	$16C,$186,$1A0,$1BA,$1D4,$1EE,$208,$222,$23C,$256,$270,$28A,$2A4,$2BE
 	dc.w	$2D8
-CountGoalies	;homegoalies / awaygoalies = goalies of the home / away team (ReadAttributeNibble)
+CountGoalies	;homegoalies / awaygoalies = goalies of the home / away team (GetGoalieCount)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#tmstruct,a2
-	jsr	(ReadAttributeNibble).l
+	jsr	(GetGoalieCount).l
 	move.w	d0,(homegoalies).w
 	movea.l	#AwShots,a2
-	jsr	(ReadAttributeNibble).l
+	jsr	(GetGoalieCount).l
 	move.w	d0,(awaygoalies).w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts

@@ -630,7 +630,7 @@ ScanAllPlayers	;Every player d1 of the 26 teams (d7): when the score routine a6 
 	divu.w	#$1A,d0
 	swap	d0
 	move.w	d0,-(sp)
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	move.w	d0,d2
 	move.w	(sp),d0
 	jsr	(GetPlayerCountD7).l
@@ -755,7 +755,7 @@ JenningsScore	;Score: goalies who played half the games or more, 100 * goals aga
 	divu.w	#$1A,d0
 	swap	d0
 	move.w	d0,d6
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	cmp.w	d0,d6
 	bge.w	AwardNotQualified
 	movem.l	d7/a0,-(sp)
@@ -785,7 +785,7 @@ ArtRossScore	;Score: skaters, goals + assists
 	divu.w	#$1A,d0
 	swap	d0
 	move.w	d0,d6
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	cmp.w	d0,d6
 	blt.w	AwardNotQualified
 	bsr.w	GetAwardGoals
@@ -800,7 +800,7 @@ VezinaScore	;Score: goalies who played a quarter of the games or more, (600 - mi
 	divu.w	#$1A,d0
 	swap	d0
 	move.w	d0,d6
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	cmp.w	d0,d6
 	bge.w	AwardNotQualified
 	movem.l	d7/a0,-(sp)

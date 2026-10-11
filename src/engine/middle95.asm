@@ -5,8 +5,8 @@
 ;------------------------------------------------------------------------------------------------------------------------
 ;	Shared helpers: sroot, vtoa, find3d, randomd0s / randomd0, GetHot, vcountwait, printz2, printsmall
 ;	(ControlCodeJumpTable and the control codes), printz, print, eraser, showclock (95: big digits when paused,
-;	PutClockDigit), PerLabels / PenShotPenalties2, makepde / getpde, ReadGoaliePulled, ReadAttributeNibble /
-;	GetDefenseStart / ProcessNibble (95: season data versions), player name formatting (95: by team struct a2 or team
+;	PutClockDigit), PerLabels / PenShotPenalties2, makepde / getpde, ReadGoaliePulled, GetGoalieCount /
+;	GetDefenseStart / GetForwardCount (95: season data versions), player name formatting (95: by team struct a2 or team
 ;	number d7), CalcAttrib and its weight lists, PushTime, PushNumber, PushNumberWidth, appendz, appstring,
 ;	setupTeamBlocksMap / CopyTeamBlockMapData, DoDMA_nd2, TeamLogoBitmaps, ResetClock / GetPeriodTime, ClrHor,
 ;	AssignPads, waitx, printscores1 / PrintTeamNameAndScore, chkpk / chkpk2, printbigz ... PutBigTile, bfasciicon,
@@ -608,14 +608,14 @@ AdvanceStringPtr	;a1 = String d0 of a String list
 	dbf	d0,.0
 	rts
 
-ReadAttributeNibble	;d0 = goalies on team a2 (ReadAttributeNibbleD7 with d7 = the team number)
+GetGoalieCount	;d0 = goalies on team a2 (GetGoalieCountD7 with d7 = the team number)
 	movem.l	d7-a0,-(sp)
 	move.w	Xvel(a2),d7
-	bsr.w	ReadAttributeNibbleD7
+	bsr.w	GetGoalieCountD7
 	movem.l	(sp)+,d7-a0
 	rts
 
-ReadAttributeNibbleD7	;d0 = goalies on team d7: from the season data in save RAM (SRRosters+$34 + team * $38), or with sflags11 bit 6 from the team data nibbles
+GetGoalieCountD7	;d0 = goalies on team d7: from the season data in save RAM (SRRosters+$34 + team * $38), or with sflags11 bit 6 from the team data nibbles
 	btst	#6,(sflags11).w
 	bne.w	.0
 	movem.l	d1-d7/a0,-(sp)
@@ -645,9 +645,9 @@ ReadAttributeNibbleD7	;d0 = goalies on team d7: from the season data in save RAM
 	rts
 
 GetDefenseStartD7	;GetDefenseStart for team d7
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	move.w	d0,-(sp)
-	jsr	(ProcessNibbleD7).l
+	jsr	(GetForwardCountD7).l
 	add.w	(sp)+,d0
 	rts
 
@@ -655,14 +655,14 @@ GetDefenseStart	;d0 = goalies + forwards of team a2, the roster index of the fir
 	;season data unless sflags11 bit 6 (Regular Game)
 	btst	#6,(sflags11).w
 	bne.w	.team
-	jsr	(ReadAttributeNibble).l
+	jsr	(GetGoalieCount).l
 	move.w	d0,-(sp)
 	jsr	(GetForwards).l
 	add.w	(sp)+,d0
 	rts
 .team	;Team data
 	movem.l	a0,-(sp)
-	bsr.w	ReadAttributeNibble
+	bsr.w	GetGoalieCount
 	move.w	d0,-(sp)
 	movea.l	tmdata(a2),a0
 	adda.w	8(a0),a0
@@ -673,18 +673,18 @@ GetDefenseStart	;d0 = goalies + forwards of team a2, the roster index of the fir
 	movem.l	(sp)+,a0
 	rts
 
-ProcessNibbleD7	;d0 = forwards on team d7 from the season data (save RAM SRRosters+$36 + team * $38)
+GetForwardCountD7	;d0 = forwards on team d7 from the season data (save RAM SRRosters+$36 + team * $38)
 	movem.l	d1-d7/a0,-(sp)
 	move.w	d7,d0
-	bra.w	ProcessNibbleSeason
+	bra.w	GetForwardCountSeason
 
-GetForwards	;d0 = forwards on team a2: ProcessNibble (team data) with sflags11 bit 6, else from the season data
+GetForwards	;d0 = forwards on team a2: GetForwardCount (team data) with sflags11 bit 6, else from the season data
 	btst	#6,(sflags11).w
-	bne.w	ProcessNibble
+	bne.w	GetForwardCount
 	movem.l	d1-d7/a0,-(sp)
 	move.w	Xvel(a2),d0
 
-ProcessNibbleSeason	;Shared tail of GetForwards / ProcessNibbleD7: read the save RAM byte for team d0
+GetForwardCountSeason	;Shared tail of GetForwards / GetForwardCountD7: read the save RAM byte for team d0
 	mulu.w	#$38,d0
 	addi.l	#SRRosters+$36,d0
 	moveq	#1,d1
@@ -695,7 +695,7 @@ ProcessNibbleSeason	;Shared tail of GetForwards / ProcessNibbleD7: read the save
 	movem.l	(sp)+,d1-d7/a0
 	rts
 
-ProcessNibble	;d0 = forwards on team a2 (high nibble of team data byte 3 at +8)
+GetForwardCount	;d0 = forwards on team a2 (high nibble of team data byte 3 at +8)
 	movem.l	a0,-(sp)
 	movea.l	tmdata(a2),a0
 	adda.w	8(a0),a0
@@ -741,7 +741,7 @@ getnamebody	;getnameD7 joins here
 	movem.l	(sp)+,d0-d3/d7-a0/a2-a3
 	rts
 
-GetPlayerNameWithAttrib	;GetTempPlayerName with FormatPlayerNameWithAttrib ("NN F. Last")
+GetPlayerNumInitial	;GetTempPlayerName with FormatPlayerNumInitial ("NN F. Last")
 	movem.l	d0/a2,-(sp)
 	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	(TempPlOffset).w,d0
@@ -749,7 +749,7 @@ GetPlayerNameWithAttrib	;GetTempPlayerName with FormatPlayerNameWithAttrib ("NN 
 	andi.w	#$FF,d0
 	adda.w	#tmsize,a2
 .0
-	bsr.w	FormatPlayerNameWithAttrib
+	bsr.w	FormatPlayerNumInitial
 	movem.l	(sp)+,d0/a2
 	rts
 
@@ -776,17 +776,17 @@ FormatPlayerInitialD7	;a1 = mesarea "F. Last" for player d0 of team d7
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
 
-FormatPlayerNameWithAttribD7	;FormatPlayerNameWithAttrib for team d7
+FormatPlayerNumInitialD7	;FormatPlayerNumInitial for team d7
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	bsr.w	getplayernameD7
-	bra.w	NameWithAttrib
+	bra.w	NumInitialBody
 
-FormatPlayerNameWithAttrib	;a1 = mesarea string "NN F. Last" for player d0 of team a2, built in TextBuffer. Called from PenaltyShotBox and others
+FormatPlayerNumInitial	;a1 = mesarea string "NN F. Last" for player d0 of team a2, built in TextBuffer. Called from PenaltyShotBox and others
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	move.w	Xvel(a2),d7
 	bsr.w	GetPlayerNamePointer
 
-NameWithAttrib	;Shared body of FormatPlayerNameWithAttrib
+NumInitialBody	;Shared body of FormatPlayerNumInitial
 	move.l	a0,-(sp)
 	movea.w	#(TextBuffer-M68K_RAM),a1
 	adda.w	(a0),a0

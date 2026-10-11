@@ -137,7 +137,7 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, sohomegoals / s
 	addi.w	#$B6,d0
 	movem.l	d0-d2,-(sp)
 	move.w	$18(a2),d1
-	jsr	(ReadAttributeNibble).l
+	jsr	(GetGoalieCount).l
 	cmp.w	d0,d1
 	movem.l	(sp)+,d0-d2
 	blt.w	.20

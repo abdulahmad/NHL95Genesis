@@ -244,7 +244,7 @@ CheckInjury	;The injury message when its timer runs out: "Injury to:" the player
 	jsr	(printz).l
 	String	' games',-(TXPRI+TXMAP1),$C,$5,$0
 .6
-	jsr	(GetPlayerNameWithAttrib).l
+	jsr	(GetPlayerNumInitial).l
 	jsr	(print).l
 	btst	#0,(puck_pflags2).w
 	beq.w	.7

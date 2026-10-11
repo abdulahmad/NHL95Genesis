@@ -654,7 +654,7 @@ SimGoalieStats	;SimGoalie for the home and the away team
 	rts
 
 SimGoalie	;Credit the goalie (1/16 the backup): $E10 more time, the shots and goals against
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	subq.w	#1,d0
 	bsr.w	PickSimGoalie
 	move.w	d0,d3
@@ -690,7 +690,7 @@ PickSimGoalie	;d0 = 1 one time in 16, else 0
 SimScorers	;Give each goal of team d1 to a skater picked from TeamScoringTbls, with SimAssists
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d1,d7
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	move.w	d0,d2
 	move.w	d0,(TempRawSpd).w
 	jsr	(GetPlayerCountD7).l

@@ -1353,7 +1353,7 @@ GetPlayerPicture	;Only the picture: a0 = the picture of player d0 of team d1 (th
 	subq.w	#1,d0
 .1
 	move.w	d0,-(sp)
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	clr.w	(rosterteam).w
 	cmp.w	(sp),d0
 	bgt.w	.2

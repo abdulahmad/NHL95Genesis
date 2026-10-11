@@ -243,16 +243,16 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **penalty94** (26 bytes): loadTeamStruct
 - **title94** (36 bytes): ReadGoaliePulled
 - **new in 95** (32 bytes): PrintListItem, PrintSmallListItem, SkipStrings
-- **stats94** (18 bytes): ReadAttributeNibble
-- **new in 95** (104 bytes): ReadAttributeNibbleD7, GetDefenseStartD7
+- **stats94** (18 bytes): GetGoalieCount
+- **new in 95** (104 bytes): GetGoalieCountD7, GetDefenseStartD7
 - **stats94** (64 bytes): GetDefenseStart
-- **new in 95** (62 bytes): ProcessNibbleD7, GetForwards, ProcessNibbleSeason
-- **stats94** (28 bytes): ProcessNibble
+- **new in 95** (62 bytes): GetForwardCountD7, GetForwards, GetForwardCountSeason
+- **stats94** (28 bytes): GetForwardCount
 - **data94** (34 bytes): GetTempPlayerName
 - **new in 95** (12 bytes): getnameD7
 - **data94** (66 bytes): getname, getnamebody
-- **new in 95** (102 bytes): GetTempPlayerNameAttrib, FormatPlayerInitialD7, FormatPlayerNameWithAttribD7
-- **data94** (74 bytes): FormatPlayerNameWithAttrib, NameWithAttrib
+- **new in 95** (102 bytes): GetTempPlayerNameAttrib, FormatPlayerInitialD7, FormatPlayerNumInitialD7
+- **data94** (74 bytes): FormatPlayerNumInitial, NumInitialBody
 - **new in 95** (64 bytes): FormatPlayerNameD7
 - **data94** (148 bytes): FormatPlayerName, FormatPlayerNameLast, FormatPlayerNameShort, FormatLastName
 - **new in 95** (104 bytes): FormatFirstNameD7, FormatLastNameAlt, FormatLastNameD7, formatlastbody
@@ -497,14 +497,14 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 ### front/stats95
 
 - **period94** (1234 bytes): GameStatisticsScreen, StatScrollStep, SetStatScroll, StatScrollRow, StatScrollRowEnd, PrintStatScrollArrows, DisplayTeamStatsScreen, FormatStatValue
-- **stats94** (1228 bytes): PlayerStatsScreen, DisplayAttributeScreen, UpdateAttributeScroll, SetAttribScrollReg, DisplayAttributeLineUp, DisplayAttributeLineDown, DisplayAttributeMenu, DisplayAttributeEntry, CheckAttributeValid, GetAttributeValue2, SkipAttribute
-- **new in 95** (20 bytes): GetPlayoffAttribute
-- **stats94** (348 bytes): GetStatsValue, DrawScrollArrowsAttribute
+- **stats94** (1228 bytes): PlayerStatsScreen, PlayerStatsList, UpdateStatsListScroll, SetStatsListScrollReg, DrawStatsRowUp, DrawStatsRowDown, DrawStatsList, DrawStatsRow, GetStatColumn, ReadStatColumn, SkipStatColumn
+- **new in 95** (20 bytes): GetPlayoffStat
+- **stats94** (348 bytes): GetStatsValue, DrawStatsListArrows
 - **new in 95** (2434 bytes): InitSeasonStats, SaveSimGame, AddTeamSeasonStats, AddPlayerSeasonStats, ReadStatBlock, WriteStatBlock, SaveGameHighlights, BestGoalieSaves, MostAssists, MostGoals, AddHighlight, CompareHighlight, ReadTeamPlayerStats, WriteTeamPlayerStats, ReadSeasonTeamRecord, SeasonPlayerStats, SeasonPlayersScreen
-- **stats94** (42 bytes): SeasonAttributeScreen
-- **new in 95** (370 bytes): SeasonAttributeDraw
-- **stats94** (854 bytes): SeasonAttribScroll, SeasonAttribScrollReg, SeasonAttribLineUp, SeasonAttribLineDown, SeasonAttributeMenu, SeasonAttributeEntry, SeasonCheckAttribute, SeasonGetAttribute
-- **new in 95** (8 bytes): SeasonSkipAttribute
+- **stats94** (42 bytes): SeasonStatsList
+- **new in 95** (370 bytes): SeasonStatsListDraw
+- **stats94** (854 bytes): SeasonStatsListScroll, SeasonStatsListScrollReg, SeasonStatsRowUp, SeasonStatsRowDown, DrawSeasonStatsList, DrawSeasonStatsRow, SeasonGetStatColumn, SeasonReadStatColumn
+- **new in 95** (8 bytes): SeasonSkipStatColumn
 - **stats94** (312 bytes): SeasonScrollArrows
 - **new in 95** (386 bytes): DrawTeamLogo1, SeasonTeamStats, SeasonTeamsScreen, SeasonTeamStatsRun
 - **period94** (956 bytes): PrintSeasonTeamStats

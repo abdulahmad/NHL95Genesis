@@ -2571,7 +2571,7 @@ FreeAgentLoop	;SignFreeAgents: input loop
 	bra.w	.0
 
 PositionCountFns	;Per-position rating routines
-	dc.l	ReadAttributeNibbleD7
+	dc.l	GetGoalieCountD7
 	dc.l	GetDefenseStartD7
 	dc.l	GetPlayerCountD7
 
@@ -2580,13 +2580,13 @@ PositionMaxChecks	;Per-position check routines
 	dc.l	CheckMaxForwards
 	dc.l	CheckMaxDefense
 
-CheckMaxGoalies	;Compare ReadAttributeNibbleD7 result with 3
-	jsr	(ReadAttributeNibbleD7).l
+CheckMaxGoalies	;Compare GetGoalieCountD7 result with 3
+	jsr	(GetGoalieCountD7).l
 	cmp.w	#3,d0
 	rts
 
-CheckMaxForwards	;Compare ProcessNibbleD7 result with $F
-	jsr	(ProcessNibbleD7).l
+CheckMaxForwards	;Compare GetForwardCountD7 result with $F
+	jsr	(GetForwardCountD7).l
 	cmp.w	#$F,d0
 	rts
 
@@ -3032,18 +3032,18 @@ ReleaseLoop	;ReleasePlayers: input loop
 	bra.w	ReleaseRedraw
 .16
 	bra.w	.0
-	dc.l	ReadAttributeNibbleD7,GetDefenseStartD7,GetPlayerCountD7	;unused pointers
+	dc.l	GetGoalieCountD7,GetDefenseStartD7,GetPlayerCountD7	;unused pointers
 
 PositionMinChecks	;Roster-minimum check per position code (0 G, 1 F, 2 D); Z set = cannot release
 	dc.l	CheckMinGoalies,CheckMinForwards,CheckMinDefense
 
-CheckMinGoalies	;Position 0 (G): count from ReadAttributeNibbleD7, Z if == 2
-	jsr	(ReadAttributeNibbleD7).l
+CheckMinGoalies	;Position 0 (G): count from GetGoalieCountD7, Z if == 2
+	jsr	(GetGoalieCountD7).l
 	cmp.w	#2,d0
 	rts
 
-CheckMinForwards	;Position 1 (F): count from ProcessNibbleD7, Z if == 9
-	jsr	(ProcessNibbleD7).l
+CheckMinForwards	;Position 1 (F): count from GetForwardCountD7, Z if == 9
+	jsr	(GetForwardCountD7).l
 	cmp.w	#9,d0
 	rts
 

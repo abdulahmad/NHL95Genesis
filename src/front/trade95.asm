@@ -363,7 +363,7 @@ ExecuteTrade	;Do the trade: sort the chosen players of both teams (tradeteam1 / 
 	move.w	(a1),d7
 	cmp.w	#0,d5
 	bne.w	.3
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	bra.w	.5
 .3
 	cmp.w	#$100,d5
@@ -390,7 +390,7 @@ ExecuteTrade	;Do the trade: sort the chosen players of both teams (tradeteam1 / 
 	move.w	(a0),d7
 	cmp.w	#0,d5
 	bne.w	.7
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	bra.w	.9
 .7
 	cmp.w	#$100,d5
@@ -422,7 +422,7 @@ SortTradePlayers	;Sort the chosen players of a trade list by position (goalies, 
 	bmi.w	.2
 	andi.w	#$FF,d1
 	move.w	#0,d2
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	cmp.w	d0,d1
 	blt.w	.1
 	move.w	#1,d2
@@ -1295,7 +1295,7 @@ DrawTradeLogo	;Draw the team block of team d1
 
 DrawTradeTeam	;Set up the trade rosters of HomeTeam and VisTeam
 	movem.l	d0-d7/a0-a6,-(sp)
-	jsr	(ReadAttributeNibbleD7).l
+	jsr	(GetGoalieCountD7).l
 	move.w	d0,(a1)
 	jsr	(GetDefenseStartD7).l
 	move.w	d0,2(a1)
@@ -1420,7 +1420,7 @@ PrintTradeNames	;Print the chosen players of a trade list with their position
 	move.w	#$F,(printx).w
 	clr.w	d0
 	move.b	2(a0),d0
-	jsr	(FormatPlayerNameWithAttribD7).l
+	jsr	(FormatPlayerNumInitialD7).l
 	jsr	(printsmall).l
 	move.w	#$20,(printx).w
 	movea.l	#PositionLetters2,a1

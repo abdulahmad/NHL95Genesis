@@ -929,7 +929,7 @@ PrintLines	;print the Strings at a1 up to a $FF String
 	rts
 
 ShowPenaltyMessages	;Every $78 frames show the next queued penalty (penaltymsgs): its name (Penaltylist) and the player
-	;(FormatPlayerNameWithAttrib) centred at $14, $F / $11, and take him off the penalty box count. d1 = 1 when the queue is empty
+	;(FormatPlayerNumInitial) centred at $14, $F / $11, and take him off the penalty box count. d1 = 1 when the queue is empty
 	movem.l	d0-d6/a0-a3,-(sp)
 	subq.w	#1,(menutimer).w
 	bpl.w	.8
@@ -974,7 +974,7 @@ ShowPenaltyMessages	;Every $78 frames show the next queued penalty (penaltymsgs)
 	adda.l	#tmsize,a2
 .2
 	move.l	a2,-(sp)
-	jsr	(FormatPlayerNameWithAttrib).l
+	jsr	(FormatPlayerNumInitial).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$14,$11,0
 	move.w	(a1),d0
@@ -1364,7 +1364,7 @@ SelectGoalieMenu	;Pause menu CHANGE GOALIE: pick team a2's goalie (or no goalie)
 	move.w	(menuitem).w,-(sp)
 	move.w	(menuitem+2).w,-(sp)
 	bsr.w	ClearMenuBox
-	jsr	(ReadAttributeNibble).l
+	jsr	(GetGoalieCount).l
 	move.w	d0,(menuitem+2).w
 	add.w	(menuitem+2).w,d1	;the 94 height. Nothing reads it in 95
 	move.w	tmgoalie(a2),d0
@@ -1440,7 +1440,7 @@ DisplayPlayerSelectMenu	;Draw the goalie list at row $E, x $C, row menuitem in
 	beq.w	.2
 	st	(TempPlOffset).w
 .2
-	jsr	(GetPlayerNameWithAttrib).l
+	jsr	(GetPlayerNumInitial).l
 	move.w	#$C,(printx).w
 	bsr.w	printsmall
 .next

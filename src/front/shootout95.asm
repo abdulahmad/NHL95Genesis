@@ -336,7 +336,7 @@ PlayoffRoundScreen	;Shootout round box: "SHOOTOUT MODE" (RoundBigTxt), the shoot
 	beq.w	.0
 	movea.l	#AwShots,a2
 .0
-	jsr	(FormatPlayerNameWithAttrib).l
+	jsr	(FormatPlayerNumInitial).l
 	move.w	(printx).w,-(sp)
 	jsr	(print).l
 	move.w	(sp)+,(printx).w
@@ -355,7 +355,7 @@ PlayoffRoundScreen	;Shootout round box: "SHOOTOUT MODE" (RoundBigTxt), the shoot
 	beq.w	.1
 	movea.l	#tmstruct,a2
 .1
-	jsr	(FormatPlayerNameWithAttrib).l
+	jsr	(FormatPlayerNumInitial).l
 	jsr	(print).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$4,$9,$0
@@ -469,7 +469,7 @@ ShooterSelectList	;Shootout shooters: the "{Select Player}" list for slot TestLi
 	move.w	(TestList).w,d0
 	asl.w	#1,d0
 	move.w	(a0,d0.w),d6
-	jsr	(ReadAttributeNibble).l
+	jsr	(GetGoalieCount).l
 	move.w	d0,d1
 	jsr	(GetPlayerCount).l
 	sub.w	d1,d0
@@ -1328,7 +1328,7 @@ PenaltyShotBox	;In a shootout PlayoffRoundScreen; else the "PENALTY SHOT!" box: 
 	beq.w	.1
 	movea.l	#AwShots,a2
 .1
-	jsr	(FormatPlayerNameWithAttrib).l
+	jsr	(FormatPlayerNumInitial).l
 	jsr	(print).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$4,$7,$0
@@ -1347,7 +1347,7 @@ PenaltyShotBox	;In a shootout PlayoffRoundScreen; else the "PENALTY SHOT!" box: 
 	beq.w	.2
 	movea.l	#tmstruct,a2
 .2
-	jsr	(FormatPlayerNameWithAttrib).l
+	jsr	(FormatPlayerNumInitial).l
 	jsr	(print).l
 	movem.l	(sp)+,d0-d2/a0-a4
 	rts
