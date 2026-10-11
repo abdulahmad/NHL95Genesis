@@ -1,9 +1,9 @@
-;	NHL 95 team data. Retail $000772-$005A33 (21186 bytes), from the IDA listing lst/nhl95.bin.lst (all dc.b there).
+;NHL 95 team data. Retail $000772-$005A33 (21186 bytes), from the lst/nhl95.bin.lst (all dc.b there).
 ;	Layout of 94 teamdata94.asm: the team address table, one block per team, playoffseats. 95 still has 26 teams plus the
 ;	two all star teams, in the 94 TeamList order. Not here: the dc.l 0 94 kept before TeamList (main95, $69A) and Credits /
 ;	CreditsList (credits95, $1A6C28).
 
-TeamList	;(94 $30E). IDA: no label. Team number = index (ANH 0 ... WPG 25, ASE 26, ASW 27), the 94 order
+TeamList	;(94 $30E). label. Team number = index (ANH 0 ... WPG 25, ASE 26, ASW 27), the 94 order
 	dc.l	Anaheim	;0 ANH
 	dc.l	Boston	;1 BOS
 	dc.l	Buffalo	;2 BUF

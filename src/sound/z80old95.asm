@@ -1,5 +1,5 @@
 ; $07E0E0  Adapted from sound94.asm: the 94 Z80 program
-;	NHL 95 segment $7E0E0-$7E36B, from lst/nhl95.bin.lst (IDA dc.b, no label). The 94 Z80 program (93 / 94 Z80_Program_Code), still
+;NHL 95 segment $7E0E0-$7E36B, from lst/nhl95.bin.lst ( no label). The 94 Z80 program (93 / 94 Z80_Program_Code), still
 ;	loaded by p_initialZ80 (sound95, no caller in 95). The same bytes as 94 except the bank window address of the FM patches, which 95
 ;	keeps at the end of sound95. 94 Pausemode follows, at the head of pause95.
 

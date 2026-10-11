@@ -1,12 +1,12 @@
 ; $0A0D1A  Adapted from stats94.asm: scoring and penalty summaries
 ;	Mapped to stats94 (58%): ScoringSummaryScreen ... DisplayPenaltyEntry (the goal and penalty summaries). crowd95 (updatecrowdf,
 ;	showcrowd) is just before it.
-;	IDA left ScoringSummaryScreen ... DisplayPenaltyEntry ($0A0D1A-$0A12A9) as dc.b; it is transcribed from the retail bytes.
-;	Local labels are numbered; the IDA local names are not kept.
+;ScoringSummaryScreen ... DisplayPenaltyEntry ($0A0D1A-$0A12A9) as dc.b; it is transcribed from the retail bytes.
+;Local labels are numbered; the names are not kept.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-ScoringSummaryScreen	;stats94 ScoringSummaryScreen (93 name). "Scoring Summary": one 4 row entry per goal (6 bytes each from ScoreSum), scrolled with up / down, start exits
+ScoringSummaryScreen	;stats94 ScoringSummaryScreen. "Scoring Summary": one 4 row entry per goal (6 bytes each from ScoreSum), scrolled with up / down, start exits
 	moveq	#9,d0
 	moveq	#$19,d1
 	move.l	#ControllerBgMap,(screenarg).l
@@ -19,7 +19,7 @@ ScoringSummaryScreen	;stats94 ScoringSummaryScreen (93 name). "Scoring Summary":
 	clr.w	d0
 	jsr	(PrintTeamData).l
 	jsr	(printsmallz).l
-	String	TXS_ALL,4,3,0,7,TXS_FONT,3,'^^Per^^Time^^Tm^^Goal/Assist^^^^^^P/S^^^',TXS_FONT,0
+	String	CC_SetMapAndPosition,4,3,0,7,CC_SetFont,3,'^^Per^^Time^^Tm^^Goal/Assist^^^^^^P/S^^^',CC_SetFont,0
 	clr.l	d0
 	move.w	(ScoreSumbytes).w,d0
 	divu.w	#6,d0
@@ -171,7 +171,7 @@ DisplayGameStatEntry	;stats94 DisplayGameStatEntry. Goal entry d3: the time, the
 	clr.w	(printfontset).w
 	rts
 
-PrintPeriodTime	;stats94 PrintPeriodTime (93 name). Print player d0 (byte, negative = none) and go down a row
+PrintPeriodTime	;stats94 PrintPeriodTime. Print player d0 (byte, negative = none) and go down a row
 	ext.w	d0
 	bmi.w	.0
 	jsr	(FormatPlayerNameWithAttrib).l
@@ -182,17 +182,17 @@ PrintPeriodTime	;stats94 PrintPeriodTime (93 name). Print player d0 (byte, negat
 rtsGameStatScroll	;stats94. Shared rts of CheckGameStatScroll
 	rts
 
-GoalTypeTbl	;stats94 GoalTypeTbl (93 name). ScoreSum byte 2 & $7F: SH2, SH, even, PP, PP2
+GoalTypeTbl	;stats94 GoalTypeTbl. ScoreSum byte 2 & $7F: SH2, SH, even, PP, PP2
 	String	'SH2'
 	String	'SH'
 	String	' '
 	String	'PP'
 	String	'PP2'
 
-DrawScrollArrowsPenalty	;stats94 DrawScrollArrowsPenalty (93 name). Summary screen up / down arrows (ScrollArrowTbl). Saves d0-d1/a1
+DrawScrollArrowsPenalty	;stats94 DrawScrollArrowsPenalty. Summary screen up / down arrows (ScrollArrowTbl). Saves d0-d1/a1
 	movem.l	d0-d1/a1,-(sp)
 	jsr	(printsmallz).l
-	String	TXS_ALL,$4,$3,$1,$9,TXS_FONT,$1,$0
+	String	CC_SetMapAndPosition,$4,$3,$1,$9,CC_SetFont,$1,$0
 	clr.w	d0
 	move.w	(VertLineScrolling).w,d1
 	tst.w	d1
@@ -208,13 +208,13 @@ DrawScrollArrowsPenalty	;stats94 DrawScrollArrowsPenalty (93 name). Summary scre
 	movem.l	(sp)+,d0-d1/a1
 	rts
 
-ScrollArrowTbl	;stats94 ScrollArrowTbl (93 name). None, up, down, both
+ScrollArrowTbl	;stats94 ScrollArrowTbl. None, up, down, both
 	String	' ',$FB,$FF,$FA,$10,' ',$F9,$0
 	String	'{',$FB,$FF,$FA,$10,' ',$F9,$0
 	String	' ',$FB,$FF,$FA,$10,'}',$F9,$0
 	String	'{',$FB,$FF,$FA,$10,'}',$F9,$0
 
-PenaltySummaryScreen	;stats94 PenaltySummaryScreen (93 name). "Penalties": one 3 row entry per penalty (4 bytes each from PenSum, PenSumLength), scrolled with up / down, start exits
+PenaltySummaryScreen	;stats94 PenaltySummaryScreen. "Penalties": one 3 row entry per penalty (4 bytes each from PenSum, PenSumLength), scrolled with up / down, start exits
 	moveq	#9,d0
 	moveq	#$19,d1
 	move.l	#ControllerBgMap,(screenarg).l
@@ -227,7 +227,7 @@ PenaltySummaryScreen	;stats94 PenaltySummaryScreen (93 name). "Penalties": one 3
 	clr.w	d0
 	jsr	(PrintTeamData).l
 	jsr	(printsmallz).l
-	String	TXS_ALL,$4,$3,$0,$7,TXS_FONT,$3,'^^Per^^Time^^Tm^^Player/Penalty^^^min^^^',TXS_FONT,$0,$0
+	String	CC_SetMapAndPosition,$4,$3,$0,$7,CC_SetFont,$3,'^^Per^^Time^^Tm^^Player/Penalty^^^min^^^',CC_SetFont,$0,$0
 	clr.l	d0
 	move.w	(PenSumLength).w,d0
 	lsr.w	#2,d0
@@ -346,7 +346,7 @@ DisplayPenaltyLineDown	;stats94 DisplayPenaltyLineDown. Penalty entry + 5 at the
 	move.l	(sp)+,d0
 	rts
 
-DisplayPenaltyEntry	;stats94 DisplayPenaltyEntry (93 name). PenSum entry d3: time, team (bit 7 of byte 2 = away), minutes and name from PenaltyList, player (byte 3)
+DisplayPenaltyEntry	;stats94 DisplayPenaltyEntry. PenSum entry d3: time, team (bit 7 of byte 2 = away), minutes and name from PenaltyList, player (byte 3)
 	move.w	(printy).w,-(sp)
 	moveq	#$28,d0
 	moveq	#3,d1

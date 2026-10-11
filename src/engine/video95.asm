@@ -10,7 +10,7 @@
 ;	The 94 middle94_1 / middle94_2 vdp helpers in a new order: DoFill, setvram, setVram_0, Vmaddr, dobitmap, DoDMA_clearCallbackPointer,
 ;	DecompressGraphics (95: no packed graphics), DoDMApro, WaitDMA, forcefade, cramfade, CopyPaletteToCRAM, xyVmMap, remap; then the
 ;	display94 vblank transfers DumpSprites, DumpSprites2, DoDMAlist (ends at the shared rts rtss2), SetScroll2; then DoDMA (95: no Z80
-;	bus request). cramfade ($79B54) and DumpSprites ($79C94) are IDA dc.b, written as instructions.
+;bus request). cramfade ($79B54) and DumpSprites ($79C94) are written as instructions.
 
 
 ; fill vram
@@ -46,7 +46,7 @@ setvram	;Fade every colour to d0, then fall into setVram_0
 	dbf	d1,.0
 	move.w	#$18,(palcount).w
 	bsr.w	forcefade
-setVram_0	;93 name: second half of 92 setVram (no fade): clear vram and set the VDP registers from disflags, Map1col,
+setVram_0	;second half of 92 setVram (no fade): clear vram and set the VDP registers from disflags, Map1col
 	;VmMap1-3, VSPRITES and VSCRLPM. Falls in from setvram, called from EASportsScreen (lines95), pause95, title95
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -164,9 +164,9 @@ dobitmap	;Copy the palettes flagged in d5 to palfadenew, then write the map at a
 	move.w	(sp)+,(printy).w
 	rts
 
-DoDMA_clearCallbackPointer	;93 name. Clear callbackPtr, fall into DecompressGraphics
+DoDMA_clearCallbackPointer	;Clear callbackPtr, fall into DecompressGraphics
 	clr.l	(callbackPtr).w
-DecompressGraphics	;93 name. a2 = graphics data, d4 = start char. Called from this file. 95 has no decompressor:
+DecompressGraphics	;a2 = graphics data, d4 = start char. Called from this file. 95 has no decompressor
 	;a packed block (size bit 15 set) only moves d4 past its chars
 	movem.l	d0-d1/a0-a6,-(sp)
 	movea.l	a2,a0
@@ -273,7 +273,7 @@ cramfade	;No xref in the listing
 	bne.s	.top
 	rts
 
-CopyPaletteToCRAM	;93 name. Copy all 64 palfadenew colours to colour ram (dfng set), then palcount = -1. Called from
+CopyPaletteToCRAM	;Copy all 64 palfadenew colours to colour ram (dfng set), then palcount = -1. Called from
 	;cramfade and EASportsScreen (lines95). 95 writes cram straight (94 waited for the dma and the Z80 bus)
 	movem.l	d0/a0-a1,-(sp)
 	move.w	(disflags).w,-(sp)
@@ -337,10 +337,10 @@ remap	;Write d0 chars at a0 to vram d1, each pixel through the colour map at a1.
 	move.w	(sp)+,(disflags).w
 	rts
 
-DumpSprites	;93 name (display94). Transfer (by dma) scroll stuff, sprite table, vram data in dmalist. No xref in the listing.
+DumpSprites	;(display94). Transfer (by dma) scroll stuff, sprite table, vram data in dmalist. No xref in the listing.
 	;Falls into DumpSprites2
 	bsr.w	SetScroll2
-DumpSprites2	;93 name (display94). Transfer sprite table, then the dma list. Falls into DoDMAlist
+DumpSprites2	;(display94). Transfer sprite table, then the dma list. Falls into DoDMAlist
 	movea.w	#(Satt-M68K_RAM),a0
 	move.w	(Sattsize).w,d0	;93 Sattsize: words
 	move.w	(VSPRITES).w,d1
@@ -360,7 +360,7 @@ rtss2	;Shared rts (93 rtss; 94 kept it in collide94), branched to from cramfade,
 	;middle95, and movea.l #x in setup95
 	rts
 
-SetScroll2	;93 name (display94); 93 IDA DoScroller. Write Hscroll / Vscroll to the vdp. Called from DumpSprites, checks95
+SetScroll2	;(display94); 93 Write Hscroll / Vscroll to the vdp. Called from DumpSprites, checks95
 	move.w	(VSCRLPM).w,d0
 	addq.w	#2,d0
 	bsr.w	Vmaddr
@@ -600,7 +600,7 @@ sizetab	;sprite size code to tile count. 92 video.asm sizetab, used by addframe2
 updatescroll	;92 name; 93 show_rink. Using hpos and vpos set scroll cords; queue rink map rows on the dma list (a5) when vertical
 	;scrolling needs new rows. Called from setvideo (display95). Rows from Rinktilelist, or RevRinkTilelist in a reverse angle replay
 	;(sflags4 bit 4). 95 has no horizontal rink check
-	moveq	#-$40,d0	;-192+128 (IDA #$FFFFFFC0)
+	moveq	#-$40,d0	;-192+128 (#$FFFFFFC0)
 	sub.w	(Hpos).w,d0
 	move.w	(Vpos).w,d1
 	addi.w	#$10,d1	;95: rink 16 lines lower
@@ -728,7 +728,7 @@ DecompressBytecode	;No caller in 95 (DecompressGraphics skips packed blocks). 93
 	move.w	0(a2,d0.w),d0
 	jsr	0(a2,d0.w)
 	bra.s	.loop
-jump_table	;93 name. DecompressBytecode handler offsets, one per opcode high nibble
+jump_table	;DecompressBytecode handler offsets, one per opcode high nibble
 	dc.w	Opcode_CopyLiteral-jump_table	;0
 	dc.w	Opcode_CopyLiteral-jump_table	;1
 	dc.w	Opcode_ClearBytes-jump_table	;2
@@ -883,7 +883,7 @@ Opcode_CopyBackwardReverseLong	;93: opcode F
 	andi.w	#$7F,d2
 	addq.w	#1,d2
 	bra.s	CopyBackwardReverseRun
-FlushOutputBuffer	;93 name. Write the full ring buffer to vram
+FlushOutputBuffer	;Write the full ring buffer to vram
 	movem.l	d0-d1/a0-a1,-(sp)
 	move.w	d1,d0
 	bne.w	.size
@@ -905,13 +905,13 @@ FlushOutputBuffer	;93 name. Write the full ring buffer to vram
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
 
-AddSmallFont	;93 name. Jumped to from ReAddSmallFont (middle95). 95 loads the map at the address in smallfontptr (94: SmallFontMap)
+AddSmallFont	;Jumped to from ReAddSmallFont (middle95). 95 loads the map at the address in smallfontptr (94: SmallFontMap)
 	move.w	d4,(smallfontchars).w
 	movea.l	(smallfontptr).w,a2
 	addq.w	#8,a2
 	bra.w	DoDMA_clearCallbackPointer
 
-DecompressGraphicsWithCallback	;93 name. DecompressGraphics, then return 8 bytes past the call (callback data)
+DecompressGraphicsWithCallback	;DecompressGraphics, then return 8 bytes past the call (callback data)
 	move.l	(sp),(callbackPtr).w
 	bsr.w	DecompressGraphics
 	addq.l	#8,(sp)
@@ -962,7 +962,7 @@ Framer	;Draw a d0 x d1 frame at printx / printy from the framer map. 95 takes th
 	move.w	d3,(a0)
 	rts
 
-AddFramer	;93 name. Jumped to from ReAddFramer (middle95). Load the framer tiles at char d4 through DecompressGraphicsWithCallback with the remap table
+AddFramer	;Jumped to from ReAddFramer (middle95). Load the framer tiles at char d4 through DecompressGraphicsWithCallback with the remap table
 	;after the jsr (colour 7 to 1); 95 also stores the map address in framermapptr
 	movea.l	#Framermap+8,a2
 	move.w	d4,(framercset).w
@@ -982,7 +982,7 @@ VBjsr	;(hockey94) Vertical blank interrupt (vector $78), jumps through the vbint
 	move.l	(vbint).w,-(sp)	;push handler address
 	rts	;and "return" into it
 
-VBlank	;(display94). 93 name; 93 IDA VBlank_org. Main vblank code for game play (vbint target). DumpSprites when dfok is set,
+VBlank	;(display94). 93 name; 93 Main vblank code for game play (vbint target). DumpSprites when dfok is set
 	;cramfade, then the game clock. gmode2 bit 2 keeps the clock running after the whistle, and with gmode2 bit 1 (penalty shot /
 	;shootout) shootoutclock counts down instead (shootoutjiffy jiffies, not while gmode2 bit 7 is set)
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1031,7 +1031,7 @@ VBlank	;(display94). 93 name; 93 IDA VBlank_org. Main vblank code for game play 
 	subq.w	#1,(shootoutclock).w
 	bra.s	.c
 
-p_music_vblank	;92 name (sound94). Read the pads (ReadJoyData), then SoundCmd 1: the 95 sound driver's vblank update. Called from the
+p_music_vblank	;(sound94). Read the pads (ReadJoyData), then SoundCmd 1: the 95 sound driver's vblank update. Called from the
 	;vblank handlers
 	bsr.w	ReadJoyData
 	move.w	#1,d0
@@ -1343,7 +1343,7 @@ ReadMenuJoy	;95 only. Read the menu pad: with sflags12 bit 0 clear, pad menupadn
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $07A762  From video94.asm and stats94.asm: ProcessInputWithRepeat, WaitVSyncAndReadInput
-;	video94 ProcessInputWithRepeat (93 name) and stats94 WaitVSyncAndReadInput, which 95 put in front of the collision code
+;video94 ProcessInputWithRepeat and stats94 WaitVSyncAndReadInput, which 95 put in front of the collision code
 ;	(collide95 starts at $7A7B4). WaitVSyncAndReadInput is written as instructions.
 
 ProcessInputWithRepeat	;(video94). 93 name. nodiag, then key repeat on d1-d3. 95: first repeat after $19 frames, then every 4 (every $14 with sflags12

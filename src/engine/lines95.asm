@@ -7,8 +7,8 @@
 ; $08A056  From input94.asm: line changes
 ;	94 input94 SetLCmode, SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2, with penalty94 linebar,
 ;	getlinee and AvgCline moved in. CompLine follows at $08A3FE.
-;	IDA code except AvgCline (dc.b, read from the retail bytes). IDA hid a printz String as instructions; it is String here. Local labels
-;	are numbered; the IDA local names are not kept.
+;except AvgCline (dc.b, read from the retail bytes). a printz String as instructions; it is String here. Local labels
+;are numbered; the names are not kept.
 ;	95 changes: the team struct offsets, the zero long at $69A (94 $30A).
 
 
@@ -299,9 +299,9 @@ AvgCline	;(penalty94) 93 name. Return d0 = average energy of the current line on
 ;	EASportsScreen, period94 updatePPTeamTime; and 95 only code: the saved line set routines (DefaultLineData, LoadTeamLines,
 ;	CheckTeamLines ...) and six DrawTeamScreen variants. Each routine comment names its 94 file or says 95 only. skate95 follows at
 ;	$08B4E0 (goalieacc).
-;	IDA left CompLine, AutoLineChange, ReadTeamSRAM, FixSavedLines, the LineSlotFixTbl handlers and the DrawTeamScreen variants as dc.b
-;	or as wrong code; they are read from the retail bytes. IDA hid printz Strings and DecompressGraphicsWithCallback remap bytes as
-;	instructions; they are String / dc.b here. Local labels are numbered; the IDA local names are not kept.
+;CompLine, AutoLineChange, ReadTeamSRAM, FixSavedLines, the LineSlotFixTbl handlers and the DrawTeamScreen variants as dc.b
+;or as wrong code; they are read from the retail bytes. printz Strings and DecompressGraphicsWithCallback remap bytes as
+;instructions; they are String / dc.b here. Local labels are numbered; the names are not kept.
 
 
 
@@ -379,7 +379,7 @@ CompLine	;(checks94) The computer picks a line for team a2 (a1 = other team): on
 	dc.w	0,2,1
 	dc.w	0,1,0
 
-chk4lc	;(checks94) Computer line change on the fly: puck in the player's own end (pucky 0-$56, 94 $58), one frame in 4, (was: AutoLineChange)
+chk4lc	;(checks94) Computer line change on the fly: puck in the player's own end (pucky 0-$56, 94 $58), one frame in 4
 	;not in line change mode, and the line tired (AvgCline $C00 or less): CompLine, SetPersonel, PrintScores1, then compshoot
 	btst	#4,(sflags7).w
 	bne.w	rtslc

@@ -2,9 +2,9 @@
 ;	New in 95: the season Create Player screens (the created player list, name entry with the letter grid, Modify Ratings
 ;	with the attribute points pool, the save RAM create records), Sign Free Agents and Release Players. Moved in: cards94
 ;	NameEntryFramer. Each routine comment says 95 only or names its 94 routine. NameEntryScreen follows at $09ACE6.
-;	IDA hid printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions and left the
+;printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions and left the
 ;	Modify Ratings field routines, the attribute handlers and several tables as dc.b; they are written from the retail bytes.
-;	Local labels are numbered; the IDA local names are not kept.
+;Local labels are numbered; the names are not kept.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -348,7 +348,7 @@ NameEntry	;95 only. Create Player name entry: toggle grid/edit mode, draw letter
 	moveq	#$16,d0
 	moveq	#7,d1
 	jsr	(printsmallz).l
-	String	TXS_FONT,$2
+	String	CC_SetFont,$2
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$17,$F,$0
 	jsr	(printsmallz).l
@@ -386,7 +386,7 @@ NameEntry	;95 only. Create Player name entry: toggle grid/edit mode, draw letter
 	String	'done.         '
 .4
 	jsr	(printsmallz).l
-	String	TXS_FONT,$2
+	String	CC_SetFont,$2
 
 NameEntryDone	;95 only. NameEntry: return
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -436,7 +436,7 @@ NameListMode	;95 only. NameEntry: name list mode (list and arrow help)
 NameListHelp	;95 only. Print help text for name list mode (D-Pad up/down / START exit / B edit)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printsmallz).l
-	String	TXS_FONT,$2
+	String	CC_SetFont,$2
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$17,$F,$0
 	jsr	(printsmallz).l
@@ -464,7 +464,7 @@ NameListHelp	;95 only. Print help text for name list mode (D-Pad up/down / START
 	jsr	(printsmallz).l
 	String	'edit.         '
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0
+	String	CC_SetFont,$0
 	movem.l	(sp)+,d0-d7/a0-a6
 .1
 	rts
@@ -665,7 +665,7 @@ PrintEditName	;95 only. Print 18-char name from a1 with - padding, highlight cur
 	clr.b	3(a0)
 	movea.l	a0,a1
 	jsr	(printsmallz).l
-	String	TXS_FONT,$1
+	String	CC_SetFont,$1
 	add.w	d4,d7
 	cmp.w	#8,d4
 	blt.w	.5
@@ -674,7 +674,7 @@ PrintEditName	;95 only. Print 18-char name from a1 with - padding, highlight cur
 	move.w	d7,(printx).w
 	jsr	(printsmall).l
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0
+	String	CC_SetFont,$0
 .6
 	move.w	(sp)+,(NameEntryLen).w
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -839,7 +839,7 @@ InvalidName	;95 only. SaveCreateName: "Invalid Name. Make sure player has both a
 
 InvalidNameWait	;95 only. SaveCreateName: wait for a key, close the box
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0
+	String	CC_SetFont,$0
 	move.w	#$FFFF,d0
 	bra.w	SaveNameRet
 
@@ -1506,7 +1506,7 @@ rtsCreate3	;95 only. empty stub (called from DrawRatings)
 
 PrintOverallRating	;unreferenced: prints OVERALL RTG. (player overall from CalcAttribRating, *100/d1)
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0,TXS_X,$4,TXS_Y,$16,'OVERALL RTG.',TXS_X,$13
+	String	CC_SetFont,$0,CC_SetX,$4,CC_SetY,$16,'OVERALL RTG.',CC_SetX,$13
 	movea.l	#CreateRecord,a0
 	adda.w	(a0),a0
 	addq.w	#8,a0
@@ -1528,7 +1528,7 @@ PrintOverallRating	;unreferenced: prints OVERALL RTG. (player overall from CalcA
 
 PrintUnallocated	;95 only. prints "Maximum Unallocated Points" and its value CreatePoints
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0,TXS_X,$4,TXS_Y,$17,'Maximum Unallocated Points',TXS_X,'"'
+	String	CC_SetFont,$0,CC_SetX,$4,CC_SetY,$17,'Maximum Unallocated Points',CC_SetX,'"'
 	move.w	(CreatePoints).l,d0
 	move.w	#4,d1
 	jsr	(PushNumberWidth).l
@@ -1795,7 +1795,7 @@ FieldPos	;95 only. field Pos.: print G/F/D indexed by CreateType
 
 FieldDone	;95 only. common field exit: reset text color (printz2 $F9,0)
 	jsr	(printsmallz).l
-	String	TXS_FONT,0
+	String	CC_SetFont,0
 	rts
 
 PosText	;95 only. G, F, D
@@ -1805,13 +1805,13 @@ PosText	;95 only. G, F, D
 
 FieldHighlight	;95 only. set normal text color, highlight if (d6,d7) is the cursor (CreateCursorX/2)
 	jsr	(printsmallz).l
-	String	TXS_FONT,0
+	String	CC_SetFont,0
 	cmp.w	(CreateCursorX).l,d6
 	bne.w	.0
 	cmp.w	(CreateCursorY).l,d7
 	bne.w	.0
 	jsr	(printsmallz).l
-	String	TXS_FONT,1
+	String	CC_SetFont,1
 .0
 	rts
 
@@ -1859,13 +1859,13 @@ PrintFieldLabel	;95 only. print field label: pick skater/goalie label list, high
 	move.w	d7,d0
 	movem.l	d0/a1,-(sp)
 	jsr	(printsmallz).l
-	String	TXS_FONT,0
+	String	CC_SetFont,0
 	cmp.w	(CreateCursorX).l,d6
 	bne.w	.1
 	cmp.w	(CreateCursorY).l,d7
 	bne.w	.1
 	jsr	(printsmallz).l
-	String	TXS_FONT,1
+	String	CC_SetFont,1
 .1
 	movem.l	(sp)+,d0/a1
 	jsr	(PrintSmallListItem).l
@@ -2398,7 +2398,7 @@ SignFreeAgents	;95 only. Sign Free Agents screen: draw, input loop
 	dc.b	$F9,$1,$FD,$7,$FC,$19,'A,B',$FD
 	dc.b	$17,'C',$FD,$1F,'Start',$FA,$1,$0
 	jsr	(printsmallz).l
-	String	TXS_X,$3,'Switch Team',TXS_X,$12,'Sign Player',TXS_X,' Exit',TXS_FONT,$0
+	String	CC_SetX,$3,'Switch Team',CC_SetX,$12,'Sign Player',CC_SetX,' Exit',CC_SetFont,$0
 	move.w	#3,d0
 	movea.l	#AttribDeltas,a0
 .0
@@ -2603,16 +2603,16 @@ CheckMaxDefense	;95 only. compare GetPlayerCountD7 - GetDefenseStartD7 with $F
 FreeAgentArrows	;95 only. draw scroll up/down arrows for the list
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printsmallz).l
-	String	TXS_FONT,$1
+	String	CC_SetFont,$1
 	move.w	(TradeData+$4).l,d0
 	add.w	(TradeData).l,d0
 	beq.w	.0
 	jsr	(printsmallz).l
-	String	TXS_X,$9,TXS_Y,$9,'{',$0
+	String	CC_SetX,$9,CC_SetY,$9,'{',$0
 	bra.w	.1
 .0
 	jsr	(printsmallz).l
-	String	TXS_X,$9,TXS_Y,$9,' ',$0
+	String	CC_SetX,$9,CC_SetY,$9,' ',$0
 .1
 	move.w	(TradeData).l,d1
 	add.w	(TradeData+$4).l,d1
@@ -2622,14 +2622,14 @@ FreeAgentArrows	;95 only. draw scroll up/down arrows for the list
 	cmp.w	d0,d1
 	bge.w	.2
 	jsr	(printsmallz).l
-	String	TXS_X,$9,TXS_Y,$13,'}',$0
+	String	CC_SetX,$9,CC_SetY,$13,'}',$0
 	bra.w	.3
 .2
 	jsr	(printsmallz).l
-	String	TXS_X,$9,TXS_Y,$13,' ',$0
+	String	CC_SetX,$9,CC_SetY,$13,' ',$0
 .3
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0
+	String	CC_SetFont,$0
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -2640,7 +2640,7 @@ FreeAgentViolation	;95 only. show VIOLATION OF ROSTER RULES message, wait, erase
 	move.w	#$E,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	String	TXS_FONT,$3,TXS_X,$7,TXS_Y,$B,'VIOLATION OF ROSTER RULES',$0
+	String	CC_SetFont,$3,CC_SetX,$7,CC_SetY,$B,'VIOLATION OF ROSTER RULES',$0
 	movea.l	#TradeRulesText,a1
 	jsr	(printsmall).l
 	bsr.w	ReadFreeAgentPads
@@ -2651,7 +2651,7 @@ FreeAgentViolation	;95 only. show VIOLATION OF ROSTER RULES message, wait, erase
 	move.w	#$E,d1
 	jsr	(eraser).l
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0
+	String	CC_SetFont,$0
 	bra.w	FreeAgentLoop
 
 FreeAgentTeamBlock	;95 only. draw team header (DrawTradeLogo) for team TradeData+$C
@@ -2682,14 +2682,14 @@ DrawFreeAgents	;95 only. draw visible free agent rows (pos, name, rating)
 	adda.l	d0,a3
 .0
 	jsr	(printsmallz).l
-	String	TXS_X,$0,'                                       ',$0
+	String	CC_SetX,$0,'                                       ',$0
 	move.w	#$B,(printx).w
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0
+	String	CC_SetFont,$0
 	cmp.w	d5,d6
 	bne.w	.1
 	jsr	(printsmallz).l
-	String	TXS_FONT,$1
+	String	CC_SetFont,$1
 .1
 	move.w	(a3)+,d0
 	move.w	#$1C,d7
@@ -2827,11 +2827,11 @@ ReleasePlayers	;95 only. Release Player screen: up/down scroll roster, switch te
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),7,2,'Release Player',0
 	jsr	(printsmallz).l
-	String	TXS_FONT,1,TXS_X,6,TXS_Y,$19,'A,B',TXS_X,$16,'C',TXS_X,' Start',TXS_ADDY,1,0
+	String	CC_SetFont,1,CC_SetX,6,CC_SetY,$19,'A,B',CC_SetX,$16,'C',CC_SetX,' Start',CC_AddY,1,0
 	jsr	(printsmallz).l
-	String	TXS_X,2,'Switch Team',TXS_X,$10,'Release Player',TXS_X,'!Exit',TXS_FONT,0,0
+	String	CC_SetX,2,'Switch Team',CC_SetX,$10,'Release Player',CC_SetX,'!Exit',CC_SetFont,0,0
 	jsr	(printsmallz).l
-	String	TXS_FONT,2,TXS_X,$1B,TXS_Y,7,'POS.',TXS_X,' RTG.',TXS_FONT,0
+	String	CC_SetFont,2,CC_SetX,$1B,CC_SetY,7,'POS.',CC_SetX,' RTG.',CC_SetFont,0
 	clr.w	(TradeData+$C).l
 	clr.w	(TradeData).l
 	move.w	#0,(HomeTeam).w
@@ -3060,16 +3060,16 @@ CheckMinDefense	;95 only. Position 2 (D): GetPlayerCountD7 roster size minus Get
 ReleaseArrows	;95 only. Draw scroll arrows ({ above / } below) beside the roster list
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printsmallz).l
-	String	TXS_FONT,1
+	String	CC_SetFont,1
 	move.w	(TradeData+$4).l,d0
 	add.w	(TradeData).l,d0
 	beq.w	.0
 	jsr	(printsmallz).l
-	String	TXS_X,9,TXS_Y,9,'{',0
+	String	CC_SetX,9,CC_SetY,9,'{',0
 	bra.w	.1
 .0
 	jsr	(printsmallz).l
-	String	TXS_X,9,TXS_Y,9,' ',0
+	String	CC_SetX,9,CC_SetY,9,' ',0
 .1
 	move.w	(TradeData).l,d1
 	add.w	(TradeData+$4).l,d1
@@ -3079,14 +3079,14 @@ ReleaseArrows	;95 only. Draw scroll arrows ({ above / } below) beside the roster
 	cmp.w	d0,d1
 	bge.w	.2
 	jsr	(printsmallz).l
-	String	TXS_X,9,TXS_Y,$15,'}',0
+	String	CC_SetX,9,CC_SetY,$15,'}',0
 	bra.w	.3
 .2
 	jsr	(printsmallz).l
-	String	TXS_X,9,TXS_Y,$15,' ',0
+	String	CC_SetX,9,CC_SetY,$15,' ',0
 .3
 	jsr	(printsmallz).l
-	String	TXS_FONT,0
+	String	CC_SetFont,0
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -3097,7 +3097,7 @@ ReleaseViolation	;95 only. "VIOLATION OF ROSTER RULES" message box, wait for key
 	move.w	#$E,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	String	TXS_FONT,3,TXS_X,7,TXS_Y,$B,'VIOLATION OF ROSTER RULES',0
+	String	CC_SetFont,3,CC_SetX,7,CC_SetY,$B,'VIOLATION OF ROSTER RULES',0
 	movea.l	#TradeRulesText,a1
 	jsr	(printsmall).l
 	bsr.w	ReadReleasePads
@@ -3108,7 +3108,7 @@ ReleaseViolation	;95 only. "VIOLATION OF ROSTER RULES" message box, wait for key
 	move.w	#$E,d1
 	jsr	(eraser).l
 	jsr	(printsmallz).l
-	String	TXS_FONT,0
+	String	CC_SetFont,0
 	bra.w	ReleaseLoop
 
 ReleaseTeamBlock	;95 only. Print team block for team TradeData+$C (DrawTradeLogo)
@@ -3137,14 +3137,14 @@ DrawReleaseRoster	;95 only. Draw the visible roster rows (pos letter, name, rati
 	adda.l	d0,a4
 .0
 	jsr	(printsmallz).l
-	String	TXS_X,0,'                                       ',0
+	String	CC_SetX,0,'                                       ',0
 	move.w	#$B,(printx).w
 	jsr	(printsmallz).l
-	String	TXS_FONT,0
+	String	CC_SetFont,0
 	cmp.w	d5,d6
 	bne.w	.1
 	jsr	(printsmallz).l
-	String	TXS_FONT,1
+	String	CC_SetFont,1
 .1
 	clr.w	d0
 	move.b	2(a4),d0

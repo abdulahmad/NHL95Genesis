@@ -3,8 +3,8 @@
 ;	assign94 assfaceoff / assfaceoffp1 moved in, display94 checkfo, and the 95 DrawFaceoffWindow
 ;	(94 puckfaceoff2 .drawfaceoffwindow). 94 ChkGoalies, ReturnGoalies, CPgoalie and CompLine are not here. penalty95
 ;	follows at $088F06.
-;	IDA left puckfaceoff ... Endfaceoff ($883C8-$88D51) as dc.b; that code is read from the retail bytes with the 94 source as the
-;	guide. IDA hid the printz / printz2 Strings as instructions; they are String here. Local labels are numbered; the IDA local names
+;puckfaceoff ... Endfaceoff ($883C8-$88D51) as dc.b; that code is read from the retail bytes with the 94 source as the
+;guide. the printz / printz2 Strings as instructions; they are String here. Local labels are numbered; the names
 ;	are not kept.
 ;	95 changes: four pads (c1playernum ... c4playernum, cont3team / cont4team), the 95 assignment numbers ($1F, 4, $10, $11, 1) and SPA
 ;	values, net y $112 / $FEEE (94 $10C / $FEF4), Practice Mode (sflags9 bit 7) faceoffs, tmsize $366.
@@ -591,7 +591,7 @@ assfaceoff	;(assign94). Assignment $10: wait for the faceoff to end (sflags2 bit
 .0
 	rts
 
-assfaceoffpl	;(assign94). Assignment $11, the faceoff player: set his fofdata2 frame from his stick hand and goal, (was: assfaceoffp1)
+assfaceoffpl	;(assign94). Assignment $11, the faceoff player: set his fofdata2 frame from his stick hand and goal
 	;and start the faceoff SPA ($1B36, or $1B60 at random once the puck temp1 is above $10). After the faceoff: nopuck $14 and assexit
 	btst	#5,pflags(a3)
 	bne.w	.7
@@ -876,7 +876,7 @@ DrawFaceoffWindow	;95 only (94 puckfaceoff2 .drawfaceoffwindow). The faceoff win
 	tst.w	(OptLine).w
 	bne.w	.2
 	jsr	(printsmallz).l
-	String	TXS_ADDY,$A,TXS_ATTR,4
+	String	CC_AddY,$A,CC_SetAttribute,4
 	moveq	#$C,d0
 	moveq	#3,d1
 	jsr	(Framer).l
@@ -887,7 +887,7 @@ DrawFaceoffWindow	;95 only (94 puckfaceoff2 .drawfaceoffwindow). The faceoff win
 	exg	d0,d1
 .1
 	jsr	(printsmallz).l
-	String	TXS_ADDX,1,TXS_ADDY,$FE
+	String	CC_AddX,1,CC_AddY,$FE
 	movea.l	#linelist,a1
 	jsr	(PrintSmallListItem).l
 	addq.w	#4,(printx).w

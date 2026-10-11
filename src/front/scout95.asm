@@ -6,15 +6,15 @@
 ;------------------------------------------------------------------------------------------------------------------------
 ; $09F590  From scout94.asm: matchups and scouting report
 ;	Mapped to scout94 (85%): ScoutingReport, PageMatchup ... MatchupLineSlots; moved in: BuildHotColdLists and SortHotColdStarters (crowd94).
-;	IDA hid the printz / printbigz Strings and the remap bytes after DecompressGraphicsWithCallback as instructions; they are written from
+;the printz / printbigz Strings and the remap bytes after DecompressGraphicsWithCallback as instructions; they are written from
 ;	the retail bytes.
 ;	$20xxxx addresses are save RAM (odd bytes).
-;	Local labels are numbered; the IDA local names are not kept.
+;Local labels are numbered; the names are not kept.
 
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-ScoutingReport	;scout94 ScoutingReport (93 name). Pregame scouting report: the Ron Barr picture, the text box and the matchups (0 the
+ScoutingReport	;scout94 ScoutingReport. Pregame scouting report: the Ron Barr picture, the text box and the matchups (0 the
 	;teams, 1-6 the players by position) with their ratings and the advantage marks; the text player (ScoutTextPlayer) types
 	;the paragraph list, with the user names of each team (GetHomeUsers / GetAwayUsers). A / C page the matchups, down types fast, start leaves
 	jsr	(ReadNameLog).l
@@ -276,7 +276,7 @@ PrintTwoSpaces	;scout94 PrintTwoSpaces. Print 2 spaces at printx / printy (TwoSp
 TwoSpacesTxt	;scout94 TwoSpacesTxt. A two space String
 	String	'  '
 
-StatsText	;scout94 StatsText (93 name). The rating names; -1 ends the list (PrintMatchupRatings)
+StatsText	;scout94 StatsText. The rating names; -1 ends the list (PrintMatchupRatings)
 	String	'Shooting'
 	String	'Skating',0
 	String	'Passing',0
@@ -407,7 +407,7 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 	tst.w	(matchup).w
 	bne.w	.3
 	jsr	(printsmallz).l
-	String	TXS_ALL,$0,$1,$16,$16,TXS_FONT,$1,$0
+	String	CC_SetMapAndPosition,$0,$1,$16,$16,CC_SetFont,$1,$0
 	lea	StatsText(pc),a1
 	move.w	#0,d7
 .0
@@ -456,7 +456,7 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 .5
 	dbf	d0,.4
 	jsr	(printsmallz).l
-	String	TXS_ALL,$0,$1,$C,$13,TXS_FONT,$1,$0
+	String	CC_SetMapAndPosition,$0,$1,$C,$13,CC_SetFont,$1,$0
 	jsr	(printsmall).l
 	move.w	#$18,(printy).w
 	move.w	#2,(printfontset).w
@@ -721,12 +721,12 @@ SortHotColdStarters	;crowd94 SortHotColdStarters. Sum the hot / cold values of t
 ;	player lists (crowd94), PrintPlayerNameRight, GetTeamRating / TeamRatings (period94), HotColdIcon (title94), GetTeamArena / GetTeamNickname
 ;	(scout94), ScoutTextScript (graphics94), GetPlayerPicture (94 DrawPlayerPicture, cards94); 95 only: the users lists of the scouting text
 ;	(GetHomeUsers ... UserNameString).
-;	IDA left CompareHotColdTotals / GetHotColdTotal and ScoutTextScript as dc.b and hid printz Strings; they are written from the retail bytes.
+;CompareHotColdTotals / GetHotColdTotal and ScoutTextScript as dc.b and hid printz Strings; they are written from the retail bytes.
 ;	$20xxxx addresses are save RAM (odd bytes).
-;	Local labels are numbered; the IDA local names are not kept.
+;Local labels are numbered; the names are not kept.
 
 
-InitScoutingDisplay	;setup94 StartScoutText. Start the text player ScoutTextPlayer: VertLineScrolling = -1, PlayerScrollCtr = -1, clear SelectedPlayerIdx / typedelay; a0 = TestList (the script line list) (was: StartScoutText)
+InitScoutingDisplay	;setup94 StartScoutText. Start the text player ScoutTextPlayer: VertLineScrolling = -1, PlayerScrollCtr = -1, clear SelectedPlayerIdx / typedelay; a0 = TestList (the script line list)
 	move.w	#$FFFF,(VertLineScrolling).w
 	st	(PlayerScrollCtr).w
 	clr.w	(SelectedPlayerIdx).w
@@ -734,7 +734,7 @@ InitScoutingDisplay	;setup94 StartScoutText. Start the text player ScoutTextPlay
 	movea.l	#setupvalues,a0
 	rts
 
-UpdateScoutingDisplay	;setup94 ScoutTextPlayer. Text player of ScoutingReport: types the ScoutTextScript lines of TestList word by word with a (was: ScoutTextPlayer)
+UpdateScoutingDisplay	;setup94 ScoutTextPlayer. Text player of ScoutingReport: types the ScoutTextScript lines of TestList word by word with a
 	;typing delay (typedelay, longer after , and .); $D ends a line; the special characters insert Strings (team names, arena, hot / cold players,
 	;user names); line breaks scroll the text box (ScoutTextNextLine)
 	cmpi.w	#$1000,(typedelay).w
@@ -940,7 +940,7 @@ rtsScoutText	equ	*	;setup94 rtss2. Shared rts of ScoutTextPlayer / ScoutTextNext
 	subq.w	#1,d1
 	bra.w	.11
 
-ScrollDisplayUp	;setup94 ScoutTextNextLine. Next text line of ScoutTextPlayer; at 7 lines scroll the 8 rows up (was: ScoutTextNextLine)
+ScrollDisplayUp	;setup94 ScoutTextNextLine. Next text line of ScoutTextPlayer; at 7 lines scroll the 8 rows up
 	clr.w	(DispAttribCtr).w
 	addq.w	#1,(VertLineScrolling).w
 	cmpi.w	#7,(VertLineScrolling).l

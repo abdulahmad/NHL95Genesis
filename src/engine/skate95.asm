@@ -172,13 +172,13 @@ doinput_goaliedive	;(input94 doinput .33) The goalie dive on button A (bit 6): f
 	bset	#5,pflags(a3)
 	addi.w	#$96,(crowdlevel).w
 
-rtss15	;94 name. The rts of doinput_goaliedive
+rtss15	;The rts of doinput_goaliedive
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; $08B734  From input94.asm: doinput_cbut, ClampTargetY, doinput_chkanim, getGoalieSCnum
 ;	94 input94 doinput_cbut, ClampTargetY (with the 10 SPA offsets after it), doinput_chkanim and getGoalieSCnum (95 getGoalieSCnum).
-;	doinput_onetimer / doinput_ispc are not in 95 here; doinput_islocked is in input95. IDA code.
+;doinput_onetimer / doinput_ispc are not in 95 here; doinput_islocked is in input95.
 ;	95 changes: the y limits $106 / $FEFA, the goalie box in doinput_chkanim, the 95 SPA values.
 
 
@@ -378,8 +378,8 @@ getGoalieSCnum	;(input94 getGoalieSCnum) 95: d0 = SCnum of the goalie of the tea
 ;	stopna2, penalty94 PenGoalStuff, data94 box / DisplayPlayerAttributeMenu / GoalBigTxt / PPGoalBigTxt, title94 PrintPlayerAssists /
 ;	PrintPlayerGoals / PrintParenNumber, replay94 checkwindow, setup94 PeriodOver / GameOver / ExitToOpening, hockey94 clockcont_0 /
 ;	clockcont; and the 95 controller setup screen (SetContTeams ... ReadAllPads).
-;	IDA left SetGoaliesCtl and PeriodOver as dc.b and the last four routines as wrong code; they and the tables are read from the
-;	retail bytes. IDA hid printz Strings and DecompressGraphicsWithCallback remap bytes as instructions; they are String / dc.b here.
+;SetGoaliesCtl and PeriodOver as dc.b and the last four routines as wrong code; they and the tables are read from the
+;retail bytes. printz Strings and DecompressGraphicsWithCallback remap bytes as instructions; they are String / dc.b here.
 
 
 GoalieReadySPA	;95 only. d1 = the goalie ready SPA: $1B7A near the puck (within $56 in y) or in a shootout, else $1C54

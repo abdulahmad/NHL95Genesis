@@ -9,8 +9,8 @@
 ;	PrintNameCursor, PrintCurLetter, LetterGridPos, EnterNameTxt / SelectNameTxt, PrintNameLog, MoveLogArrows, PrintLogArrows,
 ;	GetNameLength, PrintNameField, LetterGrid, GetLogName, StoreUserName and WriteNameRecord (the user records name entry).
 ;	The old segment map ended this part at $09B72F, inside records94 UserNameEntry ($09B6F4); UserNameEntry starts at $09B6F4.
-;	IDA hid printz / printz2 / printbigz Strings as instructions; they are written from the retail bytes.
-;	Local labels are numbered; the IDA local names are not kept.
+;printz / printz2 / printbigz Strings as instructions; they are written from the retail bytes.
+;Local labels are numbered; the names are not kept.
 
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
@@ -543,15 +543,15 @@ PrintNameField	;Name entry: print the 12-char name field at a1 ("-" pads) and th
 	move.b	(a0,d4.w),2(a1)
 	move.b	#0,3(a1)
 	jsr	(printsmallz).l
-	String	TXS_FONT,1
+	String	CC_SetFont,1
 	cmpi.b	#$20,2(a1)
 	bne.w	.2
 	jsr	(printsmallz).l
-	String	TXS_FONT,3
+	String	CC_SetFont,3
 .2
 	jsr	(printsmall).l
 	jsr	(printsmallz).l
-	String	TXS_FONT,0
+	String	CC_SetFont,0
 	movem.l	(sp)+,a0-a1
 .3
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -725,8 +725,8 @@ WriteNameRecord	;Clear name slot namelogsel from every saved record (read ReadSR
 ;	PrintRecordTitles, PrintWinRecords, ClearRecordArea, PrintPlayerRecords, PrintRecordName, CalcWinPercents, ReadTeamRecords and
 ;	ClearWinRecords (title94).
 ;	The segment map started this file at $09B730 (inside UserNameEntry); the confirmed start is $09B6F4.
-;	IDA left $09B8D6-$09C019 as dc.b; it is transcribed from the retail bytes. IDA hid printz / printz2 / printbigz Strings as instructions.
-;	Local labels are numbered; the IDA local names are not kept.
+;$09B8D6-$09C019 as dc.b; it is transcribed from the retail bytes. printz / printz2 / printbigz Strings as instructions.
+;Local labels are numbered; the names are not kept.
 
 
 UserNameEntry	;With user records on (OptUserRec 0): the name entry (NameEntryScreen) for each pad in use (records94 UserNameEntry),
@@ -906,7 +906,7 @@ RecordHoldersScreen	;records94 RecordHoldersScreen. Pause menu RECORD HOLDERS: t
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP3),$7,$2,'Record Holders',-(TXPRI+TXMAP3),$1,$9
 	jsr	(printsmallz).l
-	String	TXS_ALL,$4,$3,$5,$8,TXS_FONT,$1,'Name',TXS_FONT,$0,$0
+	String	CC_SetMapAndPosition,$4,$3,$5,$8,CC_SetFont,$1,'Name',CC_SetFont,$0,$0
 	bsr.w	PrintRecordTitles
 	bsr.w	PrintWinRecords
 .loop
@@ -982,7 +982,7 @@ PrintWinRecords	;records94 PrintWinRecords. Record Holders page 0: name (PrintRe
 	;in winsort order
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printsmallz).l
-	String	TXS_ALL,$4,$3,$2,$A,TXS_FONT,$0,$0
+	String	CC_SetMapAndPosition,$4,$3,$2,$A,CC_SetFont,$0,$0
 	move.w	#6,d7
 	movea.l	#winsort,a0
 	movea.l	#winpcts,a2
@@ -1049,7 +1049,7 @@ ClearRecordArea	;records94 ClearRecordArea. Record Holders: erase the record row
 	move.w	(printy).w,-(sp)
 	move.w	(printm).w,-(sp)
 	jsr	(printsmallz).l
-	String	TXS_ALL,$4,$3,$0,$A,$0
+	String	CC_SetMapAndPosition,$4,$3,$0,$A,$0
 	move.w	#$28,d0
 	move.w	#$12,d1
 	move.w	#$7FF,d2
@@ -1063,7 +1063,7 @@ PrintPlayerRecords	;records94 PrintPlayerRecords. Record Holders pages 1 (goals,
 	;"by TEAM vs. TEAM" of the 7 rows
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printsmallz).l
-	String	TXS_ALL,$4,$3,$2,$A,TXS_FONT,$0,$0
+	String	CC_SetMapAndPosition,$4,$3,$2,$A,CC_SetFont,$0,$0
 	move.w	#6,d7
 	movea.l	#recsort1,a0
 	cmpi.w	#1,(TempWord1).w
@@ -1325,8 +1325,8 @@ ClearWinRecords	;title94 ClearWinRecords. Clear bytes 8-$B (wins, games) of the 
 ;	Mapped to cards94 (67%): UpdateRecords (the user records after a game, four pads in 95), UpdateTeamRecord, UpdateCrowdRecord,
 ;	UpdatePlayerRecords, the save RAM record block IO (ReadTeamRecord ... WritePlayerRecord, PlayerRecordOffsets), CountGoalies and
 ;	CountPlayers; SetupScreen (stats94, 93 name) follows them in 95.
-;	IDA left SetupScreen ($09C5B8) as dc.b; it is transcribed from the retail bytes. IDA hid its printz Strings and remap bytes.
-;	Local labels are numbered; the IDA local names are not kept.
+;SetupScreen ($09C5B8) as dc.b; it is transcribed from the retail bytes. its printz Strings and remap bytes.
+;Local labels are numbered; the names are not kept.
 
 
 UpdateRecords	;cards94 UpdateRecords. With save RAM (ValidSRAM) and user records on (OptUserRec 0), update the player records
@@ -1678,7 +1678,7 @@ TeamRecordIO	;cards94 TeamRecordIO. The team record block: read or write (sflags
 WriteTeamRecord	;cards94 WriteTeamRecord. Write the team record block (TeamRecordIO)
 	bset	#6,(sflags6).w
 	bra.s	TeamRecordIO
-clrCrowdRAM	;cards94 clrCrowdRAM (IDA name). Read the 16 byte crowd record block of team d1 ($B62 + d1 * 16) to a0 (CrowdRecordIO)
+clrCrowdRAM	;cards94 clrCrowdRAM. Read the 16 byte crowd record block of team d1 ($B62 + d1 * 16) to a0 (CrowdRecordIO)
 	bclr	#6,(sflags6).w
 CrowdRecordIO	;cards94 CrowdRecordIO. The crowd record block: read or write (sflags6 bit 6)
 	movem.l	d0-d1/a0-a1,-(sp)
@@ -1747,7 +1747,7 @@ CountPlayers	;cards94 CountPlayers. homeplayers / awayplayers = players of the h
 	move.w	d0,(awayplayers).w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-SetupScreen	;stats94 SetupScreen (93 name). Common start of the stats screens: blank, scroll 0, 40 cell mode, the framer, the
+SetupScreen	;stats94 SetupScreen. Common start of the stats screens: blank, scroll 0, 40 cell mode, the framer, the
 	;background bitmap (ControllerBgMap), the small fonts (three remaps) and the big font
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l

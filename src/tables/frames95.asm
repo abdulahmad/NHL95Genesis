@@ -71,10 +71,10 @@ SPFgextra1	=	SPFboardmid+28	; 1040 95 only
 SPFgslambot	=	SPFgextra1+4	; 1044 95 only
 SPFfaceoff	=	SPFgslambot+6	; 1050 95 only. The last frame a 95 table uses is 1055
 
-SPAlist	;94 name. movea.l #SPAlist (IDA #$5A34) in the replay and input code
+SPAlist	;movea.l #SPAlist (#$5A34) in the replay and input code
 	dc.w	0
 
-SPAskate	=	*-SPAlist	; 94 SPAskate ($5D0): noturn0 (IDA $8C014) move.w #2,d1. Table 0 in 95 (94 put gready here)
+SPAskate	=	*-SPAlist	; 94 SPAskate ($5D0): noturn0 move.w #2,d1. Table 0 in 95 (94 put gready here)
 SPAskate_table:	;Frames 1-330
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -134,7 +134,7 @@ SPAskateturn_table:	;Frames 267-330
 .6	dc.w	SPFburst+48,6,SPFburst+49,6,SPFburst+50,6,SPFburst+51,6,SPFburst+52,6,SPFburst+53,6,SPFburst+54,6,SPFburst+55,-6
 .7	dc.w	SPFburst+56,6,SPFburst+57,6,SPFburst+58,6,SPFburst+59,6,SPFburst+60,6,SPFburst+61,6,SPFburst+62,6,SPFburst+63,-6
 
-SPAskate2	=	*-SPAlist	; 95 only. noturn0 (IDA $8C022) uses it in place of SPAskate when sflags bit 7 is set
+SPAskate2	=	*-SPAlist	; 95 only. noturn0 uses it in place of SPAskate when sflags bit 7 is set
 SPAskate2_table:	;Frames 1-64
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -172,7 +172,7 @@ SPAskate2_table:	;Frames 1-64
 	dc.w	SPFskate+56,7,SPFskate+57,7,SPFskate+58,7,SPFskate+59,7,SPFskate+60,7,SPFskate+61,7,SPFskate+62,7,SPFskate+63,7
 	dc.w	SPFskate+56,6,SPFskate+57,6,SPFskate+58,6,SPFskate+59,6,SPFskate+60,6,SPFskate+61,6,SPFskate+62,6,SPFskate+63,-6
 
-SPAskatewp	=	*-SPAlist	; 94 SPAskatewp ($53E): noturn0 (IDA $8C03A) for the puck carrier. input burst .anim compares it
+SPAskatewp	=	*-SPAlist	; 94 SPAskatewp ($53E): noturn0 for the puck carrier. input burst.anim compares it
 SPAskatewp_table:	;Frames 331-394
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1410,7 +1410,7 @@ SPAgskate_table:	;Frames 852-875
 .6	dc.w	SPFgskate+18,12,SPFgskate+19,8,SPFgskate+20,12,SPFgskate+19,-8
 .7	dc.w	SPFgskate+21,12,SPFgskate+22,8,SPFgskate+23,12,SPFgskate+22,-8
 
-SPAcelebrate	=	*-SPAlist	; 94 SPAcelebrate ($E8A): the 94 assscore step (IDA $83518)
+SPAcelebrate	=	*-SPAlist	; 94 SPAcelebrate ($E8A): the 94 assscore step
 SPAcelebrate_table:	;Frames 836-851
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1732,7 +1732,7 @@ SPAboardmidr_table:	;Frames 66-1039
 .6
 .7	dc.w	SPFboardmid+24,6,SPFboardmid+25,6,SPFboardmid+26,6,SPFboardmid+27,80,SPFboardmid+26,6,SPFboardmid+24,6,SPFglide+6,-8
 
-SPApump	=	*-SPAlist	; 94 SPApump ($EFC), inferred: the word list at $83564 after SPAcelebrate (IDA no label), with SPApump2
+SPApump	=	*-SPAlist	; 94 SPApump ($EFC), inferred: the word list at $83564 after SPAcelebrate (label), with SPApump2
 SPApump_table:	;Frames 922-937
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1754,7 +1754,7 @@ SPApump_table:	;Frames 922-937
 .6	dc.w	SPFpump+12,12,SPFpump+13,12,SPFpump+12,12,SPFpump+13,12,SPFpump+12,12,SPFpump+13,-12
 .7	dc.w	SPFpump+14,12,SPFpump+15,12,SPFpump+14,12,SPFpump+15,12,SPFpump+14,12,SPFpump+15,-12
 
-SPAstanley	=	*-SPAlist	; 94 SPAstanley ($109E), inferred: set at $834C0 (IDA no label), before the celebrate step
+SPAstanley	=	*-SPAlist	; 94 SPAstanley ($109E), inferred: set at $834C0 (label), before the celebrate step
 SPAstanley_table:	;Frames 938-953
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1798,7 +1798,7 @@ SPApump2_table:	;Frames 954-969
 .6	dc.w	SPFpump2+12,12,SPFpump2+13,12,SPFpump2+12,12,SPFpump2+13,12,SPFpump2+12,12,SPFpump2+13,-12
 .7	dc.w	SPFpump2+14,12,SPFpump2+15,12,SPFpump2+14,12,SPFpump2+15,12,SPFpump2+14,12,SPFpump2+15,-12
 
-SPAgslamtop	=	*-SPAlist	; 94 SPAgslamtop ($1596): checkanim (IDA $7FE62)
+SPAgslamtop	=	*-SPAlist	; 94 SPAgslamtop ($1596): checkanim
 SPAgslamtop_table:	;Frames 898-903
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1866,7 +1866,7 @@ SPAgextra2_table:	;Frames 876-879
 .4
 .5	dc.w	SPFgextra2+2,4,SPFgextra2+3,-24,SPFgextra2+2,-4
 
-SPAgslambot	=	*-SPAlist	; 94 SPAgslambot ($1684): checkanim (IDA $7FE7C)
+SPAgslambot	=	*-SPAlist	; 94 SPAgslambot ($1684): checkanim
 SPAgslambot_table:	;Frames 1044-1049
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1890,7 +1890,7 @@ SPAgslambot_table:	;Frames 1044-1049
 
 ; End of animation list
 
-revframetbl	;94 name (94 kept it at the end of graphics94). One word per sprite frame (1057, frame 0-1056):
-	;the frame for a reverse angle replay. RestoreReplayFrame (replay95, IDA $8DD46) movea.l #revframetbl,a6
+revframetbl	;(94 kept it at the end of graphics94). One word per sprite frame (1057, frame 0-1056)
+	;the frame for a reverse angle replay. RestoreReplayFrame (replay95) movea.l #revframetbl,a6
 	incbin	..\Extracted\NHL95\Graphics\revframetbl.bin
 	even

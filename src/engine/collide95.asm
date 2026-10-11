@@ -83,7 +83,7 @@ checkcoll	;d2 = new x coord, d3 = new y coord, a3 = struct of object. Check wall
 	move.w	OldYpos(a3),Ypos(a3)	;move OldYpos into Ypos
 	rts
 
-checkwallcoll	;93 name. d2/d3 = x/y to test, a3 = object, wcradiusx/wcradiusy = radius. Check the corner circles, the goals (checkgoal
+checkwallcoll	;d2/d3 = x/y to test, a3 = object, wcradiusx/wcradiusy = radius. Check the corner circles, the goals (checkgoal
 	;with a2 = SortCords+(13*SCstruct) top, SortCords+(12*SCstruct) bottom) and then the side and end boards. Calls wallcollb on a hit, with
 	;d0/d1 = cos/sin of the wall. 95 rink: sideline $98, end boards $138, corner radius $4C (94: $88, $12A, $40)
 	bclr	#pf3wall,pflags3(a3)	;wall collision bit
@@ -160,9 +160,9 @@ checkwallcoll	;93 name. d2/d3 = x/y to test, a3 = object, wcradiusx/wcradiusy = 
 	cmp.w	d4,d2
 	ble.w	wallcollb
 	rts
-	rts	;$7A976. IDA dc.b: a second rts, no xref
+	rts	;$7A976. a second rts, no xref
 
-wallcollb	;93 name. Check for puck over wall. a3 = object, d0/d1 = cos/sin of the wall. Not the puck: wallcoll. 95: Zpos above $15
+wallcollb	;Check for puck over wall. a3 = object, d0/d1 = cos/sin of the wall. Not the puck: wallcoll. 95: Zpos above $15
 	;locks the scroll (LockScroll) and goes out of play; above $12 only at x $28-$2A behind the goal line ($110) with Yvel >= $FA0 (SPA $250A on the
 	;next struct, sfx $E, crowd). Out of play: sfslock, pfnc, and while the clock runs penalty 6 (PenOOP) for ltplayer
 	cmpi.w	#$E,SCnum(a3)
@@ -1406,7 +1406,7 @@ puckstick	;puck collides with stick. a2 = player who collided, a3 = puck, d0 = d
 .ex2
 	rts
 
-puckglue	;93 name. Player a2 takes the puck (92 puckstick .glue): faceoff and pass stats, crowd song, goalie hold time (temp5),
+puckglue	;Player a2 takes the puck (92 puckstick.glue): faceoff and pass stats, crowd song, goalie hold time (temp5)
 	;then .setd0player. 95 also sets pflags2 bit 7 on a2
 	move.w	#7,-(sp)	;SFXpuckget (song)
 	move.w	SCnum(a2),d0	;move SCnum into d0

@@ -3,9 +3,9 @@
 ;	GetRosterName, Read / WriteTeamRoster, GetJerseyNumber) and the season trades: the Trade Player screen (TradePlayers),
 ;	CheckTrade (roster rules, INVALID TRADE), EvaluateTrade, GMDecision and ExecuteTrade, which moves the players with their
 ;	stats, saved lines and line slots. No 94 code. create95 follows at $097C54.
-;	IDA hid printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions and left
+;printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions and left
 ;	HighlightsHelp and ReadTradePads3 as dc.b; they are written from the retail bytes.
-;	Local labels are numbered; the IDA local names are not kept.
+;Local labels are numbered; the names are not kept.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
 ;	the cmp and exg encodings after assembly.
 
@@ -798,9 +798,9 @@ TradePlayers	;95 only. Trade Player screen (main flow): the two rosters with pos
 	String	-(TXPRI+TXMAP1),$8,$10,$0
 	bsr.w	DrawTradeLogo
 	jsr	(printsmallz).l
-	String	TXS_FONT,$2,TXS_X,$15,TXS_Y,$7,'POSITION',TXS_X,$1F,'RATING'
+	String	CC_SetFont,$2,CC_SetX,$15,CC_SetY,$7,'POSITION',CC_SetX,$1F,'RATING'
 	jsr	(printsmallz).l
-	String	TXS_FONT,$2,TXS_X,$15,TXS_Y,$11,'POSITION',TXS_X,$1F,'RATING'
+	String	CC_SetFont,$2,CC_SetX,$15,CC_SetY,$11,'POSITION',CC_SetX,$1F,'RATING'
 	jsr	(printsmallz).l
 	dc.w	$16;String length
 	dc.b	$F9,$1,$FD,$4,$FC,$19,'A',$FD
@@ -943,14 +943,14 @@ DrawTradeRosterRows	;95 only. Draw the roster rows of team d7 (name, position, r
 	adda.l	d0,a4
 .0
 	jsr	(printsmallz).l
-	String	TXS_X,$0,'                                       ',$0
+	String	CC_SetX,$0,'                                       ',$0
 	move.w	#6,(printx).w
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0
+	String	CC_SetFont,$0
 	cmp.w	d5,d6
 	bne.w	.1
 	jsr	(printsmallz).l
-	String	TXS_FONT,$1
+	String	CC_SetFont,$1
 .1
 	tst.b	(a4)
 	beq.w	.2
@@ -1142,7 +1142,7 @@ CheckTrade	;95 only. Check the trade: players chosen on both teams, at most thre
 	move.w	#$E,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	String	TXS_FONT,$3,TXS_X,$D,TXS_Y,$B,'INVALID  TRADE'
+	String	CC_SetFont,$3,CC_SetX,$D,CC_SetY,$B,'INVALID  TRADE'
 	move.w	(StatWork+$14).w,d0
 	movea.l	#InvalidTradeText,a1
 	jsr	(PrintSmallListItem).l
@@ -1359,9 +1359,9 @@ EvaluateTrade	;95 only. Evaluate Trade screen: the chosen players of both teams;
 	jsr	(forceblack).l
 	jsr	(GMDecision).l
 	jsr	(printsmallz).l
-	String	TXS_FONT,$1,TXS_X,$1,TXS_Y,$19,'     A        B         C       Start',$0
+	String	CC_SetFont,$1,CC_SetX,$1,CC_SetY,$19,'     A        B         C       Start',$0
 	jsr	(printsmallz).l
-	String	TXS_FONT,$1,TXS_X,$1,TXS_Y,$1A,'   Cancel   Modify   Execute   Propose'
+	String	CC_SetFont,$1,CC_SetX,$1,CC_SetY,$1A,'   Cancel   Modify   Execute   Propose'
 .0
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),$6,$2,'Evaluate Trade',$0
@@ -1370,7 +1370,7 @@ EvaluateTrade	;95 only. Evaluate Trade screen: the chosen players of both teams;
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$0,$0,$0
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0,TXS_X,$F,TXS_Y,$9
+	String	CC_SetFont,$0,CC_SetX,$F,CC_SetY,$9
 	movea.l	#TradeRoster1,a0
 .1
 	move.w	(TradeWork+$4).l,d3
@@ -1379,7 +1379,7 @@ EvaluateTrade	;95 only. Evaluate Trade screen: the chosen players of both teams;
 .3
 	bsr.w	PrintTradeNames
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0,TXS_X,$F,TXS_Y,$13
+	String	CC_SetFont,$0,CC_SetX,$F,CC_SetY,$13
 .4
 	movea.l	#TradeRoster2,a0
 .5
@@ -1547,9 +1547,9 @@ GMDecisionRetry	;95 only. GMDecision: back to the trade screen (CreateScreenGfx,
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),$B,$2,'GM DECISION'
 	jsr	(printsmallz).l
-	String	TXS_FONT,$1,TXS_X,$8,TXS_Y,$1A,'B=Modify',TXS_X,$12,'Start=Continue'
+	String	CC_SetFont,$1,CC_SetX,$8,CC_SetY,$1A,'B=Modify',CC_SetX,$12,'Start=Continue'
 	jsr	(printsmallz).l
-	String	TXS_FONT,$2,TXS_X,$12,TXS_Y,$8,'FOR',$0
+	String	CC_SetFont,$2,CC_SetX,$12,CC_SetY,$8,'FOR',$0
 	move.w	(HomeTeam).w,d1
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$4,$5,$0
@@ -1600,7 +1600,7 @@ GMDecisionRetry	;95 only. GMDecision: back to the trade screen (CreateScreenGfx,
 	move.w	(VisTeam).w,d7
 .4
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0,TXS_X,$9,TXS_Y,$11,'ADVANTAGE',TXS_ADDY,$1,TXS_X,$9,$0
+	String	CC_SetFont,$0,CC_SetX,$9,CC_SetY,$11,'ADVANTAGE',CC_AddY,$1,CC_SetX,$9,$0
 	movea.l	#TeamList,a1
 	asl.w	#2,d7
 	movea.l	(a1,d7.w),a1
@@ -1624,11 +1624,11 @@ GMDecisionRetry	;95 only. GMDecision: back to the trade screen (CreateScreenGfx,
 	jsr	(dobitmap).l
 .6
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0,TXS_X,$4,TXS_Y,$8
+	String	CC_SetFont,$0,CC_SetX,$4,CC_SetY,$8
 	movea.l	#tradeteam1,a0
 	bsr.w	PrintTradedPlayers
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0,TXS_X,$17,TXS_Y,$8
+	String	CC_SetFont,$0,CC_SetX,$17,CC_SetY,$8
 	movea.l	#tradeteam2,a0
 	bsr.w	PrintTradedPlayers
 	move.w	#$18,(palcount).w
@@ -1671,7 +1671,7 @@ PrintTradedPlayers	;95 only. Print the players of a trade list (up to 3)
 	move.w	(sp)+,(printx).w
 	rts
 
-ReadTradePads3	;95 only. Wait up to $5460 frames for a pad press (pads 3, 4 with FourWayPlay), d1 = buttons (no IDA label)
+ReadTradePads3	;95 only. Wait up to $5460 frames for a pad press (pads 3, 4 with FourWayPlay), d1 = buttons
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6

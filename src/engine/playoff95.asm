@@ -7,8 +7,8 @@
 ; $087BA2  From setup94.asm: PlayoffScreen
 ;	94 setup94 PlayoffScreen, HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, FormatScore,
 ;	DrawPlayoffBracket, DrawTeamBlocks, PlayoffScreenDataTable and PlayoffScreenText. PlayoffTreeSetup follows at $088046.
-;	IDA code except PlayoffScreenDataTable (dc.b, read from the retail bytes). IDA hid the printz / printz2 Strings and the
-;	DecompressGraphicsWithCallback remap bytes as instructions; they are String / dc.b here. Local labels are numbered; the IDA local
+;except PlayoffScreenDataTable (dc.b, read from the retail bytes). the printz / printz2 Strings and the
+;DecompressGraphicsWithCallback remap bytes as instructions; they are String / dc.b here. Local labels are numbered; the
 ;	names are not kept.
 ;	95 changes: PlayoffScreen returns at once in Shootout (gmode2 bit 0) and also runs for sflags11 bit 2; the shared rts is
 ;	rtsLineData (setup95, 94 rtss2). AddTeamBlock and AddSmallFont are inline, the title uses printbig with the BigFontMap2
@@ -136,13 +136,13 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	move.b	(a0)+,(printx+1).w
 	move.b	(a0)+,(printy+1).w
 	jsr	(printsmallz).l
-	String	TXS_ATTR,3
+	String	CC_SetAttribute,3
 	jsr	(FormatScore).l
 	adda.w	#$10,a2
 	dbf	d4,.4
 .5
 	jsr	(printsmallz).l
-	String	TXS_ALL,0,1,$41,1,0
+	String	CC_SetMapAndPosition,0,1,$41,1,0
 	lea	PlayoffScreenText(pc),a1
 	move.w	(gamelevel).w,d0
 	jsr	(AdvanceStringPtr).l
@@ -167,7 +167,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	jsr	(HandlePlayoffInput).l
 	bra.s	.7
 
-HandlePlayoffInput	;93 name. Read the four pads: start leaves PlayoffScreen (PlayoffScreenExit), right / left set the
+HandlePlayoffInput	;Read the four pads: start leaves PlayoffScreen (PlayoffScreenExit), right / left set the
 	;scroll step, then falls into UpdatePlayoffScroll
 	jsr	(ReadJoy1).l
 	move.w	d3,-(sp)
@@ -187,7 +187,7 @@ HandlePlayoffInput	;93 name. Read the four pads: start leaves PlayoffScreen (Pla
 	beq.w	UpdatePlayoffScroll
 	move.w	#2,(PlayerScrollCtr).w
 
-UpdatePlayoffScroll	;93 name. Move the tree one step (PlayerScrollCtr) and stop on a page boundary ($70). The
+UpdatePlayoffScroll	;Move the tree one step (PlayerScrollCtr) and stop on a page boundary ($70). The
 	;position is DispAttribCtr; playoffspritex is the sprite x offset while it is on screen
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsLineData
@@ -221,11 +221,11 @@ UpdatePlayoffScroll	;93 name. Move the tree one step (PlayerScrollCtr) and stop 
 	clr.w	(PlayerScrollCtr).w
 	rts
 
-PlayoffScreenExit	;93 name. Drop HandlePlayoffInput's return address and return from PlayoffScreen
+PlayoffScreenExit	;Drop HandlePlayoffInput's return address and return from PlayoffScreen
 	addq.w	#4,sp
 	rts
 
-PlayoffScreen_waitvsync	;93 name. Each time palcount runs out, eor the color word at palfadenew+$42 with $EE and
+PlayoffScreen_waitvsync	;Each time palcount runs out, eor the color word at palfadenew+$42 with $EE and
 	;restart palcount at $18; then wait for the next vblank
 	tst.w	(palcount).w
 	bpl.w	.0
@@ -238,7 +238,7 @@ PlayoffScreen_waitvsync	;93 name. Each time palcount runs out, eor the color wor
 	move.w	d0,(oldvcount).w
 	rts
 
-FormatScore	;93 name. Print best of 7 wins "t-b" for game struct a2 at printx / printy
+FormatScore	;Print best of 7 wins "t-b" for game struct a2 at printx / printy
 	movea.w	#(mesarea-M68K_RAM),a1
 	move.w	#6,(a1)+
 	move.w	4(a2),d0
@@ -252,7 +252,7 @@ FormatScore	;93 name. Print best of 7 wins "t-b" for game struct a2 at printx / 
 	movea.w	#(mesarea-M68K_RAM),a1
 	jmp	print
 
-DrawPlayoffBracket	;93 name. Draw tree arrow d0 from the arrows map (Arrowsmap) at printx / printy
+DrawPlayoffBracket	;Draw tree arrow d0 from the arrows map (Arrowsmap) at printx / printy
 	movem.l	d0-d7/a0-a3,-(sp)
 	movea.l	#Arrowsmap,a0
 	movea.l	a0,a1
@@ -268,7 +268,7 @@ DrawPlayoffBracket	;93 name. Draw tree arrow d0 from the arrows map (Arrowsmap) 
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-DrawTeamBlocks	;93 name. Draw team block d1 (team * 2) from Teamblocksmap at printx / printy; the user's team
+DrawTeamBlocks	;Draw team block d1 (team * 2) from Teamblocksmap at printx / printy; the user's team
 	;(potreeteam entry of potree) is highlighted (printa $6000) unless sflags11 bit 2 is set
 	movem.l	d0-d7/a0-a3,-(sp)
 	movea.w	#(potree-M68K_RAM),a0
@@ -317,7 +317,7 @@ PlayoffScreenDataTable	;dc.b. 93 name. The PlayoffScreen vblank handler (vbint):
 	movem.l	(sp)+,d0-d7/a0-a6
 	rte
 
-PlayoffScreenText	;93 name. Round titles by gamelevel, printbig Strings with their position
+PlayoffScreenText	;Round titles by gamelevel, printbig Strings with their position
 	String	$CF,$39,$19,'Playoffs'
 	String	$CF,$33,$19,'Quarterfinals'
 	String	$CF,$37,$19,'Semifinals'

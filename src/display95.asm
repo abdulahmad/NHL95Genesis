@@ -214,7 +214,7 @@ uppads	;update the 6 pad objects and queue new pad labels (FormatControllerDispl
 	dbf	d4,.nibble
 	rts
 
-FormatControllerDisplay	;93 name. Queue the 3 character label of a pad object. d1 = label code: bits 7-4 and 3-0 are digits ($F =
+FormatControllerDisplay	;Queue the 3 character label of a pad object. d1 = label code: bits 7-4 and 3-0 are digits ($F =
 	;blank), bits 10-8 index ButtonLabelCharTable (none while sflags7 bit 7 is set). a0 = pad object, a5 = dma list. Falls into
 	;RenderSmallFontChar for the last char
 	lea	ButtonLabelCharTable(pc),a4
@@ -251,7 +251,7 @@ FormatControllerDisplay	;93 name. Queue the 3 character label of a pad object. d
 	move.b	(a4,d2.w),d2
 	moveq	#2,d0
 
-RenderSmallFontChar	;93 name. Dma one small font tile (SmallFontMap) to the object's chars. d2 = ascii char, d0 = char slot,
+RenderSmallFontChar	;Dma one small font tile (SmallFontMap) to the object's chars. d2 = ascii char, d0 = char slot
 	;a0 = object (VRchar), a5 = dma list
 	movea.l	#SmallFontMap,a3
 	adda.l	4(a3),a3
@@ -268,7 +268,7 @@ RenderSmallFontChar	;93 name. Dma one small font tile (SmallFontMap) to the obje
 	move.w	d0,(a5)+
 	rts
 
-ButtonLabelCharTable	;93 name. Third label character by bits 10-8 of the label code
+ButtonLabelCharTable	;Third label character by bits 10-8 of the label code
 	dc.b	' DDLCRX',$FF	;pad byte $FF as 94
 
 ;------------------------------------------------------------------------------------------------------------------------

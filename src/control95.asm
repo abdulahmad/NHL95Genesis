@@ -145,7 +145,7 @@ burst	;(input94) C button speed burst: take $CC energy unless OptLine is set, ad
 	move.w	#SPAburst,d1
 	jmp	(SetSPA).l
 
-setpads	;Put SCnum of a3 in the d4 nibble of PadControlBits (93 name); d4 = -2 puck carrier, 0 / 2 / 4 / 6 pads.
+setpads	;Put SCnum of a3 in the d4 nibble of PadControlBits ; d4 = -2 puck carrier, 0 / 2 / 4 / 6 pads.
 	;95: a long (94: a word)
 	movem.l	d0-d1,-(sp)
 	moveq	#2,d0
@@ -443,7 +443,7 @@ clearTeamStats	;clear both team structs (2 x tmsize) but keep the first $1A0 byt
 	move.w	(sp)+,(tmstruct+tmgoalie).w
 	st	(tmstruct+tmpdst+$34).w
 	st	(AwShots+tmpdst+$34).w
-setteams	;93 name. Use hometeam/visteam to set team structures (InitTeamSructure for each). Falls in from clearTeamStats
+setteams	;Use hometeam/visteam to set team structures (InitTeamSructure for each). Falls in from clearTeamStats
 	movem.l	d0/a0-a2,-(sp)
 	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	(HomeTeam).w,d0
@@ -456,7 +456,7 @@ setteams	;93 name. Use hometeam/visteam to set team structures (InitTeamSructure
 	movem.l	(sp)+,d0/a0-a2
 	rts
 
-InitTeamSructure	;93 name. Set up team struct a2 for team d0: store the team number at $28 and the team data address
+InitTeamSructure	;Set up team struct a2 for team d0: store the team number at $28 and the team data address
 	;(TeamList) at $1E (tmdata), then LoadTeamLines (95; 94 copied the line sets here)
 	move.w	d0,Xvel(a2)
 	movea.w	#TeamList,a0
@@ -464,7 +464,7 @@ InitTeamSructure	;93 name. Set up team struct a2 for team d0: store the team num
 	move.l	(a0,d0.w),tmdata(a2)
 	jmp	(LoadTeamLines).l
 
-setplayercolors	;(94 IDA: SetTeamColors). Copy in correct color data for each team: .team for the home team, then falls in for
+setplayercolors	;(94 ). Copy in correct color data for each team:.team for the home team, then falls in for
 	;the visitors. Called from setupice and others
 	clr.w	d1
 	movea.w	#(tmstruct-M68K_RAM),a0

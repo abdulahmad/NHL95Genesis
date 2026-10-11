@@ -4,10 +4,10 @@
 ;	games (SimDayGames, SimScore, SimGameStats and the goal weight tables at the end) and the save RAM records. Moved in at the
 ;	head: hockey94 demoread / HandleJoy1, and RandomSetupTeams (95 only; optsetup94 SetupDemo picks random teams). Each routine
 ;	comment names its 94 file or says 95 only. stats95 follows at $0920DE.
-;	IDA left DayToDate / DateToDay, the season menu actions and the calendar screen as dc.b; they and the tables are read from the
-;	retail bytes. IDA hid printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions; they
-;	are String / dc.b here. The four goal weight tables at the end IDA read as code.
-;	Local labels are numbered; the IDA local names are not kept.
+;DayToDate / DateToDay, the season menu actions and the calendar screen as dc.b; they and the tables are read from the
+;retail bytes. printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions; they
+;are String / dc.b here. The four goal weight tables at the end as code.
+;Local labels are numbered; the names are not kept.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -2642,7 +2642,7 @@ MenuPlayUntil	;95 only. Play Until A Day: pick the day with A (month) / B (day),
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$7,$C,$0
 	jsr	(printsmallz).l
-	String	TXS_FONT,$2,'Please complete human',TXS_X,$7,TXS_Y,$D,'controlled games before'
+	String	CC_SetFont,$2,'Please complete human',CC_SetX,$7,CC_SetY,$D,'controlled games before'
 	jsr	(printsmallz).l
 	dc.w	$3C;String length
 	dc.b	$FD,$7,$FA,$1,$F9,$2,'selecting autoplay.',$FD
@@ -2666,15 +2666,15 @@ MenuPlayUntil	;95 only. Play Until A Day: pick the day with A (month) / B (day),
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$7,$C,$0
 	jsr	(printsmallz).l
-	String	TXS_FONT,$2,'Autoplay games until this',TXS_X,$7,TXS_Y,$D,'day...',TXS_FONT,$0,$0
+	String	CC_SetFont,$2,'Autoplay games until this',CC_SetX,$7,CC_SetY,$D,'day...',CC_SetFont,$0,$0
 	jsr	(printsmallz).l
-	String	TXS_X,$7,TXS_Y,$12,TXS_FONT,$2,'Press A to change Month',$0
+	String	CC_SetX,$7,CC_SetY,$12,CC_SetFont,$2,'Press A to change Month',$0
 	jsr	(printsmallz).l
-	String	TXS_X,$7,TXS_Y,$13,TXS_FONT,$2,'Press B to change Day',$0
+	String	CC_SetX,$7,CC_SetY,$13,CC_SetFont,$2,'Press B to change Day',$0
 	jsr	(printsmallz).l
-	String	TXS_X,$7,TXS_Y,$14,TXS_FONT,$2,'Press C to cancel',$0
+	String	CC_SetX,$7,CC_SetY,$14,CC_SetFont,$2,'Press C to cancel',$0
 	jsr	(printsmallz).l
-	String	TXS_X,$7,TXS_Y,$15,TXS_FONT,$2,'Press Start to autoplay',TXS_FONT,$0,$0
+	String	CC_SetX,$7,CC_SetY,$15,CC_SetFont,$2,'Press Start to autoplay',CC_SetFont,$0,$0
 	move.b	(SeasonDay).w,d0
 	addq.b	#1,d0
 	move.b	d0,(AutoplayDay).w
@@ -2793,14 +2793,14 @@ PrintAutoplayDay	;95 only. Print the AutoplayDay date
 	String	-(TXPRI+TXMAP1),$A,$F,$0
 	move.w	(printx).w,-(sp)
 	jsr	(printsmallz).l
-	String	TXS_FONT,$2,'               ',$0
+	String	CC_SetFont,$2,'               ',$0
 	move.w	(sp)+,(printx).w
 	move.b	(SeasonDay).w,-(sp)
 	move.b	(AutoplayDay).w,(SeasonDay).w
 	jsr	(MakeDateString).l
 	jsr	(printsmall).l
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0
+	String	CC_SetFont,$0
 	move.b	(sp)+,(SeasonDay).w
 	rts
 
@@ -3028,7 +3028,7 @@ CalendarScreen	;95 only. CALENDAR (team schedule): {} change team, [] change mon
 	dc.b	$2,'{ }',$FD,$1,$FA,$1,'= Change',$FD
 	dc.b	$1,$FA,$1,'Team',$0
 	jsr	(printsmallz).l
-	String	TXS_X,$1,TXS_Y,$15,'START',TXS_X,$1,TXS_ADDY,$1,'= Exit',TXS_FONT,$0,$0
+	String	CC_SetX,$1,CC_SetY,$15,'START',CC_SetX,$1,CC_AddY,$1,'= Exit',CC_SetFont,$0,$0
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
 .0

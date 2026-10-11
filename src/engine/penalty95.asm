@@ -7,8 +7,8 @@
 ; $088F06  From penalty94.asm: penalties, the referee, the scoreboard messages
 ;	94 penalty94 limitfo, Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, PrintPenaltyMessagesString,
 ;	with title94 LeadSong / ClearLeadSong / LeadSongExit moved in. checkagr follows at $08996E.
-;	IDA code except LeadSong ... LeadSongExit and PrintPenaltyMessagesString (dc.b, read from the retail bytes). IDA hid the printz
-;	Strings as instructions; they are String here. Local labels are numbered; the IDA local names are not kept. Each routine comment
+;except LeadSong ... LeadSongExit and PrintPenaltyMessagesString (dc.b, read from the retail bytes). the printz
+;Strings as instructions; they are String here. Local labels are numbered; the names are not kept. Each routine comment
 ;	names its 94 file.
 ;	95 changes: the team struct offsets (tmpdst $68, the penalty box list $9C), the RAM moved (RefRamMap $DBBE), the 95 sounds.
 
@@ -467,7 +467,7 @@ InProgress	;(penalty94) Ref in progress: update the graphics, stats and penalty 
 	movem.l	(sp)+,d0/a0-a3
 	rts
 
-coinsearch	;(penalty94) 93 IDA name. a2 = team. Count the players kept off the ice by penalties (coincidental penalties)
+coinsearch	;(penalty94) 93 a2 = team. Count the players kept off the ice by penalties (coincidental penalties)
 	moveq	#6,d1
 	moveq	#$32,d0	;(MaxRos-1)*2
 .0
@@ -680,7 +680,7 @@ SetPA	;(penalty94) Start ref animation d0 (penalty number); from $2E up ignored.
 	beq.w	SetPA2
 	move.w	#$3C,(penmsgtimer).w	;60
 
-SetPA2	;(penalty94) IDA: setPA2 (94). Update the ref animation: next frame / delay pair from the PenaltyList animation
+SetPA2	;(penalty94) (94). Update the ref animation: next frame / delay pair from the PenaltyList animation
 	movem.l	d0-d2/a0-a1,-(sp)
 	moveq	#$40,d0	;clear ref window
 	tst.w	(RefStep).w
@@ -810,7 +810,7 @@ prefmes	;(penalty94) Print the message for penalty d0 (negative clears it) under
 	movem.l	(sp)+,d0-d2/a1
 	rts
 
-PrintPenaltyMessagesString	;(penalty94) 93 name. Blank the horizontal mode penalty message line (22 spaces at x 5, y $B). IDA dc.b, no xref
+PrintPenaltyMessagesString	;(penalty94) 93 name. Blank the horizontal mode penalty message line (22 spaces at x 5, y $B). no xref
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),5,$B,'                      '
 	rts
@@ -820,8 +820,8 @@ PrintPenaltyMessagesString	;(penalty94) 93 name. Blank the horizontal mode penal
 ;	Mapped to data94, but only the tables are data94 (PenaltyList = 94 PenaltyList, PenShotPenalties, linelist); the code is moved in:
 ;	collide94 checkagr, display94 showref, penalty94 ClearPenaltyBuffer, title94 ClearPenalties / clrTmPdst, checks94 puckIChk,
 ;	ChkOffsides and checkob. Each routine comment names its 94 file. lines95 follows at $08A056.
-;	IDA code except puckIChk and ChkOffsides (dc.b, read from the retail bytes with the 94 source as the guide). Local labels are numbered;
-;	the IDA local names are not kept.
+;except puckIChk and ChkOffsides (dc.b, read from the retail bytes with the 94 source as the guide). Local labels are numbered
+;the names are not kept.
 ;	95 changes: the goal line $10B (94 $108), the blue line $52 (94 $54), checkagr's base $32 and the sflags9 penalty options.
 
 
@@ -915,7 +915,7 @@ showref	;(display94) Ref window: when sflags2 bit 1 is set add the 8 RefRamMap r
 	dbf	d2,.2
 	rts
 
-ClearPenaltyBuffer	;(penalty94) IDA: clrPenBuf (94). Clear PenBuf
+ClearPenaltyBuffer	;(penalty94) (94). Clear PenBuf
 	moveq	#$1F,d0	;MaxPen-1
 	movea.w	#(PenBuf-M68K_RAM),a0
 .0
@@ -1058,7 +1058,7 @@ ChkOffsides	;(checks94) Offsides: clear the flag of a team that is all back onsi
 	bclr	#4,tmflags(a2)
 	rts
 
-Penaltylist	;(data94) 92 Penaltylist, 94 PenaltyList. Penalty number = word offset into this table; the same entries as 94. (was: PenaltyList)
+Penaltylist	;(data94) 92 Penaltylist, 94 PenaltyList. Penalty number = word offset into this table; the same entries as 94.
 	;Used by AddPenalty, SetPA2, prefmes, PenaltyShotBox
 	dc.w	$0000
 	dc.w	.eop-Penaltylist;$2 period over
@@ -1239,7 +1239,7 @@ PenShotPenalties	;(data94) The penalty shot penalty number for penalty number d0
 	dc.w	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,$38,$3C
 	dc.w	$36,$3A,$2E,$30,$34,-1,-1,-1,-1,-1,-1,-1
 
-linelist	;(data94) IDA: FaceOffsprites (94). Text list for the line choices. Used by SetLCmode2 and DrawFaceoffWindow
+linelist	;(data94) (94). Text list for the line choices. Used by SetLCmode2 and DrawFaceoffWindow
 	String	'Sc1'
 	String	'Sc2'
 	String	'Chk'

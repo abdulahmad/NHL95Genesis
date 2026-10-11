@@ -5,7 +5,7 @@
 ;	sublist (moved in), crowd94 Create_HotCold_Table / HotColdLoop (moved in).
 ;	The start moved to $0836AC: CPgoalie .0 ... $0836AB is the end of CPgoalie (logic95). The end moved to $083EB1: doinput is the
 ;	start of 95 doinput (input95; doinput .0, the mapped start, is inside it).
-;	IDA left PuckcIsGoalie, forcepldata, resetplstuff and the tables as dc.b; they are code / data here, read from the retail bytes.
+;PuckcIsGoalie, forcepldata, resetplstuff and the tables as dc.b; they are code / data here, read from the retail bytes.
 ;	95 changes: SetPersonel marks the season injuries first (GameFlags bit 3, SetSeasonInjuries); setplayer reads the roster by team
 ;	number (rosterteam, GetRosterName / GetJerseyNumber), maps the stick handling nibble through StickHandTable and pulls some ratings
 ;	toward 30 (BoostAttribute); forcepldata lost the Set4WayPlayerStub call; the 95 asstab numbers and SPA values.
@@ -156,7 +156,7 @@ SetPlList	;Create PlList of players who we want on the ice now. a2 = team struct
 	beq.s	.8
 	bra.s	.6
 
-TryAddPlayerToList	;94 name. d0 = player number (1 based), d4 = PlList slot. Put d0 in the slot if he is on
+TryAddPlayerToList	;d0 = player number (1 based), d4 = PlList slot. Put d0 in the slot if he is on
 	;the bench and not in PlList yet (eq when taken)
 	move.w	d0,d1
 	subq.w	#1,d0
@@ -462,7 +462,7 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	andi.b	#$F,aggress(a3)	;mask Agr byte with F, so max is 15 decimal
 	rts
 
-ClampNibble	;94 name. Clamp byte d3 to 0-$1E. Called by setplayer
+ClampNibble	;Clamp byte d3 to 0-$1E. Called by setplayer
 	tst.b	d3	;test if d3 is zero or higher
 	bpl.w	.0
 	clr.w	d3	;if negative, clear
@@ -493,7 +493,7 @@ BoostAttribute	;95 only. d3 += ($1E - d3) / 4, kept in $F ... $1E. setplayer run
 	movem.w	(sp)+,d0
 	rts
 
-AttributeCalc	;crowd94 AttributeCalc (moved in; IDA name). Attribute d3 of player a3 * 5 plus his hot / cold value / 3,
+AttributeCalc	;crowd94 AttributeCalc (moved in). Attribute d3 of player a3 * 5 plus his hot / cold value / 3
 	;limited to 0 ... $1E
 	movem.l	d0-d2/a1,-(sp)
 	move.w	(TempWord2).w,d1
@@ -627,7 +627,7 @@ sublist	;data94 sublist (moved in). Substitution lists by position (goalie, LD, 
 	dc.b	0+5,8+5,16+5,24+5,32+5,40+5,48+5
 	dc.b	-1
 
-Create_HotCold_Table	;crowd94 Create_HotCold_Table (moved in; IDA name). Fill the hot / cold table at $1A4 of team struct a0 (94
+Create_HotCold_Table	;crowd94 Create_HotCold_Table (moved in). Fill the hot / cold table at $1A4 of team struct a0 (94
 	;$1A2) with 416 random values
 	movem.l	d0-d7,-(sp)
 	move.w	#$19F,d1	;$19F = 415. Loop will run 416 times.

@@ -4,7 +4,7 @@
 ;	(the 95 shot block tests) ahead of updatereplay, and a sound driver restart at the top of ReplayMode. replay94 checkwindow is in
 ;	goal95. Each routine comment names its 94 routine or says 95 only. season95 follows at $08DF5A.
 ;	95 packs a replay frame object as 9-bit x and 11-bit frame (94: 10-bit x, 12-bit frame) and saves both PadControlBits words.
-;	Local labels follow replay94 where the code is 94 code and are numbered in the 95 only routines; the IDA local names are not kept.
+;Local labels follow replay94 where the code is 94 code and are numbered in the 95 only routines; the names are not kept.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -693,7 +693,7 @@ RevReplayAdj	;94 only. Set sflags4 bit 7 for a reverse angle replay, then fall i
 	bset	#7,(sflags4).w;set bit 7
 	; a4 = current replay frame address to convert into normal coordinates
 
-RestoreReplayFrame	;92 name. a4 = current replay frame address to convert into normal cordinates (92
+RestoreReplayFrame	;a4 = current replay frame address to convert into normal cordinates (92
 	;SetRCords), then the other replay variables (92 nonshift). 94 flips x/y and frames for the reverse angle
 	movem.l	d0-d2/a0/a6,-(sp)
 	movea.l	#revframetbl,a6

@@ -269,7 +269,7 @@ ScoreSumbytes	equ	$FFFFC02C	;94 $FFFFC472
 ScoreSum	equ	$FFFFC02E	;94 $FFFFC474. Goal summary, 6 bytes per goal (ScoreSumbytes)
 PenSumLength	equ	$FFFFC196	;94 $FFFFC5DC
 PenSum	equ	$FFFFC198	;94 $FFFFC5DE. Penalty summary, 4 bytes per penalty (PenSumLength)
-tmstruct	equ	$FFFFC288	;94 $FFFFC6CE. Home team struct (was: HmShots)
+tmstruct	equ	$FFFFC288	;94 $FFFFC6CE. Home team struct
 HmGoals	equ	$FFFFC294	;94 $FFFFC6DA. Home team struct goals
 HomeTeamRosterPtr	equ	$FFFFC2A6	;94 $FFFFC6EC. HmShots+$1E: the team data address (TeamList entry)
 AttribDeltas	equ	$FFFFC42C	;95 only. Modify Ratings: the attribute changes (16 bytes)
@@ -341,7 +341,7 @@ OptLine	equ	$FFFFCC5C	;94 $FFFFD058
 goaliemode1	equ	$FFFFCC5E	;94 $FFFFD05A
 goaliemode2	equ	$FFFFCC60	;94 $FFFFD05C
 demoflag	equ	$FFFFCC68	;94 $FFFFD064
-seed	equ	$FFFFCC6A	;94 $FFFFD066 (was: RNGseed)
+seed	equ	$FFFFCC6A	;94 $FFFFD066
 dmaram	equ	$FFFFCC6E	;94 $FFFFD06A. Dma command long, written to the vdp as two words
 music_global_tick_counter	equ	$FFFFCC72	;94 $FFFFD06E. Begin stores the VDP PAL bit here
 TmpOptLine2	equ	$FFFFCC76	;94 $FFFFD072
@@ -535,7 +535,7 @@ ChkStickSqP	equ	$FFFFDC76	;95 only. Stick reach squared
 AutoplayDay	equ	$FFFFDC79	;95 only. Play Until A Day: the last day to autoplay, 0 none
 ShotTimer	equ	$FFFFDC7A	;95 only. Set to $1E by doshot, counted down by DoGameFrame
 shotpflags	equ	$FFFFDC7C	;95 only. pflags of the last shooter (doshot)
-varend	equ	$FFFFDC80	;93 name: end of variables, for clearing purposes only. Begin clears from VSCRLPM to here (94 $FFFFDEF4)
+varend	equ	$FFFFDC80	;end of variables, for clearing purposes only. Begin clears from VSCRLPM to here (94 $FFFFDEF4)
 penaltymsgs	equ	$FFFFDC82	;95 only. Queue of penalty messages, a word each (penalty, player), 0 ends (ShowPenaltyMessages)
 Stack	equ	$FFFFFDFA	;94 $FFFFFFFE. Begin's stack pointer; the sound driver RAM (SndDrvRAM) is above it
 SndDrvRAM	equ	$FFFFFDFC	;95 only. Sound driver (sound95) RAM base: word $1234 = driver ready, 0 = busy (SndUpdate does nothing)

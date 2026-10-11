@@ -1099,7 +1099,7 @@ ControllerSetupScreen	;95 only. Build the controller setup screen: vram, fonts, 
 	String	-(TXPRI+TXMAP1),5,2,'Controller SetUp'
 	rts
 
-DrawSetupTeamBlock	;Wrong code in IDA. 95 only. Draw team block d1 (Teamblocksmap) at printx / printy
+DrawSetupTeamBlock	;Wrong code in. 95 only. Draw team block d1 (Teamblocksmap) at printx / printy
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	asl.w	#1,d1
@@ -1116,27 +1116,27 @@ DrawSetupTeamBlock	;Wrong code in IDA. 95 only. Draw team block d1 (Teamblocksma
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintSetupStr	;Wrong code in IDA. 95 only. Print String a1 (printz2 $FE,5,$FF,1,$F9,0, then printsmall)
+PrintSetupStr	;Wrong code in. 95 only. Print String a1 (printz2 $FE,5,$FF,1,$F9,0, then printsmall)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a1,-(sp)
 	jsr	(printsmallz).l
-	String	TXS_ATTR,5,TXS_MAP,1,TXS_FONT,0
+	String	CC_SetAttribute,5,CC_SetMap,1,CC_SetFont,0
 	movea.l	(sp)+,a1
 	jsr	(printsmall).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintSetupStrHi	;Wrong code in IDA. 95 only. The same highlighted ($F9,1)
+PrintSetupStrHi	;Wrong code in. 95 only. The same highlighted ($F9,1)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a1,-(sp)
 	jsr	(printsmallz).l
-	String	TXS_ATTR,5,TXS_MAP,1,TXS_FONT,1
+	String	CC_SetAttribute,5,CC_SetMap,1,CC_SetFont,1
 	movea.l	(sp)+,a1
 	jsr	(printsmall).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReadAllPads	;Wrong code in IDA. 95 only. Read the 4 pads (nodiag) into TempWord1, TempWord2, TempRawSpd and TempMaxSpd
+ReadAllPads	;Wrong code in. 95 only. Read the 4 pads (nodiag) into TempWord1, TempWord2, TempRawSpd and TempMaxSpd
 	;(the same RAM as scratch here), all of them ored in TempLegSpd
 	jsr	(ReadJoy1).l
 	jsr	(nodiag).l

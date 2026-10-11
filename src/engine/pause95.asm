@@ -105,7 +105,7 @@ SetupPauseScreen	;(dc.b). Draw routine for the pause menu (92 Pausemode .pall / 
 ;	menu94 SetMenuPrintX / UpdateMenuSelection / PrintMenuItem, the 95 info page, penalty messages and tabs, then the item lists
 ;	(InfoMenus, StatsMenus, PauseMenus) and their AbortGame / PlayGame.
 ;	written as instructions: PauseScreenDraw ($7E816-$7EAC7), ListPenaltyBox, MenuInfoList ... PrintLines, a second rts ($7F366),
-;	the item lists and AbortGame / PlayGame ($7F368-$7F97D). IDA hid the printz / printz2 Strings as instructions; they are String here
+;the item lists and AbortGame / PlayGame ($7F368-$7F97D). the printz / printz2 Strings as instructions; they are String here
 ;	(the 40 byte menu box String as dc.w / dc.b, the String macro takes 15 values).
 seta2	;(hockey94). Set a2 to the team struct of the pause pad (menupadnum: cont1team ... cont4team). Called from Pausemode and
 	;HandleMenuInput
@@ -132,26 +132,26 @@ seta2	;(hockey94). Set a2 to the team struct of the pause pad (menupadnum: cont1
 .4
 	rts
 
-InitMenuState	;93 name. Start a menu: a0 = item list, a1 = screen draw routine; selection and first shown item 0. Falls into
+InitMenuState	;Start a menu: a0 = item list, a1 = screen draw routine; selection and first shown item 0. Falls into
 	;DrawMenuScreen. Called from Pausemode
 	move.l	a0,(menulist).w	;item list
 	move.l	a1,(menudraw).w	;draw routine
 	clr.w	(menuitem).w	;selected item
 	clr.w	(menuitem+2).w	;first item shown
 
-DrawMenuScreen	;93 name. Call the draw routine, clear the menu box, print the items (UpdateMenuSelection) and fade in
+DrawMenuScreen	;Call the draw routine, clear the menu box, print the items (UpdateMenuSelection) and fade in
 	movea.l	(menudraw).w,a0
 	jsr	(a0)
 	bsr.w	ClearMenuBox
-RedrawMenu	;95 only, no IDA label. Print the menu items and fade in. Called from the menu items below (ManualGoalieMenu, SelectGoalieMenu, TimeoutMenu) after they clear the box
+RedrawMenu	;95 only, Print the menu items and fade in. Called from the menu items below (ManualGoalieMenu, SelectGoalieMenu, TimeoutMenu) after they clear the box
 	jsr	(printsmallz).l
-	String	TXS_ATTR,4,TXS_Y,$C
+	String	CC_SetAttribute,4,CC_SetY,$C
 	jsr	(SetMenuPrintX).l
 	jsr	(UpdateMenuSelection).l
 	move.w	#$18,(palcount).w
 	rts
 
-HandleMenuInput	;93 name. Pause menu pad d1: right / left move between the three tabs (menucursor: INFO, STATS, PAUSE; SetInfoMenuItems ...),
+HandleMenuInput	;Pause menu pad d1: right / left move between the three tabs (menucursor: INFO, STATS, PAUSE; SetInfoMenuItems ...)
 	;down / up the item, C (bit 5) runs the item routine (seta2 first); ne = stay in the menu (PlayGame sets sflags9 bit 3 to leave). With
 	;sflags9 bit 5 only ShowPenaltyMessages runs
 	btst	#7,d1	;sbut
@@ -706,11 +706,11 @@ ClearOldFrames	;95 only. oldframe = -1 for the 16 sort objects, the 4 sso and th
 	movem.l	(sp)+,d0-d1/a0-a3
 	rts
 
-SetMenuPrintX	;93 name. printx = $A (95; 94 4)
+SetMenuPrintX	;printx = $A (95; 94 4)
 	move.w	#$A,(printx).w
 	rts
 
-UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to show it, and print 4 items from printy $C (the
+UpdateMenuSelection	;Clamp menuitem to the list, scroll menuitem+2 to show it, and print 4 items from printy $C (the
 	;selected one in the highlight attribute) with the up / down arrows; no menu (menulist $69A): DrawMenuInfo
 	btst	#5,(sflags9).w
 	bne.w	.11
@@ -770,11 +770,11 @@ UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to s
 	move.w	(menuitem+2).w,d0
 	beq.w	.8
 	jsr	(printsmallz).l	;more items above
-	String	TXS_ATTR,0,TXS_FONT,0,TXS_ADDX,1,TXS_ADDY,1,$7B,TXS_ADDY,$FF,0	;the up arrow
+	String	CC_SetAttribute,0,CC_SetFont,0,CC_AddX,1,CC_AddY,1,$7B,CC_AddY,$FF,0	;the up arrow
 .8
 	bsr.w	SetMenuPrintX
 	jsr	(printsmallz).l	;start of an item row
-	String	TXS_FONT,0,TXS_ADDX,2,TXS_ADDY,2
+	String	CC_SetFont,0,CC_AddX,2,CC_AddY,2
 	move.l	a1,-(sp)
 	movea.l	(menulist).w,a1
 	adda.l	(menuitemoffset).w,a1
@@ -794,7 +794,7 @@ UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to s
 	addq.w	#1,(printy).w
 	move	sr,-(sp)
 	jsr	(printsmallz).l	;more items below
-	String	TXS_ATTR,0,TXS_ADDX,1
+	String	CC_SetAttribute,0,CC_AddX,1
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#1,d0
 	move.w	#1,d1
@@ -808,12 +808,12 @@ UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to s
 	bsr.w	SetMenuPrintX
 	addq.w	#1,(printy).w
 	jsr	(printsmallz).l
-	String	TXS_FONT,0,TXS_ATTR,0,TXS_ADDX,1,$7D,0	;the down arrow
+	String	CC_SetFont,0,CC_SetAttribute,0,CC_AddX,1,$7D,0	;the down arrow
 	subq.w	#1,(printy).w
 .11
 	rts
 
-PrintMenuItem	;93 name. printsmall item String a1 (advanced past it). y: START GAME, RESUME GAME or EXIT GAME by gsp and sfpz;
+PrintMenuItem	;printsmall item String a1 (advanced past it). y: START GAME, RESUME GAME or EXIT GAME by gsp and sfpz
 	;x: MANUAL GOALIE or AUTO GOALIE by the pad team's goaliemode1 / goaliemode2
 	cmpi.b	#$79,2(a1)
 	beq.w	.0
@@ -868,7 +868,7 @@ PrintMenuItem	;93 name. printsmall item String a1 (advanced past it). y: START G
 
 ClearMenuBox	;95 only. eraser $12 x $C at $B, $B
 	jsr	(printsmallz).l
-	String	TXS_ATTR,4,TXS_X,$B,TXS_Y,$B
+	String	CC_SetAttribute,4,CC_SetX,$B,CC_SetY,$B
 	moveq	#$12,d0
 	moveq	#$C,d1
 	move.w	#$7FF,d2
@@ -1104,7 +1104,7 @@ DrawTab	;95 only. The plain tab: $D x 3 of TabBitmap at printx / printy (chars t
 	move.w	(tabchars).w,d4
 	moveq	#0,d5
 	jmp	(dobitmap).l
-	rts	;$7F366. IDA dc.b: a second rts, no xref
+	rts	;$7F366. a second rts, no xref
 
 InfoMenus	;(dc.b). The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0, $7E, $D0): a String header, then items of a
 	;String and a routine (y = the play / resume item, x = the manual goalie toggle; PrintMenuItem), ended by a $FF String
@@ -1294,7 +1294,7 @@ PlayGame	;95 only. Pause menu PLAY GAME: sflags9 bit 3 ends the pause menu (Hand
 ; $07F97E  From goalie94.asm and stats94.asm: the pause menu items
 ;	goalie94 ManualGoalieMenu, stats94 SelectGoalieMenu / DisplayPlayerSelectMenu / TimeoutMenu (95: the three tab pause
 ;	menu), the 95 PauseScores / PutScoreDigit, SetMenuPadSide and padteams. logic95 follows at $7FCFC (asstab).
-;	IDA left $07F97E-$07FCB9 as dc.b; it is code here, read from the retail bytes.
+;$07F97E-$07FCB9 as dc.b; it is code here, read from the retail bytes.
 
 
 ManualGoalieMenu	;goalie94 ManualGoalieMenu. Pause menu MANUAL GOALIE / AUTO GOALIE: with OptNOP set, toggle goaliemode2
@@ -1465,7 +1465,7 @@ TimeoutMenu	;stats94 TimeoutMenu. Pause menu TIMEOUT for team a2: drop the item 
 	bset	#2,tmflags(a2)
 	move.w	#0,(printfontset).w
 	bsr.w	printsmallz
-	String	TXS_X,$10,TXS_Y,$E,'Timeout',TXS_X,$14,TXS_Y,$10	;$FD x, $FC y
+	String	CC_SetX,$10,CC_SetY,$E,'Timeout',CC_SetX,$14,CC_SetY,$10	;$FD x, $FC y
 	movea.l	tmdata(a2),a1
 	adda.w	4(a1),a1	;team name String
 	move.w	(a1),d0

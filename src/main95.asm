@@ -1,4 +1,4 @@
-;	NHL 95 main segment. Retail $000000-$000771 (1906 bytes), from the IDA listing lst/nhl95.bin.lst.
+;NHL 95 main segment. Retail $000000-$000771 (1906 bytes), from the lst/nhl95.bin.lst.
 ;	Vectors, cartridge header (sega\SegaIDTable95.asm) and SegaInit (sega\SegaInit.asm) as in main94.asm. 95 then adds a region
 ;	lock (CHECK_VDP to .regionHang), keeps the checksum call, and holds Begin itself (94 Begin is in hockey94). TeamList (teamdata95)
 ;	starts at $772.
@@ -24,8 +24,8 @@ InitialSP = $FFFFF6	;reset vector 0. 93 / 94 name, 24-bit form of $FFFFFFF6. Beg
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-	dc.l	InitialSP	; 0 initial stack pointer (IDA: Trap3)
-	dc.l	Start		; 1 initial program counter (IDA: Reset, $200)
+	dc.l	InitialSP	; 0 initial stack pointer
+	dc.l	Start		; 1 initial program counter ( $200)
 	dc.l	BusErr		; 2 bus error. 95 has its own (an rts); 94 pointed bus and address error at AddError
 	dc.l	AdrErr		; 3 address error (an rts)
 	dc.l	InvOpCode	; 4 illegal instruction (an rts)
@@ -38,7 +38,7 @@ InitialSP = $FFFFF6	;reset vector 0. 93 / 94 name, 24-bit form of $FFFFFFF6. Beg
 	dc.l	IRQ7		; 27 ($6C) level 3, not used
 	dc.l	IRQ7		; 28 ($70) level 4: horizontal retrace (not used)
 	dc.l	0		; 29 ($74) level 5: not used
-	dc.l	VBjsr		; 30 ($78) level 6: vertical retrace, jumps through vbint (IDA: VBLANK)
+	dc.l	VBjsr		; 30 ($78) level 6: vertical retrace, jumps through vbint
 	dc.l	IRQ7		; 31 ($7C) level 7
 
 	dc.l	0,0,0,0		; 32-35 ($80-$8F): trap #0-#3, not used. 0 in retail
@@ -300,7 +300,7 @@ Begin	;cold start, entered from RegionOK. Clear RAM, init sound and menus, go to
 .0	clr.l	(a0)+			;clear RAM $AC00-$DC7F (94: $B000-$DEF3)
 	cmpa.w	#(varend-M68K_RAM),a0
 	blt.s	.0
-	clr.w	(PALflag).l		;clear the PAL flag (IDA: DMA flag)
+	clr.w	(PALflag).l		;clear the PAL flag (flag)
 	move.w	(VDP_CTRL).l,d0
 	andi.w	#1<<PAL_MODE,d0		;VDP status bit 0 = PAL (50 Hz)
 	move.w	d0,(music_global_tick_counter).l

@@ -7,8 +7,8 @@
 ; $09DA50  From shootout94.asm: the shootout; its setup and skating paths from title94.asm
 ;	ClearShootout and InitShooters (shootout94), then the title94 shootout routines PSandSOpassdir, passdirlist, StartShootoutPath,
 ;	ShootoutPaths, NextPathPoint, SkatePath and ShootoutShootCheck; then the shootout itself ($9DD3E).
-;	IDA left passdirlist ... ShootoutShootCheck ($09DAF8-$09DD3D) as dc.b; it is transcribed from the retail bytes.
-;	Local labels are numbered; the IDA local names are not kept.
+;passdirlist ... ShootoutShootCheck ($09DAF8-$09DD3D) as dc.b; it is transcribed from the retail bytes.
+;Local labels are numbered; the names are not kept.
 
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
@@ -232,8 +232,8 @@ ShootoutShootCheck	;title94 ShootoutShootCheck. Shootout, skater a3 has the puck
 ; $09DD3E  From shootout94.asm: the shootout
 ;	NextShooter, CountShootoutGoals, EndShootout (period94), PlayoffRoundScreen and RoundBigTxt (records94), ShootoutWonBy,
 ;	ShootoutShooters (94 ShootoutShooters) ... PrintShooterNames (the shootout shooters screen).
-;	IDA left NextShooter ($09DD3E) and ShootoutWonBy+$50 ... PrintShooterNames ($09E036-$09E5EF) as dc.b; they are transcribed from
-;	the retail bytes. IDA hid the printz / printz2 / printbigz Strings as instructions.
+;NextShooter ($09DD3E) and ShootoutWonBy+$50 ... PrintShooterNames ($09E036-$09E5EF) as dc.b; they are transcribed from
+;the retail bytes. the printz / printz2 / printbigz Strings as instructions.
 
 
 NextShooter	;shootout94 NextShooter. Shootout: the next shooter (BA_Team, BA_Goalie_SCnum, StartShootoutPath), or the end
@@ -429,7 +429,7 @@ ShootoutShooters	;shootout94 ShootoutShooters. Pause menu SHOOTOUT SETUP: pick t
 	clr.w	(DispAttribCtr).w
 	clr.w	(PlayerScrollCtr).w
 	jsr	(printsmallz).l
-	String	TXS_MAP,$2,TXS_X,$0,TXS_Y,$0
+	String	CC_SetMap,$2,CC_SetX,$0,CC_SetY,$0
 	moveq	#$28,d0
 	moveq	#$1C,d1
 	move.w	#$7FF,d2
@@ -503,15 +503,15 @@ ShooterSelectList	;shootout94 ShooterSelectList. Shootout shooters: the "{Select
 	jsr	(PlayerSelectBg).l
 	jsr	(ClearShooterScreen).l
 	jsr	(printsmallz).l
-	String	TXS_ALL,$0,$3,$1,$0,$0
+	String	CC_SetMapAndPosition,$0,$3,$1,$0,$0
 	moveq	#$12,d0
 	moveq	#3,d1
 	jsr	(printsmallz).l
-	String	TXS_X,$15,TXS_Y,$0
+	String	CC_SetX,$15,CC_SetY,$0
 	moveq	#$12,d0
 	moveq	#3,d1
 	jsr	(printsmallz).l
-	String	TXS_ALL,$4,$2,$2,$1,'{Select  Player}',$0
+	String	CC_SetMapAndPosition,$4,$2,$2,$1,'{Select  Player}',$0
 	clr.w	d0
 	bra.w	.6
 .loop2
@@ -617,7 +617,7 @@ PrintShooterList	;shootout94 PrintShooterList. Shootout shooters: the player lis
 	move.w	#2,(printy).w
 .loop3
 	jsr	(printsmallz).l
-	String	TXS_ATTR,$4,TXS_X,$5,TXS_ADDY,$1,'                      ',TXS_X,$5
+	String	CC_SetAttribute,$4,CC_SetX,$5,CC_AddY,$1,'                      ',CC_SetX,$5
 	cmp.w	(VertLineScrolling).w,d2
 	bne.w	.6
 	move.w	d7,(printa).w
@@ -687,31 +687,31 @@ ResetShooterScroll	;shootout94 ResetShooterScroll. Clear the list scroll words p
 	rts
 PrintShooterSlots	;shootout94 PrintShooterSlots. Shootout shooters: "Shooters" 1. ... 5. and "Goalie"
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0,TXS_MAP,$2,TXS_X,$0,TXS_Y,$A
+	String	CC_SetFont,$0,CC_SetMap,$2,CC_SetX,$0,CC_SetY,$A
 	jsr	(printsmallz).l
-	String	TXS_ATTR,$4
+	String	CC_SetAttribute,$4
 	jsr	(printsmallz).l
-	String	TXS_X,$7,TXS_Y,$C,'Shooters'
+	String	CC_SetX,$7,CC_SetY,$C,'Shooters'
 	jsr	(printsmallz).l
-	String	TXS_X,$3,TXS_Y,$E,'1. ',$0
+	String	CC_SetX,$3,CC_SetY,$E,'1. ',$0
 	jsr	(printsmallz).l
-	String	TXS_X,$3,TXS_Y,$10,'2. ',$0
+	String	CC_SetX,$3,CC_SetY,$10,'2. ',$0
 	jsr	(printsmallz).l
-	String	TXS_X,$3,TXS_Y,$12,'3. ',$0
+	String	CC_SetX,$3,CC_SetY,$12,'3. ',$0
 	jsr	(printsmallz).l
-	String	TXS_X,$3,TXS_Y,$14,'4. ',$0
+	String	CC_SetX,$3,CC_SetY,$14,'4. ',$0
 	jsr	(printsmallz).l
-	String	TXS_X,$3,TXS_Y,$16,'5. ',$0
+	String	CC_SetX,$3,CC_SetY,$16,'5. ',$0
 	jsr	(printsmallz).l
-	String	TXS_X,$1A,TXS_Y,$C,'Goalie'
+	String	CC_SetX,$1A,CC_SetY,$C,'Goalie'
 	rts
 PrintShooterBox	;shootout94 PrintShooterBox. Shootout shooters: the selected player (getname), centred
 	jsr	(printsmallz).l
-	String	TXS_ALL,$4,$2,$8,$7,TXS_FONT,$1,$0
+	String	CC_SetMapAndPosition,$4,$2,$8,$7,CC_SetFont,$1,$0
 	jsr	(printsmallz).l
-	String	TXS_X,$0,TXS_Y,$7,'                                       ',$0
+	String	CC_SetX,$0,CC_SetY,$7,'                                       ',$0
 	jsr	(printsmallz).l
-	String	TXS_X,$15,TXS_Y,$7
+	String	CC_SetX,$15,CC_SetY,$7
 	movea.l	#homeshooters,a1
 	cmpa.l	#tmstruct,a2
 	beq.w	.0
@@ -732,7 +732,7 @@ PrintShooterNames	;shootout94 PrintShooterNames. Shootout shooters: the shooters
 	;highlighted
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printsmallz).l
-	String	TXS_X,$6,TXS_Y,$E,TXS_ATTR,$6,TXS_FONT,$0
+	String	CC_SetX,$6,CC_SetY,$E,CC_SetAttribute,$6,CC_SetFont,$0
 	move.w	#0,d1
 	movea.l	#homeshooters,a0
 	cmpa.l	#tmstruct,a2
@@ -769,9 +769,9 @@ PrintShooterNames	;shootout94 PrintShooterNames. Shootout shooters: the shooters
 ;	SetupPenaltyShot (collide94), PenaltyShotBox / PenShotBigTxt (data94), PenShotChk / getBAplayerInfo (penalty94), ShortenMsgTimer
 ;	(period94), setInjuryType (collide94), getFgtbyte / chkFgtBit1 (title94), updatepwrplay / GetLowestPen (penalty94); 95 only: the season
 ;	injuries (SetSeasonInjuries ... DeleteInjurySlot, save RAM SRInjuries), CheckInjury and ClearPowerPlay.
-;	IDA left puckshootout ... UpdatePenaltyShotEnd ($09E5F0-$09ECE5) and SetupPenaltyShot as dc.b; they are transcribed from the retail
-;	bytes. IDA hid the printz / printbigz / appendz Strings as instructions.
-;	Local labels are numbered; the IDA local names are not kept.
+;puckshootout ... UpdatePenaltyShotEnd ($09E5F0-$09ECE5) and SetupPenaltyShot as dc.b; they are transcribed from the retail
+;bytes. the printz / printbigz / appendz Strings as instructions.
+;Local labels are numbered; the names are not kept.
 
 
 puckshootout	;checks94 puckshootout. Start a penalty shot or shootout attempt: the pads cleared, the shooter (NextShooter) or the path

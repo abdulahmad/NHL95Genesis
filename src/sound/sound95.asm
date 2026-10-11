@@ -1459,7 +1459,7 @@ SoundBanks	;Bank 0 (SndSetBank, Begin and Opening2): the item count, then 4 byte
 ;------------------------------------------------------------------------------------------------------------------------
 ; $0676D8  From sound94.asm: the sound calls, the unused 94 driver, the 94 samples and FM patches
 ;	The 95 sound calls (SoundCmd ... ChooseSong, hockey94 / display94 / video94 / title94 routines moved in), then what is left of the
-;	94 sound driver (sound94): z80_bus_release_delay ... p_initialZ80 as 94, IDA dc.b and no caller in 95, with the RAM moved by -$3FC,
+;94 sound driver (sound94): z80_bus_release_delay ... p_initialZ80 as 94, and no caller in 95, with the RAM moved by -$3FC
 ;	each Z80 bus request but p_initialZ80's replaced by a SoundCmd $D (pause the 95 driver) and ClearAllTrackAndSFXSlots cut down;
 ;	collide94 newcheck; then the 94 PCM samples and FM patches (the 94 files).
 
@@ -1651,7 +1651,7 @@ StartSong	;95 only: stop the song (play_new_song), then song d0 (command 4, temp
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-play_new_song	;93 name. Stop the song in progress (PlayingSong, sound driver command 5)
+play_new_song	;Stop the song in progress (PlayingSong, sound driver command 5)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#5,d0
 	move.w	(PlayingSong).w,d1
@@ -1752,16 +1752,16 @@ RandomSongs	;(title94). 8 songs ChooseSong picks from at random
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	The 94 sound driver as 95 keeps it ($67AD0-$682AF, IDA dc.b, nothing calls it). The 94 source (sound94) with the 95 changes
+;The 94 sound driver as 95 keeps it ($67AD0-$682AF, nothing calls it). The 94 source (sound94) with the 95 changes
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-z80_bus_release_delay	;93 name. Z80 busy: give the bus back, wait, then falls into UploadCommandBufferToZ80 to retry
+z80_bus_release_delay	;Z80 busy: give the bus back, wait, then falls into UploadCommandBufferToZ80 to retry
 	clr.w	(IO_Z80BUS).l
 	moveq	#$64,d0
 .delay
 	dbf	d0,.delay
-UploadCommandBufferToZ80	;93 name. Copy the 33 byte command buffer (Z80_command_buffer) to Z80 RAM $02 once the Z80 is idle (Z80 RAM $97 = 0, $96 = $7D)
+UploadCommandBufferToZ80	;Copy the 33 byte command buffer (Z80_command_buffer) to Z80 RAM $02 once the Z80 is idle (Z80 RAM $97 = 0, $96 = $7D)
 	move.w	d0,-(sp)	;95: pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
 	move.w	#$D,d0
 	jsr	(SoundCmd).l
@@ -1782,7 +1782,7 @@ UploadCommandBufferToZ80	;93 name. Copy the 33 byte command buffer (Z80_command_
 	clr.w	(IO_Z80BUS).l
 rtscmd10	;The shared rts; handle_command_10 branches to it
 	rts
-ProcessOneMusicTrack	;93 name. Count down track slot a5 (track d7) and run every event that is due through command_jump_table. A 0
+ProcessOneMusicTrack	;Count down track slot a5 (track d7) and run every event that is due through command_jump_table. A 0
 	;status ends the stream; a non-negative long at +2 is a loop pointer. Called from p_music_vblank
 	subq.w	#1,4(a5)
 	bpl.w	rtsfx
@@ -1808,7 +1808,7 @@ ProcessOneMusicTrack	;93 name. Count down track slot a5 (track d7) and run every
 	adda.w	0(a2,d0.w),a2
 	jsr	(a2)
 	bra.s	ProcessOneMusicTrack
-command_jump_table	;93 name. Event handlers by status bits 6-4, as offsets from the table. 94 adds handle_command_30
+command_jump_table	;Event handlers by status bits 6-4, as offsets from the table. 94 adds handle_command_30
 	dc.w	handle_command_00-command_jump_table
 	dc.w	handle_command_10-command_jump_table
 	dc.w	handle_command_skip-command_jump_table
@@ -1817,7 +1817,7 @@ command_jump_table	;93 name. Event handlers by status bits 6-4, as offsets from 
 	dc.w	handle_command_skip-command_jump_table
 	dc.w	handle_command_60-command_jump_table
 	dc.w	handle_command_skip-command_jump_table
-handle_command_00	;93 name. Event $0x: key off note +2 on channel +1 bits 3-0 of track d7. Also entered from handle_command_10 (volume 0). Falls into ReleaseChannelAndNote
+handle_command_00	;Event $0x: key off note +2 on channel +1 bits 3-0 of track d7. Also entered from handle_command_10 (volume 0). Falls into ReleaseChannelAndNote
 	move.b	1(a0),d0
 	andi.w	#$F,d0
 	asl.w	#3,d0
@@ -1834,7 +1834,7 @@ handle_command_00	;93 name. Event $0x: key off note +2 on channel +1 bits 3-0 of
 	btst	#0,6(a2)
 	dbne	d1,.find
 	beq.w	rtsfx
-ReleaseChannelAndNote	;93 name. Key off channel struct a2 if it is on. The PCM patches ($60 up) stop the PCM channel (ClearZ80SpecialEffectsFlags)
+ReleaseChannelAndNote	;Key off channel struct a2 if it is on. The PCM patches ($60 up) stop the PCM channel (ClearZ80SpecialEffectsFlags)
 	bclr	#0,6(a2)
 	beq.w	rtsfx
 	cmpi.b	#$60,3(a2)
@@ -1843,7 +1843,7 @@ ReleaseChannelAndNote	;93 name. Key off channel struct a2 if it is on. The PCM p
 	bset	d0,(Z80_command_buffer).w
 	st	(music_needs_z80_update).w
 	rts
-ClearZ80SpecialEffectsFlags	;93 name. Clear Z80 RAM $8E (Z80_RAM+$8E, the PCM rate byte written by UpdateChannelFrequencyAndVolume): stops the PCM channel
+ClearZ80SpecialEffectsFlags	;Clear Z80 RAM $8E (Z80_RAM+$8E, the PCM rate byte written by UpdateChannelFrequencyAndVolume): stops the PCM channel
 	move.w	d0,-(sp)	;95: pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
 	move.w	#$D,d0
 	jsr	(SoundCmd).l
@@ -1852,7 +1852,7 @@ ClearZ80SpecialEffectsFlags	;93 name. Clear Z80 RAM $8E (Z80_RAM+$8E, the PCM ra
 	clr.w	(IO_Z80BUS).l
 rtsfx	;95: the shared rts (94 had it in play_sfx_or_music_track, not in 95). ProcessOneMusicTrack, handle_command_00 and StartSong branch here
 	rts
-handle_command_10	;93 name. Event $1x: key on note +2 at volume +3 on channel +1 bits 3-0 of track d7 (volume 0 = key off). An FM
+handle_command_10	;Event $1x: key on note +2 at volume +3 on channel +1 bits 3-0 of track d7 (volume 0 = key off). An FM
 	;patch takes a free channel or the oldest one; a PCM patch ($60 up) sets the sample start / end (pcm_sample_table, 93 name) in Z80 RAM
 	;$23-$28. Then the volume (SetChannelVolume) and the frequency (UpdateChannelFrequencyAndVolume)
 	tst.b	3(a0)
@@ -1953,7 +1953,7 @@ handle_command_10	;93 name. Event $1x: key on note +2 at volume +3 on channel +1
 	move.b	#0,$97(a1)
 	clr.w	(IO_Z80BUS).l
 	bsr.w	SetChannelVolume
-UpdateChannelFrequencyAndVolume	;93 name. Set the frequency of channel struct a2 from its note and the pitch bend of its key (a3 =
+UpdateChannelFrequencyAndVolume	;Set the frequency of channel struct a2 from its note and the pitch bend of its key (a3 =
 	;voice table, word +0 = bend). Called from handle_command_60 and handle_command_10
 	clr.l	d3
 	move.b	1(a2),d3
@@ -2096,7 +2096,7 @@ SetChannelVolume	;94 only. Set the volume of channel struct a2: note volume (+2)
 	clr.w	(IO_Z80BUS).l
 	movem.l	(sp)+,d0
 	rts
-handle_command_40	;93 name. Event $4x: set the patch of channel +1 bits 3-0 of track d7 to +2 (voice table +3)
+handle_command_40	;Event $4x: set the patch of channel +1 bits 3-0 of track d7 to +2 (voice table +3)
 	lea	(fm_voice_usage_table).w,a3
 	move.b	1(a0),d0
 	andi.w	#$F,d0
@@ -2105,7 +2105,7 @@ handle_command_40	;93 name. Event $4x: set the patch of channel +1 bits 3-0 of t
 	asl.w	#3,d0
 	move.b	2(a0),3(a3,d0.w)
 	rts
-handle_command_60	;93 name. Event $6x: set the pitch bend of channel +1 bits 3-0 of track d7 to word +2 - $2000, and update the frequency of every channel with that key
+handle_command_60	;Event $6x: set the pitch bend of channel +1 bits 3-0 of track d7 to word +2 - $2000, and update the frequency of every channel with that key
 	lea	(fm_voice_usage_table).w,a3
 	move.b	1(a0),d0
 	andi.w	#$F,d0
@@ -2149,9 +2149,9 @@ handle_command_30	;94 only: event $3x, controller +2 = +3 on channel +1 bits 3-0
 	addq.w	#8,a2
 	dbf	d0,.loop
 	rts
-handle_command_skip	;93 name. Events $2x, $5x and $7x: ignored
+handle_command_skip	;Events $2x, $5x and $7x: ignored
 	rts
-p_initialZ80	;92 name (initialization). Free all slots, load the Z80 program (Z80_Program_Code, $295 bytes) into Z80 RAM, build 29
+p_initialZ80	;(initialization). Free all slots, load the Z80 program (Z80_Program_Code, $295 bytes) into Z80 RAM, build 29
 	;tables of 256 bytes below Z80 RAM $2000 (Z80_RAM+$2000; (x - $80) * 8 / n + $80 for n = 8-$24), then reset and start the Z80. Called from Begin
 	movem.l	d0-d2/a0-a2,-(sp)
 	bsr.w	ClearAllTrackAndSFXSlots
@@ -2192,7 +2192,7 @@ p_initialZ80	;92 name (initialization). Free all slots, load the Z80 program (Z8
 	clr.b	(music_needs_z80_update).w
 	movem.l	(sp)+,d0-d2/a0-a2
 	rts
-ClearAllTrackAndSFXSlots	;93 name. 95 cuts it down to PlayingSong = -1 (94 freed the 8 track slots and reset the 6 channel structs)
+ClearAllTrackAndSFXSlots	;95 cuts it down to PlayingSong = -1 (94 freed the 8 track slots and reset the 6 channel structs)
 	move.w	#$FFFF,(PlayingSong).w
 	rts
 
@@ -2211,7 +2211,7 @@ newcheck	;(collide94). start a new check sound: one of 4 sounds $1C-$1F, never t
 	rts
 
 ;	The 94 PCM samples and FM patches, the same bytes as 94 (the 94 files) at $682D6-$79901. The old driver above points at them
-pcm_sample_table	;93 name: (sample address, 0) for PCM patches $60-$6E (lea in handle_command_10)
+pcm_sample_table	;(sample address, 0) for PCM patches $60-$6E (lea in handle_command_10)
 	dc.l	sfx_puckget_pcm,0		;patch $60
 	dc.l	sfx_pass_pcm,0		;patch $61
 	dc.l	sfx_shotbh_pcm,0		;patch $62
@@ -2263,6 +2263,6 @@ sfx_shotfh_pcm
 sfx_puckget_pcm
 	incbin	..\Extracted\NHL95\Sound\sfx_puckget_pcm.bin	;$792A2-$79501 (94 $2BFE8-$2C247). sample 0: puckget
 	even
-fm_instrument_patches	;93 name: 32 FM patches x 32 bytes, byte $1E = pitch bend scale (UpdateChannelFrequencyAndVolume)
+fm_instrument_patches	;32 FM patches x 32 bytes, byte $1E = pitch bend scale (UpdateChannelFrequencyAndVolume)
 	incbin	..\Extracted\NHL95\Sound\fm_instrument_patches.bin	;$79502-$79901 (94 $2C248-$2C647). 32 FM patches x 32 bytes (byte $1E = pitch bend scale)
 	even

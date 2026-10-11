@@ -3,10 +3,10 @@
 ;	winner screens) and the playoffs (InitPlayoffs ... CollectSeriesWinners, PlayoffTreeScreen).
 ;	The segment map ended this file at $09D9BF; RoundSeriesOffsets / RoundSeriesCounts and PlayoffTreeScreen (to $09DA4F) belong here,
 ;	shootout95 starts at $09DA50 (94 ClearShootout).
-;	IDA left ScanPresidents ... GetAwardAssists ($09D03E-$09D4CD), RestoreSeasonHeader and PlayoffTreeScreen as dc.b; they are transcribed
-;	from the retail bytes. IDA hid printz / printz2 Strings and remap bytes as instructions.
+;ScanPresidents ... GetAwardAssists ($09D03E-$09D4CD), RestoreSeasonHeader and PlayoffTreeScreen as dc.b; they are transcribed
+;from the retail bytes. printz / printz2 Strings and remap bytes as instructions.
 ;	$20xxxx addresses are save RAM (odd bytes).
-;	Local labels are numbered; the IDA local names are not kept.
+;Local labels are numbered; the names are not kept.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -74,7 +74,7 @@ SeasonAwards	;95 only. End of season awards: for each of the 9 awards the finali
 
 PrintAwardTitle	;95 only. Print award AwardIndex: name, description and second line (PrintCentered)
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0,TXS_ATTR,$1,TXS_MAP,$1,TXS_Y,$2
+	String	CC_SetFont,$0,CC_SetAttribute,$1,CC_SetMap,$1,CC_SetY,$2
 	move.w	(AwardIndex).w,d0
 	movea.l	#AwardNames,a1
 	bsr.w	PrintCentered
@@ -207,7 +207,7 @@ PrintFinalists	;95 only. "FINALISTS:" and the 3 finalists (player names, or team
 	btst	#1,(BA_PS_flags).w
 	bne.w	.1
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0,TXS_ATTR,$1,TXS_MAP,$1,TXS_X,$11,TXS_Y,$6,'FINALISTS:'
+	String	CC_SetFont,$0,CC_SetAttribute,$1,CC_SetMap,$1,CC_SetX,$11,CC_SetY,$6,'FINALISTS:'
 	move.w	(AwardFlashTimer).w,d0
 	ext.l	d0
 	divu.w	(AwardCycle).w,d0
@@ -309,7 +309,7 @@ PrintFinalists	;95 only. "FINALISTS:" and the 3 finalists (player names, or team
 
 FlashWinnerCaption	;95 only. Flash "The Winner !" (AwardFlashTimer: on $1E frames, off to $3C)
 	jsr	(printsmallz).l
-	String	TXS_FONT,$0,TXS_ATTR,$1,TXS_MAP,$1,TXS_X,$11,TXS_Y,$6,'          '
+	String	CC_SetFont,$0,CC_SetAttribute,$1,CC_SetMap,$1,CC_SetX,$11,CC_SetY,$6,'          '
 	move.w	#2,(printfontset).w
 	move.w	(AwardFlashTimer).w,d0
 	cmp.w	#$1E,d0
@@ -320,7 +320,7 @@ FlashWinnerCaption	;95 only. Flash "The Winner !" (AwardFlashTimer: on $1E frame
 	clr.w	(AwardFlashTimer).w
 .0
 	jsr	(printsmallz).l
-	String	TXS_ATTR,$1,TXS_MAP,$1,TXS_X,$12,TXS_Y,$6,'The Winner !'
+	String	CC_SetAttribute,$1,CC_SetMap,$1,CC_SetX,$12,CC_SetY,$6,'The Winner !'
 	rts
 
 AwardsLoop	;95 only. Awards frames: finalists for $12C frames, then the winner to $258, then the next award; d1 = a pad button (exit), 0 after the last award or AwardWait frames

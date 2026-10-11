@@ -6,8 +6,8 @@
 ;	The 94 doinput parts doinput_cbut ... doinput_ispc, getGoalieSCnum are in skate95; the goalie dive (doinput .33) is
 ;	doinput_goaliedive (skate95); burst, Acheck, changeplayer (95 chgplayer), setc1player ... are in control95; SetLCmode, lineinput
 ;	in lines95.
-;	IDA code except puckvzadj and compshoot (dc.b, read from the retail bytes) and the dead / data bytes noted below. Local labels are
-;	numbered; the IDA local names are not kept.
+;except puckvzadj and compshoot (dc.b, read from the retail bytes) and the dead / data bytes noted below. Local labels are
+;numbered; the names are not kept.
 ;	95 changes: four pads (doinput_islocked marks the player of pad c1 ... c4playernum), the 95 asstab numbers and SPA values, the y
 ;	limits moved 3 out ($108 to $10B ...), the PAL speed $18 (94 $16), the one-timer table offsets, Findhittype's two masks swapped,
 ;	shotsets $E / $FFF2 (94 $10 / $FFF0), jsr / jmp .l to the routines 95 moved out of range.
@@ -865,7 +865,7 @@ OneTimerPass	;onetimer94 OneTimerPass (moved in). One-timer pass: puckvz = sqrt(
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-Findhittype	;94 name. Z by direction d0 from facedir and the hand (attribute bit 3): btst Dn,#imm (IDA cannot show it).
+Findhittype	;Z by direction d0 from facedir and the hand (attribute bit 3): btst Dn,#imm (show it).
 	;95 swaps the two masks of 94
 	neg.w	d0
 	add.w	facedir(a3),d0
@@ -1247,7 +1247,7 @@ shotdiradj	;a3 = shooter. Where to shoot for a computer player or a one timer
 .6
 	rts
 
-CalcAngleOffset	;shotdiradj helper (was: shotdirmath)
+CalcAngleOffset	;shotdiradj helper
 	sub.w	(puckx).w,d3	;sub puckx from post X
 	sub.w	(pucky).w,d4	;sub pucky from goalline
 	muls.w	d0,d4	;mult d0 with d4
@@ -1256,7 +1256,7 @@ CalcAngleOffset	;shotdiradj helper (was: shotdirmath)
 	divs.w	d2,d4	;divide d2 into d4
 	rts
 
-puckvzadj	;onetimer94 puckvzadj (moved in; IDA name). Set puckvz for a top shelf shot from the distance to the goal
+puckvzadj	;onetimer94 puckvzadj (moved in). Set puckvz for a top shelf shot from the distance to the goal
 	;line ($10B; 94 $108) over puckvy, at most $7FFF. Called from doshot
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(pucky).w,d0	;move pucky into d0
