@@ -91,7 +91,7 @@ logoWPG = $1A08B8		;TeamLogoBitmaps row (graphics95)
 logoASE = $1A0D2E		;TeamLogoBitmaps row (graphics95)
 logoASW = $1A11E4		;TeamLogoBitmaps row (graphics95)
 TeamLogoPalettes = $1A169A		;graphics95
-ArenaGfxBank = $1A1A1A		;dc.l x+(TeamGfxList rows; arena95)
+ArenaGfxBank = $1A1A1A		;dc.l x+(TeamGfxList rows; graphics95)
 
 ; Main segment code
 	include	engine\middle95.asm

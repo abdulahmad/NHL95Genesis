@@ -48,10 +48,8 @@
     "seg:crowd95": "buildseg.bat front\\crowd95 && node fixopcodes.js \"output\\\\crowd95 .lst\" output\\\\crowd95.bin && node verifySegment.js crowd95 0xA0B3E lst/nhl95.bin",
     "seg:summary95": "buildseg.bat front\\summary95 && node fixopcodes.js \"output\\\\summary95 .lst\" output\\\\summary95.bin && node verifySegment.js summary95 0xA0D1A lst/nhl95.bin",
     "seg:title95": "buildseg.bat front\\title95 && node fixopcodes.js \"output\\\\title95 .lst\" output\\\\title95.bin && node verifySegment.js title95 0xA12AA lst/nhl95.bin",
-    "seg:graphics95": "buildseg.bat art\\graphics95 && node fixopcodes.js \"output\\\\graphics95 .lst\" output\\\\graphics95.bin && node verifySegment.js graphics95 0xA1A5A lst/nhl95.bin",
-    "seg:logopals95": "buildseg.bat art\\logopals95 && node fixopcodes.js \"output\\\\logopals95 .lst\" output\\\\logopals95.bin && node verifySegment.js logopals95 0x1A169A lst/nhl95.bin",
-    "seg:arena95": "buildseg.bat art\\arena95 && node fixopcodes.js \"output\\\\arena95 .lst\" output\\\\arena95.bin && node verifySegment.js arena95 0x1A1A1A lst/nhl95.bin",
-    "seg:credits95": "buildseg.bat art\\credits95 && node fixopcodes.js \"output\\\\credits95 .lst\" output\\\\credits95.bin && node verifySegment.js credits95 0x1A6C28 lst/nhl95.bin",
+    "seg:graphics95": "buildseg.bat graphics95 && node fixopcodes.js \"output\\\\graphics95 .lst\" output\\\\graphics95.bin && node verifySegment.js graphics95 0xA1A5A lst/nhl95.bin",
+    "seg:credits95": "buildseg.bat credits95 && node fixopcodes.js \"output\\\\credits95 .lst\" output\\\\credits95.bin && node verifySegment.js credits95 0x1A6C28 lst/nhl95.bin",
     "seg:checksum95": "buildseg.bat checksum95 && node fixopcodes.js \"output\\\\checksum95 .lst\" output\\\\checksum95.bin && node verifySegment.js checksum95 0x1A72C0 lst/nhl95.bin"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-;	NHL 95 credits95. Retail $1A6C28-$1A72BF (1688 bytes).
+;	NHL 95 credits95. Retail $1A6C28-$1A72BF (1688 bytes). checksum95 follows at $1A72C0.
 ;	The title screen credits (94 teamdata94 Credits / CreditsList): length-prefixed Strings, String -1 ends a screen; newTitleScreen
 ;	prints Credits first, then CreditsList (CreditsPrintRow).
 

@@ -46,7 +46,7 @@ TitleScreenImg = $18DAA8	;graphics95
 TitleImg = $1960D6		;graphics95
 StanleyCupImg = $196C4C		;graphics95
 CupSprites = $19A0FA		;graphics95
-Credits = $1A6C28		;arena95
+Credits = $1A6C28		;credits95
 CreditsList = $1A6C6A		;credits95
 
 ; Main segment code
