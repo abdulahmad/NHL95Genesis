@@ -23,6 +23,7 @@ SRC = os.path.join(ROOT, 'src')
 LISTING = os.path.join(ROOT, 'output', 'nhl95 .lst')
 IDA_LST = os.path.join(ROOT, 'lst', 'nhl95.bin.lst')
 NAME_MAP = os.path.join(ROOT, 'docs', 'name_map.csv')
+SUBSYSTEMS = ('tables', 'sound', 'engine', 'front', 'art')
 
 IDA_NAME = r'(?:sub|loc|locret|unk|byte|word|dword|off|nullsub)_[0-9A-Fa-f]+'
 HEX = r'\$[0-9A-Fa-f]+'
@@ -145,10 +146,19 @@ def ida_names_by_address():
     return by_addr
 
 
+def src_files(subs=SUBSYSTEMS):
+    """The files of src and of the given subfolders, as paths relative to src."""
+    files = sorted(fn for fn in os.listdir(SRC) if fn.endswith('.asm'))
+    for sub in subs:
+        if os.path.isdir(os.path.join(SRC, sub)):
+            files += [sub + '/' + fn for fn in sorted(os.listdir(os.path.join(SRC, sub)))]
+    return files
+
+
 def module_ranges():
-    """(org, module) from each stub, so a build address maps to its file."""
+    """(org, module) from each stub, so a build address maps to its file (engine/logic95 ...)."""
     ranges = []
-    for fn in os.listdir(SRC):
+    for fn in src_files():
         if fn.endswith('_stub.asm'):
             text = open(os.path.join(SRC, fn), encoding='latin-1').read()
             m = re.search(r'^\s+org\s+\$?([0-9A-Fa-f]+)', text, re.M)
@@ -161,11 +171,7 @@ def main():
     recorded = {}
     changes = Counter()
     examples = {}
-    files = sorted(fn for fn in os.listdir(SRC) if fn.endswith('.asm'))
-    for sub in ('sega', 'stubinc', 'macros'):
-        if os.path.isdir(os.path.join(SRC, sub)):
-            files += [os.path.join(sub, fn) for fn in sorted(os.listdir(os.path.join(SRC, sub)))]
-    for fn in files:
+    for fn in src_files(SUBSYSTEMS + ('sega', 'stubinc', 'macros')):
         path = os.path.join(SRC, fn)
         stub = fn.endswith('_stub.asm')
         with open(path, encoding='latin-1', newline='') as f:

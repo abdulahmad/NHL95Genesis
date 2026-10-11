@@ -104,17 +104,30 @@ def header_94(h, l94):
     return None
 
 
-def source_order():
-    files = []
-    for line in open(os.path.join(ROOT, 'src', 'nhl95.asm')):
-        m = re.match(r'^\s+include\s+(\S+\.asm)\s*;\s*\$[0-9A-F]+', line)
+def include_lines(path):
+    """The files an include list names with their start address ('; $ADDR'), in order."""
+    out = []
+    for line in open(os.path.join(ROOT, 'src', path)):
+        m = re.match(r'^\s+include\s+(\S+\.asm)\s*;\s+\$[0-9A-F]+', line)
         if m:
-            files.append(m.group(1).replace('\\', '/'))
-            if m.group(1) == 'main95.asm':
-                for l2 in open(os.path.join(ROOT, 'src', 'main95.asm')):
-                    m2 = re.match(r'^\s+include\s+(sega\\\S+\.asm)', l2)
-                    if m2:
-                        files.append(m2.group(1).replace('\\', '/'))
+            out.append(m.group(1).replace('\\', '/'))
+    return out
+
+
+def source_order(path='nhl95.asm'):
+    """The source files in ROM order: nhl95.asm and the include lists it names (tables95.asm ...) are
+    expanded, main95.asm is followed by its sega\\ files."""
+    files = []
+    for f in include_lines(path):
+        if f != 'main95.asm' and include_lines(f):
+            files += source_order(f)
+            continue
+        files.append(f)
+        if f == 'main95.asm':
+            for l2 in open(os.path.join(ROOT, 'src', 'main95.asm')):
+                m2 = re.match(r'^\s+include\s+(sega\\\S+\.asm)', l2)
+                if m2:
+                    files.append(m2.group(1).replace('\\', '/'))
     return files
 
 
