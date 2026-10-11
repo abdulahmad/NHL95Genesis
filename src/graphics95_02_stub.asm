@@ -16,4 +16,4 @@
 
 
 ; Main segment code
-	include	data\graphics95_02.asm
+	include	graphics95_02.asm

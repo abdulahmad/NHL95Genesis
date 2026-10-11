@@ -2,7 +2,7 @@
 ;	NHL 95 segment $9AC8-$A203, from lst/nhl95.bin.lst. The game flow from the title screen to the game loop. 95 runs it as one
 ;	stretch of code: 94 Opening and Opening2 (setup94), the 95 main menu exits (season, trades, create player), StartGame and StartPer
 ;	(hockey94) without a jump between them, the 95 IntermissionMenu, the game loop, DoGameFrame with 94 periodicevents written in
-;	line, and 94 updateplayers (replay94). setvideo (display95_01) follows at $A204.
+;	line, and 94 updateplayers (replay94). setvideo (display95) follows at $A204.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -145,7 +145,7 @@ StartGame	;reset game state for a new game, then start the first period. 95 has 
 	move.b	#1,(VDP_PSG).l
 	jsr	(setupice).l
 
-IntermissionStart	;94 setup94 name: the PeriodOver tail. checks95_06 PeriodOver jumps here after forceblack: reset the
+IntermissionStart	;94 setup94 name: the PeriodOver tail. checks95_04 PeriodOver jumps here after forceblack: reset the
 	;clock, restart the sound driver, UpdateScores, IntermissionMenu, then GameOver or StartPer
 	jsr	(ResetClock).l	;hockey94_01
 	move.w	d0,-(sp)

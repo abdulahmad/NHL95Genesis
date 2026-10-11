@@ -13,22 +13,22 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $0A0B3E-$0A12A9, read from lst/nhl95.bin.
-ReadMenuJoy = $7A6AA		;video95_02
-vcountwait = $7C6BE		;video95_03
-printz2 = $7C6D4		;video95_03
-printsmall = $7C6E6		;video95_03
-printz = $7C810			;video95_03
-print = $7C822			;video95_03
-eraser = $7C8CC			;video95_03
-PrintSmallListItem = $7CB38	;video95_03
-FormatPlayerNameWithAttrib = $7CD38	;video95_03
-PushNumber = $7D120		;video95_03
-PutTeamBlock = $7D268		;video95_03
-printbigz = $7D8D2		;video95_03
+ReadMenuJoy = $7A6AA		;video95_01
+vcountwait = $7C6BE		;video95_02
+printz2 = $7C6D4		;video95_02
+printsmall = $7C6E6		;video95_02
+printz = $7C810			;video95_02
+print = $7C822			;video95_02
+eraser = $7C8CC			;video95_02
+PrintSmallListItem = $7CB38	;video95_02
+FormatPlayerNameWithAttrib = $7CD38	;video95_02
+PushNumber = $7D120		;video95_02
+PutTeamBlock = $7D268		;video95_02
+printbigz = $7D8D2		;video95_02
 FormatAndPrintTime = $7DF7C	;fourway95
-ExitAttributeScreen2 = $8546E	;data95_01
-PenaltyList = $89C2E		;data95_02
-DrawTeamScreen2 = $8ACEC	;checks95_05
+ExitAttributeScreen2 = $8546E	;optsetup95
+PenaltyList = $89C2E		;data95
+DrawTeamScreen2 = $8ACEC	;checks95_04
 ControllerBgMap = $164AC8	;graphics95_01
 CrowdFrameList = $18B628		;graphics95_01
 

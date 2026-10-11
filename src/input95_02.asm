@@ -1,6 +1,6 @@
 ;	NHL 95 input95_02. Retail $08A056-$08A3FD (936 bytes).
 ;	94 input94 SetLCmode, SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2, with penalty94 linebar,
-;	getlinee and AvgCline moved in. checks95_05 follows at $08A3FE (CompLine).
+;	getlinee and AvgCline moved in. checks95_04 follows at $08A3FE (CompLine).
 ;	IDA code except AvgCline (dc.b, read from the retail bytes). IDA hid a printz String as instructions; it is String here. Local labels
 ;	are numbered; the IDA local names are not kept.
 ;	95 changes: the team struct offsets, the zero long at $69A (94 $30A).

@@ -41,7 +41,7 @@ def scan(src, listing=False):
     files = sorted(fn for fn in os.listdir(src) if fn.endswith('.asm'))
     with open(os.path.join(src, 'ram95.asm'), encoding='latin-1') as f:
         sroffs = {int(m.group(1), 16) for m in re.finditer(r'^SR\w+\s+equ\s+\$([0-9A-Fa-f]+)', f.read(), re.M)}
-    for sub in ('data', 'sega', 'stubinc'):
+    for sub in ('sega', 'stubinc'):
         if os.path.isdir(os.path.join(src, sub)):
             files += [os.path.join(sub, fn) for fn in sorted(os.listdir(os.path.join(src, sub)))
                       if fn.endswith(('.asm', '.inc'))]

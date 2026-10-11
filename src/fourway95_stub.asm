@@ -17,11 +17,11 @@
 ZeroLong = $69A			;main95
 dobitmap = $79A3C		;video95_01
 DoDMA_clearCallbackPointer = $79AC0	;video95_01
-ReadJoy = $7A52A		;video95_02
-printz = $7C810			;video95_03
-print = $7C822			;video95_03
-PrintSmallListItem = $7CB38	;video95_03
-PushTime = $7D0BC		;video95_03
+ReadJoy = $7A52A		;video95_01
+printz = $7C810			;video95_02
+print = $7C822			;video95_02
+PrintSmallListItem = $7CB38	;video95_02
+PushTime = $7D0BC		;video95_02
 EASNmap = $180B4E		;graphics95_01
 ArenaGfxBank = $1A1A1A		;dc.l x+(TeamGfxList rows; graphics95_02)
 

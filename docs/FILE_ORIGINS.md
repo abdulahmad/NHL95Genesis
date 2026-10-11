@@ -9,7 +9,7 @@ A label is assigned by the first rule that applies:
 3. **fingerprint**: `tools/segmap95.json` matched the bytes to a 94 routine.
 4. **name (93)**: a label only NHLPA93Genesis has.
 5. **follows**: a table, shared `rts` or entry point with no evidence of its own takes the label before it.
-6. **file**: the rest of a file that is new in 95 (sounddrv95, season95, trade95, create95, awards95, schedule95) is new in 95.
+6. **file**: the rest of a file that is new in 95 (season95, trade95, create95, awards95, schedule95) is new in 95.
 
 Sizes run from a label to the next one, so the vectors ($0-$FF) and the header before CountryCode are not counted. Percentages are by bytes. "new in 95" means 94 has no routine like it.
 
@@ -20,43 +20,33 @@ Sizes run from a label to the next one, so the vectors ($0-$FF) and the header b
 | `main95` | $000200-$000771 | 1144 | new in 95 81%, hockey94 18%, data94 1%, teamdata94 <1%, main94 <1% |
 | `sega/SegaIDTable95` | $0001F0-$0001FF | 16 | sega/SegaIDTable94 100% |
 | `sega/SegaInit` | $000200-$0002F9 | 250 | sega/SegaInit 100% |
-| `data/teamdata95` | $000772-$005A33 | 21186 | teamdata94 100% |
-| `data/frames95` | $005A34-$008DD7 | 13220 | frames94 84%, graphics94 16% |
-| `data/schedule95` | $008DD8-$009721 | 2378 | new in 95 100% |
+| `teamdata95` | $000772-$005A33 | 21186 | teamdata94 100% |
+| `frames95` | $005A34-$008DD7 | 13220 | frames94 84%, graphics94 16% |
+| `schedule95` | $008DD8-$009721 | 2378 | new in 95 100% |
 | `sram95` | $009722-$009AC7 | 934 | sram94 63%, new in 95 37% |
-| `hockey95_01` | $009AC8-$00A203 | 1852 | hockey94 44%, new in 95 30%, setup94 25% |
-| `display95_01` | $00A204-$00A535 | 818 | display94 100% |
-| `replay95_01` | $00A536-$00A655 | 288 | replay94 100% |
+| `hockey95` | $009AC8-$00A203 | 1852 | hockey94 44%, new in 95 30%, setup94 25% |
+| `display95` | $00A204-$00A655 | 1106 | display94 74%, replay94 26% |
 | `setup95_01` | $00A656-$00AF43 | 2286 | setup94 45%, title94 23%, input94 21%, new in 95 11% |
-| `sounddrv95` | $00AF44-$0676D7 | 378772 | new in 95 100% |
-| `sound95_01` | $0676D8-$079901 | 74282 | sound94 99%, new in 95 1%, title94 <1%, display94 <1%, hockey94 <1%, video94 <1%, collide94 <1% |
-| `video95_01` | $079902-$079D7F | 1150 | video94 93%, display94 7%, collide94 <1% |
-| `display95_02` | $079D80-$07A029 | 682 | display94 98%, data94 2% |
-| `video95_02` | $07A02A-$07A761 | 1848 | video94 52%, sound94 19%, new in 95 15%, display94 12%, attract94 3%, hockey94 <1% |
+| `sound95_01` | $00AF44-$079901 | 453054 | new in 95 84%, sound94 16%, title94 <1%, display94 <1%, hockey94 <1%, video94 <1%, collide94 <1% |
+| `video95_01` | $079902-$07A761 | 3680 | video94 55%, display94 26%, sound94 10%, new in 95 7%, attract94 1%, data94 <1%, hockey94 <1%, collide94 <1% |
 | `collide95_01` | $07A762-$07C511 | 7600 | collide94 95%, crowd94 3%, cards94 1%, video94 1%, new in 95 1%, stats94 <1%, input94 <1% |
-| `video95_03` | $07C512-$07DE9F | 6542 | new in 95 26%, video94 25%, setup94 9%, data94 8%, display94 6%, penalty94 6%, cards94 5%, checks94 4%, title94 4%, optsetup94 3%, hockey94 2%, stats94 2%, collide94 2%, menu94 <1%, scout94 <1% |
+| `video95_02` | $07C512-$07DE9F | 6542 | new in 95 26%, video94 25%, setup94 9%, data94 8%, display94 6%, penalty94 6%, cards94 5%, checks94 4%, title94 4%, optsetup94 3%, hockey94 2%, stats94 2%, collide94 2%, menu94 <1%, scout94 <1% |
 | `fourway95` | $07DEA0-$07E0DF | 576 | fourway94 38%, title94 25%, new in 95 16%, penalty94 10%, video94 8%, setup94 3% |
-| `data/sound95_02` | $07E0E0-$07E36B | 652 | sound94 100% |
-| `hockey95_02` | $07E36C-$07E4D5 | 362 | hockey94 100% |
-| `menu95` | $07E4D6-$07F97D | 5288 | new in 95 79%, menu94 19%, hockey94 2% |
-| `checks95_01` | $07F97E-$0807EB | 3694 | checks94 71%, stats94 11%, new in 95 8%, goalie94 6%, data94 4% |
-| `assign95_01` | $0807EC-$080BE9 | 1022 | assign94 100% |
-| `checks95_02` | $080BEA-$08282D | 7236 | checks94 86%, assign94 7%, new in 95 5%, input94 2%, collide94 <1% |
-| `assign95_02` | $08282E-$082BCF | 930 | assign94 100% |
+| `sound95_02` | $07E0E0-$07E36B | 652 | sound94 100% |
+| `menu95` | $07E36C-$07F97D | 5650 | new in 95 74%, menu94 18%, hockey94 8% |
+| `checks95_01` | $07F97E-$082BCF | 12882 | checks94 69%, assign94 19%, new in 95 5%, stats94 3%, goalie94 2%, input94 1%, data94 1%, collide94 <1% |
 | `onetimer95` | $082BD0-$082FC1 | 1010 | onetimer94 92%, title94 8% |
-| `checks95_03` | $082FC2-$0836AB | 1770 | checks94 41%, assign94 28%, new in 95 27%, cards94 5% |
+| `checks95_02` | $082FC2-$0836AB | 1770 | checks94 41%, assign94 28%, new in 95 27%, cards94 5% |
 | `collide95_02` | $0836AC-$083EB1 | 2054 | collide94 72%, new in 95 9%, crowd94 7%, data94 6%, setup94 4%, hockey94 2%, stats94 1% |
 | `input95_01` | $083EB2-$084FE7 | 4406 | input94 85%, onetimer94 13%, checks94 1% |
-| `data95_01` | $084FE8-$087BA1 | 11194 | optsetup94 47%, data94 25%, stats94 15%, new in 95 10%, attract94 2%, title94 1% |
+| `optsetup95` | $084FE8-$087BA1 | 11194 | optsetup94 47%, data94 25%, stats94 15%, new in 95 10%, attract94 2%, title94 1% |
 | `setup95_02` | $087BA2-$088045 | 1188 | setup94 100% |
-| `checks95_04` | $088046-$088F05 | 3776 | checks94 59%, data94 10%, display94 9%, penalty94 8%, assign94 5%, new in 95 5%, title94 3%, hockey94 <1%, collide94 <1% |
+| `checks95_03` | $088046-$088F05 | 3776 | checks94 59%, data94 10%, display94 9%, penalty94 8%, assign94 5%, new in 95 5%, title94 3%, hockey94 <1%, collide94 <1% |
 | `penalty95` | $088F06-$08996D | 2664 | penalty94 93%, title94 6%, collide94 <1% |
-| `data95_02` | $08996E-$08A055 | 1768 | data94 51%, checks94 28%, collide94 11%, title94 5%, display94 4%, penalty94 1% |
+| `data95` | $08996E-$08A055 | 1768 | data94 51%, checks94 28%, collide94 11%, title94 5%, display94 4%, penalty94 1% |
 | `input95_02` | $08A056-$08A3FD | 936 | input94 78%, penalty94 22%, collide94 <1% |
-| `checks95_05` | $08A3FE-$08B733 | 4918 | new in 95 69%, checks94 19%, penalty94 7%, attract94 4%, input94 1%, period94 1% |
-| `input95_03` | $08B734-$08B9A7 | 628 | input94 100% |
-| `checks95_06` | $08B9A8-$08D399 | 6642 | checks94 36%, new in 95 36%, data94 7%, title94 6%, hockey94 5%, replay94 5%, setup94 2%, penalty94 2%, crowd94 1% |
-| `replay95_02` | $08D39A-$08DF59 | 3008 | replay94 85%, new in 95 15% |
+| `checks95_04` | $08A3FE-$08D399 | 12188 | new in 95 47%, checks94 27%, input94 6%, data94 4%, penalty94 4%, title94 3%, hockey94 3%, replay94 3%, attract94 1%, setup94 1%, crowd94 1%, period94 <1% |
+| `replay95` | $08D39A-$08DF59 | 3008 | replay94 85%, new in 95 15% |
 | `season95` | $08DF5A-$0920DD | 16772 | new in 95 99%, hockey94 1% |
 | `period95` | $0920DE-$0925AD | 1232 | period94 100% |
 | `stats95_01` | $0925AE-$0962ED | 15680 | new in 95 51%, stats94 31%, period94 12%, data94 6%, cards94 <1% |
@@ -66,17 +56,16 @@ Sizes run from a label to the next one, so the vectors ($0-$FF) and the header b
 | `records95` | $09B6F4-$09C019 | 2342 | records94 85%, new in 95 9%, title94 3%, cards94 3% |
 | `cards95_02` | $09C01A-$09C6EF | 1750 | cards94 68%, stats94 18%, new in 95 14% |
 | `awards95` | $09C6F0-$09DA4F | 4960 | new in 95 99%, cards94 1% |
-| `title95_01` | $09DA50-$09DD3D | 750 | title94 83%, shootout94 17% |
-| `shootout95` | $09DD3E-$09E5EF | 2226 | shootout94 77%, records94 16%, period94 7% |
-| `checks95_07` | $09E5F0-$09F58F | 4000 | checks94 47%, penalty94 14%, new in 95 12%, collide94 11%, hockey94 8%, data94 6%, period94 1%, title94 1% |
+| `shootout95` | $09DA50-$09E5EF | 2976 | shootout94 62%, title94 21%, records94 12%, period94 5% |
+| `checks95_05` | $09E5F0-$09F58F | 4000 | checks94 47%, penalty94 14%, new in 95 12%, collide94 11%, hockey94 8%, data94 6%, period94 1%, title94 1% |
 | `scout95` | $09F590-$0A00D5 | 2886 | scout94 92%, crowd94 8% |
 | `setup95_03` | $0A00D6-$0A0B3D | 2664 | setup94 28%, graphics94 26%, crowd94 14%, cards94 10%, title94 8%, period94 6%, new in 95 5%, scout94 4% |
 | `stats95_02` | $0A0B3E-$0A12A9 | 1900 | stats94 75%, display94 15%, new in 95 5%, hockey94 5% |
-| `title95_02` | $0A12AA-$0A1A59 | 1968 | title94 66%, new in 95 34% |
-| `data/graphics95_01` | $0A1A5A-$1A1699 | 1047616 | graphics94 100%, cards94 <1% |
-| `data/title95_03` | $1A169A-$1A1A19 | 896 | title94 100% |
-| `data/graphics95_02` | $1A1A1A-$1A6C27 | 21006 | graphics94 100% |
-| `data/credits95` | $1A6C28-$1A72BF | 1688 | teamdata94 100% |
+| `title95_01` | $0A12AA-$0A1A59 | 1968 | title94 66%, new in 95 34% |
+| `graphics95_01` | $0A1A5A-$1A1699 | 1047616 | graphics94 100%, cards94 <1% |
+| `title95_02` | $1A169A-$1A1A19 | 896 | title94 100% |
+| `graphics95_02` | $1A1A1A-$1A6C27 | 21006 | graphics94 100% |
+| `credits95` | $1A6C28-$1A72BF | 1688 | teamdata94 100% |
 | `checksum95` | $1A72C0-$1A730F | 80 | checksum94 100% |
 
 ## By 94 file
@@ -88,38 +77,38 @@ Where the routines and tables of each 94 file ended up in 95: bytes, then the la
 | sega/SegaIDTable94 | `sega/SegaIDTable95` 16 (1) |
 | sega/SegaInit | `sega/SegaInit` 250 (27) |
 | main94 | `main95` 0 (1) |
-| teamdata94 | `data/teamdata95` 21186 (28), `data/credits95` 1688 (2), `main95` 4 (1) |
-| frames94 | `data/frames95` 11106 (79) |
-| hockey94 | `hockey95_01` 820 (4), `hockey95_02` 362 (2), `checks95_06` 344 (2), `checks95_07` 310 (1), `main95` 204 (1), `season95` 158 (3), `video95_03` 126 (3), `menu95` 118 (6), `sound95_01` 106 (2), `stats95_02` 88 (1), `collide95_02` 32 (1), `checks95_04` 16 (1), `video95_02` 6 (1) |
-| menu94 | `menu95` 1016 (6), `video95_03` 22 (1) |
-| stats94 | `stats95_01` 4906 (52), `data95_01` 1702 (16), `stats95_02` 1424 (18), `checks95_01` 414 (3), `cards95_02` 312 (1), `video95_03` 110 (3), `collide95_01` 24 (1), `collide95_02` 18 (1) |
-| replay94 | `replay95_02` 2556 (16), `checks95_06` 312 (1), `replay95_01` 288 (1) |
-| input94 | `input95_01` 3764 (17), `input95_02` 730 (8), `input95_03` 628 (4), `setup95_01` 474 (7), `checks95_02` 158 (1), `checks95_05` 58 (1), `collide95_01` 16 (1) |
-| assign94 | `assign95_01` 1022 (3), `assign95_02` 930 (5), `checks95_02` 510 (4), `checks95_03` 488 (3), `checks95_04` 196 (2) |
-| checks94 | `checks95_02` 6208 (30), `checks95_01` 2632 (7), `checks95_06` 2400 (10), `checks95_04` 2244 (8), `checks95_07` 1886 (7), `checks95_05` 910 (4), `checks95_03` 720 (6), `data95_02` 500 (3), `video95_03` 270 (5), `input95_01` 50 (1) |
-| video94 | `video95_03` 1604 (30), `video95_01` 1068 (15), `video95_02` 954 (30), `sound95_01` 96 (2), `collide95_01` 58 (1), `fourway95` 48 (2) |
-| penalty94 | `penalty95` 2490 (19), `checks95_07` 564 (4), `video95_03` 364 (5), `checks95_05` 346 (3), `checks95_04` 316 (3), `input95_02` 204 (3), `checks95_06` 118 (1), `fourway95` 56 (1), `data95_02` 14 (1) |
-| collide94 | `collide95_01` 7184 (24), `collide95_02` 1480 (7), `checks95_07` 438 (2), `data95_02` 192 (1), `video95_03` 108 (4), `sound95_01` 38 (1), `checks95_02` 30 (1), `video95_01` 2 (1), `checks95_04` 2 (1), `penalty95` 2 (1), `input95_02` 2 (1) |
-| display94 | `display95_01` 818 (9), `display95_02` 666 (3), `video95_03` 376 (4), `checks95_04` 338 (2), `stats95_02` 290 (4), `video95_02` 214 (3), `sound95_01` 132 (2), `video95_01` 80 (4), `data95_02` 78 (1) |
-| setup94 | `setup95_02` 1188 (10), `setup95_01` 1026 (6), `setup95_03` 738 (3), `video95_03` 586 (3), `hockey95_01` 470 (3), `checks95_06` 138 (3), `collide95_02` 84 (1), `fourway95` 18 (1) |
-| attract94 | `data95_01` 238 (3), `checks95_05` 182 (1), `video95_02` 48 (1) |
-| data94 | `data95_01` 2750 (29), `stats95_01` 1000 (5), `data95_02` 904 (3), `video95_03` 502 (16), `checks95_06` 488 (4), `checks95_04` 362 (1), `checks95_07` 242 (2), `checks95_01` 136 (1), `collide95_02` 114 (2), `display95_02` 16 (1), `main95` 8 (4) |
+| teamdata94 | `teamdata95` 21186 (28), `credits95` 1688 (2), `main95` 4 (1) |
+| frames94 | `frames95` 11106 (79) |
+| hockey94 | `hockey95` 820 (4), `menu95` 480 (8), `checks95_04` 344 (2), `checks95_05` 310 (1), `main95` 204 (1), `season95` 158 (3), `video95_02` 126 (3), `sound95_01` 106 (2), `stats95_02` 88 (1), `collide95_02` 32 (1), `checks95_03` 16 (1), `video95_01` 6 (1) |
+| menu94 | `menu95` 1016 (6), `video95_02` 22 (1) |
+| stats94 | `stats95_01` 4906 (52), `optsetup95` 1702 (16), `stats95_02` 1424 (18), `checks95_01` 414 (3), `cards95_02` 312 (1), `video95_02` 110 (3), `collide95_01` 24 (1), `collide95_02` 18 (1) |
+| replay94 | `replay95` 2556 (16), `checks95_04` 312 (1), `display95` 288 (1) |
+| input94 | `input95_01` 3764 (17), `input95_02` 730 (8), `checks95_04` 686 (5), `setup95_01` 474 (7), `checks95_01` 158 (1), `collide95_01` 16 (1) |
+| assign94 | `checks95_01` 2462 (12), `checks95_02` 488 (3), `checks95_03` 196 (2) |
+| checks94 | `checks95_01` 8840 (37), `checks95_04` 3310 (14), `checks95_03` 2244 (8), `checks95_05` 1886 (7), `checks95_02` 720 (6), `data95` 500 (3), `video95_02` 270 (5), `input95_01` 50 (1) |
+| video94 | `video95_01` 2022 (45), `video95_02` 1604 (30), `sound95_01` 96 (2), `collide95_01` 58 (1), `fourway95` 48 (2) |
+| penalty94 | `penalty95` 2490 (19), `checks95_05` 564 (4), `checks95_04` 464 (4), `video95_02` 364 (5), `checks95_03` 316 (3), `input95_02` 204 (3), `fourway95` 56 (1), `data95` 14 (1) |
+| collide94 | `collide95_01` 7184 (24), `collide95_02` 1480 (7), `checks95_05` 438 (2), `data95` 192 (1), `video95_02` 108 (4), `sound95_01` 38 (1), `checks95_01` 30 (1), `video95_01` 2 (1), `checks95_03` 2 (1), `penalty95` 2 (1), `input95_02` 2 (1) |
+| display94 | `video95_01` 960 (10), `display95` 818 (9), `video95_02` 376 (4), `checks95_03` 338 (2), `stats95_02` 290 (4), `sound95_01` 132 (2), `data95` 78 (1) |
+| setup94 | `setup95_02` 1188 (10), `setup95_01` 1026 (6), `setup95_03` 738 (3), `video95_02` 586 (3), `hockey95` 470 (3), `checks95_04` 138 (3), `collide95_02` 84 (1), `fourway95` 18 (1) |
+| attract94 | `optsetup95` 238 (3), `checks95_04` 182 (1), `video95_01` 48 (1) |
+| data94 | `optsetup95` 2750 (29), `stats95_01` 1000 (5), `data95` 904 (3), `video95_02` 502 (16), `checks95_04` 488 (4), `checks95_03` 362 (1), `checks95_05` 242 (2), `checks95_01` 136 (1), `collide95_02` 114 (2), `video95_01` 16 (1), `main95` 8 (4) |
 | sram94 | `sram95` 592 (8) |
-| sound94 | `sound95_01` 73266 (33), `data/sound95_02` 652 (1), `video95_02` 352 (13) |
-| graphics94 | `data/graphics95_01` 1046976 (281), `data/graphics95_02` 21006 (1), `data/frames95` 2114 (1), `setup95_03` 692 (1) |
+| sound94 | `sound95_01` 73266 (33), `sound95_02` 652 (1), `video95_01` 352 (13) |
+| graphics94 | `graphics95_01` 1046976 (281), `graphics95_02` 21006 (1), `frames95` 2114 (1), `setup95_03` 692 (1) |
 | onetimer94 | `onetimer95` 928 (5), `input95_01` 592 (6) |
 | fourway94 | `fourway95` 216 (5) |
-| crowd94 | `setup95_03` 380 (8), `scout95` 226 (1), `collide95_01` 204 (2), `collide95_02` 138 (3), `checks95_06` 74 (1) |
-| optsetup94 | `data95_01` 5308 (30), `video95_03` 168 (2) |
-| cards94 | `cards95_01` 2574 (23), `cards95_02` 1192 (15), `data/graphics95_01` 640 (1), `video95_03` 354 (9), `setup95_03` 270 (1), `create95` 216 (3), `checks95_03` 84 (1), `collide95_01` 70 (1), `records95` 70 (3), `stats95_01` 42 (1), `awards95` 28 (1) |
+| crowd94 | `setup95_03` 380 (8), `scout95` 226 (1), `collide95_01` 204 (2), `collide95_02` 138 (3), `checks95_04` 74 (1) |
+| optsetup94 | `optsetup95` 5308 (30), `video95_02` 168 (2) |
+| cards94 | `cards95_01` 2574 (23), `cards95_02` 1192 (15), `graphics95_01` 640 (1), `video95_02` 354 (9), `setup95_03` 270 (1), `create95` 216 (3), `checks95_02` 84 (1), `collide95_01` 70 (1), `records95` 70 (3), `stats95_01` 42 (1), `awards95` 28 (1) |
 | records94 | `records95` 1984 (17), `shootout95` 348 (2) |
-| shootout94 | `shootout95` 1722 (19), `title95_01` 128 (1) |
-| scout94 | `scout95` 2660 (28), `setup95_03` 96 (4), `video95_03` 14 (1) |
-| period94 | `stats95_01` 1804 (7), `period95` 1232 (11), `shootout95` 156 (1), `setup95_03` 156 (3), `checks95_07` 46 (1), `checks95_05` 38 (1) |
+| shootout94 | `shootout95` 1850 (20) |
+| scout94 | `scout95` 2660 (28), `setup95_03` 96 (4), `video95_02` 14 (1) |
+| period94 | `stats95_01` 1804 (7), `period95` 1232 (11), `shootout95` 156 (1), `setup95_03` 156 (3), `checks95_05` 46 (1), `checks95_04` 38 (1) |
 | goalie94 | `checks95_01` 232 (1) |
-| title94 | `title95_02` 1294 (7), `data/title95_03` 896 (1), `title95_01` 622 (14), `setup95_01` 524 (1), `checks95_06` 378 (4), `sound95_01` 268 (3), `video95_03` 236 (2), `setup95_03` 202 (1), `penalty95` 172 (3), `fourway95` 146 (2), `data95_01` 114 (3), `checks95_04` 106 (1), `onetimer95` 82 (1), `data95_02` 80 (2), `records95` 74 (1), `checks95_07` 34 (2) |
+| title94 | `title95_01` 1294 (7), `title95_02` 896 (1), `shootout95` 622 (14), `setup95_01` 524 (1), `checks95_04` 378 (4), `sound95_01` 268 (3), `video95_02` 236 (2), `setup95_03` 202 (1), `penalty95` 172 (3), `fourway95` 146 (2), `optsetup95` 114 (3), `checks95_03` 106 (1), `onetimer95` 82 (1), `data95` 80 (2), `records95` 74 (1), `checks95_05` 34 (2) |
 | checksum94 | `checksum95` 80 (1) |
-| new in 95 | `sounddrv95` 378772 (27), `season95` 16614 (178), `create95` 12218 (178), `stats95_01` 7928 (85), `trade95` 6502 (45), `awards95` 4932 (66), `menu95` 4154 (32), `checks95_05` 3384 (15), `checks95_06` 2390 (29), `data/schedule95` 2378 (2), `video95_03` 1702 (35), `data95_01` 1082 (15), `main95` 928 (11), `title95_02` 674 (8), `hockey95_01` 562 (1), `checks95_07` 480 (9), `checks95_03` 478 (1), `replay95_02` 452 (2), `sound95_01` 376 (6), `sram95` 342 (3), `checks95_02` 330 (1), `checks95_01` 280 (5), `video95_02` 274 (4), `setup95_01` 262 (5), `cards95_02` 246 (2), `records95` 214 (5), `checks95_04` 196 (1), `collide95_02` 188 (4), `setup95_03` 130 (6), `stats95_02` 98 (1), `fourway95` 92 (4), `collide95_01` 44 (2) |
+| new in 95 | `sound95_01` 379148 (33), `season95` 16614 (178), `create95` 12218 (178), `stats95_01` 7928 (85), `trade95` 6502 (45), `checks95_04` 5774 (44), `awards95` 4932 (66), `menu95` 4154 (32), `schedule95` 2378 (2), `video95_02` 1702 (35), `optsetup95` 1082 (15), `main95` 928 (11), `title95_01` 674 (8), `checks95_01` 610 (6), `hockey95` 562 (1), `checks95_05` 480 (9), `checks95_02` 478 (1), `replay95` 452 (2), `sram95` 342 (3), `video95_01` 274 (4), `setup95_01` 262 (5), `cards95_02` 246 (2), `records95` 214 (5), `checks95_03` 196 (1), `collide95_02` 188 (4), `setup95_03` 130 (6), `stats95_02` 98 (1), `fourway95` 92 (4), `collide95_01` 44 (2) |
 
 ## Routines in each 95 file
 
@@ -141,16 +130,16 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 - **sega/SegaInit** (250 bytes): SegaInit, h_s, cold_start, security, japan, reg_init, r_int1, dma_fill, z80_clr, z801, z802, clr_wk, c_wk1, clr_col, c_col1, clr_vsc, c_vsc1, clr_psg, c_psg1, hot_start
 
-### data/teamdata95
+### teamdata95
 
 - **teamdata94** (21186 bytes): (tables only)
 
-### data/frames95
+### frames95
 
 - **frames94** (11106 bytes): (tables only)
 - **graphics94** (2114 bytes): (tables only)
 
-### data/schedule95
+### schedule95
 
 - **new in 95** (2378 bytes): (tables only)
 
@@ -159,7 +148,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **sram94** (592 bytes): InitSaveRAM, SRAMWaitVblank, ValidateSRAM, ClearSRAM, WriteSRAM, MakeSRAMChecksum, ReadSRAM
 - **new in 95** (342 bytes): BuildLeaderList, BuildLeaderListSum, BuildLeaderListPct
 
-### hockey95_01
+### hockey95
 
 - **setup94** (284 bytes): Opening, Opening2
 - **hockey94** (308 bytes): StartGame
@@ -167,12 +156,9 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **hockey94** (512 bytes): StartPer, Gameloop, DoGameFrame
 - **new in 95** (562 bytes): IntermissionMenu
 
-### display95_01
+### display95
 
 - **display94** (818 bytes): setvideo, setsortcords, checksso, setffo, uppads, FormatControllerDisplay, RenderSmallFontChar
-
-### replay95_01
-
 - **replay94** (288 bytes): updateanim
 
 ### setup95_01
@@ -189,13 +175,9 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **input94** (154 bytes): restorepl
 - **setup94** (252 bytes): clearTeamStats, setteams, InitTeamSructure
 
-### sounddrv95
-
-- **new in 95** (378772 bytes): SndDriver, SndLoadZ80, SndUpdate, SndStartSeq, SndStopSeq, SndPutZ80Cmd, SndUploadBlock, SndReadBlock, SndWriteBlock, SndPauseZ80, SndResumeZ80, SndStopAll, SndClearNotes, SndReleaseNotes, SndAddNote, SndUpdateNotes, SndStreamZ80, SndFindBankItem, SndSetBank, SndLoadList, SndFreeBlocks, SndResetBlocks, SndSendZ80, Z80BusRequest, Z80BusRelease
-
 ### sound95_01
 
-- **new in 95** (16 bytes): SoundCmd
+- **new in 95** (378788 bytes): SndDriver, SndLoadZ80, SndUpdate, SndStartSeq, SndStopSeq, SndPutZ80Cmd, SndUploadBlock, SndReadBlock, SndWriteBlock, SndPauseZ80, SndResumeZ80, SndStopAll, SndClearNotes, SndReleaseNotes, SndAddNote, SndUpdateNotes, SndStreamZ80, SndFindBankItem, SndSetBank, SndLoadList, SndFreeBlocks, SndResetBlocks, SndSendZ80, Z80BusRequest, Z80BusRelease, SoundCmd
 - **hockey94** (40 bytes): UpdateCwdExcite
 - **display94** (90 bytes): updatesound
 - **hockey94** (66 bytes): CheckPeriodEnd
@@ -219,15 +201,9 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **collide94** (2 bytes): (tables only)
 - **display94** (28 bytes): SetScroll2
 - **video94** (154 bytes): DoDMA
-
-### display95_02
-
 - **display94** (468 bytes): addframe, addframe2
 - **data94** (16 bytes): (tables only)
 - **display94** (198 bytes): updatescroll
-
-### video95_02
-
 - **video94** (742 bytes): forceblack, forceblack2, DecompressBytecode, Opcode_CopyLiteral, Opcode_ClearBytes, Opcode_Fillbytes, Opcode_CopyBackwardShort, CopyBackwardRun, Opcode_CopyBackwardMedium, Opcode_CopyBackwardLong, Opcode_CopyBackwardExtended1, Opcode_CopyBackwardExtended2, Opcode_CopyBackwardReverseShort, CopyBackwardReverseRun, Opcode_CopyBackwardReverseMedium, Opcode_CopyBackwardReverseLong, FlushOutputBuffer, AddSmallFont, DecompressGraphicsWithCallback, Framer, AddFramer
 - **new in 95** (28 bytes): AddFramer2
 - **hockey94** (6 bytes): VBjsr
@@ -257,7 +233,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **collide94** (930 bytes): puckgoalie, checkint
 - **new in 95** (28 bytes): DropPuck
 
-### video95_03
+### video95_02
 
 - **video94** (116 bytes): sroot
 - **checks94** (104 bytes): vtoa
@@ -336,17 +312,13 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **fourway94** (216 bytes): Detect4WayPlay, Read4WayPad1, Read4WayPad2, Read4WayPad3, Read4WayPad4
 - **new in 95** (66 bytes): Read4WayPort1, Read4WayPort2, ReadJoyJmp
 
-### data/sound95_02
+### sound95_02
 
 - **sound94** (652 bytes): (tables only)
 
-### hockey95_02
-
-- **hockey94** (362 bytes): Pausemode, SetupPauseScreen
-
 ### menu95
 
-- **hockey94** (80 bytes): seta2
+- **hockey94** (442 bytes): Pausemode, SetupPauseScreen, seta2
 - **menu94** (26 bytes): InitMenuState, DrawMenuScreen
 - **new in 95** (32 bytes): RedrawMenu
 - **menu94** (362 bytes): HandleMenuInput
@@ -364,13 +336,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **data94** (136 bytes): (tables only)
 - **new in 95** (32 bytes): doassignment
 - **checks94** (2632 bytes): assgoaliecpu, checkanim, ClampYPosition, AdjustFacingDirection, goaliesave, assgoalietopuck
-
-### assign95_01
-
 - **assign94** (1022 bytes): assdefd, asswingd
-
-### checks95_02
-
 - **checks94** (1082 bytes): asswingo, asscenterd, asscentero
 - **assign94** (508 bytes): assdefo, assnothing, assfight
 - **checks94** (800 bytes): pucknorm, puckunflip, puckflip, puckshadow, findpc, a2touchpuck
@@ -381,9 +347,6 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **assign94** (2 bytes): (tables only)
 - **checks94** (3380 bytes): assbreakaway, assnearest, skatetopuckinit, skatetopuck, avdgoal, breakaway, chkpuckc, asspuckc, chk4shot, chk4pass
 - **input94** (158 bytes): check4bench
-
-### assign95_02
-
 - **assign94** (930 bytes): assbench, asspenalty, assdopen, assepen
 
 ### onetimer95
@@ -392,7 +355,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **title94** (82 bytes): EndOneTimer
 - **onetimer94** (16 bytes): CheckOneTimerFacing
 
-### checks95_03
+### checks95_02
 
 - **checks94** (490 bytes): assshoot, assgoaliectrl, a2offsides
 - **assign94** (116 bytes): asseben
@@ -424,7 +387,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **onetimer94** (138 bytes): puckvzadj
 - **checks94** (50 bytes): compshoot
 
-### data95_01
+### optsetup95
 
 - **stats94** (886 bytes): TeamRosterScreen, DisplayPlayerList
 - **new in 95** (218 bytes): PrintPlayerLines
@@ -457,7 +420,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 - **setup94** (1188 bytes): PlayoffScreen, HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, FormatScore, DrawPlayoffBracket, DrawTeamBlocks, PlayoffScreenDataTable
 
-### checks95_04
+### checks95_03
 
 - **data94** (362 bytes): (tables only)
 - **title94** (106 bytes): DrawPlayoffSprite
@@ -480,7 +443,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **collide94** (2 bytes): (tables only)
 - **penalty94** (2094 bytes): AddPenalty, AddPenalty2, PenaltyManager, chkprogress, InProgress, coinsearch, updatepentime, ProcessPenaltyList, RemovePlayerFromList, releasepl, checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, PrintPenaltyMessagesString
 
-### data95_02
+### data95
 
 - **collide94** (192 bytes): checkagr
 - **display94** (78 bytes): showref
@@ -497,7 +460,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **collide94** (2 bytes): (tables only)
 - **penalty94** (204 bytes): linebar, getlinee, AvgCline
 
-### checks95_05
+### checks95_04
 
 - **checks94** (372 bytes): CompLine, AutoLineChange
 - **penalty94** (18 bytes): SetupTeamForIntermission
@@ -510,13 +473,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **checks94** (536 bytes): goalieacc
 - **input94** (58 bytes): doinput_goaliedive
 - **checks94** (2 bytes): (tables only)
-
-### input95_03
-
 - **input94** (628 bytes): doinput_cbut, ClampTargetY, doinput_chkanim, getGoalieSCnum
-
-### checks95_06
-
 - **new in 95** (46 bytes): GoalieReadySPA
 - **checks94** (36 bytes): (tables only)
 - **new in 95** (36 bytes): (tables only)
@@ -540,7 +497,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **hockey94** (52 bytes): clockcont
 - **new in 95** (1630 bytes): SetContTeams, PrintPracticeGoalies, PrintGoalieCount, DrawPadSetup, DrawPadIcon, DrawPadCursor, PrintPracticeTitle, ControllerSetupScreen, DrawSetupTeamBlock, PrintSetupStr, PrintSetupStrHi, ReadAllPads
 
-### replay95_02
+### replay95
 
 - **new in 95** (452 bytes): chkcheckstart, CanCheckStart
 - **replay94** (2556 bytes): updatereplay, ReplayMode, ShowReplayIcon, EraseReplayIcon, ShowReplayBanner, EraseReplayBanner, suba4, adda4, adda42, adda43, UpdateCameraPos, RevReplayAdj, RestoreReplayFrame, ClampReplayView
@@ -618,19 +575,16 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **cards94** (28 bytes): PrintCentered
 - **new in 95** (4658 bytes): DrawAwardPicture, DrawFinalistsPanel, DrawWinnerPanel, DrawAwardPanel, AwardWinnerNop, PrintFinalists, FlashWinnerCaption, AwardsLoop, AwardsScreenSetup, FindAwardFinalists, SortAwardScores, ScanConnSmythe, ScanPresidents, ScanSelke, ScanPearson, ScanJennings, ScanArtRoss, ScanNorris, ScanHart, ScanVezina, ConnSmytheScore, PresidentsScore, SelkeScore, PearsonScore, JenningsScore, ArtRossScore, VezinaScore, NorrisScore, HartScore, AwardQualifies, AwardNotQualified, GetGoalieAwardStats, GetAwardGoals, GetAwardAssists, InitPlayoffs, SeedPairings, SortSeeds, CalcSeedPoints, CopyBytes, SetupPlayoffs, RestoreSeasonHeader, NextPlayoffRound, InitPlayoffSeries, PlayoffRoundDone, SeriesInRound, GetRoundPairings, ReadPlayoffSchedule, RecordPlayoffGame, PlayoffTreeScreen
 
-### title95_01
+### shootout95
 
 - **shootout94** (128 bytes): ClearShootout
 - **title94** (622 bytes): PSandSOpassdir, StartShootoutPath, NextPathPoint, SkatePath, ShootoutShootCheck
-
-### shootout95
-
 - **shootout94** (176 bytes): NextShooter, CountShootoutGoals
 - **period94** (156 bytes): EndShootout
 - **records94** (348 bytes): PlayoffRoundScreen
 - **shootout94** (1546 bytes): ShootoutWonBy, ShootersRedraw, ShootersLoop, ShootersExit, ShooterSelectList, PrintShooterList, ShootersPick, ShootersMove, ShootersSelect, ShootersBackground, ClearShooterScreen, ResetShooterScroll, PrintShooterSlots, PrintShooterBox, PrintShooterNames
 
-### checks95_07
+### checks95_05
 
 - **checks94** (1886 bytes): puckshootout, SelectPenaltyShotSkater, puckpenshot, UpdatePenaltyShotEnd, EndPenaltyShotPlay, PenaltyShotEndReturn
 - **collide94** (132 bytes): SetupPenaltyShot
@@ -674,26 +628,26 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **display94** (290 bytes): showcrowd, ShowCrowdPb, ShowCrowdFrame
 - **stats94** (1424 bytes): ScoringSummaryScreen, CheckGameStatScroll, UpdateGameStatScroll, DisplayGameStatLineUp, DisplayGameStatLineDown, DisplayGameStatEntry, PrintPeriodTime, DrawScrollArrowsPenalty, PenaltySummaryScreen, CheckPenaltyScroll, UpdatePenaltyScroll, DisplayPenaltyLineUp, DisplayPenaltyLineDown, DisplayPenaltyEntry
 
-### title95_02
+### title95_01
 
 - **title94** (1294 bytes): newTitleScreen, CreditsPrintRow, CreditsWait, TitleVBlank, CreditsLineScroll, CreditsScrollStep, HiScoreScreen
 - **new in 95** (674 bytes): StanleyCupScreen, CupReadPads, CupWaitFrame, CupExit, CupVBlank, CupDrawTeam, CupBuildSprites, AddSpriteFrame
 
-### data/graphics95_01
+### graphics95_01
 
 - **graphics94** (142754 bytes): (tables only)
 - **cards94** (640 bytes): (tables only)
 - **graphics94** (904222 bytes): (tables only)
 
-### data/title95_03
+### title95_02
 
 - **title94** (896 bytes): (tables only)
 
-### data/graphics95_02
+### graphics95_02
 
 - **graphics94** (21006 bytes): (tables only)
 
-### data/credits95
+### credits95
 
 - **teamdata94** (1688 bytes): (tables only)
 

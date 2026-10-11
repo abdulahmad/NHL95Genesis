@@ -11,8 +11,7 @@ The source follows [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis): i
 | Path | What it is |
 | --- | --- |
 | `src/nhl95.asm` | Top level of the full build: the equates, `org 0`, then every file in ROM order with its start address. |
-| `src/<file>95.asm` | Code, one file per NHL94Genesis file (`hockey94.asm` -> `hockey95_01.asm`). A 94 file that 95 splits into pieces separated by other files is numbered `_01`, `_02`, ... in ROM order. 95-only systems have their own file (`sounddrv95`, `season95`, `trade95`, `create95`, `awards95`, `schedule95`). |
-| `src/data/` | Pure data files: team data, sprite animation tables, the season schedule, the 94 Z80 program, graphics, logo palettes, credits. Graphics and sound are incbins of `Extracted/`. |
+| `src/<file>95.asm` | Code and data, one file per NHL94Genesis file (`hockey94.asm` -> `hockey95.asm`), all in `src/` as in 94. A 94 file that 95 splits into pieces separated by other files is numbered `_01`, `_02`, ... in ROM order. A short run of one 94 file between pieces of another is part of the file around it, after a banner naming its 94 file. 95-only systems have their own file (`season95`, `trade95`, `create95`, `awards95`, `schedule95`); the 95 sound driver is the head of `sound95_01`. `docs/FILE_ORIGINS.md` gives the 94 file of every routine. |
 | `src/sega/` | Sega's cartridge header (`SegaIDTable95.asm`, $100-$1FF) and power-on code (`SegaInit.asm`, $200-$2F9), included by `main95.asm`. |
 | `src/ram95.asm` | The RAM map, Z80 RAM and the save RAM offsets (`SR...`). Equates only. |
 | `src/stubinc/` | `ports.inc` (IO and VDP ports) and `equals.inc` (VDP status bits). Equates only. |
@@ -20,7 +19,7 @@ The source follows [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis): i
 | `src/<file>_stub.asm` | One per segment: the segment org, the equates, equates for the outside addresses the segment uses, then `include <file>.asm`. A stub builds and verifies one segment by itself. |
 | `docs/name_map.csv` | Every label: address, current name, the IDA name, the old name if it was renamed, and the file. |
 
-Files included by `nhl95.asm` have no `org`. Assembler paths are relative to `src/` (`include data\teamdata95.asm`, `incbin ..\Extracted\...`).
+Files included by `nhl95.asm` have no `org`. Assembler paths are relative to `src/` (`incbin ..\Extracted\...`). Graphics and sound are incbins of `Extracted/`.
 
 ## Build
 

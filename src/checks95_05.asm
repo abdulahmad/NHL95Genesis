@@ -1,1374 +1,1104 @@
-;	NHL 95 checks95_05. Retail $08A3FE-$08B733 (4918 bytes).
-;	Mapped to checks94 (27%): checks94 CompLine, AutoLineChange and goalieacc, the input94 goalie dive, with moved in: penalty94
-;	SetupTeamForIntermission, chkatop and ChkShotStat, attract94 EASportsScreen, period94 updatePPTeamTime; and 95 only code: the
-;	saved line set routines (DefaultLineData, LoadTeamLines, CheckTeamLines ...) and six DrawTeamScreen variants. Each routine comment
-;	names its 94 file or says 95 only. input95_03 follows at $08B734 (doinput_cbut; the row map put it at $8B748).
-;	IDA left CompLine, AutoLineChange, ReadTeamSRAM, FixSavedLines, the LineSlotFixTbl handlers and the DrawTeamScreen variants as dc.b
-;	or as wrong code; they are read from the retail bytes. IDA hid printz Strings and DecompressGraphicsWithCallback remap bytes as
-;	instructions; they are String / dc.b here. Local labels are numbered; the IDA local names are not kept.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	NHL 95 checks95_05. Retail $09E5F0-$09F58F (4000 bytes).
+;	Mapped to checks94 (75%): puckshootout, SelectPenaltyShotSkater, puckpenshot, UpdatePenaltyShotEnd, EndPenaltyShotPlay; moved in:
+;	SetupPenaltyShot (collide94), PenaltyShotBox / PenShotBigTxt (data94), PenShotChk / getBAplayerInfo (penalty94), ShortenMsgTimer
+;	(period94), setInjuryType (collide94), getFgtbyte / chkFgtBit1 (title94), updatepwrplay / GetLowestPen (penalty94); 95 only: the season
+;	injuries (SetSeasonInjuries ... DeleteInjurySlot, save RAM SRInjuries), CheckInjury and ClearPowerPlay.
+;	IDA left puckshootout ... UpdatePenaltyShotEnd ($09E5F0-$09ECE5) and SetupPenaltyShot as dc.b; they are transcribed from the retail
+;	bytes. IDA hid the printz / printbigz / appendz Strings as instructions.
+;	Local labels are numbered; the IDA local names are not kept.
+;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
+;	the cmp and exg encodings after assembly.
 
+	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
 
-CompLine	;(checks94) The computer picks a line for team a2 (a1 = other team): on a power play or penalty kill the better
-	;of lines 3 / 4 or 5 / 6 by energy (getlinee); else from the tables by the other team's line and the score in period 3
-	;(gsp 2), the first with energy above $C00
-	movem.l	d0-d2/a0,-(sp)
-	moveq	#3,d0
-	move.w	tmap(a2),d1
-	sub.w	tmap(a1),d1
-	beq.w	.3
-	bpl.w	.0
-	addq.w	#2,d0
-.0
-	move.w	d0,-(sp)	;find pk/pp line
-	bsr.w	getlinee
-	move.w	d0,d1
-	move.w	(sp),d0
-	addq.w	#1,d0
-	bsr.w	getlinee
-	cmp.w	d0,d1
-	bge.w	.1
-	addq.w	#1,(sp)
-.1
-	move.w	(sp)+,tmline(a2)
-.2
-	movem.l	(sp)+,d0-d2/a0
-	rts
-.3
-	cmpa.w	#(HmShots-M68K_RAM),a2
-	bne.w	.6
-	moveq	#2,d1
-	lea	.5(pc),a0
-	cmpi.w	#2,(gsp).w
-	bne.w	.4
-	move.w	tmscore(a2),d2
-	cmp.w	tmscore(a1),d2
-	beq.w	.4
-	adda.w	#$E,a0
-	bgt.w	.4
-	adda.w	#$E,a0
-.4
-	move.w	tmline(a1),d1
-	asl.w	#1,d1
-	move.w	(a0,d1.w),d0
-	bsr.w	getlinee
-	cmp.w	#$C00,d0
-	bls.w	.6
-	move.w	(a0,d1.w),tmline(a2)
-	bra.s	.2
-.5
-	dc.w	0,1,2,0,1,0,1
-	dc.w	2,0,1,2,0,2,0
-	dc.w	0,1,0,0,1,0,1
-.6
-	moveq	#2,d1
-	lea	.8(pc),a0
-	cmpi.w	#2,(gsp).w
-	bne.w	.7
-	move.w	tmscore(a2),d2
-	cmp.w	tmscore(a1),d2
+puckshootout	;checks94 puckshootout. Start a penalty shot or shootout attempt: the pads cleared, the shooter (NextShooter) or the path
+	;(StartShootoutPath), the song, the goalies back, SelectPenaltyShotSkater; the puck assignment $20 (3 with no skater)
+	bclr	#1,pflags(a3)
 	beq.w	.7
-	addq.w	#6,a0
-	bgt.w	.7
-	addq.w	#6,a0
-.7
-	move.w	(a0)+,d0
-	bsr.w	getlinee
-	cmp.w	#$C00,d0
-	dbhi	d1,.7
-	move.w	-(a0),tmline(a2)
+	bclr	#7,(sflags).w
+	bset	#7,(sflags7).w
+	clr.l	(padcont).w
+	clr.l	(padcont+4).w
+	clr.l	(padcont+8).w
+	bclr	#7,(gmode2).w
+	btst	#0,(gmode2).w
+	beq.w	.0
+	jsr	(NextShooter).l
 	bra.w	.2
+.0
+	jsr	(StartShootoutPath).l
+	move.l	a2,-(sp)
+	movea.l	#HmShots,a2
+	tst.w	(BA_Team).w
+	beq.w	.1
+	movea.l	#AwShots,a2
+.1
+	addq.w	#1,$362(a2)
+	movea.l	(sp)+,a2
+.2
+	bclr	#2,(BA_PS_flags).w
+	bclr	#4,(BA_PS_flags).w
+	bclr	#5,(BA_PS_flags).w
+	bclr	#6,(BA_PS_flags).w
+	bset	#1,(sflags6).w
+	btst	#3,(gmode).w
+	beq.w	.3
+	jmp	(Stop4Pen).l
+.3
+	bclr	#1,pflags(a3)
+	btst	#0,(gmode2).w
+	beq.w	.4
+	tst.w	(shootoutteam).w
+	bne.w	.6
+	tst.w	(homeshootnum).w
+	bne.w	.6
+	move.w	(HomeTeam).w,(HmTeam).w
+	move.w	#2,(SongIndex).w
+	jsr	(ChooseSong).l
+	move.w	(SongNum).w,-(sp)
+	bra.w	.5
+.4
+	move.w	(HomeTeam).w,(HmTeam).w
+	move.w	#2,(SongIndex).w
+	jsr	(ChooseSong).l
+	move.w	(SongNum).w,-(sp)
+.5
+	jsr	(song).l
+.6
+	bset	#0,(gmode).w
+	bset	#1,(gmode2).w
+	clr.w	(puckvx).w
+	clr.w	(puckvy).w
+	move.w	#$19,(shootoutclock).w
+	jsr	(ReturnGoalies).l
+	st	temp1(a3)
+	st	temp2(a3)
+.7
+	bset	#2,(BA_PS_flags).w
+	movem.w	d1-d2,-(sp)
+	jsr	(SelectPenaltyShotSkater).l
+	bmi.w	.8
+	movem.w	(sp)+,d1-d2
+	bra.w	.9
 .8
-	dc.w	0,1,2
-	dc.w	0,2,1
-	dc.w	0,1,0
+	movem.w	(sp)+,d1-d2
+	bclr	#2,(BA_PS_flags).w
+	move.w	#3,d0
+	jsr	(assreplace).l
+	rts
+.9
+	movem.w	d1-d2,-(sp)
+	move.w	(BA_Goalie_SCnum).w,d0
+	movea.l	#SortCords,a2
+	asl.w	#7,d0
+	adda.w	d0,a2
+	tst.w	$34(a2)
+	bne.w	.10
+	btst	#2,$63(a2)
+	beq.w	.14
+.10
+	move.w	(BA_Goalie_SCnum).w,d0
+	move.w	#6,d2
+.11
+	subq.w	#1,d2
+	bmi.s	.8
+	subq.w	#1,d0
+	bpl.w	.12
+	move.w	#5,d0
+	bra.w	.13
+.12
+	cmp.w	#5,d0
+	bne.w	.13
+	move.w	#$B,d0
+.13
+	movea.l	#SortCords,a2
+	move.w	d0,d1
+	asl.w	#7,d1
+	adda.w	d1,a2
+	tst.w	$34(a2)
+	bne.s	.11
+	btst	#2,$63(a2)
+	bne.s	.11
+	move.w	d0,(BA_Goalie_SCnum).w
+.14
+	movem.w	(sp)+,d1-d2
+	movea.w	#(HmShots-M68K_RAM),a2
+	move.w	#$20,d0
+	jmp	(assreplace).l
 
-AutoLineChange	;(checks94) Computer line change on the fly: puck in the player's own end (pucky 0-$56, 94 $58), one frame in 4,
-	;not in line change mode, and the line tired (AvgCline $C00 or less): CompLine, SetPersonel, PrintScores1, then compshoot
-	btst	#4,(sflags7).w
-	bne.w	rtslc
+SelectPenaltyShotSkater	;checks94 SelectPenaltyShotSkater. The best rated free skater of the shooting team (9 rating nibbles) in BA_Skater_Offset, a3 his sort object; d0 = 1, or -1 with none
+	movem.l	d0-d7/a0-a6,-(sp)
+	movea.l	#HmShots,a0
+	tst.w	(BA_Team).w
+	beq.w	.0
+	movea.l	#AwShots,a0
+.0
+	move.w	#0,d1
+	move.w	#$FFFF,d6
+	move.w	#$FFFF,d5
+	movea.l	tmdata(a0),a2
+	adda.w	(a2),a2
+.1
+	cmpi.w	#2,(a2)
+	beq.w	.5
+	adda.w	(a2),a2
+	move.w	d1,d7
+	asl.w	#1,d7
+	move.b	5(a2),d0
+	andi.w	#$F,d0
+	cmp.b	#1,d0
+	ble.w	.4
+	btst	#0,(gmode2).w
+	bne.w	.6
+	cmpi.w	#$FFFE,tmpdst(a0,d7.w)
+	beq.w	.2
+	cmpi.w	#$FFFF,tmpdst(a0,d7.w)
+	bne.w	.4
+.2
+	clr.w	d3
+	clr.w	d0
+	move.b	1(a2),d0
+	andi.w	#$F,d0
+	add.w	d0,d3
+	move.b	2(a2),d0
+	andi.w	#$F,d0
+	add.w	d0,d3
+	move.b	2(a2),d0
+	andi.w	#$F0,d0
+	lsr.w	#4,d0
+	add.w	d0,d3
+	move.b	3(a2),d0
+	andi.w	#$F,d0
+	add.w	d0,d3
+	move.b	3(a2),d0
+	andi.w	#$F0,d0
+	lsr.w	#4,d0
+	add.w	d0,d3
+	move.b	5(a2),d0
+	andi.w	#$F,d0
+	add.w	d0,d3
+	move.b	5(a2),d0
+	andi.w	#$F0,d0
+	lsr.w	#4,d0
+	add.w	d0,d3
+	move.b	6(a2),d0
+	andi.w	#$F0,d0
+	lsr.w	#4,d0
+	add.w	d0,d3
+	move.b	7(a2),d0
+	andi.w	#$F0,d0
+	lsr.w	#4,d0
+	add.w	d0,d3
+	cmp.w	(BA_Skater_Offset).w,d1
+	bne.w	.3
+	move.w	#$7FFF,d3
+.3
+	cmp.w	d6,d3
+	blt.w	.4
+	move.w	d3,d6
+	move.w	d1,d5
+	bra.w	.4
+.4
+	addq.l	#8,a2
+	addq.w	#1,d1
+	cmp.w	#$1A,d1
+	blt.w	.1
+.5
+	tst.w	d5
+	bmi.w	.8
+	move.w	d5,(BA_Skater_Offset).w
+.6
+	move.w	#0,(BA_Sktr_SCnum).w
+	tst.w	(BA_Team).w
+	beq.w	.7
+	move.w	#6,(BA_Sktr_SCnum).w
+.7
+	move.w	(BA_Sktr_SCnum).w,d0
+	asl.w	#7,d0
+	movea.l	#SortCords,a3
+	adda.w	d0,a3
+	move.w	(BA_Skater_Offset).w,d3
+	bra.w	.9
+.8
+	move.w	#$FFFF,d0
+	bra.w	.10
+.9
+	move.w	#1,d0
+.10
+	movem.l	(sp)+,d0-d7/a0-a6
+	rts
+
+puckpenshot	;checks94 puckpenshot. Penalty shot / shootout face-off: rink, puck and nets reset, the shooter at the puck and the goalie in the net, the others off the ice; without $62(a3) bit 1 resume play
+	bclr	#1,pflags(a3)
+	beq.w	.21
+	movem.l	d0-d7/a0-a6,-(sp)
+	jsr	(forceblack).l
+.0
+	btst	#0,(disflags).w
+	bne.s	.0
+	cmpi.w	#$258,(crowdlevel).w
+	bls.w	.1
+	move.w	#$258,(crowdlevel).w
+	addi.w	#$14,(CwdExciteLvl).w
+.1
+	move.w	(ExtraChars).w,d4
+	movea.l	#RefTiles+8,a2
+	jsr	(DoDMA_clearCallbackPointer).l
+	bset	#3,(disflags).w
+	bclr	#0,(sflags).w
+	bclr	#0,(sflags3).w
+	clr.w	(glovecords).w
+	clr.b	(iflags).w
+	st	(RefCnt).w
+	bclr	#1,(sflags2).w
+	st	(passplayer).w
+	jsr	(RestoreGameScreen).l
+	clr.w	(Vpos).w
+	clr.w	(Hpos).w
+	move.w	#0,(puckx).w
+	move.w	#0,(pucky).w
+	clr.w	(puckz).w
+	clr.w	(puckvx).w
+	clr.w	(puckvy).w
+	clr.w	(puckvz).w
+	st	(puckc).w
+	movea.w	#(SortCords+(12*SCstruct)-M68K_RAM),a0	;goal net SCstruct
+	clr.w	Xvel(a0)
+	clr.w	Yvel(a0)
+	clr.w	(a0)
+	move.w	#$112,Ypos(a0)
+	adda.w	#SCstruct,a0
+	clr.w	Xvel(a0)
+	clr.w	Yvel(a0)
+	clr.w	(a0)
+	move.w	#$FEEE,Ypos(a0)
+	movea.w	#(SortCords+((puckscnum+1)*SCstruct)-M68K_RAM),a0	;puck shadow SCstruct
+	move.w	#$1B3,6(a0)
+	clr.w	SPA(a0)
+	clr.w	4(a0)
+	clr.w	(SortCords+(puckscnum*SCstruct)+attribute).w
+	bclr	#6,(sflags).w
+	moveq	#$64,d4
+.2
+	jsr	(checkwindow).l
+	dbf	d4,.2
+	move.w	#$3C,(yleader).w
+	jsr	(ResetBench).l
+	movea.w	#(HmShots-M68K_RAM),a2
+	jsr	(SetPersonel).l
+	bsr.w	SetupPenaltyShot
+	adda.w	#tmsize,a2
+	jsr	(SetPersonel).l
+	bsr.w	SetupPenaltyShot
+	jsr	(resetplstuff).l
+	move.l	a3,-(sp)
+	movea.l	#SortCords+(11*SCstruct),a3	;away goalie SCstruct
+	move.w	#$B,d2	;11 = # of player SCstructs
+.3
+	cmp.w	(BA_Sktr_SCnum).w,d2
+	beq.w	.4
+	cmp.w	(BA_Goalie_SCnum).w,d2
+	beq.w	.9
+	move.w	#$FF10,(a3)
+	clr.w	Ypos(a3)
+	clr.w	6(a3)
+	move.w	#$1D,d0
+	jsr	(assinsert).l
+	bra.w	.15
+.4
+	tst.w	position(a3)
+	bpl.w	.6
+	bclr	#2,pflags2(a3)
+	beq.w	.6
+	movem.l	d0-d7/a0-a6,-(sp)
+	clr.w	d3
+	move.b	pnum(a3),d3
+	jsr	(setplayer).l
+	movem.l	(sp)+,d0-d7/a0-a6
+	tst.w	position(a3)
+	beq.w	.5
+	bpl.w	.6
+.5
+	nop
+.6
+	move.w	(puckx).w,d0
+	subi.w	#0,d0
+	move.w	d0,(a3)
 	move.w	(pucky).w,d0
 	btst	#7,pflags(a3)
-	bne.w	.0
-	neg.w	d0
-.0
-	tst.w	d0
-	bmi.w	rtslc
-	cmp.w	#$56,d0
-	bgt.w	rtslc
-	move.w	(VDP_CNTR).l,d0
-	andi.w	#3,d0
-	bne.w	rtslc
-	btst	#3,pflags2(a3)
-	bne.w	rtslc
-	movea.w	#(HmShots-M68K_RAM),a2
-	lea	tmsize(a2),a1
-	btst	#6,pflags(a3)
-	beq.w	.1
-	exg	a2,a1
-.1
-	bsr.w	AvgCline
-	cmp.w	#$C00,d0
-	bhi.w	rtslc
-	bsr.w	CompLine
-	jsr	(SetPersonel).l
-	jsr	(PrintScores1).l
-	jmp	compshoot
-
-SetupTeamForIntermission	;(penalty94) 93 name. Reset the bench (ResetBench), then for each team SetupTeamLine. Called from hockey95_01
-	bsr.w	ResetBench
-	movea.w	#(HmShots-M68K_RAM),a2
-	lea	tmsize(a2),a3
-	bsr.w	SetupTeamLine
-	exg	a2,a3	;falls in for the other team
-
-SetupTeamLine	;95 only. Team a3 (a2 = other team): ResetTeamEnergy, line 0, and with line changes on the power play line 3
-	;or penalty kill line 5 when the players on ice (tmap) differ
-	jsr	(ResetTeamEnergy).l
-	clr.w	tmline(a3)
-	tst.w	(OptLine).w
-	bne.w	.0
-	move.w	tmap(a3),d0
-	sub.w	tmap(a2),d0
-	beq.w	.0
-	move.w	#3,tmline(a3)
-	tst.w	d0
-	bpl.w	.0
-	move.w	#5,tmline(a3)
-.0
-	rts
-
-ReadTeamSRAM	;95 only, no xref. Read $39 bytes of team d7 (0-$1B) from save RAM offset d0 to a0
-	movem.l	d0/d7/a0,-(sp)
-	cmp.w	#$1B,d7
-	bgt.w	.0
-	ext.l	d0
-	mulu.w	#$39,d7
-	add.l	d7,d0
-	moveq	#$39,d1
-	jsr	(ReadSRAM).l
-.0
-	movem.l	(sp)+,d0/d7/a0
-	rts
-
-DefaultLineData	;95 only. Copy the default line sets of the 28 teams (TeamList + 6, 8 x 8 bytes, then $64) to M68K_RAM+SRLines, the RAM copy of the save RAM lines.
-	;Called from sram95
-	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#M68K_RAM+SRLines,a0
-	movea.l	#TeamList,a3
-	move.w	#$1B,d1
-	clr.w	d7
-.0
-	move.w	d7,d0
-	asl.w	#2,d0
-	movea.l	(a3,d0.w),a1
-	adda.w	6(a1),a1
-	move.w	#7,d2
-.1
-	move.b	(a1)+,(a0)+
-	move.b	(a1)+,(a0)+
-	move.b	(a1)+,(a0)+
-	move.b	(a1)+,(a0)+
-	move.b	(a1)+,(a0)+
-	move.b	(a1)+,(a0)+
-	move.b	(a1)+,(a0)+
-	move.b	(a1)+,(a0)+
-	dbf	d2,.1
-	move.b	#$64,(a0)+
-	addq.w	#1,d7
-	dbf	d1,.0
-	movem.l	(sp)+,d0-d7/a0-a6
-	rts
-
-LoadTeamLines	;95 only. The line sets of team struct a2 ($16C): from save RAM (SRLines + team * $41) when there is save RAM and
-	;line changes are on, else from the team data. Jumped to from setup95_01
-	tst.w	(OptLine).w
-	beq.w	.3
-	tst.w	(ValidSRAM).w
-	bmi.w	.0
-	movem.l	d0-d2,-(sp)
-	move.l	#SRLines,d0
-	move.w	$28(a2),d2
-	mulu.w	#$41,d2
-	add.l	d2,d0
-	moveq	#$41,d1
-	movea.l	#ThreeStars,a0
-	jsr	(ReadSRAM).l
-	movem.l	(sp)+,d0-d2
-	btst	#6,(sflags11).w
-	bne.w	.0
-	bra.w	.1
-.0
-	movea.l	$1E(a2),a0
-	adda.w	6(a0),a0
-.1
-	lea	$16C(a2),a1
-	move.l	(a0)+,(a1)+
-	move.l	(a0)+,(a1)+
-	addq.w	#8,a0
-	move.w	#$B,d0
-.2
-	move.l	(a0)+,(a1)+
-	dbf	d0,.2
-	rts
-.3
-	tst.w	(ValidSRAM).w
-	bmi.w	.4
-	movem.l	d0-d2,-(sp)
-	move.l	#SRLines,d0
-	move.w	$28(a2),d2
-	mulu.w	#$41,d2
-	add.l	d2,d0
-	moveq	#$41,d1
-	movea.l	#ThreeStars,a0
-	jsr	(ReadSRAM).l
-	movem.l	(sp)+,d0-d2
-	bra.w	.5
-.4
-	movea.l	$1E(a2),a0
-	adda.w	6(a0),a0
-.5
-	moveq	#$D,d0
-	addq.w	#8,a0
-	lea	$16C(a2),a1
-.6
-	move.l	(a0)+,(a1)+
-	dbf	d0,.6
-	rts
-
-FixSavedLines	;95 only, no xref. Clamp the saved line slots of team d7 in the 4 TeamRecordSRAM records into the goalie /
-	;defense / forward ranges (ReadAttributeNibbleD7, GetDefenseStartD7, GetPlayerCountD7) and write them back
-	movem.l	d0-d7/a0-a6,-(sp)
-	jsr	(ReadAttributeNibbleD7).l
-	move.w	d0,d3
-	jsr	(GetDefenseStartD7).l
-	move.w	d0,d4
-	jsr	(GetPlayerCountD7).l
-	move.w	d0,d5
-	move.w	#3,d6
-.0
-	movea.l	#TeamRecordSRAM,a0
-	move.w	d6,d0
-	asl.w	#3,d0
-	move.l	4(a0,d0.w),d1
-	move.l	(a0,d0.w),d0
-	move.w	d7,d2
-	mulu.w	d1,d2
-	add.l	d2,d0
-	movea.l	#ThreeStars,a0
-	jsr	(ReadSRAM).l
-	cmpi.b	#$64,-1(a0,d1.w)
-	bne.w	.2
-	movem.l	d0-d1/a0,-(sp)
-	lsr.w	#3,d1
-	subq.w	#1,d1
-.1
-	bsr.w	.3
-	bsr.w	.5
-	bsr.w	.5
-	bsr.w	.7
-	bsr.w	.7
-	bsr.w	.7
-	bsr.w	.9
-	addq.w	#1,a0
-	dbf	d1,.1
-	movem.l	(sp)+,d0-d1/a0
-	jsr	(WriteSRAM).l
-.2
-	dbf	d6,.0
-	jsr	(MakeSRAMChecksum).l
-	movem.l	(sp)+,d0-d7/a0-a6
-	rts
-.3
-	cmp.b	(a0),d3
-	bge.w	.4
-	subq.b	#1,(a0)
-	bra.s	.3
-.4
-	addq.w	#1,a0
-	rts
-.5
-	cmp.b	(a0),d5
-	bge.w	.6
-	subq.b	#1,(a0)
-	bra.s	.5
-.6
-	cmp.b	(a0),d4
-	blt.s	.4
-	addq.b	#1,(a0)
-	bra.s	.6
+	bne.w	.7
+	addi.w	#$10,d0
+	move.w	#4,facedir(a3)
+	bra.w	.8
 .7
-	cmp.b	(a0),d4
-	bge.w	.8
-	subq.b	#1,(a0)
-	bra.s	.7
+	addi.w	#-$10,d0
+	move.w	#0,facedir(a3)
 .8
-	cmp.b	(a0),d3
-	blt.s	.4
-	addq.b	#1,(a0)
-	bra.s	.8
+	move.w	d0,Ypos(a3)
+	clr.w	Xvel(a3)
+	clr.w	Yvel(a3)
+	clr.w	Zvel(a3)
+	move.w	#$E,d0
+	jsr	(assinsert).l
+	bra.w	.15
 .9
-	cmp.b	(a0),d5
-	bge.s	.4
-	subq.b	#1,(a0)
-	bra.s	.9
-
-CheckSavedLines	;95 only. CheckTeamLines for tradeteam1 and tradeteam2. Called from the trade code
-	movem.l	d0-d7/a0-a6,-(sp)
-	move.w	(tradeteam1).w,d7
-	bsr.w	CheckTeamLines
-	move.w	(tradeteam2).w,d7
-	bsr.w	CheckTeamLines
-	movem.l	(sp)+,d0-d7/a0-a6
-	rts
-
-CheckTeamLines	;95 only. Check the saved lines of team d7 in the 4 TeamRecordSRAM records ($64 marks a valid one): each slot
-	;with bit 7 set is refilled by LineSlotFixTbl (slot & 7), then written back (WriteSRAM, MakeSRAMChecksum)
-	movem.l	d0-d7/a0-a6,-(sp)
-	move.w	#3,d6
-.0
-	movea.l	#TeamRecordSRAM,a0
-	move.w	d6,d2
-	asl.w	#3,d2
-	move.l	(a0,d2.w),d0
-	move.l	4(a0,d2.w),d1
-	move.w	d1,(gameclock).w
-	move.w	d7,d2
-	mulu.w	d1,d2
-	add.l	d2,d0
-	movea.l	#ThreeStars,a0
-	movem.l	d0-d1/a0,-(sp)
-	jsr	(ReadSRAM).l
-	cmpi.b	#$64,-1(a0,d1.w)
-	bne.w	.4
-	clr.w	d5
-	subq.w	#2,d1
-.1
-	tst.b	(a0,d5.w)
-	bpl.w	.2
-	move.w	d5,d4
-	andi.w	#7,d4
-	asl.w	#2,d4
-	movea.l	#LineSlotFixTbl,a2
-	movea.l	(a2,d4.w),a2
-	jsr	(a2)
-.2
-	addq.w	#1,d5
-	dbf	d1,.1
-	movem.l	(sp)+,d0-d1/a0
-	jsr	(WriteSRAM).l
-.3
-	dbf	d6,.0
-	jsr	(MakeSRAMChecksum).l
-	movem.l	(sp)+,d0-d7/a0-a6
-	rts
-.4
-	movem.l	(sp)+,d0-d1/a0
-	bra.s	.3
-
-LineSlotFixTbl	;95 only. CheckTeamLines slot handlers by slot & 7: goalie (the best one), defense, defense, forward, forward,
-	;forward, extra, none
-	dc.l	.0,.4,.4,.20,.20,.20,.33,.3
-.0
-	movem.l	d0-d7/a3,-(sp)
-	jsr	(ReadAttributeNibbleD7).l
-	subq.w	#1,d0
-	move.w	d0,d1
-	clr.w	d0
-	clr.w	d6
-	move.b	#$FF,d4
-.1
-	jsr	(GetRosterName).l
-	adda.w	(a1),a1
-	move.b	1(a1),d3
-	andi.w	#$F,d3
-	cmp.b	d4,d3
-	ble.w	.2
-	move.w	d0,d6
-	move.b	d3,d4
-.2
-	addq.w	#1,d0
-	dbf	d1,.1
-	addq.w	#1,d6
-	move.b	d6,(a0,d5.w)
-	movem.l	(sp)+,d0-d7/a3
-	rts
-.3
-	clr.b	(a0,d5.w)
-	rts
-.4
-	movem.l	d0-d7/a0-a6,-(sp)
-	bclr	#6,(sflags6).w
-	jsr	(GetPlayerCountD7).l
-	move.w	d0,d2
-	jsr	(GetDefenseStartD7).l
-	clr.w	d1
-	movea.l	#linemarkbuf,a1
-.5
-	cmp.w	d0,d2
-	ble.w	.8
-	btst	#6,(sflags6).w
-	bne.w	.6
-	bsr.w	.17
-	beq.w	.7
-.6
-	move.b	d0,(a1)+
-	addq.w	#1,d1
-.7
-	addq.w	#1,d0
-	bra.s	.5
-.8
-	tst.w	d1
-	bne.w	.9
-	bset	#6,(sflags6).w
-	bra.w	.12
-.9
-	movea.l	#linemarkbuf,a1
-	subq.w	#1,d1
-	bmi.w	.12
-	clr.w	d4
-	move.b	#$FF,d3
-.10
-	move.b	(a1,d1.w),d0
-	ext.w	d0
-	movem.l	d6/a1,-(sp)
-	jsr	(GetRosterName).l
-	adda.w	(a1),a1
-	move.b	1(a1),d2
-	andi.w	#$F,d2
-	move.b	2(a1),d6
-	lsr.b	#4,d6
-	andi.b	#$F,d6
-	add.b	d6,d2
-	move.b	3(a1),d6
-	lsr.b	#4,d6
-	andi.b	#$F,d6
-	add.b	d6,d2
-	move.b	4(a1),d6
-	lsr.b	#4,d6
-	andi.b	#$F,d6
-	add.b	d6,d2
-	movem.l	(sp)+,d6/a1
-	cmp.b	d3,d2
-	ble.w	.11
-	move.w	d0,d4
-	move.b	d2,d3
-.11
-	dbf	d1,.10
-	addq.b	#1,d4
-	move.b	d4,(a0,d5.w)
-	bra.w	.16
-.12
-	jsr	(GetDefenseStartD7).l
-.13
-	addq.w	#1,d0
-	movem.w	d1/d5,-(sp)
-	andi.w	#$FFF8,d5
-	move.w	#7,d1
-.14
-	cmp.b	(a0,d5.w),d0
-	beq.w	.15
-	addq.w	#1,d5
-	dbf	d1,.14
-.15
-	tst.w	d1
-	movem.w	(sp)+,d1/d5
-	bpl.s	.13
-	move.b	d0,(a0,d5.w)
-.16
-	movem.l	(sp)+,d0-d7/a0-a6
-	rts
-.17
-	movem.l	d0-d2/a0,-(sp)
-	move.w	(gameclock).w,d1
-	subq.w	#2,d1
-	addq.b	#1,d0
-.18
-	cmp.b	(a0,d1.w),d0
-	beq.w	.19
-	dbf	d1,.18
-	move.w	#1,d0
-.19
-	movem.l	(sp)+,d0-d2/a0
-	rts
-.20
-	movem.l	d0-d7/a0-a6,-(sp)
-	bclr	#6,(sflags6).w
-	jsr	(GetDefenseStartD7).l
-	move.w	d0,d2
-	jsr	(ReadAttributeNibbleD7).l
-	clr.w	d1
-	movea.l	#linemarkbuf,a1
-.21
-	cmp.w	d0,d2
-	ble.w	.24
-	btst	#6,(sflags6).w
-	bne.w	.22
-	bsr.s	.17
-	beq.w	.23
-.22
-	move.b	d0,(a1)+
-	addq.w	#1,d1
-.23
-	addq.w	#1,d0
-	bra.s	.21
-.24
-	tst.w	d1
-	bne.w	.25
-	bset	#6,(sflags6).w
-	bra.w	.28
-.25
-	movea.l	#linemarkbuf,a1
-	subq.w	#1,d1
-	bmi.w	.28
-	clr.w	d4
-	move.b	#$FF,d3
-.26
-	move.b	(a1,d1.w),d0
-	ext.w	d0
-	movem.l	d6/a1,-(sp)
-	jsr	(GetRosterName).l
-	adda.w	(a1),a1
-	move.b	1(a1),d2
-	andi.w	#$F,d2
-	move.b	2(a1),d6
-	andi.b	#$F,d6
-	add.b	d6,d2
-	move.b	2(a1),d6
-	lsr.b	#4,d6
-	andi.b	#$F,d6
-	move.b	5(a1),d6
-	andi.b	#$F,d6
-	add.b	d6,d2
-	move.b	5(a1),d6
-	lsr.b	#4,d6
-	andi.b	#$F,d6
-	add.b	d6,d2
-	movem.l	(sp)+,d6/a1
-	cmp.b	d3,d2
-	ble.w	.27
-	move.w	d0,d4
-	move.b	d2,d3
-.27
-	dbf	d1,.26
-	addq.b	#1,d4
-	move.b	d4,(a0,d5.w)
-	bra.w	.32
-.28
-	jsr	(ReadAttributeNibbleD7).l
-.29
-	addq.w	#1,d0
-	movem.w	d1/d5,-(sp)
-	andi.w	#$FFF8,d5
-	move.w	#7,d1
-.30
-	cmp.b	(a0,d5.w),d0
-	beq.w	.31
-	addq.w	#1,d5
-	dbf	d1,.30
-.31
-	tst.w	d1
-	movem.w	(sp)+,d1/d5
-	bpl.s	.29
-	move.b	d0,(a0,d5.w)
-.32
-	movem.l	(sp)+,d0-d7/a0-a6
-	rts
-.33
-	movem.l	d0-d7/a0-a6,-(sp)
-	jsr	(ReadAttributeNibbleD7).l
-.34
-	bsr.w	.17
-	bne.w	.35
-	addq.w	#1,d0
-	bra.s	.34
-.35
-	addq.w	#1,d0
-	move.b	d0,(a0,d5.w)
-	movem.l	(sp)+,d0-d7/a0-a6
-	rts
-
-EASportsScreen	;(attract94) Called from Begin (main95). Show the EA Sports screen (EASportsMap) until a button, or $50 x 4
-	;frames
-	move.l	#vb2,(vbint).w	;vblank handler
-	bclr	#1,(disflags).w
-	move.w	#5,(Map3col1).w
-	move.w	#$A000,(VmMap2).w
-	move.w	#7,(Map2col1).w
-	move.w	#$C000,(VmMap1).w
-	move.w	#7,(Map1col1).w
-	move.w	#$F000,(VmMap3).w
-	move.w	#$F800,(VSPRITES).w
-	move.w	#$FC00,(VSCRLPM).w
-	movea.w	#(palfadenew-M68K_RAM),a0
-	moveq	#$1F,d1	;32 longs: all 64 colours black
-.0
-	clr.l	(a0)+
-	dbf	d1,.0
-	jsr	(CopyPaletteToCRAM).l
-	jsr	(setVram_0).l
-	jsr	(printz).l
-	String	$FE,0,0,0
-	movea.l	#EASportsMap,a2
-	movea.l	a2,a0
-	movea.l	a2,a1
-	adda.l	(a2)+,a0
-	adda.l	(a2)+,a1
-	clr.w	d0
-	clr.w	d1
-	move.w	(a1),d2
-	move.w	2(a1),d3
-	move.w	#1,d4
-	moveq	#$F,d5
-	jsr	(dobitmap).l
-	move.w	#$18,(palcount).w	;fade in
-	move	#$2500,sr	;vblank on
-	move.w	#$50,(RNGseed).w	;frame count down in the random seed word
-.1
-	moveq	#4,d0
-	jsr	(waitx).l
-	tst.w	d1
-	bne.w	.2
-	subq.w	#1,(RNGseed).w
-	bpl.s	.1
-.2
-	move	#$2700,sr
-	jsr	(forceblack).l
-	rts
-
-chkatop	;(penalty94) Attack time of possession stat update. Called once a second from updatepentime
-	moveq	#0,d1
-	move.w	(pucky).w,d0
-	cmp.w	#$56,d0
-	bgt.w	.0
-	move.l	#tmsize,d1
-	neg.w	d0
-	cmp.w	#$56,d0
-	blt.w	.2
-.0
-	btst	#1,(gmode).w
-	beq.w	.1
-	eori.w	#tmsize,d1
-.1
-	movea.w	#(HmShots-M68K_RAM),a2
-	addq.w	#1,tmATOP(a2,d1.w)	;attack time
-.2
-	rts
-
-updatePPTeamTime	;(period94) Power play time of the teams, once a second. Called from updatepentime
-	btst	#5,(sflags2).w	;check if PP
-	beq.w	.1
-	movea.l	#HmShots,a2	;move home team struct into a2
-	btst	#6,(sflags2).w	;check who's on PP
-	beq.w	.0	;branch if home (team 1)
-	movea.l	#AwShots,a2	;move away team struct into a2
-.0
-	addq.w	#1,$354(a2)
-.1
-	rts
-
-ChkShotStat	;(penalty94) Determine if a shot was taken and add it to the stats (crowd, team, shooter and goalie)
-	btst	#0,(gmode).w	;gmclock: clock stopped
-	bne.w	.10
-	btst	#4,(gmode).w	;gmhl: highlight
-	bne.w	.10
-	bclr	#4,(sflags2).w	;sf2shot: shot taken
-	bne.w	.4
-	btst	#0,(sflags4).w
+	btst	#0,(gmode2).w
 	beq.w	.10
-	bclr	#3,(sflags8).w
-	bne.w	.0
-	bset	#3,(sflags8).w
-	bra.w	.10
-.0
-	movem.l	d0-d1/a1-a3,-(sp)
-	move.l	a4,-(sp)
-	movea.l	#ChkCnt,a4
-	adda.w	(ScoreSumbytes).w,a4
-	movea.l	#HmShots,a2	;home team
-	btst	#7,2(a4)	;entry flag: visitors
-	beq.w	.1
-	adda.w	#tmsize,a2
-.1
-	clr.w	d0
-	move.b	3(a4),d0	;pnum (roster offset)
-	movea.l	(sp)+,a4
-	movea.w	tmsort(a2),a2
-	move.w	#5,d1
-.2
-	cmp.b	$66(a2),d0	;pnum
-	beq.w	.3
-	adda.w	#SCstruct,a2
-	dbf	d1,.2
-	bra.w	.9
-.3
-	move.w	$52(a2),d0	;SCnum
-	bra.w	.5
-.4
-	movem.l	d0-d1/a1-a3,-(sp)
-	addi.w	#$64,(crowdlevel).w	;100
-	addi.w	#$A,(CwdExciteLvl).w
-	move.w	(shotplayer).w,d0
-.5
-	asl.w	#7,d0	;scsize
+	move.b	(shootoutteam-1).w,pnum(a3)
+	tst.w	(shootoutteam).w
+	beq.w	.11
+	move.b	(homeshootnum-1).w,pnum(a3)
+	bra.w	.11
+.10
+	tst.w	position(a3)
+	bpl.w	.13
+	bclr	#2,pflags2(a3)
+	beq.w	.13
+.11
+	movem.l	d0-d7/a0-a6,-(sp)
+	clr.w	d3
+	move.b	pnum(a3),d3
+	jsr	(setplayer).l
+	movem.l	(sp)+,d0-d7/a0-a6
+	tst.w	position(a3)
+	bne.w	.12
+	bpl.w	.13
+.12
+	nop
+.13
+	bclr	#2,pflags2(a3)
+	move.w	#0,d0
+	move.w	#$E5,d1
+	btst	#7,pflags(a3)
+	bne.w	.14
+	move.w	#$FF1B,d1
+.14
+	move.w	d0,(a3)
+	move.w	d1,Ypos(a3)
+	clr.w	Xvel(a3)
+	clr.w	Yvel(a3)
+	clr.w	Zpos(a3)
+	sub.w	(puckx).w,d0
+	sub.w	(pucky).w,d1
+	neg.w	d0
+	neg.w	d1
+	jsr	(vtoa).l
+	move.w	d0,facedir(a3)
+	bclr	#2,pflags2(a3)
+	bclr	#5,pflags(a3)
+	move.w	#$B5C,d1
+	jsr	(SetSPA).l
+.15
+	suba.l	#SCstruct,a3
+	dbf	d2,.3
+	jsr	(SprSort).l
+	movea.l	(sp)+,a3
+	jsr	(AssignPads).l
+	move.w	(BA_Goalie_SCnum).w,d0
+	asl.w	#7,d0
 	movea.w	#(SortCords-M68K_RAM),a3
 	adda.w	d0,a3
-	jsr	(loadTeamStruct).l
-	addq.w	#1,(a2)	;tmshots
-	btst	#5,(sflags2).w	;sf2pwrplay
-	beq.w	.8
-	btst	#6,(sflags2).w	;sf2pwrtm: 0 home, 1 visitors
-	bne.w	.7
+	move.w	#0,(a3)
+	move.w	#$FF06,Ypos(a3)
+	btst	#7,pflags(a3)
+	bne.w	.16
+	move.w	#$FA,Ypos(a3)
+.16
+	move.w	(BA_Goalie_SCnum).w,d0
+	move.w	#1,d1
 	btst	#6,pflags(a3)
-	bne.w	.8
-.6
-	addq.w	#1,$356(a2)
-	bra.w	.8
-.7
-	btst	#6,pflags(a3)
-	bne.s	.6
-.8
-	move.l	a2,-(sp)
-	move.w	(gsp).w,d0	;period
-	add.w	d0,d0
-	adda.w	d0,a2
-	addq.w	#1,$34C(a2)
-	movea.l	(sp)+,a2
-	clr.w	d0
-	move.b	pnum(a3),d0
-	addi.w	#$EA,d0
-	addq.b	#1,(a2,d0.w)
-	move.w	$26(a1),d0
-	bmi.w	.9
-	addi.w	#$EA,d0
-	addq.b	#1,(a1,d0.w)
-.9
-	movem.l	(sp)+,d0-d1/a1-a3
-.10
-	rts
-
-DrawTeamScreen2	;95 only. A DrawTeamScreen (data95_01) for the season / stats screens: screenarg is the background bitmap; the
-	;team block tiles (setupTeamBlocksMap), RosterFont at smallfontchars ... smallfont4chars with four remaps, BigFontMap2. d0 / d1 =
-	;first row / row count of the bitmap
-	movem.l	d0-d1/a2,-(sp)
-	jsr	(forceblack).l
-.0
-	btst	#0,(disflags).w
-	bne.s	.0
-	clr.w	(Hscroll).w
-	clr.w	(Vscroll).w
-	jsr	(SetScroll2).l
-	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
-	movea.l	#VDP_DATA,a0
-	move.w	#$9100,4(a0)
-	move.w	#$921C,4(a0)
-	move.w	(VSPRITES).w,d0
-	jsr	(Vmaddr).l
-	move.l	#0,(a0)
-	move.w	#$8C81,4(a0)
-	move.w	#6,(Map3col1).w
-	move.w	#$8D00,4(a0)
-	clr.w	d0
-	jsr	(Vmaddr).l
-	move.l	#0,(a0)
-	move.w	(sp)+,(disflags).w
-	bclr	#1,(disflags).w
-	moveq	#1,d4
-	movem.l	a0-a6,-(sp)
-	move.l	#Teamblocksmap,(teamblocksmapptr).l
-	jsr	(setupTeamBlocksMap).l
-	movem.l	(sp)+,a0-a6
-	jsr	(printz).l
-	String	$BD,0,0,0
-	movea.l	(screenarg).w,a1
-	adda.l	4(a1),a1
-	movea.w	#ZeroLong,a2
-	clr.w	d0
-	clr.w	d1
-	move.w	(a1),d2
-	move.w	2(a1),d3
-	moveq	#0,d5
-	jsr	(dobitmap).l
-	jsr	(printz).l
-	String	$FD,0,0,0
-	movem.l	(sp),d0-d1/a2
-	add.w	d0,(printy).w
-	movea.l	(screenarg).w,a0
-	movea.l	a0,a1
-	movea.l	a0,a2
-	adda.l	(a2)+,a0
-	adda.l	(a2)+,a1
-	move.w	d1,d3
-	sub.w	d0,d3
-	move.w	d0,d1
-	clr.w	d0
-	moveq	#$28,d2
-	moveq	#$F,d5
-	jsr	(dobitmap).l
-	move.w	d4,(smallfontchars).w
-	move.l	#RosterFont,(smallfontptr).l
-	movea.l	(smallfontptr).w,a2
-	addq.w	#8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$04,$83,$45,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(smallfont2chars).w
-	movea.l	#RosterFont+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0C,$83,$45,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(smallfont3chars).w
-	movea.l	#RosterFont+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$06,$83,$45,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(smallfont4chars).w
-	movea.l	#RosterFont+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$16,$83,$45,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(BigFontChars).w
-	movea.l	#BigFontMap2+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF;remap table
-	jsr	(printz).l
-	String	$FE,0,0,0
-	moveq	#$40,d0
-	moveq	#$20,d1
-	move.w	#$7FF,d2
-	jsr	(eraser).l
+	beq.w	.17
+	move.w	#2,d1
+.17
+	cmp.w	(cont1team).w,d1
+	bne.w	.18
+	jsr	(setc1player).l
+	bra.w	.19
+.18
+	cmp.w	(cont2team).w,d1
+	bne.w	.19
+	jsr	(setc2player).l
+.19
+	move.w	#6,d0
+	jsr	(assreplace).l
+	bset	#7,(BA_PS_flags).w
+	bset	#2,(sflags2).w
+	move.w	#$190,(msgtimer).w
+	tst.w	(cont1team).w
+	bne.w	.20
+	tst.w	(cont2team).w
+	bne.w	.20
+	move.w	#$64,(msgtimer).w
+.20
 	move.w	#$18,(palcount).w
-	movem.l	(sp)+,d0-d1/a2
+	movem.l	(sp)+,d0-d7/a0-a6
+	rts
+.21
+	bset	#2,(gmode2).w
+	move.w	#1,d0
+	jsr	(assreplace).l
+	clr.w	Xvel(a3)
+	clr.w	Yvel(a3)
 	rts
 
-DrawTeamScreen3	;95 only. The same with SmallFontMap
-	movem.l	d0-d1/a2,-(sp)
-	jsr	(forceblack).l
-.0
-	btst	#0,(disflags).w
-	bne.s	.0
-	clr.w	(Hscroll).w
-	clr.w	(Vscroll).w
-	jsr	(SetScroll2).l
-	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
-	movea.l	#VDP_DATA,a0
-	move.w	#$9100,4(a0)
-	move.w	#$921C,4(a0)
-	move.w	(VSPRITES).w,d0
-	jsr	(Vmaddr).l
-	move.l	#0,(a0)
-	move.w	#$8C81,4(a0)
-	move.w	#6,(Map3col1).w
-	move.w	#$8D00,4(a0)
-	clr.w	d0
-	jsr	(Vmaddr).l
-	move.l	#0,(a0)
-	move.w	(sp)+,(disflags).w
-	bclr	#1,(disflags).w
-	moveq	#1,d4
-	movem.l	a0-a6,-(sp)
-	move.l	#Teamblocksmap,(teamblocksmapptr).l
-	jsr	(setupTeamBlocksMap).l
-	movem.l	(sp)+,a0-a6
-	jsr	(printz).l
-	String	$BD,0,0,0
-	movea.l	(screenarg).w,a1
-	adda.l	4(a1),a1
-	movea.w	#ZeroLong,a2
-	clr.w	d0
-	clr.w	d1
-	move.w	(a1),d2
-	move.w	2(a1),d3
-	moveq	#0,d5
-	jsr	(dobitmap).l
-	jsr	(printz).l
-	String	$FD,0,0,0
-	movem.l	(sp),d0-d1/a2
-	add.w	d0,(printy).w
-	movea.l	(screenarg).w,a0
-	movea.l	a0,a1
-	movea.l	a0,a2
-	adda.l	(a2)+,a0
-	adda.l	(a2)+,a1
-	move.w	d1,d3
-	sub.w	d0,d3
-	move.w	d0,d1
-	clr.w	d0
-	moveq	#$28,d2
-	moveq	#$F,d5
-	jsr	(dobitmap).l
-	move.w	d4,(smallfontchars).w
-	move.l	#SmallFontMap,(smallfontptr).l
-	movea.l	#SmallFontMap+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(smallfont2chars).w
-	movea.l	#SmallFontMap+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$8B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(smallfont3chars).w
-	movea.l	#SmallFontMap+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(smallfont4chars).w
-	movea.l	#SmallFontMap+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$1B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(BigFontChars).w
-	movea.l	#BigFontMap2+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF;remap table
-	jsr	(printz).l
-	String	$FE,0,0,0
-	moveq	#$40,d0
-	moveq	#$20,d1
-	move.w	#$7FF,d2
-	jsr	(eraser).l
-	move.w	#$18,(palcount).w
-	movem.l	(sp)+,d0-d1/a2
-	rts
+PenShotTable	;checks94 puckpenshot data (94 has no label). Not used
+	dc.b	0,1,2,3,4,5,6,0,0,1,5,3,4,2,0,0
+	dc.b	0,3,5,1,4,0,0,0,0,0
+	dc.w	$FF06,$FFDD,$FFCE,$0023,$FFCE,$FFCE,$FFF6,$0000,$FFF1,$0032,$FFF6,$0000,$FFC4
 
-DrawTeamScreen4NoSetup	;95 only. DrawTeamScreen4 without the screen setup (forceblack, scroll, vdp registers)
-	movem.l	d0-d1/a2,-(sp)
-	bra.w	DrawTeamScreen4Body
-
-DrawTeamScreen4	;95 only. The same as DrawTeamScreen3, the team block tiles with dma (Teamblocksmap+8)
-	movem.l	d0-d1/a2,-(sp)
-	jsr	(forceblack).l
-.0
-	btst	#0,(disflags).w
-	bne.s	.0
-	clr.w	(Hscroll).w
-	clr.w	(Vscroll).w
-	jsr	(SetScroll2).l
-	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
-	movea.l	#VDP_DATA,a0
-	move.w	#$9100,4(a0)
-	move.w	#$921C,4(a0)
-	move.w	(VSPRITES).w,d0
-	jsr	(Vmaddr).l
-	move.l	#0,(a0)
-	move.w	#$8C81,4(a0)
-	move.w	#6,(Map3col1).w
-	move.w	#$8D00,4(a0)
-	clr.w	d0
-	jsr	(Vmaddr).l
-	move.l	#0,(a0)
-	move.w	(sp)+,(disflags).w
-	bclr	#1,(disflags).w
-
-DrawTeamScreen4Body	;DrawTeamScreen4 after the screen setup; DrawTeamScreen4NoSetup branches here
-	moveq	#1,d4
-	movem.l	a0-a6,-(sp)
-	movea.l	#Teamblocksmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
-	movem.l	(sp)+,a0-a6
-	jsr	(printz).l
-	String	$BD,0,0,0
-	movea.l	(screenarg).w,a1
-	adda.l	4(a1),a1
-	movea.w	#ZeroLong,a2
-	clr.w	d0
-	clr.w	d1
-	move.w	(a1),d2
-	move.w	2(a1),d3
-	moveq	#0,d5
-	jsr	(dobitmap).l
-	jsr	(printz).l
-	String	$FD,0,0,0
-	movem.l	(sp),d0-d1/a2
-	add.w	d0,(printy).w
-	movea.l	(screenarg).w,a0
-	movea.l	a0,a1
-	movea.l	a0,a2
-	adda.l	(a2)+,a0
-	adda.l	(a2)+,a1
-	move.w	d1,d3
-	sub.w	d0,d3
-	move.w	d0,d1
-	clr.w	d0
-	moveq	#$28,d2
-	moveq	#$F,d5
-	jsr	(dobitmap).l
-	move.w	d4,(smallfontchars).w
-	move.l	#SmallFontMap,(smallfontptr).l
-	movea.l	#SmallFontMap+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(smallfont2chars).w
-	movea.l	#SmallFontMap+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$8B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(smallfont3chars).w
-	movea.l	#SmallFontMap+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(smallfont4chars).w
-	movea.l	#SmallFontMap+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$1B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(BigFontChars).w
-	movea.l	#BigFontMap2+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF;remap table
-	jsr	(printz).l
-	String	$FE,0,0,0
-	moveq	#$40,d0
-	moveq	#$20,d1
-	move.w	#$7FF,d2
-	jsr	(eraser).l
-	move.w	#$18,(palcount).w
-	movem.l	(sp)+,d0-d1/a2
-	rts
-
-DrawTeamScreen5	;95 only. DrawTeamScreen4 with three small fonts and palette word $A00
-	movem.l	d0-d1/a2,-(sp)
-	jsr	(forceblack).l
-.0
-	btst	#0,(disflags).w
-	bne.s	.0
-	clr.w	(Hscroll).w
-	clr.w	(Vscroll).w
-	jsr	(SetScroll2).l
-	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
-	movea.l	#VDP_DATA,a0
-	move.w	#$9100,4(a0)
-	move.w	#$921C,4(a0)
-	move.w	(VSPRITES).w,d0
-	jsr	(Vmaddr).l
-	move.l	#0,(a0)
-	move.w	#$8C81,4(a0)
-	move.w	#6,(Map3col1).w
-	move.w	#$8D00,4(a0)
-	clr.w	d0
-	jsr	(Vmaddr).l
-	move.l	#0,(a0)
-	move.w	(sp)+,(disflags).w
-	bclr	#1,(disflags).w
-	moveq	#1,d4
-	movem.l	a0-a6,-(sp)
-	movea.l	#Teamblocksmap+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
-	movem.l	(sp)+,a0-a6
-	jsr	(printz).l
-	String	$BD,0,0,0
-	movea.l	(screenarg).w,a1
-	adda.l	4(a1),a1
-	movea.w	#ZeroLong,a2
-	clr.w	d0
-	clr.w	d1
-	move.w	(a1),d2
-	move.w	2(a1),d3
-	moveq	#0,d5
-	jsr	(dobitmap).l
-	jsr	(printz).l
-	String	$FD,0,0,0
-	movem.l	(sp),d0-d1/a2
-	add.w	d0,(printy).w
-	movea.l	(screenarg).w,a0
-	movea.l	a0,a1
-	movea.l	a0,a2
-	adda.l	(a2)+,a0
-	adda.l	(a2)+,a1
-	move.w	d1,d3
-	sub.w	d0,d3
-	move.w	d0,d1
-	clr.w	d0
-	moveq	#$28,d2
-	moveq	#$F,d5
-	jsr	(dobitmap).l
-	move.w	d4,(smallfontchars).w
-	move.l	#SmallFontMap,(smallfontptr).l
-	movea.l	#SmallFontMap+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$44,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(smallfont2chars).w
-	movea.l	#SmallFontMap+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(smallfont3chars).w
-	movea.l	#SmallFontMap+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$E1,$23,$46,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(BigFontChars).w
-	movea.l	#BigFontMap2+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF;remap table
-	jsr	(printz).l
-	String	$FE,0,0,0
-	moveq	#$40,d0
-	moveq	#$20,d1
-	move.w	#$7FF,d2
-	jsr	(eraser).l
-	move.w	#$A00,(palfadenew).w
-	move.w	#$18,(palcount).w
-	movem.l	(sp)+,d0-d1/a2
-	rts
-
-DrawTeamScreen6	;95 only. The team blocks (screen6chars1), the bitmap, Screen6Tiles1 / 2 (screen6chars2 / 3), three small fonts,
-	;the big font and the framer (Framermap)
-	movem.l	d0-d1/a2,-(sp)
-	jsr	(forceblack).l
-.0
-	btst	#0,(disflags).w
-	bne.s	.0
-	clr.w	(Hscroll).w
-	clr.w	(Vscroll).w
-	jsr	(SetScroll2).l
-	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
-	movea.l	#VDP_DATA,a0
-	move.w	#$9100,4(a0)
-	move.w	#$921C,4(a0)
-	move.w	(VSPRITES).w,d0
-	jsr	(Vmaddr).l
-	move.l	#0,(a0)
-	move.w	#$8C81,4(a0)
-	move.w	#6,(Map3col1).w
-	move.w	#$8D00,4(a0)
-	clr.w	d0
-	jsr	(Vmaddr).l
-	move.l	#0,(a0)
-	move.w	(sp)+,(disflags).w
-	bclr	#1,(disflags).w
-	moveq	#1,d4
-	moveq	#1,d4
-	movem.l	a0-a6,-(sp)
-	move.l	#Teamblocksmap,(teamblocksmapptr).l
-	jsr	(setupTeamBlocksMap).l
-	movem.l	(sp)+,a0-a6
-	move.w	d4,(screen6chars1).w
-	jsr	(printz).l
-	String	$BD,0,0,0
-	movea.l	(screenarg).w,a1
-	adda.l	4(a1),a1
-	movea.w	#ZeroLong,a2
-	clr.w	d0
-	clr.w	d1
-	move.w	(a1),d2
-	move.w	2(a1),d3
-	moveq	#0,d5
-	jsr	(dobitmap).l
-	jsr	(printz).l
-	String	$FD,0,0,0
-	movem.l	(sp),d0-d1/a2
-	add.w	d0,(printy).w
-	movea.l	(screenarg).w,a0
-	movea.l	a0,a1
-	movea.l	a0,a2
-	adda.l	(a2)+,a0
-	adda.l	(a2)+,a1
-	move.w	d1,d3
-	sub.w	d0,d3
-	move.w	d0,d1
-	clr.w	d0
-	moveq	#$28,d2
-	moveq	#0,d5
-	jsr	(dobitmap).l
-	move.w	d4,(screen6chars2).w
-	movea.l	#Screen6Tiles1,a2
-	jsr	(DoDMA_clearCallbackPointer).l
-	move.w	d4,(screen6chars3).w
-	movea.l	#Screen6Tiles2,a2
-	jsr	(DoDMA_clearCallbackPointer).l
-	move.w	d4,(smallfontchars).w
-	move.l	#SmallFontMap,(smallfontptr).l
-	movea.l	#SmallFontMap+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(smallfont2chars).w
-	movea.l	#SmallFontMap+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$01,$23,$46,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(smallfont3chars).w
-	movea.l	#SmallFontMap+8,a2
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$B1,$23,$46,$67,$89,$AB,$CD,$EF;remap table
-	move.w	d4,(BigFontChars).w
-	movea.l	#BigFontMap2+8,a2
-	jsr	(DoDMA_clearCallbackPointer).l
-	movea.l	#Framermap+8,a2
-	move.l	#Framermap,(framermapptr).l
-	move.w	d4,(framercset).w
-	jsr	(DecompressGraphicsWithCallback).l
-	dc.b	$07,$89,$A5,$6B,$89,$AB,$CD,$EF;remap table
-	jsr	(printz).l
-	String	$FE,0,0,0
-	moveq	#$40,d0
-	moveq	#$20,d1
-	move.w	#$7FF,d2
-	jsr	(eraser).l
-	movem.l	(sp)+,d0-d1/a2
-	rts
-
-goalieacc	;(checks94) Goalie movement: a pad goalie near his crease faces the puck and gets the ready SPA (GoalieReadySPA),
-	;turning (AdjustFacingDirection); stopna2 deep in the crease; then playeracc. A computer goalie keeps or turns its facing
-	btst	#3,pflags(a3)
-	beq.w	.9
+UpdatePenaltyShotEnd	;checks94 UpdatePenaltyShotEnd. The shot ends (BA_PS_flags bit 4) when the goalie has the puck, the loose puck timer or the clock runs out; the first time AddPenalty2 $A. Runs on into EndPenaltyShotPlay
 	movem.w	d0,-(sp)
 	move.w	(puckc).w,d0
-	cmp.w	SCnum(a3),d0
+	cmp.w	(BA_Goalie_SCnum).w,d0
 	movem.w	(sp)+,d0
-	beq.w	.9
-	cmpi.w	#$30,(a3)
-	bgt.w	.9
-	cmpi.w	#$FFD0,(a3)
-	blt.w	.9
-	cmpi.w	#$FF40,Ypos(a3)
-	bgt.w	.0
-	cmpi.w	#$FEFA,Ypos(a3)
-	blt.w	.9
-	bra.w	.1
+	beq.w	.2
+	btst	#5,(BA_PS_flags).w
+	beq.w	.3
+	btst	#5,(gmode2).w
+	bne.w	.0
+	tst.w	(puckc).w
+	bpl.w	.1
+	bset	#5,(gmode2).w
 .0
-	cmpi.w	#$C0,Ypos(a3)
-	blt.w	.9
-	cmpi.w	#$106,Ypos(a3)
-	bgt.w	.9
+	tst.w	(puckc).w
+	bpl.w	.2
 .1
-	movem.w	d0-d1,-(sp)
-	move.w	(puckx).w,d0
-	sub.w	(a3),d0
-	move.w	(pucky).w,d1
-	sub.w	Ypos(a3),d1
-	cmp.w	#$10,d0
-	bgt.w	.2
-	cmp.w	#$FFF0,d0
-	blt.w	.2
-	cmp.w	#$10,d1
-	bgt.w	.2
-	cmp.w	#$FFF0,d1
-	blt.w	.2
-	move.w	facedir(a3),d0
+	tst.w	(passmodetimer).w
+	bmi.w	.2
+	subq.w	#1,(passmodetimer).w
 	bra.w	.3
 .2
-	jsr	(vtoa).l
+	bset	#4,(BA_PS_flags).w
 .3
-	btst	#0,(sflags4).w
+	tst.w	(shootoutclock).w
 	bne.w	.4
-	jsr	(AdjustFacingDirection).l
-	movem.w	(sp)+,d0-d1
-	bra.w	.5
+	bset	#4,(BA_PS_flags).w
 .4
-	movem.w	(sp)+,d0-d1
-	cmp.w	#8,d0
-	beq.w	.5
-	movem.w	d0-d1,-(sp)
-	jsr	(AdjustFacingDirection).l
-	movem.w	(sp)+,d0-d1
+	btst	#4,(BA_PS_flags).w
+	bne.w	.5
+	rts
 .5
-	bsr.w	GoalieReadySPA
-	btst	#1,pflags2(a3)
-	bne.w	.15
-	jsr	(SetSPA).l
-	cmp.w	#8,d0
-	bne.w	.8
-	tst.w	position(a3)
-	bne.w	.8
-	btst	#3,pflags(a3)
-	beq.w	.8
-	move.w	d0,-(sp)
-	move.w	Ypos(a3),d0
-	btst	#7,pflags(a3)
-	beq.w	.6
-	neg.w	d0
-.6
-	cmp.w	#$D8,d0
-	blt.w	.7
-	move.w	(a3),d0
-	cmp.w	#$20,d0
-	bgt.w	.7
-	cmp.w	#$FFE0,d0
-	blt.w	.7
-	move.w	(sp)+,d0
-	jsr	(stopna2).l
-	bra.w	.8
-.7
-	jsr	(stopna2).l
-	move.w	(sp)+,d0
-.8
-	move.w	d0,d2
-	jmp	playeracc
-.9
-	bsr.w	GoalieReadySPA
-	btst	#3,pflags(a3)
-	beq.w	.13
-	btst	#2,pflags(a3)
-	bne.w	.14
-	cmp.w	#8,d0
-	bne.w	.12
-	tst.w	position(a3)
-	bne.w	.14
-	move.w	d0,-(sp)
-	move.w	Ypos(a3),d0
-	btst	#7,pflags(a3)
-	beq.w	.10
-	neg.w	d0
-.10
-	cmp.w	#$D8,d0
-	blt.w	.11
-	move.w	(a3),d0
-	cmp.w	#$20,d0
-	bgt.w	.11
-	cmp.w	#$FFE0,d0
-	blt.w	.11
-	move.w	(sp)+,d0
-	jsr	(stopna).l
-	bra.w	.14
-.11
-	move.w	(sp)+,d0
-	bra.w	.14
-.12
-	bra.w	.17
-.13
-	andi.w	#$F,d0
-	cmp.w	#7,d0
-	ble.w	.17
-	cmp.w	#9,d0
-	bne.w	.14
-	move.w	Xvel(a3),d0
-	or.w	Yvel(a3),d0
-	beq.w	.14
-	jmp	stopna2
-.14
-	btst	#1,pflags2(a3)
-	beq.w	.16
-.15
+	btst	#6,(BA_PS_flags).w
+	bne.w	PenaltyShotEndReturn
+	bset	#6,(BA_PS_flags).w
+	move.w	#$A,d0
+	jsr	(AddPenalty2).l
+
+EndPenaltyShotPlay	;checks94 EndPenaltyShotPlay. LockScroll, end the penalty shot play (the BA flags), the shooter newpnum back, then CountShootoutGoals
+	jsr	(LockScroll).l
+	btst	#0,(gmode2).w
+	bne.w	.0
+	move.w	#$A,(replaydelay).w
+	bset	#2,(sflags2).w
+.0
+	bset	#0,(gmode).w
+	bclr	#2,(gmode2).w
+	bclr	#2,(BA_PS_flags).w
+	bclr	#3,(BA_PS_flags).w
+	bclr	#5,(BA_PS_flags).w
+	bclr	#4,(BA_PS_flags).w
+	bclr	#6,(BA_PS_flags).w
+	movem.l	d0/a0,-(sp)
+	movea.l	#SortCords,a0
+	move.w	(BA_Sktr_SCnum).w,d0
+	asl.w	#7,d0
+	move.b	(savednewpnum).w,newpnum(a0,d0.w)
+	movem.l	(sp)+,d0/a0
+	jsr	(CountShootoutGoals).l
+
+PenaltyShotEndReturn	;checks94 PenaltyShotEndReturn. Shared rts
 	rts
-.16
-	jmp	SetSPA
-.17
-	sub.w	facedir(a3),d0
-	beq.w	.18
-	neg.w	d0
-	andi.w	#4,d0
-	lsr.w	#1,d0
+
+SetupPenaltyShot	;collide94 SetupPenaltyShot. Penalty shot for team a2: the shooter plays center (BA_Skater_Offset), the goalie stays, the other players unavailable (assreplace $1D)
+	movem.l	d0-d5/a0-a3,-(sp)
+	movea.w	$22(a2),a3
+	moveq	#5,d4
+.0
+	move.w	SCnum(a3),d0
+	cmp.w	(BA_Sktr_SCnum).w,d0
+	beq.w	.1
+	cmp.w	(BA_Goalie_SCnum).w,d0
+	beq.w	.2
+	bset	#2,pflags2(a3)
+	move.w	#$1D,d0
+	jsr	(assreplace).l
+	bra.w	.4
+.1
+	jsr	(Setplass).l
+	move.b	newpnum(a3),(savednewpnum).w
+	move.b	(BA_Skater_Offset+1).w,newpnum(a3)
+	move.w	#4,position(a3)
+	bra.w	.3
+.2
+	jsr	(Setplass).l
+	clr.w	position(a3)
+.3
+	clr.w	d3
+	move.b	newpnum(a3),d3
+	add.w	d3,d3
+	move.w	#$FFFF,$68(a2,d3.w)
+	lsr.w	#1,d3
+	jsr	(setplayer).l
+.4
+	st	newpnum(a3)
+	st	newpos(a3)
+	adda.w	#SCstruct,a3
+	dbf	d4,.0
+	movem.l	(sp)+,d0-d5/a0-a3
+	rts
+
+PenaltyShotBox	;data94 PenaltyShotBox. In a shootout PlayoffRoundScreen; else the "PENALTY SHOT!" box: the shooter, the penalty (PenaltyList) and " by" the checker
+	bset	#7,(gmode2).w
+	btst	#0,(gmode2).w
+	beq.w	.0
+	jmp	(PlayoffRoundScreen).l
+.0
+	movem.l	d0-d2/a0-a4,-(sp)
+	move.w	#$FFFF,d0
+	jsr	(prefmes).l	;d0 = -1
+	jsr	(printz).l
+	String	$BF,$3,$2,$0
+	moveq	#$1B,d0
+	moveq	#8,d1
+	jsr	(Framer).l
+	lea	PenShotBigTxt(pc),a1
+	jsr	(printbig1).l
+	move.w	(BA_Sktr_SCnum).w,d0
+	asl.w	#7,d0	;sprite structs are $80 bytes
+	movea.l	#SortCords,a2
+	adda.w	d0,a2
+	clr.w	d0
+	move.b	$66(a2),d0	;roster slot
+	movea.l	#HmShots,a2
+	tst.w	(BA_Team).w
+	beq.w	.1
+	movea.l	#AwShots,a2
+.1
+	jsr	(FormatPlayerNameWithAttrib).l
+	jsr	(print).l
+	jsr	(printz).l
+	String	$BF,$4,$7,$0
+	movem.l	a1/a3,-(sp)
+	move.w	(pspenalty).w,d0
+	movea.l	#PenaltyList,a1
+	adda.w	(a1,d0.w),a1
+	lea	2(a1),a1
+	jsr	(print).l
+	movem.l	(sp)+,a1/a3
+	jsr	(printz).l
+	String	' by',$BF,$4,$8
+	move.w	(BA_Checker_Offset).w,d0
+	movea.l	#AwShots,a2
+	tst.w	(BA_Team).w
+	beq.w	.2
+	movea.l	#HmShots,a2
+.2
+	jsr	(FormatPlayerNameWithAttrib).l
+	jsr	(print).l
+	movem.l	(sp)+,d0-d2/a0-a4
+	rts
+
+PenShotBigTxt	;data94 PenShotBigTxt. PenaltyShotBox big text
+	String	$BF,$4,$3,'PENALTY SHOT!',$BF,$4,$5,$0
+
+PenShotChk	;penalty94 PenShotChk. A breakaway shooter hit: a penalty shot when penalty d0 allows one (PenShotPenalties); d0 = the penalty
+	movem.l	d1-d3/a0,-(sp)
+	btst	#1,$64(a2)	;breakaway
+	beq.w	.0
+	btst	#3,(gmode).w
+	bne.w	.0
+	movem.w	d2,-(sp)
+	move.w	(PBnum).w,d2
+	andi.w	#$FF00,d2
+	movem.w	(sp)+,d2
+	bne.w	.0
+	btst	#3,(BA_PS_flags).w
+	beq.w	.1
+.0
+	move.w	#$FFFF,d1
+	bra.w	.3
+.1
+	movea.l	#PenShotPenalties,a0
+	move.w	(a0,d0.w),d1
+	bmi.w	.3
+	move.w	$52(a2),d2	;SCnum
+	movem.w	d0-d1,-(sp)
+	move.w	d2,d0
+	jsr	(getBAplayerInfo).l
+	movem.w	(sp)+,d0-d1
+	bpl.w	.2
+	bclr	#3,(BA_PS_flags).w
+	bra.s	.0
+.2
+	move.w	d1,(pspenalty).w
+	move.w	d1,d0	;return the penalty shot penalty
+.3
+	movem.l	(sp)+,d1-d3/a0
+	rts
+
+getBAplayerInfo	;penalty94 getBAplayerInfo. Keep the breakaway shooter, team, goalie and checker for the penalty shot; N clear when set
+	movem.l	d1-d3/a1,-(sp)
+	tst.w	(OptPen).w
+	beq.w	.4
+	bset	#3,(BA_PS_flags).w
+	movem.w	d0,-(sp)
+	move.w	#5,d1
+	move.w	#0,d2
+	cmp.w	#5,d0
+	bgt.w	.0
+	move.w	#$B,d1
+	move.w	#1,d2
+.0
+	move.w	d1,d0
+	jsr	(getGoalieSCnum).l
+	tst.w	d0
+	bpl.w	.1
+	movem.w	(sp)+,d0	;no goalie
+	bclr	#3,(BA_PS_flags).w
+	bra.w	.3
+.1
+	move.w	d0,d1	;d1 = goalie's SCnum
+	move.w	(sp)+,d0	;d0 now back to player checked on breakaway SCnum
+	move.w	d0,(BA_Sktr_SCnum).w
+	movea.l	#SortCords,a1
+	move.w	d0,d3
+	asl.w	#7,d3	;scsize
+	move.w	#0,(BA_Team).w
+	btst	#6,pflags(a1,d3.w)
+	beq.w	.2
+	move.w	#1,(BA_Team).w
+.2
+	move.w	#0,(BA_Skater_Offset).w
+	move.b	pnum(a1,d3.w),(BA_Skater_Offset+1).w
+	move.w	d1,(BA_Goalie_SCnum).w
+	asl.w	#7,d1	;scsize
+	move.w	#0,(BA_Goalie_Offset).w
+	move.b	pnum(a1,d1.w),(BA_Goalie_Offset+1).w
+	move.w	#0,(BA_Checker_Offset).w
+	move.b	pnum(a3),(BA_Checker_Offset+1).w
+.3
+	movem.l	(sp)+,d1-d3/a1
+	rts
+.4
+	move.w	#$FFFF,d1	;N set: no penalty shot
+	bra.s	.3
+
+ShortenMsgTimer	;period94 ShortenMsgTimer. Cap the message timer at 2, unless a second pad is on and a3 is not the puck carrier
+	movem.l	d0,-(sp)
+	tst.w	(cont2team).w
+	beq.w	.0
+	move.w	SCnum(a3),d0
+	cmp.w	(puckc).w,d0
+	bne.w	.1
+.0
+	cmpi.w	#2,(msgtimer).w
+	ble.w	.1
+	move.w	#2,(msgtimer).w
+.1
+	movem.l	(sp)+,d0
+	rts
+
+setInjuryType	;collide94 setInjuryType. a2 injured: out for the period ($FFFD) or the game ($FFFC); in a season a random games count (SetInjuryGames)
+	bclr	#1,(sflags12).w
+	move.w	d0,-(sp)
+	bset	#2,$63(a2)
+	addi.w	#$12C,(crowdlevel).w
+	addi.w	#$1E,(CwdExciteLvl).w
+	move.w	#$D,-(sp)	;sound effect
+	jsr	(sfx).l
+	clr.w	$28(a2)
+	clr.w	$2A(a2)
+	move.w	(a2),(xc1).w	;move Xpos to scroll center
+	move.w	$14(a2),(yc1).w
+	bset	#6,(sflags).w
+	clr.w	d1	;clear d1
+	movea.w	#(HmShots-M68K_RAM),a0	;move Home team Struct to a0
+	btst	#6,$62(a2)
+	beq.w	.0	;branch if home
+	move.w	#$8000,d1
+	adda.w	#tmsize,a0	;add $364 to a0 (Away Team Struct start)
+.0
+	move.b	$66(a2),d1
+	move.w	d1,(TempPlOffset).w
+	ext.w	d1	;sign extend - in this case just makes upper bye of word 00
+	add.w	d1,d1	;add d1 to itself
+	btst	#1,(sflags13).w
+	bne.w	.1
+	exg	a2,a3	;swap a2 and a3
+	jsr	(getFgtbyte).l	;get the Fgt byte (divided by 4)
+	exg	a2,a3	;swap back
+	tst.w	d0	;check if d0 is zero
+	bne.w	.1
+	bclr	#5,(sflags7).w	;clear injury game bit
+	move.w	#$FFFD,tmpdst(a0,d1.w)
+	bra.w	.4
+.1
+	cmp.w	#3,d0	;compare d0 to 3 (if H/F was 12, d0 = 3)
+	beq.w	.2
+	bclr	#5,(sflags7).w
+	move.w	#$FFFD,tmpdst(a0,d1.w)
+	jsr	(chkFgtBit1).l	;check Fgt bit 1 of player.
+	beq.w	.4
+.2
+	bset	#5,(sflags7).w	;set injury game bit
+	move.w	#$FFFC,tmpdst(a0,d1.w)
+	btst	#3,(GameFlags).w
+	beq.w	.4
+	btst	#2,(SeasonDay+1).w
+	beq.w	.4
+	move.w	#$64,d0
+	jsr	(randomd0).l
+	cmp.w	#$32,d0
+	blt.w	.4
+	movem.w	d1,-(sp)
+	clr.w	d0
+	move.b	(SeasonLength).w,d0
+	clr.w	d1
+	move.b	(SeasonDay).w,d1
+	sub.w	d1,d0
+	movem.w	(sp)+,d1
+	cmp.w	#2,d0
+	blt.w	.4
 	subq.w	#1,d0
-	add.w	facedir(a3),d0
-	andi.w	#7,d0
-	move.w	d0,facedir(a3)
-.18
-	move.w	#$22BA,d1
-	jsr	(SetSPA).l
-	move.w	facedir(a3),d2
-	jmp	playeracc
-	rts	;unused
-
-doinput_goaliedive	;(input94 doinput .33) The goalie dive on button A (bit 6): face TempWord1, nopuck 8, the dive SPA $1D4E, crowd
-	;+$96. Jumped to from doinput (input95_01)
-	btst	#6,d1
-	beq.w	doinput_cbut
-	move.w	(TempWord1).w,d0
-	cmp.b	#8,d0
-	beq.w	doinput_cbut
-	move.w	d0,facedir(a3)
-	move.b	#8,nopuck(a3)
-	move.w	#$1D4E,d1
-	jsr	(SetSPA).l
-	bset	#1,pflags2(a3)
-	bset	#5,pflags(a3)
-	addi.w	#$96,(crowdlevel).w
-
-rtss15	;94 name. The rts of doinput_goaliedive
+	cmp.w	#5,d0
+	ble.w	.3
+	move.w	#5,d0
+.3
+	jsr	(randomd0).l
+	addq.w	#1,d0
+	movem.l	d1/d7,-(sp)
+	move.w	$28(a0),d7
+	move.w	(TempPlOffset).w,d1
+	andi.w	#$FF,d1
+	bset	#1,(sflags13).w
+	jsr	(SetInjuryGames).l
+	movem.l	(sp)+,d1/d7
+.4
+	move.w	(sp)+,d0
 	rts
 
+SetSeasonInjuries	;95 only. The players of team a2 with injury games left (save RAM SRInjuries) are out ($FFFC)
+	movem.l	d0-d3/a0/a2,-(sp)
+	movea.l	#SaveRAM+2*SRInjuries,a0
+	move.w	$28(a2),d0
+	mulu.w	#$1C,d0
+	adda.l	d0,a0
+	adda.w	#$68,a2
+	move.w	#$19,d3
+.0
+	move.w	(a0),d1
+	andi.w	#$F0,d1
+	beq.w	.1
+	move.w	#$FFFC,(a2)
+.1
+	addq.w	#2,a2
+	subq.w	#1,d3
+	bmi.w	.3
+	move.w	(a0),d1
+	andi.w	#$F,d1
+	beq.w	.2
+	move.w	#$FFFC,(a2)
+.2
+	addq.w	#2,a2
+	addq.w	#2,a0
+	dbf	d3,.0
+.3
+	movem.l	(sp)+,d0-d3/a0/a2
+	rts
+
+TickTeamInjuries	;95 only. A game played: one injury game off for teams d0 and d1 (TickInjuries), save RAM checksum
+	movem.l	d2-d4/a0,-(sp)
+	bsr.w	TickInjuries
+	move.w	d1,d0
+	bsr.w	TickInjuries
+	jsr	(MakeSRAMChecksum).l
+	movem.l	(sp)+,d2-d4/a0
+	rts
+
+TickInjuries	;95 only. One game off every injury of team d0 (save RAM SRInjuries, a nibble per player)
+	movea.l	#SaveRAM+2*SRInjuries,a0
+	mulu.w	#$1C,d0
+	adda.l	d0,a0
+	move.w	#$C,d2
+.0
+	move.w	(a0),d3
+	andi.w	#$F,d3
+	beq.w	.1
+	subq.w	#1,d3
+	andi.w	#$F0,(a0)
+	or.w	d3,(a0)
+.1
+	move.w	(a0),d3
+	andi.w	#$F0,d3
+	beq.w	.2
+	subi.w	#$10,d3
+	andi.w	#$F,(a0)
+	or.w	d3,(a0)
+.2
+	addq.w	#2,a0
+	dbf	d2,.0
+	rts
+
+SetInjuryGames	;95 only. Injury games d0 for player d1 of team d7 (save RAM SRInjuries); sflags12 bit 1 and injurygames
+	movem.l	d0-d7/a0-a7,-(sp)
+	bset	#1,(sflags12).w
+	move.w	d0,(injurygames).w
+	mulu.w	#$1C,d7
+	movea.l	#SaveRAM+2*SRInjuries,a0
+	adda.l	d7,a0
+	move.w	d1,d2
+	lsr.w	#1,d2
+	add.w	d2,d2
+	move.w	(a0,d2.w),d3
+	btst	#0,d1
+	bne.w	.0
+	andi.w	#$F,d3
+	asl.w	#4,d0
+	or.w	d0,d3
+	bra.w	.1
+.0
+	andi.w	#$F0,d3
+	or.w	d0,d3
+.1
+	move.w	d3,(a0,d2.w)
+	movem.l	(sp)+,d0-d7/a0-a7
+	rts
+
+GetInjuryGames	;95 only. d0 = the injury games of player d1 of team d7 (save RAM SRInjuries)
+	movem.l	d1-d7/a0,-(sp)
+	movea.l	#SaveRAM+2*SRInjuries,a0
+	mulu.w	#$1C,d7
+	adda.l	d7,a0
+	move.w	d1,d2
+	lsr.w	#1,d2
+	add.w	d2,d2
+	move.w	(a0,d2.w),d0
+	btst	#0,d1
+	bne.w	.0
+	lsr.w	#4,d0
+.0
+	andi.w	#$F,d0
+	movem.l	(sp)+,d1-d7/a0
+	rts
+
+getFgtbyte	;title94 getFgtbyte. d0 = $74(a2) / 4
+	clr.w	d0	;clear d0
+	move.b	$74(a2),d0	;move H/F bit into d0 (this is always even)
+	lsr.w	#2,d0	;shift 2 right (divide by 4)
+	rts
+
+chkFgtBit1	;title94 chkFgtBit1. 95: Z from bit 1 of a random 0-99 (94 tested bit 1 of $74(a2))
+	movem.w	d0,-(sp)
+	move.w	#$64,d0
+	jsr	(randomd0).l
+	btst	#1,d0
+	movem.w	(sp)+,d0
+	rts
+
+CheckInjury	;95 only. The injury message when its timer runs out: "Injury to:" the player, "Out for period", "game" or n "games"
+	subq.w	#1,(InjCntDown).w
+	beq.w	.0
+	rts
+.0
+	btst	#1,(sflags12).w
+	beq.w	.1
+	jsr	(MakeSRAMChecksum).l
+.1
+	movem.l	d0-d2/a0-a4,-(sp)
+	jsr	(printz).l
+	String	$BF,$B,$3,$0
+	moveq	#$12,d0
+	moveq	#5,d1
+	jsr	(Framer).l
+	btst	#1,(sflags12).w
+	bne.w	.3
+	btst	#5,(sflags7).w
+	bne.w	.2
+	jsr	(printz).l
+	String	$BF,$C,$4,'Injury to:',$BF,$C,$6,'Out for period',$BF,$C,$5,$0
+	bra.w	.6
+.2
+	jsr	(printz).l
+	String	$BF,$C,$4,'Injury to:',$BF,$C,$6,'Out for game',$BF,$C,$5,$0
+	bra.w	.6
+.3
+	jsr	(printz).l
+	String	$BF,$C,$4,'Injury to:',$BF,$C,$6,'Out for '
+	move.w	(injurygames).w,d0
+	move.w	#1,d1
+	jsr	(PushNumberWidth).l
+.4
+	jsr	(print).l
+	cmpi.w	#1,(injurygames).w
+	bgt.w	.5
+	jsr	(printz).l
+	String	' game',$BF,$C,$5
+	bra.w	.6
+.5
+	jsr	(printz).l
+	String	' games',$BF,$C,$5,$0
+.6
+	jsr	(GetTempPlayerNameAttrib).l
+	jsr	(print).l
+	btst	#0,(puck_pflags2).w
+	beq.w	.7
+	jsr	(printz).l
+	String	$BF,$14,$6,'the game',$0
+.7
+	movem.l	(sp)+,d0-d2/a0-a4
+	rts
+
+InsertInjurySlot	;95 only. Open an injury slot at player d1 of team d7 (the later nibbles up one); a player traded in
+	movem.l	d0-d7/a0-a6,-(sp)
+	movea.l	#SaveRAM+2*SRInjuries,a0
+	mulu.w	#$1C,d7
+	adda.l	d7,a0
+	adda.l	#$18,a0
+	move.w	#$19,d3
+.0
+	move.w	(a0),d0
+	subq.w	#2,a0
+	cmp.w	d1,d3
+	ble.w	.1
+	asr.w	#4,d0
+	andi.w	#$F,d0
+.1
+	subq.w	#1,d3
+	bmi.w	.3
+	cmp.w	d1,d3
+	ble.w	.2
+	move.w	(a0),d4
+	asl.w	#4,d4
+	andi.w	#$F0,d4
+	andi.w	#$F,d0
+	or.w	d4,d0
+.2
+	andi.w	#$FF,d0
+	move.w	d0,2(a0)
+	dbf	d3,.0
+.3
+	movem.l	(sp)+,d0-d7/a0-a6
+	rts
+
+DeleteInjurySlot	;95 only. Remove the injury slot of player d1 of team d7 (the later nibbles down one); a player traded out
+	movem.l	d0-d7/a0-a6,-(sp)
+	movea.l	#SaveRAM+2*SRInjuries,a0
+	mulu.w	#$1C,d7
+	adda.l	d7,a0
+	move.w	#$D,d2
+	clr.w	d3
+.0
+	move.w	(a0)+,d0
+	cmp.w	d1,d3
+	blt.w	.1
+	asl.w	#4,d0
+.1
+	subq.w	#1,d2
+	bmi.w	.3
+	addq.w	#1,d3
+	cmp.w	d1,d3
+	blt.w	.2
+	move.w	(a0),d4
+	asr.w	#4,d4
+	andi.w	#$F,d4
+	andi.w	#$F0,d0
+	or.w	d4,d0
+.2
+	andi.w	#$FF,d0
+	move.w	d0,-2(a0)
+	addq.w	#1,d3
+	dbf	d2,.0
+.3
+	movem.l	(sp)+,d0-d7/a0-a6
+	rts
+
+updatepwrplay	;penalty94 updatepwrplay. The power play box: the team and the time left (GetLowestPen)
+	btst	#1,(gmode2).w
+	bne.w	rtsPowerPlay
+	movea.w	#(HmShots-M68K_RAM),a2
+	lea	tmsize(a2),a3
+	move.w	tmap(a2),d0
+	sub.w	tmap(a3),d0
+	beq.w	ClearPowerPlay
+	bpl.w	.0
+	btst	#6,(sflags2).w
+	bne.w	.1
+	bsr.w	ClearPowerPlay
+	bset	#6,(sflags2).w
+	bra.w	.1
+.0
+	exg	a2,a3
+	btst	#6,(sflags2).w
+	beq.w	.1
+	bsr.w	ClearPowerPlay
+	bclr	#6,(sflags2).w
+.1
+	bset	#5,(sflags2).w
+	bne.w	.4
+	addq.w	#1,4(a3)
+	cmpa.w	#(HmShots-M68K_RAM),a3
+	bne.w	.3
+.2
+	bra.w	.4
+.3
+	bra.s	.2
+.4
+	jsr	(printz).l
+	String	$BF,$1,$19,'   ',$16,$17,$18,$19,$BF,$1,$1A,'  ',$0
+	bsr.w	GetLowestPen
+	jsr	(PushTime).l
+	jsr	(print).l
+	movea.l	tmdata(a3),a0
+	movea.w	#(mesarea-M68K_RAM),a3
+	move.w	#2,(a3)
+	jsr	(appendz).l
+	String	$BF,$1,$19,$0
+	adda.w	4(a0),a0	;team name
+	adda.w	(a0),a0
+	movea.l	a0,a1
+	jsr	(appstring).l
+	movea.w	a3,a1
+	jmp	(print).l
+
+ClearPowerPlay	;95 only. Clear the power play box (sflags2 bit 5)
+	bclr	#5,(sflags2).w
+	beq.w	rtsPowerPlay
+	jsr	(printz).l
+	String	$BF,$1,$19,' '
+	jmp	(EASNLogo).l
+
+rtsPowerPlay	;95 only. Shared rts of updatepwrplay / ClearPowerPlay
+	rts
+
+GetLowestPen	;penalty94 GetLowestPen. a2 = shorthanded team, a3 = team on the power play. d0 = power play time left from the penalty box times
+	clr.w	d0
+	clr.w	d3
+	lea	$9C(a2),a0
+.0
+	clr.w	d2
+	move.b	(a0)+,d2
+	bmi.w	.1
+	move.w	$68(a2,d2.w),d2
+	btst	#$E,d2	;bit 14: coincidental
+	bne.s	.0
+	sub.w	d3,d2
+	add.w	d2,d0
+	move.w	d2,d3
+	bra.s	.0
+.1
+	cmpi.w	#6,$24(a3)	;tmap: 6 on ice, done
+	beq.w	.3
+	sub.w	d3,d0
+	lea	$9C(a3),a0
+	clr.w	d2
+.2
+	move.b	(a0)+,d2
+	bmi.w	.3
+	btst	#6,$68(a3,d2.w)
+	bne.s	.2
+	cmp.w	$68(a3,d2.w),d0
+	blt.w	.3
+	add.w	d3,d0
+.3
+	andi.w	#$FF,d0
+	rts

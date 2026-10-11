@@ -1,6 +1,6 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	replay95_02 segment stub. Retail $08D39A-$08DF59.
+;	replay95 segment stub. Retail $08D39A-$08DF59.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -15,7 +15,7 @@
 ; External addresses outside $08D39A-$08DF59, read from lst/nhl95.bin.
 ZeroLong = $69A			;main95
 revframetbl = $8596		;frames95
-setvideo = $A204		;display95_01
+setvideo = $A204		;display95
 SprSort = $A8E6			;setup95_01
 setpads = $AB2A			;setup95_01
 Z80Program = $BD86		;sound95_01
@@ -26,17 +26,17 @@ SoundOff = $679B2		;sound95_01
 DoFill = $79902			;sound95_01
 dobitmap = $79A3C		;video95_01
 DoDMA_clearCallbackPointer = $79AC0	;video95_01
-forceblack = $7A02A		;display95_02
-forceblack2 = $7A054		;video95_02
-ReadMenuJoy = $7A6AA		;video95_02
-vtoa = $7C586			;video95_03
-vcountwait = $7C6BE		;video95_03
-printz = $7C810			;video95_03
-eraser = $7C8CC			;video95_03
+forceblack = $7A02A		;video95_01
+forceblack2 = $7A054		;video95_01
+ReadMenuJoy = $7A6AA		;video95_01
+vtoa = $7C586			;video95_02
+vcountwait = $7C6BE		;video95_02
+printz = $7C810			;video95_02
+eraser = $7C8CC			;video95_02
 InitMenuState = $7E526		;menu95
 RestoreGameScreen = $7EBBE	;menu95
 ReplayMap = $1625F2		;graphics95_01
 ReplayIconMap = $162D18		;graphics95_01
 
 ; Main segment code
-	include	replay95_02.asm
+	include	replay95.asm

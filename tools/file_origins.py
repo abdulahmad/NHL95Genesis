@@ -25,7 +25,7 @@ from collections import Counter, OrderedDict, defaultdict
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROM_END = 0x1A7310
-NEW95 = {'sounddrv95', 'season95', 'trade95', 'create95', 'awards95', 'schedule95'}
+NEW95 = {'season95', 'trade95', 'create95', 'awards95', 'schedule95'}
 REGION_LOCK = {'CHECK_VDP', 'RegionPrint', 'RegionSystems', 'DevelopedTxt', 'AndTxt', 'SystemsTxt',
                'NtscMegaDriveTxt', 'NtscGenesisTxt', 'PalMegaDriveTxt', 'RegionFont', 'RegionOK'}
 
@@ -202,7 +202,7 @@ def write(order, rows, ref94):
            '3. **fingerprint**: `tools/segmap95.json` matched the bytes to a 94 routine.',
            '4. **name (93)**: a label only NHLPA93Genesis has.',
            '5. **follows**: a table, shared `rts` or entry point with no evidence of its own takes the label before it.',
-           '6. **file**: the rest of a file that is new in 95 (sounddrv95, season95, trade95, create95, awards95, '
+           '6. **file**: the rest of a file that is new in 95 (season95, trade95, create95, awards95, '
            'schedule95) is new in 95.', '',
            'Sizes run from a label to the next one, so the vectors ($0-$FF) and the header before CountryCode are not '
            'counted. Percentages are by bytes. "new in 95" means 94 has no routine like it.', '',

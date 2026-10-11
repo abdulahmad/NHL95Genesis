@@ -1,11 +1,11 @@
 ;	NHL 95 setup95_02. Retail $087BA2-$088045 (1188 bytes).
 ;	94 setup94 PlayoffScreen, HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, FormatScore,
-;	DrawPlayoffBracket, DrawTeamBlocks, PlayoffScreenDataTable and PlayoffScreenText. checks95_04 follows at $088046 (PlayoffTreeSetup).
+;	DrawPlayoffBracket, DrawTeamBlocks, PlayoffScreenDataTable and PlayoffScreenText. checks95_03 follows at $088046 (PlayoffTreeSetup).
 ;	IDA code except PlayoffScreenDataTable (dc.b, read from the retail bytes). IDA hid the printz / printz2 Strings and the
 ;	DecompressGraphicsWithCallback remap bytes as instructions; they are String / dc.b here. Local labels are numbered; the IDA local
 ;	names are not kept.
 ;	95 changes: PlayoffScreen returns at once in Shootout (gmode2 bit 0) and also runs for sflags11 bit 2; the shared rts is
-;	rtsLineData (data95_01, 94 rtss2). AddTeamBlock and AddSmallFont are inline, the title uses printbig with the BigFontMap2
+;	rtsLineData (optsetup95, 94 rtss2). AddTeamBlock and AddSmallFont are inline, the title uses printbig with the BigFontMap2
 ;	tiles, HandlePlayoffInput reads all four pads, the song is 3 (94 $79), the map chars start at $69A (94 $30A).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.

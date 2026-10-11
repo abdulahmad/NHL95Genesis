@@ -1,6 +1,6 @@
 ;	NHL 95 penalty95. Retail $088F06-$08996D (2664 bytes).
 ;	94 penalty94 limitfo, Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, PrintPenaltyMessagesString,
-;	with title94 LeadSong / ClearLeadSong / LeadSongExit moved in. data95_02 follows at $08996E.
+;	with title94 LeadSong / ClearLeadSong / LeadSongExit moved in. data95 follows at $08996E.
 ;	IDA code except LeadSong ... LeadSongExit and PrintPenaltyMessagesString (dc.b, read from the retail bytes). IDA hid the printz
 ;	Strings as instructions; they are String here. Local labels are numbered; the IDA local names are not kept. Each routine comment
 ;	names its 94 file.

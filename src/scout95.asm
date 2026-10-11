@@ -391,7 +391,7 @@ DrawMatchupBitmap	;scout94 DrawMatchupBitmap. 6 x 6 dobitmap, then erase the nam
 	jsr	(eraser).l
 	rts
 
-GetMatchupLogo	;scout94 GetTeamLogo (video95_03 has the hockey94 GetTeamLogo). a0 = the logo bitmap of team d3 (TeamLogoBitmaps)
+GetMatchupLogo	;scout94 GetTeamLogo (video95_02 has the hockey94 GetTeamLogo). a0 = the logo bitmap of team d3 (TeamLogoBitmaps)
 	asl.w	#2,d3
 	movea.l	#TeamLogoBitmaps,a0
 	movea.l	(a0,d3.w),a0

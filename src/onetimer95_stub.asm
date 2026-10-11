@@ -17,12 +17,12 @@ setc1player = $AD80		;setup95_01
 setc2player = $AD8A		;setup95_01
 setc3player = $AD96		;setup95_01
 setc4player = $ADA2		;setup95_01
-vtoa = $7C586			;video95_03
-Setplass = $81540		;checks95_02
-assexit = $8155E		;checks95_02
+vtoa = $7C586			;video95_02
+Setplass = $81540		;checks95_01
+assexit = $8155E		;checks95_01
 Findhittype = $84A16		;input95_01
 doshot = $84B6E			;input95_01
-SetSPA = $8BC9A			;checks95_06
+SetSPA = $8BC9A			;checks95_04
 
 ; Main segment code
 	include	onetimer95.asm

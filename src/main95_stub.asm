@@ -15,22 +15,22 @@
 
 ; External addresses outside $000000-$000771, read from lst/nhl95.bin.
 ; The vector longs carry the address itself; jsr / jmp (x).l carry it too; movea.l #x carries it as the immediate.
-IRQ7 = $7A416			;(an rte) Vectors $60-$70 and $7C (video95_02)
-VBjsr = $7A32C			;Vector $78 (video95_02)
+IRQ7 = $7A416			;(an rte) Vectors $60-$70 and $7C (video95_01)
+VBjsr = $7A32C			;Vector $78 (video95_01)
 ValidationRoutine = $1A72C0	;checksum95
 SoundCmd = $676D8		;sound95_01
 SoundOff = $679B2		;sound95_01
 KillCrowd = $67988		;sound95_01
 Detect4WayPlay = $7DFC6		;fourway95
-EASportsScreen = $8AAC8		;checks95_05
+EASportsScreen = $8AAC8		;checks95_04
 InitSaveRAM = $9722		;sram95
-HiScoreScreen = $A16DE		;title95_02
-ReadLineData = $87B30		;data95_01
-DefaultMenus = $866DE		;data95_01
-orjoy = $7A448			;video95_02
-Opening = $9AC8			;hockey95_01
-Z80Program = $BD86		;The 95 Z80 sound program (sounddrv95)
-SoundBanks = $D8EC		;The sound data after the Z80 program (sounddrv95)
+HiScoreScreen = $A16DE		;title95_01
+ReadLineData = $87B30		;optsetup95
+DefaultMenus = $866DE		;optsetup95
+orjoy = $7A448			;video95_01
+Opening = $9AC8			;hockey95
+Z80Program = $BD86		;The 95 Z80 sound program (sound95_01)
+SoundBanks = $D8EC		;The sound data after the Z80 program (sound95_01)
 
 ; Main segment code
 	include	main95.asm

@@ -1,14 +1,107 @@
-; $07E4D6  Adapted from menu94.asm: menu core
-;	NHL 95 segment $7E4D6-$7F97D, from lst/nhl95.bin.lst. The 95 pause menu: hockey94 seta2, menu94 InitMenuState / DrawMenuScreen /
-;	HandleMenuInput (95: three tabs, INFO / STATS / PAUSE, each with item lists by game mode), the hockey94 startpause entries, the 95
-;	PauseScreenDraw and its penalty boxes, RestoreGameScreen (after the pause), menu94 SetMenuPrintX / UpdateMenuSelection / PrintMenuItem,
-;	the 95 info page, penalty messages and tabs, then the item lists (InfoMenus, StatsMenus, PauseMenus) and their AbortGame / PlayGame.
-;	checks95_01 (94 ManualGoalieMenu) follows at $7F97E.
-;	written as instructions: PauseScreenDraw ($7E816-$7EAC7), ListPenaltyBox, MenuInfoList ... PrintLines, a second rts ($7F366),
-;	the item lists and AbortGame / PlayGame ($7F368-$7F97D). IDA hid the printz / printz2 Strings as instructions; they are String here (the
-;	40 byte menu box String as dc.w / dc.b, the String macro takes 15 values).
+; $07E36C  Adapted from menu94.asm: the pause screen and the 95 pause menu; Pausemode from hockey94.asm
+;	94 Pausemode and SetupPauseScreen (hockey94), then the 95 pause menu ($7E4D6).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
+
+Pausemode	;(hockey94 PauseMode). Game is in pause mode now: fade out, stop the sound (unless sflags9 bit 5), run the pause menu
+	;(SetPauseMenuItems, InitMenuState, HandleMenuInput) until it ends or, with no pad on a team, $708 frames pass without a button; then reload
+	;the sound driver (SoundCmd 9, 0 Z80Program, 6 SoundBanks, 7) and restore the screen (RestoreGameScreen, setvideo) and fade in. Called from DoGameFrame
+	move.w	(smallfontchars).w,-(sp)
+	clr.w	(menucursor).w
+	clr.l	(menuitemoffset).w
+	jsr	(forceblack).l	;fade screen to black
+	move.w	d0,-(sp)
+	move.w	(vcount).w,d0
+.0
+	cmp.w	(vcount).w,d0
+	beq.s	.0	;wait for the next vblank
+	move.w	(sp)+,d0
+	btst	#sfpz,(sflags).w
+	beq.w	.1
+	btst	#5,(sflags9).w
+	bne.w	.1	;eq = leave pause
+	jsr	(SoundOff).l
+	bra.w	.1	;95: to the next instruction
+.1
+	move.w	(sflags).w,-(sp)
+	jsr	(seta2).l	;a2 = team of pausing controller
+	move.w	#$3C,(menutimer).w
+	move.w	#2,(menucursor).w
+	bsr.w	SetPauseMenuItems
+	movea.l	(menulist).w,a0
+	lea	SetupPauseScreen(pc),a1	;screen draw routine
+	jsr	(InitMenuState).l
+	move.l	#$708,(pausetimeout).w
+.2
+	jsr	(vcountwait).l
+	jsr	(ReadMenuJoy).l
+	tst.w	d1
+	beq.w	.3
+	move.l	#$708,(pausetimeout).w
+.3
+	jsr	(AnyPadAssigned).l
+	bne.w	.4
+	subq.l	#1,(pausetimeout).w
+	bmi.w	.5
+.4
+	jsr	(ProcessInputWithRepeat).l
+	jsr	(HandleMenuInput).l
+	bne.s	.2	;eq = leave pause
+.5
+	jsr	(forceblack).l
+	btst	#7,(sflags9).w
+	beq.w	.6
+	jsr	(PracticeGoalies).l
+.6
+	btst	#5,(sflags9).w
+	bne.w	.7
+	jsr	(play_new_song).l
+	move.w	#9,d0
+	jsr	(SoundCmd).l
+	move.w	#0,d0
+	move.w	#$1B63,d1
+	movea.l	#Z80Program,a0
+	jsr	(SoundCmd).l
+	move.w	#6,d0
+	clr.w	d1
+	movea.l	#SoundBanks,a0
+	jsr	(SoundCmd).l
+	move.w	#7,d0
+	move.w	#1,d1
+	jsr	(SoundCmd).l
+.7
+	move.w	(sp)+,(sflags).w
+	jsr	(RestoreGameScreen).l
+	movea.l	#VDP_DATA,a0
+	move.w	#$9100,4(a0)
+	move.w	#$9200,4(a0)
+	bclr	#sfpz,(sflags).w
+	jsr	(setvideo).l
+	move.w	#$18,(palcount).w
+	btst	#5,(sflags11).w
+	beq.w	.8
+	move.w	#$FFFF,(palcount).w
+.8
+	tst.w	(palcount).w
+	bpl.s	.8
+	move.w	(vcount).w,(oldvcount).w
+	move.w	(sp)+,(smallfontchars).w
+	rts
+
+SetupPauseScreen	;(dc.b). Draw routine for the pause menu (92 Pausemode .pall / .top): PauseScreenDraw, then KillCrowd
+	jsr	(PauseScreenDraw).l
+	jsr	(KillCrowd).l
+	rts
+
+;------------------------------------------------------------------------------------------------------------------------
+; $07E4D6  From menu94.asm: the 95 pause menu
+;	hockey94 seta2, menu94 InitMenuState / DrawMenuScreen / HandleMenuInput (95: three tabs, INFO / STATS / PAUSE, each with item lists
+;	by game mode), the hockey94 startpause entries, the 95 PauseScreenDraw and its penalty boxes, RestoreGameScreen (after the pause),
+;	menu94 SetMenuPrintX / UpdateMenuSelection / PrintMenuItem, the 95 info page, penalty messages and tabs, then the item lists
+;	(InfoMenus, StatsMenus, PauseMenus) and their AbortGame / PlayGame.
+;	written as instructions: PauseScreenDraw ($7E816-$7EAC7), ListPenaltyBox, MenuInfoList ... PrintLines, a second rts ($7F366),
+;	the item lists and AbortGame / PlayGame ($7F368-$7F97D). IDA hid the printz / printz2 Strings as instructions; they are String here
+;	(the 40 byte menu box String as dc.w / dc.b, the String macro takes 15 values).
 seta2	;(hockey94). Set a2 to the team struct of the pause pad (menupadnum: cont1team ... cont4team). Called from Pausemode and
 	;HandleMenuInput
 	movea.l	#HmShots,a2
@@ -492,7 +585,7 @@ rtsmenu	;An rts branched to from ShowPenaltyBox and ListPenaltyBox
 
 RestoreGameScreen	;95 only (in the 94 Pausemode ClrHor place). Rebuild the game screen after the pause screen: the vdp maps, palettes,
 	;vram, framer, fonts, energy bar, crowd and EASN tiles, the face off screen (disflags bit 4) or the ref tiles, the rink tiles and home team
-	;graphics, then PrintScores1. Called from Pausemode (hockey95_02)
+	;graphics, then PrintScores1. Called from Pausemode (above)
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	(printfontset).w
 	bclr	#5,(sflags9).w

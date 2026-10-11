@@ -1,8 +1,8 @@
-;	NHL 95 replay95_02. Retail $08D39A-$08DF59 (3008 bytes).
+;	NHL 95 replay95. Retail $08D39A-$08DF59 (3008 bytes).
 ;	Mapped to replay94 (80%): updatereplay, ReplayMode, ShowReplayIcon / EraseReplayIcon / ShowReplayBanner / EraseReplayBanner,
 ;	suba4, adda4, UpdateCameraPos, RevReplayAdj, RestoreReplayFrame and ClampReplayView. 95 adds chkcheckstart and CanCheckStart
 ;	(the 95 check start tests) ahead of updatereplay, and a sound driver restart at the top of ReplayMode. replay94 checkwindow is in
-;	checks95_06. Each routine comment names its 94 routine or says 95 only. season95 follows at $08DF5A.
+;	checks95_04. Each routine comment names its 94 routine or says 95 only. season95 follows at $08DF5A.
 ;	95 packs a replay frame object as 9-bit x and 11-bit frame (94: 10-bit x, 12-bit frame) and saves both PadControlBits words.
 ;	Local labels follow replay94 where the code is 94 code and are numbered in the 95 only routines; the IDA local names are not kept.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the

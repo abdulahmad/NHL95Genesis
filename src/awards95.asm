@@ -2,7 +2,7 @@
 ;	New in 95 (no 94 file): GetTeamUser (UpdateRecords), the end of season awards (SeasonAwards: the award scans, the finalists and
 ;	winner screens) and the playoffs (InitPlayoffs ... CollectSeriesWinners, PlayoffTreeScreen).
 ;	The segment map ended this file at $09D9BF; RoundSeriesOffsets / RoundSeriesCounts and PlayoffTreeScreen (to $09DA4F) belong here,
-;	title95_01 starts at $09DA50 (94 ClearShootout).
+;	shootout95 starts at $09DA50 (94 ClearShootout).
 ;	IDA left ScanPresidents ... GetAwardAssists ($09D03E-$09D4CD), RestoreSeasonHeader and PlayoffTreeScreen as dc.b; they are transcribed
 ;	from the retail bytes. IDA hid printz / printz2 Strings and remap bytes as instructions.
 ;	$20xxxx addresses are save RAM (odd bytes).

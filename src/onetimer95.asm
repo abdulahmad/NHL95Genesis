@@ -1,6 +1,6 @@
 ;	NHL 95 onetimer95. Retail $082BD0-$082FC1 (1010 bytes).
 ;	94 onetimer94 assonetimer, setonetimeranim, PuckOnAttackHalf, onetimershot, then title94 EndOneTimer (moved in) and the 95
-;	CheckOneTimerFacing. The tail of the old placeholder ($082FC2-$082FF9) is checks94 assshoot, at the head of checks95_03.
+;	CheckOneTimerFacing. checks94 assshoot follows, at the head of checks95_02.
 ;	94 puckvzadj, OneTimerPass, OneTimerTarget and its tables (onetimer94) are elsewhere in 95.
 ;	IDA left $082BD0-$082E87 and $082EFE-$082F5F as dc.b; they are code here, read from the retail bytes. IDA code: PuckOnAttackHalf
 ;	(PuckOnAttackHalf), EndOneTimer; CheckOneTimerFacing ($082FB2) is dc.b again.
@@ -217,7 +217,7 @@ setonetimeranim	;94 IDA name. The one-timer animation: d1 = $150A or $176E (94 $
 	rts
 
 PuckOnAttackHalf	;94 name. d0 = 1 when the puck is on the half of the goal player a3 shoots at, else 0 (the code after the bra is
-	;never used). Called from doinput (input95) and asspassrec (checks95_02)
+	;never used). Called from doinput (input95) and asspassrec (checks95_01)
 	movem.w	d0-d1,-(sp)
 	move.w	(pucky).w,d0
 	btst	#7,pflags(a3)	;pfgoal - check which goal shooting at
@@ -283,7 +283,7 @@ onetimershot	;94 IDA name. Do the one-timer shot (doshot), credit the last two p
 	rts
 
 EndOneTimer	;title94 EndOneTimer (moved in). End a one-timer for a3: bits cleared, onetimerplayer = -1, SetSPA $B5C (94 $50C),
-	;then assexit (goalie) or Setplass. Called from assonetimer and from $8C606 (checks95_06)
+	;then assexit (goalie) or Setplass. Called from assonetimer and from $8C606 (checks95_04)
 	movem.l	d0/a0,-(sp)
 	bclr	#3,$64(a3)
 	bclr	#5,pflags(a3)

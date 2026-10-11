@@ -3,7 +3,7 @@
 ;	collision code in a new order: checkcoll, checkwallcoll, wallcollb, wallcoll, checkplcoll, checkcx, checkcheck, CCStart (checkinglist, the 95
 ;	checkinglist2, Bcheck, holdcheck, the 95 Sweepcheck), FallDown, checkpuckcoll, puckstick, puckglue, puckbody, rtspuck (the 94 rtss2 place),
 ;	deflect, checkpuckcoll_sfx, checkgoal (the 94 .goal code is elsewhere: Goal), checkgoalp, CheckBump, cards94 wallcollduringcheck, crowd94
-;	checkcornercoll94 / cornercollb94, puckgoalie, checkint, the 95 DropPuck. video95_03 (94 sroot) follows at $7C512.
+;	checkcornercoll94 / cornercollb94, puckgoalie, checkint, the 95 DropPuck. video95_02 (94 sroot) follows at $7C512.
 ;	written as instructions: WaitVSyncAndReadInput, a second rts after checkwallcoll ($7A976), checkpuckcoll ... checkpuckcoll_sfx
 ;	($7B51A-$7BD8B) and puckgoalie ($7C154-$7C3FB).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the

@@ -9,7 +9,7 @@
 ;	cmp encoding after assembly.
 
 LoadHomeTeamGfx	;(title94). Load the HomeTeam graphics of TeamGfxList to VRAM d4 - $18 (DoDMA_clearCallbackPointer). Called from setupice
-	;and ClrHor (video95_03)
+	;and ClrHor (video95_02)
 	move.w	d0,-(sp)
 	subi.w	#$18,d4
 	movea.l	#TeamGfxList,a2
@@ -30,7 +30,7 @@ TeamGfxList	;(dc.b). LoadHomeTeamGfx: one address per team (TeamList order) in t
 	dc.l	ArenaGfxBank+$45E6,ArenaGfxBank+$48F0,ArenaGfxBank+$4F04,ArenaGfxBank+$4F04
 
 EASNLogo	;(penalty94). 93 name. Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertical ice rink if no power play. Called
-	;from PrintScores1 (video95_03)
+	;from PrintScores1 (video95_02)
 	btst	#5,(sflags2).w	;sf2pwrplay
 	bne.w	.x
 	bsr.w	printz
@@ -48,7 +48,7 @@ EASNLogo	;(penalty94). 93 name. Draw the EASN logo map at x 2, y $19 (94: x 1) o
 .x
 	rts
 
-setupEASNmap	;(penalty94 EASNLogo+$14). Load the EASN logo tiles at EASNcset. Called from setupice and ClrHor (video95_03)
+setupEASNmap	;(penalty94 EASNLogo+$14). Load the EASN logo tiles at EASNcset. Called from setupice and ClrHor (video95_02)
 	move.w	(EASNcset).w,d4
 	movea.l	#EASNmap+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
@@ -150,5 +150,5 @@ Read4WayPort2	;No xref. 95 only. The same for port 2, against pad4wayword2
 	eor.w	d1,d2
 	and.w	d2,d1
 	rts
-ReadJoyJmp	;95 only. jmp ReadJoy (video95_02)
+ReadJoyJmp	;95 only. jmp ReadJoy (video95_01)
 	jmp	(ReadJoy).l

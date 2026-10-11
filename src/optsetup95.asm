@@ -1,4 +1,4 @@
-;	NHL 95 data95_01. Retail $084FE6-$087BA1 (11196 bytes).
+;	NHL 95 optsetup95. Retail $084FE6-$087BA1 (11196 bytes).
 ;	Mapped to data94 (34%), but most of the row is other 94 files moved together: stats94 TeamRosterScreen, DisplayPlayerList,
 ;	getNameandAttrib and its column handlers, DrawTeamScreen; data94 PAttribColumns / GAttribColumns, PlayerPositionText; the 95 game
 ;	setup screen (optsetup94 GameSetUp ... setoptions, attract94 DrawTeamBitmap, SetPojoyMode, rewritten for the 13 95 play modes,
@@ -574,7 +574,7 @@ PAttribColumns	;(93 PAttribColumns). Skater attribute columns for DisplayPlayerL
 	String	'     Status    ]'
 	dc.w	$0000,$0	;status
 
-PAttribOverall	;The Overall entry; PAttribOverallMask is read by video95_03
+PAttribOverall	;The Overall entry; PAttribOverallMask is read by video95_02
 	String	'[   Overall    ]'
 
 PAttribOverallMask
@@ -613,7 +613,7 @@ GAttribColumns	;(93 GAttribColumns). Goalie attribute columns, same format as PA
 	String	'     Status    ]'
 	dc.w	$0000,$0	;status
 
-GAttribOverall	;The Overall entry; GAttribOverallMask is read by video95_03
+GAttribOverall	;The Overall entry; GAttribOverallMask is read by video95_02
 	String	'[   Overall    ]'
 
 GAttribOverallMask
@@ -651,7 +651,7 @@ GameSetUp	;(94 optsetup94). The game setup screen, rewritten for 95: ReadLineDat
 	;TempOptPlayMode. In a season (GameFlags bit 5) take the season options (ReadSeasonHeader) and the matchup (StepSeasonTeam).
 	;Then setoptions, and the line cursor loop: FixModeOptions, PrintOptions, the logos or matchup bitmaps, GameSetUp_2 for a key;
 	;up / down move SelectedPlayerIdx, left / right step setupvalues (WrapOptionUp / Down), start stores them (SetupStart) and sets the
-	;pads (SetPojoyMode, FigureJoy). Called from hockey95_01
+	;pads (SetPojoyMode, FigureJoy). Called from hockey95
 	jsr	(ReadLineData).l
 	movea.l	#pwddatabuffer,a3	;saved playoff state
 	jsr	(ReadPassBits).l
@@ -2000,7 +2000,7 @@ DrawVisBlock	;94 only (rewritten). Erase the left logo (setupcardflags bit 2 was
 	move.w	#1,(printx).w
 
 DrawSetupLogo	;94 optsetup94 DrawTeamLogo. Draw the logo of team logoteam (TeamLogoBitmaps) at printx, 6 x 6, palette TeamLogoPalettes
-	;+ team * $20 - $20 (bit 2: home) or - $40. Branched to from DrawHomeBlock; the name DrawTeamLogo is video95_03's
+	;+ team * $20 - $20 (bit 2: home) or - $40. Branched to from DrawHomeBlock; the name DrawTeamLogo is video95_02's
 	move.w	#1,(printy).w
 	move.w	(homepicchars).w,d4
 	btst	#2,(setupcardflags).w
@@ -2493,7 +2493,7 @@ GetShifter	;(92 / 93 GetShifter). Returns d1 = number of games - 1, d2 = first b
 	move.l	(sp)+,d0
 	rts
 
-AddPOStats	;(93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to its packed playoff totals. Called from hockey95_01
+AddPOStats	;(93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to its packed playoff totals. Called from hockey95
 	cmpi.w	#1,(OptPlayMode).w
 	blt.w	.4
 	bsr.w	ReadTeamStats

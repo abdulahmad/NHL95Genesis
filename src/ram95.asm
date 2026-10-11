@@ -521,7 +521,7 @@ ValidSRAM	equ	$FFFFDC3A	;94 $FFFFD458. 0 = save RAM checksum good, -1 = bad
 CreatedPlayerBuf	equ	$FFFFDC3C	;95 only. Created player record read from save RAM (GetCreatedName reads it at +2)
 jerseynum	equ	$FFFFDC3D	;95 only. Jersey number byte from GetJerseyNumber
 SRAMChecksum	equ	$FFFFDC5E	;95 only. The complement and sum bytes MakeSRAMChecksum writes to save RAM SRChecksum
-HmDefMode	equ	$FFFFDC62	;95 only. Home team defense mode: at 1 (Opening2 sets it) assdefd chases the carrier (assdefdchase) and asswingd covers (assign95_01)
+HmDefMode	equ	$FFFFDC62	;95 only. Home team defense mode: at 1 (Opening2 sets it) assdefd chases the carrier (assdefdchase) and asswingd covers (checks95_01)
 AwDefMode	equ	$FFFFDC64	;95 only. Away team defense mode, as HmDefMode
 turnstep	equ	$FFFFDC66	;95 only. doplayeracc: the turn step for the facing change
 menucursor	equ	$FFFFDC68	;95 only. Pause menu column (Pausemode sets 2)
@@ -538,7 +538,7 @@ shotpflags	equ	$FFFFDC7C	;95 only. pflags of the last shooter (doshot)
 varend	equ	$FFFFDC80	;93 name: end of variables, for clearing purposes only. Begin clears from VSCRLPM to here (94 $FFFFDEF4)
 penaltymsgs	equ	$FFFFDC82	;95 only. Queue of penalty messages, a word each (penalty, player), 0 ends (ShowPenaltyMessages)
 Stack	equ	$FFFFFDFA	;94 $FFFFFFFE. Begin's stack pointer; the sound driver RAM (SndDrvRAM) is above it
-SndDrvRAM	equ	$FFFFFDFC	;95 only. Sound driver (sounddrv95) RAM base: word $1234 = driver ready, 0 = busy (SndUpdate does nothing)
+SndDrvRAM	equ	$FFFFFDFC	;95 only. Sound driver (sound95_01) RAM base: word $1234 = driver ready, 0 = busy (SndUpdate does nothing)
 SndSeqPtr	equ	$FFFFFDFE	;95 only. 8 song slots: song data (-1 = free)
 SndSeqPos	equ	$FFFFFE1E	;95 only. 8 longs: offset of the next event in the song
 SndSeqId	equ	$FFFFFE3E	;95 only. 8 words: the id SndStartSeq gave the slot (SndStopSeq finds it)

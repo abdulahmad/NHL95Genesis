@@ -2,9 +2,9 @@
 ;	94 input94 doinput (95: its start is doinput; the mapped start doinput .0 is inside it), doinput_islocked, rtss7, faceoffinput,
 ;	setpassmode, passmode, dopass, passtoa0, then onetimer94 OneTimerTarget and its tables and OneTimerPass (moved in), input94
 ;	Findhittype, SetShotMode, ShotMode, prepshot, doshot, shotsets, shotdiradj, shotdirmath, onetimer94 puckvzadj and checks94
-;	compshoot (moved in). data95_01 follows at $084FE6.
-;	The 94 doinput parts doinput_cbut ... doinput_ispc, getGoalieSCnum are in input95_03; the goalie dive (doinput .33) is
-;	doinput_goaliedive (checks95_05); burst, Acheck, changeplayer (95 chgplayer), setc1player ... are in setup95_01; SetLCmode, lineinput
+;	compshoot (moved in). optsetup95 follows at $084FE6.
+;	The 94 doinput parts doinput_cbut ... doinput_ispc, getGoalieSCnum are in checks95_04; the goalie dive (doinput .33) is
+;	doinput_goaliedive (checks95_04); burst, Acheck, changeplayer (95 chgplayer), setc1player ... are in setup95_01; SetLCmode, lineinput
 ;	in input95_02.
 ;	IDA code except puckvzadj and compshoot (dc.b, read from the retail bytes) and the dead / data bytes noted below. Local labels are
 ;	numbered; the IDA local names are not kept.
@@ -1309,7 +1309,7 @@ puckvzadj	;onetimer94 puckvzadj (moved in; IDA name). Set puckvz for a top shelf
 	rts
 
 compshoot	;checks94 compshoot (moved in). Computer player shoots: drop the caller's return, temp2 from the
-	;distance to the goal line, then assshoot. Jumped to from asspuckc, chk4shot (checks95_02) and checks95_05
+	;distance to the goal line, then assshoot. Jumped to from asspuckc, chk4shot (checks95_01) and checks95_04
 	addq.w	#4,sp
 	move.w	(pucky).w,d0
 	btst	#7,pflags(a3)

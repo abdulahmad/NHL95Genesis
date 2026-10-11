@@ -1,4 +1,4 @@
-;	NHL 95 data95_02. Retail $08996E-$08A055 (1768 bytes).
+;	NHL 95 data95. Retail $08996E-$08A055 (1768 bytes).
 ;	Mapped to data94, but only the tables are data94 (PenaltyList = 94 PenaltyList, PenShotPenalties, linelist); the code is moved in:
 ;	collide94 checkagr, display94 showref, penalty94 ClearPenaltyBuffer, title94 ClearPenalties / clrTmPdst, checks94 puckIChk,
 ;	ChkOffsides and checkob. Each routine comment names its 94 file. input95_02 follows at $08A056.

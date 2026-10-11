@@ -45,116 +45,116 @@ main95.asm,$0006A0,2,AdrErr,code,data94,follows BusErr
 main95.asm,$0006A2,2,InvOpCode,code,data94,fingerprint Illinst
 main95.asm,$0006A4,2,DivBy0,code,data94,fingerprint Illinst
 main95.asm,$0006A6,204,Begin,code,hockey94,name
-data/teamdata95.asm,$000772,112,TeamList,data,teamdata94,name
-data/teamdata95.asm,$0007E2,720,AllStarsEast,data,teamdata94,name
-data/teamdata95.asm,$000AB2,692,AllStarsWest,data,teamdata94,name
-data/teamdata95.asm,$000D66,708,Anaheim,data,teamdata94,name
-data/teamdata95.asm,$00102A,730,Boston,data,teamdata94,name
-data/teamdata95.asm,$001304,732,Buffalo,data,teamdata94,name
-data/teamdata95.asm,$0015E0,734,Calgary,data,teamdata94,name
-data/teamdata95.asm,$0018BE,736,Chicago,data,teamdata94,name
-data/teamdata95.asm,$001B9E,766,Detroit,data,teamdata94,name
-data/teamdata95.asm,$001E9C,754,Edmonton,data,teamdata94,name
-data/teamdata95.asm,$00218E,736,Florida,data,teamdata94,name
-data/teamdata95.asm,$00246E,756,Hartford,data,teamdata94,name
-data/teamdata95.asm,$002762,706,LosAngeles,data,teamdata94,name
-data/teamdata95.asm,$002A24,724,Dallas,data,teamdata94,name
-data/teamdata95.asm,$002CF8,752,Montreal,data,teamdata94,name
-data/teamdata95.asm,$002FE8,2240,NewJersey,data,teamdata94,name
-data/teamdata95.asm,$0038A8,758,Ottawa,data,teamdata94,name
-data/teamdata95.asm,$003B9E,734,Philadelphia,data,teamdata94,name
-data/teamdata95.asm,$003E7C,752,Pittsburgh,data,teamdata94,name
-data/teamdata95.asm,$00416C,742,Quebec,data,teamdata94,name
-data/teamdata95.asm,$004452,708,SanJose,data,teamdata94,name
-data/teamdata95.asm,$004716,744,StLouis,data,teamdata94,name
-data/teamdata95.asm,$0049FE,696,TampaBay,data,teamdata94,name
-data/teamdata95.asm,$004CB6,754,Toronto,data,teamdata94,name
-data/teamdata95.asm,$004FA8,742,Vancouver,data,teamdata94,name
-data/teamdata95.asm,$00528E,712,Winnipeg,data,teamdata94,name
-data/teamdata95.asm,$005556,734,Washington,data,teamdata94,name
-data/teamdata95.asm,$005834,512,playoffseats,data,teamdata94,name
-data/frames95.asm,$005A34,2,SPAlist,data,frames94,name
-data/frames95.asm,$005A36,786,SPAskate_table,data,frames94,name
-data/frames95.asm,$005D48,274,SPAskateturn_table,data,frames94,follows SPAskate_table
-data/frames95.asm,$005E5A,786,SPAskate2_table,data,frames94,follows SPAskateturn_table
-data/frames95.asm,$00616C,786,SPAskatewp_table,data,frames94,name
-data/frames95.asm,$00647E,274,SPAskatewp2_table,data,frames94,follows SPAskatewp_table
-data/frames95.asm,$006590,50,SPAglide_table,data,frames94,name
-data/frames95.asm,$0065C2,50,SPAglidewp_table,data,frames94,follows SPAglide_table
-data/frames95.asm,$0065F4,82,SPAturnl_table,data,frames94,name
-data/frames95.asm,$006646,82,SPAturnr_table,data,frames94,name
-data/frames95.asm,$006698,82,SPAturnlwp_table,data,frames94,follows SPAturnr_table
-data/frames95.asm,$0066EA,82,SPAturnrwp_table,data,frames94,follows SPAturnlwp_table
-data/frames95.asm,$00673C,82,SPAstop_table,data,frames94,name
-data/frames95.asm,$00678E,82,SPAstopwp_table,data,frames94,follows SPAstop_table
-data/frames95.asm,$0067E0,50,SPAshoulderchkl_table,data,frames94,name
-data/frames95.asm,$006812,50,SPAshoulderchkr_table,data,frames94,name
-data/frames95.asm,$006844,50,SPAHold_table,data,frames94,name
-data/frames95.asm,$006876,50,SPAHold2_table,data,frames94,name
-data/frames95.asm,$0068A8,50,SPAhook_table,data,frames94,name
-data/frames95.asm,$0068DA,146,SPAhook2_table,data,frames94,name
-data/frames95.asm,$00696C,114,SPAsweepchk_table,data,frames94,name
-data/frames95.asm,$0069DE,242,SPAfallfwd_table,data,frames94,name
-data/frames95.asm,$006AD0,274,SPAfallback_table,data,frames94,name
-data/frames95.asm,$006BE2,274,SPAburst_table,data,frames94,name
-data/frames95.asm,$006CF4,162,SPApflip_table,data,frames94,name
-data/frames95.asm,$006D96,114,SPApassf_table,data,frames94,name
-data/frames95.asm,$006E08,82,SPApassf2_table,data,frames94,follows SPApassf_table
-data/frames95.asm,$006E5A,114,SPApassb_table,data,frames94,name
-data/frames95.asm,$006ECC,114,SPApassb2_table,data,frames94,follows SPApassb_table
-data/frames95.asm,$006F3E,306,SPAshotf_table,data,frames94,name
-data/frames95.asm,$007070,306,SPAshotf2_table,data,frames94,follows SPAshotf_table
-data/frames95.asm,$0071A2,306,SPAshotb_table,data,frames94,name
-data/frames95.asm,$0072D4,306,SPAshotb2_table,data,frames94,follows SPAshotb_table
-data/frames95.asm,$007406,210,SPAskateback_table,data,frames94,name
-data/frames95.asm,$0074D8,146,SPAstumble_table,data,frames94,name
-data/frames95.asm,$00756A,42,SPAfaceoff_table,data,frames94,name
-data/frames95.asm,$007594,26,SPAfaceoffr_table,data,frames94,name
-data/frames95.asm,$0075AE,218,SPAgready_table,data,frames94,name
-data/frames95.asm,$007688,50,SPAgready2_table,data,frames94,name
-data/frames95.asm,$0076BA,50,SPAgglover_table,data,frames94,name
-data/frames95.asm,$0076EC,50,SPAgglovel_table,data,frames94,name
-data/frames95.asm,$00771E,50,SPAgstickr_table,data,frames94,name
-data/frames95.asm,$007750,50,SPAgstickl_table,data,frames94,name
-data/frames95.asm,$007782,146,SPAgdive_table,data,frames94,name
-data/frames95.asm,$007814,74,SPAwallright_table,data,frames94,name
-data/frames95.asm,$00785E,66,SPAwallleft_table,data,frames94,name
-data/frames95.asm,$0078A0,178,SPAcheckstart_table,data,frames94,follows SPAwallleft_table
-data/frames95.asm,$007952,74,SPAsiren_table,data,frames94,name
-data/frames95.asm,$00799C,50,SPAflail_table,data,frames94,name
-data/frames95.asm,$0079CE,114,SPAgswing_table,data,frames94,name
-data/frames95.asm,$007A40,82,SPAgstackl_table,data,frames94,name
-data/frames95.asm,$007A92,82,SPAgstackr_table,data,frames94,name
-data/frames95.asm,$007AE4,114,SPAboardtop_table,data,frames94,name
-data/frames95.asm,$007B56,122,SPAboardright_table,data,frames94,name
-data/frames95.asm,$007BD0,114,SPAboardbot_table,data,frames94,name
-data/frames95.asm,$007C42,122,SPAboardleft_table,data,frames94,name
-data/frames95.asm,$007CBC,50,SPAboardchk_table,data,frames94,name
-data/frames95.asm,$007CEE,146,SPAgskate_table,data,frames94,name
-data/frames95.asm,$007D80,114,SPAcelebrate_table,data,frames94,name
-data/frames95.asm,$007DF2,42,SPAgstackalt1_table,data,frames94,follows SPAcelebrate_table
-data/frames95.asm,$007E1C,26,SPAgstackalt2_table,data,frames94,follows SPAgstackalt1_table
-data/frames95.asm,$007E36,82,SPAcatch_table,data,frames94,name
-data/frames95.asm,$007E88,66,SPAinjuryfall_table,data,frames94,name
-data/frames95.asm,$007ECA,66,SPAinjury1_table,data,frames94,name
-data/frames95.asm,$007F0C,50,SPAinjury2_table,data,frames94,follows SPAinjury1_table
-data/frames95.asm,$007F3E,38,SPAbglass_table,data,frames94,name
-data/frames95.asm,$007F64,26,SPAshoulderchkl2_table,data,frames94,follows SPAbglass_table
-data/frames95.asm,$007F7E,26,SPAshoulderchkr2_table,data,frames94,follows SPAshoulderchkl2_table
-data/frames95.asm,$007F98,50,SPAglideback_table,data,frames94,name
-data/frames95.asm,$007FCA,306,SPAflip_table,data,frames94,name
-data/frames95.asm,$0080FC,162,SPAboardmidl_table,data,frames94,name
-data/frames95.asm,$00819E,162,SPAboardmidr_table,data,frames94,name
-data/frames95.asm,$008240,210,SPApump_table,data,frames94,name
-data/frames95.asm,$008312,210,SPAstanley_table,data,frames94,name
-data/frames95.asm,$0083E4,210,SPApump2_table,data,frames94,follows SPAstanley_table
-data/frames95.asm,$0084B6,98,SPAgslamtop_table,data,frames94,name
-data/frames95.asm,$008518,42,SPAgextra1_table,data,frames94,follows SPAgslamtop_table
-data/frames95.asm,$008542,42,SPAgextra2_table,data,frames94,follows SPAgextra1_table
-data/frames95.asm,$00856C,42,SPAgslambot_table,data,frames94,name
-data/frames95.asm,$008596,2114,revframetbl,data,graphics94,name
-data/schedule95.asm,$008DD8,2377,SeasonSchedule,data,new in 95,file
-data/schedule95.asm,$009721,1,SeasonScheduleEnd,data,new in 95,follows SeasonSchedule
+teamdata95.asm,$000772,112,TeamList,data,teamdata94,name
+teamdata95.asm,$0007E2,720,AllStarsEast,data,teamdata94,name
+teamdata95.asm,$000AB2,692,AllStarsWest,data,teamdata94,name
+teamdata95.asm,$000D66,708,Anaheim,data,teamdata94,name
+teamdata95.asm,$00102A,730,Boston,data,teamdata94,name
+teamdata95.asm,$001304,732,Buffalo,data,teamdata94,name
+teamdata95.asm,$0015E0,734,Calgary,data,teamdata94,name
+teamdata95.asm,$0018BE,736,Chicago,data,teamdata94,name
+teamdata95.asm,$001B9E,766,Detroit,data,teamdata94,name
+teamdata95.asm,$001E9C,754,Edmonton,data,teamdata94,name
+teamdata95.asm,$00218E,736,Florida,data,teamdata94,name
+teamdata95.asm,$00246E,756,Hartford,data,teamdata94,name
+teamdata95.asm,$002762,706,LosAngeles,data,teamdata94,name
+teamdata95.asm,$002A24,724,Dallas,data,teamdata94,name
+teamdata95.asm,$002CF8,752,Montreal,data,teamdata94,name
+teamdata95.asm,$002FE8,2240,NewJersey,data,teamdata94,name
+teamdata95.asm,$0038A8,758,Ottawa,data,teamdata94,name
+teamdata95.asm,$003B9E,734,Philadelphia,data,teamdata94,name
+teamdata95.asm,$003E7C,752,Pittsburgh,data,teamdata94,name
+teamdata95.asm,$00416C,742,Quebec,data,teamdata94,name
+teamdata95.asm,$004452,708,SanJose,data,teamdata94,name
+teamdata95.asm,$004716,744,StLouis,data,teamdata94,name
+teamdata95.asm,$0049FE,696,TampaBay,data,teamdata94,name
+teamdata95.asm,$004CB6,754,Toronto,data,teamdata94,name
+teamdata95.asm,$004FA8,742,Vancouver,data,teamdata94,name
+teamdata95.asm,$00528E,712,Winnipeg,data,teamdata94,name
+teamdata95.asm,$005556,734,Washington,data,teamdata94,name
+teamdata95.asm,$005834,512,playoffseats,data,teamdata94,name
+frames95.asm,$005A34,2,SPAlist,data,frames94,name
+frames95.asm,$005A36,786,SPAskate_table,data,frames94,name
+frames95.asm,$005D48,274,SPAskateturn_table,data,frames94,follows SPAskate_table
+frames95.asm,$005E5A,786,SPAskate2_table,data,frames94,follows SPAskateturn_table
+frames95.asm,$00616C,786,SPAskatewp_table,data,frames94,name
+frames95.asm,$00647E,274,SPAskatewp2_table,data,frames94,follows SPAskatewp_table
+frames95.asm,$006590,50,SPAglide_table,data,frames94,name
+frames95.asm,$0065C2,50,SPAglidewp_table,data,frames94,follows SPAglide_table
+frames95.asm,$0065F4,82,SPAturnl_table,data,frames94,name
+frames95.asm,$006646,82,SPAturnr_table,data,frames94,name
+frames95.asm,$006698,82,SPAturnlwp_table,data,frames94,follows SPAturnr_table
+frames95.asm,$0066EA,82,SPAturnrwp_table,data,frames94,follows SPAturnlwp_table
+frames95.asm,$00673C,82,SPAstop_table,data,frames94,name
+frames95.asm,$00678E,82,SPAstopwp_table,data,frames94,follows SPAstop_table
+frames95.asm,$0067E0,50,SPAshoulderchkl_table,data,frames94,name
+frames95.asm,$006812,50,SPAshoulderchkr_table,data,frames94,name
+frames95.asm,$006844,50,SPAHold_table,data,frames94,name
+frames95.asm,$006876,50,SPAHold2_table,data,frames94,name
+frames95.asm,$0068A8,50,SPAhook_table,data,frames94,name
+frames95.asm,$0068DA,146,SPAhook2_table,data,frames94,name
+frames95.asm,$00696C,114,SPAsweepchk_table,data,frames94,name
+frames95.asm,$0069DE,242,SPAfallfwd_table,data,frames94,name
+frames95.asm,$006AD0,274,SPAfallback_table,data,frames94,name
+frames95.asm,$006BE2,274,SPAburst_table,data,frames94,name
+frames95.asm,$006CF4,162,SPApflip_table,data,frames94,name
+frames95.asm,$006D96,114,SPApassf_table,data,frames94,name
+frames95.asm,$006E08,82,SPApassf2_table,data,frames94,follows SPApassf_table
+frames95.asm,$006E5A,114,SPApassb_table,data,frames94,name
+frames95.asm,$006ECC,114,SPApassb2_table,data,frames94,follows SPApassb_table
+frames95.asm,$006F3E,306,SPAshotf_table,data,frames94,name
+frames95.asm,$007070,306,SPAshotf2_table,data,frames94,follows SPAshotf_table
+frames95.asm,$0071A2,306,SPAshotb_table,data,frames94,name
+frames95.asm,$0072D4,306,SPAshotb2_table,data,frames94,follows SPAshotb_table
+frames95.asm,$007406,210,SPAskateback_table,data,frames94,name
+frames95.asm,$0074D8,146,SPAstumble_table,data,frames94,name
+frames95.asm,$00756A,42,SPAfaceoff_table,data,frames94,name
+frames95.asm,$007594,26,SPAfaceoffr_table,data,frames94,name
+frames95.asm,$0075AE,218,SPAgready_table,data,frames94,name
+frames95.asm,$007688,50,SPAgready2_table,data,frames94,name
+frames95.asm,$0076BA,50,SPAgglover_table,data,frames94,name
+frames95.asm,$0076EC,50,SPAgglovel_table,data,frames94,name
+frames95.asm,$00771E,50,SPAgstickr_table,data,frames94,name
+frames95.asm,$007750,50,SPAgstickl_table,data,frames94,name
+frames95.asm,$007782,146,SPAgdive_table,data,frames94,name
+frames95.asm,$007814,74,SPAwallright_table,data,frames94,name
+frames95.asm,$00785E,66,SPAwallleft_table,data,frames94,name
+frames95.asm,$0078A0,178,SPAcheckstart_table,data,frames94,follows SPAwallleft_table
+frames95.asm,$007952,74,SPAsiren_table,data,frames94,name
+frames95.asm,$00799C,50,SPAflail_table,data,frames94,name
+frames95.asm,$0079CE,114,SPAgswing_table,data,frames94,name
+frames95.asm,$007A40,82,SPAgstackl_table,data,frames94,name
+frames95.asm,$007A92,82,SPAgstackr_table,data,frames94,name
+frames95.asm,$007AE4,114,SPAboardtop_table,data,frames94,name
+frames95.asm,$007B56,122,SPAboardright_table,data,frames94,name
+frames95.asm,$007BD0,114,SPAboardbot_table,data,frames94,name
+frames95.asm,$007C42,122,SPAboardleft_table,data,frames94,name
+frames95.asm,$007CBC,50,SPAboardchk_table,data,frames94,name
+frames95.asm,$007CEE,146,SPAgskate_table,data,frames94,name
+frames95.asm,$007D80,114,SPAcelebrate_table,data,frames94,name
+frames95.asm,$007DF2,42,SPAgstackalt1_table,data,frames94,follows SPAcelebrate_table
+frames95.asm,$007E1C,26,SPAgstackalt2_table,data,frames94,follows SPAgstackalt1_table
+frames95.asm,$007E36,82,SPAcatch_table,data,frames94,name
+frames95.asm,$007E88,66,SPAinjuryfall_table,data,frames94,name
+frames95.asm,$007ECA,66,SPAinjury1_table,data,frames94,name
+frames95.asm,$007F0C,50,SPAinjury2_table,data,frames94,follows SPAinjury1_table
+frames95.asm,$007F3E,38,SPAbglass_table,data,frames94,name
+frames95.asm,$007F64,26,SPAshoulderchkl2_table,data,frames94,follows SPAbglass_table
+frames95.asm,$007F7E,26,SPAshoulderchkr2_table,data,frames94,follows SPAshoulderchkl2_table
+frames95.asm,$007F98,50,SPAglideback_table,data,frames94,name
+frames95.asm,$007FCA,306,SPAflip_table,data,frames94,name
+frames95.asm,$0080FC,162,SPAboardmidl_table,data,frames94,name
+frames95.asm,$00819E,162,SPAboardmidr_table,data,frames94,name
+frames95.asm,$008240,210,SPApump_table,data,frames94,name
+frames95.asm,$008312,210,SPAstanley_table,data,frames94,name
+frames95.asm,$0083E4,210,SPApump2_table,data,frames94,follows SPAstanley_table
+frames95.asm,$0084B6,98,SPAgslamtop_table,data,frames94,name
+frames95.asm,$008518,42,SPAgextra1_table,data,frames94,follows SPAgslamtop_table
+frames95.asm,$008542,42,SPAgextra2_table,data,frames94,follows SPAgextra1_table
+frames95.asm,$00856C,42,SPAgslambot_table,data,frames94,name
+frames95.asm,$008596,2114,revframetbl,data,graphics94,name
+schedule95.asm,$008DD8,2377,SeasonSchedule,data,new in 95,file
+schedule95.asm,$009721,1,SeasonScheduleEnd,data,new in 95,follows SeasonSchedule
 sram95.asm,$009722,244,InitSaveRAM,code,sram94,name
 sram95.asm,$009816,8,SRAMWaitVblank,code,sram94,name
 sram95.asm,$00981E,10,VBcount,data,sram94,name
@@ -166,24 +166,24 @@ sram95.asm,$009952,32,ReadSRAM,code,sram94,name
 sram95.asm,$009972,60,BuildLeaderList,code,new in 95,header
 sram95.asm,$0099AE,86,BuildLeaderListSum,code,new in 95,header
 sram95.asm,$009A04,196,BuildLeaderListPct,code,new in 95,header
-hockey95_01.asm,$009AC8,18,Opening,code,setup94,name
-hockey95_01.asm,$009ADA,266,Opening2,code,setup94,name
-hockey95_01.asm,$009BE4,308,StartGame,code,hockey94,name
-hockey95_01.asm,$009D18,186,IntermissionStart,code,setup94,name
-hockey95_01.asm,$009DD2,286,StartPer,code,hockey94,name
-hockey95_01.asm,$009EF0,50,Gameloop,code,hockey94,name
-hockey95_01.asm,$009F22,176,DoGameFrame,code,hockey94,name
-hockey95_01.asm,$009FD2,562,IntermissionMenu,code,new in 95,header
-display95_01.asm,$00A204,120,setvideo,code,display94,name
-display95_01.asm,$00A27C,30,setsortcords,code,display94,name
-display95_01.asm,$00A29A,2,rtssdisp,code,display94,follows setsortcords
-display95_01.asm,$00A29C,360,checksso,code,display94,name
-display95_01.asm,$00A404,48,setffo,code,display94,name
-display95_01.asm,$00A434,102,uppads,code,display94,name
-display95_01.asm,$00A49A,100,FormatControllerDisplay,code,display94,name
-display95_01.asm,$00A4FE,48,RenderSmallFontChar,code,display94,name
-display95_01.asm,$00A52E,8,ButtonLabelCharTable,data,display94,name
-replay95_01.asm,$00A536,288,updateanim,code,replay94,name
+hockey95.asm,$009AC8,18,Opening,code,setup94,name
+hockey95.asm,$009ADA,266,Opening2,code,setup94,name
+hockey95.asm,$009BE4,308,StartGame,code,hockey94,name
+hockey95.asm,$009D18,186,IntermissionStart,code,setup94,name
+hockey95.asm,$009DD2,286,StartPer,code,hockey94,name
+hockey95.asm,$009EF0,50,Gameloop,code,hockey94,name
+hockey95.asm,$009F22,176,DoGameFrame,code,hockey94,name
+hockey95.asm,$009FD2,562,IntermissionMenu,code,new in 95,header
+display95.asm,$00A204,120,setvideo,code,display94,name
+display95.asm,$00A27C,30,setsortcords,code,display94,name
+display95.asm,$00A29A,2,rtssdisp,code,display94,follows setsortcords
+display95.asm,$00A29C,360,checksso,code,display94,name
+display95.asm,$00A404,48,setffo,code,display94,name
+display95.asm,$00A434,102,uppads,code,display94,name
+display95.asm,$00A49A,100,FormatControllerDisplay,code,display94,name
+display95.asm,$00A4FE,48,RenderSmallFontChar,code,display94,name
+display95.asm,$00A52E,8,ButtonLabelCharTable,data,display94,name
+display95.asm,$00A536,288,updateanim,code,replay94,name
 setup95_01.asm,$00A656,212,defaultsprites,code,setup94,name
 setup95_01.asm,$00A72A,444,defaultsprites2,code,setup94,name
 setup95_01.asm,$00A8E6,118,SprSort,code,setup94,name
@@ -203,33 +203,33 @@ setup95_01.asm,$00ADAE,154,restorepl,code,input94,name
 setup95_01.asm,$00AE48,142,clearTeamStats,code,setup94,name
 setup95_01.asm,$00AED6,46,setteams,code,setup94,name
 setup95_01.asm,$00AF04,64,InitTeamSructure,code,setup94,name
-sounddrv95.asm,$00AF44,194,SndDriver,code,new in 95,file
-sounddrv95.asm,$00B006,262,SndLoadZ80,code,new in 95,header
-sounddrv95.asm,$00B10C,684,SndUpdate,code,new in 95,header
-sounddrv95.asm,$00B3B8,194,SndStartSeq,code,new in 95,header
-sounddrv95.asm,$00B47A,98,SndStopSeq,code,new in 95,header
-sounddrv95.asm,$00B4DC,130,SndPutZ80Cmd,code,new in 95,header
-sounddrv95.asm,$00B55E,284,SndUploadBlock,code,new in 95,header
-sounddrv95.asm,$00B67A,138,SndReadBlock,code,new in 95,header
-sounddrv95.asm,$00B704,138,SndWriteBlock,code,new in 95,header
-sounddrv95.asm,$00B78E,60,SndPauseZ80,code,new in 95,header
-sounddrv95.asm,$00B7CA,60,SndResumeZ80,code,new in 95,header
-sounddrv95.asm,$00B806,56,SndStopAll,code,new in 95,header
-sounddrv95.asm,$00B83E,58,SndClearNotes,code,new in 95,header
-sounddrv95.asm,$00B878,74,SndReleaseNotes,code,new in 95,header
-sounddrv95.asm,$00B8C2,44,SndAddNote,code,new in 95,header
-sounddrv95.asm,$00B8EE,124,SndUpdateNotes,code,new in 95,header
-sounddrv95.asm,$00B96A,352,SndStreamZ80,code,new in 95,header
-sounddrv95.asm,$00BACA,126,SndFindBankItem,code,new in 95,header
-sounddrv95.asm,$00BB48,92,SndSetBank,code,new in 95,header
-sounddrv95.asm,$00BBA4,84,SndLoadList,code,new in 95,header
-sounddrv95.asm,$00BBF8,278,SndFreeBlocks,code,new in 95,header
-sounddrv95.asm,$00BD0E,74,SndResetBlocks,code,new in 95,header
-sounddrv95.asm,$00BD58,16,SndSendZ80,code,new in 95,header
-sounddrv95.asm,$00BD68,20,Z80BusRequest,code,new in 95,header
-sounddrv95.asm,$00BD7C,10,Z80BusRelease,code,new in 95,header
-sounddrv95.asm,$00BD86,7014,Z80Program,data,new in 95,follows Z80BusRelease
-sounddrv95.asm,$00D8EC,368108,SoundBanks,data,new in 95,follows Z80Program
+sound95_01.asm,$00AF44,194,SndDriver,code,new in 95,no 94 match
+sound95_01.asm,$00B006,262,SndLoadZ80,code,new in 95,header
+sound95_01.asm,$00B10C,684,SndUpdate,code,new in 95,header
+sound95_01.asm,$00B3B8,194,SndStartSeq,code,new in 95,header
+sound95_01.asm,$00B47A,98,SndStopSeq,code,new in 95,header
+sound95_01.asm,$00B4DC,130,SndPutZ80Cmd,code,new in 95,header
+sound95_01.asm,$00B55E,284,SndUploadBlock,code,new in 95,header
+sound95_01.asm,$00B67A,138,SndReadBlock,code,new in 95,header
+sound95_01.asm,$00B704,138,SndWriteBlock,code,new in 95,header
+sound95_01.asm,$00B78E,60,SndPauseZ80,code,new in 95,header
+sound95_01.asm,$00B7CA,60,SndResumeZ80,code,new in 95,header
+sound95_01.asm,$00B806,56,SndStopAll,code,new in 95,header
+sound95_01.asm,$00B83E,58,SndClearNotes,code,new in 95,header
+sound95_01.asm,$00B878,74,SndReleaseNotes,code,new in 95,header
+sound95_01.asm,$00B8C2,44,SndAddNote,code,new in 95,header
+sound95_01.asm,$00B8EE,124,SndUpdateNotes,code,new in 95,header
+sound95_01.asm,$00B96A,352,SndStreamZ80,code,new in 95,header
+sound95_01.asm,$00BACA,126,SndFindBankItem,code,new in 95,header
+sound95_01.asm,$00BB48,92,SndSetBank,code,new in 95,header
+sound95_01.asm,$00BBA4,84,SndLoadList,code,new in 95,header
+sound95_01.asm,$00BBF8,278,SndFreeBlocks,code,new in 95,header
+sound95_01.asm,$00BD0E,74,SndResetBlocks,code,new in 95,header
+sound95_01.asm,$00BD58,16,SndSendZ80,code,new in 95,header
+sound95_01.asm,$00BD68,20,Z80BusRequest,code,new in 95,header
+sound95_01.asm,$00BD7C,10,Z80BusRelease,code,new in 95,header
+sound95_01.asm,$00BD86,7014,Z80Program,data,new in 95,follows Z80BusRelease
+sound95_01.asm,$00D8EC,368108,SoundBanks,data,new in 95,follows Z80Program
 sound95_01.asm,$0676D8,16,SoundCmd,code,new in 95,no 94 match
 sound95_01.asm,$0676E8,40,UpdateCwdExcite,code,hockey94,name
 sound95_01.asm,$067710,90,updatesound,code,display94,name
@@ -299,62 +299,62 @@ video95_01.asm,$079CA8,32,DoDMAlist,code,display94,name
 video95_01.asm,$079CC8,2,rtss2,code,collide94,header names collide94
 video95_01.asm,$079CCA,28,SetScroll2,code,display94,name
 video95_01.asm,$079CE6,154,DoDMA,code,video94,name
-display95_02.asm,$079D80,40,addframe,code,display94,name
-display95_02.asm,$079DA8,428,addframe2,code,display94,name
-display95_02.asm,$079F54,16,sizetab,data,data94,name
-display95_02.asm,$079F64,198,updatescroll,code,display94,name
-video95_02.asm,$07A02A,42,forceblack,code,video94,name
-video95_02.asm,$07A054,42,forceblack2,code,video94,name
-video95_02.asm,$07A07E,56,DecompressBytecode,code,video94,name
-video95_02.asm,$07A0B6,32,jump_table,data,video94,name
-video95_02.asm,$07A0D6,28,Opcode_CopyLiteral,code,video94,name
-video95_02.asm,$07A0F2,28,Opcode_ClearBytes,code,video94,name
-video95_02.asm,$07A10E,32,Opcode_Fillbytes,code,video94,name
-video95_02.asm,$07A12E,22,Opcode_CopyBackwardShort,code,video94,name
-video95_02.asm,$07A144,28,CopyBackwardRun,code,video94,name
-video95_02.asm,$07A160,14,Opcode_CopyBackwardMedium,code,video94,name
-video95_02.asm,$07A16E,26,Opcode_CopyBackwardLong,code,video94,name
-video95_02.asm,$07A188,26,Opcode_CopyBackwardExtended1,code,video94,name
-video95_02.asm,$07A1A2,26,Opcode_CopyBackwardExtended2,code,video94,name
-video95_02.asm,$07A1BC,22,Opcode_CopyBackwardReverseShort,code,video94,name
-video95_02.asm,$07A1D2,28,CopyBackwardReverseRun,code,video94,name
-video95_02.asm,$07A1EE,32,Opcode_CopyBackwardReverseMedium,code,video94,name
-video95_02.asm,$07A20E,26,Opcode_CopyBackwardReverseLong,code,video94,name
-video95_02.asm,$07A228,46,FlushOutputBuffer,code,video94,name
-video95_02.asm,$07A256,14,AddSmallFont,code,video94,name
-video95_02.asm,$07A264,12,DecompressGraphicsWithCallback,code,video94,name
-video95_02.asm,$07A270,124,Framer,code,video94,name
-video95_02.asm,$07A2EC,36,AddFramer,code,video94,name
-video95_02.asm,$07A310,28,AddFramer2,code,new in 95,header
-video95_02.asm,$07A32C,6,VBjsr,code,hockey94,name
-video95_02.asm,$07A332,180,VBlank,code,display94,name
-video95_02.asm,$07A3E6,16,p_music_vblank,code,sound94,name
-video95_02.asm,$07A3F6,32,vb2,code,display94,name
-video95_02.asm,$07A416,2,IRQ7,code,display94,name
-video95_02.asm,$07A418,48,VBlank_SetOptions,code,attract94,name
-video95_02.asm,$07A448,14,orjoy,code,video94,name
-video95_02.asm,$07A456,50,orjoy4way,code,new in 95,header
-video95_02.asm,$07A488,40,nodiag,code,video94,name
-video95_02.asm,$07A4B0,24,ReadJoy1,code,video94,name
-video95_02.asm,$07A4C8,24,ReadJoy2,code,video94,name
-video95_02.asm,$07A4E0,32,ReadJoy3,code,video94,name
-video95_02.asm,$07A500,12,NoJoy,code,new in 95,header
-video95_02.asm,$07A50C,30,ReadJoy4,code,video94,name
-video95_02.asm,$07A52A,32,ReadJoy,code,video94,name
-video95_02.asm,$07A54A,16,jdtab,data,video94,name
-video95_02.asm,$07A55A,66,ReadJoyData,code,sound94,name
-video95_02.asm,$07A59C,26,ReadPad4Way1,code,sound94,name
-video95_02.asm,$07A5B6,26,ReadPad4Way2,code,sound94,name
-video95_02.asm,$07A5D0,26,ReadPad4Way3,code,sound94,name
-video95_02.asm,$07A5EA,22,ReadPad4Way4,code,sound94,name
-video95_02.asm,$07A600,14,ReadPad4WayPort1,code,sound94,name
-video95_02.asm,$07A60E,12,ReadPad2,code,sound94,name
-video95_02.asm,$07A61A,10,ReadPad1,code,sound94,name
-video95_02.asm,$07A624,14,ReadPadA0,code,sound94,name
-video95_02.asm,$07A632,76,ReadPad3Button,code,sound94,name
-video95_02.asm,$07A67E,16,PadDirTable,data,sound94,name
-video95_02.asm,$07A68E,28,ResetZ80Bus,code,sound94,name
-video95_02.asm,$07A6AA,184,ReadMenuJoy,code,new in 95,header
+video95_01.asm,$079D80,40,addframe,code,display94,name
+video95_01.asm,$079DA8,428,addframe2,code,display94,name
+video95_01.asm,$079F54,16,sizetab,data,data94,name
+video95_01.asm,$079F64,198,updatescroll,code,display94,name
+video95_01.asm,$07A02A,42,forceblack,code,video94,name
+video95_01.asm,$07A054,42,forceblack2,code,video94,name
+video95_01.asm,$07A07E,56,DecompressBytecode,code,video94,name
+video95_01.asm,$07A0B6,32,jump_table,data,video94,name
+video95_01.asm,$07A0D6,28,Opcode_CopyLiteral,code,video94,name
+video95_01.asm,$07A0F2,28,Opcode_ClearBytes,code,video94,name
+video95_01.asm,$07A10E,32,Opcode_Fillbytes,code,video94,name
+video95_01.asm,$07A12E,22,Opcode_CopyBackwardShort,code,video94,name
+video95_01.asm,$07A144,28,CopyBackwardRun,code,video94,name
+video95_01.asm,$07A160,14,Opcode_CopyBackwardMedium,code,video94,name
+video95_01.asm,$07A16E,26,Opcode_CopyBackwardLong,code,video94,name
+video95_01.asm,$07A188,26,Opcode_CopyBackwardExtended1,code,video94,name
+video95_01.asm,$07A1A2,26,Opcode_CopyBackwardExtended2,code,video94,name
+video95_01.asm,$07A1BC,22,Opcode_CopyBackwardReverseShort,code,video94,name
+video95_01.asm,$07A1D2,28,CopyBackwardReverseRun,code,video94,name
+video95_01.asm,$07A1EE,32,Opcode_CopyBackwardReverseMedium,code,video94,name
+video95_01.asm,$07A20E,26,Opcode_CopyBackwardReverseLong,code,video94,name
+video95_01.asm,$07A228,46,FlushOutputBuffer,code,video94,name
+video95_01.asm,$07A256,14,AddSmallFont,code,video94,name
+video95_01.asm,$07A264,12,DecompressGraphicsWithCallback,code,video94,name
+video95_01.asm,$07A270,124,Framer,code,video94,name
+video95_01.asm,$07A2EC,36,AddFramer,code,video94,name
+video95_01.asm,$07A310,28,AddFramer2,code,new in 95,header
+video95_01.asm,$07A32C,6,VBjsr,code,hockey94,name
+video95_01.asm,$07A332,180,VBlank,code,display94,name
+video95_01.asm,$07A3E6,16,p_music_vblank,code,sound94,name
+video95_01.asm,$07A3F6,32,vb2,code,display94,name
+video95_01.asm,$07A416,2,IRQ7,code,display94,name
+video95_01.asm,$07A418,48,VBlank_SetOptions,code,attract94,name
+video95_01.asm,$07A448,14,orjoy,code,video94,name
+video95_01.asm,$07A456,50,orjoy4way,code,new in 95,header
+video95_01.asm,$07A488,40,nodiag,code,video94,name
+video95_01.asm,$07A4B0,24,ReadJoy1,code,video94,name
+video95_01.asm,$07A4C8,24,ReadJoy2,code,video94,name
+video95_01.asm,$07A4E0,32,ReadJoy3,code,video94,name
+video95_01.asm,$07A500,12,NoJoy,code,new in 95,header
+video95_01.asm,$07A50C,30,ReadJoy4,code,video94,name
+video95_01.asm,$07A52A,32,ReadJoy,code,video94,name
+video95_01.asm,$07A54A,16,jdtab,data,video94,name
+video95_01.asm,$07A55A,66,ReadJoyData,code,sound94,name
+video95_01.asm,$07A59C,26,ReadPad4Way1,code,sound94,name
+video95_01.asm,$07A5B6,26,ReadPad4Way2,code,sound94,name
+video95_01.asm,$07A5D0,26,ReadPad4Way3,code,sound94,name
+video95_01.asm,$07A5EA,22,ReadPad4Way4,code,sound94,name
+video95_01.asm,$07A600,14,ReadPad4WayPort1,code,sound94,name
+video95_01.asm,$07A60E,12,ReadPad2,code,sound94,name
+video95_01.asm,$07A61A,10,ReadPad1,code,sound94,name
+video95_01.asm,$07A624,14,ReadPadA0,code,sound94,name
+video95_01.asm,$07A632,76,ReadPad3Button,code,sound94,name
+video95_01.asm,$07A67E,16,PadDirTable,data,sound94,name
+video95_01.asm,$07A68E,28,ResetZ80Bus,code,sound94,name
+video95_01.asm,$07A6AA,184,ReadMenuJoy,code,new in 95,header
 collide95_01.asm,$07A762,58,ProcessInputWithRepeat,code,video94,name
 collide95_01.asm,$07A79C,24,WaitVSyncAndReadInput,code,stats94,name
 collide95_01.asm,$07A7B4,238,checkcoll,code,collide94,name
@@ -387,129 +387,129 @@ collide95_01.asm,$07C14E,6,cornercollb94,code,crowd94,name
 collide95_01.asm,$07C154,680,puckgoalie,code,collide94,name
 collide95_01.asm,$07C3FC,250,checkint,code,collide94,name
 collide95_01.asm,$07C4F6,28,DropPuck,code,new in 95,header
-video95_03.asm,$07C512,116,sroot,code,video94,name
-video95_03.asm,$07C586,104,vtoa,code,checks94,name
-video95_03.asm,$07C5EE,64,find3d,code,display94,name
-video95_03.asm,$07C62E,12,randomd0s,code,video94,name
-video95_03.asm,$07C63A,56,randomd0,code,video94,name
-video95_03.asm,$07C672,76,GetHot,code,checks94,name
-video95_03.asm,$07C6BE,22,vcountwait,code,menu94,name
-video95_03.asm,$07C6D4,18,printz2,code,video94,name
-video95_03.asm,$07C6E6,140,printsmall,code,video94,name
-video95_03.asm,$07C772,36,ControlCodeJumpTable,data,video94,name
-video95_03.asm,$07C796,16,ControlCode_SetMapAndPosition,code,video94,name
-video95_03.asm,$07C7A6,20,ControlCode_SetMap,code,video94,name
-video95_03.asm,$07C7BA,16,ControlCode_SetAttribute,code,video94,name
-video95_03.asm,$07C7CA,14,ControlCode_SetX,code,video94,name
-video95_03.asm,$07C7D8,14,ControlCode_SetY,code,video94,name
-video95_03.asm,$07C7E6,14,ControlCode_AddX,code,video94,name
-video95_03.asm,$07C7F4,14,ControlCode_AddY,code,video94,name
-video95_03.asm,$07C802,12,ControlCode_SetFont,code,video94,name
-video95_03.asm,$07C80E,2,ControlCode_None,code,video94,fingerprint ControlCode_SetFont
-video95_03.asm,$07C810,18,printz,code,video94,name
-video95_03.asm,$07C822,170,print,code,video94,name
-video95_03.asm,$07C8CC,62,eraser,code,video94,name
-video95_03.asm,$07C90A,138,showclock,code,display94,name
-video95_03.asm,$07C994,60,PutClockDigit,code,new in 95,header
-video95_03.asm,$07C9D0,150,showclockdma,code,display94,header names 94 showclock
-video95_03.asm,$07CA66,24,ClockDigitChar,code,display94,fingerprint showclock+$C0
-video95_03.asm,$07CA7E,20,PerLabels,data,data94,name
-video95_03.asm,$07CA92,20,PenShotPenalties2,data,data94,name
-video95_03.asm,$07CAA6,42,makepde,code,collide94,name
-video95_03.asm,$07CAD0,32,getpde,code,collide94,name
-video95_03.asm,$07CAF0,26,loadTeamStruct,code,penalty94,name
-video95_03.asm,$07CB0A,36,ReadGoaliePulled,code,title94,name
-video95_03.asm,$07CB2E,10,PrintListItem,code,new in 95,header
-video95_03.asm,$07CB38,10,PrintSmallListItem,code,new in 95,header
-video95_03.asm,$07CB42,12,SkipStrings,code,new in 95,header
-video95_03.asm,$07CB4E,18,ReadAttributeNibble,code,stats94,name
-video95_03.asm,$07CB60,86,ReadAttributeNibbleD7,code,new in 95,header
-video95_03.asm,$07CBB6,18,GetDefenseStartD7,code,new in 95,header
-video95_03.asm,$07CBC8,64,GetDefenseStart,code,stats94,name
-video95_03.asm,$07CC08,10,ProcessNibbleD7,code,new in 95,header
-video95_03.asm,$07CC12,18,GetForwards,code,new in 95,header
-video95_03.asm,$07CC24,34,ProcessNibbleSeason,code,new in 95,header
-video95_03.asm,$07CC46,28,ProcessNibble,code,stats94,name
-video95_03.asm,$07CC62,34,GetTempPlayerName,code,data94,name
-video95_03.asm,$07CC84,12,getnameD7,code,new in 95,header
-video95_03.asm,$07CC90,12,getname,code,data94,name
-video95_03.asm,$07CC9C,54,getnamebody,code,data94,follows getname
-video95_03.asm,$07CCD2,34,GetTempPlayerNameAttrib,code,new in 95,header
-video95_03.asm,$07CCF4,56,FormatPlayerInitialD7,code,new in 95,header
-video95_03.asm,$07CD2C,12,FormatPlayerNameWithAttribD7,code,new in 95,header
-video95_03.asm,$07CD38,12,FormatPlayerNameWithAttrib,code,data94,name
-video95_03.asm,$07CD44,62,NameWithAttrib,code,data94,fingerprint FormatPlayerNameWithAttrib
-video95_03.asm,$07CD82,64,FormatPlayerNameD7,code,new in 95,header
-video95_03.asm,$07CDC2,68,FormatPlayerName,code,data94,name
-video95_03.asm,$07CE06,16,FormatPlayerNameLast,code,data94,name
-video95_03.asm,$07CE16,16,FormatPlayerNameShort,code,data94,name
-video95_03.asm,$07CE26,48,FormatLastName,code,data94,name
-video95_03.asm,$07CE56,32,FormatFirstNameD7,code,new in 95,header
-video95_03.asm,$07CE76,24,FormatLastNameAlt,code,new in 95,header
-video95_03.asm,$07CE8E,8,FormatLastNameD7,code,new in 95,header
-video95_03.asm,$07CE96,40,formatlastbody,code,new in 95,no 94 match
-video95_03.asm,$07CEBE,26,FinalizeTextBuffer,code,data94,name
-video95_03.asm,$07CED8,8,getplayernameD7,code,new in 95,header
-video95_03.asm,$07CEE0,8,getplayername,code,data94,name
-video95_03.asm,$07CEE8,14,getnamea0,code,data94,follows getplayername
-video95_03.asm,$07CEF6,32,d0toascii,code,data94,name
-video95_03.asm,$07CF16,98,CalcAttrib,code,cards94,name
-video95_03.asm,$07CF78,276,CalcAttribRating,code,new in 95,header
-video95_03.asm,$07D08C,16,OvrPlayerWgtList,data,cards94,name
-video95_03.asm,$07D09C,16,OvrGoalWgtList,data,cards94,name
-video95_03.asm,$07D0AC,16,AttribWgtList,data,cards94,name
-video95_03.asm,$07D0BC,100,PushTime,code,video94,name
-video95_03.asm,$07D120,52,PushNumber,code,video94,name
-video95_03.asm,$07D154,92,PushNumberWidth,code,video94,name
-video95_03.asm,$07D1B0,92,PushNumberWidthZero,code,new in 95,header
-video95_03.asm,$07D20C,8,appendz,code,video94,name
-video95_03.asm,$07D214,68,appstring,code,video94,name
-video95_03.asm,$07D258,16,ScaleAttrib,code,new in 95,header
-video95_03.asm,$07D268,70,PutTeamBlock,code,new in 95,header
-video95_03.asm,$07D2AE,102,setupTeamBlocksMap,code,setup94,name
-video95_03.asm,$07D314,74,CopyTeamBlockMapData,code,setup94,name
-video95_03.asm,$07D35E,140,DoDMA_nd2,code,video94,name
-video95_03.asm,$07D3EA,14,GetTeamLogo,code,scout94,name
-video95_03.asm,$07D3F8,112,TeamLogoBitmaps,data,optsetup94,name
-video95_03.asm,$07D468,56,DrawTeamLogo,code,optsetup94,name
-video95_03.asm,$07D4A0,42,ResetClock,code,hockey94,name
-video95_03.asm,$07D4CA,24,GetPeriodTime,code,hockey94,name
-video95_03.asm,$07D4E2,94,ClrHor,code,penalty94,name
-video95_03.asm,$07D540,432,AssignPads,code,new in 95,header
-video95_03.asm,$07D6F0,22,SetRinkPalette,code,new in 95,header
-video95_03.asm,$07D706,92,waitx,code,video94,name
-video95_03.asm,$07D762,20,GetPeriodTimeRemaining,code,collide94,name
-video95_03.asm,$07D776,172,PrintScores1,code,penalty94,name
-video95_03.asm,$07D822,34,PrintTeamNameAndScore,code,penalty94,name
-video95_03.asm,$07D844,10,ReAddFramer,code,new in 95,header
-video95_03.asm,$07D84E,10,ReAddSmallFont,code,new in 95,header
-video95_03.asm,$07D858,44,AddFonts,code,new in 95,header
-video95_03.asm,$07D884,16,chkpk,code,checks94,name
-video95_03.asm,$07D894,30,chkpk2,code,checks94,name
-video95_03.asm,$07D8B2,32,CheckNewCarrier,code,new in 95,header
-video95_03.asm,$07D8D2,18,printbigz,code,video94,name
-video95_03.asm,$07D8E4,18,printbigz2,code,new in 95,header
-video95_03.asm,$07D8F6,18,printbigz1,code,new in 95,header
-video95_03.asm,$07D908,14,printbig1,code,new in 95,header
-video95_03.asm,$07D916,14,printbig,code,video94,name
-video95_03.asm,$07D924,10,printbig2,code,new in 95,header
-video95_03.asm,$07D92E,154,printbigtext,code,video94,header names 94 printbig
-video95_03.asm,$07D9C8,74,PrintBigChar,code,video94,name
-video95_03.asm,$07DA12,42,PutBigTile,code,video94,name
-video95_03.asm,$07DA3C,60,bfasciicon,data,data94,name
-video95_03.asm,$07DA78,200,UnpackPicture,code,title94,name
-video95_03.asm,$07DB40,60,UpdateLineChange,code,hockey94,name
-video95_03.asm,$07DB7C,38,RestoreTeamEnergy,code,penalty94,name
-video95_03.asm,$07DBA2,40,ResetTeamEnergy,code,new in 95,header
-video95_03.asm,$07DBCA,14,setpde,code,collide94,name
-video95_03.asm,$07DBD8,50,SeasonPlayerOut,code,new in 95,header
-video95_03.asm,$07DC0A,44,WeightedRandomSelect,code,checks94,name
-video95_03.asm,$07DC36,44,AppendTeamName,code,cards94,name
-video95_03.asm,$07DC62,20,StartText,code,cards94,name
-video95_03.asm,$07DC76,104,AppendUserName,code,cards94,name
-video95_03.asm,$07DCDE,2,NoNameTxt,data,cards94,name
-video95_03.asm,$07DCE0,38,TrimSpaces,code,cards94,name
-video95_03.asm,$07DD06,410,setupice,code,setup94,name
+video95_02.asm,$07C512,116,sroot,code,video94,name
+video95_02.asm,$07C586,104,vtoa,code,checks94,name
+video95_02.asm,$07C5EE,64,find3d,code,display94,name
+video95_02.asm,$07C62E,12,randomd0s,code,video94,name
+video95_02.asm,$07C63A,56,randomd0,code,video94,name
+video95_02.asm,$07C672,76,GetHot,code,checks94,name
+video95_02.asm,$07C6BE,22,vcountwait,code,menu94,name
+video95_02.asm,$07C6D4,18,printz2,code,video94,name
+video95_02.asm,$07C6E6,140,printsmall,code,video94,name
+video95_02.asm,$07C772,36,ControlCodeJumpTable,data,video94,name
+video95_02.asm,$07C796,16,ControlCode_SetMapAndPosition,code,video94,name
+video95_02.asm,$07C7A6,20,ControlCode_SetMap,code,video94,name
+video95_02.asm,$07C7BA,16,ControlCode_SetAttribute,code,video94,name
+video95_02.asm,$07C7CA,14,ControlCode_SetX,code,video94,name
+video95_02.asm,$07C7D8,14,ControlCode_SetY,code,video94,name
+video95_02.asm,$07C7E6,14,ControlCode_AddX,code,video94,name
+video95_02.asm,$07C7F4,14,ControlCode_AddY,code,video94,name
+video95_02.asm,$07C802,12,ControlCode_SetFont,code,video94,name
+video95_02.asm,$07C80E,2,ControlCode_None,code,video94,fingerprint ControlCode_SetFont
+video95_02.asm,$07C810,18,printz,code,video94,name
+video95_02.asm,$07C822,170,print,code,video94,name
+video95_02.asm,$07C8CC,62,eraser,code,video94,name
+video95_02.asm,$07C90A,138,showclock,code,display94,name
+video95_02.asm,$07C994,60,PutClockDigit,code,new in 95,header
+video95_02.asm,$07C9D0,150,showclockdma,code,display94,header names 94 showclock
+video95_02.asm,$07CA66,24,ClockDigitChar,code,display94,fingerprint showclock+$C0
+video95_02.asm,$07CA7E,20,PerLabels,data,data94,name
+video95_02.asm,$07CA92,20,PenShotPenalties2,data,data94,name
+video95_02.asm,$07CAA6,42,makepde,code,collide94,name
+video95_02.asm,$07CAD0,32,getpde,code,collide94,name
+video95_02.asm,$07CAF0,26,loadTeamStruct,code,penalty94,name
+video95_02.asm,$07CB0A,36,ReadGoaliePulled,code,title94,name
+video95_02.asm,$07CB2E,10,PrintListItem,code,new in 95,header
+video95_02.asm,$07CB38,10,PrintSmallListItem,code,new in 95,header
+video95_02.asm,$07CB42,12,SkipStrings,code,new in 95,header
+video95_02.asm,$07CB4E,18,ReadAttributeNibble,code,stats94,name
+video95_02.asm,$07CB60,86,ReadAttributeNibbleD7,code,new in 95,header
+video95_02.asm,$07CBB6,18,GetDefenseStartD7,code,new in 95,header
+video95_02.asm,$07CBC8,64,GetDefenseStart,code,stats94,name
+video95_02.asm,$07CC08,10,ProcessNibbleD7,code,new in 95,header
+video95_02.asm,$07CC12,18,GetForwards,code,new in 95,header
+video95_02.asm,$07CC24,34,ProcessNibbleSeason,code,new in 95,header
+video95_02.asm,$07CC46,28,ProcessNibble,code,stats94,name
+video95_02.asm,$07CC62,34,GetTempPlayerName,code,data94,name
+video95_02.asm,$07CC84,12,getnameD7,code,new in 95,header
+video95_02.asm,$07CC90,12,getname,code,data94,name
+video95_02.asm,$07CC9C,54,getnamebody,code,data94,follows getname
+video95_02.asm,$07CCD2,34,GetTempPlayerNameAttrib,code,new in 95,header
+video95_02.asm,$07CCF4,56,FormatPlayerInitialD7,code,new in 95,header
+video95_02.asm,$07CD2C,12,FormatPlayerNameWithAttribD7,code,new in 95,header
+video95_02.asm,$07CD38,12,FormatPlayerNameWithAttrib,code,data94,name
+video95_02.asm,$07CD44,62,NameWithAttrib,code,data94,fingerprint FormatPlayerNameWithAttrib
+video95_02.asm,$07CD82,64,FormatPlayerNameD7,code,new in 95,header
+video95_02.asm,$07CDC2,68,FormatPlayerName,code,data94,name
+video95_02.asm,$07CE06,16,FormatPlayerNameLast,code,data94,name
+video95_02.asm,$07CE16,16,FormatPlayerNameShort,code,data94,name
+video95_02.asm,$07CE26,48,FormatLastName,code,data94,name
+video95_02.asm,$07CE56,32,FormatFirstNameD7,code,new in 95,header
+video95_02.asm,$07CE76,24,FormatLastNameAlt,code,new in 95,header
+video95_02.asm,$07CE8E,8,FormatLastNameD7,code,new in 95,header
+video95_02.asm,$07CE96,40,formatlastbody,code,new in 95,no 94 match
+video95_02.asm,$07CEBE,26,FinalizeTextBuffer,code,data94,name
+video95_02.asm,$07CED8,8,getplayernameD7,code,new in 95,header
+video95_02.asm,$07CEE0,8,getplayername,code,data94,name
+video95_02.asm,$07CEE8,14,getnamea0,code,data94,follows getplayername
+video95_02.asm,$07CEF6,32,d0toascii,code,data94,name
+video95_02.asm,$07CF16,98,CalcAttrib,code,cards94,name
+video95_02.asm,$07CF78,276,CalcAttribRating,code,new in 95,header
+video95_02.asm,$07D08C,16,OvrPlayerWgtList,data,cards94,name
+video95_02.asm,$07D09C,16,OvrGoalWgtList,data,cards94,name
+video95_02.asm,$07D0AC,16,AttribWgtList,data,cards94,name
+video95_02.asm,$07D0BC,100,PushTime,code,video94,name
+video95_02.asm,$07D120,52,PushNumber,code,video94,name
+video95_02.asm,$07D154,92,PushNumberWidth,code,video94,name
+video95_02.asm,$07D1B0,92,PushNumberWidthZero,code,new in 95,header
+video95_02.asm,$07D20C,8,appendz,code,video94,name
+video95_02.asm,$07D214,68,appstring,code,video94,name
+video95_02.asm,$07D258,16,ScaleAttrib,code,new in 95,header
+video95_02.asm,$07D268,70,PutTeamBlock,code,new in 95,header
+video95_02.asm,$07D2AE,102,setupTeamBlocksMap,code,setup94,name
+video95_02.asm,$07D314,74,CopyTeamBlockMapData,code,setup94,name
+video95_02.asm,$07D35E,140,DoDMA_nd2,code,video94,name
+video95_02.asm,$07D3EA,14,GetTeamLogo,code,scout94,name
+video95_02.asm,$07D3F8,112,TeamLogoBitmaps,data,optsetup94,name
+video95_02.asm,$07D468,56,DrawTeamLogo,code,optsetup94,name
+video95_02.asm,$07D4A0,42,ResetClock,code,hockey94,name
+video95_02.asm,$07D4CA,24,GetPeriodTime,code,hockey94,name
+video95_02.asm,$07D4E2,94,ClrHor,code,penalty94,name
+video95_02.asm,$07D540,432,AssignPads,code,new in 95,header
+video95_02.asm,$07D6F0,22,SetRinkPalette,code,new in 95,header
+video95_02.asm,$07D706,92,waitx,code,video94,name
+video95_02.asm,$07D762,20,GetPeriodTimeRemaining,code,collide94,name
+video95_02.asm,$07D776,172,PrintScores1,code,penalty94,name
+video95_02.asm,$07D822,34,PrintTeamNameAndScore,code,penalty94,name
+video95_02.asm,$07D844,10,ReAddFramer,code,new in 95,header
+video95_02.asm,$07D84E,10,ReAddSmallFont,code,new in 95,header
+video95_02.asm,$07D858,44,AddFonts,code,new in 95,header
+video95_02.asm,$07D884,16,chkpk,code,checks94,name
+video95_02.asm,$07D894,30,chkpk2,code,checks94,name
+video95_02.asm,$07D8B2,32,CheckNewCarrier,code,new in 95,header
+video95_02.asm,$07D8D2,18,printbigz,code,video94,name
+video95_02.asm,$07D8E4,18,printbigz2,code,new in 95,header
+video95_02.asm,$07D8F6,18,printbigz1,code,new in 95,header
+video95_02.asm,$07D908,14,printbig1,code,new in 95,header
+video95_02.asm,$07D916,14,printbig,code,video94,name
+video95_02.asm,$07D924,10,printbig2,code,new in 95,header
+video95_02.asm,$07D92E,154,printbigtext,code,video94,header names 94 printbig
+video95_02.asm,$07D9C8,74,PrintBigChar,code,video94,name
+video95_02.asm,$07DA12,42,PutBigTile,code,video94,name
+video95_02.asm,$07DA3C,60,bfasciicon,data,data94,name
+video95_02.asm,$07DA78,200,UnpackPicture,code,title94,name
+video95_02.asm,$07DB40,60,UpdateLineChange,code,hockey94,name
+video95_02.asm,$07DB7C,38,RestoreTeamEnergy,code,penalty94,name
+video95_02.asm,$07DBA2,40,ResetTeamEnergy,code,new in 95,header
+video95_02.asm,$07DBCA,14,setpde,code,collide94,name
+video95_02.asm,$07DBD8,50,SeasonPlayerOut,code,new in 95,header
+video95_02.asm,$07DC0A,44,WeightedRandomSelect,code,checks94,name
+video95_02.asm,$07DC36,44,AppendTeamName,code,cards94,name
+video95_02.asm,$07DC62,20,StartText,code,cards94,name
+video95_02.asm,$07DC76,104,AppendUserName,code,cards94,name
+video95_02.asm,$07DCDE,2,NoNameTxt,data,cards94,name
+video95_02.asm,$07DCE0,38,TrimSpaces,code,cards94,name
+video95_02.asm,$07DD06,410,setupice,code,setup94,name
 fourway95.asm,$07DEA0,34,LoadHomeTeamGfx,code,title94,name
 fourway95.asm,$07DEC2,112,TeamGfxList,data,title94,name
 fourway95.asm,$07DF32,56,EASNLogo,code,penalty94,name
@@ -525,9 +525,9 @@ fourway95.asm,$07E082,28,Read4WayPad4,code,fourway94,name
 fourway95.asm,$07E09E,30,Read4WayPort1,code,new in 95,header
 fourway95.asm,$07E0BC,30,Read4WayPort2,code,new in 95,header
 fourway95.asm,$07E0DA,6,ReadJoyJmp,code,new in 95,header
-data/sound95_02.asm,$07E0E0,652,Z80_Program_Code,data,sound94,name
-hockey95_02.asm,$07E36C,348,Pausemode,code,hockey94,name
-hockey95_02.asm,$07E4C8,14,SetupPauseScreen,code,hockey94,name
+sound95_02.asm,$07E0E0,652,Z80_Program_Code,data,sound94,name
+menu95.asm,$07E36C,348,Pausemode,code,hockey94,name
+menu95.asm,$07E4C8,14,SetupPauseScreen,code,hockey94,name
 menu95.asm,$07E4D6,80,seta2,code,hockey94,name
 menu95.asm,$07E526,16,InitMenuState,code,menu94,name
 menu95.asm,$07E536,10,DrawMenuScreen,code,menu94,name
@@ -589,68 +589,68 @@ checks95_01.asm,$080426,82,AdjustFacingDirection,code,checks94,name
 checks95_01.asm,$080478,714,goaliesave,code,checks94,name
 checks95_01.asm,$080742,20,saveanim,data,checks94,follows goaliesave
 checks95_01.asm,$080756,150,assgoalietopuck,code,checks94,name
-assign95_01.asm,$0807EC,528,assdefd,code,assign94,name
-assign95_01.asm,$0809FC,2,rtss21,code,assign94,fingerprint rtss21
-assign95_01.asm,$0809FE,492,asswingd,code,assign94,name
-checks95_02.asm,$080BEA,376,asswingo,code,checks94,name
-checks95_02.asm,$080D62,2,rtss11,code,checks94,fingerprint rtss11
-checks95_02.asm,$080D64,398,asscenterd,code,checks94,name
-checks95_02.asm,$080EF2,306,asscentero,code,checks94,name
-checks95_02.asm,$081024,478,assdefo,code,assign94,name
-checks95_02.asm,$081202,28,assnothing,code,assign94,name
-checks95_02.asm,$08121E,2,assfight,code,assign94,name
-checks95_02.asm,$081220,236,pucknorm,code,checks94,name
-checks95_02.asm,$08130C,42,puckunflip,code,checks94,name
-checks95_02.asm,$081336,28,puckflip,code,checks94,name
-checks95_02.asm,$081352,78,puckshadow,code,checks94,name
-checks95_02.asm,$0813A0,140,findpc,code,checks94,name
-checks95_02.asm,$08142C,276,a2touchpuck,code,checks94,name
-checks95_02.asm,$081540,30,Setplass,code,collide94,name
-checks95_02.asm,$08155E,18,assexit,code,checks94,name
-checks95_02.asm,$081570,10,assinsert,code,checks94,name
-checks95_02.asm,$08157A,20,assreplace,code,checks94,name
-checks95_02.asm,$08158E,156,EvadePC,code,checks94,name
-checks95_02.asm,$08162A,2,rtsskateto,code,checks94,follows EvadePC
-checks95_02.asm,$08162C,206,skateto,code,checks94,name
-checks95_02.asm,$0816FA,276,check4check,code,checks94,name
-checks95_02.asm,$08180E,330,check4check2,code,new in 95,header
-checks95_02.asm,$081958,240,asspassrec,code,checks94,name
-checks95_02.asm,$081A48,18,SkateToTempTarget,code,checks94,name
-checks95_02.asm,$081A5A,2,rtss6,code,assign94,header names 94 rtss6
-checks95_02.asm,$081A5C,2,rtsskate,code,checks94,fingerprint asspassrec
-checks95_02.asm,$081A5E,38,assbreakaway,code,checks94,name
-checks95_02.asm,$081A84,960,assnearest,code,checks94,name
-checks95_02.asm,$081E44,26,skatetopuckinit,code,checks94,name
-checks95_02.asm,$081E5E,180,skatetopuck,code,checks94,name
-checks95_02.asm,$081F12,256,avdgoal,code,checks94,name
-checks95_02.asm,$082012,298,breakaway,code,checks94,name
-checks95_02.asm,$08213C,42,chkpuckc,code,checks94,name
-checks95_02.asm,$082166,762,asspuckc,code,checks94,name
-checks95_02.asm,$082460,472,chk4shot,code,checks94,name
-checks95_02.asm,$082638,344,chk4pass,code,checks94,name
-checks95_02.asm,$082790,158,check4bench,code,input94,name
-assign95_02.asm,$08282E,374,assbench,code,assign94,name
-assign95_02.asm,$0829A4,2,rtss4,code,assign94,header names 94 rtss4
-assign95_02.asm,$0829A6,356,asspenalty,code,assign94,name
-assign95_02.asm,$082B0A,52,assdopen,code,assign94,name
-assign95_02.asm,$082B3E,146,assepen,code,assign94,name
+checks95_01.asm,$0807EC,528,assdefd,code,assign94,name
+checks95_01.asm,$0809FC,2,rtss21,code,assign94,fingerprint rtss21
+checks95_01.asm,$0809FE,492,asswingd,code,assign94,name
+checks95_01.asm,$080BEA,376,asswingo,code,checks94,name
+checks95_01.asm,$080D62,2,rtss11,code,checks94,fingerprint rtss11
+checks95_01.asm,$080D64,398,asscenterd,code,checks94,name
+checks95_01.asm,$080EF2,306,asscentero,code,checks94,name
+checks95_01.asm,$081024,478,assdefo,code,assign94,name
+checks95_01.asm,$081202,28,assnothing,code,assign94,name
+checks95_01.asm,$08121E,2,assfight,code,assign94,name
+checks95_01.asm,$081220,236,pucknorm,code,checks94,name
+checks95_01.asm,$08130C,42,puckunflip,code,checks94,name
+checks95_01.asm,$081336,28,puckflip,code,checks94,name
+checks95_01.asm,$081352,78,puckshadow,code,checks94,name
+checks95_01.asm,$0813A0,140,findpc,code,checks94,name
+checks95_01.asm,$08142C,276,a2touchpuck,code,checks94,name
+checks95_01.asm,$081540,30,Setplass,code,collide94,name
+checks95_01.asm,$08155E,18,assexit,code,checks94,name
+checks95_01.asm,$081570,10,assinsert,code,checks94,name
+checks95_01.asm,$08157A,20,assreplace,code,checks94,name
+checks95_01.asm,$08158E,156,EvadePC,code,checks94,name
+checks95_01.asm,$08162A,2,rtsskateto,code,checks94,follows EvadePC
+checks95_01.asm,$08162C,206,skateto,code,checks94,name
+checks95_01.asm,$0816FA,276,check4check,code,checks94,name
+checks95_01.asm,$08180E,330,check4check2,code,new in 95,header
+checks95_01.asm,$081958,240,asspassrec,code,checks94,name
+checks95_01.asm,$081A48,18,SkateToTempTarget,code,checks94,name
+checks95_01.asm,$081A5A,2,rtss6,code,assign94,header names 94 rtss6
+checks95_01.asm,$081A5C,2,rtsskate,code,checks94,fingerprint asspassrec
+checks95_01.asm,$081A5E,38,assbreakaway,code,checks94,name
+checks95_01.asm,$081A84,960,assnearest,code,checks94,name
+checks95_01.asm,$081E44,26,skatetopuckinit,code,checks94,name
+checks95_01.asm,$081E5E,180,skatetopuck,code,checks94,name
+checks95_01.asm,$081F12,256,avdgoal,code,checks94,name
+checks95_01.asm,$082012,298,breakaway,code,checks94,name
+checks95_01.asm,$08213C,42,chkpuckc,code,checks94,name
+checks95_01.asm,$082166,762,asspuckc,code,checks94,name
+checks95_01.asm,$082460,472,chk4shot,code,checks94,name
+checks95_01.asm,$082638,344,chk4pass,code,checks94,name
+checks95_01.asm,$082790,158,check4bench,code,input94,name
+checks95_01.asm,$08282E,374,assbench,code,assign94,name
+checks95_01.asm,$0829A4,2,rtss4,code,assign94,header names 94 rtss4
+checks95_01.asm,$0829A6,356,asspenalty,code,assign94,name
+checks95_01.asm,$082B0A,52,assdopen,code,assign94,name
+checks95_01.asm,$082B3E,146,assepen,code,assign94,name
 onetimer95.asm,$082BD0,638,assonetimer,code,onetimer94,name
 onetimer95.asm,$082E4E,58,setonetimeranim,code,onetimer94,name
 onetimer95.asm,$082E88,118,PuckOnAttackHalf,code,onetimer94,name
 onetimer95.asm,$082EFE,98,onetimershot,code,onetimer94,name
 onetimer95.asm,$082F60,82,EndOneTimer,code,title94,name
 onetimer95.asm,$082FB2,16,CheckOneTimerFacing,code,onetimer94,name
-checks95_03.asm,$082FC2,56,assshoot,code,checks94,name
-checks95_03.asm,$082FFA,344,assgoaliectrl,code,checks94,name
-checks95_03.asm,$083152,90,a2offsides,code,checks94,name
-checks95_03.asm,$0831AC,116,asseben,code,assign94,name
-checks95_03.asm,$083220,478,assdefdchase,code,new in 95,header
-checks95_03.asm,$0833FE,84,setSlotBit,code,cards94,name
-checks95_03.asm,$083452,282,assscore,code,assign94,name
-checks95_03.asm,$08356C,90,assgoaliebreakwait,code,assign94,name
-checks95_03.asm,$0835C6,104,ChkGoalies,code,checks94,name
-checks95_03.asm,$08362E,52,ReturnGoalies,code,checks94,name
-checks95_03.asm,$083662,74,CPgoalie,code,checks94,name
+checks95_02.asm,$082FC2,56,assshoot,code,checks94,name
+checks95_02.asm,$082FFA,344,assgoaliectrl,code,checks94,name
+checks95_02.asm,$083152,90,a2offsides,code,checks94,name
+checks95_02.asm,$0831AC,116,asseben,code,assign94,name
+checks95_02.asm,$083220,478,assdefdchase,code,new in 95,header
+checks95_02.asm,$0833FE,84,setSlotBit,code,cards94,name
+checks95_02.asm,$083452,282,assscore,code,assign94,name
+checks95_02.asm,$08356C,90,assgoaliebreakwait,code,assign94,name
+checks95_02.asm,$0835C6,104,ChkGoalies,code,checks94,name
+checks95_02.asm,$08362E,52,ReturnGoalies,code,checks94,name
+checks95_02.asm,$083662,74,CPgoalie,code,checks94,name
 collide95_02.asm,$0836AC,32,PuckcIsGoalie,code,new in 95,header
 collide95_02.asm,$0836CC,186,SetPersonel,code,collide94,name
 collide95_02.asm,$083786,192,SetPlList,code,collide94,name
@@ -694,102 +694,102 @@ input95_01.asm,$084E3A,224,shotdiradj,code,input94,name
 input95_01.asm,$084F1A,18,shotdirmath,code,input94,name
 input95_01.asm,$084F2C,138,puckvzadj,code,onetimer94,name
 input95_01.asm,$084FB6,50,compshoot,code,checks94,name
-data95_01.asm,$084FE8,504,TeamRosterScreen,code,stats94,name
-data95_01.asm,$0851E0,382,DisplayPlayerList,code,stats94,name
-data95_01.asm,$08535E,218,PrintPlayerLines,code,new in 95,header
-data95_01.asm,$085438,54,PlayerStatMenuTxt,data,stats94,name
-data95_01.asm,$08546E,12,ExitAttributeScreen2,code,stats94,name
-data95_01.asm,$08547A,68,getNameandAttrib,code,stats94,name
-data95_01.asm,$0854BE,12,attribjmp,data,stats94,name
-data95_01.asm,$0854CA,130,AttribStatus,code,stats94,name
-data95_01.asm,$08554C,52,StatusTextTbl,data,stats94,name
-data95_01.asm,$085580,100,InjuryGamesTbl,data,new in 95,header
-data95_01.asm,$0855E4,26,AttribEnergy,code,stats94,name
-data95_01.asm,$0855FE,6,AttribFighting,code,stats94,name
-data95_01.asm,$085604,38,AttribRating,code,stats94,name
-data95_01.asm,$08562A,28,AttribPrintPct,code,stats94,name
-data95_01.asm,$085646,14,AttribHanded,code,stats94,name
-data95_01.asm,$085654,20,HandedTextTbl,data,stats94,name
-data95_01.asm,$085668,34,AttribWeight,code,stats94,name
-data95_01.asm,$08568A,322,DrawTeamScreen,code,stats94,name
-data95_01.asm,$0857CC,56,FindPlayerLine,code,new in 95,header
-data95_01.asm,$085804,26,LoadRosterFont,code,new in 95,header
-data95_01.asm,$08581E,22,PAttribColumns,data,data94,name
-data95_01.asm,$085834,18,PAttribOverall,data,data94,name
-data95_01.asm,$085846,314,PAttribOverallMask,data,data94,name
-data95_01.asm,$085980,22,GAttribColumns,data,data94,name
-data95_01.asm,$085996,18,GAttribOverall,data,data94,name
-data95_01.asm,$0859A8,226,GAttribOverallMask,data,data94,name
-data95_01.asm,$085A8A,20,PlayerPositionText,data,data94,name
-data95_01.asm,$085A9E,750,GameSetUp,code,optsetup94,name
-data95_01.asm,$085D8C,286,GameSetUp_2,code,optsetup94,name
-data95_01.asm,$085EAA,8,OptionLimits,data,optsetup94,name
-data95_01.asm,$085EB2,26,WrapOptionUp,code,optsetup94,follows OptionLimits
-data95_01.asm,$085ECC,26,WrapOptionDown,code,optsetup94,follows WrapOptionUp
-data95_01.asm,$085EE6,72,MoveMenuFrame,code,optsetup94,name
-data95_01.asm,$085F2E,1074,FixModeOptions,code,optsetup94,name
-data95_01.asm,$086360,70,EraseCardText,code,new in 95,header
-data95_01.asm,$0863A6,174,PrintOptions,code,optsetup94,name
-data95_01.asm,$086454,4,ScrollDownTxt,data,optsetup94,name
-data95_01.asm,$086458,4,ScrollClearTxt,data,optsetup94,name
-data95_01.asm,$08645C,4,ScrollUpTxt,data,optsetup94,name
-data95_01.asm,$086460,280,GameSetUp_4,code,optsetup94,name
-data95_01.asm,$086578,20,IslandersTxt,data,optsetup94,name
-data95_01.asm,$08658C,20,RangersTxt,data,optsetup94,name
-data95_01.asm,$0865A0,22,BlankValueTxt,data,optsetup94,name
-data95_01.asm,$0865B6,22,NATxt,data,optsetup94,name
-data95_01.asm,$0865CC,122,PrintOptionName,code,optsetup94,header names 94 PrintOptionNames
-data95_01.asm,$086646,16,BlankNameTxt,data,optsetup94,follows PrintOptionName
-data95_01.asm,$086656,68,PrintSetupText,code,new in 95,header
-data95_01.asm,$08669A,68,PrintSetupTextHi,code,new in 95,header
-data95_01.asm,$0866DE,34,DefaultMenus,code,data94,name
-data95_01.asm,$086700,18,defmenuoptions,data,data94,name
-data95_01.asm,$086712,88,GetSetupValues,code,new in 95,header
-data95_01.asm,$08676A,6,ModeToSetupMode,data,new in 95,follows GetSetupValues
-data95_01.asm,$086770,456,SetupStart,code,optsetup94,name
-data95_01.asm,$086938,14,SetupModeToMode,data,optsetup94,follows SetupStart
-data95_01.asm,$086946,258,setoptions,code,optsetup94,name
-data95_01.asm,$086A48,16,LoadSetupTiles,code,optsetup94,name
-data95_01.asm,$086A58,372,FigureJoy,code,data94,name
-data95_01.asm,$086BCC,28,NOPJoyTbl,data,data94,header names 94 FigureJoy
-data95_01.asm,$086BE8,128,OptionNames,data,optsetup94,name
-data95_01.asm,$086C68,606,OptionValueOffsets,data,optsetup94,name
-data95_01.asm,$086EC6,160,DrawMatchupBitmaps,code,attract94,name
-data95_01.asm,$086F66,34,DrawTeamBitmap,code,attract94,name
-data95_01.asm,$086F88,204,UpdateSetupLogos,code,new in 95,header
-data95_01.asm,$087054,74,DrawHomeBlock,code,optsetup94,name
-data95_01.asm,$08709E,70,DrawVisBlock,code,optsetup94,name
-data95_01.asm,$0870E4,144,DrawSetupLogo,code,optsetup94,header names optsetup94
-data95_01.asm,$087174,518,PlayerCardTimer,code,optsetup94,name
-data95_01.asm,$08737A,18,ResetCardTimer,code,optsetup94,name
-data95_01.asm,$08738C,10,GetBlankChar,code,new in 95,header
-data95_01.asm,$087396,76,EraseCard,code,optsetup94,name
-data95_01.asm,$0873E2,32,ClearLogoPalettes,code,new in 95,header
-data95_01.asm,$087402,58,StepSeasonTeam,code,new in 95,header
-data95_01.asm,$08743C,44,SetPojoyMode,code,attract94,name
-data95_01.asm,$087468,48,InitializeGameStructures,code,data94,name
-data95_01.asm,$087498,14,OptionRNG,code,data94,name
-data95_01.asm,$0874A6,200,ReadPassBits,code,data94,name
-data95_01.asm,$08756E,150,EncodePW,code,data94,name
-data95_01.asm,$087604,100,WritePassBits,code,data94,name
-data95_01.asm,$087668,24,PushBits,code,data94,name
-data95_01.asm,$087680,12,ClrPassBits,code,data94,name
-data95_01.asm,$08768C,28,SuperAdd,code,data94,name
-data95_01.asm,$0876A8,54,SuperMult,code,data94,name
-data95_01.asm,$0876DE,30,SuperDiv,code,data94,name
-data95_01.asm,$0876FC,24,GetShifter,code,data94,name
-data95_01.asm,$087714,148,AddPOStats,code,data94,name
-data95_01.asm,$0877A8,4,BitWidthTable,data,data94,name
-data95_01.asm,$0877AC,70,ReadTeamStats,code,data94,name
-data95_01.asm,$0877F2,394,ResolveGames,code,data94,name
-data95_01.asm,$08797C,118,ContinuePlayoffs,code,data94,name
-data95_01.asm,$0879F2,108,NewPO,code,data94,name
-data95_01.asm,$087A5E,132,MakeTree,code,data94,name
-data95_01.asm,$087AE2,62,SetTreeGameTeams,code,new in 95,header
-data95_01.asm,$087B20,16,CheckPlayoffsStarted,code,new in 95,header
-data95_01.asm,$087B30,54,ReadLineData,code,title94,name
-data95_01.asm,$087B66,58,WriteLineData,code,title94,name
-data95_01.asm,$087BA0,2,rtsLineData,code,title94,fingerprint WriteLineData
+optsetup95.asm,$084FE8,504,TeamRosterScreen,code,stats94,name
+optsetup95.asm,$0851E0,382,DisplayPlayerList,code,stats94,name
+optsetup95.asm,$08535E,218,PrintPlayerLines,code,new in 95,header
+optsetup95.asm,$085438,54,PlayerStatMenuTxt,data,stats94,name
+optsetup95.asm,$08546E,12,ExitAttributeScreen2,code,stats94,name
+optsetup95.asm,$08547A,68,getNameandAttrib,code,stats94,name
+optsetup95.asm,$0854BE,12,attribjmp,data,stats94,name
+optsetup95.asm,$0854CA,130,AttribStatus,code,stats94,name
+optsetup95.asm,$08554C,52,StatusTextTbl,data,stats94,name
+optsetup95.asm,$085580,100,InjuryGamesTbl,data,new in 95,header
+optsetup95.asm,$0855E4,26,AttribEnergy,code,stats94,name
+optsetup95.asm,$0855FE,6,AttribFighting,code,stats94,name
+optsetup95.asm,$085604,38,AttribRating,code,stats94,name
+optsetup95.asm,$08562A,28,AttribPrintPct,code,stats94,name
+optsetup95.asm,$085646,14,AttribHanded,code,stats94,name
+optsetup95.asm,$085654,20,HandedTextTbl,data,stats94,name
+optsetup95.asm,$085668,34,AttribWeight,code,stats94,name
+optsetup95.asm,$08568A,322,DrawTeamScreen,code,stats94,name
+optsetup95.asm,$0857CC,56,FindPlayerLine,code,new in 95,header
+optsetup95.asm,$085804,26,LoadRosterFont,code,new in 95,header
+optsetup95.asm,$08581E,22,PAttribColumns,data,data94,name
+optsetup95.asm,$085834,18,PAttribOverall,data,data94,name
+optsetup95.asm,$085846,314,PAttribOverallMask,data,data94,name
+optsetup95.asm,$085980,22,GAttribColumns,data,data94,name
+optsetup95.asm,$085996,18,GAttribOverall,data,data94,name
+optsetup95.asm,$0859A8,226,GAttribOverallMask,data,data94,name
+optsetup95.asm,$085A8A,20,PlayerPositionText,data,data94,name
+optsetup95.asm,$085A9E,750,GameSetUp,code,optsetup94,name
+optsetup95.asm,$085D8C,286,GameSetUp_2,code,optsetup94,name
+optsetup95.asm,$085EAA,8,OptionLimits,data,optsetup94,name
+optsetup95.asm,$085EB2,26,WrapOptionUp,code,optsetup94,follows OptionLimits
+optsetup95.asm,$085ECC,26,WrapOptionDown,code,optsetup94,follows WrapOptionUp
+optsetup95.asm,$085EE6,72,MoveMenuFrame,code,optsetup94,name
+optsetup95.asm,$085F2E,1074,FixModeOptions,code,optsetup94,name
+optsetup95.asm,$086360,70,EraseCardText,code,new in 95,header
+optsetup95.asm,$0863A6,174,PrintOptions,code,optsetup94,name
+optsetup95.asm,$086454,4,ScrollDownTxt,data,optsetup94,name
+optsetup95.asm,$086458,4,ScrollClearTxt,data,optsetup94,name
+optsetup95.asm,$08645C,4,ScrollUpTxt,data,optsetup94,name
+optsetup95.asm,$086460,280,GameSetUp_4,code,optsetup94,name
+optsetup95.asm,$086578,20,IslandersTxt,data,optsetup94,name
+optsetup95.asm,$08658C,20,RangersTxt,data,optsetup94,name
+optsetup95.asm,$0865A0,22,BlankValueTxt,data,optsetup94,name
+optsetup95.asm,$0865B6,22,NATxt,data,optsetup94,name
+optsetup95.asm,$0865CC,122,PrintOptionName,code,optsetup94,header names 94 PrintOptionNames
+optsetup95.asm,$086646,16,BlankNameTxt,data,optsetup94,follows PrintOptionName
+optsetup95.asm,$086656,68,PrintSetupText,code,new in 95,header
+optsetup95.asm,$08669A,68,PrintSetupTextHi,code,new in 95,header
+optsetup95.asm,$0866DE,34,DefaultMenus,code,data94,name
+optsetup95.asm,$086700,18,defmenuoptions,data,data94,name
+optsetup95.asm,$086712,88,GetSetupValues,code,new in 95,header
+optsetup95.asm,$08676A,6,ModeToSetupMode,data,new in 95,follows GetSetupValues
+optsetup95.asm,$086770,456,SetupStart,code,optsetup94,name
+optsetup95.asm,$086938,14,SetupModeToMode,data,optsetup94,follows SetupStart
+optsetup95.asm,$086946,258,setoptions,code,optsetup94,name
+optsetup95.asm,$086A48,16,LoadSetupTiles,code,optsetup94,name
+optsetup95.asm,$086A58,372,FigureJoy,code,data94,name
+optsetup95.asm,$086BCC,28,NOPJoyTbl,data,data94,header names 94 FigureJoy
+optsetup95.asm,$086BE8,128,OptionNames,data,optsetup94,name
+optsetup95.asm,$086C68,606,OptionValueOffsets,data,optsetup94,name
+optsetup95.asm,$086EC6,160,DrawMatchupBitmaps,code,attract94,name
+optsetup95.asm,$086F66,34,DrawTeamBitmap,code,attract94,name
+optsetup95.asm,$086F88,204,UpdateSetupLogos,code,new in 95,header
+optsetup95.asm,$087054,74,DrawHomeBlock,code,optsetup94,name
+optsetup95.asm,$08709E,70,DrawVisBlock,code,optsetup94,name
+optsetup95.asm,$0870E4,144,DrawSetupLogo,code,optsetup94,header names optsetup94
+optsetup95.asm,$087174,518,PlayerCardTimer,code,optsetup94,name
+optsetup95.asm,$08737A,18,ResetCardTimer,code,optsetup94,name
+optsetup95.asm,$08738C,10,GetBlankChar,code,new in 95,header
+optsetup95.asm,$087396,76,EraseCard,code,optsetup94,name
+optsetup95.asm,$0873E2,32,ClearLogoPalettes,code,new in 95,header
+optsetup95.asm,$087402,58,StepSeasonTeam,code,new in 95,header
+optsetup95.asm,$08743C,44,SetPojoyMode,code,attract94,name
+optsetup95.asm,$087468,48,InitializeGameStructures,code,data94,name
+optsetup95.asm,$087498,14,OptionRNG,code,data94,name
+optsetup95.asm,$0874A6,200,ReadPassBits,code,data94,name
+optsetup95.asm,$08756E,150,EncodePW,code,data94,name
+optsetup95.asm,$087604,100,WritePassBits,code,data94,name
+optsetup95.asm,$087668,24,PushBits,code,data94,name
+optsetup95.asm,$087680,12,ClrPassBits,code,data94,name
+optsetup95.asm,$08768C,28,SuperAdd,code,data94,name
+optsetup95.asm,$0876A8,54,SuperMult,code,data94,name
+optsetup95.asm,$0876DE,30,SuperDiv,code,data94,name
+optsetup95.asm,$0876FC,24,GetShifter,code,data94,name
+optsetup95.asm,$087714,148,AddPOStats,code,data94,name
+optsetup95.asm,$0877A8,4,BitWidthTable,data,data94,name
+optsetup95.asm,$0877AC,70,ReadTeamStats,code,data94,name
+optsetup95.asm,$0877F2,394,ResolveGames,code,data94,name
+optsetup95.asm,$08797C,118,ContinuePlayoffs,code,data94,name
+optsetup95.asm,$0879F2,108,NewPO,code,data94,name
+optsetup95.asm,$087A5E,132,MakeTree,code,data94,name
+optsetup95.asm,$087AE2,62,SetTreeGameTeams,code,new in 95,header
+optsetup95.asm,$087B20,16,CheckPlayoffsStarted,code,new in 95,header
+optsetup95.asm,$087B30,54,ReadLineData,code,title94,name
+optsetup95.asm,$087B66,58,WriteLineData,code,title94,name
+optsetup95.asm,$087BA0,2,rtsLineData,code,title94,fingerprint WriteLineData
 setup95_02.asm,$087BA2,658,PlayoffScreen,code,setup94,name
 setup95_02.asm,$087E34,68,HandlePlayoffInput,code,setup94,name
 setup95_02.asm,$087E78,98,UpdatePlayoffScroll,code,setup94,name
@@ -800,26 +800,26 @@ setup95_02.asm,$087F2E,46,DrawPlayoffBracket,code,setup94,name
 setup95_02.asm,$087F5C,78,DrawTeamBlocks,code,setup94,name
 setup95_02.asm,$087FAA,82,PlayoffScreenDataTable,code,setup94,name
 setup95_02.asm,$087FFC,74,PlayoffScreenText,data,setup94,name
-checks95_04.asm,$088046,362,PlayoffTreeSetup,data,data94,name
-checks95_04.asm,$0881B0,106,DrawPlayoffSprite,code,title94,name
-checks95_04.asm,$08821A,98,SetSframe,code,display94,name
-checks95_04.asm,$08827C,56,UpdateScores,code,penalty94,name
-checks95_04.asm,$0882B4,196,SetScore,code,penalty94,name
-checks95_04.asm,$088378,64,sctab,data,penalty94,name
-checks95_04.asm,$0883B8,16,ClearShotData,code,hockey94,name
-checks95_04.asm,$0883C8,426,puckfaceoff,code,checks94,name
-checks95_04.asm,$088572,76,SetFaceoffComputerLine,code,checks94,name
-checks95_04.asm,$0885BE,74,StartFaceoffLineChange,code,checks94,name
-checks95_04.asm,$088608,2,rtsfaceoff,code,collide94,header names 94 rtss2
-checks95_04.asm,$08860A,74,WaitForFaceoffLineChanges,code,checks94,name
-checks95_04.asm,$088654,90,UpdateFaceoffLineChangeTimer,code,checks94,name
-checks95_04.asm,$0886AE,1096,puckfaceoff2,code,checks94,name
-checks95_04.asm,$088AF6,22,assfaceoff,code,assign94,name
-checks95_04.asm,$088B0C,174,assfaceoffp1,code,assign94,name
-checks95_04.asm,$088BBA,130,updatefaceoff,code,checks94,name
-checks95_04.asm,$088C3C,278,Endfaceoff,code,checks94,name
-checks95_04.asm,$088D52,240,checkfo,code,display94,name
-checks95_04.asm,$088E42,196,DrawFaceoffWindow,code,new in 95,header
+checks95_03.asm,$088046,362,PlayoffTreeSetup,data,data94,name
+checks95_03.asm,$0881B0,106,DrawPlayoffSprite,code,title94,name
+checks95_03.asm,$08821A,98,SetSframe,code,display94,name
+checks95_03.asm,$08827C,56,UpdateScores,code,penalty94,name
+checks95_03.asm,$0882B4,196,SetScore,code,penalty94,name
+checks95_03.asm,$088378,64,sctab,data,penalty94,name
+checks95_03.asm,$0883B8,16,ClearShotData,code,hockey94,name
+checks95_03.asm,$0883C8,426,puckfaceoff,code,checks94,name
+checks95_03.asm,$088572,76,SetFaceoffComputerLine,code,checks94,name
+checks95_03.asm,$0885BE,74,StartFaceoffLineChange,code,checks94,name
+checks95_03.asm,$088608,2,rtsfaceoff,code,collide94,header names 94 rtss2
+checks95_03.asm,$08860A,74,WaitForFaceoffLineChanges,code,checks94,name
+checks95_03.asm,$088654,90,UpdateFaceoffLineChangeTimer,code,checks94,name
+checks95_03.asm,$0886AE,1096,puckfaceoff2,code,checks94,name
+checks95_03.asm,$088AF6,22,assfaceoff,code,assign94,name
+checks95_03.asm,$088B0C,174,assfaceoffp1,code,assign94,name
+checks95_03.asm,$088BBA,130,updatefaceoff,code,checks94,name
+checks95_03.asm,$088C3C,278,Endfaceoff,code,checks94,name
+checks95_03.asm,$088D52,240,checkfo,code,display94,name
+checks95_03.asm,$088E42,196,DrawFaceoffWindow,code,new in 95,header
 penalty95.asm,$088F06,106,limitfo,code,penalty94,name
 penalty95.asm,$088F70,154,LeadSong,code,title94,name
 penalty95.asm,$08900A,8,ClearLeadSong,code,title94,name
@@ -843,17 +843,17 @@ penalty95.asm,$0897B2,110,SetPA2,code,penalty94,name
 penalty95.asm,$089820,120,PushRef,code,penalty94,name
 penalty95.asm,$089898,178,prefmes,code,penalty94,name
 penalty95.asm,$08994A,36,PrintPenaltyMessagesString,code,penalty94,name
-data95_02.asm,$08996E,192,checkagr,code,collide94,name
-data95_02.asm,$089A2E,78,showref,code,display94,name
-data95_02.asm,$089A7C,14,ClearPenaltyBuffer,code,penalty94,name
-data95_02.asm,$089A8A,58,ClearPenalties,code,title94,name
-data95_02.asm,$089AC4,22,clrTmPdst,code,title94,name
-data95_02.asm,$089ADA,96,puckIChk,code,checks94,name
-data95_02.asm,$089B3A,244,ChkOffsides,code,checks94,name
-data95_02.asm,$089C2E,814,PenaltyList,data,data94,name
-data95_02.asm,$089F5C,160,checkob,code,checks94,name
-data95_02.asm,$089FFC,48,PenShotPenalties,data,data94,name
-data95_02.asm,$08A02C,42,linelist,data,data94,name
+data95.asm,$08996E,192,checkagr,code,collide94,name
+data95.asm,$089A2E,78,showref,code,display94,name
+data95.asm,$089A7C,14,ClearPenaltyBuffer,code,penalty94,name
+data95.asm,$089A8A,58,ClearPenalties,code,title94,name
+data95.asm,$089AC4,22,clrTmPdst,code,title94,name
+data95.asm,$089ADA,96,puckIChk,code,checks94,name
+data95.asm,$089B3A,244,ChkOffsides,code,checks94,name
+data95.asm,$089C2E,814,PenaltyList,data,data94,name
+data95.asm,$089F5C,160,checkob,code,checks94,name
+data95.asm,$089FFC,48,PenShotPenalties,data,data94,name
+data95.asm,$08A02C,42,linelist,data,data94,name
 input95_02.asm,$08A056,62,SetLCmode,code,input94,name
 input95_02.asm,$08A094,166,SetLCmode2,code,input94,name
 input95_02.asm,$08A13A,68,setlccords,code,input94,name
@@ -866,108 +866,108 @@ input95_02.asm,$08A330,2,rtslc,code,collide94,header names 94 rtss2
 input95_02.asm,$08A332,80,linebar,code,penalty94,name
 input95_02.asm,$08A382,66,getlinee,code,penalty94,name
 input95_02.asm,$08A3C4,58,AvgCline,code,penalty94,name
-checks95_05.asm,$08A3FE,254,CompLine,code,checks94,name
-checks95_05.asm,$08A4FC,118,AutoLineChange,code,checks94,name
-checks95_05.asm,$08A572,18,SetupTeamForIntermission,code,penalty94,name
-checks95_05.asm,$08A584,50,SetupTeamLine,code,new in 95,header
-checks95_05.asm,$08A5B6,34,ReadTeamSRAM,code,new in 95,header
-checks95_05.asm,$08A5D8,74,DefaultLineData,code,new in 95,header
-checks95_05.asm,$08A622,172,LoadTeamLines,code,new in 95,header
-checks95_05.asm,$08A6CE,204,FixSavedLines,code,new in 95,header
-checks95_05.asm,$08A79A,26,CheckSavedLines,code,new in 95,header
-checks95_05.asm,$08A7B4,132,CheckTeamLines,code,new in 95,header
-checks95_05.asm,$08A838,656,LineSlotFixTbl,data,new in 95,header
-checks95_05.asm,$08AAC8,182,EASportsScreen,code,attract94,name
-checks95_05.asm,$08AB7E,54,chkatop,code,penalty94,name
-checks95_05.asm,$08ABB4,38,updatePPTeamTime,code,period94,name
-checks95_05.asm,$08ABDA,274,ChkShotStat,code,penalty94,name
-checks95_05.asm,$08ACEC,404,DrawTeamScreen2,code,new in 95,header
-checks95_05.asm,$08AE80,404,DrawTeamScreen3,code,new in 95,header
-checks95_05.asm,$08B014,8,DrawTeamScreen4NoSetup,code,new in 95,header
-checks95_05.asm,$08B01C,118,DrawTeamScreen4,code,new in 95,header
-checks95_05.asm,$08B092,282,DrawTeamScreen4Body,code,new in 95,no 94 match
-checks95_05.asm,$08B1AC,382,DrawTeamScreen5,code,new in 95,header
-checks95_05.asm,$08B32A,438,DrawTeamScreen6,code,new in 95,header
-checks95_05.asm,$08B4E0,536,goalieacc,code,checks94,name
-checks95_05.asm,$08B6F8,58,doinput_goaliedive,code,input94,header names input94
-checks95_05.asm,$08B732,2,rtss15,code,checks94,fingerprint goalieacc
-input95_03.asm,$08B734,348,doinput_cbut,code,input94,name
-input95_03.asm,$08B890,62,ClampTargetY,code,input94,name
-input95_03.asm,$08B8CE,166,doinput_chkanim,code,input94,name
-input95_03.asm,$08B974,52,getGoalieSCnum,code,input94,name
-checks95_06.asm,$08B9A8,46,GoalieReadySPA,code,new in 95,header
-checks95_06.asm,$08B9D6,36,dirtab,data,checks94,name
-checks95_06.asm,$08B9FA,36,dirtab2,data,new in 95,header
-checks95_06.asm,$08BA1E,64,MaxSpeed,data,checks94,name
-checks95_06.asm,$08BA5E,188,dostop,code,checks94,name
-checks95_06.asm,$08BB1A,82,stopna,code,checks94,name
-checks95_06.asm,$08BB6C,302,updatevel,code,new in 95,header
-checks95_06.asm,$08BC9A,22,SetSPA,code,checks94,name
-checks95_06.asm,$08BCB0,74,stopna2,code,crowd94,name
-checks95_06.asm,$08BCFA,664,doplayeracc,code,checks94,name
-checks95_06.asm,$08BF92,230,noturn0,code,checks94,name
-checks95_06.asm,$08C078,14,noturn,code,checks94,name
-checks95_06.asm,$08C086,372,playeracc,code,checks94,name
-checks95_06.asm,$08C1FA,266,PlaceBoardFall,code,title94,name
-checks95_06.asm,$08C304,728,Goal,code,checks94,header names checks94
-checks95_06.asm,$08C5DC,64,AssignTeam,code,new in 95,header
-checks95_06.asm,$08C61C,2,rtsgoal,code,new in 95,follows AssignTeam
-checks95_06.asm,$08C61E,118,PenGoalStuff,code,penalty94,name
-checks95_06.asm,$08C694,28,box,code,data94,name
-checks95_06.asm,$08C6B0,394,DisplayPlayerAttributeMenu,code,data94,name
-checks95_06.asm,$08C83A,32,GoalBigTxt,data,data94,name
-checks95_06.asm,$08C85A,34,PPGoalBigTxt,data,data94,name
-checks95_06.asm,$08C87C,22,PrintPlayerAssists,code,title94,name
-checks95_06.asm,$08C892,18,PrintPlayerGoals,code,title94,name
-checks95_06.asm,$08C8A4,72,PrintParenNumber,code,title94,name
-checks95_06.asm,$08C8EC,20,LockScroll,code,new in 95,header
-checks95_06.asm,$08C900,312,checkwindow,code,replay94,name
-checks95_06.asm,$08CA38,128,SetGoaliesCtl,code,new in 95,header
-checks95_06.asm,$08CAB8,6,GoalieCtlLimits,data,new in 95,header
-checks95_06.asm,$08CABE,32,GetGoalieCtl,code,new in 95,header
-checks95_06.asm,$08CADE,124,PracticeGoalies,code,new in 95,header
-checks95_06.asm,$08CB5A,104,PeriodOver,code,setup94,name
-checks95_06.asm,$08CBC2,292,clockcont_0,code,hockey94,name
-checks95_06.asm,$08CCE6,28,GameOver,code,setup94,name
-checks95_06.asm,$08CD02,6,ExitToOpening,code,setup94,name
-checks95_06.asm,$08CD08,52,clockcont,code,hockey94,name
-checks95_06.asm,$08CD3C,408,SetContTeams,code,new in 95,header
-checks95_06.asm,$08CED4,4,ContTeamOrder1,data,new in 95,header
-checks95_06.asm,$08CED8,4,ContTeamOrder2,data,new in 95,follows ContTeamOrder1
-checks95_06.asm,$08CEDC,76,PrintPracticeGoalies,code,new in 95,header
-checks95_06.asm,$08CF28,20,PrintGoalieCount,code,new in 95,header
-checks95_06.asm,$08CF3C,12,GoalieCountTxt,data,new in 95,header
-checks95_06.asm,$08CF48,16,PracticeGoalieTbl,data,new in 95,header
-checks95_06.asm,$08CF58,154,DrawPadSetup,code,new in 95,header
-checks95_06.asm,$08CFF2,58,DrawPadIcon,code,new in 95,header
-checks95_06.asm,$08D02C,32,PadIconMaps,data,new in 95,header
-checks95_06.asm,$08D04C,68,DrawPadCursor,code,new in 95,header
-checks95_06.asm,$08D090,44,BlankLineTxt,data,new in 95,header
-checks95_06.asm,$08D0BC,38,PrintPracticeTitle,code,new in 95,header
-checks95_06.asm,$08D0E2,56,PracticePlayersTxt,data,new in 95,header
-checks95_06.asm,$08D11A,438,ControllerSetupScreen,code,new in 95,header
-checks95_06.asm,$08D2D0,48,DrawSetupTeamBlock,code,new in 95,header
-checks95_06.asm,$08D300,34,PrintSetupStr,code,new in 95,header
-checks95_06.asm,$08D322,34,PrintSetupStrHi,code,new in 95,header
-checks95_06.asm,$08D344,86,ReadAllPads,code,new in 95,header
-replay95_02.asm,$08D39A,184,chkcheckstart,code,new in 95,header
-replay95_02.asm,$08D452,268,CanCheckStart,code,new in 95,header
-replay95_02.asm,$08D55E,264,updatereplay,code,replay94,name
-replay95_02.asm,$08D666,2,rtss8,code,replay94,header names replay94
-replay95_02.asm,$08D668,1186,ReplayMode,code,replay94,name
-replay95_02.asm,$08DB0A,54,ShowReplayIcon,code,replay94,name
-replay95_02.asm,$08DB40,30,EraseReplayIcon,code,replay94,name
-replay95_02.asm,$08DB5E,52,ShowReplayBanner,code,replay94,name
-replay95_02.asm,$08DB92,30,EraseReplayBanner,code,replay94,name
-replay95_02.asm,$08DBB0,50,suba4,code,replay94,name
-replay95_02.asm,$08DBE2,200,adda4,code,replay94,name
-replay95_02.asm,$08DCAA,12,adda42,code,replay94,name
-replay95_02.asm,$08DCB6,20,adda43,code,replay94,name
-replay95_02.asm,$08DCCA,2,rtsAdda4,code,replay94,fingerprint adda43
-replay95_02.asm,$08DCCC,102,UpdateCameraPos,code,replay94,name
-replay95_02.asm,$08DD32,16,RevReplayAdj,code,replay94,name
-replay95_02.asm,$08DD42,474,RestoreReplayFrame,code,replay94,name
-replay95_02.asm,$08DF1C,62,ClampReplayView,code,replay94,name
+checks95_04.asm,$08A3FE,254,CompLine,code,checks94,name
+checks95_04.asm,$08A4FC,118,AutoLineChange,code,checks94,name
+checks95_04.asm,$08A572,18,SetupTeamForIntermission,code,penalty94,name
+checks95_04.asm,$08A584,50,SetupTeamLine,code,new in 95,header
+checks95_04.asm,$08A5B6,34,ReadTeamSRAM,code,new in 95,header
+checks95_04.asm,$08A5D8,74,DefaultLineData,code,new in 95,header
+checks95_04.asm,$08A622,172,LoadTeamLines,code,new in 95,header
+checks95_04.asm,$08A6CE,204,FixSavedLines,code,new in 95,header
+checks95_04.asm,$08A79A,26,CheckSavedLines,code,new in 95,header
+checks95_04.asm,$08A7B4,132,CheckTeamLines,code,new in 95,header
+checks95_04.asm,$08A838,656,LineSlotFixTbl,data,new in 95,header
+checks95_04.asm,$08AAC8,182,EASportsScreen,code,attract94,name
+checks95_04.asm,$08AB7E,54,chkatop,code,penalty94,name
+checks95_04.asm,$08ABB4,38,updatePPTeamTime,code,period94,name
+checks95_04.asm,$08ABDA,274,ChkShotStat,code,penalty94,name
+checks95_04.asm,$08ACEC,404,DrawTeamScreen2,code,new in 95,header
+checks95_04.asm,$08AE80,404,DrawTeamScreen3,code,new in 95,header
+checks95_04.asm,$08B014,8,DrawTeamScreen4NoSetup,code,new in 95,header
+checks95_04.asm,$08B01C,118,DrawTeamScreen4,code,new in 95,header
+checks95_04.asm,$08B092,282,DrawTeamScreen4Body,code,new in 95,no 94 match
+checks95_04.asm,$08B1AC,382,DrawTeamScreen5,code,new in 95,header
+checks95_04.asm,$08B32A,438,DrawTeamScreen6,code,new in 95,header
+checks95_04.asm,$08B4E0,536,goalieacc,code,checks94,name
+checks95_04.asm,$08B6F8,58,doinput_goaliedive,code,input94,header names input94
+checks95_04.asm,$08B732,2,rtss15,code,checks94,fingerprint goalieacc
+checks95_04.asm,$08B734,348,doinput_cbut,code,input94,name
+checks95_04.asm,$08B890,62,ClampTargetY,code,input94,name
+checks95_04.asm,$08B8CE,166,doinput_chkanim,code,input94,name
+checks95_04.asm,$08B974,52,getGoalieSCnum,code,input94,name
+checks95_04.asm,$08B9A8,46,GoalieReadySPA,code,new in 95,header
+checks95_04.asm,$08B9D6,36,dirtab,data,checks94,name
+checks95_04.asm,$08B9FA,36,dirtab2,data,new in 95,header
+checks95_04.asm,$08BA1E,64,MaxSpeed,data,checks94,name
+checks95_04.asm,$08BA5E,188,dostop,code,checks94,name
+checks95_04.asm,$08BB1A,82,stopna,code,checks94,name
+checks95_04.asm,$08BB6C,302,updatevel,code,new in 95,header
+checks95_04.asm,$08BC9A,22,SetSPA,code,checks94,name
+checks95_04.asm,$08BCB0,74,stopna2,code,crowd94,name
+checks95_04.asm,$08BCFA,664,doplayeracc,code,checks94,name
+checks95_04.asm,$08BF92,230,noturn0,code,checks94,name
+checks95_04.asm,$08C078,14,noturn,code,checks94,name
+checks95_04.asm,$08C086,372,playeracc,code,checks94,name
+checks95_04.asm,$08C1FA,266,PlaceBoardFall,code,title94,name
+checks95_04.asm,$08C304,728,Goal,code,checks94,header names checks94
+checks95_04.asm,$08C5DC,64,AssignTeam,code,new in 95,header
+checks95_04.asm,$08C61C,2,rtsgoal,code,new in 95,follows AssignTeam
+checks95_04.asm,$08C61E,118,PenGoalStuff,code,penalty94,name
+checks95_04.asm,$08C694,28,box,code,data94,name
+checks95_04.asm,$08C6B0,394,DisplayPlayerAttributeMenu,code,data94,name
+checks95_04.asm,$08C83A,32,GoalBigTxt,data,data94,name
+checks95_04.asm,$08C85A,34,PPGoalBigTxt,data,data94,name
+checks95_04.asm,$08C87C,22,PrintPlayerAssists,code,title94,name
+checks95_04.asm,$08C892,18,PrintPlayerGoals,code,title94,name
+checks95_04.asm,$08C8A4,72,PrintParenNumber,code,title94,name
+checks95_04.asm,$08C8EC,20,LockScroll,code,new in 95,header
+checks95_04.asm,$08C900,312,checkwindow,code,replay94,name
+checks95_04.asm,$08CA38,128,SetGoaliesCtl,code,new in 95,header
+checks95_04.asm,$08CAB8,6,GoalieCtlLimits,data,new in 95,header
+checks95_04.asm,$08CABE,32,GetGoalieCtl,code,new in 95,header
+checks95_04.asm,$08CADE,124,PracticeGoalies,code,new in 95,header
+checks95_04.asm,$08CB5A,104,PeriodOver,code,setup94,name
+checks95_04.asm,$08CBC2,292,clockcont_0,code,hockey94,name
+checks95_04.asm,$08CCE6,28,GameOver,code,setup94,name
+checks95_04.asm,$08CD02,6,ExitToOpening,code,setup94,name
+checks95_04.asm,$08CD08,52,clockcont,code,hockey94,name
+checks95_04.asm,$08CD3C,408,SetContTeams,code,new in 95,header
+checks95_04.asm,$08CED4,4,ContTeamOrder1,data,new in 95,header
+checks95_04.asm,$08CED8,4,ContTeamOrder2,data,new in 95,follows ContTeamOrder1
+checks95_04.asm,$08CEDC,76,PrintPracticeGoalies,code,new in 95,header
+checks95_04.asm,$08CF28,20,PrintGoalieCount,code,new in 95,header
+checks95_04.asm,$08CF3C,12,GoalieCountTxt,data,new in 95,header
+checks95_04.asm,$08CF48,16,PracticeGoalieTbl,data,new in 95,header
+checks95_04.asm,$08CF58,154,DrawPadSetup,code,new in 95,header
+checks95_04.asm,$08CFF2,58,DrawPadIcon,code,new in 95,header
+checks95_04.asm,$08D02C,32,PadIconMaps,data,new in 95,header
+checks95_04.asm,$08D04C,68,DrawPadCursor,code,new in 95,header
+checks95_04.asm,$08D090,44,BlankLineTxt,data,new in 95,header
+checks95_04.asm,$08D0BC,38,PrintPracticeTitle,code,new in 95,header
+checks95_04.asm,$08D0E2,56,PracticePlayersTxt,data,new in 95,header
+checks95_04.asm,$08D11A,438,ControllerSetupScreen,code,new in 95,header
+checks95_04.asm,$08D2D0,48,DrawSetupTeamBlock,code,new in 95,header
+checks95_04.asm,$08D300,34,PrintSetupStr,code,new in 95,header
+checks95_04.asm,$08D322,34,PrintSetupStrHi,code,new in 95,header
+checks95_04.asm,$08D344,86,ReadAllPads,code,new in 95,header
+replay95.asm,$08D39A,184,chkcheckstart,code,new in 95,header
+replay95.asm,$08D452,268,CanCheckStart,code,new in 95,header
+replay95.asm,$08D55E,264,updatereplay,code,replay94,name
+replay95.asm,$08D666,2,rtss8,code,replay94,header names replay94
+replay95.asm,$08D668,1186,ReplayMode,code,replay94,name
+replay95.asm,$08DB0A,54,ShowReplayIcon,code,replay94,name
+replay95.asm,$08DB40,30,EraseReplayIcon,code,replay94,name
+replay95.asm,$08DB5E,52,ShowReplayBanner,code,replay94,name
+replay95.asm,$08DB92,30,EraseReplayBanner,code,replay94,name
+replay95.asm,$08DBB0,50,suba4,code,replay94,name
+replay95.asm,$08DBE2,200,adda4,code,replay94,name
+replay95.asm,$08DCAA,12,adda42,code,replay94,name
+replay95.asm,$08DCB6,20,adda43,code,replay94,name
+replay95.asm,$08DCCA,2,rtsAdda4,code,replay94,fingerprint adda43
+replay95.asm,$08DCCC,102,UpdateCameraPos,code,replay94,name
+replay95.asm,$08DD32,16,RevReplayAdj,code,replay94,name
+replay95.asm,$08DD42,474,RestoreReplayFrame,code,replay94,name
+replay95.asm,$08DF1C,62,ClampReplayView,code,replay94,name
 season95.asm,$08DF5A,128,demoread,code,hockey94,name
 season95.asm,$08DFDA,28,HandleJoy1,code,hockey94,name
 season95.asm,$08DFF6,2,rtsdemo,code,hockey94,follows HandleJoy1
@@ -1670,21 +1670,21 @@ awards95.asm,$09D8D2,238,RecordPlayoffGame,code,new in 95,header
 awards95.asm,$09D9C0,8,RoundSeriesOffsets,data,new in 95,header
 awards95.asm,$09D9C8,6,RoundSeriesCounts,data,new in 95,header
 awards95.asm,$09D9CE,130,PlayoffTreeScreen,code,new in 95,header
-title95_01.asm,$09DA50,128,ClearShootout,code,shootout94,name
-title95_01.asm,$09DAD0,40,PSandSOpassdir,code,title94,name
-title95_01.asm,$09DAF8,18,passdirlist,data,title94,name
-title95_01.asm,$09DB0A,50,StartShootoutPath,code,title94,name
-title95_01.asm,$09DB3C,28,ShootoutPaths,data,title94,name
-title95_01.asm,$09DB58,12,ShootoutPath1,data,title94,name
-title95_01.asm,$09DB64,16,ShootoutPath2,data,title94,name
-title95_01.asm,$09DB74,12,ShootoutPath3,data,title94,name
-title95_01.asm,$09DB80,12,ShootoutPath4,data,title94,name
-title95_01.asm,$09DB8C,12,ShootoutPath5,data,title94,name
-title95_01.asm,$09DB98,12,ShootoutPath6,data,title94,name
-title95_01.asm,$09DBA4,12,ShootoutPath7,data,title94,name
-title95_01.asm,$09DBB0,104,NextPathPoint,code,title94,name
-title95_01.asm,$09DC18,136,SkatePath,code,title94,name
-title95_01.asm,$09DCA0,158,ShootoutShootCheck,code,title94,name
+shootout95.asm,$09DA50,128,ClearShootout,code,shootout94,name
+shootout95.asm,$09DAD0,40,PSandSOpassdir,code,title94,name
+shootout95.asm,$09DAF8,18,passdirlist,data,title94,name
+shootout95.asm,$09DB0A,50,StartShootoutPath,code,title94,name
+shootout95.asm,$09DB3C,28,ShootoutPaths,data,title94,name
+shootout95.asm,$09DB58,12,ShootoutPath1,data,title94,name
+shootout95.asm,$09DB64,16,ShootoutPath2,data,title94,name
+shootout95.asm,$09DB74,12,ShootoutPath3,data,title94,name
+shootout95.asm,$09DB80,12,ShootoutPath4,data,title94,name
+shootout95.asm,$09DB8C,12,ShootoutPath5,data,title94,name
+shootout95.asm,$09DB98,12,ShootoutPath6,data,title94,name
+shootout95.asm,$09DBA4,12,ShootoutPath7,data,title94,name
+shootout95.asm,$09DBB0,104,NextPathPoint,code,title94,name
+shootout95.asm,$09DC18,136,SkatePath,code,title94,name
+shootout95.asm,$09DCA0,158,ShootoutShootCheck,code,title94,name
 shootout95.asm,$09DD3E,86,NextShooter,code,shootout94,name
 shootout95.asm,$09DD94,90,CountShootoutGoals,code,shootout94,name
 shootout95.asm,$09DDEE,156,EndShootout,code,period94,name
@@ -1707,34 +1707,34 @@ shootout95.asm,$09E444,10,ResetShooterScroll,code,shootout94,name
 shootout95.asm,$09E44E,146,PrintShooterSlots,code,shootout94,name
 shootout95.asm,$09E4E0,142,PrintShooterBox,code,shootout94,name
 shootout95.asm,$09E56E,130,PrintShooterNames,code,shootout94,name
-checks95_07.asm,$09E5F0,438,puckshootout,code,checks94,name
-checks95_07.asm,$09E7A6,314,SelectPenaltyShotSkater,code,checks94,name
-checks95_07.asm,$09E8E0,842,puckpenshot,code,checks94,name
-checks95_07.asm,$09EC2A,52,PenShotTable,data,checks94,header names checks94
-checks95_07.asm,$09EC5E,136,UpdatePenaltyShotEnd,code,checks94,name
-checks95_07.asm,$09ECE6,102,EndPenaltyShotPlay,code,checks94,name
-checks95_07.asm,$09ED4C,2,PenaltyShotEndReturn,code,checks94,name
-checks95_07.asm,$09ED4E,132,SetupPenaltyShot,code,collide94,name
-checks95_07.asm,$09EDD2,220,PenaltyShotBox,code,data94,name
-checks95_07.asm,$09EEAE,22,PenShotBigTxt,data,data94,name
-checks95_07.asm,$09EEC4,120,PenShotChk,code,penalty94,name
-checks95_07.asm,$09EF3C,168,getBAplayerInfo,code,penalty94,name
-checks95_07.asm,$09EFE4,46,ShortenMsgTimer,code,period94,name
-checks95_07.asm,$09F012,306,setInjuryType,code,collide94,name
-checks95_07.asm,$09F144,78,SetSeasonInjuries,code,new in 95,header
-checks95_07.asm,$09F192,26,TickTeamInjuries,code,new in 95,header
-checks95_07.asm,$09F1AC,62,TickInjuries,code,new in 95,header
-checks95_07.asm,$09F1EA,72,SetInjuryGames,code,new in 95,header
-checks95_07.asm,$09F232,46,GetInjuryGames,code,new in 95,header
-checks95_07.asm,$09F260,10,getFgtbyte,code,title94,name
-checks95_07.asm,$09F26A,24,chkFgtBit1,code,title94,name
-checks95_07.asm,$09F282,310,CheckInjury,code,hockey94,name
-checks95_07.asm,$09F3B8,86,InsertInjurySlot,code,new in 95,header
-checks95_07.asm,$09F40E,80,DeleteInjurySlot,code,new in 95,header
-checks95_07.asm,$09F45E,194,updatepwrplay,code,penalty94,name
-checks95_07.asm,$09F520,28,ClearPowerPlay,code,new in 95,header
-checks95_07.asm,$09F53C,2,rtsPowerPlay,code,new in 95,header
-checks95_07.asm,$09F53E,82,GetLowestPen,code,penalty94,name
+checks95_05.asm,$09E5F0,438,puckshootout,code,checks94,name
+checks95_05.asm,$09E7A6,314,SelectPenaltyShotSkater,code,checks94,name
+checks95_05.asm,$09E8E0,842,puckpenshot,code,checks94,name
+checks95_05.asm,$09EC2A,52,PenShotTable,data,checks94,header names checks94
+checks95_05.asm,$09EC5E,136,UpdatePenaltyShotEnd,code,checks94,name
+checks95_05.asm,$09ECE6,102,EndPenaltyShotPlay,code,checks94,name
+checks95_05.asm,$09ED4C,2,PenaltyShotEndReturn,code,checks94,name
+checks95_05.asm,$09ED4E,132,SetupPenaltyShot,code,collide94,name
+checks95_05.asm,$09EDD2,220,PenaltyShotBox,code,data94,name
+checks95_05.asm,$09EEAE,22,PenShotBigTxt,data,data94,name
+checks95_05.asm,$09EEC4,120,PenShotChk,code,penalty94,name
+checks95_05.asm,$09EF3C,168,getBAplayerInfo,code,penalty94,name
+checks95_05.asm,$09EFE4,46,ShortenMsgTimer,code,period94,name
+checks95_05.asm,$09F012,306,setInjuryType,code,collide94,name
+checks95_05.asm,$09F144,78,SetSeasonInjuries,code,new in 95,header
+checks95_05.asm,$09F192,26,TickTeamInjuries,code,new in 95,header
+checks95_05.asm,$09F1AC,62,TickInjuries,code,new in 95,header
+checks95_05.asm,$09F1EA,72,SetInjuryGames,code,new in 95,header
+checks95_05.asm,$09F232,46,GetInjuryGames,code,new in 95,header
+checks95_05.asm,$09F260,10,getFgtbyte,code,title94,name
+checks95_05.asm,$09F26A,24,chkFgtBit1,code,title94,name
+checks95_05.asm,$09F282,310,CheckInjury,code,hockey94,name
+checks95_05.asm,$09F3B8,86,InsertInjurySlot,code,new in 95,header
+checks95_05.asm,$09F40E,80,DeleteInjurySlot,code,new in 95,header
+checks95_05.asm,$09F45E,194,updatepwrplay,code,penalty94,name
+checks95_05.asm,$09F520,28,ClearPowerPlay,code,new in 95,header
+checks95_05.asm,$09F53C,2,rtsPowerPlay,code,new in 95,header
+checks95_05.asm,$09F53E,82,GetLowestPen,code,penalty94,name
 scout95.asm,$09F590,960,ScoutingReport,code,scout94,name
 scout95.asm,$09F950,50,PageMatchup,code,scout94,name
 scout95.asm,$09F982,36,PrintMatchupRating,code,scout94,name
@@ -1815,305 +1815,305 @@ stats95_02.asm,$0A1198,2,rtsPenaltyScroll,code,stats94,header names stats94
 stats95_02.asm,$0A119A,44,DisplayPenaltyLineUp,code,stats94,name
 stats95_02.asm,$0A11C6,48,DisplayPenaltyLineDown,code,stats94,name
 stats95_02.asm,$0A11F6,180,DisplayPenaltyEntry,code,stats94,name
-title95_02.asm,$0A12AA,650,newTitleScreen,code,title94,name
-title95_02.asm,$0A1534,80,CreditsPrintRow,code,title94,name
-title95_02.asm,$0A1584,64,CreditsWait,code,title94,name
-title95_02.asm,$0A15C4,104,TitleVBlank,code,title94,name
-title95_02.asm,$0A162C,72,CreditsLineScroll,code,title94,name
-title95_02.asm,$0A1674,106,CreditsScrollStep,code,title94,name
-title95_02.asm,$0A16DE,218,HiScoreScreen,code,title94,name
-title95_02.asm,$0A17B8,276,StanleyCupScreen,code,new in 95,header
-title95_02.asm,$0A18CC,52,CupReadPads,code,new in 95,header
-title95_02.asm,$0A1900,12,CupWaitFrame,code,new in 95,header
-title95_02.asm,$0A190C,8,CupExit,code,new in 95,header
-title95_02.asm,$0A1914,62,CupVBlank,code,new in 95,header
-title95_02.asm,$0A1952,60,CupDrawTeam,code,new in 95,header
-title95_02.asm,$0A198E,106,CupBuildSprites,code,new in 95,header
-title95_02.asm,$0A19F8,98,AddSpriteFrame,code,new in 95,header
-data/graphics95_01.asm,$0A1A5A,1078,PicturePalette,data,graphics94,name
-data/graphics95_01.asm,$0A1E90,874,NoPicSkater2,data,graphics94,name
-data/graphics95_01.asm,$0A21FA,874,NoPicSkater1,data,graphics94,name
-data/graphics95_01.asm,$0A2564,874,NoPicGoalie2,data,graphics94,name
-data/graphics95_01.asm,$0A28CE,874,NoPicGoalie1,data,graphics94,name
-data/graphics95_01.asm,$0A2C38,874,CardGuyHebert,data,graphics94,follows NoPicGoalie1
-data/graphics95_01.asm,$0A2FA2,874,CardBobCorkum,data,graphics94,follows CardGuyHebert
-data/graphics95_01.asm,$0A330C,874,CardTerryYake,data,graphics94,follows CardBobCorkum
-data/graphics95_01.asm,$0A3676,874,CardGarryValk,data,graphics94,follows CardTerryYake
-data/graphics95_01.asm,$0A39E0,874,CardSeanHill,data,graphics94,follows CardGarryValk
-data/graphics95_01.asm,$0A3D4A,874,CardBillHoulder,data,graphics94,follows CardSeanHill
-data/graphics95_01.asm,$0A40B4,874,CardJonCasey,data,graphics94,name
-data/graphics95_01.asm,$0A441E,874,CardAdamOates,data,graphics94,name
-data/graphics95_01.asm,$0A4788,874,CardBryanSmolinski,data,graphics94,follows CardAdamOates
-data/graphics95_01.asm,$0A4AF2,874,CardCamNeely,data,graphics94,name
-data/graphics95_01.asm,$0A4E5C,874,CardRayBourque,data,graphics94,name
-data/graphics95_01.asm,$0A51C6,874,CardAlIafrate,data,graphics94,name
-data/graphics95_01.asm,$0A5530,874,CardDominikHasek,data,graphics94,follows CardAlIafrate
-data/graphics95_01.asm,$0A589A,874,CardPatLaFontaine,data,graphics94,name
-data/graphics95_01.asm,$0A5C04,874,CardDaleHawerchuk,data,graphics94,name
-data/graphics95_01.asm,$0A5F6E,874,CardAlexnderMogilny,data,graphics94,name
-data/graphics95_01.asm,$0A62D8,874,CardDougBodger,data,graphics94,name
-data/graphics95_01.asm,$0A6642,874,CardPetrSvoboda,data,graphics94,name
-data/graphics95_01.asm,$0A69AC,874,CardMikeVernon,data,graphics94,name
-data/graphics95_01.asm,$0A6D16,874,CardJoeNieuwendyk,data,graphics94,name
-data/graphics95_01.asm,$0A7080,874,CardGaryRoberts,data,graphics94,name
-data/graphics95_01.asm,$0A73EA,874,CardTheorenFleury,data,graphics94,name
-data/graphics95_01.asm,$0A7754,874,CardZarleyZalapski,data,graphics94,name
-data/graphics95_01.asm,$0A7ABE,874,CardAlMacInnis,data,graphics94,name
-data/graphics95_01.asm,$0A7E28,874,CardEdBelfour,data,graphics94,name
-data/graphics95_01.asm,$0A8192,874,CardJeremyRoenick,data,graphics94,name
-data/graphics95_01.asm,$0A84FC,874,CardMichelGoulet,data,graphics94,name
-data/graphics95_01.asm,$0A8866,874,CardJoeMurphy,data,graphics94,follows CardMichelGoulet
-data/graphics95_01.asm,$0A8BD0,874,CardChrisChelios,data,graphics94,name
-data/graphics95_01.asm,$0A8F3A,874,CardSteveSmith,data,graphics94,name
-data/graphics95_01.asm,$0A92A4,874,CardAndyMoog,data,graphics94,name
-data/graphics95_01.asm,$0A960E,874,CardMikeModano,data,graphics94,name
-data/graphics95_01.asm,$0A9978,874,CardDaveGagner,data,graphics94,name
-data/graphics95_01.asm,$0A9CE2,874,CardRussCourtnall,data,graphics94,name
-data/graphics95_01.asm,$0AA04C,874,CardMarkTinordi,data,graphics94,name
-data/graphics95_01.asm,$0AA3B6,874,CardDerianHatcher,data,graphics94,follows CardMarkTinordi
-data/graphics95_01.asm,$0AA720,874,CardBobEssensa,data,graphics94,name
-data/graphics95_01.asm,$0AAA8A,874,CardSteveYzerman,data,graphics94,name
-data/graphics95_01.asm,$0AADF4,874,CardSergeiFedorov,data,graphics94,name
-data/graphics95_01.asm,$0AB15E,874,CardDinoCiccarelli,data,graphics94,name
-data/graphics95_01.asm,$0AB4C8,874,CardPaulCoffey,data,graphics94,name
-data/graphics95_01.asm,$0AB832,874,CardSteveChiasson,data,graphics94,name
-data/graphics95_01.asm,$0ABB9C,874,CardBillRanford,data,graphics94,name
-data/graphics95_01.asm,$0ABF06,1030,CardDougWeight,data,graphics94,name
-data/graphics95_01.asm,$0AC30C,874,CardShayneCorson,data,graphics94,name
-data/graphics95_01.asm,$0AC676,1030,CardZdenoCiger,data,graphics94,follows CardShayneCorson
-data/graphics95_01.asm,$0ACA7C,1748,CardIgorKravchuk,data,graphics94,name
-data/graphics95_01.asm,$0AD150,874,CardJohnVanbiesbrk,data,graphics94,name
-data/graphics95_01.asm,$0AD4BA,874,CardJesseBelanger,data,graphics94,follows CardJohnVanbiesbrk
-data/graphics95_01.asm,$0AD824,874,CardAndreiLomakin,data,graphics94,follows CardJesseBelanger
-data/graphics95_01.asm,$0ADB8E,1054,CardBobKudelski,data,graphics94,name
-data/graphics95_01.asm,$0ADFAC,874,CardBrianBenning,data,graphics94,follows CardBobKudelski
-data/graphics95_01.asm,$0AE316,874,CardGordMurphy,data,graphics94,follows CardBrianBenning
-data/graphics95_01.asm,$0AE680,874,CardSeanBurke,data,graphics94,name
-data/graphics95_01.asm,$0AE9EA,874,CardAndrewCassels,data,graphics94,name
-data/graphics95_01.asm,$0AED54,874,CardGeoffSanderson,data,graphics94,name
-data/graphics95_01.asm,$0AF0BE,874,CardPatVerbeek,data,graphics94,name
-data/graphics95_01.asm,$0AF428,874,CardAlexnderGodynyuk,data,graphics94,follows CardPatVerbeek
-data/graphics95_01.asm,$0AF792,874,CardChrisPronger,data,graphics94,follows CardAlexnderGodynyuk
-data/graphics95_01.asm,$0AFAFC,1006,CardKellyHrudey,data,graphics94,name
-data/graphics95_01.asm,$0AFEEA,874,CardWayneGretzky,data,graphics94,name
-data/graphics95_01.asm,$0B0254,874,CardLucRobitaille,data,graphics94,name
-data/graphics95_01.asm,$0B05BE,874,CardJariKurri,data,graphics94,follows CardLucRobitaille
-data/graphics95_01.asm,$0B0928,874,CardRobBlake,data,graphics94,name
-data/graphics95_01.asm,$0B0C92,874,CardMartyMcSorley,data,graphics94,name
-data/graphics95_01.asm,$0B0FFC,874,CardPatrickRoy,data,graphics94,name
-data/graphics95_01.asm,$0B1366,874,CardKirkMuller,data,graphics94,name
-data/graphics95_01.asm,$0B16D0,874,CardVincentDamphousse,data,graphics94,name
-data/graphics95_01.asm,$0B1A3A,874,CardBrianBellows,data,graphics94,name
-data/graphics95_01.asm,$0B1DA4,874,CardEricDesjardins,data,graphics94,name
-data/graphics95_01.asm,$0B210E,982,CardMattSchneider,data,graphics94,name
-data/graphics95_01.asm,$0B24E4,874,CardChrisTerreri,data,graphics94,name
-data/graphics95_01.asm,$0B284E,874,CardCoreyMillen,data,graphics94,follows CardChrisTerreri
-data/graphics95_01.asm,$0B2BB8,874,CardJohnMacLean,data,graphics94,follows CardCoreyMillen
-data/graphics95_01.asm,$0B2F22,874,CardStephaneRicher,data,graphics94,name
-data/graphics95_01.asm,$0B328C,874,CardScottStevens,data,graphics94,name
-data/graphics95_01.asm,$0B35F6,874,CardScottNiedrmayer,data,graphics94,follows CardScottStevens
-data/graphics95_01.asm,$0B3960,982,CardRonHextall,data,graphics94,name
-data/graphics95_01.asm,$0B3D36,874,CardPierreTurgeon,data,graphics94,name
-data/graphics95_01.asm,$0B40A0,874,CardBenoitHogue,data,graphics94,name
-data/graphics95_01.asm,$0B440A,874,CardSteveThomas,data,graphics94,name
-data/graphics95_01.asm,$0B4774,1030,CardDariusKasparitis,data,graphics94,name
-data/graphics95_01.asm,$0B4B7A,874,CardVladimirMalakhov,data,graphics94,name
-data/graphics95_01.asm,$0B4EE4,874,CardMikeRichter,data,graphics94,follows CardVladimirMalakhov
-data/graphics95_01.asm,$0B524E,874,CardMarkMessier,data,graphics94,name
-data/graphics95_01.asm,$0B55B8,1054,CardAdamGraves,data,graphics94,follows CardMarkMessier
-data/graphics95_01.asm,$0B59D6,874,CardSteveLarmer,data,graphics94,name
-data/graphics95_01.asm,$0B5D40,874,CardBrianLeetch,data,graphics94,name
-data/graphics95_01.asm,$0B60AA,874,CardSergeiZubov,data,graphics94,follows CardBrianLeetch
-data/graphics95_01.asm,$0B6414,874,CardCraigBillington,data,graphics94,follows CardSergeiZubov
-data/graphics95_01.asm,$0B677E,874,CardAlexnderDaigle,data,graphics94,follows CardCraigBillington
-data/graphics95_01.asm,$0B6AE8,874,CardAlexeiYashin,data,graphics94,follows CardAlexnderDaigle
-data/graphics95_01.asm,$0B6E52,874,CardSylvainTurgeon,data,graphics94,name
-data/graphics95_01.asm,$0B71BC,874,CardNormMaciver,data,graphics94,name
-data/graphics95_01.asm,$0B7526,874,CardBradShaw,data,graphics94,name
-data/graphics95_01.asm,$0B7890,874,CardDominicRoussel,data,graphics94,follows CardBradShaw
-data/graphics95_01.asm,$0B7BFA,874,CardEricLindros,data,graphics94,name
-data/graphics95_01.asm,$0B7F64,874,CardRodBrindAmour,data,graphics94,name
-data/graphics95_01.asm,$0B82CE,874,CardMarkRecchi,data,graphics94,name
-data/graphics95_01.asm,$0B8638,874,CardGarryGalley,data,graphics94,name
-data/graphics95_01.asm,$0B89A2,874,CardDimitriYushkevich,data,graphics94,name
-data/graphics95_01.asm,$0B8D0C,874,CardTomBarrasso,data,graphics94,name
-data/graphics95_01.asm,$0B9076,874,CardMarioLemieux,data,graphics94,name
-data/graphics95_01.asm,$0B93E0,874,CardKevinStevens,data,graphics94,name
-data/graphics95_01.asm,$0B974A,874,CardJaromirJagr,data,graphics94,name
-data/graphics95_01.asm,$0B9AB4,874,CardUlfSamuelsson,data,graphics94,name
-data/graphics95_01.asm,$0B9E1E,1748,CardLarryMurphy,data,graphics94,name
-data/graphics95_01.asm,$0BA4F2,874,CardJoeSakic,data,graphics94,name
-data/graphics95_01.asm,$0BA85C,874,CardMatsSundin,data,graphics94,name
-data/graphics95_01.asm,$0BABC6,874,CardValeriKamensky,data,graphics94,follows CardMatsSundin
-data/graphics95_01.asm,$0BAF30,874,CardCurtisLeschyshyn,data,graphics94,name
-data/graphics95_01.asm,$0BB29A,874,CardAlexeiGusarov,data,graphics94,follows CardCurtisLeschyshyn
-data/graphics95_01.asm,$0BB604,874,CardArtursIrbe,data,graphics94,name
-data/graphics95_01.asm,$0BB96E,874,CardIgorLarionov,data,graphics94,follows CardArtursIrbe
-data/graphics95_01.asm,$0BBCD8,874,CardUlfDahlen,data,graphics94,follows CardIgorLarionov
-data/graphics95_01.asm,$0BC042,874,CardSergeiMakarov,data,graphics94,follows CardUlfDahlen
-data/graphics95_01.asm,$0BC3AC,874,CardJeffNorton,data,graphics94,follows CardSergeiMakarov
-data/graphics95_01.asm,$0BC716,874,CardSandisOzolinsh,data,graphics94,follows CardJeffNorton
-data/graphics95_01.asm,$0BCA80,874,CardCurtisJoseph,data,graphics94,name
-data/graphics95_01.asm,$0BCDEA,874,CardCraigJanney,data,graphics94,name
-data/graphics95_01.asm,$0BD154,874,CardBrendanShanahan,data,graphics94,name
-data/graphics95_01.asm,$0BD4BE,874,CardBrettHull,data,graphics94,name
-data/graphics95_01.asm,$0BD828,874,CardPhilHousley,data,graphics94,name
-data/graphics95_01.asm,$0BDB92,874,CardSteveDuchesne,data,graphics94,name
-data/graphics95_01.asm,$0BDEFC,874,CardDarenPuppa,data,graphics94,follows CardSteveDuchesne
-data/graphics95_01.asm,$0BE266,874,CardChrisGratton,data,graphics94,follows CardDarenPuppa
-data/graphics95_01.asm,$0BE5D0,874,CardBrianBradley,data,graphics94,name
-data/graphics95_01.asm,$0BE93A,874,CardPetrKlima,data,graphics94,name
-data/graphics95_01.asm,$0BECA4,1748,CardRomanHamrlik,data,graphics94,name
-data/graphics95_01.asm,$0BF378,874,CardFelixPotvin,data,graphics94,name
-data/graphics95_01.asm,$0BF6E2,874,CardDougGilmour,data,graphics94,name
-data/graphics95_01.asm,$0BFA4C,874,CardWendelClark,data,graphics94,follows CardDougGilmour
-data/graphics95_01.asm,$0BFDB6,1030,CardDaveAndreychuk,data,graphics94,name
-data/graphics95_01.asm,$0C01BC,874,CardJamieMacoun,data,graphics94,follows CardDaveAndreychuk
-data/graphics95_01.asm,$0C0526,874,CardDaveEllett,data,graphics94,name
-data/graphics95_01.asm,$0C0890,874,CardKirkMcLean,data,graphics94,name
-data/graphics95_01.asm,$0C0BFA,874,CardCliffRonning,data,graphics94,name
-data/graphics95_01.asm,$0C0F64,874,CardGeoffCourtnall,data,graphics94,name
-data/graphics95_01.asm,$0C12CE,874,CardPavelBure,data,graphics94,name
-data/graphics95_01.asm,$0C1638,874,CardJyrkiLumme,data,graphics94,name
-data/graphics95_01.asm,$0C19A2,874,CardJeffBrown,data,graphics94,name
-data/graphics95_01.asm,$0C1D0C,874,CardDonBeaupre,data,graphics94,name
-data/graphics95_01.asm,$0C2076,874,CardMikeRidley,data,graphics94,name
-data/graphics95_01.asm,$0C23E0,874,CardJoeJuneau,data,graphics94,name
-data/graphics95_01.asm,$0C274A,874,CardDimitriKhristich,data,graphics94,name
-data/graphics95_01.asm,$0C2AB4,874,CardKevinHatcher,data,graphics94,name
-data/graphics95_01.asm,$0C2E1E,874,CardSylvainCote,data,graphics94,follows CardKevinHatcher
-data/graphics95_01.asm,$0C3188,874,CardTimCheveldae,data,graphics94,name
-data/graphics95_01.asm,$0C34F2,874,CardAlexeiZhamnov,data,graphics94,name
-data/graphics95_01.asm,$0C385C,1030,CardKeithTkachuk,data,graphics94,follows CardAlexeiZhamnov
-data/graphics95_01.asm,$0C3C62,874,CardTeemuSelanne,data,graphics94,name
-data/graphics95_01.asm,$0C3FCC,1054,CardTeppoNumminen,data,graphics94,name
-data/graphics95_01.asm,$0C43EA,874,CardDaveManson,data,graphics94,name
-data/graphics95_01.asm,$0C4754,168,FeaturedPicIdx,data,graphics94,follows CardDaveManson
-data/graphics95_01.asm,$0C47FC,640,FeaturedPictures,data,cards94,name
-data/graphics95_01.asm,$0C4A7C,23278,Rinktilelist,data,graphics94,name
-data/graphics95_01.asm,$0CA56A,10,Sprites,data,graphics94,name
-data/graphics95_01.asm,$0CA574,422784,Spritetiles,data,graphics94,name
-data/graphics95_01.asm,$1318F4,25202,frameSprData,data,graphics94,name
-data/graphics95_01.asm,$137B66,2144,Hotlist,data,graphics94,name
-data/graphics95_01.asm,$1383C6,3278,RosterFont,data,graphics94,fingerprint SmallFontMap
-data/graphics95_01.asm,$139094,3438,SmallFontMap,data,graphics94,name
-data/graphics95_01.asm,$139E02,3694,SmallFontMap2,data,graphics94,follows SmallFontMap
-data/graphics95_01.asm,$13AC70,13358,PauseBgBitmap,data,graphics94,follows SmallFontMap2
-data/graphics95_01.asm,$13E09E,382,PeriodNumberBitmap,data,graphics94,follows PauseBgBitmap
-data/graphics95_01.asm,$13E21C,3214,TabBitmap,data,graphics94,follows PeriodNumberBitmap
-data/graphics95_01.asm,$13EEAA,3438,PauseFontMap,data,graphics94,follows TabBitmap
-data/graphics95_01.asm,$13FC18,1010,ClockDigitsBitmap,data,graphics94,follows PauseFontMap
-data/graphics95_01.asm,$14000A,10492,RosterBitmap,data,graphics94,follows ClockDigitsBitmap
-data/graphics95_01.asm,$142906,17438,Teamblocksmap,data,graphics94,name
-data/graphics95_01.asm,$146D24,12558,PauseTeamBlocksMap,data,graphics94,follows Teamblocksmap
-data/graphics95_01.asm,$149E32,1630,FaceOffMap,data,graphics94,name
-data/graphics95_01.asm,$14A490,7352,FaceOffSprites,data,graphics94,name
-data/graphics95_01.asm,$14C148,448,Framermap,data,graphics94,name
-data/graphics95_01.asm,$14C308,448,Framermap2,data,graphics94,follows Framermap
-data/graphics95_01.asm,$14C4C8,718,EnergyBarMap,data,graphics94,name
-data/graphics95_01.asm,$14C796,9070,EASportsMap,data,graphics94,name
-data/graphics95_01.asm,$14EB04,4254,RefTiles,data,graphics94,follows EASportsMap
-data/graphics95_01.asm,$14FBA2,7102,RefTilesHor,data,graphics94,follows RefTiles
-data/graphics95_01.asm,$151760,3438,SetupFont,data,graphics94,follows RefTilesHor
-data/graphics95_01.asm,$1524CE,25646,SetupBgMap2,data,graphics94,follows SetupFont
-data/graphics95_01.asm,$1588FC,3662,SetupBgMap1,data,graphics94,follows SetupBgMap2
-data/graphics95_01.asm,$15974A,14110,TeamBitmaps,data,graphics94,name
-data/graphics95_01.asm,$15CE68,4898,BigFontMap3,data,graphics94,follows TeamBitmaps
-data/graphics95_01.asm,$15E18A,4834,BigFontMap,data,graphics94,name
-data/graphics95_01.asm,$15F46C,4514,BigFontMap2,data,graphics94,follows BigFontMap
-data/graphics95_01.asm,$16060E,8164,RevRinkTilelist,data,graphics94,name
-data/graphics95_01.asm,$1625F2,1830,ReplayMap,data,graphics94,name
-data/graphics95_01.asm,$162D18,1586,ReplayIconMap,data,graphics94,follows ReplayMap
-data/graphics95_01.asm,$16334A,4032,HiScoreBgMap,data,graphics94,follows ReplayIconMap
-data/graphics95_01.asm,$16430A,1982,HiScoreImg,data,graphics94,name
-data/graphics95_01.asm,$164AC8,3950,ControllerBgMap,data,graphics94,follows HiScoreImg
-data/graphics95_01.asm,$165A36,6894,GamesTodayLogoMap,data,graphics94,follows ControllerBgMap
-data/graphics95_01.asm,$167524,346,GamesTodayMap1,data,graphics94,follows GamesTodayLogoMap
-data/graphics95_01.asm,$16767E,416,GamesTodayMap2,data,graphics94,follows GamesTodayMap1
-data/graphics95_01.asm,$16781E,550,GamesTodayMap3,data,graphics94,follows GamesTodayMap2
-data/graphics95_01.asm,$167A44,5166,CalendarBgMap,data,graphics94,follows GamesTodayMap3
-data/graphics95_01.asm,$168E72,2154,CalOpponentMap,data,graphics94,follows CalendarBgMap
-data/graphics95_01.asm,$1696DC,1546,CalDayMap,data,graphics94,follows CalOpponentMap
-data/graphics95_01.asm,$169CE6,2862,CalMonthMap,data,graphics94,follows CalDayMap
-data/graphics95_01.asm,$16A814,168,CalCheckMap,data,graphics94,follows CalMonthMap
-data/graphics95_01.asm,$16A8BC,448,CalResultMap,data,graphics94,follows CalCheckMap
-data/graphics95_01.asm,$16AA7C,734,ControllerTitleMap,data,graphics94,follows CalResultMap
-data/graphics95_01.asm,$16AD5A,856,PadCursorMap,data,graphics94,follows ControllerTitleMap
-data/graphics95_01.asm,$16B0B2,278,PadIconMap1,data,graphics94,follows PadCursorMap
-data/graphics95_01.asm,$16B1C8,278,PadIconMap2,data,graphics94,follows PadIconMap1
-data/graphics95_01.asm,$16B2DE,278,PadIconMap3,data,graphics94,follows PadIconMap2
-data/graphics95_01.asm,$16B3F4,278,PadIconMap4,data,graphics94,follows PadIconMap3
-data/graphics95_01.asm,$16B50A,3886,PlayerStatsBgMap,data,graphics94,follows PadIconMap4
-data/graphics95_01.asm,$16C438,830,PlayerStatsTitleMap,data,graphics94,follows PlayerStatsBgMap
-data/graphics95_01.asm,$16C776,646,PeriodStatsMap,data,graphics94,follows PlayerStatsTitleMap
-data/graphics95_01.asm,$16C9FC,646,HighlightsBgMap,data,graphics94,follows PeriodStatsMap
-data/graphics95_01.asm,$16CC82,7730,WaitBoxMap,data,graphics94,follows HighlightsBgMap
-data/graphics95_01.asm,$16EAB4,3358,LineEditorBgMap,data,graphics94,follows WaitBoxMap
-data/graphics95_01.asm,$16F7D2,670,PlayerSelectMap2,data,graphics94,follows LineEditorBgMap
-data/graphics95_01.asm,$16FA70,2446,PlayerSelectMap1,data,graphics94,follows PlayerSelectMap2
-data/graphics95_01.asm,$1703FE,10446,CreateBgMap,data,graphics94,follows PlayerSelectMap1
-data/graphics95_01.asm,$172CCC,5070,TradeBgMap,data,graphics94,follows CreateBgMap
-data/graphics95_01.asm,$17409A,18222,AwardsBgMap,data,graphics94,follows TradeBgMap
-data/graphics95_01.asm,$1787C8,842,FinalistsPanelMap,data,graphics94,follows AwardsBgMap
-data/graphics95_01.asm,$178B12,948,WinnerPanelMap,data,graphics94,follows FinalistsPanelMap
-data/graphics95_01.asm,$178EC6,1994,HartPic,data,graphics94,follows WinnerPanelMap
-data/graphics95_01.asm,$179690,4794,NorrisPic,data,graphics94,follows HartPic
-data/graphics95_01.asm,$17A94A,2462,VezinaPic,data,graphics94,follows NorrisPic
-data/graphics95_01.asm,$17B2E8,3096,ArtRossPic,data,graphics94,follows VezinaPic
-data/graphics95_01.asm,$17BF00,8662,SelkePic,data,graphics94,follows ArtRossPic
-data/graphics95_01.asm,$17E0D6,3512,JenningsPic,data,graphics94,follows SelkePic
-data/graphics95_01.asm,$17EE8E,2270,PresidentsPic,data,graphics94,follows JenningsPic
-data/graphics95_01.asm,$17F76C,2750,ConnSmythePic,data,graphics94,follows PresidentsPic
-data/graphics95_01.asm,$18022A,2340,PearsonPic,data,graphics94,follows ConnSmythePic
-data/graphics95_01.asm,$180B4E,518,EASNmap,data,graphics94,name
-data/graphics95_01.asm,$180D54,804,GMDecisionMap,data,graphics94,follows EASNmap
-data/graphics95_01.asm,$181078,1038,FreeAgentMap2,data,graphics94,follows GMDecisionMap
-data/graphics95_01.asm,$181486,1662,FreeAgentMap1,data,graphics94,follows FreeAgentMap2
-data/graphics95_01.asm,$181B04,3192,TradeAdvantageMap2,data,graphics94,follows FreeAgentMap1
-data/graphics95_01.asm,$18277C,3448,TradeAdvantageMap1,data,graphics94,follows TradeAdvantageMap2
-data/graphics95_01.asm,$1834F4,226,NameEntryBgMap,data,graphics94,follows TradeAdvantageMap1
-data/graphics95_01.asm,$1835D6,886,Arrowsmap,data,graphics94,name
-data/graphics95_01.asm,$18394C,2446,ScoutMap,data,graphics94,name
-data/graphics95_01.asm,$1842DA,20254,PlayoffSprite,data,graphics94,name
-data/graphics95_01.asm,$1891F8,5070,ScoutReportMap,data,graphics94,follows PlayoffSprite
-data/graphics95_01.asm,$18A5C6,454,HotIconMap,data,graphics94,name
-data/graphics95_01.asm,$18A78C,550,ColdIconMap,data,graphics94,name
-data/graphics95_01.asm,$18A9B2,3190,RonBarrMap,data,graphics94,name
-data/graphics95_01.asm,$18B628,9344,CrowdFrameList,data,graphics94,name
-data/graphics95_01.asm,$18DAA8,34350,TitleScreenImg,data,graphics94,name
-data/graphics95_01.asm,$1960D6,2934,TitleImg,data,graphics94,name
-data/graphics95_01.asm,$196C4C,13486,StanleyCupImg,data,graphics94,follows TitleImg
-data/graphics95_01.asm,$19A0FA,2200,CupSprites,data,graphics94,follows StanleyCupImg
-data/graphics95_01.asm,$19A992,1174,logoANH,data,graphics94,name
-data/graphics95_01.asm,$19AE28,854,logoBOS,data,graphics94,name
-data/graphics95_01.asm,$19B17E,854,logoBUF,data,graphics94,name
-data/graphics95_01.asm,$19B4D4,1174,logoCGY,data,graphics94,name
-data/graphics95_01.asm,$19B96A,1078,logoCHI,data,graphics94,name
-data/graphics95_01.asm,$19BDA0,854,logoDET,data,graphics94,name
-data/graphics95_01.asm,$19C0F6,1014,logoEDM,data,graphics94,name
-data/graphics95_01.asm,$19C4EC,950,logoFLA,data,graphics94,name
-data/graphics95_01.asm,$19C8A2,662,logoHFD,data,graphics94,name
-data/graphics95_01.asm,$19CB38,1110,logoNYI,data,graphics94,name
-data/graphics95_01.asm,$19CF8E,886,logoLA,data,graphics94,name
-data/graphics95_01.asm,$19D304,1046,logoDAL,data,graphics94,name
-data/graphics95_01.asm,$19D71A,886,logoMTL,data,graphics94,name
-data/graphics95_01.asm,$19DA90,1206,logoNJ,data,graphics94,name
-data/graphics95_01.asm,$19DF46,1238,logoNYR,data,graphics94,name
-data/graphics95_01.asm,$19E41C,1046,logoOTW,data,graphics94,name
-data/graphics95_01.asm,$19E832,950,logoPHI,data,graphics94,name
-data/graphics95_01.asm,$19EBE8,886,logoPIT,data,graphics94,name
-data/graphics95_01.asm,$19EF5E,854,logoQUE,data,graphics94,name
-data/graphics95_01.asm,$19F2B4,1078,logoSJ,data,graphics94,name
-data/graphics95_01.asm,$19F6EA,982,logoSTL,data,graphics94,name
-data/graphics95_01.asm,$19FAC0,1046,logoTB,data,graphics94,name
-data/graphics95_01.asm,$19FED6,854,logoTOR,data,graphics94,name
-data/graphics95_01.asm,$1A022C,1046,logoVAN,data,graphics94,name
-data/graphics95_01.asm,$1A0642,630,logoWSH,data,graphics94,name
-data/graphics95_01.asm,$1A08B8,1142,logoWPG,data,graphics94,name
-data/graphics95_01.asm,$1A0D2E,1206,logoASE,data,graphics94,name
-data/graphics95_01.asm,$1A11E4,1206,logoASW,data,graphics94,name
-data/title95_03.asm,$1A169A,896,TeamLogoPalettes,data,title94,name
-data/graphics95_02.asm,$1A1A1A,21006,ArenaGfxBank,data,graphics94,name
-data/credits95.asm,$1A6C28,66,Credits,data,teamdata94,name
-data/credits95.asm,$1A6C6A,1622,CreditsList,data,teamdata94,name
+title95_01.asm,$0A12AA,650,newTitleScreen,code,title94,name
+title95_01.asm,$0A1534,80,CreditsPrintRow,code,title94,name
+title95_01.asm,$0A1584,64,CreditsWait,code,title94,name
+title95_01.asm,$0A15C4,104,TitleVBlank,code,title94,name
+title95_01.asm,$0A162C,72,CreditsLineScroll,code,title94,name
+title95_01.asm,$0A1674,106,CreditsScrollStep,code,title94,name
+title95_01.asm,$0A16DE,218,HiScoreScreen,code,title94,name
+title95_01.asm,$0A17B8,276,StanleyCupScreen,code,new in 95,header
+title95_01.asm,$0A18CC,52,CupReadPads,code,new in 95,header
+title95_01.asm,$0A1900,12,CupWaitFrame,code,new in 95,header
+title95_01.asm,$0A190C,8,CupExit,code,new in 95,header
+title95_01.asm,$0A1914,62,CupVBlank,code,new in 95,header
+title95_01.asm,$0A1952,60,CupDrawTeam,code,new in 95,header
+title95_01.asm,$0A198E,106,CupBuildSprites,code,new in 95,header
+title95_01.asm,$0A19F8,98,AddSpriteFrame,code,new in 95,header
+graphics95_01.asm,$0A1A5A,1078,PicturePalette,data,graphics94,name
+graphics95_01.asm,$0A1E90,874,NoPicSkater2,data,graphics94,name
+graphics95_01.asm,$0A21FA,874,NoPicSkater1,data,graphics94,name
+graphics95_01.asm,$0A2564,874,NoPicGoalie2,data,graphics94,name
+graphics95_01.asm,$0A28CE,874,NoPicGoalie1,data,graphics94,name
+graphics95_01.asm,$0A2C38,874,CardGuyHebert,data,graphics94,follows NoPicGoalie1
+graphics95_01.asm,$0A2FA2,874,CardBobCorkum,data,graphics94,follows CardGuyHebert
+graphics95_01.asm,$0A330C,874,CardTerryYake,data,graphics94,follows CardBobCorkum
+graphics95_01.asm,$0A3676,874,CardGarryValk,data,graphics94,follows CardTerryYake
+graphics95_01.asm,$0A39E0,874,CardSeanHill,data,graphics94,follows CardGarryValk
+graphics95_01.asm,$0A3D4A,874,CardBillHoulder,data,graphics94,follows CardSeanHill
+graphics95_01.asm,$0A40B4,874,CardJonCasey,data,graphics94,name
+graphics95_01.asm,$0A441E,874,CardAdamOates,data,graphics94,name
+graphics95_01.asm,$0A4788,874,CardBryanSmolinski,data,graphics94,follows CardAdamOates
+graphics95_01.asm,$0A4AF2,874,CardCamNeely,data,graphics94,name
+graphics95_01.asm,$0A4E5C,874,CardRayBourque,data,graphics94,name
+graphics95_01.asm,$0A51C6,874,CardAlIafrate,data,graphics94,name
+graphics95_01.asm,$0A5530,874,CardDominikHasek,data,graphics94,follows CardAlIafrate
+graphics95_01.asm,$0A589A,874,CardPatLaFontaine,data,graphics94,name
+graphics95_01.asm,$0A5C04,874,CardDaleHawerchuk,data,graphics94,name
+graphics95_01.asm,$0A5F6E,874,CardAlexnderMogilny,data,graphics94,name
+graphics95_01.asm,$0A62D8,874,CardDougBodger,data,graphics94,name
+graphics95_01.asm,$0A6642,874,CardPetrSvoboda,data,graphics94,name
+graphics95_01.asm,$0A69AC,874,CardMikeVernon,data,graphics94,name
+graphics95_01.asm,$0A6D16,874,CardJoeNieuwendyk,data,graphics94,name
+graphics95_01.asm,$0A7080,874,CardGaryRoberts,data,graphics94,name
+graphics95_01.asm,$0A73EA,874,CardTheorenFleury,data,graphics94,name
+graphics95_01.asm,$0A7754,874,CardZarleyZalapski,data,graphics94,name
+graphics95_01.asm,$0A7ABE,874,CardAlMacInnis,data,graphics94,name
+graphics95_01.asm,$0A7E28,874,CardEdBelfour,data,graphics94,name
+graphics95_01.asm,$0A8192,874,CardJeremyRoenick,data,graphics94,name
+graphics95_01.asm,$0A84FC,874,CardMichelGoulet,data,graphics94,name
+graphics95_01.asm,$0A8866,874,CardJoeMurphy,data,graphics94,follows CardMichelGoulet
+graphics95_01.asm,$0A8BD0,874,CardChrisChelios,data,graphics94,name
+graphics95_01.asm,$0A8F3A,874,CardSteveSmith,data,graphics94,name
+graphics95_01.asm,$0A92A4,874,CardAndyMoog,data,graphics94,name
+graphics95_01.asm,$0A960E,874,CardMikeModano,data,graphics94,name
+graphics95_01.asm,$0A9978,874,CardDaveGagner,data,graphics94,name
+graphics95_01.asm,$0A9CE2,874,CardRussCourtnall,data,graphics94,name
+graphics95_01.asm,$0AA04C,874,CardMarkTinordi,data,graphics94,name
+graphics95_01.asm,$0AA3B6,874,CardDerianHatcher,data,graphics94,follows CardMarkTinordi
+graphics95_01.asm,$0AA720,874,CardBobEssensa,data,graphics94,name
+graphics95_01.asm,$0AAA8A,874,CardSteveYzerman,data,graphics94,name
+graphics95_01.asm,$0AADF4,874,CardSergeiFedorov,data,graphics94,name
+graphics95_01.asm,$0AB15E,874,CardDinoCiccarelli,data,graphics94,name
+graphics95_01.asm,$0AB4C8,874,CardPaulCoffey,data,graphics94,name
+graphics95_01.asm,$0AB832,874,CardSteveChiasson,data,graphics94,name
+graphics95_01.asm,$0ABB9C,874,CardBillRanford,data,graphics94,name
+graphics95_01.asm,$0ABF06,1030,CardDougWeight,data,graphics94,name
+graphics95_01.asm,$0AC30C,874,CardShayneCorson,data,graphics94,name
+graphics95_01.asm,$0AC676,1030,CardZdenoCiger,data,graphics94,follows CardShayneCorson
+graphics95_01.asm,$0ACA7C,1748,CardIgorKravchuk,data,graphics94,name
+graphics95_01.asm,$0AD150,874,CardJohnVanbiesbrk,data,graphics94,name
+graphics95_01.asm,$0AD4BA,874,CardJesseBelanger,data,graphics94,follows CardJohnVanbiesbrk
+graphics95_01.asm,$0AD824,874,CardAndreiLomakin,data,graphics94,follows CardJesseBelanger
+graphics95_01.asm,$0ADB8E,1054,CardBobKudelski,data,graphics94,name
+graphics95_01.asm,$0ADFAC,874,CardBrianBenning,data,graphics94,follows CardBobKudelski
+graphics95_01.asm,$0AE316,874,CardGordMurphy,data,graphics94,follows CardBrianBenning
+graphics95_01.asm,$0AE680,874,CardSeanBurke,data,graphics94,name
+graphics95_01.asm,$0AE9EA,874,CardAndrewCassels,data,graphics94,name
+graphics95_01.asm,$0AED54,874,CardGeoffSanderson,data,graphics94,name
+graphics95_01.asm,$0AF0BE,874,CardPatVerbeek,data,graphics94,name
+graphics95_01.asm,$0AF428,874,CardAlexnderGodynyuk,data,graphics94,follows CardPatVerbeek
+graphics95_01.asm,$0AF792,874,CardChrisPronger,data,graphics94,follows CardAlexnderGodynyuk
+graphics95_01.asm,$0AFAFC,1006,CardKellyHrudey,data,graphics94,name
+graphics95_01.asm,$0AFEEA,874,CardWayneGretzky,data,graphics94,name
+graphics95_01.asm,$0B0254,874,CardLucRobitaille,data,graphics94,name
+graphics95_01.asm,$0B05BE,874,CardJariKurri,data,graphics94,follows CardLucRobitaille
+graphics95_01.asm,$0B0928,874,CardRobBlake,data,graphics94,name
+graphics95_01.asm,$0B0C92,874,CardMartyMcSorley,data,graphics94,name
+graphics95_01.asm,$0B0FFC,874,CardPatrickRoy,data,graphics94,name
+graphics95_01.asm,$0B1366,874,CardKirkMuller,data,graphics94,name
+graphics95_01.asm,$0B16D0,874,CardVincentDamphousse,data,graphics94,name
+graphics95_01.asm,$0B1A3A,874,CardBrianBellows,data,graphics94,name
+graphics95_01.asm,$0B1DA4,874,CardEricDesjardins,data,graphics94,name
+graphics95_01.asm,$0B210E,982,CardMattSchneider,data,graphics94,name
+graphics95_01.asm,$0B24E4,874,CardChrisTerreri,data,graphics94,name
+graphics95_01.asm,$0B284E,874,CardCoreyMillen,data,graphics94,follows CardChrisTerreri
+graphics95_01.asm,$0B2BB8,874,CardJohnMacLean,data,graphics94,follows CardCoreyMillen
+graphics95_01.asm,$0B2F22,874,CardStephaneRicher,data,graphics94,name
+graphics95_01.asm,$0B328C,874,CardScottStevens,data,graphics94,name
+graphics95_01.asm,$0B35F6,874,CardScottNiedrmayer,data,graphics94,follows CardScottStevens
+graphics95_01.asm,$0B3960,982,CardRonHextall,data,graphics94,name
+graphics95_01.asm,$0B3D36,874,CardPierreTurgeon,data,graphics94,name
+graphics95_01.asm,$0B40A0,874,CardBenoitHogue,data,graphics94,name
+graphics95_01.asm,$0B440A,874,CardSteveThomas,data,graphics94,name
+graphics95_01.asm,$0B4774,1030,CardDariusKasparitis,data,graphics94,name
+graphics95_01.asm,$0B4B7A,874,CardVladimirMalakhov,data,graphics94,name
+graphics95_01.asm,$0B4EE4,874,CardMikeRichter,data,graphics94,follows CardVladimirMalakhov
+graphics95_01.asm,$0B524E,874,CardMarkMessier,data,graphics94,name
+graphics95_01.asm,$0B55B8,1054,CardAdamGraves,data,graphics94,follows CardMarkMessier
+graphics95_01.asm,$0B59D6,874,CardSteveLarmer,data,graphics94,name
+graphics95_01.asm,$0B5D40,874,CardBrianLeetch,data,graphics94,name
+graphics95_01.asm,$0B60AA,874,CardSergeiZubov,data,graphics94,follows CardBrianLeetch
+graphics95_01.asm,$0B6414,874,CardCraigBillington,data,graphics94,follows CardSergeiZubov
+graphics95_01.asm,$0B677E,874,CardAlexnderDaigle,data,graphics94,follows CardCraigBillington
+graphics95_01.asm,$0B6AE8,874,CardAlexeiYashin,data,graphics94,follows CardAlexnderDaigle
+graphics95_01.asm,$0B6E52,874,CardSylvainTurgeon,data,graphics94,name
+graphics95_01.asm,$0B71BC,874,CardNormMaciver,data,graphics94,name
+graphics95_01.asm,$0B7526,874,CardBradShaw,data,graphics94,name
+graphics95_01.asm,$0B7890,874,CardDominicRoussel,data,graphics94,follows CardBradShaw
+graphics95_01.asm,$0B7BFA,874,CardEricLindros,data,graphics94,name
+graphics95_01.asm,$0B7F64,874,CardRodBrindAmour,data,graphics94,name
+graphics95_01.asm,$0B82CE,874,CardMarkRecchi,data,graphics94,name
+graphics95_01.asm,$0B8638,874,CardGarryGalley,data,graphics94,name
+graphics95_01.asm,$0B89A2,874,CardDimitriYushkevich,data,graphics94,name
+graphics95_01.asm,$0B8D0C,874,CardTomBarrasso,data,graphics94,name
+graphics95_01.asm,$0B9076,874,CardMarioLemieux,data,graphics94,name
+graphics95_01.asm,$0B93E0,874,CardKevinStevens,data,graphics94,name
+graphics95_01.asm,$0B974A,874,CardJaromirJagr,data,graphics94,name
+graphics95_01.asm,$0B9AB4,874,CardUlfSamuelsson,data,graphics94,name
+graphics95_01.asm,$0B9E1E,1748,CardLarryMurphy,data,graphics94,name
+graphics95_01.asm,$0BA4F2,874,CardJoeSakic,data,graphics94,name
+graphics95_01.asm,$0BA85C,874,CardMatsSundin,data,graphics94,name
+graphics95_01.asm,$0BABC6,874,CardValeriKamensky,data,graphics94,follows CardMatsSundin
+graphics95_01.asm,$0BAF30,874,CardCurtisLeschyshyn,data,graphics94,name
+graphics95_01.asm,$0BB29A,874,CardAlexeiGusarov,data,graphics94,follows CardCurtisLeschyshyn
+graphics95_01.asm,$0BB604,874,CardArtursIrbe,data,graphics94,name
+graphics95_01.asm,$0BB96E,874,CardIgorLarionov,data,graphics94,follows CardArtursIrbe
+graphics95_01.asm,$0BBCD8,874,CardUlfDahlen,data,graphics94,follows CardIgorLarionov
+graphics95_01.asm,$0BC042,874,CardSergeiMakarov,data,graphics94,follows CardUlfDahlen
+graphics95_01.asm,$0BC3AC,874,CardJeffNorton,data,graphics94,follows CardSergeiMakarov
+graphics95_01.asm,$0BC716,874,CardSandisOzolinsh,data,graphics94,follows CardJeffNorton
+graphics95_01.asm,$0BCA80,874,CardCurtisJoseph,data,graphics94,name
+graphics95_01.asm,$0BCDEA,874,CardCraigJanney,data,graphics94,name
+graphics95_01.asm,$0BD154,874,CardBrendanShanahan,data,graphics94,name
+graphics95_01.asm,$0BD4BE,874,CardBrettHull,data,graphics94,name
+graphics95_01.asm,$0BD828,874,CardPhilHousley,data,graphics94,name
+graphics95_01.asm,$0BDB92,874,CardSteveDuchesne,data,graphics94,name
+graphics95_01.asm,$0BDEFC,874,CardDarenPuppa,data,graphics94,follows CardSteveDuchesne
+graphics95_01.asm,$0BE266,874,CardChrisGratton,data,graphics94,follows CardDarenPuppa
+graphics95_01.asm,$0BE5D0,874,CardBrianBradley,data,graphics94,name
+graphics95_01.asm,$0BE93A,874,CardPetrKlima,data,graphics94,name
+graphics95_01.asm,$0BECA4,1748,CardRomanHamrlik,data,graphics94,name
+graphics95_01.asm,$0BF378,874,CardFelixPotvin,data,graphics94,name
+graphics95_01.asm,$0BF6E2,874,CardDougGilmour,data,graphics94,name
+graphics95_01.asm,$0BFA4C,874,CardWendelClark,data,graphics94,follows CardDougGilmour
+graphics95_01.asm,$0BFDB6,1030,CardDaveAndreychuk,data,graphics94,name
+graphics95_01.asm,$0C01BC,874,CardJamieMacoun,data,graphics94,follows CardDaveAndreychuk
+graphics95_01.asm,$0C0526,874,CardDaveEllett,data,graphics94,name
+graphics95_01.asm,$0C0890,874,CardKirkMcLean,data,graphics94,name
+graphics95_01.asm,$0C0BFA,874,CardCliffRonning,data,graphics94,name
+graphics95_01.asm,$0C0F64,874,CardGeoffCourtnall,data,graphics94,name
+graphics95_01.asm,$0C12CE,874,CardPavelBure,data,graphics94,name
+graphics95_01.asm,$0C1638,874,CardJyrkiLumme,data,graphics94,name
+graphics95_01.asm,$0C19A2,874,CardJeffBrown,data,graphics94,name
+graphics95_01.asm,$0C1D0C,874,CardDonBeaupre,data,graphics94,name
+graphics95_01.asm,$0C2076,874,CardMikeRidley,data,graphics94,name
+graphics95_01.asm,$0C23E0,874,CardJoeJuneau,data,graphics94,name
+graphics95_01.asm,$0C274A,874,CardDimitriKhristich,data,graphics94,name
+graphics95_01.asm,$0C2AB4,874,CardKevinHatcher,data,graphics94,name
+graphics95_01.asm,$0C2E1E,874,CardSylvainCote,data,graphics94,follows CardKevinHatcher
+graphics95_01.asm,$0C3188,874,CardTimCheveldae,data,graphics94,name
+graphics95_01.asm,$0C34F2,874,CardAlexeiZhamnov,data,graphics94,name
+graphics95_01.asm,$0C385C,1030,CardKeithTkachuk,data,graphics94,follows CardAlexeiZhamnov
+graphics95_01.asm,$0C3C62,874,CardTeemuSelanne,data,graphics94,name
+graphics95_01.asm,$0C3FCC,1054,CardTeppoNumminen,data,graphics94,name
+graphics95_01.asm,$0C43EA,874,CardDaveManson,data,graphics94,name
+graphics95_01.asm,$0C4754,168,FeaturedPicIdx,data,graphics94,follows CardDaveManson
+graphics95_01.asm,$0C47FC,640,FeaturedPictures,data,cards94,name
+graphics95_01.asm,$0C4A7C,23278,Rinktilelist,data,graphics94,name
+graphics95_01.asm,$0CA56A,10,Sprites,data,graphics94,name
+graphics95_01.asm,$0CA574,422784,Spritetiles,data,graphics94,name
+graphics95_01.asm,$1318F4,25202,frameSprData,data,graphics94,name
+graphics95_01.asm,$137B66,2144,Hotlist,data,graphics94,name
+graphics95_01.asm,$1383C6,3278,RosterFont,data,graphics94,fingerprint SmallFontMap
+graphics95_01.asm,$139094,3438,SmallFontMap,data,graphics94,name
+graphics95_01.asm,$139E02,3694,SmallFontMap2,data,graphics94,follows SmallFontMap
+graphics95_01.asm,$13AC70,13358,PauseBgBitmap,data,graphics94,follows SmallFontMap2
+graphics95_01.asm,$13E09E,382,PeriodNumberBitmap,data,graphics94,follows PauseBgBitmap
+graphics95_01.asm,$13E21C,3214,TabBitmap,data,graphics94,follows PeriodNumberBitmap
+graphics95_01.asm,$13EEAA,3438,PauseFontMap,data,graphics94,follows TabBitmap
+graphics95_01.asm,$13FC18,1010,ClockDigitsBitmap,data,graphics94,follows PauseFontMap
+graphics95_01.asm,$14000A,10492,RosterBitmap,data,graphics94,follows ClockDigitsBitmap
+graphics95_01.asm,$142906,17438,Teamblocksmap,data,graphics94,name
+graphics95_01.asm,$146D24,12558,PauseTeamBlocksMap,data,graphics94,follows Teamblocksmap
+graphics95_01.asm,$149E32,1630,FaceOffMap,data,graphics94,name
+graphics95_01.asm,$14A490,7352,FaceOffSprites,data,graphics94,name
+graphics95_01.asm,$14C148,448,Framermap,data,graphics94,name
+graphics95_01.asm,$14C308,448,Framermap2,data,graphics94,follows Framermap
+graphics95_01.asm,$14C4C8,718,EnergyBarMap,data,graphics94,name
+graphics95_01.asm,$14C796,9070,EASportsMap,data,graphics94,name
+graphics95_01.asm,$14EB04,4254,RefTiles,data,graphics94,follows EASportsMap
+graphics95_01.asm,$14FBA2,7102,RefTilesHor,data,graphics94,follows RefTiles
+graphics95_01.asm,$151760,3438,SetupFont,data,graphics94,follows RefTilesHor
+graphics95_01.asm,$1524CE,25646,SetupBgMap2,data,graphics94,follows SetupFont
+graphics95_01.asm,$1588FC,3662,SetupBgMap1,data,graphics94,follows SetupBgMap2
+graphics95_01.asm,$15974A,14110,TeamBitmaps,data,graphics94,name
+graphics95_01.asm,$15CE68,4898,BigFontMap3,data,graphics94,follows TeamBitmaps
+graphics95_01.asm,$15E18A,4834,BigFontMap,data,graphics94,name
+graphics95_01.asm,$15F46C,4514,BigFontMap2,data,graphics94,follows BigFontMap
+graphics95_01.asm,$16060E,8164,RevRinkTilelist,data,graphics94,name
+graphics95_01.asm,$1625F2,1830,ReplayMap,data,graphics94,name
+graphics95_01.asm,$162D18,1586,ReplayIconMap,data,graphics94,follows ReplayMap
+graphics95_01.asm,$16334A,4032,HiScoreBgMap,data,graphics94,follows ReplayIconMap
+graphics95_01.asm,$16430A,1982,HiScoreImg,data,graphics94,name
+graphics95_01.asm,$164AC8,3950,ControllerBgMap,data,graphics94,follows HiScoreImg
+graphics95_01.asm,$165A36,6894,GamesTodayLogoMap,data,graphics94,follows ControllerBgMap
+graphics95_01.asm,$167524,346,GamesTodayMap1,data,graphics94,follows GamesTodayLogoMap
+graphics95_01.asm,$16767E,416,GamesTodayMap2,data,graphics94,follows GamesTodayMap1
+graphics95_01.asm,$16781E,550,GamesTodayMap3,data,graphics94,follows GamesTodayMap2
+graphics95_01.asm,$167A44,5166,CalendarBgMap,data,graphics94,follows GamesTodayMap3
+graphics95_01.asm,$168E72,2154,CalOpponentMap,data,graphics94,follows CalendarBgMap
+graphics95_01.asm,$1696DC,1546,CalDayMap,data,graphics94,follows CalOpponentMap
+graphics95_01.asm,$169CE6,2862,CalMonthMap,data,graphics94,follows CalDayMap
+graphics95_01.asm,$16A814,168,CalCheckMap,data,graphics94,follows CalMonthMap
+graphics95_01.asm,$16A8BC,448,CalResultMap,data,graphics94,follows CalCheckMap
+graphics95_01.asm,$16AA7C,734,ControllerTitleMap,data,graphics94,follows CalResultMap
+graphics95_01.asm,$16AD5A,856,PadCursorMap,data,graphics94,follows ControllerTitleMap
+graphics95_01.asm,$16B0B2,278,PadIconMap1,data,graphics94,follows PadCursorMap
+graphics95_01.asm,$16B1C8,278,PadIconMap2,data,graphics94,follows PadIconMap1
+graphics95_01.asm,$16B2DE,278,PadIconMap3,data,graphics94,follows PadIconMap2
+graphics95_01.asm,$16B3F4,278,PadIconMap4,data,graphics94,follows PadIconMap3
+graphics95_01.asm,$16B50A,3886,PlayerStatsBgMap,data,graphics94,follows PadIconMap4
+graphics95_01.asm,$16C438,830,PlayerStatsTitleMap,data,graphics94,follows PlayerStatsBgMap
+graphics95_01.asm,$16C776,646,PeriodStatsMap,data,graphics94,follows PlayerStatsTitleMap
+graphics95_01.asm,$16C9FC,646,HighlightsBgMap,data,graphics94,follows PeriodStatsMap
+graphics95_01.asm,$16CC82,7730,WaitBoxMap,data,graphics94,follows HighlightsBgMap
+graphics95_01.asm,$16EAB4,3358,LineEditorBgMap,data,graphics94,follows WaitBoxMap
+graphics95_01.asm,$16F7D2,670,PlayerSelectMap2,data,graphics94,follows LineEditorBgMap
+graphics95_01.asm,$16FA70,2446,PlayerSelectMap1,data,graphics94,follows PlayerSelectMap2
+graphics95_01.asm,$1703FE,10446,CreateBgMap,data,graphics94,follows PlayerSelectMap1
+graphics95_01.asm,$172CCC,5070,TradeBgMap,data,graphics94,follows CreateBgMap
+graphics95_01.asm,$17409A,18222,AwardsBgMap,data,graphics94,follows TradeBgMap
+graphics95_01.asm,$1787C8,842,FinalistsPanelMap,data,graphics94,follows AwardsBgMap
+graphics95_01.asm,$178B12,948,WinnerPanelMap,data,graphics94,follows FinalistsPanelMap
+graphics95_01.asm,$178EC6,1994,HartPic,data,graphics94,follows WinnerPanelMap
+graphics95_01.asm,$179690,4794,NorrisPic,data,graphics94,follows HartPic
+graphics95_01.asm,$17A94A,2462,VezinaPic,data,graphics94,follows NorrisPic
+graphics95_01.asm,$17B2E8,3096,ArtRossPic,data,graphics94,follows VezinaPic
+graphics95_01.asm,$17BF00,8662,SelkePic,data,graphics94,follows ArtRossPic
+graphics95_01.asm,$17E0D6,3512,JenningsPic,data,graphics94,follows SelkePic
+graphics95_01.asm,$17EE8E,2270,PresidentsPic,data,graphics94,follows JenningsPic
+graphics95_01.asm,$17F76C,2750,ConnSmythePic,data,graphics94,follows PresidentsPic
+graphics95_01.asm,$18022A,2340,PearsonPic,data,graphics94,follows ConnSmythePic
+graphics95_01.asm,$180B4E,518,EASNmap,data,graphics94,name
+graphics95_01.asm,$180D54,804,GMDecisionMap,data,graphics94,follows EASNmap
+graphics95_01.asm,$181078,1038,FreeAgentMap2,data,graphics94,follows GMDecisionMap
+graphics95_01.asm,$181486,1662,FreeAgentMap1,data,graphics94,follows FreeAgentMap2
+graphics95_01.asm,$181B04,3192,TradeAdvantageMap2,data,graphics94,follows FreeAgentMap1
+graphics95_01.asm,$18277C,3448,TradeAdvantageMap1,data,graphics94,follows TradeAdvantageMap2
+graphics95_01.asm,$1834F4,226,NameEntryBgMap,data,graphics94,follows TradeAdvantageMap1
+graphics95_01.asm,$1835D6,886,Arrowsmap,data,graphics94,name
+graphics95_01.asm,$18394C,2446,ScoutMap,data,graphics94,name
+graphics95_01.asm,$1842DA,20254,PlayoffSprite,data,graphics94,name
+graphics95_01.asm,$1891F8,5070,ScoutReportMap,data,graphics94,follows PlayoffSprite
+graphics95_01.asm,$18A5C6,454,HotIconMap,data,graphics94,name
+graphics95_01.asm,$18A78C,550,ColdIconMap,data,graphics94,name
+graphics95_01.asm,$18A9B2,3190,RonBarrMap,data,graphics94,name
+graphics95_01.asm,$18B628,9344,CrowdFrameList,data,graphics94,name
+graphics95_01.asm,$18DAA8,34350,TitleScreenImg,data,graphics94,name
+graphics95_01.asm,$1960D6,2934,TitleImg,data,graphics94,name
+graphics95_01.asm,$196C4C,13486,StanleyCupImg,data,graphics94,follows TitleImg
+graphics95_01.asm,$19A0FA,2200,CupSprites,data,graphics94,follows StanleyCupImg
+graphics95_01.asm,$19A992,1174,logoANH,data,graphics94,name
+graphics95_01.asm,$19AE28,854,logoBOS,data,graphics94,name
+graphics95_01.asm,$19B17E,854,logoBUF,data,graphics94,name
+graphics95_01.asm,$19B4D4,1174,logoCGY,data,graphics94,name
+graphics95_01.asm,$19B96A,1078,logoCHI,data,graphics94,name
+graphics95_01.asm,$19BDA0,854,logoDET,data,graphics94,name
+graphics95_01.asm,$19C0F6,1014,logoEDM,data,graphics94,name
+graphics95_01.asm,$19C4EC,950,logoFLA,data,graphics94,name
+graphics95_01.asm,$19C8A2,662,logoHFD,data,graphics94,name
+graphics95_01.asm,$19CB38,1110,logoNYI,data,graphics94,name
+graphics95_01.asm,$19CF8E,886,logoLA,data,graphics94,name
+graphics95_01.asm,$19D304,1046,logoDAL,data,graphics94,name
+graphics95_01.asm,$19D71A,886,logoMTL,data,graphics94,name
+graphics95_01.asm,$19DA90,1206,logoNJ,data,graphics94,name
+graphics95_01.asm,$19DF46,1238,logoNYR,data,graphics94,name
+graphics95_01.asm,$19E41C,1046,logoOTW,data,graphics94,name
+graphics95_01.asm,$19E832,950,logoPHI,data,graphics94,name
+graphics95_01.asm,$19EBE8,886,logoPIT,data,graphics94,name
+graphics95_01.asm,$19EF5E,854,logoQUE,data,graphics94,name
+graphics95_01.asm,$19F2B4,1078,logoSJ,data,graphics94,name
+graphics95_01.asm,$19F6EA,982,logoSTL,data,graphics94,name
+graphics95_01.asm,$19FAC0,1046,logoTB,data,graphics94,name
+graphics95_01.asm,$19FED6,854,logoTOR,data,graphics94,name
+graphics95_01.asm,$1A022C,1046,logoVAN,data,graphics94,name
+graphics95_01.asm,$1A0642,630,logoWSH,data,graphics94,name
+graphics95_01.asm,$1A08B8,1142,logoWPG,data,graphics94,name
+graphics95_01.asm,$1A0D2E,1206,logoASE,data,graphics94,name
+graphics95_01.asm,$1A11E4,1206,logoASW,data,graphics94,name
+title95_02.asm,$1A169A,896,TeamLogoPalettes,data,title94,name
+graphics95_02.asm,$1A1A1A,21006,ArenaGfxBank,data,graphics94,name
+credits95.asm,$1A6C28,66,Credits,data,teamdata94,name
+credits95.asm,$1A6C6A,1622,CreditsList,data,teamdata94,name
 checksum95.asm,$1A72C0,80,ValidationRoutine,code,checksum94,name
