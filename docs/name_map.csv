@@ -1659,7 +1659,7 @@ $09C3A8,UpdateUserRecord,sub_9C3A8,,front/records95
 $09C464,ReadTeamRecord,sub_9C464,,front/records95
 $09C46A,TeamRecordIO,loc_9C46A,,front/records95
 $09C49A,WriteTeamRecord,sub_9C49A,,front/records95
-$09C4A2,clrCrowdRAM,sub_9C4A2,,front/records95
+$09C4A2,ReadCrowdRecord,sub_9C4A2,clrCrowdRAM,front/records95
 $09C4A8,CrowdRecordIO,loc_9C4A8,,front/records95
 $09C4D8,WriteCrowdRecord,sub_9C4D8,,front/records95
 $09C4E0,ReadPlayerRecord,sub_9C4E0,,front/records95

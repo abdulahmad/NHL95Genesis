@@ -1470,9 +1470,9 @@ UpdateTeamRecord	;Add the game of team a1 (against a2) to team record block d1 (
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 UpdateCrowdRecord	;Crowd record block d1 of team a1: the most goals, the biggest period lead and (home
-	;team) the crowd peak (CrowdPeak), with users d4 / d5 and opponent d2 (clrCrowdRAM, WriteCrowdRecord)
+	;team) the crowd peak (CrowdPeak), with users d4 / d5 and opponent d2 (ReadCrowdRecord, WriteCrowdRecord)
 	movem.l	d0-d7/a0-a6,-(sp)
-	bsr.w	clrCrowdRAM
+	bsr.w	ReadCrowdRecord
 	move.w	$C(a1),d3
 	cmp.b	(a0),d3
 	ble.w	.0
@@ -1669,7 +1669,7 @@ TeamRecordIO	;The team record block: read or write (sflags6 bit 6)
 WriteTeamRecord	;Write the team record block (TeamRecordIO)
 	bset	#6,(sflags6).w
 	bra.s	TeamRecordIO
-clrCrowdRAM	;Read the 16 byte crowd record block of team d1 ($B62 + d1 * 16) to a0 (CrowdRecordIO)
+ReadCrowdRecord	;Read the 16 byte crowd record block of team d1 ($B62 + d1 * 16) to a0 (CrowdRecordIO)
 	bclr	#6,(sflags6).w
 CrowdRecordIO	;The crowd record block: read or write (sflags6 bit 6)
 	movem.l	d0-d1/a0-a1,-(sp)
