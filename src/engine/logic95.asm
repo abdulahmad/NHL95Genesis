@@ -77,7 +77,7 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	bne.w	.assstart	;branch if set
 	bra.w	.assstart	;95: always. 94 played the slam sound at two frames here; the next 4 lines are dead
 	bset	#3,(sflags4).w	;set bit 3
-	move.w	#SFX_CHECK,-(sp)	;SFX
+	move.w	#SFXcheck,-(sp)	;SFX
 	jsr	(sfx).l
 	bra.w	.assstart	;set bit 3
 .0
@@ -2335,7 +2335,7 @@ assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates 
 	beq.w	.nna
 	btst	#pf3break,pflags3(a3)	;check if breakaway
 	beq.w	.chkbreak2	;jump if not
-	move.w	#SFX_BEEP1,-(sp)	;ding SFX
+	move.w	#SFXbeep1,-(sp)	;ding SFX
 	jsr	(sfx).l
 .chkbreak2
 	btst	#pf3break,pflags3(a3)	;check if breakaway
@@ -2738,7 +2738,7 @@ breakaway	;Breakaway for the carrier
 	bset	#2,(sflags5).w
 	bclr	#1,pflags(a3)	;pfna - clear new assignment
 	beq.w	.nna	;jump if no new assignment
-	move.w	#SFX_BEEP1,-(sp)	;ding SFX
+	move.w	#SFXbeep1,-(sp)	;ding SFX
 	jsr	(sfx).l
 	movem.l	a2,-(sp)	;push a2 on stack
 	movea.l	#HmShots,a2	;move Home Team Struct into a2
@@ -2765,7 +2765,7 @@ breakaway	;Breakaway for the carrier
 BreakawayOffsidesFlagSet	;94 name: the breakaway / offsides flags of a3 ($64 bits 1 and 0)
 	btst	#1,pflags(a3)	;check for new assignment
 	beq.w	.loadYpos	;branch if no new assignment
-	bclr	#pf3offs,pflags3(a3)	;clear player offsides flag
+	bclr	#pf3oside,pflags3(a3)	;clear player offsides flag
 	bclr	#pf3break,pflags3(a3)	;clear player breakaway flag
 .loadYpos
 	movem.w	d0-d1/a0,-(sp)
@@ -2788,10 +2788,10 @@ BreakawayOffsidesFlagSet	;94 name: the breakaway / offsides flags of a3 ($64 bit
 	cmp.w	d1,d0	;compare Ypos to blue line Y
 	blt.w	.offzone	;branch if in offensive zone
 .setoffside
-	bset	#pf3offs,pflags3(a3)	;set offsides flag
+	bset	#pf3oside,pflags3(a3)	;set offsides flag
 	bra.w	.nogood
 .offzone
-	bclr	#pf3offs,pflags3(a3)	;clear offside bit
+	bclr	#pf3oside,pflags3(a3)	;clear offside bit
 	beq.w	.nogood	;branch if on the blue line
 	movea.l	#SortCords+(11*SCstruct),a0	;loads last SCScruct player struct (Away pos #6)
 	move.w	#$B,d0	;B = # of player structs to check (12)
@@ -2880,7 +2880,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	beq.w	.7
 	btst	#pf3break,pflags3(a3)
 	beq.w	.4
-	move.w	#SFX_BEEP1,-(sp)
+	move.w	#SFXbeep1,-(sp)
 	jsr	(sfx).l
 .4
 	btst	#pf3break,pflags3(a3)

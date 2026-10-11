@@ -25,7 +25,7 @@ DoFill	;Called from pause95, middle95. 95 writes the long straight to the vdp (9
 	lsr.w	#2,d1
 	ori.w	#$4000,d1
 	swap	d1
-	move.l	d1,vdpctrl(a1)
+	move.l	d1,Vctrl-Vdata(a1)
 	move.w	d2,d3
 	swap	d3
 	move.w	d2,d3
@@ -63,42 +63,42 @@ setVram_0	;93 name: second half of 92 setVram (no fade): clear vram and set the 
 	bne.w	.i32
 	ori.w	#$81,d0
 .i32
-	move.w	d0,vdpctrl(a0)	;40 col mode, no interlace, normal brightness
-	move.w	#VDPR_MODE1+$04,vdpctrl(a0)	;512 color palette enable
-	move.w	#VDPR_MODE2+$64,vdpctrl(a0)
+	move.w	d0,Vctrl-Vdata(a0)	;40 col mode, no interlace, normal brightness
+	move.w	#VDPR_MODE1+$04,Vctrl-Vdata(a0)	;512 color palette enable
+	move.w	#VDPR_MODE2+$64,Vctrl-Vdata(a0)
 	move.w	#$9001,d0	;playfield is 64x32
 	cmpi.w	#6,(Map1col1).w
 	beq.w	.i64
 	move.w	#$9003,d0
 .i64
-	move.w	d0,vdpctrl(a0)
+	move.w	d0,Vctrl-Vdata(a0)
 	move.w	#$8200,d0
 	move.b	(VmMap1).w,d0
 	lsr.b	#2,d0
 	andi.b	#$38,d0
-	move.w	d0,vdpctrl(a0)
+	move.w	d0,Vctrl-Vdata(a0)
 	move.w	#$8400,d0
 	move.b	(VmMap2).w,d0
 	lsr.b	#5,d0
-	move.w	d0,vdpctrl(a0)
+	move.w	d0,Vctrl-Vdata(a0)
 	move.w	#$8300,d0
 	move.b	(VmMap3).w,d0
 	lsr.b	#2,d0
 	andi.b	#$3E,d0
-	move.w	d0,vdpctrl(a0)
+	move.w	d0,Vctrl-Vdata(a0)
 	move.w	#$8500,d0
 	move.b	(VSPRITES).w,d0
 	lsr.b	#1,d0
-	move.w	d0,vdpctrl(a0)
+	move.w	d0,Vctrl-Vdata(a0)
 	move.w	#$8D00,d0
 	move.b	(VSCRLPM).w,d0
 	lsr.b	#2,d0
-	move.w	d0,vdpctrl(a0)
-	move.w	#VDPR_WINX,vdpctrl(a0)	;disable plane 3 graphics
-	move.w	#VDPR_WINY,vdpctrl(a0)	;disable plane 3 graphics
-	move.w	#VDPR_BGCOL,vdpctrl(a0)	;Palette # 0 is border/transparent
-	move.w	#VDPR_MODE3,vdpctrl(a0)	;Scroll mode (entire scroll)
-	move.l	#VSRAM_W,vdpctrl(a0)	;vsram
+	move.w	d0,Vctrl-Vdata(a0)
+	move.w	#VDPR_WINX,Vctrl-Vdata(a0)	;disable plane 3 graphics
+	move.w	#VDPR_WINY,Vctrl-Vdata(a0)	;disable plane 3 graphics
+	move.w	#VDPR_BGCOL,Vctrl-Vdata(a0)	;Palette # 0 is border/transparent
+	move.w	#VDPR_MODE3,Vctrl-Vdata(a0)	;Scroll mode (entire scroll)
+	move.l	#VSRAM_W,Vctrl-Vdata(a0)	;vsram
 	move.l	#0,(a0)	;playfield 1/2
 	move.w	(sp)+,(disflags).w
 	rts
@@ -113,7 +113,7 @@ Vmaddr
 	ori.w	#$4000,d0
 	swap	d0
 	andi.w	#3,d0
-	move.l	d0,vdpctrl(a0)
+	move.l	d0,Vctrl-Vdata(a0)
 	rts
 
 dobitmap	;Copy the palettes flagged in d5 to palfadenew, then write the map at a1 to the screen at printx / printy.
@@ -248,7 +248,7 @@ cramfade	;No xref in the listing
 	move.w	d6,d0
 	swap	d0
 	move.w	#$20,d0
-	move.l	d0,vdpctrl(a0)
+	move.l	d0,Vctrl-Vdata(a0)
 	move.w	(a0),d7
 	move.w	d7,d0
 	and.w	d5,d0
@@ -265,7 +265,7 @@ cramfade	;No xref in the listing
 	move.l	#$C000,d0
 	move.b	d6,d0
 	swap	d0
-	move.l	d0,vdpctrl(a0)
+	move.l	d0,Vctrl-Vdata(a0)
 	move.w	d7,(a0)
 .next
 	addq.w	#2,d6
@@ -280,7 +280,7 @@ CopyPaletteToCRAM	;93 name. Copy all 64 palfadenew colours to colour ram (dfng s
 	bset	#dfng,(disflags).w
 	movea.w	#(palfadenew-M68K_RAM),a1
 	movea.l	#VDP_DATA,a0
-	move.l	#CRAM_W,vdpctrl(a0)	;cram write, address 0
+	move.l	#CRAM_W,Vctrl-Vdata(a0)	;cram write, address 0
 	moveq	#$1F,d0
 .0
 	move.l	(a1)+,(a0)
@@ -365,7 +365,7 @@ SetScroll2	;93 name (display94); 93 IDA DoScroller. Write Hscroll / Vscroll to t
 	addq.w	#2,d0
 	bsr.w	Vmaddr
 	move.w	(Hscroll).w,(a0)
-	move.l	#VSRAM_W+(2<<16),vdpctrl(a0)	;vsram write, address 2
+	move.l	#VSRAM_W+(2<<16),Vctrl-Vdata(a0)	;vsram write, address 2
 	move.w	(Vscroll).w,(a0)
 	rts
 
@@ -1013,7 +1013,7 @@ VBlank	;(display94). 93 name; 93 IDA VBlank_org. Main vblank code for game play 
 	bgt.w	.c
 	cmpi.w	#$3C,(gameclock).w	;60
 	blt.w	.c
-	move.w	#SFX_BEEP2,-(sp)	;SFXbeep2, played when gameclock reaches 60
+	move.w	#SFXbeep2,-(sp)	;SFXbeep2, played when gameclock reaches 60
 	jsr	(sfx).l	;95: jsr (94: bsr.w)
 .c
 	addq.w	#1,(vcount).w	;92 Vcount

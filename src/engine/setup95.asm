@@ -474,14 +474,14 @@ DrawTeamScreen	;93 name (94 stats94). Roster screen background: wait for the dma
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.w	#VDPR_WINX,vdpctrl(a0)
-	move.w	#VDPR_WINY+$1C,vdpctrl(a0)
+	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
+	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
 	move.w	(VSPRITES).w,d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
-	move.w	#VDPR_MODE4+$81,vdpctrl(a0)
+	move.w	#VDPR_MODE4+$81,Vctrl-Vdata(a0)
 	move.w	#6,(Map3col1).w
-	move.w	#VDPR_HSCROLL,vdpctrl(a0)
+	move.w	#VDPR_HSCROLL,Vctrl-Vdata(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)

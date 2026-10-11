@@ -685,7 +685,7 @@ updatefaceoff	;(checks94). Faceoff count down: fofdata frame from temp1; at 0 er
 Endfaceoff	;(checks94). Drop the puck: sfx $2C, reload the ref tiles (RefTiles), clear the faceoff flags, pick the winner
 	;(.ftab from the two fofdata2 frames and randomd0) and the puck direction (fodir1 / fodir2 or random, dirtab); assignment 1
 	;(pucknorm). Practice drops it dead
-	move.w	#SFX_PUCKICE,-(sp)
+	move.w	#SFXpuckice,-(sp)
 	jsr	(sfx).l
 	bclr	#0,(sflags2).w
 	move.w	#$3C,(holdreset).w

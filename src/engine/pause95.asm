@@ -78,8 +78,8 @@ Pausemode	;(hockey94 PauseMode). Game is in pause mode now: fade out, stop the s
 	move.w	(sp)+,(sflags).w
 	jsr	(RestoreGameScreen).l
 	movea.l	#VDP_DATA,a0
-	move.w	#VDPR_WINX,vdpctrl(a0)
-	move.w	#VDPR_WINY,vdpctrl(a0)
+	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
+	move.w	#VDPR_WINY,Vctrl-Vdata(a0)
 	bclr	#sfpz,(sflags).w
 	jsr	(setvideo).l
 	move.w	#$18,(palcount).w
@@ -355,14 +355,14 @@ PauseScreenDraw	;95 only. Draw the pause screen (SetupPauseScreen): wait out the
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.w	#VDPR_WINX,vdpctrl(a0)	;no window
-	move.w	#VDPR_WINY,vdpctrl(a0)
+	move.w	#VDPR_WINX,Vctrl-Vdata(a0)	;no window
+	move.w	#VDPR_WINY,Vctrl-Vdata(a0)
 	move.w	(VSPRITES).w,d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)	;first sprite off
-	move.w	#VDPR_MODE4+$81,vdpctrl(a0)	;40 col mode
+	move.w	#VDPR_MODE4+$81,Vctrl-Vdata(a0)	;40 col mode
 	move.w	#6,(Map2col1).w
-	move.w	#VDPR_HSCROLL,vdpctrl(a0)	;hscroll table at 0
+	move.w	#VDPR_HSCROLL,Vctrl-Vdata(a0)	;hscroll table at 0
 	clr.w	d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)

@@ -84,7 +84,7 @@ SetStatScroll	;period94 SetStatScroll. Plane A vertical scroll (VSRAM 0) = VertL
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.l	#VSRAM_W+(2<<16),vdpctrl(a0)
+	move.l	#VSRAM_W+(2<<16),Vctrl-Vdata(a0)
 	move.w	#$FFB0,d0
 	add.w	(VertLineScrolling).w,d0
 	move.w	d0,(a0)
@@ -462,7 +462,7 @@ SetAttribScrollReg	;stats94 SetAttribScrollReg (93 name). VSRAM = VertLineScroll
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.l	#VSRAM_W+(2<<16),vdpctrl(a0)
+	move.l	#VSRAM_W+(2<<16),Vctrl-Vdata(a0)
 	move.w	#$FF98,d0
 	add.w	(VertLineScrolling).w,d0
 	move.w	d0,(a0)
@@ -1463,14 +1463,14 @@ SeasonPlayersScreen	;95 only. Run the season stats screen, then jump to ExitAttr
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.w	#VDPR_WINX,vdpctrl(a0)
-	move.w	#VDPR_WINY,vdpctrl(a0)
+	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
+	move.w	#VDPR_WINY,Vctrl-Vdata(a0)
 	move.w	(VSPRITES).w,d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
-	move.w	#VDPR_MODE4+$81,vdpctrl(a0)
+	move.w	#VDPR_MODE4+$81,Vctrl-Vdata(a0)
 	move.w	#6,(Map2col1).w
-	move.w	#VDPR_HSCROLL,vdpctrl(a0)
+	move.w	#VDPR_HSCROLL,Vctrl-Vdata(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
@@ -1620,7 +1620,7 @@ SeasonAttribScrollReg	;stats94 SetAttribScrollReg. VSRAM = VertLineScrolling - $
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movea.l	#VDP_DATA,a0
-	move.l	#VSRAM_W+(2<<16),vdpctrl(a0)
+	move.l	#VSRAM_W+(2<<16),Vctrl-Vdata(a0)
 	move.w	#$FF98,d0
 	add.w	(VertLineScrolling).w,d0
 	move.w	d0,(a0)
@@ -3920,7 +3920,7 @@ DisplayPeriodOver	;(data94; 93 name) End of game Stars of the Game box. Called f
 	move.w	(HmGoals).w,d0
 	sub.w	(AwGoals).w,d0
 	ble.w	.3
-	move.w	#SFX_HOMEWIN,-(sp)	;song $F: home team won
+	move.w	#SFXhomewin,-(sp)	;song $F: home team won
 	jsr	(song).l
 .3
 	movem.l	(sp)+,d0-d5/a0-a4

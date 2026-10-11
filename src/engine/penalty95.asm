@@ -162,7 +162,7 @@ Stop4Pen	;(penalty94) a0 = PenaltyList penalty + 2. Stop the clock, set the face
 	clr.w	(Pencntdwn).w
 	bset	#2,(gmode).w
 	jsr	(play_new_song).l
-	move.w	#SFX_WHISTLE,-(sp)	;whistle (92 SFXwhistle = 10)
+	move.w	#SFXwhistle,-(sp)	;whistle (92 SFXwhistle = 10)
 	jsr	(sfx).l
 	movem.l	d1/a0-a3,-(sp)
 	movea.l	#PenBuf,a0
