@@ -777,8 +777,8 @@ Dallas	;DAL, $2A24 (94 $214E, after LA as 94 Minnesota)
 	dc.w	.sr-.0
 	dc.w	.sodds-.0
 .pad
-	incbin	..\Extracted\NHL95\Graphics\Pals\MINh95.pal
-	incbin	..\Extracted\NHL95\Graphics\Pals\MINv95.pal
+	incbin	..\Extracted\NHL95\Graphics\Pals\DALh95.pal
+	incbin	..\Extracted\NHL95\Graphics\Pals\DALv95.pal
 .sr	;4 bytes
 	dc.w	$5310,$20F7
 .sodds
@@ -954,8 +954,8 @@ NYIslanders	;NYI, $32DA (94 $2A58)
 	dc.w	.sr-.0
 	dc.w	.sodds-.0
 .pad
-	incbin	..\Extracted\NHL95\Graphics\Pals\LIh95.pal
-	incbin	..\Extracted\NHL95\Graphics\Pals\LIv95.pal
+	incbin	..\Extracted\NHL95\Graphics\Pals\NYIh95.pal
+	incbin	..\Extracted\NHL95\Graphics\Pals\NYIv95.pal
 .sr	;4 bytes
 	dc.w	$5221,$12F7
 .sodds
@@ -1013,8 +1013,8 @@ NYRangers	;NYR, $35C6 (94 $2D5C)
 	dc.w	.sr-.0
 	dc.w	.sodds-.0
 .pad
-	incbin	..\Extracted\NHL95\Graphics\Pals\NYh95.pal
-	incbin	..\Extracted\NHL95\Graphics\Pals\NYv95.pal
+	incbin	..\Extracted\NHL95\Graphics\Pals\NYRh95.pal
+	incbin	..\Extracted\NHL95\Graphics\Pals\NYRv95.pal
 .sr	;4 bytes
 	dc.w	$5620,$20F7
 .sodds
@@ -1425,8 +1425,8 @@ TampaBay	;TB, $49FE (94 $4216)
 	dc.w	.sr-.0
 	dc.w	.sodds-.0
 .pad
-	incbin	..\Extracted\NHL95\Graphics\Pals\TBYh95.pal
-	incbin	..\Extracted\NHL95\Graphics\Pals\TBYv95.pal
+	incbin	..\Extracted\NHL95\Graphics\Pals\TBh95.pal
+	incbin	..\Extracted\NHL95\Graphics\Pals\TBv95.pal
 .sr	;4 bytes
 	dc.w	$1000,$01D7
 .sodds
