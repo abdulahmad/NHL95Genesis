@@ -1,6 +1,5 @@
-;	3 parts in ROM order, each under its banner below. incbin only (plus the two
-;	FeaturedPictures tables), no gap and no overlap. Each file is a slice of lst/nhl95.bin written by npm run extractassets
-;	into Extracted\\Graphics. follows.
+;	3 parts in ROM order, each under its banner below. incbin only (plus the two FeaturedPictures tables).
+;	Each file is a slice of the ROM written by npm run extractassets into Extracted\\Graphics.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	The player pictures (FeaturedPicIdx / FeaturedPictures), the rink, the sprites, the fonts and the screen maps and bitmaps, up to
@@ -650,8 +649,8 @@ logoASW	;team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoASW.map.jim
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Mapped (100%): TeamLogoPalettes, one 32 byte palette per team in TeamList order. 25 are the same bytes as the 94 files
-;	and keep their DAL, ASE and ASW differ and are the 94 stem with 95 added.
+;	TeamLogoPalettes, one 32 byte palette per team in TeamList order. 25 are unchanged from 94; DAL, ASE and ASW
+;	are new.
 
 TeamLogoPalettes	;Team logo palettes, 16 colors per team (DrawMatchupLogo, NameEntryScreen, DrawTeamBitmap)
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalANHA.pal	;ANH, 94 file, same bytes

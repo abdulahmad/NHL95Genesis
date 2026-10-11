@@ -3,10 +3,8 @@
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; its setup and skating paths
-;	ClearShootout and InitShooters, then the shootout routines PSandSOpassdir, passdirlist, StartShootoutPath
-;	ShootoutPaths, NextPathPoint, SkatePath and ShootoutShootCheck; then the shootout itself.
-;passdirlist ... ShootoutShootCheck as dc.b; it is transcribed from the retail bytes.
+;	The shootout setup and skating paths: ClearShootout and InitShooters, then PSandSOpassdir, passdirlist,
+;	StartShootoutPath, ShootoutPaths, NextPathPoint, SkatePath and ShootoutShootCheck; then the shootout itself.
 
 
 
@@ -228,10 +226,8 @@ ShootoutShootCheck	;Shootout, skater a3 has the puck (gmode2 bit 1): Z set (d0 i
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	NextShooter, CountShootoutGoals, EndShootout, PlayoffRoundScreen and RoundBigTxt, ShootoutWonBy
+;	NextShooter, CountShootoutGoals, EndShootout, PlayoffRoundScreen and RoundBigTxt, ShootoutWonBy,
 ;	ShootoutShooters ... PrintShooterNames (the shootout shooters screen).
-;NextShooter and ShootoutWonBy+$50 ... PrintShooterNames as dc.b; they are transcribed
-;the retail bytes. the printz / printz2 / printbigz Strings as instructions.
 
 
 NextShooter	;Shootout: the next shooter (BA_Team, BA_Goalie_SCnum, StartShootoutPath), or the end
@@ -762,12 +758,10 @@ PrintShooterNames	;Shootout shooters: the shooters' names (FormatPlayerNameShort
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Mapped (75%): puckshootout, SelectPenaltyShotSkater, puckpenshot, UpdatePenaltyShotEnd, EndPenaltyShotPlay; moved
-;	SetupPenaltyShot, PenaltyShotBox / PenShotBigTxt, PenShotChk / getBAplayerInfo, ShortenMsgTimer
-;	setInjuryType, getFgtbyte / chkFgtBit1, updatepwrplay / GetLowestPen; the season
-;	injuries (SetSeasonInjuries ... DeleteInjurySlot, save RAM SRInjuries), CheckInjury and ClearPowerPlay.
-;puckshootout ... UpdatePenaltyShotEnd and SetupPenaltyShot as dc.b; they are transcribed from the retail
-;bytes. the printz / printbigz / appendz Strings as instructions.
+;	puckshootout, SelectPenaltyShotSkater, puckpenshot, UpdatePenaltyShotEnd, EndPenaltyShotPlay, SetupPenaltyShot,
+;	PenaltyShotBox / PenShotBigTxt, PenShotChk / getBAplayerInfo, ShortenMsgTimer, setInjuryType, getFgtbyte /
+;	chkFgtBit1, updatepwrplay / GetLowestPen; the season injuries (SetSeasonInjuries ... DeleteInjurySlot, save RAM
+;	SRInjuries), CheckInjury and ClearPowerPlay.
 
 
 

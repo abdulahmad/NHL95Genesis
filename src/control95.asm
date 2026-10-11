@@ -1,6 +1,5 @@
-;	The pad input 94 did in line; holdplayer, Acheck, burst and setpads chgplayer (with exit and
-;	swpchk); the setcplayer entries and restorepl; clearTeamStats setteams, InitTeamSructure and
-;	setplayercolors. is before it; the sound driver follows at $AF44.
+;	The pad input per player (updatepadinput), holdplayer, Acheck, burst and setpads, chgplayer (with exit and
+;	swpchk); the setcplayer entries and restorepl; clearTeamStats, setteams, InitTeamSructure and setplayercolors.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 

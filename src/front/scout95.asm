@@ -3,9 +3,7 @@
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Mapped (85%): ScoutingReport, PageMatchup ... MatchupLineSlots; moved in: BuildHotColdLists and SortHotColdStarters.
-;the printz / printbigz Strings and the remap bytes after DecompressGraphicsWithCallback as instructions; they are written from
-;	the retail bytes.
+;	ScoutingReport, PageMatchup ... MatchupLineSlots, BuildHotColdLists and SortHotColdStarters.
 ;	$20xxxx addresses are save RAM (odd bytes).
 
 
@@ -714,11 +712,9 @@ SortHotColdStarters	;Sum the hot / cold values of the 6 starters of team a0 (sav
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Mapped (58%): StartScoutText, ScoutTextPlayer, ScoutTextNextLine; moved in: CompareHotColdTotals, GetHotColdTotal, the hot / cold
-;	player lists, PrintPlayerNameRight, GetTeamRating / TeamRatings, HotColdIcon, GetTeamArena / GetTeamNickname
-;	ScoutTextScript, GetPlayerPicture; the users lists of the scouting text
-;	(GetHomeUsers ... UserNameString).
-;CompareHotColdTotals / GetHotColdTotal and ScoutTextScript as dc.b and hid printz Strings; they are written from the retail bytes.
+;	StartScoutText, ScoutTextPlayer, ScoutTextNextLine, CompareHotColdTotals, GetHotColdTotal, the hot / cold player
+;	lists, PrintPlayerNameRight, GetTeamRating / TeamRatings, HotColdIcon, GetTeamArena / GetTeamNickname,
+;	ScoutTextScript, GetPlayerPicture; the users lists of the scouting text (GetHomeUsers ... UserNameString).
 ;	$20xxxx addresses are save RAM (odd bytes).
 
 

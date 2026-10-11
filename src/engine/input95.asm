@@ -1,13 +1,9 @@
-;	NHL 95. doinput (its start is doinput; the mapped start doinput.0 is inside it), doinput_islocked, rtss7,
-;	faceoffinput setpassmode, passmode, dopass, passtoa0, then OneTimerTarget and its tables and OneTimerPass (moved in)
-;	Findhittype, SetShotMode, ShotMode, prepshot, doshot, shotsets, shotdiradj, shotdirmath, puckvzadj compshoot (moved in).
-;	follows.
-;	The 94 parts doinput_cbut ... doinput_ispc, getGoalieSCnum are; the goalie dive (doinput.33) doinput_goaliedive; burst, Acheck,
-;	changeplayer, setc1player ... are; SetLCmode, lineinput except puckvzadj and compshoot (dc.b, read from the retail bytes) and
-;	the dead / data bytes noted below. 95 changes: four pads (doinput_islocked marks the player of pad c1 ... c4playernum), the
-;	asstab numbers and SPA values, the y limits moved 3 out ($108 to $10B ...), the PAL speed $18 (94 $16), the one-timer table
-;	offsets, Findhittype's two masks swapped, shotsets $E / $FFF2 (94 $10 / $FFF0), jsr / jmp .l to the routines 95 moved out of
-;	range.
+;	NHL 95 controller input. doinput, doinput_islocked, rtss7, faceoffinput, setpassmode, passmode, dopass, passtoa0,
+;	OneTimerTarget and its tables, OneTimerPass, Findhittype, SetShotMode, ShotMode, prepshot, doshot, shotsets,
+;	shotdiradj, shotdirmath, puckvzadj, compshoot.
+;	95 changes: four pads (doinput_islocked marks the player of pad c1 ... c4playernum), the asstab numbers and SPA
+;	values, the y limits moved 3 out ($108 to $10B ...), the PAL speed $18 (94 $16), the one-timer table offsets,
+;	Findhittype's two masks swapped, shotsets $E / $FFF2 (94 $10 / $FFF0).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -1150,7 +1146,7 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 .19
 	move.w	d3,(puckvz).w	;move into puckvz
 	bra.w	.20
-	bclr	#4,(sflags5).w	;dead (the bra above skips it): the 94 top shelf call
+	bclr	#4,(sflags5).w	;never reached (the bra above skips it): top shelf call
 	beq.w	.20
 	btst	#pf3onetimer,pflags3(a3)	;check if one timer
 	bne.w	.20

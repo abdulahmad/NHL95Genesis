@@ -5,10 +5,10 @@
 ;------------------------------------------------------------------------------------------------------------------------
 ;	Three runs in ROM order: the VDP helpers with the vblank transfers, the sprite frames and rink
 ;	scroll, then the decompressor, the vblank handlers and the pad reads.
-;	The 94 / vdp helpers in a new order: DoFill, setvram, setVram_0, Vmaddr, dobitmap, DoDMA_clearCallbackPointer
-;	DecompressGraphics (95: no packed graphics), DoDMApro, WaitDMA, forcefade, cramfade, CopyPaletteToCRAM, xyVmMap, remap; then the
-;	vblank transfers DumpSprites, DumpSprites2, DoDMAlist (ends at the shared rts rtss2), SetScroll2; then DoDMA (95: no Z80
-;bus request). cramfade and DumpSprites are written as instructions.
+;	The VDP helpers: DoFill, setvram, setVram_0, Vmaddr, dobitmap, DoDMA_clearCallbackPointer, DecompressGraphics
+;	(95: no packed graphics), DoDMApro, WaitDMA, forcefade, cramfade, CopyPaletteToCRAM, xyVmMap, remap; then the
+;	vblank transfers DumpSprites, DumpSprites2, DoDMAlist (ends at the shared rts rtss2), SetScroll2; then DoDMA
+;	(95: no Z80 bus request).
 
 
 ; fill vram
@@ -429,8 +429,8 @@ DoDMA	;95 drops the 94 Z80 bus request, the sr save and the last word fix for a 
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	addframe2, then sizetab (94 kept it), then updatescroll. 95 reads a new 8 byte sprite record (Y, size /
-;	tile high bits, tile / flags, X) and has no horizontal rink case.
+;	addframe2, then sizetab, then updatescroll. 95 reads a new 8 byte sprite record (Y, size / tile high bits,
+;	tile / flags, X) and has no horizontal rink case.
 
 addframe	;a3 = sort cord object. Project it with find3d, then addframe2. a5 = dma trans, a6 = sprite attribute table.
 	;Called from setsortcords
@@ -594,7 +594,7 @@ addframe2	;d0/d1 = x/y coord on screen, a3 = object, a5 = dma trans, a6 = sprite
 sizetab	;sprite size code to tile count. sizetab, used by addframe2 (94 kept it)
 	dc.b	1,2,3,4,2,4,6,8,3,6,9,$C,4,8,$C,$10
 
-updatescroll	;93 show_rink. Using hpos and vpos set scroll cords; queue rink map rows on the dma list (a5) when vertical
+updatescroll	;Using hpos and vpos set scroll cords; queue rink map rows on the dma list (a5) when vertical
 	;scrolling needs new rows. Called from setvideo. Rows from Rinktilelist, or RevRinkTilelist in a reverse angle replay
 	;(sflags4 bit 4). 95 has no horizontal rink check
 	moveq	#-$40,d0	;-192+128 (#$FFFFFFC0)
@@ -662,13 +662,10 @@ updatescroll	;93 show_rink. Using hpos and vpos set scroll cords; queue rink map
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	forceblack2, the graphics decompressor (DecompressBytecode, jump_table, the Opcode_* handlers, FlushOutputBuffer; no
-;	caller in 95), AddSmallFont, DecompressGraphicsWithCallback, Framer, AddFramer, the AddFramer2; moved in: VBjsr
-;	VBlank, p_music_vblank, vb2 and IRQ7, VBlank_SetOptions; then
-;	orjoy, the orjoy4way, nodiag, ReadJoy1-4, ReadJoy, jdtab, ReadJoyData ... ResetZ80Bus (95 pauses the sound driver
-;	around the pad reads), then the 95 ReadMenuJoy.
-;	written as instructions: forceblack2 ... AddSmallFont, AddFramer, VBlank, vb2, VBlank_SetOptions
-;	ReadJoyData ... ResetZ80Bus.
+;	forceblack2, the graphics decompressor (DecompressBytecode, jump_table, the Opcode_* handlers, FlushOutputBuffer;
+;	unused), AddSmallFont, DecompressGraphicsWithCallback, Framer, AddFramer, AddFramer2, VBjsr, VBlank,
+;	p_music_vblank, vb2 and IRQ7, VBlank_SetOptions; then orjoy, orjoy4way, nodiag, ReadJoy1-4, ReadJoy, jdtab,
+;	ReadJoyData ... ResetZ80Bus (95 pauses the sound driver around the pad reads), then ReadMenuJoy.
 
 ; fade all colors to black but don't upset palfadenew
 forceblack	;Called from most screens
@@ -1338,8 +1335,7 @@ ReadMenuJoy	;Read the menu pad: with sflags12 bit 0 clear, pad menupadnum (ReadJ
 	jmp	(orjoy4way).l
 
 ;------------------------------------------------------------------------------------------------------------------------
-;ProcessInputWithRepeat and WaitVSyncAndReadInput, which 95 put in front of the collision code
-;	(starts). WaitVSyncAndReadInput is written as instructions.
+;	ProcessInputWithRepeat and WaitVSyncAndReadInput.
 
 ProcessInputWithRepeat	;nodiag, then key repeat on d1-d3. 95: first repeat after $19 frames, then every 4 (every $14 with sflags12
 	;bit 0)

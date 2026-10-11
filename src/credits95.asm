@@ -1,10 +1,10 @@
-;	NHL 95. follows.
+;	NHL 95 credits.
 ;	The title screen credits: length-prefixed Strings, String -1 ends a screen; newTitleScreen
 ;	prints Credits first, then CreditsList.
 
 	include	macros\genesis.mac	;String
 
-Credits	;94 / 93 Credits. Title screen scroller: the copyright and trademark lines
+Credits	;Title screen scroller: the copyright and trademark lines
 	String	'$ 1994 Electronic Arts'
 	String	'Licensed by'
 	String	'Sega Enterprises, Ltd.'
@@ -154,7 +154,7 @@ CreditsList	;94 / 93 CreditsList. The credits after the copyright lines
 	String	'Ken Rogers'
 	String	-1
 
-	dc.w	2	;empty String (93: String '')
+	dc.w	2	;empty String
 	String	-1
 
 	String	-1

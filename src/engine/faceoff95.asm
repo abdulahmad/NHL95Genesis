@@ -1,8 +1,8 @@
-;	UpdateScores / SetScore / sctab and ClearShotData, then ... Endfaceoff with assfaceoff / assfaceoffp1 moved in, checkfo, and the
-;	DrawFaceoffWindow ReturnGoalies, CPgoalie and CompLine are not here. follows. puckfaceoff ... Endfaceoff as dc.b; that code is read
-;	from the retail bytes with the 94 source as the guide. the printz / printz2 Strings as instructions; they are String here. 95
-;	changes: four pads (c1playernum ... c4playernum, cont3team / cont4team), the 95 assignment numbers ($1F, 4, $10, $11, 1) and SPA
-;	values, net y $112 / $FEEE (94 $10C / $FEF4), Practice Mode (sflags9 bit 7) faceoffs, tmsize $366.
+;	UpdateScores / SetScore / sctab and ClearShotData, puckfaceoff ... Endfaceoff with assfaceoff / assfaceoffp1,
+;	checkfo, and DrawFaceoffWindow.
+;	95 changes: four pads (c1playernum ... c4playernum, cont3team / cont4team), the new assignment numbers
+;	($1F, 4, $10, $11, 1) and SPA values, net y $112 / $FEEE (94 $10C / $FEF4), Practice Mode (sflags9 bit 7)
+;	faceoffs, tmsize $366.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 

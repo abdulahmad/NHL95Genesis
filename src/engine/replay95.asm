@@ -1,10 +1,8 @@
-;	NHL 95.
-;	Mapped (80%): updatereplay, ReplayMode, ShowReplayIcon / EraseReplayIcon / ShowReplayBanner / EraseReplayBanner
-;	suba4, adda4, UpdateCameraPos, RevReplayAdj, RestoreReplayFrame and ClampReplayView. 95 adds chkblock and CanBlock
-;	(the 95 shot block tests) ahead of updatereplay, and a sound driver restart at the top of ReplayMode. checkwindow is in
-;	follows.
-;	95 packs a replay frame object as 9-bit x and 11-bit frame (94: 10-bit x, 12-bit frame) and saves both PadControlBits words.
-;Local labels follow where the code is 94 code and are numbered in the new 95 routines; the names are not kept.
+;	NHL 95 instant replay: updatereplay, ReplayMode, ShowReplayIcon / EraseReplayIcon / ShowReplayBanner /
+;	EraseReplayBanner, suba4, adda4, UpdateCameraPos, RevReplayAdj, RestoreReplayFrame and ClampReplayView.
+;	95 adds chkblock and CanBlock (the shot block tests) ahead of updatereplay, and a sound driver restart at the top
+;	of ReplayMode. A replay frame object packs a 9-bit x and an 11-bit frame (94: 10-bit x, 12-bit frame), and both
+;	PadControlBits words are saved.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -251,7 +249,7 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	move.w	#7,d0
 	move.w	#1,d1
 	jsr	(SoundCmd).l
-	;the 94 starts here. As 93: a d-pad press picks the nearest object in that direction and the
+	;A d-pad press picks the nearest object in that direction and the
 	;camera follows it
 	bclr	#0,(sflags5).w
 	jsr	(forceblack).l

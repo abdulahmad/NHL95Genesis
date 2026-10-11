@@ -1,10 +1,6 @@
-;	NHL 95.
-;	New in 95 (no 94 file): GetTeamUser, the end of season awards (SeasonAwards: the award scans, the finalists and
-;	winner screens) and the playoffs (InitPlayoffs ... CollectSeriesWinners, PlayoffTreeScreen).
-;	The segment map ended this file ; RoundSeriesOffsets / RoundSeriesCounts and PlayoffTreeScreen (to) belong here
-;	starts.
-;ScanPresidents ... GetAwardAssists, RestoreSeasonHeader and PlayoffTreeScreen as dc.b; they are transcribed
-;from the retail bytes. printz / printz2 Strings and remap bytes as instructions.
+;	NHL 95 awards and playoffs.
+;	New in 95: GetTeamUser, the end of season awards (SeasonAwards: the award scans, the finalists and winner screens)
+;	and the playoffs (InitPlayoffs ... CollectSeriesWinners, PlayoffTreeScreen).
 ;	$20xxxx addresses are save RAM (odd bytes).
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the

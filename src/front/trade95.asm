@@ -1,10 +1,8 @@
-;	NHL 95.
+;	NHL 95 rosters and trades.
 ;	New in 95: the season roster helpers (GetHighlightSlot, HighlightsHelp, DefaultRosters, GetRosterId, GetCreatedName,
 ;	GetRosterName, Read / WriteTeamRoster, GetJerseyNumber) and the season trades: the Trade Player screen (TradePlayers),
-;	CheckTrade (roster rules, INVALID TRADE), EvaluateTrade, GMDecision and ExecuteTrade, which moves the players with their
-;	stats, saved lines and line slots. No 94 code. follows.
-;printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions and left
-;	HighlightsHelp and ReadTradePads3 as dc.b; they are written from the retail bytes.
+;	CheckTrade (roster rules, INVALID TRADE), EvaluateTrade, GMDecision and ExecuteTrade, which moves the players with
+;	their stats, saved lines and line slots.
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
 ;	the cmp and exg encodings after assembly.

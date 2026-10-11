@@ -1,9 +1,7 @@
-;	NHL 95.
+;	NHL 95 create player.
 ;	New in 95: the season Create Player screens (the created player list, name entry with the letter grid, Modify Ratings
-;	with the attribute points pool, the save RAM create records), Sign Free Agents and Release Players. Moved
-;	NameEntryFramer. Each routine comment says New in 95 or names its 94 routine. NameEntryScreen follows.
-;printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions and left the
-;	Modify Ratings field routines, the attribute handlers and several tables as dc.b; they are written from the retail bytes.
+;	with the attribute points pool, the save RAM create records), Sign Free Agents and Release Players, and
+;	NameEntryFramer.
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.

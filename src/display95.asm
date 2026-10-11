@@ -354,7 +354,7 @@ updateanim	;frame switch control on struct a3. Called from updateplayers. 95: no
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	defaultsprites, defaultsprites2 and SprSort. follows at $A95C.
+;	defaultsprites, defaultsprites2 and SprSort.
 
 
 defaultsprites	;allocate vram and assign char area for graphic structures. d4 = char area for data. Sets up the sso (4) and

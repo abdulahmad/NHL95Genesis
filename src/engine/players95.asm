@@ -1,11 +1,7 @@
-;	NHL 95.
-;	The PuckcIsGoalie, then SetPersonel, SetPlList, TryAddPlayerToList, forcepldata, GetPlayerCount (moved
-;	by team number, GetPlayerCountD7), setplayer, ClampNibble, the StickHandTable and BoostAttribute
-;	AttributeCalc (moved in), restoreteams (moved in), ResetBench, resetplstuff (moved in), priolist and
-;	sublist (moved in), Create_HotCold_Table / HotColdLoop (moved in).
-;	The start moved to: CPgoalie.0 ... The end moved to: doinput is the
-;	start of doinput (doinput.0; the mapped start; is inside it).
-;PuckcIsGoalie, forcepldata, resetplstuff and the tables as dc.b; they are code / data here, read from the retail bytes.
+;	NHL 95 player setup.
+;	PuckcIsGoalie, SetPersonel, SetPlList, TryAddPlayerToList, forcepldata, GetPlayerCount / GetPlayerCountD7,
+;	setplayer, ClampNibble, StickHandTable and BoostAttribute, AttributeCalc, restoreteams, ResetBench,
+;	resetplstuff, priolist and sublist, Create_HotCold_Table / HotColdLoop.
 ;	95 changes: SetPersonel marks the season injuries first (GameFlags bit 3, SetSeasonInjuries); setplayer reads the roster by team
 ;	number (rosterteam, GetRosterName / GetJerseyNumber), maps the stick handling nibble through StickHandTable and pulls some ratings
 ;	toward 30 (BoostAttribute); forcepldata lost the Set4WayPlayerStub call; the asstab numbers and SPA values.

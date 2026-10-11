@@ -1,6 +1,5 @@
-;	goalieacc, the goalie dive, doinput_cbut ... getGoalieSCnum, the GoalieReadySPA, dirtab
-;	MaxSpeed ... stopna, the updatevel, SetSPA, stopna2, doplayeracc ... playeracc
-;	follows.
+;	goalieacc, the goalie dive, doinput_cbut ... getGoalieSCnum, GoalieReadySPA, dirtab,
+;	MaxSpeed ... stopna, updatevel, SetSPA, stopna2, doplayeracc ... playeracc.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -371,12 +370,10 @@ getGoalieSCnum	;(getGoalieSCnum) 95: d0 = SCnum of the goalie of the team of pla
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	dirtab, MaxSpeed, dostop, stopna, SetSPA, doplayeracc, noturn0, noturn, playeracc and the goal code, with moved
+;	dirtab, MaxSpeed, dostop, stopna, SetSPA, doplayeracc, noturn0, noturn, playeracc and the goal code:
 ;	stopna2, PenGoalStuff, box / DisplayPlayerAttributeMenu / GoalBigTxt / PPGoalBigTxt, PrintPlayerAssists /
 ;	PrintPlayerGoals / PrintParenNumber, checkwindow, PeriodOver / GameOver / ExitToOpening, clockcont_0 /
-;	clockcont; and the 95 controller setup screen (SetContTeams ... ReadAllPads).
-;SetGoaliesCtl and PeriodOver as dc.b and the last four routines as wrong code; they and the tables are read from the
-;retail bytes. printz Strings and DecompressGraphicsWithCallback remap bytes as instructions; they are String / dc.b here.
+;	clockcont; then the controller setup screen (SetContTeams ... ReadAllPads). New in 95: the controller setup screen.
 
 
 GoalieReadySPA	;d1 = the goalie ready SPA: $1B7A near the puck (within $56 in y) or in a shootout, else $1C54

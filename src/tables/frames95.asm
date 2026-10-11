@@ -1,12 +1,10 @@
-;	NHL 95 sprite animation tables (92 / ), then revframetbl.
-;	from lst/nhl95.bin.lst (all dc.b there).
+;	NHL 95 sprite animation tables, then revframetbl.
 ;	SPAlist is a word, then one table per animation. A table is 8 direction offsets (from .t), a flag word, then
 ;	frame,time word pairs per direction; a negative time ends the direction. SPA<name> is the table offset from
-;	SPAlist, which the code uses (movea.l #SPAlist,a0 is $5A34). 95 has 78 tables (94: 66) in a new order and new frame
-;	numbers (frames 1-1055; 94: 1-837). Most player animations have a second table for the puck carrier (SCnum =
-;	puckc), named with the 94 wp (with puck) suffix. Each table's comment gives the 94 table and the 95 code that
-;	uses it. A direction can hold more than one terminated sequence; the extra pairs are not reached through .t.
-;	The frames are written as SPF base + n, as 94.
+;	SPAlist, which the code uses. 95 has 78 tables (94: 66) in a new order and new frame numbers (frames 1-1055;
+;	94: 1-837). Most player animations have a second table for the puck carrier (SCnum = puckc), named with a wp
+;	(with puck) suffix. A direction can hold more than one terminated sequence; the extra pairs are not reached
+;	through .t. The frames are written as SPF base + n.
 
 ; Sprite Frame (SPF) base indices, in frame sheet order, with the and value where 95 has the group. 95 moves the plain
 ; skating frames first and gives the skating groups 8 frames per direction (94: 5); a "New in 95" group is new frames.

@@ -1,6 +1,6 @@
-;	setInjuryType, the 95 season injuries (SetSeasonInjuries ... GetInjuryGames), getFgtbyte / chkFgtBit1
-;	CheckInjury, the InsertInjurySlot / DeleteInjurySlot, then the power play box: updatepwrplay, the 95
-;	ClearPowerPlay / rtsPowerPlay, GetLowestPen. follows.
+;	setInjuryType, the season injuries (SetSeasonInjuries ... GetInjuryGames), getFgtbyte / chkFgtBit1, CheckInjury,
+;	InsertInjurySlot / DeleteInjurySlot, then the power play box: updatepwrplay, ClearPowerPlay / rtsPowerPlay,
+;	GetLowestPen. New in 95: season injuries.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 

@@ -1,7 +1,6 @@
-;	NHL 95 segment, from lst/nhl95.bin.lst. The game flow from the title screen to the game loop. 95 runs it as one
-;	stretch of code: and Opening2, the 95 main menu exits (season, trades, create player), StartGame and StartPer
-;	without a jump between them, the IntermissionMenu, the game loop, DoGameFrame with the 94 written line, and 94
-;	updateplayers. setvideo follows at $A204.
+;	The game flow from the title screen to the game loop, as one stretch of code: Opening and Opening2, the main menu
+;	exits (season, trades, create player), StartGame and StartPer without a jump between them, the IntermissionMenu,
+;	the game loop, DoGameFrame and updateplayers.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 

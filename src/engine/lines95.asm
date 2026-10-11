@@ -3,9 +3,8 @@
 ;	the cmp and exg encodings after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2, with linebar getlinee and AvgCline moved
-;	in. CompLine follows. except AvgCline (dc.b, read from the retail bytes). a printz String as instructions; it is String
-;	here. 95 changes: the team struct offsets, the zero long at $69A (94 $30A).
+;	SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2, linebar, getlinee and AvgCline.
+;	95 changes: the team struct offsets, the zero long at $69A (94 $30A).
 
 
 
@@ -290,11 +289,8 @@ AvgCline	;Return d0 = average energy of the current line on team a2
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	CompLine and AutoLineChange, with moved in: SetupTeamForIntermission, chkatop and ChkShotStat EASportsScreen,
-;	updatePPTeamTime; andcode: the saved line set routines (DefaultLineData, LoadTeamLines CheckTeamLines ...) and six
-;	DrawTeamScreen variants. follows at CompLine, AutoLineChange, ReadTeamSRAM, FixSavedLines, the LineSlotFixTbl handlers and
-;	the DrawTeamScreen variants as dc.b or as wrong code; they are read from the retail bytes. printz Strings and
-;	DecompressGraphicsWithCallback remap bytes as instructions; they are String / dc.b here.
+;	CompLine and AutoLineChange, SetupTeamForIntermission, chkatop, ChkShotStat, EASportsScreen, updatePPTeamTime,
+;	the saved line set routines (DefaultLineData, LoadTeamLines, CheckTeamLines ...) and six DrawTeamScreen variants.
 
 
 
@@ -427,7 +423,7 @@ SetupTeamLine	;Team a3 (a2 = other team): ResetTeamEnergy, line 0, and with line
 .0
 	rts
 
-ReadTeamSRAM	;no xref. Read $39 bytes of team d7 (0-$1B) from save RAM offset d0 to a0
+ReadTeamSRAM	;Unreferenced. Read $39 bytes of team d7 (0-$1B) from save RAM offset d0 to a0
 	movem.l	d0/d7/a0,-(sp)
 	cmp.w	#$1B,d7
 	bgt.w	.0
@@ -524,7 +520,7 @@ LoadTeamLines	;The line sets of team struct a2 ($16C): from save RAM (SRLines + 
 	dbf	d0,.6
 	rts
 
-FixSavedLines	;no xref. Clamp the saved line slots of team d7 in the 4 TeamRecordSRAM records into the goalie /
+FixSavedLines	;Unreferenced. Clamp the saved line slots of team d7 in the 4 TeamRecordSRAM records into the goalie /
 	;defense / forward ranges (ReadAttributeNibbleD7, GetDefenseStartD7, GetPlayerCountD7) and write them back
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(ReadAttributeNibbleD7).l

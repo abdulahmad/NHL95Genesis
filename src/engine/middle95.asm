@@ -3,19 +3,14 @@
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Helpers from many 94 files: sroot, vtoa, find3d
-;	randomd0s / randomd0, GetHot, vcountwait, printz2, printsmall (ControlCodeJumpTable and the control codes)
-;	printz, print, eraser, showclock (95: big digits when paused, PutClockDigit), PerLabels / PenShotPenalties2
-;	makepde / getpde, ReadGoaliePulled, ReadAttributeNibble / GetDefenseStart / ProcessNibble (95: season data versions)
-;	player name formatting (95: by team struct a2 or team number d7), CalcAttrib and its weight lists, PushTime
-;	PushNumber, PushNumberWidth, appendz, appstring, setupTeamBlocksMap / CopyTeamBlockMapData, DoDMA_nd2, TeamLogoBitmaps
-;	ResetClock / GetPeriodTime, ClrHor, the AssignPads, waitx, PrintScores1 / PrintTeamNameAndScore
-;	chkpk / chkpk2, printbigz ... PutBigTile, bfasciicon, UnpackPicture, RestoreTeamEnergy
-;	WeightedRandomSelect, AppendTeamName ... TrimSpaces, then setupice. LoadHomeTeamGfx follows.
-;	written as instructions: the ControlCodeJumpTable code, GetDefenseStart, GetForwards, ProcessNibble ... getnameD7,
-;	FormatPlayerNameLast ... FormatLastName, FormatLastNameAlt, PushNumberWidthZero, GetTeamLogo, DrawTeamLogo, ClrHor, AssignPads,
-;ReAddFramer, ReAddSmallFont, chkpk, printbigz2, printbig2, RestoreTeamEnergy, AppendTeamName ... TrimSpaces. the printz Strings
-;	in showclock, getname and PrintScores1 as instructions; they are String here.
+;	Shared helpers: sroot, vtoa, find3d, randomd0s / randomd0, GetHot, vcountwait, printz2, printsmall
+;	(ControlCodeJumpTable and the control codes), printz, print, eraser, showclock (95: big digits when paused,
+;	PutClockDigit), PerLabels / PenShotPenalties2, makepde / getpde, ReadGoaliePulled, ReadAttributeNibble /
+;	GetDefenseStart / ProcessNibble (95: season data versions), player name formatting (95: by team struct a2 or team
+;	number d7), CalcAttrib and its weight lists, PushTime, PushNumber, PushNumberWidth, appendz, appstring,
+;	setupTeamBlocksMap / CopyTeamBlockMapData, DoDMA_nd2, TeamLogoBitmaps, ResetClock / GetPeriodTime, ClrHor,
+;	AssignPads, waitx, PrintScores1 / PrintTeamNameAndScore, chkpk / chkpk2, printbigz ... PutBigTile, bfasciicon,
+;	UnpackPicture, RestoreTeamEnergy, WeightedRandomSelect, AppendTeamName ... TrimSpaces, then setupice.
 
 
 sroot	;d0 = square root of d0 (long). Small values by odd subtraction, else Newton steps, else a binary search
@@ -472,7 +467,7 @@ PutClockDigit	;Draw big clock digit d0 (0-9, $A the colon) at printx / printy fr
 	movem.w	(sp)+,d0-d7
 	rts
 
-showclockdma	;the 94 vertical rink body (.3): when dfclock is set queue the clock chars in the dma list (a5); with gmode2 bit 1 shootoutclock is shown. Not in a
+showclockdma	;When dfclock is set queue the clock chars in the dma list (a5); with gmode2 bit 1 shootoutclock is shown. Not in a
 	;stoppage (sflags2 bit 3) or game over (gsp 4)
 	bclr	#3,(disflags).w
 	beq.w	.2
@@ -2267,9 +2262,7 @@ setupice	;set all variables, send non purgeable graphics, build sprite frame lis
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	LoadHomeTeamGfx and TeamGfxList, EASNLogo and setupEASNmap, FormatAndPrintTime and
-;	PeriodLabelTable. follows. Written as instructions: TeamGfxList, FormatAndPrintTime, PeriodLabelTable.
-;the printz String in EASNLogo as instructions.
+;	LoadHomeTeamGfx and TeamGfxList, EASNLogo and setupEASNmap, FormatAndPrintTime and PeriodLabelTable.
 
 
 LoadHomeTeamGfx	;Load the HomeTeam graphics of TeamGfxList to VRAM d4 - $18 (DoDMA_clearCallbackPointer). Called from setupice

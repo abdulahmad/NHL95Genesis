@@ -102,9 +102,7 @@ SetupPauseScreen	;(dc.b). Draw routine for the pause menu: PauseScreenDraw, then
 ;	by game mode), the startpause entries, the PauseScreenDraw and its penalty boxes, RestoreGameScreen (after the pause)
 ;	SetMenuPrintX / UpdateMenuSelection / PrintMenuItem, the 95 info page, penalty messages and tabs, then the item lists
 ;	(InfoMenus, StatsMenus, PauseMenus) and their AbortGame / PlayGame.
-;	written as instructions: PauseScreenDraw, ListPenaltyBox, MenuInfoList ... PrintLines, a second rts
-;the item lists and AbortGame / PlayGame. the printz / printz2 Strings as instructions; they are String here
-;	(the 40 byte menu box String as dc.w / dc.b, the String macro takes 15 values).
+;	The 40 byte menu box String is dc.w / dc.b (the String macro takes 15 values).
 seta2	;Set a2 to the team struct of the pause pad (menupadnum: cont1team ... cont4team). Called from Pausemode and
 	;HandleMenuInput
 	movea.l	#tmstruct,a2
@@ -1102,7 +1100,7 @@ DrawTab	;The plain tab: $D x 3 of TabBitmap at printx / printy (chars tabchars)
 	move.w	(tabchars).w,d4
 	moveq	#0,d5
 	jmp	(dobitmap).l
-	rts	;a second rts, no xref
+	rts	;a second rts, unreferenced
 
 InfoMenus	;(dc.b). The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0, $7E, $D0): a String header, then items of a
 	;String and a routine (y = the play / resume item, x = the manual goalie toggle; PrintMenuItem), ended by a $FF String
@@ -1289,9 +1287,8 @@ PlayGame	;Pause menu PLAY GAME: sflags9 bit 3 ends the pause menu (HandleMenuInp
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	ManualGoalieMenu, SelectGoalieMenu / DisplayPlayerSelectMenu / TimeoutMenu (95: the three tab pause
-;	menu), the PauseScores / PutScoreDigit, SetMenuPadSide and padteams. follows (asstab).
-;it is code here, read from the retail bytes.
+;	ManualGoalieMenu, SelectGoalieMenu / DisplayPlayerSelectMenu / TimeoutMenu (the three tab pause menu),
+;	PauseScores / PutScoreDigit, SetMenuPadSide and padteams.
 
 
 ManualGoalieMenu	;Pause menu MANUAL GOALIE / AUTO GOALIE: with OptNOP set, toggle goaliemode2

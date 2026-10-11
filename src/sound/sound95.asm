@@ -1456,10 +1456,9 @@ SoundBanks	;Bank 0 (SndSetBank, Begin and Opening2): the item count, then 4 byte
 	incbin	..\Extracted\NHL95\Sound\Bank\snd95_list_01.bin
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	The 95 sound calls (SoundCmd ... ChooseSong), then what is left of the
-;94 sound driver: z80_bus_release_delay ... p_initialZ80 as 94, and no caller in 95, with the RAM moved by -$3FC
-;	each Z80 bus request but p_initialZ80's replaced by a SoundCmd $D (pause the 95 driver) and ClearAllTrackAndSFXSlots cut down;
-;	newcheck; then the 94 PCM samples and FM patches (the 94 files).
+;	The sound calls (SoundCmd ... ChooseSong), then what is left of the old sound driver: z80_bus_release_delay ...
+;	p_initialZ80, unused, with its RAM moved by -$3FC, each Z80 bus request but p_initialZ80's replaced by a SoundCmd $D
+;	(pause the new driver) and ClearAllTrackAndSFXSlots cut down; newcheck; then the old PCM samples and FM patches.
 
 SoundCmd	;Send command d0 to the 95 sound driver (SndDriver, above). Called from Begin, Opening2, StartGame ...
 	jsr	(SndDriver).l
@@ -2208,7 +2207,7 @@ newcheck	;start a new check sound: one of 4 sounds $1C-$1F, never the last one a
 	move.l	(sp)+,d0
 	rts
 
-;	The 94 PCM samples and FM patches, the same bytes as 94 (the 94 files). The old driver above points at them
+;	The PCM samples and FM patches of the old sound driver (unchanged from 94). The old driver above points at them.
 pcm_sample_table	;(sample address, 0) for PCM patches $60-$6E (lea in handle_command_10)
 	dc.l	sfx_puckget_pcm,0		;patch $60
 	dc.l	sfx_pass_pcm,0		;patch $61

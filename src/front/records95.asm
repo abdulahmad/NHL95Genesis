@@ -3,11 +3,9 @@
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Mapped (81%): NameEntryScreen, NameLetterGrid, NameEntryHelp, PrintNamePrompt, SyncLetterCursor, FindLetter
-;	PrintNameCursor, PrintCurLetter, LetterGridPos, EnterNameTxt / SelectNameTxt, PrintNameLog, MoveLogArrows, PrintLogArrows,
+;	NameEntryScreen, NameLetterGrid, NameEntryHelp, PrintNamePrompt, SyncLetterCursor, FindLetter, PrintNameCursor,
+;	PrintCurLetter, LetterGridPos, EnterNameTxt / SelectNameTxt, PrintNameLog, MoveLogArrows, PrintLogArrows,
 ;	GetNameLength, PrintNameField, LetterGrid, GetLogName, StoreUserName and WriteNameRecord (the user records name entry).
-;	The old segment map ended this part, inside UserNameEntry; UserNameEntry starts.
-;printz / printz2 / printbigz Strings as instructions; they are written from the retail bytes.
 
 
 
@@ -717,12 +715,10 @@ WriteNameRecord	;Clear name slot namelogsel from every saved record (read ReadSR
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Mapped (84%): UserNameEntry (four pads in 95), the name log checks (NameInUse ... SkipOtherUserName)
-;	WriteNameLog / ReadNameLog / NameLogIO, ClearNameHelp, PlayoffStatsScreen, RecordHoldersScreen, PrintRecordPage
-;	PrintRecordTitles, PrintWinRecords, ClearRecordArea, PrintPlayerRecords, PrintRecordName, CalcWinPercents, ReadTeamRecords and
+;	UserNameEntry (four pads in 95), the name log checks (NameInUse ... SkipOtherUserName), WriteNameLog /
+;	ReadNameLog / NameLogIO, ClearNameHelp, PlayoffStatsScreen, RecordHoldersScreen, PrintRecordPage, PrintRecordTitles,
+;	PrintWinRecords, ClearRecordArea, PrintPlayerRecords, PrintRecordName, CalcWinPercents, ReadTeamRecords and
 ;	ClearWinRecords.
-;	The segment map started this file (inside UserNameEntry); the confirmed start is.
-;it is transcribed from the retail bytes. printz / printz2 / printbigz Strings as instructions.
 
 
 
@@ -1318,10 +1314,9 @@ ClearWinRecords	;Clear bytes 8-$B (wins, games) of the 8 ThreeStars records and 
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Mapped (67%): UpdateRecords (the user records after a game, four pads in 95), UpdateTeamRecord, UpdateCrowdRecord
-;	UpdatePlayerRecords, the save RAM record block IO (ReadTeamRecord ... WritePlayerRecord, PlayerRecordOffsets), CountGoalies and
-;	CountPlayers; SetupScreen follows them in 95.
-;SetupScreen as dc.b; it is transcribed from the retail bytes. its printz Strings and remap bytes.
+;	UpdateRecords (the user records after a game, four pads in 95), UpdateTeamRecord, UpdateCrowdRecord,
+;	UpdatePlayerRecords, the save RAM record block IO (ReadTeamRecord ... WritePlayerRecord, PlayerRecordOffsets),
+;	CountGoalies and CountPlayers.
 
 
 

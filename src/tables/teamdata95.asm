@@ -1,9 +1,7 @@
-;NHL 95 team data., from the lst/nhl95.bin.lst (all dc.b there).
-;	Layout of 94: the team address table, one block per team, playoffseats. 95 still has 26 teams plus the
-;	two all star teams, in the 94 order. Not here: the dc.l 0 94 kept before TeamList and Credits /
-;	CreditsList.
+;	NHL 95 team data: the team address table, one block per team, then playoffseats. 26 teams plus the two all star
+;	teams, in the same order as 94.
 
-TeamList	;(94 $30E). label. Team number = index (ANH 0 ... WPG 25, ASE 26, ASW 27), the 94 order
+TeamList	;Team number = index (ANH 0 ... WPG 25, ASE 26, ASW 27)
 	dc.l	Anaheim	;0 ANH
 	dc.l	Boston	;1 BOS
 	dc.l	Buffalo	;2 BUF
@@ -1708,7 +1706,7 @@ Washington	;WSH, $5556 (94 $4DFC)
 .ar	;arena
 	String	'US Air Arena'
 
-playoffseats	;(94 $5576). movea.l #$5834 in the playoff tree setup (NewPO .0, MakeTree). 32 rows of 16 team numbers, as 94
+playoffseats	;Playoff seeding: 32 rows of 16 team numbers (NewPO, MakeTree)
 	dc.b	SJ,TOR,LA,DET, VAN,DAL,CGY,CHI, BOS,NYR,MTL,NJ, PIT,PHI,BUF,FLA
 	dc.b	EDM,WPG,SJ,DET, LA,TOR,VAN,CHI, QUE,NYI,HFD,TB, OTW,NYR,BOS,NJ
 	dc.b	CGY,DAL,ANH,WPG, EDM,STL,SJ,DAL, BOS,NYI,MTL,OTW, PIT,WSH,BUF,NJ

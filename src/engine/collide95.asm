@@ -1,9 +1,7 @@
-;	The 94 collision code in a new order: checkcoll, checkwallcoll, wallcollb, wallcoll, checkplcoll, checkcx, checkcheck, CCStart (checkinglist, the 95
-;	checkinglist2, Bcheck, holdcheck, the Sweepcheck), FallDown, checkpuckcoll, puckstick, puckglue, puckbody, rtspuck
-;	deflect, checkpuckcoll_sfx, checkgoal (the 94.goal code is elsewhere: Goal), checkgoalp, CheckBump, wallcollduringcheck
-;	/, puckgoalie, checkint, the DropPuck. follows.
-;	written as instructions: a second rts after checkwallcoll, checkpuckcoll ... checkpuckcoll_sfx
-;	puckgoalie.
+;	The collision code: checkcoll, checkwallcoll, wallcollb, wallcoll, checkplcoll, checkcx, checkcheck, CCStart
+;	(checkinglist, checkinglist2, Bcheck, holdcheck, Sweepcheck), FallDown, checkpuckcoll, puckstick, puckglue,
+;	puckbody, rtspuck, deflect, checkpuckcoll_sfx, checkgoal (the goal itself is handled in Goal), checkgoalp,
+;	CheckBump, wallcollduringcheck, puckgoalie, checkint and DropPuck.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 ;	Sort struct (SortCords, $80 each): $40 temp1, $64 bit 3 one-timer, bit 4 wall collision, bit 5 fell, $68 Agl, $73 aggres, $74 Fgt, $75 Chk.
@@ -159,7 +157,7 @@ checkwallcoll	;d2/d3 = x/y to test, a3 = object, wcradiusx/wcradiusy = radius. C
 	cmp.w	d4,d2
 	ble.w	wallcollb
 	rts
-	rts	;a second rts, no xref
+	rts	;a second rts, unreferenced
 
 wallcollb	;Check for puck over wall. a3 = object, d0/d1 = cos/sin of the wall. Not the puck: wallcoll. Zpos above $15
 	;locks the scroll (LockScroll) and goes out of play; above $12 only at x $28-$2A behind the goal line ($110) with Yvel >= $FA0 (SPA $250A on the
@@ -1586,7 +1584,7 @@ puckbody	;puck hits player a2. a3 = puck, d0 = distance^2 (from checkpuckcoll .c
 	exg	a2,a3
 	jsr	(SetSPA).l
 	exg	a2,a3
-rtspuck	;Shared rts in the 94 place (after puckbody), branched to from this segment
+rtspuck	;Shared rts after puckbody
 	rts
 
 deflect	;random puck direction on deflection, puck = a3. Entered from puckstick. Zvel = randomd0($400)

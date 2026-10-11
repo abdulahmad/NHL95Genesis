@@ -1,7 +1,5 @@
-;NHL 95 main segment., from the lst/nhl95.bin.lst.
-;	Vectors, cartridge header and SegaInit (sega\SegaInit.asm) as. 95 then adds a region
-;	lock (CHECK_VDP to.regionHang), keeps the checksum call, and holds Begin itself. TeamList
-;	starts at $772.
+;	NHL 95 main: vectors, cartridge header and SegaInit (sega\SegaInit.asm), then a region lock (CHECK_VDP to
+;	.regionHang), the checksum call, and Begin.
 	include	macros\genesis.mac
 
 ;	68000
@@ -67,7 +65,7 @@ Start	;Power on: the Sega hardware init, then the region lock, the checksum and 
 
 CHECK_VDP	;Hot start lands here. Match the console region to the CountryCode letters; on a mismatch draw the
 	;"DEVELOPED FOR USE ONLY WITH ... SYSTEMS." screen and hang
-	tst.w	(VDP_CTRL).l		; this is protect to push. start_bottum rapid_firely (94 comment)
+	tst.w	(VDP_CTRL).l		; this is protect to push. start_bottum rapid_firely
 	clr.l	d0
 	move.b	(IO_PCBVER+1).l,d0	;version register: bit 7 = overseas, bit 6 = PAL
 	lsr.b	#6,d0

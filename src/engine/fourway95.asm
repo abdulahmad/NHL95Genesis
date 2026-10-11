@@ -1,6 +1,5 @@
-;	The AnyPadAssigned, then Detect4WayPlay and the unused Read4WayPad1-4, which 95 reads through its own
-;	Read4WayPort1 / Read4WayPort2. z80old95 (the 94 Z80 program) follows
-;	written as instructions: Read4WayPad1 ... ReadJoyJmp.
+;	AnyPadAssigned, then Detect4WayPlay and the unused Read4WayPad1-4 (the pads are read through Read4WayPort1 /
+;	Read4WayPort2).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 

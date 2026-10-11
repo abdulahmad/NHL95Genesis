@@ -1,7 +1,6 @@
-;	Goal, the AssignTeam / rtsgoal, PenGoalStuff, box ... PPGoalBigTxt
-;	PrintPlayerAssists ... PrintParenNumber, the LockScroll, checkwindow, the SetGoaliesCtl ... PracticeGoalies
-;	PeriodOver, clockcont_0, GameOver / ExitToOpening, clockcont, then the 95 controller setup
-;	screen (SetContTeams ... ReadAllPads). follows.
+;	Goal, AssignTeam / rtsgoal, PenGoalStuff, box ... PPGoalBigTxt, PrintPlayerAssists ... PrintParenNumber, LockScroll,
+;	checkwindow, SetGoaliesCtl ... PracticeGoalies, PeriodOver, clockcont_0, GameOver / ExitToOpening, clockcont, then the
+;	controller setup screen (SetContTeams ... ReadAllPads). New in 95: the controller setup screen.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
 ;	the cmp and exg encodings after assembly.
 

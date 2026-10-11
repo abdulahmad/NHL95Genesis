@@ -3,13 +3,8 @@
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Mapped (87%): GameStatisticsScreen, its scroll step, SetStatScroll, StatScrollRow / StatScrollRowEnd
-;	PrintStatScrollArrows, DisplayTeamStatsScreen, FormatStatValue, TeamStatTextTbl and TeamStatTextTblNoPen. The rest of
-;	is in other 95 files; rtsStatTables, the rts after the tables, starts.
-;	The segment map started this file, but is the end 's SimTieTbl
-;(26 teams x 3 bytes); GameStatisticsScreen starts.
-;the screen head, the arrows and the Strings in DisplayTeamStatsScreen / FormatStatValue as code or dc.b; they are
-;	written from the retail bytes.
+;	GameStatisticsScreen, its scroll step, SetStatScroll, StatScrollRow / StatScrollRowEnd, PrintStatScrollArrows,
+;	DisplayTeamStatsScreen, FormatStatValue, TeamStatTextTbl and TeamStatTextTblNoPen.
 
 
 	include	macros\genesis.mac	;String
@@ -53,7 +48,7 @@ GameStatisticsScreen	;Pause menu GAME STATS: both teams' totals
 	bsr.w	StatScrollStep
 	bsr.w	PrintStatScrollArrows
 	bra.s	.loop
-StatScrollStep	;GameStatisticsScreen .4 in 94: one scroll step of PlayerScrollCtr, within 0 ... matchupvis
+StatScrollStep	;One scroll step of PlayerScrollCtr, within 0 ... matchupvis
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsStatTables
 	add.w	(VertLineScrolling).w,d0
@@ -319,13 +314,12 @@ TeamStatTextTblNoPen	;The rows without the power play ones, used when penalties 
 	dc.w	$14,$12
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Mapped (22%), with and moved in. In ROM order: rtsStatTables; the pause menu PLAYER STATS screen (PlayerStatsScreen ...
-;	ScrollArrowTbl2); the 95 season stats save code (InitSeasonStats SaveSimGame, the player / team stat blocks in save RAM
-;	and the game highlights); the 95 season PLAYER STATS, TEAM STATS and LEAGUE LEADERS screens (also the pause menu SEASON
-;	PLAYERS / SEASON TEAMS); PeriodStatsScreen line editor (LineEditor ... UpdatePlayerAttribute) with the 95 save / load of
-;	team lines; DisplayPeriodOver FindMaxAttributeTEam, CalculateTeamAttributes, CalculateTeamAttributeValues; and the 95
-;	season NHL HIGHLIGHTS screen. (no). follows. they are written from the retail bytes the 94 routines from the 94 source.
-;	printz Strings; they are String here.
+;	rtsStatTables; the pause menu PLAYER STATS screen (PlayerStatsScreen ... ScrollArrowTbl2); the season stats save
+;	code (InitSeasonStats, SaveSimGame, the player / team stat blocks in save RAM and the game highlights); the season
+;	PLAYER STATS, TEAM STATS and LEAGUE LEADERS screens (also the pause menu SEASON PLAYERS / SEASON TEAMS); the
+;	PeriodStatsScreen line editor (LineEditor ... UpdatePlayerAttribute) with save / load of team lines; DisplayPeriodOver,
+;	FindMaxAttributeTEam, CalculateTeamAttributes, CalculateTeamAttributeValues; and the season NHL HIGHLIGHTS screen.
+;	New in 95: the season stats, leaders and highlights screens.
 
 
 

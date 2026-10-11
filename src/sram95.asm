@@ -1,9 +1,8 @@
-;	NHL 95 segment, from lst/nhl95.bin.lst. The battery save RAM: 95 keeps $8000 bytes (94: $2000) on the odd bytes at
-;	SaveRAM, copies them to M68K_RAM at power on (InitSaveRAM) and protects them with a sum / complement checksum in bytes $7FFE-$7FFF.
-;	SRAMWaitVblank, VBcount, ValidateSRAM, ClearSRAM, WriteSRAM, MakeSRAMChecksum, ReadSRAM, then three routines new in 95
-;	that build the season leader lists from the save RAM stats. Opening follows at $9AC8.
-;95 addresses RAM with (x).l here where 94 used (x).w, and indexes the save RAM with a long (d0.l). The at $981E (VBcount)
-;	and $9972-$9AC7 (the leader list routines, no xref) are written as instructions.
+;	The battery save RAM: 95 keeps $8000 bytes (94: $2000) on the odd bytes at SaveRAM, copies them to M68K_RAM at
+;	power on (InitSaveRAM) and protects them with a sum / complement checksum in bytes $7FFE-$7FFF.
+;	SRAMWaitVblank, VBcount, ValidateSRAM, ClearSRAM, WriteSRAM, MakeSRAMChecksum, ReadSRAM, then three routines that
+;	build the season leader lists from the save RAM stats (New in 95).
+;	95 addresses RAM with (x).l here where 94 used (x).w, and indexes the save RAM with a long (d0.l).
 
 InitSaveRAM	;Called from Begin. Copy the $8000 byte save RAM (the odd bytes at SaveRAM) to M68K_RAM and check its checksum
 	;(ValidateSRAM; ValidSRAM 0 = good, -1 = bad). A bad save RAM is cleared (ClearSRAM) and read again. Two power-on tests that never return:
@@ -81,7 +80,7 @@ SRAMWaitVblank	;Wait for the next vblank. Called from InitSaveRAM
 	jsr	(vcountwait).l
 	rts
 
-VBcount	;at $981E. vbint handler while InitSaveRAM runs: vcount + 1 only. 95 writes addi.w #1 (94: addq.w)
+VBcount	;vbint handler while InitSaveRAM runs: vcount + 1 only. 95 writes addi.w #1 (94: addq.w)
 	opt	oaq-	;keep the addi (SNASM would make it addq)
 	addi.w	#1,(vcount).l	;vblank with counter only
 	opt	oaq+
@@ -207,7 +206,7 @@ ReadSRAM	;move into a0 location and increment: copy d1 save RAM bytes from byte 
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;Season leader lists. New in 95 ( no xref). The Individual Leaders screen runs one of these through a5
+;Season leader lists. New in 95 (unreferenced). The Individual Leaders screen runs one of these through a5
 ;	(movea.l #x,a5). Save RAM stats are words (2 save RAM bytes, the odd bytes of 2 words) at byte d0 + 2 * player.
 ;	In: d0 = first save RAM byte of the stat, d1 = 2 * players ($548: 26 teams of 26), a0 = value list, a3 = player number list,
 ;	a2 = count word. Out: one value / player number pair per listed player, (a2) = the number listed

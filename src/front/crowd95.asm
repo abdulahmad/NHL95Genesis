@@ -1,5 +1,4 @@
-;	updatecrowdf, the 95 crowd frame table (CrowdFrameTbl), showcrowd ... rtsShowCrowd.
-;	follows.
+;	updatecrowdf, the crowd frame table (CrowdFrameTbl), showcrowd ... rtsShowCrowd.
 
 
 	include	macros\genesis.mac	;String

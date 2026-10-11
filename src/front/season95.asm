@@ -1,12 +1,8 @@
-;	NHL 95.
-;	New in 95: season mode. SeasonMain runs the season from the main flow: SEASON SETUP, the SEASON OPTIONS menu (play games,
-;	play until a day, standings, team schedule calendar, games today, stats and playoff screens), the simulation of the computer
-;	games (SimDayGames, SimScore, SimGameStats and the goal weight tables at the end) and the save RAM records. Moved in at the
-;	head: demoread / HandleJoy1, and RandomSetupTeams (SetupDemo picks random teams). Each routine
-;	comment names its 94 file or says New in 95. follows.
-;DayToDate / DateToDay, the season menu actions and the calendar screen as dc.b; they and the tables are read from the
-;retail bytes. printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions; they
-;are String / dc.b here. The four goal weight tables at the end as code.
+;	NHL 95 season mode.
+;	New in 95: SeasonMain runs the season from the main flow: SEASON SETUP, the SEASON OPTIONS menu (play games,
+;	play until a day, standings, team schedule calendar, games today, stats and playoff screens), the simulation of the
+;	computer games (SimDayGames, SimScore, SimGameStats and the goal weight tables at the end) and the save RAM records.
+;	At the head: demoread / HandleJoy1, and RandomSetupTeams (SetupDemo picks random teams).
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.

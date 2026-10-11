@@ -1,6 +1,4 @@
-;	Mapped (58%): ScoringSummaryScreen ... DisplayPenaltyEntry (the goal and penalty summaries). (updatecrowdf
-;	showcrowd) is just before it.
-;ScoringSummaryScreen ... DisplayPenaltyEntry as dc.b; it is transcribed from the retail bytes.
+;	ScoringSummaryScreen ... DisplayPenaltyEntry (the goal and penalty summaries).
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.

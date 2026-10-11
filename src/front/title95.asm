@@ -1,8 +1,6 @@
-;	NHL 95.
-;	Mapped (53%): newTitleScreen, CreditsPrintRow, CreditsWait, TitleVBlank, CreditsLineScroll, CreditsScrollStep, HiScoreScreen
+;	NHL 95 title screens: newTitleScreen, CreditsPrintRow, CreditsWait, TitleVBlank, CreditsLineScroll, CreditsScrollStep,
+;	HiScoreScreen.
 ;	New in 95: the Stanley Cup screen (StanleyCupScreen ... AddSpriteFrame).
-;TitleVBlank, CreditsScrollStep and CupVBlank as dc.b and hid the printz Strings and remap bytes; they are written from the retail
-;	bytes.
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.

@@ -3,11 +3,9 @@
 ;	the cmp and exg encodings after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, PrintPenaltyMessagesString with
-;	LeadSong / ClearLeadSong / LeadSongExit moved in. checkagr follows. except LeadSong ... LeadSongExit and
-;	PrintPenaltyMessagesString (dc.b, read from the retail bytes). the printz Strings as instructions; they are String here.
-;	Each routine comment names its 94 file. 95 changes: the team struct offsets (tmpdst $68, the penalty box list $9C), the RAM
-;	moved (RefRamMap $DBBE), the 95 sounds.
+;	Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, PrintPenaltyMessagesString,
+;	LeadSong / ClearLeadSong / LeadSongExit.
+;	95 changes: the team struct offsets (tmpdst $68, the penalty box list $9C), RefRamMap at $DBBE, the new sounds.
 
 
 
@@ -807,16 +805,15 @@ prefmes	;Print the message for penalty d0 (negative clears it) under the ref
 	movem.l	(sp)+,d0-d2/a1
 	rts
 
-PrintPenaltyMessagesString	;Blank the horizontal mode penalty message line (22 spaces at x 5, y $B). no xref
+PrintPenaltyMessagesString	;Blank the horizontal mode penalty message line (22 spaces at x 5, y $B). Unreferenced
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),5,$B,'                      '
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Mapped, but only the tables are ; the code is moved checkagr, showref, ClearPenaltyBuffer, ClearPenalties / clrTmPdst,
-;	puckIChk ChkOffsides and checkob. follows. except puckIChk and ChkOffsides (dc.b, read from the retail bytes with the 94
-;	source as the guide). 95 changes: the goal line $10B (94 $108), the blue line $52 (94 $54), checkagr's base $32 and the
-;	sflags9 penalty options.
+;	checkagr, showref, ClearPenaltyBuffer, ClearPenalties / clrTmPdst, puckIChk, ChkOffsides and checkob.
+;	95 changes: the goal line $10B (94 $108), the blue line $52 (94 $54), checkagr's base $32 and the sflags9
+;	penalty options.
 
 
 
@@ -1052,7 +1049,7 @@ ChkOffsides	;Offsides: clear the flag of a team that is all back onside (.8), th
 	bclr	#4,tmflags(a2)
 	rts
 
-Penaltylist	;94 PenaltyList. Penalty number = word offset into this table; the same entries as 94.
+Penaltylist	;Penalty number = word offset into this table; the same entries as 94.
 	;Used by AddPenalty, SetPA2, prefmes, PenaltyShotBox
 	dc.w	$0000
 	dc.w	.eop-Penaltylist;$2 period over

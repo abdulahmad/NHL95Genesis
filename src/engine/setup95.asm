@@ -1,12 +1,9 @@
-;	NHL 95.
-;	Mapped (34%), but most of the row is other 94 files moved together: TeamRosterScreen, DisplayPlayerList getNameandAttrib and
-;	its column handlers, DrawTeamScreen; PAttribColumns / GAttribColumns, PlayerPositionText; the 95 game setup screen (GameSetUp
-;	... setoptions, DrawTeamBitmap, SetPojoyMode, rewritten for the 13 95 play modes the season and the player cards);
-;	DefaultMenus, FigureJoy and the playoff routines InitializeGameStructures ... MakeTree ReadLineData / WriteLineData. follows.
-;	code as dc.b (TeamRosterScreen ... these are read from the retail bytes. hid the printz / printz2 Strings and the
-;	DecompressGraphicsWithCallback remap bytes as instructions.
-;	Its RAM names are: the 94 setup and card words (logoteam ... cardteamnum, DispAttribCtr
-;	setupprevline), the playoff words (gsstruct ... potree), and the 95 setup words (SelectedPlayerIdx, setupvalues, setupdir ...).
+;	NHL 95 roster and game setup screens.
+;	TeamRosterScreen, DisplayPlayerList, getNameandAttrib and its column handlers, DrawTeamScreen; PAttribColumns /
+;	GAttribColumns, PlayerPositionText; the game setup screen (GameSetUp ... setoptions, DrawTeamBitmap, SetPojoyMode,
+;	for the 13 play modes, the season and the player cards); DefaultMenus, FigureJoy and the playoff routines
+;	InitializeGameStructures ... MakeTree, ReadLineData / WriteLineData.
+;	New in 95: the game setup screen was rewritten for the new play modes.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -637,7 +634,7 @@ GAttribOverallMask
 	dc.w	$2000,$6	;weight
 	dc.w	-1
 
-PlayerPositionText	;Position names for the line slots (no xref in)
+PlayerPositionText	;Position names for the line slots
 	String	'LD'
 	String	'RD'
 	String	'LW'
