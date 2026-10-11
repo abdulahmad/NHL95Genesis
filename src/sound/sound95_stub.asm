@@ -1,3 +1,4 @@
+	include	macros\genesis.mac	;String, SndItem (main95.asm includes it in the full build)
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
 ;	sound95 segment stub. Retail $00AF44-$079901.
