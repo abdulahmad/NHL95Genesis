@@ -2217,3 +2217,5 @@ PutTeamBlock,PrintTeamData,93G/94G
 ScaleAttrib,AttribAdjust,94G
 GetTempPlayerNameAttrib,GetPlayerNameWithAttrib,94G
 SkipStrings,AdvanceStringPtr,93G/94G
+shotdirmath,CalcAngleOffset,93G/94G
+.loop/.add/.next/.bad/.fill/.halt (checksum95),ValidationLoop/SkipIncrement/ContinueValidation/VDPErrorSetup/VRAMWriteLoop/Halt,92G promoted

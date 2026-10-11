@@ -1217,11 +1217,11 @@ shotdiradj	;a3 = shooter. Where to shoot for a computer player or a one timer
 	neg.w	d4	;negate if bottom goal
 .2
 	movem.w	d3-d4,-(sp)	;push to stack
-	bsr.w	shotdirmath
+	bsr.w	CalcAngleOffset
 	move.w	d4,d5
 	movem.w	(sp)+,d3-d4	;pop from stack
 	neg.w	d3	;negate d3 (other post)
-	bsr.w	shotdirmath
+	bsr.w	CalcAngleOffset
 	add.w	d5,d4	;add results to d4
 	clr.w	d0	;clear d0
 	cmp.w	#$2C,d4	;','   ; 2C - right X edge of crease
@@ -1247,7 +1247,7 @@ shotdiradj	;a3 = shooter. Where to shoot for a computer player or a one timer
 .6
 	rts
 
-shotdirmath	;shotdiradj helper
+CalcAngleOffset	;shotdiradj helper (was: shotdirmath)
 	sub.w	(puckx).w,d3	;sub puckx from post X
 	sub.w	(pucky).w,d4	;sub pucky from goalline
 	muls.w	d0,d4	;mult d0 with d4

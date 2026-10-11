@@ -150,3 +150,4 @@ Naming lineage: 92G (abdulahmad/NHL92Genesis, EA original source) is the root. 9
 
 Clash rule: if a routine, data label or RAM variable (RAM matched by usage, not address) is clearly the same as one in the parent game, it must take the parent's name. An existing label in the child that already uses that name was misnamed and is renamed to something accurate (its own parent-game name if it has one, else a descriptive name). Old names stay in a `(was: X)` comment on the definition and in `docs/name_map.csv`.
 - 94G/93G/92G renames applied: see docs/name_map.csv (seed, tmstruct, assfaceoffpl, donothing, Penaltylist, GetPlayerName, chk4lc, VBlank_TitleScreen, scouting routines, setupIceRinkMap, reenergizeteam, PrintTeamData, AttribAdjust, GetPlayerNameWithAttrib, AdvanceStringPtr).
+- shotdirmath -> CalcAngleOffset; checksum 92 labels promoted.
