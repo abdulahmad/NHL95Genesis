@@ -49,6 +49,7 @@ The batch files run `assembler\Assembler.exe` (SNASM68K) on Windows. Under Linux
 
 - `tools/scan_cleanup.py` counts what is left: disassembler noise in comments, raw RAM / hardware / save RAM / ROM addresses in code, raw struct displacements, and IDA names. `--list` prints each hit.
 - `tools/strip_noise.py` removes disassembler noise from comments (never code) and records each removed IDA name in `docs/name_map.csv`.
+- `tools/file_origins.py --ref94 <NHL94Genesis> --ref93 <NHLPA93Genesis>` writes `docs/FILE_ORIGINS.md` and `docs/function_origins.csv`: for every 95 file and every label in it, the 94 file it came from (or new in 95). Run a full build first; it reads `output/nhl95 .lst`.
 - `tools/fingerprint_map.py`, `verify_segmap.py`, `apply_segmap.py`, `segmap95.json` and `SEGMAP95.md` made the first split of the ROM into 94 files, before any segment was transcribed. They are kept for history. Their output (placeholder files, provisional orgs) is out of date: the include list in `src/nhl95.asm` and `SEGMENT_AGENT.md` are current.
 
 ## Segment notes
