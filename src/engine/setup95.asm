@@ -905,11 +905,11 @@ GameSetUp_2	;Wait up to $E10 frames (94 $5460) for a key on pad 1 / 2 (pads 3 / 
 .10
 	rts
 
-OptionLimits	;pslim. Number of values of each setup line (mode, team 1, team 2, length, goalies, user records, penalties
+OptionLimits	;Number of values of each setup line (mode, team 1, team 2, length, goalies, user records, penalties
 	;line changes)
 	dc.w	$D1C,$1C03,$202,$303
 
-WrapOptionUp	;iilimit, the up half: setupvalues(d0) past OptionLimits(d0) goes to 0
+WrapOptionUp	;Wrap up: setupvalues(d0) past OptionLimits(d0) goes to 0
 	movea.l	#OptionLimits,a1
 	clr.w	d2
 	move.b	(a1,d0.w),d2
@@ -919,7 +919,7 @@ WrapOptionUp	;iilimit, the up half: setupvalues(d0) past OptionLimits(d0) goes t
 .0
 	rts
 
-WrapOptionDown	;The down half: a negative setupvalues(d0) goes to OptionLimits(d0) - 1
+WrapOptionDown	;Wrap down: a negative setupvalues(d0) goes to OptionLimits(d0) - 1
 	tst.b	(a0,d0.w)
 	bpl.w	.0
 	movea.l	#OptionLimits,a1
@@ -929,7 +929,7 @@ WrapOptionDown	;The down half: a negative setupvalues(d0) goes to OptionLimits(d
 .0
 	rts
 
-MoveMenuFrame	;nms. Keep SelectedPlayerIdx inside DispAttribCtr ... VertLineScrolling; in a season (GameFlags bit 5) line 0 is skipped
+MoveMenuFrame	;Keep SelectedPlayerIdx inside DispAttribCtr ... VertLineScrolling; in a season (GameFlags bit 5) line 0 is skipped
 	move.w	(SelectedPlayerIdx).w,d0
 	sub.w	(DispAttribCtr).w,d0
 	bpl.w	.0
@@ -952,7 +952,7 @@ MoveMenuFrame	;nms. Keep SelectedPlayerIdx inside DispAttribCtr ... VertLineScro
 .2
 	rts
 
-FixModeOptions	;(rewritten). Set setuplines / setupshown for the mode in setupvalues (Trade, Create, Sign, Release and Shootout
+FixModeOptions	;Set setuplines / setupshown for the mode in setupvalues (Trade, Create, Sign, Release and Shootout
 	;show fewer lines), keep the two teams 0-$19 and different in Trade Players, skip the modes save RAM or the season do not allow
 	;(ValidSRAM, ReadSeasonHeader, CheckCreateSlots, ReadCreatedPlayers), step a season matchup and start new /
 	;continue playoffs (NewPO, ContinuePlayoffs) when line 1 changes
@@ -1266,7 +1266,7 @@ EraseCardText	;Erase the card text areas: 5 rows at $FF,8,3 and 1 row at $FF,9,9
 	movem.l	(sp)+,d0-d2/a0
 	rts
 
-PrintOptions	;93 setoptions.ps. Print the option names (PrintOptionName) and values (GameSetUp_4) of lines
+PrintOptions	;Print the option names (PrintOptionName) and values (GameSetUp_4) of lines
 	;DispAttribCtr ... VertLineScrolling from row $B, then the scroll marks at x 2: '{' when lines are above, '}' when more follow
 	bsr.w	MoveMenuFrame
 	move.w	(DispAttribCtr).w,d0
@@ -1412,7 +1412,7 @@ BlankValueTxt	;A blank value
 NATxt	;Not read in 95 (GameSetUp_4 has its own N/A String)
 	String	'N/A                 '
 
-PrintOptionName	;one line. Print option name d0 (OptionNames) at printx; lines not shown print BlankNameTxt
+PrintOptionName	;Print option name d0 (OptionNames) at printx; lines not shown print BlankNameTxt
 	movem.l	d0/a1,-(sp)
 	move.w	d0,-(sp)
 	movea.l	#OptionNames,a1
@@ -1528,7 +1528,7 @@ GetSetupValues	;setupvalues from the options: line 0 from ModeToSetupMode(OptPla
 ModeToSetupMode	;OptPlayMode 0-4 to the setup mode list (OptionValueOffsets line 0)
 	dc.w	$5,$304,$CFF
 
-SetupStart	;93 setoptions.ex. Store setupvalues in the options: OptPlayMode, the mode flags
+SetupStart	;Store setupvalues in the options: OptPlayMode, the mode flags
 	;(sflags10 bits 2 / 4-6 Trade / Create / Sign / Release, gmode2 bit 0 Shootout, sflags11 bit 6 Regular Game, sflags9 bit 7
 	;Practice, GameFlags bits 3 / 4 season), the teams, then the other options; line changes 2 (Auto) sets sflags7 bit 4.
 	;Playoff modes set sflags10 bit 0
@@ -1641,7 +1641,7 @@ SetupStart	;93 setoptions.ex. Store setupvalues in the options: OptPlayMode, the
 SetupModeToMode	;Setup mode 0-$C to OptPlayMode ($FF ends)
 	dc.w	$0,$2,$301,$0,$0,$0,$4FF
 
-setoptions	;options screen display ( 94). Build the game setup screen: vbint VBlank_SetOptions, the vram map, the team
+setoptions	;Build the game setup screen: vbint VBlank_SetOptions, the vram map, the team
 	;bitmap tiles (LoadSetupTiles), the SetupFont tiles at smallfont2chars / smallfont3chars, then the SetupBgMap1 / SetupBgMap2
 	;bitmaps on maps 1 and 2
 	move.l	#VBlank_SetOptions,(vbint).w
@@ -1703,7 +1703,7 @@ setoptions	;options screen display ( 94). Build the game setup screen: vbint VBl
 	jsr	(dobitmap).l
 	rts
 
-LoadSetupTiles	;Load the TeamBitmaps+8 tiles from char d4 (2)
+LoadSetupTiles	;Load the TeamBitmaps+8 tiles from char d4
 	moveq	#2,d4
 	movea.l	#TeamBitmaps+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
@@ -1958,7 +1958,7 @@ UpdateSetupLogos	;When a team changed (setuphome / setupvis against setupvalues 
 .7
 	rts
 
-DrawHomeBlock	;(rewritten). Erase the right logo (setupcardflags bit 3 was set) and draw logo logoteam at x $21
+DrawHomeBlock	;Erase the right logo (setupcardflags bit 3 was set) and draw logo logoteam at x $21
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#2,(setupcardflags).w
 	bclr	#3,(setupcardflags).w
@@ -1976,7 +1976,7 @@ DrawHomeBlock	;(rewritten). Erase the right logo (setupcardflags bit 3 was set) 
 	move.w	#$21,(printx).w
 	bra.w	DrawSetupLogo
 
-DrawVisBlock	;(rewritten). Erase the left logo (setupcardflags bit 2 was set) and draw logo logoteam at x 1
+DrawVisBlock	;Erase the left logo (setupcardflags bit 2 was set) and draw logo logoteam at x 1
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#3,(setupcardflags).w
 	bclr	#2,(setupcardflags).w
@@ -2402,7 +2402,7 @@ WritePassBits	;Transfer the game variables to the bits at a3
 	dbf	d2,.0
 	rts
 
-PushBits	;bits = bits * d1 + d0. d1 = range 2^1-2^15, d0 = data
+PushBits	;Bits = bits * d1 + d0. d1 = range 2^1-2^15, d0 = data
 	movem.l	d0-d1,-(sp)
 	exg	d0,d1
 	bsr.w	SuperMult
@@ -2730,9 +2730,9 @@ ContinuePlayoffs	;Continue playoffs: read the saved bits (ReadPassBits from pwdd
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-NewPO	;New playoff tree with Opt1team (a random
+NewPO	;New playoff tree with Opt1team in a random
 	;playoffseats row that has it), bosgames 7 and MakeTree for OptPlayMode 2; otherwise bosgames 0, the gsstruct wins cleared, and falls into MakeTree
-	moveq	#$20,d0	;' '   ; 20 = 32 decimal
+	moveq	#$20,d0	;32 playoffseats rows
 	jsr	(randomd0).l
 .0
 	addq.w	#1,d0	;adds 1 to d0 (d0 cannot be 0)
