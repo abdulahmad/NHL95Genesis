@@ -12,7 +12,7 @@ The first split came from the fingerprint map `tools/segmap95.json` (every 94 ro
 
 ## Layout
 
-- One file per 95 subsystem, named for what it does (proposal D, `docs/PROPOSAL_D_SUBSYSTEMS.md`), each one contiguous range of the ROM. The trunk (`main95`, `sram95`, `hockey95`, `display95`, `control95`, `checksum95`) is in `src/`; the rest is in `tables\`, `sound\`, `engine\`, `front\` and `art\`.
+- One file per 95 subsystem, named for what it does, each one contiguous range of the ROM. The trunk (`main95`, `sram95`, `hockey95`, `display95`, `control95`, `checksum95`) is in `src/`; the rest is in `tables\`, `sound\`, `engine\`, `front\` and `art\`.
 - `src/nhl95.asm` includes the trunk files and four include lists in ROM order: `tables95.asm`, `engine95.asm`, `front95.asm`, `art95.asm`. A list names the files of its folder in ROM order. A file lives in its subsystem's folder but is included where its bytes are: `sound\z80old95.asm` is between `fourway95` and `pause95`, so `engine95.asm` includes it. `engine95.asm` is one assembly (PC-relative branches cross every file in it); do not cut it into separate builds.
 - The header names the 94 files the file was adapted from. Where a file takes code from more than one 94 file, a `;----` banner before each run gives its address and 94 file (replay94 updateanim in display95, hockey94 Pausemode in pause95, assign94 in logic95, input94 doinput_cbut in skate95, the title94 shootout paths in shootout95). `docs/FILE_ORIGINS.md` gives the 94 file of every routine.
 - Each file's stub is next to it (`src/engine/logic95_stub.asm`). Paths in a stub or a file are relative to `src/` (`include engine\logic95.asm`).
@@ -54,7 +54,7 @@ After every matched segment, delete `output/nhl95.bin` and `output/modified_nhl9
 - A global label ends local-label scope. A local that another routine or another file calls stays global. SNASM cannot reference another routine's local.
 - SNASM symbols are case-insensitive. `setVram` and `setvram` are the same symbol.
 - Keep each comment line under 200 characters. A longer line makes SNASM write an empty bin, and verify can then print MATCH for 0 bytes.
-- Do not delete an asm file. Edit it in place. The exceptions were merging two contiguous pieces of the same 94 file, and the move to one file per subsystem (proposal D), which replaced the flat files.
+- Do not delete an asm file. Edit it in place. The exceptions were merging two contiguous pieces of the same 94 file, and the move to one file per subsystem, which replaced the flat files.
 - Data goes in the segment of the code that owns it. Sound data follows the sound driver. Graphics are incbins from `extractAssets95.js`, named for the asset, never for an IDA address. A map reference is `Label+8`. Team palettes are `.pal` incbins.
 - A new ROM map row gets its include in `src/nhl95.asm` or the include list of its folder, in ROM order, and its stub next to it, in the same session.
 - Do not copy a 94 name onto a 95 address because the low 16 bits match. Do not copy a 94 org.
@@ -72,7 +72,7 @@ Name it in the session that transcribes it. Do not leave a cleanup pass.
 
 ## ROM map
 
-The first row that is not matched is the current segment. The rows are in 95 ROM order and tile $000000-$1FFFFF with the `$FF` fill ($1A7310-$1FFFFF, the `dcb.b` in `src/nhl95.asm`). They come from `tools/segmap95.json`: `python3 tools/fingerprint_map.py --ref <NHL94Genesis>` locates the 94 routines, `python3 tools/verify_segmap.py` checks the tiling and boundaries, `python3 tools/apply_segmap.py --ref <NHL94Genesis>` wrote the first version of this table. Every row is now matched; org and end are the confirmed ranges, and the file names are the current paths under `src/` (one file per subsystem since proposal D). Matched is the share of the row covered by 94 routines found at similarity 0.5 or more; it is `-` for a row whose range changed when the files became subsystems (`docs/FILE_ORIGINS.md` has each file's mix by bytes). Confidence is how sure the row's range is, not a byte match.
+The first row that is not matched is the current segment. The rows are in 95 ROM order and tile $000000-$1FFFFF with the `$FF` fill ($1A7310-$1FFFFF, the `dcb.b` in `src/nhl95.asm`). They come from `tools/segmap95.json`: `python3 tools/fingerprint_map.py --ref <NHL94Genesis>` locates the 94 routines, `python3 tools/verify_segmap.py` checks the tiling and boundaries, `python3 tools/apply_segmap.py --ref <NHL94Genesis>` wrote the first version of this table. Every row is now matched; org and end are the confirmed ranges, and the file names are the current paths under `src/` (one file per subsystem). Matched is the share of the row covered by 94 routines found at similarity 0.5 or more; it is `-` for a row whose range changed when the files became subsystems (`docs/FILE_ORIGINS.md` has each file's mix by bytes). Confidence is how sure the row's range is, not a byte match.
 
 | File | Status | Org, start label | End | 94 file | Matched | Confidence | Note |
 |---|---|---|---|---|---|---|---|

@@ -18,7 +18,7 @@ The source follows [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis): i
 | `src/engine/` | The game engine, $079902-$08DF59, one file per subsystem: `video95`, `collide95`, `middle95`, `fourway95`, `pause95`, `logic95` (the player AI), `players95`, `input95`, `setup95`, `playoff95`, `faceoff95`, `penalty95`, `lines95`, `skate95`, `goal95`, `replay95`. |
 | `src/front/` | The menus and screens around the game: `season95`, `stats95`, `trade95`, `create95`, `records95`, `awards95`, `shootout95`, `injury95`, `scout95`, `crowd95`, `summary95`, `title95`. |
 | `src/art/` | Graphics data and the credits: `graphics95`, `logopals95`, `arena95`, `credits95`. |
-| (each code file) | One file per 95 subsystem, named for what it does (proposal D, `docs/PROPOSAL_D_SUBSYSTEMS.md`). Each file is one contiguous range of the ROM. The header says which 94 files it was adapted from; where it takes code from more than one 94 file, a banner before each run names the 94 file. `docs/FILE_ORIGINS.md` gives the 94 file of every routine. |
+| (each code file) | One file per 95 subsystem, named for what it does. Each file is one contiguous range of the ROM. The header says which 94 files it was adapted from; where it takes code from more than one 94 file, a banner before each run names the 94 file. `docs/FILE_ORIGINS.md` gives the 94 file of every routine. |
 | `src/sega/` | Sega's cartridge header (`SegaIDTable95.asm`, $100-$1FF) and power-on code (`SegaInit.asm`, $200-$2F9), included by `main95.asm`. |
 | `src/ram95.asm` | The RAM map, Z80 RAM and the save RAM offsets (`SR...`). Equates only. |
 | `src/stubinc/` | `ports.inc` (IO and VDP ports) and `equals.inc` (VDP status bits). Equates only. |
@@ -26,7 +26,6 @@ The source follows [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis): i
 | `<file>_stub.asm` | One per code file, next to it (`src/engine/logic95_stub.asm`): the segment org, the equates, equates for the outside addresses the segment uses, then `include <path>.asm`. A stub builds and verifies one segment by itself. |
 | `docs/name_map.csv` | Every label: address, current name, the IDA name, the old name if it was renamed, and the file. |
 | `docs/WHY_95_MOVED.md` | Why 95 reordered 94's routines (SNES banking, locality and re-filing weighed against the code), and the subsystem files the 95 source probably had. |
-| `docs/PROPOSAL_D_SUBSYSTEMS.md` | Proposal D: one file per 95 subsystem with the names Lesser probably used, in folders with nested include lists, no sections (scratch build tested). |
 
 Files included by `nhl95.asm` or an include list have no `org`. Assembler paths are relative to `src/`, also in the subfolders (`include engine\logic95.asm`, `incbin ..\Extracted\...`). Graphics and sound are incbins of `Extracted/`.
 
