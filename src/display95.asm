@@ -66,7 +66,7 @@ checksso	;do graphics for sso structure: arrows for the players when they are of
 	bne.w	.x
 	movea.w	#(Joy1Struct-M68K_RAM),a0
 	movea.w	#(sso-M68K_RAM),a3
-	move.w	#$69,d3	;first arrow frame (94: $180, SPFarrow)
+	move.w	#$69,d3	;SPFarrow, the first arrow frame (94: $180)
 	bsr.w	.ca
 	adda.w	#$1C,a0	;ffosize
 	adda.w	#$14,a3	;ssosize
@@ -396,12 +396,12 @@ defaultsprites	;allocate vram and assign char area for graphic structures. d4 = 
 	dc.w	0,0,0,0,9
 	dc.w	0,0,0,0,9
 .listffo	;xcord,ycord,zpos,frame,attribute,vram char size
-	dc.w	0,0,$FFFF,$71,0,7	;puck poss. star
-	dc.w	0,0,$FFFF,$6F,0,7	;joypad 1 star
-	dc.w	0,0,$FFFF,$70,0,7	;joypad 2 star
-	dc.w	0,0,$FFFF,$79,0,7	;joypad 3 star
-	dc.w	0,0,$FFFF,$7A,0,7	;joypad 4 star
-	dc.w	0,0,$FFFF,$72,$8000,7	;replay cursor
+	dc.w	0,0,$FFFF,$71,0,7	;SPFpad+2 frame (puck poss. star)
+	dc.w	0,0,$FFFF,$6F,0,7	;SPFpad+0 frame (joypad 1 star)
+	dc.w	0,0,$FFFF,$70,0,7	;SPFpad+1 frame (joypad 2 star)
+	dc.w	0,0,$FFFF,$79,0,7	;SPFpad34+0 frame (joypad 3 star)
+	dc.w	0,0,$FFFF,$7A,0,7	;SPFpad34+1 frame (joypad 4 star)
+	dc.w	0,0,$FFFF,$72,$8000,7	;SPFreplay frame (replay cursor)
 
 defaultsprites2	;objects which are tied to screen scrolling and have velocity: the 16 SortCords objects from .list (players,
 	;puck, puck shadow, goal nets ...), the OOlist and OOlistpos; then SprSort. 95 clears $78 bytes of each (94: $80) and faces the
@@ -459,10 +459,10 @@ defaultsprites2	;objects which are tied to screen scrolling and have velocity: t
 	dc.w	$32,$A,0,$45,1,$14,8,4,0,$40	;SCnum 9
 	dc.w	$FFDD,$32,0,$45,1,$14,8,4,0,$40	;SCnum 10
 	dc.w	0,$10B,0,$262,1,$14,8,4,0,$40	;SCnum 11 (away goalie)
-	dc.w	0,$112,0,$1BE,0,$11,$14,6,0,0	;SCnum 12 (goal nets)
-	dc.w	0,$FEEE,0,$1BF,0,$1C,$14,6,0,0	;SCnum 13
-	dc.w	0,0,0,$1B4,0,1,5,5,1,1	;SCnum 14 (puck)
-	dc.w	0,0,0,$1B3,0,$18,3,3,2,4	;SCnum 15 (puck shadow)
+	dc.w	0,$112,0,$1BE,0,$11,$14,6,0,0	;SCnum 12 (goal nets), SPFgoal frame
+	dc.w	0,$FEEE,0,$1BF,0,$1C,$14,6,0,0	;SCnum 13, SPFgoal+1 frame
+	dc.w	0,0,0,$1B4,0,1,5,5,1,1	;SCnum 14 (puck), SPFpuck+1 frame
+	dc.w	0,0,0,$1B3,0,$18,3,3,2,4	;SCnum 15 (puck shadow), SPFpuck frame
 
 SprSort	;sort objects in struct SortObj and set corresponding tables for keeping them sorted later (Ylist, OOlist,
 	;OOlistpos). 95 has no horizontal rink case
