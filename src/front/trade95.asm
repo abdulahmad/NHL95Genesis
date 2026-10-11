@@ -612,9 +612,9 @@ FixSavedLine	;Fix saved line block d6 (TeamRecordSRAM) of team TradeFromTeam aft
 
 TeamRecordSRAM	;Save RAM blocks of the saved team lines (offset, size a team)
 	dc.l	SRLines,$41
-	dc.l	SRLines2,$39
-	dc.l	SRLines3,$39
-	dc.l	SRLines4,$39
+	dc.l	SRSavedLines1,$39
+	dc.l	SRSavedLines2,$39
+	dc.l	SRSavedLines3,$39
 
 RemoveTradedPlayer	;Remove the traded player from his old team: roster, stats, saved lines and line slots
 	movem.l	d0-d7/a0-a6,-(sp)

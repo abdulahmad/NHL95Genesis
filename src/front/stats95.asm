@@ -3847,17 +3847,17 @@ CopyTeamLines	;B in exit menu: copy the loaded line data (a0, 56 bytes) into tea
 	rts
 
 TeamLinesOffset	;d0 = save RAM offset of team a2's saved line ($39 bytes per team; base by GameFlags bit 3 / sflags10 bit 0)
-	move.l	#SRLines2,d0
+	move.l	#SRSavedLines1,d0
 	btst	#3,(GameFlags).w
 	bne.w	.1
 	btst	#0,(sflags10).w
 	bne.w	.0
 	bra.w	.2
 .0
-	move.l	#SRLines4,d0
+	move.l	#SRSavedLines3,d0
 	bra.w	.2
 .1
-	move.l	#SRLines3,d0
+	move.l	#SRSavedLines2,d0
 .2
 	moveq	#$39,d1
 	move.w	d1,-(sp)

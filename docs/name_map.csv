@@ -2235,3 +2235,9 @@ TXS_ALL,CC_SetMapAndPosition,93G
 .halt,Halt,earlier rename (source comment)
 $FFCC50,Opt1team,,Opt1Team,ram95
 $FFCC52,Opt2team,,Opt2Team,ram95
+$FFD184,shootoutround,,playoffround,ram95
+$004530,SRSavedLines1,,SRLines2,ram95
+$004B6C,SRSavedLines2,,SRLines3,ram95
+$005136,SRSavedLines3,,SRLines4,ram95
+$FFD1AE,gamestoday3chars,,seasonchars1,ram95
+$FFD1B2,gamestoday1chars,,seasonchars2,ram95

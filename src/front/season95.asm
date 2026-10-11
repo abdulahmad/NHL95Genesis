@@ -2246,7 +2246,7 @@ DrawGameTeams	;Draw the team names of a game line
 	movea.l	#(GameColsTbl4+3),a0
 	move.w	(SelectedPlayerIdx).w,d1
 	move.b	(a0,d1.w),(printy+1).w
-	move.w	(seasonchars2).w,d4
+	move.w	(gamestoday1chars).w,d4
 	movea.l	#GamesTodayMap1,a0
 	clr.w	d0
 	clr.w	d1
@@ -2316,7 +2316,7 @@ DrawGameResult	;Draw the result of a game line
 	move.b	(a1,d2.w),(printy+1).w
 	clr.w	d0
 	clr.w	d1
-	move.w	(seasonchars1).w,d4
+	move.w	(gamestoday3chars).w,d4
 	movea.l	#GamesTodayMap3,a0
 	movea.l	a0,a1
 	adda.l	(a0),a0
@@ -2409,7 +2409,7 @@ GamesTodayGfx	;Games today screen video set up and graphics
 	move.w	d4,(BigFontChars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
-	move.w	d4,(seasonchars2).w
+	move.w	d4,(gamestoday1chars).w
 	movea.l	#GamesTodayMap1+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$0B,$97,$54,$CF,$F9,$AB,$CD,$E1	;remap table
@@ -2417,7 +2417,7 @@ GamesTodayGfx	;Games today screen video set up and graphics
 	movea.l	#GamesTodayMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$0B,$97,$54,$CF,$F9,$AB,$CD,$E1	;remap table
-	move.w	d4,(seasonchars1).w
+	move.w	d4,(gamestoday3chars).w
 	movea.l	#GamesTodayMap3+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$0B,$97,$54,$CF,$F9,$AB,$CD,$E1	;remap table

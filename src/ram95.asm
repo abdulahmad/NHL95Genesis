@@ -413,7 +413,7 @@ winties	equ	$FFFFD15E	;94 $FFFFD552. The ties word of each record (record bytes 
 wingames	equ	$FFFFD16E	;94 $FFFFD562. The games word of each record (record bytes $A-$B)
 sohomegoals	equ	$FFFFD180	;Shootout goals, home
 soawaygoals	equ	$FFFFD182	;Shootout goals, away
-playoffround	equ	$FFFFD184	;94 $FFFFD578. Shootout round (ClearShootout sets 1)
+shootoutround	equ	$FFFFD184	;94 $FFFFD578. Shootout round (ClearShootout sets 1)
 homeshooters	equ	$FFFFD186	;94 $FFFFD57A. The home shootout shooter list (6 words below homeshootnum, InitShooters)
 homeshootnum	equ	$FFFFD192	;94 $FFFFD586. The shooter index of the shootout
 awayshooters	equ	$FFFFD194	;94 $FFFFD588. The away shootout shooter list (6 words below shootoutteam)
@@ -426,9 +426,9 @@ SeasonPerlen	equ	$FFFFD1A8	;Season period length (ReadSeasonHeader)
 SeasonPen	equ	$FFFFD1A9	;Season penalties
 SeasonLine	equ	$FFFFD1AA	;Season line changes
 seasonteamsel	equ	$FFFFD1AC	;Offset of the season matchup in SeasonTeams, -1 none
-seasonchars1	equ	$FFFFD1AE	;Games today screen chars (GamesTodayMap3)
+gamestoday3chars	equ	$FFFFD1AE	;Games today screen chars (GamesTodayMap3)
 padcursorchars	equ	$FFFFD1B0	;ControllerSetupScreen: PadCursorMap chars
-seasonchars2	equ	$FFFFD1B2	;Games today screen chars (GamesTodayMap1)
+gamestoday1chars	equ	$FFFFD1B2	;Games today screen chars (GamesTodayMap1)
 GamesTodayDay	equ	$FFFFD1B4	;GamesToday: SeasonDay on entry
 padiconchars1	equ	$FFFFD1B6	;ControllerSetupScreen: PadIconMap1 ... 4 chars (PadIconChars)
 padiconchars2	equ	$FFFFD1B8
@@ -577,9 +577,9 @@ SRGamesPlayed	equ	$3218	;games played
 SRPenMin	equ	$3794	;penalty minutes (team struct +$104); goalies: goals against scaled to a full game
 SRTeamStats	equ	$3D10	;regular season team stats, 10 bytes a team (AddTeamSeasonStats, ReadSeasonTeamRecord)
 SRLines	equ	$3E14	;the line sets, $41 bytes a team (LoadTeamLines; DefaultLineData fills the RAM copy)
-SRLines2	equ	$4530	;the other saved line blocks, $39 bytes a team (TeamRecordSRAM)
-SRLines3	equ	$4B6C
-SRLines4	equ	$5136
+SRSavedLines1	equ	$4530	;the other saved line blocks, $39 bytes a team (TeamRecordSRAM)
+SRSavedLines2	equ	$4B6C
+SRSavedLines3	equ	$5136
 SRJerseyNums	equ	$5700	;jersey numbers of the season rosters, $20 bytes a team (GetJerseyNumber)
 SRFreeAgentJerseys	equ	$5A80	;jersey numbers of the free agent slots, the SRJerseyNums row after the 28 teams (ReleasePlayers)
 SRCreatedPlayers	equ	$5AA0	;the created player records (InitCreateRecord, LoadCreateTemplate, CommitCreatedPlayer)
