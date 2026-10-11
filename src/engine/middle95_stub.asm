@@ -27,7 +27,7 @@ setc4player = $ADA2
 setplayercolors = $AF1A
 SoundCmd = $676D8
 DoFill = $79902
-setvram = $79936
+setVram = $79936
 Vmaddr = $79A22
 dobitmap = $79A3C
 DoDMA_clearCallbackPointer = $79AC0
@@ -53,7 +53,7 @@ GetCreatedName = $96494
 GetRosterName = $9649E		;a1 = name String of player d0 of team d7 (season roster aware)
 GetJerseyNumber = $965A8		;jerseynum = the jersey number byte of player d0 of team d7
 Rinktilelist = $C4A7C		;Rink map
-Hotlist = $137B66		;Hot spot x / y bytes by frame
+HotList = $137B66		;Hot spot x / y bytes by frame
 SmallFontMap2 = $139E02
 ClockDigitsBitmap = $13FC18
 EnergyBarMap = $14C4C8

@@ -5,7 +5,7 @@
 ;------------------------------------------------------------------------------------------------------------------------
 ;	Three runs in ROM order: the VDP helpers with the vblank transfers, the sprite frames and rink
 ;	scroll, then the decompressor, the vblank handlers and the pad reads.
-;	The VDP helpers: DoFill, setvram, setVram_0, Vmaddr, dobitmap, DoDMA_clearCallbackPointer, DecompressGraphics
+;	The VDP helpers: DoFill, setVram, setVram_0, Vmaddr, dobitmap, DoDMA_clearCallbackPointer, DecompressGraphics
 ;	(95: no packed graphics), DoDMApro, WaitDMA, forcefade, cramfade, CopyPaletteToCRAM, xyVmMap, remap; then the
 ;	vblank transfers DumpSprites, DumpSprites2, DoDMAlist (ends at the shared rts rtss2), SetScroll2; then DoDMA
 ;	(95: no Z80 bus request).
@@ -36,7 +36,7 @@ DoFill	;Called,. 95 writes the long straight to the vdp (94 went through dmaram)
 	rts
 
 ; d0 = color to fade to
-setvram	;Fade every colour to d0, then fall into setVram_0
+setVram	;Fade every colour to d0, then fall into setVram_0
 	movea.w	#(palfadenew-M68K_RAM),a0
 	moveq	#$3F,d1
 .0
@@ -45,7 +45,7 @@ setvram	;Fade every colour to d0, then fall into setVram_0
 	move.w	#$18,(palcount).w
 	bsr.w	forcefade
 setVram_0	;second half of setVram without the fade: clear vram and set the VDP registers from disflags, Map1col
-	;VmMap1-3, VSPRITES and VSCRLPM. Falls in from setvram, called from EASportsScreen
+	;VmMap1-3, VSPRITES and VSCRLPM. Falls in from setVram, called from EASportsScreen
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
 	move.w	#VDPR_AUTOINC+$02,(VDP_CTRL).l

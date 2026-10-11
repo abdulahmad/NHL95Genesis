@@ -2932,7 +2932,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 .12
 	jsr	(ShootoutShootCheck).l
 	bne.w	.nodec
-	jsr	(compshoot).l
+	jsr	(CompShoot).l
 .13
 	bsr.w	chk4pass
 .nodec
@@ -3040,7 +3040,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	dc.w	$1E
 	dc.w	$E9	;94 $E6
 
-chk4shot	;Shoot or clear the puck (compshoot). 95: the breakaway deke always in Practice Mode
+chk4shot	;Shoot or clear the puck (CompShoot). 95: the breakaway deke always in Practice Mode
 	jsr	(chkpk).l
 	bne.w	.pkill	;killing penalty
 	tst.w	(threat).w
@@ -3055,7 +3055,7 @@ chk4shot	;Shoot or clear the puck (compshoot). 95: the breakaway deke always in 
 	cmp.w	Ypos(a3),d0
 	bge.w	.0
 .clear
-	jmp	(compshoot).l	;clear puck
+	jmp	(CompShoot).l	;clear puck
 .cmphome
 	cmp.w	Ypos(a3),d0
 	bgt.s	.clear	;clear puck
@@ -3083,7 +3083,7 @@ chk4shot	;Shoot or clear the puck (compshoot). 95: the breakaway deke always in 
 	add.w	facedir(a3),d0
 	andi.w	#7,d0
 	move.w	d0,facedir(a3)
-	bra.w	compshoot
+	bra.w	CompShoot
 .npk
 	moveq	#$20,d4
 	clr.w	d1
@@ -3174,7 +3174,7 @@ chk4shot	;Shoot or clear the puck (compshoot). 95: the breakaway deke always in 
 	bmi.w	rtsskate
 	btst	#sf2offsig,(sflags2).w
 	bne.w	rtsskate
-	jmp	(compshoot).l
+	jmp	(CompShoot).l
 
 chk4pass	;Pass to a free teammate (dopass)
 	tst.w	(threat).w

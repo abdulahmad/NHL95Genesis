@@ -287,7 +287,7 @@ $0786EA,sfx_shotfh_pcm,,,sound/sound95
 $0792A2,sfx_puckget_pcm,,,sound/sound95
 $079502,fm_instrument_patches,,,sound/sound95
 $079902,DoFill,sub_79902,,engine/video95
-$079936,setvram,sub_79936,,engine/video95
+$079936,setVram,sub_79936,setvram,engine/video95
 $07994C,setVram_0,sub_7994C,,engine/video95
 $079A22,Vmaddr,sub_79A22,,engine/video95
 $079A3C,dobitmap,sub_79A3C,,engine/video95
@@ -701,7 +701,7 @@ $084E16,shotsets,unk_84E16,,engine/input95
 $084E3A,shotdiradj,sub_84E3A,,engine/input95
 $084F1A,shotdirmath,sub_84F1A,,engine/input95
 $084F2C,puckvzadj,,,engine/input95
-$084FB6,compshoot,,,engine/input95
+$084FB6,CompShoot,,compshoot,engine/input95
 $084FE8,TeamRosterScreen,sub_84FE8,,engine/setup95
 $0851E0,DisplayPlayerList,sub_851E0,,engine/setup95
 $08535E,PrintPlayerLines,sub_8535E,,engine/setup95
@@ -2074,7 +2074,7 @@ $0C4A7C,Rinktilelist,unk_C4A7C,,graphics95
 $0CA56A,Sprites,unk_CA56A,,graphics95
 $0CA574,Spritetiles,,,graphics95
 $1318F4,frameSprData,,,graphics95
-$137B66,Hotlist,,HotSpotList,graphics95
+$137B66,HotList,,Hotlist;HotSpotList,graphics95
 $137B66,HotSpotList,unk_137B66,,graphics95
 $1383C6,RosterFont,unk_1383C6,,graphics95
 $139094,SmallFontMap,unk_139094,,graphics95

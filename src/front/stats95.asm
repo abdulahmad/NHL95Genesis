@@ -1425,7 +1425,7 @@ MarkSeasonRosters	;Set bit 15 of every player's goals and shots words in save RA
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SeasonPlayerStats	;95 season Player Stats screen: set the VRAM layout (VSCRLPM ... Map3col1), clear VRAM (setvram), then run the stats screen and return
+SeasonPlayerStats	;95 season Player Stats screen: set the VRAM layout (VSCRLPM ... Map3col1), clear VRAM (setVram), then run the stats screen and return
 	bclr	#1,(disflags).w
 	move.w	#$C000,(VmMap2).w
 	move.w	#6,(Map2col1).w
@@ -1436,7 +1436,7 @@ SeasonPlayerStats	;95 season Player Stats screen: set the VRAM layout (VSCRLPM .
 	move.w	#5,(Map3col1).w
 	move.w	#$FC00,(VSCRLPM).w
 	moveq	#0,d0
-	jsr	(setvram).l
+	jsr	(setVram).l
 	bra.w	SeasonAttributeScreen
 
 SeasonPlayersScreen	;Run the season stats screen, then jump to ExitAttributeScreen2
@@ -1925,7 +1925,7 @@ SeasonTeamStats	;95 season TEAM STATS screen (sflags11 bit 3 = playoff "Playoff 
 	move.w	#5,(Map3col1).w
 	move.w	#$FC00,(VSCRLPM).w
 	moveq	#0,d0
-	jsr	(setvram).l
+	jsr	(setVram).l
 	bra.w	SeasonTeamStatsRun
 
 SeasonTeamsScreen	;Pause / season menu Season Team Stats (Playoff Teams): SeasonTeamStatsRun, then ExitAttributeScreen2

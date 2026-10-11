@@ -16,7 +16,7 @@
 ; External addresses outside, read from lst/nhl95.bin.
 ZeroLong = $69A
 song = $678C2
-setvram = $79936
+setVram = $79936
 Vmaddr = $79A22
 dobitmap = $79A3C
 DoDMA_clearCallbackPointer = $79AC0

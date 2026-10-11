@@ -407,7 +407,7 @@ Spritetiles	;the sprite tiles
 	incbin	..\Extracted\NHL95\Graphics\Spritetiles.bin
 frameSprData
 	incbin	..\Extracted\NHL95\Graphics\frameSprData.bin
-Hotlist	;the hot spot byte pair of each frame
+HotList	;the hot spot byte pair of each frame
 	incbin	..\Extracted\NHL95\Graphics\HotSpotList.bin
 RosterFont	;data
 	incbin	..\Extracted\NHL95\Graphics\RosterFont.bin

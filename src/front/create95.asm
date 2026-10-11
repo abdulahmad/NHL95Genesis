@@ -24,7 +24,7 @@ CreateScreenGfx	;set up VDP planes and load create-player graphics/palettes
 	move.w	#$E000,(VmMap1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0
-	jsr	(setvram).l
+	jsr	(setVram).l
 	jsr	(orjoy).l
 	move.w	#1,d4
 	move.w	d4,(smallfontchars).w
@@ -1064,7 +1064,7 @@ CreateRatingsGfx	;set up the create player screen: VDP setup, decompress graphic
 	move.w	#$E000,(VmMap1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0
-	jsr	(setvram).l
+	jsr	(setVram).l
 	move	#$2500,sr
 	jsr	(orjoy).l
 	move.w	d4,(framercset).w
@@ -1274,7 +1274,7 @@ ModifyRatings	;Create Player "Modify Ratings" screen: load graphics/text, then j
 	move.w	#$E000,(VmMap1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0
-	jsr	(setvram).l
+	jsr	(setVram).l
 	move	#$2500,sr
 	jsr	(orjoy).l
 	move.w	d4,(framercset).w

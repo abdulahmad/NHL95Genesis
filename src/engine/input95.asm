@@ -1,6 +1,6 @@
 ;	NHL 95 controller input. doinput, doinput_islocked, rtss7, faceoffinput, setpassmode, passmode, dopass, passtoa0,
 ;	OneTimerTarget and its tables, OneTimerPass, Findhittype, SetShotMode, ShotMode, prepshot, doshot, shotsets,
-;	shotdiradj, shotdirmath, puckvzadj, compshoot.
+;	shotdiradj, shotdirmath, puckvzadj, CompShoot.
 ;	95 changes: four pads (doinput_islocked marks the player of pad c1 ... c4playernum), the asstab numbers and SPA
 ;	values, the y limits moved 3 out ($108 to $10B ...), the PAL speed $18 (94 $16), the one-timer table offsets,
 ;	Findhittype's two masks swapped, shotsets $E / $FFF2 (94 $10 / $FFF0).
@@ -1301,7 +1301,7 @@ puckvzadj	;Set puckvz for a top shelf shot from the distance to the goal
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-compshoot	;Computer player shoots: drop the caller's return, temp2 from the
+CompShoot	;Computer player shoots: drop the caller's return, temp2 from the
 	;distance to the goal line, then assshoot. Jumped to from asspuckc, chk4shot and AutoLineChange
 	addq.w	#4,sp
 	move.w	(pucky).w,d0

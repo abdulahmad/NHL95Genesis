@@ -7,7 +7,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-	rts	;unused (the byte after compshoot)
+	rts	;unused (the byte after CompShoot)
 
 TeamRosterScreen	;"Team Roster" screen for team a2: DrawTeamScreen, then the player list (DisplayPlayerList)
 	;with page (SelectedPlayerIdx: goalies, offense, defense; C), column (DispAttribCtr: left / right) and row scroll (rosterscroll: up / down).
@@ -1658,7 +1658,7 @@ setoptions	;options screen display ( 94). Build the game setup screen: vbint VBl
 	move.w	#$E000,(VmMap1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0	;fade to color
-	jsr	(setvram).l
+	jsr	(setVram).l
 	jsr	(orjoy).l
 	move.w	#1,d4
 	jsr	(LoadSetupTiles).l

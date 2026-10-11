@@ -1023,7 +1023,7 @@ ControllerSetupScreen	;Build the controller setup screen: vram, fonts, the team 
 	move.w	#$E000,(VmMap1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0
-	jsr	(setvram).l
+	jsr	(setVram).l
 	jsr	(orjoy).l
 	move.w	#1,d4
 	move.w	d4,(smallfontchars).w

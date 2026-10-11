@@ -22,7 +22,7 @@ newTitleScreen	;The title screen (TitleScreenImg, TitleImg) with the vblank Titl
 	move.w	#$F800,(VSPRITES).w
 	move.w	#$FC00,(VSCRLPM).w
 	move.w	#0,d0
-	jsr	(setvram).l
+	jsr	(setVram).l
 	movea.l	#VDP_DATA,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$17,Vctrl-Vdata(a0)
@@ -358,7 +358,7 @@ StanleyCupScreen	;The Stanley Cup screen: the vblank CupVBlank, the cup (Stanley
 	move.w	#$E000,(VmMap1).w
 	move.w	#7,(Map1col1).w
 	move.w	#0,d0
-	jsr	(setvram).l
+	jsr	(setVram).l
 	clr.w	(cupframe).w
 	move.w	#1,d4
 	move.w	d4,(teamblocksmapptr).w

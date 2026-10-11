@@ -369,7 +369,7 @@ CompLine	;The computer picks a line for team a2 (a1 = other team): on a power pl
 	dc.w	0,1,0
 
 chk4lc	;Computer line change on the fly: puck in the player's own end (pucky 0-$56, 94 $58), one frame in 4
-	;not in line change mode, and the line tired (AvgCline $C00 or less): CompLine, SetPersonel, PrintScores1, then compshoot
+	;not in line change mode, and the line tired (AvgCline $C00 or less): CompLine, SetPersonel, PrintScores1, then CompShoot
 	btst	#4,(sflags7).w
 	bne.w	rtslc
 	move.w	(pucky).w,d0
@@ -398,7 +398,7 @@ chk4lc	;Computer line change on the fly: puck in the player's own end (pucky 0-$
 	bsr.w	CompLine
 	jsr	(setpersonel).l
 	jsr	(printscores1).l
-	jmp	compshoot
+	jmp	CompShoot
 
 SetupTeamForIntermission	;Reset the bench (ResetBench), then for each team SetupTeamLine.
 	bsr.w	ResetBench

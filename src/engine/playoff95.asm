@@ -32,7 +32,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	move.w	#$E000,(VmMap1).w
 	move.w	#7,(Map1col1).w
 	move.w	#0,d0
-	jsr	(setvram).l
+	jsr	(setVram).l
 	jsr	(printz).l
 	String	-TXMAP1,0,0,0
 	move.l	#$80,d0

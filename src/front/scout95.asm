@@ -45,7 +45,7 @@ ScoutingReport	;Pregame scouting report: the Ron Barr picture, the text box and 
 	move.w	#6,(Map1col1).w
 	move.w	#6,(Map2col1).w
 	move.w	#0,d0	;fade to color
-	jsr	(setvram).l
+	jsr	(setVram).l
 	move.w	#2,d4	;vram chars from 2
 	move.w	d4,(homepicchars).w	;home picture chars (6 x 6)
 	addi.w	#$24,d4

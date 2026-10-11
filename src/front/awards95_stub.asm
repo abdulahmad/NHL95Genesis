@@ -15,7 +15,7 @@
 ; External addresses outside, read from lst/nhl95.bin.
 TeamList = $772
 MakeSRAMChecksum = $9908
-setvram = $79936
+setVram = $79936
 dobitmap = $79A3C
 forceblack = $7A02A
 DecompressGraphicsWithCallback = $7A264

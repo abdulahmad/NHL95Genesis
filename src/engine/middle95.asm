@@ -157,14 +157,14 @@ randomd0	;d0 = random number 0 to d0-1 (RNGseed * $BB40E62D + 1)
 	movem.l	(sp)+,d1-d2
 	rts
 
-GetHot	;Push long address of structure to get hot spot from; hot spot x/y returned in d0/d1 (Hotlist by frame, flipped with the attribute)
+GetHot	;Push long address of structure to get hot spot from; hot spot x/y returned in d0/d1 (HotList by frame, flipped with the attribute)
 	movem.l	a0-a1,-(sp)
 	movea.l	$C(sp),a0	;move stored address before sub routine call into a0
 	clr.w	d0	;clear d0
 	clr.w	d1	;clear d1
 	tst.w	6(a0)
 	ble.w	.1
-	movea.l	#Hotlist,a1	;move Hotlist address into a1
+	movea.l	#HotList,a1	;move HotList address into a1
 	move.w	6(a0),d0
 	add.w	d0,d0	;double d0
 	move.b	1(a1,d0.w),d1	;SprStrHot Y byte
@@ -2184,7 +2184,7 @@ setupice	;set all variables, send non purgeable graphics, build sprite frame lis
 	move.w	#5,(Map3col1).w
 	move.w	#$FC00,(VSCRLPM).w
 	moveq	#0,d0
-	jsr	(setvram).l
+	jsr	(setVram).l
 	bclr	#0,(sflags).w
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
