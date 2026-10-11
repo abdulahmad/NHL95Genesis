@@ -91,9 +91,9 @@ CHECK_VDP	;Hot start lands here. Match the console region to the CountryCode let
 	move.w	#VDPR_MODE4+$81,(a5)		;reg 12: 40 cell mode
 	move.w	#VDPR_AUTOINC+$02,(a5)		;reg 15: auto increment 2
 	move.w	#VDPR_PLANESIZE+$01,(a5)		;reg 16: 64 x 32 cell planes
-	move.l	#$C0020000,(a5)		;cram write, address 2 (colour 1)
+	move.l	#CRAM_W+(2<<16),(a5)		;cram write, address 2 (colour 1)
 	move.w	#$EEE,(a4)		;colour 1 = white
-	move.l	#$40000000,(a5)		;vram write, address 0
+	move.l	#VRAM_W,(a5)		;vram write, address 0
 	lea	RegionFont(pc),a0
 	move.w	#$3A,d0			;59 characters, space to Z
 	move.l	#$10000000,d2		;pixel mask: colour 1 in the nibble rol.l moves into place
@@ -167,7 +167,7 @@ RegionPrint	;Print the 0 terminated text at a0 on plane A ($C000), row d1, colum
 	swap	d3
 	asl.l	#1,d3			;column * 2
 	add.l	d3,d2
-	addi.l	#$40000003,d2		;vram write at $C000 + row * $80 + column * 2
+	addi.l	#VRAM_W+(($C000&$3FFF)<<16)+($C000>>14),d2		;vram write at $C000 + row * $80 + column * 2
 	move.l	d2,(a5)
 .0
 	tst.b	(a0)

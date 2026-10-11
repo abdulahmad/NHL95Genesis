@@ -214,7 +214,7 @@ TitleVBlank	;title94 TitleVBlank. newTitleScreen vblank: the line scroll table a
 	move.w	#$1C0,d0
 	jsr	(DoDMA).l
 	movea.l	#VDP_DATA,a0
-	move.l	#$40000010,vdpctrl(a0)
+	move.l	#VSRAM_W,vdpctrl(a0)
 	move.w	(Vscroll).w,(a0)
 	movea.w	#(Satt-M68K_RAM),a0
 	move.w	(Sattsize).w,d0

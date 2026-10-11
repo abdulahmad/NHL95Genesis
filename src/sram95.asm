@@ -58,7 +58,7 @@ InitSaveRAM	;Called from Begin. Copy the $8000 byte save RAM (the odd bytes at S
 .loadcolor
 	move.w	d3,d0	;move d3 (color of flashing screen) to d0
 .flashscreen
-	move.l	#$C0000000,(VDP_CTRL).l	;cram write 0: the background colour
+	move.l	#CRAM_W,(VDP_CTRL).l	;cram write 0: the background colour
 	move.w	d0,d1
 	and.w	d3,d1
 	move.w	d1,(VDP_DATA).l

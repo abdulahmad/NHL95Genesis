@@ -139,3 +139,4 @@ Add a file here when the listing shows a system 94 does not have.
   95: SoundBanks entries use the `SndItem type,id,size` macro (genesis.mac) with `SB_PATCH`/`SB_SAMPLE`/`SB_SONG`/`SB_LIST`. TeamSongs keeps raw driver song numbers (no names known).
 - Teams: `stubinc/equals.inc` has the team numbers `ANH`=0 ... `WPG`=25, `ASE`=26, `ASW`=27 (TeamList order); playoffseats uses them. `.ls` line rows are commented with the linelist names (Sc1, Sc2, Chk, PP1, PP2, PK1, PK2).
   95: schedule95 Day uses the same equates; SimGoals*/SimTieTbl rows carry their team.
+- VDP commands: `ports.inc` adds `VRAM_W`, `CRAM_W`, `VSRAM_W` (long control words; add `(addr&$3FFF)<<16 + addr>>14`): `move.l #VSRAM_W+(2<<16),vdpctrl(a0)`.
