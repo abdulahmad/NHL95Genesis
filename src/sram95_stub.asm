@@ -15,12 +15,12 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside $009722-$009AC7, read from lst/nhl95.bin: jsr (x).l carries the address.
-ReadJoy1 = $7A4B0		;video95_01
-vcountwait = $7C6BE		;video95_02
+ReadJoy1 = $7A4B0		;video95
+vcountwait = $7C6BE		;middle95
 DefaultRosters = $96390		;trade95
-DefaultLineData = $8A5D8	;checks95_04
+DefaultLineData = $8A5D8	;lines95
 ClearCreatedPlayers = $98C88	;create95
-NullSaveClear = $A0A2E		;setup95_03
+NullSaveClear = $A0A2E		;scout95
 
 ; Main segment code
 	include	sram95.asm

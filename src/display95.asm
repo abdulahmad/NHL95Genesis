@@ -1,7 +1,14 @@
-; $00A204  Adapted from display94.asm: video setup, sort coordinates, pads; then updateanim from replay94.asm
+; $00A204  Adapted from display94.asm, replay94.asm and setup94.asm: video setup, sort coordinates, pads, updateanim, default sprites
+;	2 parts in ROM order, each under its banner below.
+;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
+;	cmp encoding after assembly.
+
+;------------------------------------------------------------------------------------------------------------------------
+; $00A204  From display94.asm: video setup, sort coordinates, pads; then updateanim from replay94.asm
 ;	94 setvideo, checksso, setsortcords, setffo, uppads, FormatControllerDisplay, RenderSmallFontChar and ButtonLabelCharTable
 ;	(display94), then updateanim (replay94, $A536).
 ;	95 has 6 pad objects and no glove object (94: 7 with glovestruct), and keeps the pad nibbles in one long (PadControlBits).
+
 
 setvideo	;this is not vblank code but sets up ram for vblank transfers. Called once per game frame (DoGameFrame, Pausemode, ...).
 	;95 has no showzam, AddArenaAnimSprite or Crowd_Noise here, and no clock while paused
@@ -346,4 +353,153 @@ updateanim	;frame switch control on struct a3. Called from updateplayers (hockey
 	move.w	d2,frame(a3)	;move d2 into frame
 	move.b	#4,glitch(a3)	;move 4 into glitch - /60 sec min frame switch time
 .rtss
+	rts
+
+;------------------------------------------------------------------------------------------------------------------------
+; $00A656  From setup94.asm: defaultsprites, defaultsprites2, SprSort
+;	setup94 defaultsprites, defaultsprites2 and SprSort. control95 follows at $A95C.
+
+
+defaultsprites	;allocate vram and assign char area for graphic structures. d4 = char area for data. Sets up the sso (4) and
+	;ffo (6; 94: 7 with the gloves) objects from .listsso / .listffo, then defaultsprites2. Called from setupice
+	movea.l	#.listsso,a2
+	movea.w	#(sso-M68K_RAM),a3
+	moveq	#3,d0	;#ssonum-1 into d0
+.ssotop
+	move.w	#$FFFF,oldframe(a3)	;screen objects not locked to scroll of screen
+	move.w	(a2)+,(a3)
+	move.w	(a2)+,2(a3)
+	move.w	(a2)+,frame(a3)
+	move.w	(a2)+,attribute(a3)
+	move.w	d4,VRchar(a3)
+	add.w	(a2)+,d4
+	adda.w	#$14,a3	;#ssosize
+	dbf	d0,.ssotop
+	movea.l	#.listffo,a2
+	movea.l	#pads,a3	;ffo
+	moveq	#5,d0	;#ffonum-1 (94: 6)
+.ffotop
+	st	oldframe(a3)	;objects tied to screen scrolling (not players/net/puck)
+	move.w	(a2)+,(a3)
+	move.w	(a2)+,Ypos(a3)
+	move.w	(a2)+,Zpos(a3)
+	move.w	(a2)+,frame(a3)
+	move.w	(a2)+,attribute(a3)
+	move.w	d4,VRchar(a3)
+	add.w	(a2)+,d4
+	adda.w	#$1C,a3	;#ffosize
+	dbf	d0,.ffotop
+	bra.w	defaultsprites2
+.listsso	;xcord,ycord,frame,attribute,vram char size
+	dc.w	0,0,0,0,9
+	dc.w	0,0,0,0,9
+	dc.w	0,0,0,0,9
+	dc.w	0,0,0,0,9
+.listffo	;xcord,ycord,zpos,frame,attribute,vram char size
+	dc.w	0,0,$FFFF,$71,0,7	;puck poss. star
+	dc.w	0,0,$FFFF,$6F,0,7	;joypad 1 star
+	dc.w	0,0,$FFFF,$70,0,7	;joypad 2 star
+	dc.w	0,0,$FFFF,$79,0,7	;joypad 3 star
+	dc.w	0,0,$FFFF,$7A,0,7	;joypad 4 star
+	dc.w	0,0,$FFFF,$72,$8000,7	;replay cursor
+
+defaultsprites2	;objects which are tied to screen scrolling and have velocity: the 16 SortCords objects from .list (players,
+	;puck, puck shadow, goal nets ...), the OOlist and OOlistpos; then SprSort. 95 clears $78 bytes of each (94: $80) and faces the
+	;away team down
+	clr.w	d6
+	movea.w	#(OOlist-M68K_RAM),a1
+	lea	.list(pc),a2
+	movea.w	#(SortCords-M68K_RAM),a3
+	movea.w	#(OOlistpos-M68K_RAM),a4
+.0
+	moveq	#$1D,d0	;94: $1F
+	movea.w	a3,a0
+.1
+	clr.l	(a0)+
+	dbf	d0,.1
+	move.w	d6,SCnum(a3)
+	st	oldframe(a3)
+	st	pnum(a3)
+	move.w	(a2)+,(a3)
+	move.w	(a2)+,Ypos(a3)
+	move.w	(a2)+,Zpos(a3)
+	move.w	(a2)+,frame(a3)
+	move.w	(a2)+,attribute(a3)
+	move.w	d4,VRchar(a3)
+	add.w	(a2)+,d4
+	move.w	(a2)+,radiusx(a3)
+	move.w	(a2)+,radiusy(a3)
+	addq.w	#1,a2
+	move.b	(a2)+,asslist(a3)
+	addq.w	#1,a2
+	move.b	(a2)+,pflags(a3)
+	btst	#pfteam,pflags(a3)	;95: the away team starts facing down
+	beq.w	.2
+	move.w	#4,facedir(a3)
+.2
+	adda.w	#SCstruct,a3
+	asl.w	#1,d6
+	move.b	d6,(a1)+
+	lsr.w	#1,d6
+	move.w	d6,(a4)+
+	addq.w	#1,d6
+	cmp.w	#$10,d6
+	bne.s	.0
+	bra.w	SprSort
+.list	;xcord,ycord,zcord,frame,att,crsize,radx,rady,asslist,pflags
+	dc.w	0,$FFC4,0,$41,0,$14,8,4,0,$80	;SCnum 0 (home skaters)
+	dc.w	$32,$FFF6,0,$41,0,$14,8,4,0,$80	;SCnum 1
+	dc.w	0,$FFF1,0,$41,0,$14,8,4,0,$80	;SCnum 2
+	dc.w	$FFCE,$FFF6,0,$41,0,$14,8,4,0,$80	;SCnum 3
+	dc.w	$23,$FFCE,0,$41,0,$14,8,4,0,$80	;SCnum 4
+	dc.w	0,$FEF5,0,$25E,0,$14,8,4,0,$80	;SCnum 5 (home goalie)
+	dc.w	0,$3C,0,$45,1,$14,8,4,0,$40	;SCnum 6 (away skaters)
+	dc.w	$FFCE,$A,0,$45,1,$14,8,4,0,$40	;SCnum 7
+	dc.w	0,$F,0,$45,1,$14,8,4,0,$40	;SCnum 8
+	dc.w	$32,$A,0,$45,1,$14,8,4,0,$40	;SCnum 9
+	dc.w	$FFDD,$32,0,$45,1,$14,8,4,0,$40	;SCnum 10
+	dc.w	0,$10B,0,$262,1,$14,8,4,0,$40	;SCnum 11 (away goalie)
+	dc.w	0,$112,0,$1BE,0,$11,$14,6,0,0	;SCnum 12 (goal nets)
+	dc.w	0,$FEEE,0,$1BF,0,$1C,$14,6,0,0	;SCnum 13
+	dc.w	0,0,0,$1B4,0,1,5,5,1,1	;SCnum 14 (puck)
+	dc.w	0,0,0,$1B3,0,$18,3,3,2,4	;SCnum 15 (puck shadow)
+
+SprSort	;sort objects in struct SortObj and set corresponding tables for keeping them sorted later (Ylist, OOlist,
+	;OOlistpos). 95 has no horizontal rink case
+	movem.l	d0-d4/a0-a2,-(sp)
+	movea.l	#OOlistpos,a2
+	movea.l	#Ylist,a1
+	movea.l	#SortCords,a0
+	move.w	#$F,d3	;Sortobjs -1
+.loop0
+	move.w	Ypos(a0),d4
+	move.w	d4,(a1)+
+	adda.w	#SCstruct,a0
+	dbf	d3,.loop0
+	movea.l	#Ylist,a1
+.loop
+	clr.w	d4
+	movea.l	#OOlist,a0
+	move.w	#$E,d3
+	clr.w	d0
+	clr.w	d1
+.0
+	move.b	(a0)+,d0
+	move.b	(a0),d1
+	move.w	(a1,d0.w),d2
+	cmp.w	(a1,d1.w),d2
+	ble.w	.1
+	move.b	d0,(a0)
+	move.b	d1,-1(a0)
+	move.l	a0,d2
+	subi.l	#OOlist,d2
+	move.w	d2,(a2,d0.w)
+	subq.w	#1,d2
+	move.w	d2,(a2,d1.w)
+	st	d4
+.1
+	dbf	d3,.0
+	tst.w	d4
+	bne.s	.loop
+	movem.l	(sp)+,d0-d4/a0-a2
 	rts

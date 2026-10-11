@@ -1,8 +1,8 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-REM Usage: buildseg.bat hockey95
-REM Assembles src\<name>_stub.asm to output\<name>.bin
+REM Usage: buildseg.bat hockey95   or   buildseg.bat engine\logic95
+REM Assembles src\<path>_stub.asm to output\<name>.bin (name = the file name without its folder)
 
 if "%~1"=="" (
     echo ERROR: No segment name provided
@@ -10,7 +10,8 @@ if "%~1"=="" (
     exit /b 1
 )
 
-set "ROM_NAME=%~1"
+set "STUB=%~1"
+set "ROM_NAME=%~n1"
 set "WORKSPACE=%~dp0"
 
 if not exist "%WORKSPACE%output" mkdir "%WORKSPACE%output"
@@ -27,7 +28,7 @@ cd /d "%WORKSPACE%src" || exit /b 1
   /p /m /g ^
   /o d- /o s- /o r+ /o l+ /o l. /o ow+ /o op- /o os+ /o oz+ /o omq- /o oaq+ /o osq+ ^
   %CHECKSUM_FLAG% %REV_FLAG% ^
-  "%ROM_NAME%_stub.asm,%WORKSPACE%output\%ROM_NAME%.bin,%WORKSPACE%output\%ROM_NAME%,%WORKSPACE%output\%ROM_NAME%" ^
+  "%STUB%_stub.asm,%WORKSPACE%output\%ROM_NAME%.bin,%WORKSPACE%output\%ROM_NAME%,%WORKSPACE%output\%ROM_NAME%" ^
   > "%WORKSPACE%output\Build_%ROM_NAME%.log"
 
 if errorlevel 1 (
