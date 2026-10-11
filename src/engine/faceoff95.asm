@@ -836,7 +836,7 @@ checkfo	;Check for faceoff sprites: the 3 fofdata2 entries (frame, flags) as Fac
 .7
 	rts
 
-DrawFaceoffWindow	;(94 puckfaceoff2.drawfaceoffwindow). The faceoff window (FaceOffMap) at x $36 or $BE
+DrawFaceoffWindow	;Draw the faceoff window (FaceOffMap) at x $36 or $BE
 	;y $5C, and with line changes on the two line names (linelist)
 	jsr	(printz).l
 	String	-TXMAP1,0,0,0

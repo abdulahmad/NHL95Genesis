@@ -56,7 +56,7 @@ setsortcords	;Setup sort cord graphics: addframe for the 16 objects in OOlist or
 	adda.w	d1,a3	;add offset to next struct
 	jsr	(addframe).l
 	dbf	d0,.top	;loop until done
-rtssdisp	;checksso .ca branches here
+rtssdisp	;Shared rts; checksso branches here
 	rts
 
 checksso	;Do graphics for sso structure: arrows for the players when they are off screen. Called from setvideo. a5 = dma list,

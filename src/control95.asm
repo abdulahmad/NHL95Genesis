@@ -3,7 +3,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-updatepadinput	;The end of, called from updateplayers with a3 =
+updatepadinput	;Pad input for a player. Called from updateplayers with a3 = the
 	;object, d6 = SCnum. The pad (1-4) controlling a3 reads its buttons and runs doinput, with d4 = 0 / 2 / 4 / 6 (94 swaps the pad 3 /
 	;4 variables into pads 1 / 2). Then the assignment, collisions and the impact decay
 	cmp.w	(c1playernum).w,d6	;check if cont 1 is puck carrier

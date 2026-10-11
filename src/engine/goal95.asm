@@ -1097,7 +1097,7 @@ ControllerSetupScreen	;Build the controller setup screen: vram, fonts, the team 
 	String	-(TXPRI+TXMAP1),5,2,'Controller SetUp'
 	rts
 
-DrawSetupTeamBlock	;Wrong code in. Draw team block d1 (Teamblocksmap) at printx / printy
+DrawSetupTeamBlock	;Draw team block d1 (Teamblocksmap) at printx / printy
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	asl.w	#1,d1
@@ -1114,7 +1114,7 @@ DrawSetupTeamBlock	;Wrong code in. Draw team block d1 (Teamblocksmap) at printx 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintSetupStr	;Wrong code in. Print String a1 (printz2 $FE,5,$FF,1,$F9,0, then printsmall)
+PrintSetupStr	;Print String a1 (printz2 $FE,5,$FF,1,$F9,0, then printsmall)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a1,-(sp)
 	jsr	(printsmallz).l
@@ -1124,7 +1124,7 @@ PrintSetupStr	;Wrong code in. Print String a1 (printz2 $FE,5,$FF,1,$F9,0, then p
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintSetupStrHi	;Wrong code in. The same highlighted ($F9,1)
+PrintSetupStrHi	;The same highlighted ($F9,1)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a1,-(sp)
 	jsr	(printsmallz).l
@@ -1134,7 +1134,7 @@ PrintSetupStrHi	;Wrong code in. The same highlighted ($F9,1)
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReadAllPads	;Wrong code in. Read the 4 pads into TempWord1, TempWord2, TempRawSpd and TempMaxSpd
+ReadAllPads	;Read the 4 pads into TempWord1, TempWord2, TempRawSpd and TempMaxSpd
 	;(the same RAM as scratch here), all of them ored in TempLegSpd
 	jsr	(ReadJoy1).l
 	jsr	(nodiag).l
