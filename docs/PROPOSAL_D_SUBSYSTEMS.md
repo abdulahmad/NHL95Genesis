@@ -6,7 +6,7 @@ No sections. Every file stays one contiguous ROM range and the include order is 
 
 `docs/WHY_95_MOVED.md` explains why 95's order follows subsystems rather than 94's files. This proposal turns that reading into a file list.
 
-Implemented on the branch `cursor/subsystems-75f7` (not merged to `main`); see "Implemented on branch" below.
+Implemented on the branch `cursor/subsystems-75f7` and merged to `main`; see "Implemented" below.
 
 ## What the real names probably were
 
@@ -168,9 +168,9 @@ No new address is hardcoded. Files and include lists have no org, and the stubs 
 6. Update README, SEGMENT_AGENT.md (the ROM map table and the file rules) and PROMPT.md.
 7. Full build and all 43 segments after each step.
 
-## Implemented on branch `cursor/subsystems-75f7`
+## Implemented
 
-The layout above is implemented on the branch `cursor/subsystems-75f7`, not on `main`. Full build MATCH (SHA-1 `09e87b076aa4cd6f057a1d65bb50fd889b509b44`) and 43 / 43 segments MATCH after every commit. No code or data byte changed.
+The layout above was implemented on the branch `cursor/subsystems-75f7` and merged to `main`. Full build MATCH (SHA-1 `09e87b076aa4cd6f057a1d65bb50fd889b509b44`) and 43 / 43 segments MATCH after every commit. No code or data byte changed.
 
 - The 43 files, the four include lists and the stubs are as in the table. The old flat files are deleted.
 - Joined files keep each old header as a banner; split files got a header for each part, and the headers and banners name only what is in their own part. The `N parts` line of a header counts its banners.
