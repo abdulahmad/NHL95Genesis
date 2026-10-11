@@ -222,7 +222,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **input94** (16 bytes): Sweepcheck
 - **collide94** (4008 bytes): FallDown, checkpuckcoll, puckstick, puckglue, puckbody, deflect, checkpuckcoll_sfx, checkgoal, checkgoalp, CheckBump
 - **cards94** (70 bytes): wallcollduringcheck
-- **crowd94** (204 bytes): checkcornercoll94, cornercollb94
+- **crowd94** (204 bytes): checkcornercoll, cornercollb
 - **collide94** (930 bytes): puckgoalie, checkint
 - **new in 95** (28 bytes): DropPuck
 

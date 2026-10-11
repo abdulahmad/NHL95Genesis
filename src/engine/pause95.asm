@@ -586,7 +586,7 @@ rtsmenu	;An rts branched to from ShowPenaltyBox and ListPenaltyBox
 
 RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps, palettes
 	;vram, framer, fonts, energy bar, crowd and EASN tiles, the face off screen (disflags bit 4) or the ref tiles, the rink tiles and home team
-	;graphics, then PrintScores1. Called from Pausemode (above)
+	;graphics, then printscores1. Called from Pausemode (above)
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	(printfontset).w
 	bclr	#5,(sflags9).w

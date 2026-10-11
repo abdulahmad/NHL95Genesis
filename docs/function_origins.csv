@@ -382,8 +382,8 @@ engine/collide95.asm,$07BD8C,402,checkgoal,code,collide94,name
 engine/collide95.asm,$07BF1E,144,checkgoalp,code,collide94,name
 engine/collide95.asm,$07BFAE,148,CheckBump,code,collide94,name
 engine/collide95.asm,$07C042,70,wallcollduringcheck,code,cards94,name
-engine/collide95.asm,$07C088,198,checkcornercoll94,code,crowd94,name
-engine/collide95.asm,$07C14E,6,cornercollb94,code,crowd94,name
+engine/collide95.asm,$07C088,198,checkcornercoll,code,crowd94,name
+engine/collide95.asm,$07C14E,6,cornercollb,code,crowd94,name
 engine/collide95.asm,$07C154,680,puckgoalie,code,collide94,name
 engine/collide95.asm,$07C3FC,250,checkint,code,collide94,name
 engine/collide95.asm,$07C4F6,28,DropPuck,code,new in 95,header

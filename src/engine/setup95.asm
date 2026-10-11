@@ -643,7 +643,7 @@ PlayerPositionText	;Position names for the line slots
 
 GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the options from TmpOptLine2 /
 	;TempOptPlayMode. In a season (GameFlags bit 5) take the season options (ReadSeasonHeader) and the matchup.
-	;Then setoptions, and the line cursor loop: FixModeOptions, PrintOptions, the logos or matchup bitmaps, GameSetUp_2 for a key;
+	;Then setoptions, and the line cursor loop: FixModeOptions, PrintOptions, the logos or matchup bitmaps, ReadSetupPads for a key;
 	;up / down move SelectedPlayerIdx, left / right step setupvalues (WrapOptionUp / Down), start stores them (SetupStart) and sets the
 	;pads (SetPojoyMode, FigureJoy).
 	jsr	(ReadLineData).l
@@ -725,7 +725,7 @@ GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the 
 	bsr.w	UpdateSetupLogos
 	bsr.w	DrawMatchupBitmaps
 .10
-	bsr.w	GameSetUp_2
+	bsr.w	ReadSetupPads
 	move.w	(SelectedPlayerIdx).w,(setupprevline).w
 	tst.w	d1
 	bne.w	.13
@@ -829,7 +829,7 @@ GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the 
 	jsr	(SetPojoyMode).l
 	jmp	FigureJoy
 
-GameSetUp_2	;Wait up to $E10 frames (94 $5460) for a key on pad 1 / 2 (pads 3 / 4 with FourWayPlay)
+ReadSetupPads	;Wait up to $E10 frames (94 $5460) for a key on pad 1 / 2 (pads 3 / 4 with FourWayPlay)
 	;d1 = new keys, 0 when time ran out. C held repeats faster (setupcardflags bit 5). Runs PlayerCardTimer each frame
 	move.l	#$E10,d6
 .0
@@ -1266,7 +1266,7 @@ EraseCardText	;Erase the card text areas: 5 rows at $FF,8,3 and 1 row at $FF,9,9
 	movem.l	(sp)+,d0-d2/a0
 	rts
 
-PrintOptions	;Print the option names (PrintOptionName) and values (GameSetUp_4) of lines
+PrintOptions	;Print the option names (PrintOptionName) and values (PrintOptionValue) of lines
 	;DispAttribCtr ... VertLineScrolling from row $B, then the scroll marks at x 2: '{' when lines are above, '}' when more follow
 	bsr.w	MoveMenuFrame
 	move.w	(DispAttribCtr).w,d0
@@ -1275,7 +1275,7 @@ PrintOptions	;Print the option names (PrintOptionName) and values (GameSetUp_4) 
 	move.w	#4,(printx).w
 	bsr.w	PrintOptionName
 	move.w	#$13,(printx).w
-	bsr.w	GameSetUp_4
+	bsr.w	PrintOptionValue
 	addq.w	#2,(printy).w
 	addq.w	#1,d0
 	cmp.w	(VertLineScrolling).w,d0
@@ -1319,7 +1319,7 @@ ScrollClearTxt
 ScrollUpTxt
 	String	'{'
 
-GameSetUp_4	;Print the value of setup line d0 at printx (OptionValueOffsets / the value Strings)
+PrintOptionValue	;Print the value of setup line d0 at printx (OptionValueOffsets / the value Strings)
 	;teams 1 / 2 go to the team name (TeamList city, IslandersTxt / RangersTxt for teams $D / $E), lines not shown print
 	;BlankValueTxt, Shootout prints N/A for the length. The cursor line is highlighted (PrintSetupTextHi)
 	movem.l	d0-d2/a0-a1,-(sp)
@@ -1409,7 +1409,7 @@ RangersTxt
 BlankValueTxt	;A blank value
 	String	'                    '
 
-NATxt	;Not read in 95 (GameSetUp_4 has its own N/A String)
+NATxt	;Not read in 95 (PrintOptionValue has its own N/A String)
 	String	'N/A                 '
 
 PrintOptionName	;Print option name d0 (OptionNames) at printx; lines not shown print BlankNameTxt
@@ -2037,7 +2037,7 @@ DrawSetupLogo	;Draw the logo of team logoteam at printx, 6 x 6, palette TeamLogo
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PlayerCardTimer	;Player cards, called each frame from GameSetUp_2 while carddelay has run out: every cardtimer frames switch
+PlayerCardTimer	;Player cards, called each frame from ReadSetupPads while carddelay has run out: every cardtimer frames switch
 	;sides (setupcardflags bit 1), erase the card (GetBlankChar) and draw the next of 6 featured players of HomeTeam / VisTeam:
 	;the picture (GetPlayerPicture, PicturePalette) unpacked to picturebuf and drawn, then the name (GetRosterName) and number
 	cmpi.w	#1,(setupshown).w

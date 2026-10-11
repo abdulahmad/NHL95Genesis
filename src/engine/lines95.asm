@@ -196,7 +196,7 @@ lcfound	;Line d2 was picked: store it ($2E), set tmline and the players (SetPers
 	move.w	d0,tmline(a2)
 	jsr	(setpersonel).l
 
-lcfound2	;Erase the line change box and redraw the scores (PrintScores1)
+lcfound2	;Erase the line change box and redraw the scores (printscores1)
 	btst	#7,(sflags).w
 	bne.w	rtslc
 	bsr.w	setlccords
@@ -369,7 +369,7 @@ CompLine	;The computer picks a line for team a2 (a1 = other team): on a power pl
 	dc.w	0,1,0
 
 chk4lc	;Computer line change on the fly: puck in the player's own end (pucky 0-$56, 94 $58), one frame in 4
-	;not in line change mode, and the line tired (AvgCline $C00 or less): CompLine, SetPersonel, PrintScores1, then CompShoot
+	;not in line change mode, and the line tired (AvgCline $C00 or less): CompLine, SetPersonel, printscores1, then CompShoot
 	btst	#4,(sflags7).w
 	bne.w	rtslc
 	move.w	(pucky).w,d0

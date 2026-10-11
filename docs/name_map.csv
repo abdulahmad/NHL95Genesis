@@ -389,8 +389,8 @@ $07BD8C,checkgoal,sub_7BD8C,,engine/collide95
 $07BF1E,checkgoalp,loc_7BF1E,,engine/collide95
 $07BFAE,CheckBump,sub_7BFAE,,engine/collide95
 $07C042,wallcollduringcheck,sub_7C042,,engine/collide95
-$07C088,checkcornercoll94,sub_7C088,,engine/collide95
-$07C14E,cornercollb94,sub_7C14E,,engine/collide95
+$07C088,checkcornercoll,sub_7C088,checkcornercoll94,engine/collide95
+$07C14E,cornercollb,sub_7C14E,cornercollb94,engine/collide95
 $07C154,puckgoalie,,,engine/collide95
 $07C3FC,checkint,sub_7C3FC,,engine/collide95
 $07C4F6,DropPuck,sub_7C4F6,,engine/collide95
@@ -730,7 +730,7 @@ $085996,GAttribOverall,unk_85996,,engine/setup95
 $0859A8,GAttribOverallMask,dword_859A8,,engine/setup95
 $085A8A,PlayerPositionText,unk_85A8A,,engine/setup95
 $085A9E,GameSetUp,sub_85A9E,,engine/setup95
-$085D8C,GameSetUp_2,sub_85D8C,,engine/setup95
+$085D8C,ReadSetupPads,sub_85D8C,GameSetUp_2,engine/setup95
 $085EAA,OptionLimits,unk_85EAA,,engine/setup95
 $085EB2,WrapOptionUp,sub_85EB2,,engine/setup95
 $085ECC,WrapOptionDown,sub_85ECC,,engine/setup95
@@ -741,7 +741,7 @@ $0863A6,PrintOptions,sub_863A6,,engine/setup95
 $086454,ScrollDownTxt,unk_86454,,engine/setup95
 $086458,ScrollClearTxt,unk_86458,,engine/setup95
 $08645C,ScrollUpTxt,unk_8645C,,engine/setup95
-$086460,GameSetUp_4,sub_86460,,engine/setup95
+$086460,PrintOptionValue,sub_86460,GameSetUp_4,engine/setup95
 $086578,IslandersTxt,unk_86578,,engine/setup95
 $08658C,RangersTxt,unk_8658C,,engine/setup95
 $0865A0,BlankValueTxt,unk_865A0,,engine/setup95

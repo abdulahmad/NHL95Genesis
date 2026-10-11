@@ -9,7 +9,7 @@
 ;	GetDefenseStart / ProcessNibble (95: season data versions), player name formatting (95: by team struct a2 or team
 ;	number d7), CalcAttrib and its weight lists, PushTime, PushNumber, PushNumberWidth, appendz, appstring,
 ;	setupTeamBlocksMap / CopyTeamBlockMapData, DoDMA_nd2, TeamLogoBitmaps, ResetClock / GetPeriodTime, ClrHor,
-;	AssignPads, waitx, PrintScores1 / PrintTeamNameAndScore, chkpk / chkpk2, printbigz ... PutBigTile, bfasciicon,
+;	AssignPads, waitx, printscores1 / PrintTeamNameAndScore, chkpk / chkpk2, printbigz ... PutBigTile, bfasciicon,
 ;	UnpackPicture, RestoreTeamEnergy, WeightedRandomSelect, AppendTeamName ... TrimSpaces, then setupice.
 
 
@@ -527,14 +527,14 @@ ClockDigitChar	;showclockdma helper: next digit of d0 (divu remainder) as a cloc
 	ext.l	d0
 	rts
 
-PerLabels	;Text list for periods; 94 ' F' (93 'Final'). Used by PrintScores1
+PerLabels	;Text list for periods; 94 ' F' (93 'Final'). Used by printscores1
 	String	'1',$12
 	String	'2',$13
 	String	'3',$14
 	String	'OT'
 	String	' F'
 
-PenShotPenalties2	;The same with a blank last entry. Used by PrintScores1
+PenShotPenalties2	;The same with a blank last entry. Used by printscores1
 	String	'1',$12
 	String	'2',$13
 	String	'3',$14
@@ -1739,7 +1739,7 @@ printscores1	;Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; period na
 	movem.l	(sp)+,d0-d2/a0-a3
 	rts
 
-PrintTeamNameAndScore	;Print the team name of team a2 at printx/printy, then its score as 2 digits at x $1C. Called twice from PrintScores1
+PrintTeamNameAndScore	;Print the team name of team a2 at printx/printy, then its score as 2 digits at x $1C. Called twice from printscores1
 	movea.l	$1E(a2),a1
 	adda.w	4(a1),a1
 	adda.w	(a1),a1	;skip the first string to the team name
@@ -2287,7 +2287,7 @@ TeamGfxList	;LoadHomeTeamGfx: one address per team (TeamList order) in the Arena
 	dc.l	ArenaGfxBank+$45E6,ArenaGfxBank+$48F0,ArenaGfxBank+$4F04,ArenaGfxBank+$4F04
 
 EASNLogo	;Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertical ice rink if no power play.
-	;from PrintScores1
+	;from printscores1
 	btst	#5,(sflags2).w	;sf2pwrplay
 	bne.w	.x
 	bsr.w	printz

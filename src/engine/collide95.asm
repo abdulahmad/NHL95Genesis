@@ -1831,14 +1831,14 @@ wallcollduringcheck	;During a check, a skater a2 (not a goalie) near the wall: t
 	addi.w	#$17,(wcradiusy).l	;add $17 to wcradiusy
 	movem.l	a0-a6,-(sp)
 	exg	a2,a3	;swap a2 and a3
-	jsr	(checkcornercoll94).l
+	jsr	(checkcornercoll).l
 	exg	a2,a3	;swap a2 and a3
 	movem.l	(sp)+,a0-a6
 	movem.l	(sp)+,d0-d7
 .0
 	rts
 
-checkcornercoll94	;Corner circles and side walls for object a3 at d2 / d3 (wcradiusx / wcradiusy); a hit goes to
+checkcornercoll	;Corner circles and side walls for object a3 at d2 / d3 (wcradiusx / wcradiusy); a hit goes to
 	;end boards $128
 	bclr	#pf3wall,pflags3(a3)	;clears bit 4 in pflags3 (not used in 92)
 	move.w	#$98,d4
@@ -1888,7 +1888,7 @@ checkcornercoll94	;Corner circles and side walls for object a3 at d2 / d3 (wcrad
 	ext.l	d1
 	asl.l	#8,d1
 	divs.w	d3,d1
-	bsr.w	cornercollb94
+	bsr.w	cornercollb
 .2
 	movem.w	(sp)+,d2-d5
 	move.w	Wallcos(a3),d0
@@ -1897,22 +1897,22 @@ checkcornercoll94	;Corner circles and side walls for object a3 at d2 / d3 (wcrad
 	move.w	#$100,d0	;now check side walls
 	clr.w	d1
 	cmp.w	d5,d3
-	bge.w	cornercollb94
+	bge.w	cornercollb
 	neg.w	d5
 	neg.w	d0
 	cmp.w	d5,d3
-	ble.w	cornercollb94
+	ble.w	cornercollb
 	exg	d0,d1
 	cmp.w	d4,d2
-	bge.w	cornercollb94
+	bge.w	cornercollb
 	neg.w	d4
 	neg.w	d1
 	cmp.w	d4,d2
-	ble.w	cornercollb94
+	ble.w	cornercollb
 .3
 	rts
 
-cornercollb94	;Straight to wallcollb
+cornercollb	;Straight to wallcollb
 	jmp	(wallcollb).l
 
 

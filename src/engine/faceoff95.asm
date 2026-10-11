@@ -214,7 +214,7 @@ puckfaceoff	;Puck assignment 3: start a faceoff. Shootout: stop the puck, assign
 	bra.w	WaitForFaceoffLineChanges
 
 SetFaceoffComputerLine	;Line changes on and team d0 not on a pad (or sflags7 bit 4): CompLine, SetPersonel
-	;PrintScores1, crowdnoisedelay $2710
+	;printscores1, crowdnoisedelay $2710
 	tst.w	(OptLine).w
 	bne.w	rtsfaceoff
 	btst	#4,(sflags7).w
