@@ -71,6 +71,75 @@ video95_text.asm       video95_vdp.asm
 
 The ROM order is no longer in the names. It stays in `src/nhl95.asm` (one include per file, with its address) and in the SEGMENT_AGENT.md ROM map.
 
+## What each file came from
+
+How much of each file is new in 95 and how much was adapted from 94, from `docs/function_origins.csv` (written by `tools/file_origins.py`). Files are in ROM order, under their proposed names.
+
+- **Functions** counts every labelled routine and table, code and data. Labels with no bytes of their own are left out.
+- **New in 95** and **Adapted from 94** are shares of that count. Adapted means 94 has the same routine, found by name, by header or by fingerprint (the rules are in `docs/FILE_ORIGINS.md`). It does not say how much the routine changed; a copy with one changed line counts the same as an exact copy.
+- **New, by bytes** and **Top 94 files, by bytes** are shares of the file's length. Up to two 94 files are shown, largest first, so a row adds up to 100% only when no third 94 file contributes.
+- `main95` includes its `sega/` include files (SegaIDTable95, SegaInit).
+
+| File | Now | Functions | New in 95 | Adapted from 94 | New, by bytes | Top 94 files, by bytes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `main95` |  | 43 | 26% | 74% | 66% | sega/SegaInit 18%, hockey94 14% |
+| `teamdata95` |  | 28 | 0% | 100% | 0% | teamdata94 100% |
+| `frames95` |  | 80 | 0% | 100% | 0% | frames94 84%, graphics94 16% |
+| `schedule95` |  | 2 | 100% | 0% | 100% | - |
+| `sram95` |  | 11 | 27% | 73% | 37% | sram94 63% |
+| `hockey95` |  | 8 | 12% | 88% | 30% | hockey94 44%, setup94 25% |
+| `display95` |  | 10 | 0% | 100% | 0% | display94 74%, replay94 26% |
+| `setup95_sprites` | `setup95_01` | 19 | 26% | 74% | 11% | setup94 45%, title94 23% |
+| `sound95_driver` | `sound95_01` | 76 | 43% | 57% | 84% | sound94 16%, title94 <1% |
+| `video95_vdp` | `video95_01` | 76 | 5% | 95% | 7% | video94 55%, display94 26% |
+| `collide95_contact` | `collide95_01` | 32 | 6% | 94% | <1% | collide94 95%, crowd94 3% |
+| `video95_text` | `video95_02` | 123 | 28% | 72% | 26% | video94 25%, setup94 9% |
+| `fourway95` |  | 15 | 27% | 73% | 16% | fourway94 38%, title94 25% |
+| `sound95_z80` | `sound95_02` | 1 | 0% | 100% | 0% | sound94 100% |
+| `menu95` |  | 46 | 70% | 30% | 74% | menu94 18%, hockey94 8% |
+| `checks95_assign` | `checks95_01` | 62 | 10% | 90% | 5% | checks94 69%, assign94 19% |
+| `onetimer95` |  | 6 | 0% | 100% | 0% | onetimer94 92%, title94 8% |
+| `checks95_goalie` | `checks95_02` | 11 | 9% | 91% | 27% | checks94 41%, assign94 28% |
+| `collide95_lineup` | `collide95_02` | 19 | 21% | 79% | 9% | collide94 72%, crowd94 7% |
+| `input95_shoot` | `input95_01` | 24 | 0% | 100% | 0% | input94 85%, onetimer94 13% |
+| `optsetup95` |  | 96 | 16% | 84% | 10% | optsetup94 47%, data94 25% |
+| `setup95_playoffs` | `setup95_02` | 10 | 0% | 100% | 0% | setup94 100% |
+| `checks95_faceoff` | `checks95_03` | 20 | 5% | 95% | 5% | checks94 59%, data94 10% |
+| `penalty95` |  | 23 | 0% | 100% | 0% | penalty94 93%, title94 6% |
+| `data95` |  | 11 | 0% | 100% | 0% | data94 51%, checks94 28% |
+| `input95_lines` | `input95_02` | 12 | 0% | 100% | 0% | input94 78%, penalty94 22% |
+| `checks95_lines` + `checks95_skate` | `checks95_04` | 84 | 52% | 48% | 47% | checks94 27%, input94 6% |
+| &nbsp;&nbsp;`checks95_lines` | split | 22 | 68% | 32% | 78% | checks94 9%, penalty94 8% |
+| &nbsp;&nbsp;`checks95_skate` | split | 62 | 47% | 53% | 30% | checks94 37%, input94 9% |
+| `replay95` |  | 18 | 11% | 89% | 15% | replay94 85% |
+| `season95` |  | 181 | 98% | 2% | >99% | hockey94 <1% |
+| `period95` |  | 11 | 0% | 100% | 0% | period94 100% |
+| `stats95_players` | `stats95_01` | 150 | 57% | 43% | 51% | stats94 31%, period94 12% |
+| `trade95` |  | 45 | 100% | 0% | 100% | - |
+| `create95` |  | 181 | 98% | 2% | 98% | cards94 2% |
+| `cards95_names` | `cards95_01` | 23 | 0% | 100% | 0% | cards94 100% |
+| `records95` |  | 26 | 19% | 81% | 9% | records94 85%, title94 3% |
+| `cards95_records` | `cards95_02` | 18 | 11% | 89% | 14% | cards94 68%, stats94 18% |
+| `awards95` |  | 67 | 99% | 1% | >99% | cards94 <1% |
+| `shootout95` |  | 37 | 0% | 100% | 0% | shootout94 62%, title94 21% |
+| `checks95_penshot` | `checks95_05` | 28 | 32% | 68% | 12% | checks94 47%, penalty94 14% |
+| `scout95` |  | 29 | 0% | 100% | 0% | scout94 92%, crowd94 8% |
+| `setup95_scout` | `setup95_03` | 27 | 22% | 78% | 5% | setup94 28%, graphics94 26% |
+| `stats95_summary` | `stats95_02` | 24 | 4% | 96% | 5% | stats94 75%, display94 15% |
+| `title95_screen` | `title95_01` | 15 | 53% | 47% | 34% | title94 66% |
+| `graphics95_main` | `graphics95_01` | 282 | 0% | 100% | 0% | graphics94 >99%, cards94 <1% |
+| `title95_palettes` | `title95_02` | 1 | 0% | 100% | 0% | title94 100% |
+| `graphics95_arena` | `graphics95_02` | 1 | 0% | 100% | 0% | graphics94 100% |
+| `credits95` |  | 2 | 0% | 100% | 0% | teamdata94 100% |
+| `checksum95` |  | 1 | 0% | 100% | 0% | checksum94 100% |
+
+Across the ROM, 788 of 2115 functions (37%) are new in 95, and 614 of the 1397 code routines (44%). By bytes, new code and data is 26% of the ROM, held down by the graphics, which are almost all from 94.
+
+A few rows say more than the file name does:
+- `credits95` is all teamdata94, because 94 keeps `Credits` and `CreditsList` in `teamdata94.asm`.
+- `sound95_driver` is 43% new by count but 84% by bytes: the new 95 driver and sound bank are large, and the kept 94 routines are small.
+- Of the two halves of the optional `checks95_04` split, `checks95_lines` is mostly new (the 95 saved lines and team line screens); `checks95_skate` is mostly 94 movement code.
+
 ## Doing it
 
 1. `git mv` each module and stub (through temporary names, since some old and new names overlap).
