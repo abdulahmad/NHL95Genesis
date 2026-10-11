@@ -1,7 +1,7 @@
 ;	NHL 95 replay95. Retail $08D39A-$08DF59 (3008 bytes).
 ;	Mapped to replay94 (80%): updatereplay, ReplayMode, ShowReplayIcon / EraseReplayIcon / ShowReplayBanner / EraseReplayBanner,
-;	suba4, adda4, UpdateCameraPos, RevReplayAdj, RestoreReplayFrame and ClampReplayView. 95 adds chkcheckstart and CanCheckStart
-;	(the 95 check start tests) ahead of updatereplay, and a sound driver restart at the top of ReplayMode. replay94 checkwindow is in
+;	suba4, adda4, UpdateCameraPos, RevReplayAdj, RestoreReplayFrame and ClampReplayView. 95 adds chkblock and CanBlock
+;	(the 95 shot block tests) ahead of updatereplay, and a sound driver restart at the top of ReplayMode. replay94 checkwindow is in
 ;	goal95. Each routine comment names its 94 routine or says 95 only. season95 follows at $08DF5A.
 ;	95 packs a replay frame object as 9-bit x and 11-bit frame (94: 10-bit x, 12-bit frame) and saves both PadControlBits words.
 ;	Local labels follow replay94 where the code is 94 code and are numbered in the 95 only routines; the IDA local names are not kept.
@@ -9,8 +9,8 @@
 ;	cmp encoding after assembly.
 
 	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
-chkcheckstart	;95 only. Called with d1 = SPAhook for a player a3 about to check: d1 becomes
-	;SPAcheckstart ($1E6C) when the puck carrier (shot dir mode set) or the last shooter (ShotTimer running)
+chkblock	;95 only. Called with d1 = SPAhook for a player a3 about to check: d1 becomes the shot block
+	;SPAblock ($1E6C) when the puck carrier (shot dir mode set) or the last shooter (ShotTimer running)
 	;is on the other team
 	btst	#sfssdir,(sflags).w
 	bne.w	.carrier
@@ -39,9 +39,9 @@ chkcheckstart	;95 only. Called with d1 = SPAhook for a player a3 about to check:
 	btst	#pfteam,d0
 	beq.w	.done
 .start
-	move.w	#$1E6C,d1	;SPAcheckstart
+	move.w	#$1E6C,d1	;SPAblock
 	bra.w	.done
-	movem.w	d1,-(sp)	;not reached: the same facing test as CanCheckStart
+	movem.w	d1,-(sp)	;not reached: the same facing test as CanBlock
 	move.w	(puckx).w,d0
 	sub.w	Xpos(a3),d0
 	move.w	(pucky).w,d1
@@ -66,8 +66,8 @@ chkcheckstart	;95 only. Called with d1 = SPAhook for a player a3 about to check:
 .rts
 	rts
 
-CanCheckStart	;95 only. ne when joystick player a3 may start a check: pfalock clear, sflags sfssdir
-	;set and GameFlags bit 2 clear (cleared while sfssdir is clear), a3 at y $56 or more toward the goal it shoots
+CanBlock	;95 only. ne when joystick player a3 may block the shot (SPAblock): pfalock clear, sflags sfssdir
+	;set and GameFlags bit 2 clear (one block per shot; cleared while sfssdir is clear), a3 at y $56 or more toward the goal it shoots
 	;at, the puck carrier on the other team, the direction (vtoa) from a3 to the puck the same as from the goal at
 	;y $10B to the puck, a3 on the puck's side of x 0 and within y $B2 of it, and a3 facing that direction or one
 	;next to it. d0 is restored

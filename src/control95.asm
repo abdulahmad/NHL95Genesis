@@ -74,7 +74,7 @@ holdplayer	;Jumped to from doinput
 	adda.w	d0,a0	;add offset to a0
 	bra.w	Acheck
 .0
-	jsr	(chkcheckstart).l	;95 only
+	jsr	(chkblock).l	;95 only
 	jmp	(SetSPA).l
 Acheck	;(input94) Hold check for a3 on player a0 (the CPU jumps in here): SPAHold (stick in the air) or SPAhook by Ypos of a3 - a0
 	;and the goal a3 shoots at (pfgoal); SPAhook with no impact

@@ -108,9 +108,9 @@ $006E08,SPApassf2_table,,,tables/frames95
 $006E5A,SPApassb_table,,,tables/frames95
 $006ECC,SPApassb2_table,,,tables/frames95
 $006F3E,SPAshotf_table,,,tables/frames95
-$007070,SPAshotf2_table,,,tables/frames95
+$007070,SPAfakeshotf_table,,SPAshotf2_table,tables/frames95
 $0071A2,SPAshotb_table,,,tables/frames95
-$0072D4,SPAshotb2_table,,,tables/frames95
+$0072D4,SPAfakeshotb_table,,SPAshotb2_table,tables/frames95
 $007406,SPAskateback_table,,,tables/frames95
 $0074D8,SPAstumble_table,,,tables/frames95
 $00756A,SPAfaceoff_table,,,tables/frames95
@@ -124,7 +124,7 @@ $007750,SPAgstickl_table,,,tables/frames95
 $007782,SPAgdive_table,,,tables/frames95
 $007814,SPAwallright_table,,,tables/frames95
 $00785E,SPAwallleft_table,,,tables/frames95
-$0078A0,SPAcheckstart_table,,,tables/frames95
+$0078A0,SPAblock_table,,SPAcheckstart_table,tables/frames95
 $007952,SPAsiren_table,,,tables/frames95
 $00799C,SPAflail_table,,,tables/frames95
 $0079CE,SPAgswing_table,,,tables/frames95
@@ -961,8 +961,8 @@ $08D2D0,DrawSetupTeamBlock,,,engine/goal95
 $08D300,PrintSetupStr,sub_8D300,,engine/goal95
 $08D322,PrintSetupStrHi,sub_8D322,,engine/goal95
 $08D344,ReadAllPads,sub_8D344,,engine/goal95
-$08D39A,chkcheckstart,sub_8D39A,,engine/replay95
-$08D452,CanCheckStart,sub_8D452,,engine/replay95
+$08D39A,chkblock,sub_8D39A,chkcheckstart,engine/replay95
+$08D452,CanBlock,sub_8D452,CanCheckStart,engine/replay95
 $08D55E,updatereplay,sub_8D55E,,engine/replay95
 $08D666,rtss8,locret_8D666,,engine/replay95
 $08D668,ReplayMode,,,engine/replay95

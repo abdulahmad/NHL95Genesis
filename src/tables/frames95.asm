@@ -672,7 +672,7 @@ SPApassf_table:	;Frames 451-495
 .6	dc.w	SPFswing+39,4,SPFswing+40,4,SPFswing+41,-20
 .7	dc.w	SPFswing+45,4,SPFswing+46,4,SPFswing+47,-20
 
-SPApassf2	=	*-SPAlist	; 95 only. dopass uses it in place of SPApassf when GameFlags bit 1 is set
+SPApassf2	=	*-SPAlist	; 95 only. The drop pass: dopass uses it in place of SPApassf when GameFlags bit 1 is set (A with the dpad back)
 SPApassf2_table:	;Frames 450-493
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -716,7 +716,7 @@ SPApassb_table:	;Frames 576-599
 .6	dc.w	SPFswingb+18,4,SPFswingb+19,4,SPFswingb+20,-20
 .7	dc.w	SPFswingb+21,4,SPFswingb+22,4,SPFswingb+23,-20
 
-SPApassb2	=	*-SPAlist	; 95 only. dopass uses it in place of SPApassb when GameFlags bit 1 is set
+SPApassb2	=	*-SPAlist	; 95 only. The backhand drop pass: see SPApassf2
 SPApassb2_table:	;Frames 576-598
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -768,8 +768,8 @@ SPAshotf_table:	;Frames 448-495
 .7	dc.w	SPFswing+44,4,SPFswing+43,4,SPFswing+42,4,SPFswing+42,4,SPFswing+43,4,SPFswing+44,4,SPFswing+45,4,SPFswing+46,4
 	dc.w	SPFswing+47,-20
 
-SPAshotf2	=	*-SPAlist	; 95 only. SetShotMode uses it in place of SPAshotf when GameFlags bit 0 is set
-SPAshotf2_table:	;Frames 448-495
+SPAfakeshotf	=	*-SPAlist	; 95 only, 95 PC name. The fake shot: SetShotMode uses it in place of SPAshotf when GameFlags bit 0 is set
+SPAfakeshotf_table:	;Frames 448-495
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
@@ -828,8 +828,8 @@ SPAshotb_table:	;Frames 576-599
 .7	dc.w	SPFswingb+21,2,SPFswingb+21,2,SPFswingb+21,2,SPFswingb+21,2,SPFswingb+21,2,SPFswingb+21,2,SPFswingb+22,2,SPFswingb+23,2
 	dc.w	SPFswingb+23,-10
 
-SPAshotb2	=	*-SPAlist	; 95 only. SetShotMode uses it in place of SPAshotb when GameFlags bit 0 is set
-SPAshotb2_table:	;Frames 449-495
+SPAfakeshotb	=	*-SPAlist	; 95 only, 95 PC name. The backhand fake shot: see SPAfakeshotf
+SPAfakeshotb_table:	;Frames 449-495
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t
@@ -1144,8 +1144,9 @@ SPAwallleft_table:	;Frames 1005-1008
 .6	dc.w	SPFPen,8,SPFPen+1,8,SPFPen+2,8,SPFPen+3,-8
 .7	dc.w	SPFPen,8,SPFPen+1,8,SPFPen+2,8,SPFPen+3,-8
 
-SPAcheckstart	=	*-SPAlist	; 95 only. Set by check4check (computer player checks) and chkcheckstart .start
-SPAcheckstart_table:	;Frames 183-697
+SPAblock	=	*-SPAlist	; 95 only. The shot block (95 PC has blockleft, blockright, blockfront, blockknee): check4check and
+	;check4check2 for a joystick player (CanBlock), chkblock in place of SPAhook
+SPAblock_table:	;Frames 183-697
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
 	dc.w	.1-.t

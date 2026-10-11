@@ -220,7 +220,7 @@ gmode2	equ	$FFFFBF00	;94 $FFFFC2FA. Bit 0 shootout (main menu Shootout)
 sflags7	equ	$FFFFBF02	;94 $FFFFC2FC. Bit 1 overtime
 sflags8	equ	$FFFFBF04	;94 $FFFFC2FE
 sflags9	equ	$FFFFBF06	;95 only. Bit 7 Practice Mode (main menu item 2)
-GameFlags	equ	$FFFFBF08	;95 only. Flag byte: bit 7 holds MakeSRAMChecksum during a batch of save RAM writes; bits 0, 1 pick the second shot / pass tables
+GameFlags	equ	$FFFFBF08	;95 only. Flag byte: bit 7 holds MakeSRAMChecksum during a batch of save RAM writes; bit 0 fake shot, bit 1 drop pass, bit 2 shot block done
 sflags10	equ	$FFFFBF0A	;95 only. Main menu: bit 2 Trade Players, bit 4 Create Player, bit 5 Sign Free Agents, bit 6 Release Players
 sflags11	equ	$FFFFBF0C	;95 only. Bit 7 user records count (UserNameEntry: at most one pad per team), bit 6 Regular Game (main menu item 1; kept over the Opening2 RAM clear), bit 5 set around IntermissionMenu, bit 4 a team award (SeasonAwards), bit 3 the playoff stats (GetAwardGoals), bit 2 set around PlayoffScreen (PlayoffTreeScreen)
 sflags12	equ	$FFFFBF0E	;95 only. Bit 7 Opening2 skips the sound restart (set by Opening), bit 6 SortAwardScores lowest first, bit 0 set while IntermissionMenu runs Pausemode

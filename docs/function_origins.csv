@@ -103,9 +103,9 @@ tables/frames95.asm,$006E08,82,SPApassf2_table,data,frames94,follows SPApassf_ta
 tables/frames95.asm,$006E5A,114,SPApassb_table,data,frames94,name
 tables/frames95.asm,$006ECC,114,SPApassb2_table,data,frames94,follows SPApassb_table
 tables/frames95.asm,$006F3E,306,SPAshotf_table,data,frames94,name
-tables/frames95.asm,$007070,306,SPAshotf2_table,data,frames94,follows SPAshotf_table
+tables/frames95.asm,$007070,306,SPAfakeshotf_table,data,frames94,follows SPAshotf_table
 tables/frames95.asm,$0071A2,306,SPAshotb_table,data,frames94,name
-tables/frames95.asm,$0072D4,306,SPAshotb2_table,data,frames94,follows SPAshotb_table
+tables/frames95.asm,$0072D4,306,SPAfakeshotb_table,data,frames94,follows SPAshotb_table
 tables/frames95.asm,$007406,210,SPAskateback_table,data,frames94,name
 tables/frames95.asm,$0074D8,146,SPAstumble_table,data,frames94,name
 tables/frames95.asm,$00756A,42,SPAfaceoff_table,data,frames94,name
@@ -119,7 +119,7 @@ tables/frames95.asm,$007750,50,SPAgstickl_table,data,frames94,name
 tables/frames95.asm,$007782,146,SPAgdive_table,data,frames94,name
 tables/frames95.asm,$007814,74,SPAwallright_table,data,frames94,name
 tables/frames95.asm,$00785E,66,SPAwallleft_table,data,frames94,name
-tables/frames95.asm,$0078A0,178,SPAcheckstart_table,data,frames94,follows SPAwallleft_table
+tables/frames95.asm,$0078A0,178,SPAblock_table,data,frames94,follows SPAwallleft_table
 tables/frames95.asm,$007952,74,SPAsiren_table,data,frames94,name
 tables/frames95.asm,$00799C,50,SPAflail_table,data,frames94,name
 tables/frames95.asm,$0079CE,114,SPAgswing_table,data,frames94,name
@@ -950,8 +950,8 @@ engine/goal95.asm,$08D2D0,48,DrawSetupTeamBlock,code,new in 95,header
 engine/goal95.asm,$08D300,34,PrintSetupStr,code,new in 95,header
 engine/goal95.asm,$08D322,34,PrintSetupStrHi,code,new in 95,header
 engine/goal95.asm,$08D344,86,ReadAllPads,code,new in 95,header
-engine/replay95.asm,$08D39A,184,chkcheckstart,code,new in 95,header
-engine/replay95.asm,$08D452,268,CanCheckStart,code,new in 95,header
+engine/replay95.asm,$08D39A,184,chkblock,code,new in 95,header
+engine/replay95.asm,$08D452,268,CanBlock,code,new in 95,header
 engine/replay95.asm,$08D55E,264,updatereplay,code,replay94,name
 engine/replay95.asm,$08D666,2,rtss8,code,replay94,header names replay94
 engine/replay95.asm,$08D668,1186,ReplayMode,code,replay94,name

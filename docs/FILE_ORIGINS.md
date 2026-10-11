@@ -488,7 +488,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 ### engine/replay95
 
-- **new in 95** (452 bytes): chkcheckstart, CanCheckStart
+- **new in 95** (452 bytes): chkblock, CanBlock
 - **replay94** (2556 bytes): updatereplay, ReplayMode, ShowReplayIcon, EraseReplayIcon, ShowReplayBanner, EraseReplayBanner, suba4, adda4, adda42, adda43, UpdateCameraPos, RevReplayAdj, RestoreReplayFrame, ClampReplayView
 
 ### front/season95

@@ -33,7 +33,7 @@ doinput = $83EB2		;players95
 LoadTeamLines = $8A622		;lines95
 dirtab = $8B9D6		;skate95
 SetSPA = $8BC9A		;skate95
-chkcheckstart = $8D39A		;95 only: may change d1 to SPAcheckstart. (replay95)
+chkblock = $8D39A		;95 only: may change d1 to SPAblock. (replay95)
 
 ; Main segment code
 	include	control95.asm

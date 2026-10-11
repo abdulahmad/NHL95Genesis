@@ -2044,16 +2044,16 @@ skateto	;Skate a3 to d0 / d1, a0 = extra routine. 95: nothing while locked in an
 	move.b	temp2+1(a3),d0	;temp2+1
 	jmp	(doplayeracc).l
 
-check4check	;Check an opponent in front of a3. 95: a joystick player starts the check animation (CanCheckStart, SPAcheckstart); sflags10 bit 7 always looks; burstchk / Acheck
+check4check	;Check an opponent in front of a3. 95: a joystick player blocks the shot (CanBlock, SPAblock); sflags10 bit 7 always looks; burstchk / Acheck
 	tst.w	position(a3)	;check if goalie
 	bne.w	.player	;branch if not
 	rts
 .player
-	btst	#3,pflags(a3)	;95: a joystick player starts the check animation when CanCheckStart allows
+	btst	#3,pflags(a3)	;95: a joystick player blocks the shot when CanBlock allows
 	bne.w	.cpu
-	jsr	(CanCheckStart).l
+	jsr	(CanBlock).l
 	beq.w	.cpu
-	move.w	#$1E6C,d1	;SPAcheckstart
+	move.w	#$1E6C,d1	;SPAblock
 	bset	#2,(GameFlags).w
 	jsr	(SetSPA).l
 	bset	#5,pflags(a3)	;lock the animation
@@ -2134,9 +2134,9 @@ check4check2	;95 only. check4check with a puck y test before the check (burstchk
 .player
 	btst	#3,pflags(a3)
 	bne.w	.cpu
-	jsr	(CanCheckStart).l
+	jsr	(CanBlock).l
 	beq.w	.cpu
-	move.w	#$1E6C,d1	;SPAcheckstart
+	move.w	#$1E6C,d1	;SPAblock
 	bset	#2,(GameFlags).w
 	jsr	(SetSPA).l
 	bset	#5,pflags(a3)

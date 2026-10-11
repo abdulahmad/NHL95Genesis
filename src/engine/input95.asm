@@ -331,7 +331,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 .47
 	movem.l	(sp)+,d5-d6/a1-a4
 	beq.w	.48
-	bset	#1,(GameFlags).w
+	bset	#1,(GameFlags).w	;95: drop pass (A with the dpad back)
 	movem.l	(sp)+,a0
 	bra.w	setpassmode
 	dc.b	8,0,4,8,6,7,5,8,2,1,3,8,8,8,8,8	;unused: dpad bits to a direction (8 = none)
@@ -375,7 +375,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	tst.w	d0
 	bmi.w	.55
 	movem.w	(sp)+,d0
-	bset	#0,(GameFlags).w
+	bset	#0,(GameFlags).w	;95: fake shot (A released in the attacking zone)
 	bne.w	.54
 	jmp	SetShotMode
 .54
@@ -969,7 +969,7 @@ prepshot	;Prepare the shot (shot direction), then doshot
 doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets, shotdiradj; puckvz. 95: shotpflags,
 	;ShotTimer
 	movem.l	d0-d7/a0-a3,-(sp)
-	bclr	#0,(GameFlags).w
+	bclr	#0,(GameFlags).w	;95: a fake shot ends in SPAglidewp without the shot
 	beq.w	.0
 	bclr	#3,(sflags).w
 	move.w	#$B8E,d1
