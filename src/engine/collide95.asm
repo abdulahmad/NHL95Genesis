@@ -188,7 +188,7 @@ wallcollb	;93 name. Check for puck over wall. a3 = object, d0/d1 = cos/sin of th
 	move.w	#$250A,d1
 	jsr	(SetSPA).l
 	movea.l	(sp)+,a3
-	move.w	#$E,-(sp)
+	move.w	#SFX_0E,-(sp)
 	jsr	(sfx).l
 	addi.w	#$258,(crowdlevel).w
 	addi.w	#$F,(CwdExciteLvl).w
@@ -273,7 +273,7 @@ wallcoll	;d0 = cosine, d1 = sine of angle of incidence with wall, a3 = object. B
 	bgt.w	.4
 	cmpi.w	#$A,impact(a3)	;impact(a3)
 	blt.w	.4
-	move.w	#$20,-(sp)	;#SFXplayerwall
+	move.w	#SFX_PLAYERWALL,-(sp)	;#SFXplayerwall
 	jsr	(sfx).l
 .4
 	asr.w	#2,d2
@@ -1280,7 +1280,7 @@ checkpuckcoll	;look for puck coll with players. a3 = puck. Clears Yvel past the 
 	move.w	(puckc).w,d0	;move puckc into d0
 	cmp.w	SCnum(a2),d0	;compare SCnum to d0
 	beq.w	.exit	;branch if equal
-	move.w	#5,-(sp)	;sound
+	move.w	#SFX_SHOTWIFF,-(sp)	;sound
 	jsr	(sfx).l
 	bra.w	.exit
 
@@ -1354,7 +1354,7 @@ puckstick	;puck collides with stick. a2 = player who collided, a3 = puck, d0 = d
 	bclr	#sfspdir,(sflags).w	;clear pass dir mode
 	bclr	#sfssdir,(sflags).w	;clear shot dir mode
 .stdef
-	move.w	#6,-(sp)	;#SFXstdef
+	move.w	#SFX_STDEF,-(sp)	;#SFXstdef
 	jsr	(sfx).l
 	jsr	(a2touchpuck).l
 	bra.w	deflect
@@ -1553,7 +1553,7 @@ puckbody	;puck hits player a2. a3 = puck, d0 = distance^2 (from checkpuckcoll .c
 	bne.w	rtspuck
 .hit
 	jsr	(a2touchpuck).l
-	move.w	#$24,-(sp)	;SFXpuckbody
+	move.w	#SFX_PUCKBODY,-(sp)	;SFXpuckbody
 	jsr	(sfx).l
 	clr.w	Zvel(a3)
 	move.b	#8,nopuck(a2)
@@ -1973,7 +1973,7 @@ puckgoalie	;puck hits goalie a2. a3 = puck, d0/d1 = goalie - puck x/y. A save bo
 .song
 	jsr	(song).l
 .nosong
-	move.w	#$24,-(sp)	;#SFXpuckbody
+	move.w	#SFX_PUCKBODY,-(sp)	;#SFXpuckbody
 	jsr	(sfx).l
 	move.w	(puckc).w,d2	;move puckc into d2
 	bmi.w	.chkanim	;branch if no puckc

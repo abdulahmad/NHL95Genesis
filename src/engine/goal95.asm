@@ -57,7 +57,7 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 	cmp.w	(vcount).w,d0
 	beq.s	.8
 	move.w	(sp)+,d0
-	move.w	#0,-(sp)
+	move.w	#SFX_SIREN,-(sp)
 	jsr	(sfx).l
 	jsr	(LockScroll).l
 	addi.w	#$1F4,(crowdlevel).w
@@ -733,7 +733,7 @@ clockcont	;(hockey94) Clock continue: when the clock is at 0 stop the play (sfx 
 	bne.w	.0
 	bset	#3,(disflags).w	;dfclock: clock needs update
 	jsr	(play_new_song).l
-	move.w	#4,-(sp)	;horn
+	move.w	#SFX_HORN,-(sp)	;horn
 	jsr	(sfx).l
 	bsr.w	LockScroll
 	jmp	clockcont_0

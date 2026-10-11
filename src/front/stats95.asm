@@ -3920,7 +3920,7 @@ DisplayPeriodOver	;(data94; 93 name) End of game Stars of the Game box. Called f
 	move.w	(HmGoals).w,d0
 	sub.w	(AwGoals).w,d0
 	ble.w	.3
-	move.w	#$F,-(sp)	;song $F: home team won
+	move.w	#SFX_HOMEWIN,-(sp)	;song $F: home team won
 	jsr	(song).l
 .3
 	movem.l	(sp)+,d0-d5/a0-a4

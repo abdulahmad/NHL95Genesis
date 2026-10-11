@@ -11,7 +11,7 @@ setInjuryType	;collide94 setInjuryType. a2 injured: out for the period ($FFFD) o
 	bset	#2,pflags2(a2)
 	addi.w	#$12C,(crowdlevel).w
 	addi.w	#$1E,(CwdExciteLvl).w
-	move.w	#$D,-(sp)	;sound effect
+	move.w	#SFX_0D,-(sp)	;sound effect
 	jsr	(sfx).l
 	clr.w	Xvel(a2)
 	clr.w	Yvel(a2)

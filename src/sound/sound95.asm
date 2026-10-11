@@ -1173,288 +1173,147 @@ SoundBanks	;Bank 0 (SndSetBank, Begin and Opening2): the item count, then 4 byte
 	;(type, id, size), then the items in that order. Type 0 = patch (uploaded to the Z80 by a load list), 1 = sample (streamed),
 	;3 = song (SndStartSeq), $B = load list (SndLoadList). SndFindBankItem finds an item by type and id
 	dc.w	141	;items
-	dc.b	$0,$00
-	dc.w	$5	;patch 0
-	dc.b	$0,$01
-	dc.w	$5	;patch 1
-	dc.b	$0,$02
-	dc.w	$5	;patch 2
-	dc.b	$0,$03
-	dc.w	$5	;patch 3
-	dc.b	$0,$04
-	dc.w	$5	;patch 4
-	dc.b	$0,$05
-	dc.w	$5	;patch 5
-	dc.b	$0,$06
-	dc.w	$5	;patch 6
-	dc.b	$0,$07
-	dc.w	$5	;patch 7
-	dc.b	$0,$08
-	dc.w	$5	;patch 8
-	dc.b	$0,$09
-	dc.w	$5	;patch 9
-	dc.b	$0,$0A
-	dc.w	$5	;patch 10
-	dc.b	$0,$0B
-	dc.w	$27	;patch 11
-	dc.b	$0,$0C
-	dc.w	$5	;patch 12
-	dc.b	$0,$0D
-	dc.w	$27	;patch 13
-	dc.b	$0,$0E
-	dc.w	$27	;patch 14
-	dc.b	$0,$11
-	dc.w	$27	;patch 17
-	dc.b	$0,$13
-	dc.w	$10	;patch 19
-	dc.b	$0,$14
-	dc.w	$10	;patch 20
-	dc.b	$0,$15
-	dc.w	$27	;patch 21
-	dc.b	$0,$16
-	dc.w	$27	;patch 22
-	dc.b	$0,$18
-	dc.w	$27	;patch 24
-	dc.b	$0,$19
-	dc.w	$27	;patch 25
-	dc.b	$0,$1B
-	dc.w	$27	;patch 27
-	dc.b	$0,$1C
-	dc.w	$27	;patch 28
-	dc.b	$0,$1D
-	dc.w	$27	;patch 29
-	dc.b	$0,$33
-	dc.w	$5	;patch 51
-	dc.b	$0,$36
-	dc.w	$5	;patch 54
-	dc.b	$0,$38
-	dc.w	$5	;patch 56
-	dc.b	$0,$39
-	dc.w	$5	;patch 57
-	dc.b	$0,$3B
-	dc.w	$5	;patch 59
-	dc.b	$0,$3D
-	dc.w	$5	;patch 61
-	dc.b	$0,$3E
-	dc.w	$27	;patch 62
-	dc.b	$0,$3F
-	dc.w	$27	;patch 63
-	dc.b	$0,$40
-	dc.w	$27	;patch 64
-	dc.b	$0,$41
-	dc.w	$5	;patch 65
-	dc.b	$0,$42
-	dc.w	$5	;patch 66
-	dc.b	$0,$43
-	dc.w	$5	;patch 67
-	dc.b	$0,$44
-	dc.w	$5	;patch 68
-	dc.b	$0,$45
-	dc.w	$27	;patch 69
-	dc.b	$0,$46
-	dc.w	$5	;patch 70
-	dc.b	$0,$47
-	dc.w	$27	;patch 71
-	dc.b	$0,$48
-	dc.w	$5	;patch 72
-	dc.b	$0,$49
-	dc.w	$27	;patch 73
-	dc.b	$1,$00
-	dc.w	$2143	;sample 0
-	dc.b	$1,$01
-	dc.w	$227	;sample 1
-	dc.b	$1,$02
-	dc.w	$20CB	;sample 2
-	dc.b	$1,$03
-	dc.w	$863	;sample 3
-	dc.b	$1,$04
-	dc.w	$A03	;sample 4
-	dc.b	$1,$05
-	dc.w	$F09	;sample 5
-	dc.b	$1,$06
-	dc.w	$F23	;sample 6
-	dc.b	$1,$07
-	dc.w	$EC3	;sample 7
-	dc.b	$1,$08
-	dc.w	$10D3	;sample 8
-	dc.b	$1,$09
-	dc.w	$32F	;sample 9
-	dc.b	$1,$0A
-	dc.w	$353	;sample 10
-	dc.b	$1,$0B
-	dc.w	$15C2	;sample 11
-	dc.b	$1,$0C
-	dc.w	$1045	;sample 12
-	dc.b	$1,$0E
-	dc.w	$9BC3	;sample 14
-	dc.b	$1,$10
-	dc.w	$EC29	;sample 16
-	dc.b	$1,$11
-	dc.w	$2528	;sample 17
-	dc.b	$1,$13
-	dc.w	$57CE	;sample 19
-	dc.b	$1,$15
-	dc.w	$1EC9	;sample 21
-	dc.b	$1,$16
-	dc.w	$D083	;sample 22
-	dc.b	$1,$17
-	dc.w	$47D0	;sample 23
-	dc.b	$1,$18
-	dc.w	$1503	;sample 24
-	dc.b	$1,$19
-	dc.w	$1B43	;sample 25
-	dc.b	$1,$1B
-	dc.w	$1822	;sample 27
-	dc.b	$1,$1D
-	dc.w	$232	;sample 29
-	dc.b	$3,$00
-	dc.w	$46FB	;song 0
-	dc.b	$3,$01
-	dc.w	$2B82	;song 1
-	dc.b	$3,$02
-	dc.w	$3587	;song 2
-	dc.b	$3,$03
-	dc.w	$3F33	;song 3
-	dc.b	$3,$04
-	dc.w	$C	;song 4
-	dc.b	$3,$05
-	dc.w	$C	;song 5
-	dc.b	$3,$06
-	dc.w	$C	;song 6
-	dc.b	$3,$07
-	dc.w	$C	;song 7
-	dc.b	$3,$08
-	dc.w	$C	;song 8
-	dc.b	$3,$09
-	dc.w	$C	;song 9
-	dc.b	$3,$0A
-	dc.w	$C	;song 10
-	dc.b	$3,$0B
-	dc.w	$C	;song 11
-	dc.b	$3,$0E
-	dc.w	$E	;song 14
-	dc.b	$3,$10
-	dc.w	$E	;song 16
-	dc.b	$3,$11
-	dc.w	$C	;song 17
-	dc.b	$3,$13
-	dc.w	$C	;song 19
-	dc.b	$3,$15
-	dc.w	$C	;song 21
-	dc.b	$3,$16
-	dc.w	$64	;song 22
-	dc.b	$3,$17
-	dc.w	$54	;song 23
-	dc.b	$3,$18
-	dc.w	$C	;song 24
-	dc.b	$3,$19
-	dc.w	$C	;song 25
-	dc.b	$3,$1A
-	dc.w	$C	;song 26
-	dc.b	$3,$1B
-	dc.w	$C	;song 27
-	dc.b	$3,$1C
-	dc.w	$C	;song 28
-	dc.b	$3,$1D
-	dc.w	$C	;song 29
-	dc.b	$3,$1E
-	dc.w	$E	;song 30
-	dc.b	$3,$20
-	dc.w	$C	;song 32
-	dc.b	$3,$21
-	dc.w	$C	;song 33
-	dc.b	$3,$22
-	dc.w	$C	;song 34
-	dc.b	$3,$23
-	dc.w	$C	;song 35
-	dc.b	$3,$24
-	dc.w	$C	;song 36
-	dc.b	$3,$25
-	dc.w	$C	;song 37
-	dc.b	$3,$26
-	dc.w	$31B	;song 38
-	dc.b	$3,$27
-	dc.w	$14	;song 39
-	dc.b	$3,$28
-	dc.w	$14	;song 40
-	dc.b	$3,$29
-	dc.w	$C	;song 41
-	dc.b	$3,$32
-	dc.w	$1F2	;song 50
-	dc.b	$3,$33
-	dc.w	$4E4	;song 51
-	dc.b	$3,$34
-	dc.w	$254	;song 52
-	dc.b	$3,$35
-	dc.w	$2AE	;song 53
-	dc.b	$3,$36
-	dc.w	$31C	;song 54
-	dc.b	$3,$37
-	dc.w	$2A8	;song 55
-	dc.b	$3,$38
-	dc.w	$29C	;song 56
-	dc.b	$3,$39
-	dc.w	$1AC	;song 57
-	dc.b	$3,$3A
-	dc.w	$3E4	;song 58
-	dc.b	$3,$3B
-	dc.w	$244	;song 59
-	dc.b	$3,$3C
-	dc.w	$30	;song 60
-	dc.b	$3,$3D
-	dc.w	$404	;song 61
-	dc.b	$3,$3E
-	dc.w	$341	;song 62
-	dc.b	$3,$3F
-	dc.w	$208	;song 63
-	dc.b	$3,$40
-	dc.w	$27E	;song 64
-	dc.b	$3,$41
-	dc.w	$358	;song 65
-	dc.b	$3,$42
-	dc.w	$12C	;song 66
-	dc.b	$3,$43
-	dc.w	$3C4	;song 67
-	dc.b	$3,$44
-	dc.w	$20C	;song 68
-	dc.b	$3,$45
-	dc.w	$274	;song 69
-	dc.b	$3,$46
-	dc.w	$158	;song 70
-	dc.b	$3,$47
-	dc.w	$3BC	;song 71
-	dc.b	$3,$48
-	dc.w	$424	;song 72
-	dc.b	$3,$49
-	dc.w	$400	;song 73
-	dc.b	$3,$4A
-	dc.w	$315	;song 74
-	dc.b	$3,$4B
-	dc.w	$365	;song 75
-	dc.b	$3,$4C
-	dc.w	$363	;song 76
-	dc.b	$3,$4D
-	dc.w	$2C9	;song 77
-	dc.b	$3,$4E
-	dc.w	$41C	;song 78
-	dc.b	$3,$4F
-	dc.w	$48C	;song 79
-	dc.b	$3,$50
-	dc.w	$255	;song 80
-	dc.b	$3,$51
-	dc.w	$22A	;song 81
-	dc.b	$3,$52
-	dc.w	$F0	;song 82
-	dc.b	$3,$53
-	dc.w	$274	;song 83
-	dc.b	$3,$54
-	dc.w	$D4	;song 84
-	dc.b	$3,$55
-	dc.w	$429	;song 85
-	dc.b	$B,$00
-	dc.w	$19	;list 0
-	dc.b	$B,$01
-	dc.w	$3F	;list 1
+	SndItem	SB_PATCH,$00,$5	;patch 0
+	SndItem	SB_PATCH,$01,$5	;patch 1
+	SndItem	SB_PATCH,$02,$5	;patch 2
+	SndItem	SB_PATCH,$03,$5	;patch 3
+	SndItem	SB_PATCH,$04,$5	;patch 4
+	SndItem	SB_PATCH,$05,$5	;patch 5
+	SndItem	SB_PATCH,$06,$5	;patch 6
+	SndItem	SB_PATCH,$07,$5	;patch 7
+	SndItem	SB_PATCH,$08,$5	;patch 8
+	SndItem	SB_PATCH,$09,$5	;patch 9
+	SndItem	SB_PATCH,$0A,$5	;patch 10
+	SndItem	SB_PATCH,$0B,$27	;patch 11
+	SndItem	SB_PATCH,$0C,$5	;patch 12
+	SndItem	SB_PATCH,$0D,$27	;patch 13
+	SndItem	SB_PATCH,$0E,$27	;patch 14
+	SndItem	SB_PATCH,$11,$27	;patch 17
+	SndItem	SB_PATCH,$13,$10	;patch 19
+	SndItem	SB_PATCH,$14,$10	;patch 20
+	SndItem	SB_PATCH,$15,$27	;patch 21
+	SndItem	SB_PATCH,$16,$27	;patch 22
+	SndItem	SB_PATCH,$18,$27	;patch 24
+	SndItem	SB_PATCH,$19,$27	;patch 25
+	SndItem	SB_PATCH,$1B,$27	;patch 27
+	SndItem	SB_PATCH,$1C,$27	;patch 28
+	SndItem	SB_PATCH,$1D,$27	;patch 29
+	SndItem	SB_PATCH,$33,$5	;patch 51
+	SndItem	SB_PATCH,$36,$5	;patch 54
+	SndItem	SB_PATCH,$38,$5	;patch 56
+	SndItem	SB_PATCH,$39,$5	;patch 57
+	SndItem	SB_PATCH,$3B,$5	;patch 59
+	SndItem	SB_PATCH,$3D,$5	;patch 61
+	SndItem	SB_PATCH,$3E,$27	;patch 62
+	SndItem	SB_PATCH,$3F,$27	;patch 63
+	SndItem	SB_PATCH,$40,$27	;patch 64
+	SndItem	SB_PATCH,$41,$5	;patch 65
+	SndItem	SB_PATCH,$42,$5	;patch 66
+	SndItem	SB_PATCH,$43,$5	;patch 67
+	SndItem	SB_PATCH,$44,$5	;patch 68
+	SndItem	SB_PATCH,$45,$27	;patch 69
+	SndItem	SB_PATCH,$46,$5	;patch 70
+	SndItem	SB_PATCH,$47,$27	;patch 71
+	SndItem	SB_PATCH,$48,$5	;patch 72
+	SndItem	SB_PATCH,$49,$27	;patch 73
+	SndItem	SB_SAMPLE,$00,$2143	;sample 0
+	SndItem	SB_SAMPLE,$01,$227	;sample 1
+	SndItem	SB_SAMPLE,$02,$20CB	;sample 2
+	SndItem	SB_SAMPLE,$03,$863	;sample 3
+	SndItem	SB_SAMPLE,$04,$A03	;sample 4
+	SndItem	SB_SAMPLE,$05,$F09	;sample 5
+	SndItem	SB_SAMPLE,$06,$F23	;sample 6
+	SndItem	SB_SAMPLE,$07,$EC3	;sample 7
+	SndItem	SB_SAMPLE,$08,$10D3	;sample 8
+	SndItem	SB_SAMPLE,$09,$32F	;sample 9
+	SndItem	SB_SAMPLE,$0A,$353	;sample 10
+	SndItem	SB_SAMPLE,$0B,$15C2	;sample 11
+	SndItem	SB_SAMPLE,$0C,$1045	;sample 12
+	SndItem	SB_SAMPLE,$0E,$9BC3	;sample 14
+	SndItem	SB_SAMPLE,$10,$EC29	;sample 16
+	SndItem	SB_SAMPLE,$11,$2528	;sample 17
+	SndItem	SB_SAMPLE,$13,$57CE	;sample 19
+	SndItem	SB_SAMPLE,$15,$1EC9	;sample 21
+	SndItem	SB_SAMPLE,$16,$D083	;sample 22
+	SndItem	SB_SAMPLE,$17,$47D0	;sample 23
+	SndItem	SB_SAMPLE,$18,$1503	;sample 24
+	SndItem	SB_SAMPLE,$19,$1B43	;sample 25
+	SndItem	SB_SAMPLE,$1B,$1822	;sample 27
+	SndItem	SB_SAMPLE,$1D,$232	;sample 29
+	SndItem	SB_SONG,$00,$46FB	;song 0
+	SndItem	SB_SONG,$01,$2B82	;song 1
+	SndItem	SB_SONG,$02,$3587	;song 2
+	SndItem	SB_SONG,$03,$3F33	;song 3
+	SndItem	SB_SONG,$04,$C	;song 4
+	SndItem	SB_SONG,$05,$C	;song 5
+	SndItem	SB_SONG,$06,$C	;song 6
+	SndItem	SB_SONG,$07,$C	;song 7
+	SndItem	SB_SONG,$08,$C	;song 8
+	SndItem	SB_SONG,$09,$C	;song 9
+	SndItem	SB_SONG,$0A,$C	;song 10
+	SndItem	SB_SONG,$0B,$C	;song 11
+	SndItem	SB_SONG,$0E,$E	;song 14
+	SndItem	SB_SONG,$10,$E	;song 16
+	SndItem	SB_SONG,$11,$C	;song 17
+	SndItem	SB_SONG,$13,$C	;song 19
+	SndItem	SB_SONG,$15,$C	;song 21
+	SndItem	SB_SONG,$16,$64	;song 22
+	SndItem	SB_SONG,$17,$54	;song 23
+	SndItem	SB_SONG,$18,$C	;song 24
+	SndItem	SB_SONG,$19,$C	;song 25
+	SndItem	SB_SONG,$1A,$C	;song 26
+	SndItem	SB_SONG,$1B,$C	;song 27
+	SndItem	SB_SONG,$1C,$C	;song 28
+	SndItem	SB_SONG,$1D,$C	;song 29
+	SndItem	SB_SONG,$1E,$E	;song 30
+	SndItem	SB_SONG,$20,$C	;song 32
+	SndItem	SB_SONG,$21,$C	;song 33
+	SndItem	SB_SONG,$22,$C	;song 34
+	SndItem	SB_SONG,$23,$C	;song 35
+	SndItem	SB_SONG,$24,$C	;song 36
+	SndItem	SB_SONG,$25,$C	;song 37
+	SndItem	SB_SONG,$26,$31B	;song 38
+	SndItem	SB_SONG,$27,$14	;song 39
+	SndItem	SB_SONG,$28,$14	;song 40
+	SndItem	SB_SONG,$29,$C	;song 41
+	SndItem	SB_SONG,$32,$1F2	;song 50
+	SndItem	SB_SONG,$33,$4E4	;song 51
+	SndItem	SB_SONG,$34,$254	;song 52
+	SndItem	SB_SONG,$35,$2AE	;song 53
+	SndItem	SB_SONG,$36,$31C	;song 54
+	SndItem	SB_SONG,$37,$2A8	;song 55
+	SndItem	SB_SONG,$38,$29C	;song 56
+	SndItem	SB_SONG,$39,$1AC	;song 57
+	SndItem	SB_SONG,$3A,$3E4	;song 58
+	SndItem	SB_SONG,$3B,$244	;song 59
+	SndItem	SB_SONG,$3C,$30	;song 60
+	SndItem	SB_SONG,$3D,$404	;song 61
+	SndItem	SB_SONG,$3E,$341	;song 62
+	SndItem	SB_SONG,$3F,$208	;song 63
+	SndItem	SB_SONG,$40,$27E	;song 64
+	SndItem	SB_SONG,$41,$358	;song 65
+	SndItem	SB_SONG,$42,$12C	;song 66
+	SndItem	SB_SONG,$43,$3C4	;song 67
+	SndItem	SB_SONG,$44,$20C	;song 68
+	SndItem	SB_SONG,$45,$274	;song 69
+	SndItem	SB_SONG,$46,$158	;song 70
+	SndItem	SB_SONG,$47,$3BC	;song 71
+	SndItem	SB_SONG,$48,$424	;song 72
+	SndItem	SB_SONG,$49,$400	;song 73
+	SndItem	SB_SONG,$4A,$315	;song 74
+	SndItem	SB_SONG,$4B,$365	;song 75
+	SndItem	SB_SONG,$4C,$363	;song 76
+	SndItem	SB_SONG,$4D,$2C9	;song 77
+	SndItem	SB_SONG,$4E,$41C	;song 78
+	SndItem	SB_SONG,$4F,$48C	;song 79
+	SndItem	SB_SONG,$50,$255	;song 80
+	SndItem	SB_SONG,$51,$22A	;song 81
+	SndItem	SB_SONG,$52,$F0	;song 82
+	SndItem	SB_SONG,$53,$274	;song 83
+	SndItem	SB_SONG,$54,$D4	;song 84
+	SndItem	SB_SONG,$55,$429	;song 85
+	SndItem	SB_LIST,$00,$19	;list 0
+	SndItem	SB_LIST,$01,$3F	;list 1
 	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_00.bin
 	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_01.bin
 	incbin	..\Extracted\NHL95\Sound\Bank\snd95_patch_02.bin
