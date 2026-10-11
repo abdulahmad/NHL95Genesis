@@ -61,7 +61,7 @@ Day	MACRO
 	ENDIF
 	ENDM
 
-SeasonSchedule	;Move.b (x).l, movea.l #x (PickSeasonStartDay, BuildSeasonTeamList, WriteDayGames, ...)
+SeasonSchedule	;The season schedule (read by PickSeasonStartDay, BuildSeasonTeamList, WriteDayGames, ...)
 	dc.b	192	;days
 	Day	NYR,BOS,  PHI,PIT,  DAL,DET,  CGY,NYI                                                                                  ;day 1
 	Day	OTW,QUE,  MTL,HFD,  NJ, TB,   CHI,FLA,  WPG,WSH,  EDM,SJ,   LA, VAN                                                    ;day 2

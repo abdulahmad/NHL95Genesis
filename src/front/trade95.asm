@@ -783,8 +783,8 @@ TradePlayers	;Trade Player screen (main flow): the two rosters with position / r
 	bclr	#2,(disflags).w
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$0,$0,$0
-	bsr.w	DrawTradeRoster1
-	bsr.w	DrawTradeRoster2
+	bsr.w	DrawHomeTradeRoster
+	bsr.w	DrawVisTradeRoster
 	move.w	#$FFFF,(setupdir).w
 .3
 	move.w	(HomeTeam).w,d1
@@ -810,8 +810,8 @@ TradePlayers	;Trade Player screen (main flow): the two rosters with position / r
 .4
 	cmpi.w	#$FFFF,(setupdir).w
 	beq.w	.5
-	bsr.w	DrawTradeRoster1
-	bsr.w	DrawTradeRoster2
+	bsr.w	DrawHomeTradeRoster
+	bsr.w	DrawVisTradeRoster
 .5
 	move.w	#$FFFF,(setupdir).w
 	bsr.w	ReadTradePads
@@ -906,7 +906,7 @@ TradePlayers	;Trade Player screen (main flow): the two rosters with position / r
 	move.w	#7,(setupdir).w
 	bra.w	.3
 
-DrawTradeRoster1	;Draw the roster of HomeTeam with the chosen marks; falls into DrawTradeRosterRows
+DrawHomeTradeRoster	;Draw the roster of HomeTeam with the chosen marks; falls into DrawTradeRosterRows
 	move.w	(TradeData).l,d5
 	tst.w	(TradeData+$C).l
 	beq.w	.0
@@ -918,7 +918,7 @@ DrawTradeRoster1	;Draw the roster of HomeTeam with the chosen marks; falls into 
 	move.w	(HomeTeam).w,d7
 	bra.w	DrawTradeRosterRows
 
-DrawTradeRoster2	;Draw the roster of VisTeam with the chosen marks
+DrawVisTradeRoster	;Draw the roster of VisTeam with the chosen marks
 	move.w	(TradeData+$2).l,d5
 	tst.w	(TradeData+$C).l
 	bne.w	.0
@@ -1385,7 +1385,7 @@ EvaluateTrade	;Evaluate Trade screen: the chosen players of both teams; A cancel
 	move.w	(VisTeam).w,d7
 	bsr.w	PrintTradeNames
 .6
-	bsr.w	ReadTradePads2
+	bsr.w	ReadEvalTradePads
 	tst.w	d1
 	beq.w	.9
 	btst	#7,d1
@@ -1444,7 +1444,7 @@ PositionLetters2	;G, F, D
 	String	'F',$0
 	String	'D',$0
 
-ReadTradePads2	;As ReadTradePads
+ReadEvalTradePads	;As ReadTradePads
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6
@@ -1634,7 +1634,7 @@ GMDecisionRetry	;GMDecision: back to the trade screen (CreateScreenGfx, TradePla
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$0,$0,$0
 .7
-	bsr.w	ReadTradePads3
+	bsr.w	ReadGMDecisionPads
 	tst.w	d1
 	beq.w	.9
 	btst	#7,d1
@@ -1669,7 +1669,7 @@ PrintTradedPlayers	;Print the players of a trade list (up to 3)
 	move.w	(sp)+,(printx).w
 	rts
 
-ReadTradePads3	;Wait up to $5460 frames for a pad press (pads 3, 4 with FourWayPlay), d1 = buttons
+ReadGMDecisionPads	;Wait up to $5460 frames for a pad press (pads 3, 4 with FourWayPlay), d1 = buttons
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6

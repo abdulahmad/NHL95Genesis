@@ -430,7 +430,7 @@ CupWaitFrame	;StanleyCupScreen: wait for the next vblank
 	beq.s	.0
 	rts
 
-CupExit	;Leave StanleyCupScreen (CupReadPads on start: drop its return address). Leave StanleyCupScreen (CupReadPads on start: drop its return address)
+CupExit	;Leave StanleyCupScreen (CupReadPads on start: drop its return address)
 	addq.w	#4,sp
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts

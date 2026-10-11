@@ -61,7 +61,7 @@ showcrowd	;Crowd sprites: up to 3 frames per PBnum nibble (ShowCrowdPb), then th
 	move.b	(crowdframe+1).w,d0
 	bra.w	ShowCrowdFrame
 
-ShowCrowdPb	;Pb. d2 = the count (PBnum nibble, at most 3), d3 = the first frame
+ShowCrowdPb	;Crowd frames for the penalty box: d2 = the count (PBnum nibble, at most 3), d3 = the first frame
 	andi.w	#$F,d2
 	cmp.w	#3,d2
 	bls.w	.0
@@ -76,7 +76,7 @@ ShowCrowdPb	;Pb. d2 = the count (PBnum nibble, at most 3), d3 = the first frame
 	dbf	d2,.1
 	rts
 
-ShowCrowdFrame	;Sc. Crowd frame d0 (0 = none): its sprites in view as sprite table entries at a6 (at most $40)
+ShowCrowdFrame	;Crowd frame d0 (0 = none): its sprites in view as sprite table entries at a6 (at most $40)
 	ext.w	d0
 	beq.w	rtsShowCrowd
 	cmp.w	#$40,d6

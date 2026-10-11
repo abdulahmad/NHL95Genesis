@@ -1858,7 +1858,7 @@ GamesToday	;GAMES TODAY screen: list the day's games, A toggles human / computer
 
 GamesTodayLoop	;GamesToday: draw and read the pads
 	bsr.w	DrawGamesToday
-	bsr.w	ReadAnyPad2
+	bsr.w	ReadGamesTodayPad
 	move.w	(SelectedPlayerIdx).w,(setupprevline).w
 	tst.w	d1
 	bne.w	.1
@@ -2026,7 +2026,7 @@ GamesTodayDone	;GamesToday: return
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReadAnyPad2	;As ReadAnyPad
+ReadGamesTodayPad	;As ReadAnyPad
 	move.l	#$5460,d6
 .0
 	move.w	(vcount).w,d1
@@ -2464,7 +2464,7 @@ SeasonOptions	;SEASON OPTIONS menu: the regular season, end of season or playoff
 .1
 	bsr.w	DrawSeasonMenu
 .2
-	bsr.w	ReadAnyPad3
+	bsr.w	ReadSeasonMenuPad
 	tst.w	d1
 	bne.w	.6
 .3
@@ -2800,7 +2800,7 @@ PrintAutoplayDay	;Print the AutoplayDay date
 	move.b	(sp)+,(SeasonDay).w
 	rts
 
-ReadAnyPad3	;As ReadAnyPad
+ReadSeasonMenuPad	;As ReadAnyPad
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6
@@ -3031,7 +3031,7 @@ CalendarScreen	;CALENDAR (team schedule): {} change team, [] change month, start
 	bsr.w	CalendarBg
 	bsr.w	DrawCalendar
 .1
-	bsr.w	ReadAnyPad4
+	bsr.w	ReadCalendarPad
 	tst.w	d1
 	beq.w	.6
 	btst	#7,d1
@@ -3075,7 +3075,7 @@ CalendarScreen	;CALENDAR (team schedule): {} change team, [] change month, start
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReadAnyPad4	;As ReadAnyPad
+ReadCalendarPad	;As ReadAnyPad
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6
@@ -3510,7 +3510,7 @@ StandingsScreen	;NHL STANDINGS: {} conference / division, [] the other group; st
 	bsr.w	SortStandings
 	bsr.w	DrawStandings
 .1
-	bsr.w	ReadAnyPad5
+	bsr.w	ReadStandingsPad
 	tst.w	d1
 	beq.w	.6
 	btst	#7,d1
@@ -3543,7 +3543,7 @@ StandingsScreen	;NHL STANDINGS: {} conference / division, [] the other group; st
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReadAnyPad5	;As ReadAnyPad
+ReadStandingsPad	;As ReadAnyPad
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6

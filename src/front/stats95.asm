@@ -1524,7 +1524,7 @@ SeasonAttributeDraw	;Draw the season player stats screen for team d7 (SeasonAttr
 .2
 	clr.w	d0
 	move.w	d7,d0
-	jsr	(DrawTeamLogo1).l
+	jsr	(DrawSeasonStatsLogo).l
 	bsr.w	SeasonAttributeMenu
 	bsr.w	SeasonScrollArrows
 .3
@@ -1896,7 +1896,7 @@ SeasonScrollArrowTbl	;None, up, down, both
 	String	' ',$FB,$FF,$FA,$E,'}',$F9,$0
 	String	'{',$FB,$FF,$FA,$E,'}',$F9,$0
 
-DrawTeamLogo1	;Draw bitmap Teamblocksmap via dobitmap with tile base $69A, d1 = 2*d0 (team d0). Saves all regs
+DrawSeasonStatsLogo	;Draw bitmap Teamblocksmap via dobitmap with tile base $69A, d1 = 2*d0 (team d0). Saves all regs
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#1,d4
 	move.w	d0,d1
@@ -1959,7 +1959,7 @@ SeasonTeamStatsRun	;Season (or playoff, sflags11 bit 3) team stats screen: team 
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),$E,$6,$0
 	move.w	d7,d0
-	jsr	(DrawTeamLogo2).l
+	jsr	(DrawTeamStatsLogo).l
 	bsr.w	PrintSeasonTeamStats
 .3
 	jsr	(vcountwait).l
@@ -2183,7 +2183,7 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	movem.l	(sp)+,a6
 	rts
 
-DrawTeamLogo2	;Draw team d0's logo: frame d0*2 of the bitmap set at Teamblocksmap, tile $69A, via dobitmap
+DrawTeamStatsLogo	;Draw team d0's logo: frame d0*2 of the bitmap set at Teamblocksmap, tile $69A, via dobitmap
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#1,d4
 	move.w	d0,d1
@@ -2229,7 +2229,7 @@ LeagueLeadersScreen	;League Leaders screen (season menu): team/individual stat l
 	bsr.w	LeadersScrollArrows
 	bsr.w	LeadersHelp
 .2
-	bsr.w	ReadAnyPad6
+	bsr.w	ReadLeadersPad
 	tst.w	d1
 	beq.w	.10
 	btst	#7,d1
@@ -2382,7 +2382,7 @@ LeaderModeText
 	String	$BF,$11,$5,'TEAM',$BF,$5,$7,'   Team    ',$0
 	String	$BF,$F,$5,'INDIVIDUAL',$BF,$6,$7,'No. Player   Team  ',$0
 
-ReadAnyPad6	;League Leaders: wait (frame-synced) until a joypad reports input; d1 = buttons
+ReadLeadersPad	;League Leaders: wait (frame-synced) until a joypad reports input; d1 = buttons
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6
@@ -2880,7 +2880,7 @@ GatherAndSort	;Call a5 to fill values at LeaderValues / players at LeaderPlayers
 	bne.s	.sortValuesUp
 	rts
 
-DrawLeaderRows	;Draw the leader rows (StatWork+8 rows from StatWork+4): when StatWork is set use the sorted list (DrawPlayerLeaderRows), else rank, team logo (DrawTeamLogo3), and the category value (LeaderPrintJumps) from the RAM tables in LeaderTables
+DrawLeaderRows	;Draw the leader rows (StatWork+8 rows from StatWork+4): when StatWork is set use the sorted list (DrawPlayerLeaderRows), else rank, team logo (DrawLeaderLogo), and the category value (LeaderPrintJumps) from the RAM tables in LeaderTables
 	tst.w	(StatWork).w
 	bne.w	DrawPlayerLeaderRows
 	clr.w	d6
@@ -2911,7 +2911,7 @@ DrawLeaderRows	;Draw the leader rows (StatWork+8 rows from StatWork+4): when Sta
 	clr.w	d1
 	move.b	(a5,d0.w),d1
 	move.w	#5,(printx).w
-	bsr.w	DrawTeamLogo3
+	bsr.w	DrawLeaderLogo
 	addq.w	#1,(printy).w
 	move.w	#$18,(printx).w
 	movea.l	#TeamLeaderValues,a0
@@ -3066,7 +3066,7 @@ LeaderTables	;RAM tables (team order) per category for DrawLeaderRows
 	dc.l	LeaderTeamTbls+$9C
 	dc.l	LeaderTeamTbls+$B6
 
-DrawTeamLogo3	;Draw small team logo d1 from Teamblocksmap at printx / printy. Saves all
+DrawLeaderLogo	;Draw small team logo d1 from Teamblocksmap at printx / printy. Saves all
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	asl.w	#1,d1
@@ -4069,7 +4069,7 @@ HighlightsScreen	;Season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left
 	beq.w	.2
 	bsr.w	DrawHighlightPage
 .2
-	bsr.w	ReadAnyPad7
+	bsr.w	ReadHighlightsPad
 	move.w	(SelectedPlayerIdx).w,(setupprevline).w
 	tst.w	d1
 	bne.w	.4
@@ -4153,7 +4153,7 @@ HighlightsScreen	;Season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReadAnyPad7	;Highlights joypad wait: each frame poll joypads (ReadJoy1-4 + ProcessInputWithRepeat) until d1 != 0
+ReadHighlightsPad	;Highlights joypad wait: each frame poll joypads (ReadJoy1-4 + ProcessInputWithRepeat) until d1 != 0
 	move.l	#$5460,d6
 .0
 	move.w	#$64,d6
@@ -4229,13 +4229,13 @@ DrawHighlightPage	;Draw the current highlight page: day header, team logos/score
 	clr.w	d1
 	move.b	0(a0,d0.w),d1
 	move.w	d1,(HomeTeam).w
-	bsr.w	DrawTeamLogo4
+	bsr.w	DrawHighlightLogo
 	move.w	#7,(printx).w
 	move.w	#$E,(printy).w
 	clr.w	d1
 	move.b	1(a0,d0.w),d1
 	move.w	d1,(VisTeam).w
-	bsr.w	DrawTeamLogo4
+	bsr.w	DrawHighlightLogo
 	bsr.w	PrintGameScore2
 	bsr.w	DrawHighlightEntry
 .0
@@ -4420,7 +4420,7 @@ PrintScore2	;print 2-digit number d5 at current cursor (PushNumberWidth + printb
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawTeamLogo4	;Draw team logo d1 (from Teamblocksmap graphics, palette teamblocksmapptr) via dobitmap
+DrawHighlightLogo	;Draw team logo d1 (from Teamblocksmap graphics, palette teamblocksmapptr) via dobitmap
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	asl.w	#1,d1

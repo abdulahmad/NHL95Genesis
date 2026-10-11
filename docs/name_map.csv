@@ -1077,7 +1077,7 @@ $08FD70,GamesTodayUp,loc_8FD70,,front/season95
 $08FDBA,GamesTodayDown,loc_8FDBA,,front/season95
 $08FE10,GamesTodayExit,loc_8FE10,,front/season95
 $08FE48,GamesTodayDone,loc_8FE48,,front/season95
-$08FE4E,ReadAnyPad2,sub_8FE4E,,front/season95
+$08FE4E,ReadGamesTodayPad,sub_8FE4E,ReadAnyPad2,front/season95
 $08FECA,PrintGamesToday,sub_8FECA,,front/season95
 $08FEE2,PrintPreviousDay,sub_8FEE2,,front/season95
 $08FEFC,DrawGamesToday,loc_8FEFC,,front/season95
@@ -1118,7 +1118,7 @@ $090722,MenuPlayUntil,,,front/season95
 $0909F8,AutoplayCancel,,,front/season95
 $090A22,AutoplayMessage,,,front/season95
 $090A98,PrintAutoplayDay,,,front/season95
-$090AEC,ReadAnyPad3,sub_90AEC,,front/season95
+$090AEC,ReadSeasonMenuPad,sub_90AEC,ReadAnyPad3,front/season95
 $090B6C,DrawSeasonMenu,sub_90B6C,,front/season95
 $090BD6,GetSeasonMenu,sub_90BD6,,front/season95
 $090C1A,SeasonMenuText,unk_90C1A,,front/season95
@@ -1127,7 +1127,7 @@ $090DB6,PlayoffMenuText,unk_90DB6,,front/season95
 $090E60,SeasonOptionsGfx,sub_90E60,,front/season95
 $090F76,PrintWait,,,front/season95
 $090FD0,CalendarScreen,,,front/season95
-$0910F8,ReadAnyPad4,,,front/season95
+$0910F8,ReadCalendarPad,,ReadAnyPad4,front/season95
 $091178,CalendarGfx,,,front/season95
 $0912C4,CountSeasonMonths,,,front/season95
 $0912F0,DrawCalendar,,,front/season95
@@ -1142,7 +1142,7 @@ $091662,CalendarFirstDay,,,front/season95
 $091676,CalendarFirstDayTbl,,,front/season95
 $091684,CalendarBg,,,front/season95
 $0916B8,StandingsScreen,sub_916B8,,front/season95
-$091798,ReadAnyPad5,sub_91798,,front/season95
+$091798,ReadStandingsPad,sub_91798,ReadAnyPad5,front/season95
 $091818,SortStandings,sub_91818,,front/season95
 $09188E,StandingsPoints,sub_9188E,,front/season95
 $0918DA,StandingsGroups,sub_918DA,,front/season95
@@ -1232,12 +1232,12 @@ $093A7C,SeasonAttributeMenuTxt,,,front/stats95
 $093AB8,SeasonAttributeTitleTxt,,,front/stats95
 $093B3C,SeasonScrollArrows,,,front/stats95
 $093B78,SeasonScrollArrowTbl,,,front/stats95
-$093BA0,DrawTeamLogo1,,,front/stats95
+$093BA0,DrawSeasonStatsLogo,,DrawTeamLogo1,front/stats95
 $093BD2,SeasonTeamStats,,,front/stats95
 $093C14,SeasonTeamsScreen,,,front/stats95
 $093C1E,SeasonTeamStatsRun,,,front/stats95
 $093D22,PrintSeasonTeamStats,,,front/stats95
-$0940DE,DrawTeamLogo2,,,front/stats95
+$0940DE,DrawTeamStatsLogo,,DrawTeamLogo2,front/stats95
 $094110,LeagueLeadersScreen,,,front/stats95
 $0942A6,LeadersScrollArrows,,,front/stats95
 $0942FC,PrintTeamCategory,,,front/stats95
@@ -1246,7 +1246,7 @@ $0943D2,PrintPlayerCategory,,,front/stats95
 $0943F8,PlayerCategoryText,,,front/stats95
 $094440,PrintLeadersHeader,,,front/stats95
 $094472,LeaderModeText,,,front/stats95
-$0944B0,ReadAnyPad6,,,front/stats95
+$0944B0,ReadLeadersPad,,ReadAnyPad6,front/stats95
 $094528,ClearLeadersArea,,,front/stats95
 $094558,BuildLeaders,,,front/stats95
 $094576,TeamLeaderJumps,,,front/stats95
@@ -1283,7 +1283,7 @@ $094C64,PrintLeaderPct,,,front/stats95
 $094C76,DrawPlayerLeaderRows,,,front/stats95
 $094DC8,rtsLeaderRows,,,front/stats95
 $094DCA,LeaderTables,,,front/stats95
-$094DE6,DrawTeamLogo3,,,front/stats95
+$094DE6,DrawLeaderLogo,,DrawTeamLogo3,front/stats95
 $094E16,BlankLine40,,,front/stats95
 $094E40,LeadersHelp,,,front/stats95
 $094ED2,PeriodStatsScreen,,,front/stats95
@@ -1318,7 +1318,7 @@ $095BEA,FindMaxAttributeTEam,sub_95BEA,,front/stats95
 $095C2A,CalculateTeamAttributes,sub_95C2A,,front/stats95
 $095C8A,CalculateTeamAttributeValues,sub_95C8A,,front/stats95
 $095D28,HighlightsScreen,,,front/stats95
-$095F06,ReadAnyPad7,,,front/stats95
+$095F06,ReadHighlightsPad,,ReadAnyPad7,front/stats95
 $095F86,PrintHighlightsTitle,,,front/stats95
 $095FA2,DrawHighlightPage,,,front/stats95
 $096060,DrawHighlightEntry,,,front/stats95
@@ -1335,7 +1335,7 @@ $09623A,AssistText,,,front/stats95
 $096242,SaveText,,,front/stats95
 $09624A,PrintGameScore2,,,front/stats95
 $0962A4,PrintScore2,,,front/stats95
-$0962BE,DrawTeamLogo4,,,front/stats95
+$0962BE,DrawHighlightLogo,,DrawTeamLogo4,front/stats95
 $0962EE,GetHighlightSlot,sub_962EE,,front/trade95
 $096350,HighlightsHelp,,,front/trade95
 $096390,DefaultRosters,sub_96390,,front/trade95
@@ -1359,8 +1359,8 @@ $096A54,RemoveTradedPlayer,sub_96A54,,front/trade95
 $096BB2,TradeStatOffsets2,unk_96BB2,,front/trade95
 $096BB8,FixSavedLine2,sub_96BB8,,front/trade95
 $096C14,TradePlayers,loc_96C14,,front/trade95
-$096EEA,DrawTradeRoster1,sub_96EEA,,front/trade95
-$096F18,DrawTradeRoster2,sub_96F18,,front/trade95
+$096EEA,DrawHomeTradeRoster,sub_96EEA,DrawTradeRoster1,front/trade95
+$096F18,DrawVisTradeRoster,sub_96F18,DrawTradeRoster2,front/trade95
 $096F42,DrawTradeRosterRows,loc_96F42,,front/trade95
 $097020,PositionLetters,unk_97020,,front/trade95
 $09702C,ReadTradePads,sub_9702C,,front/trade95
@@ -1378,11 +1378,11 @@ $09766C,rtsTrade,nullsub_1,,front/trade95
 $09766E,EvaluateTrade,loc_9766E,,front/trade95
 $0977B0,PrintTradeNames,sub_977B0,,front/trade95
 $097810,PositionLetters2,unk_97810,,front/trade95
-$09781C,ReadTradePads2,sub_9781C,,front/trade95
+$09781C,ReadEvalTradePads,sub_9781C,ReadTradePads2,front/trade95
 $097868,GMDecision,sub_97868,,front/trade95
 $097966,GMDecisionRetry,loc_97966,,front/trade95
 $097B5C,PrintTradedPlayers,sub_97B5C,,front/trade95
-$097B8E,ReadTradePads3,,,front/trade95
+$097B8E,ReadGMDecisionPads,,ReadTradePads3,front/trade95
 $097C0E,TradeValue,sub_97C0E,,front/trade95
 $097C46,TradeRatingSteps,unk_97C46,,front/trade95
 $097C4D,TradeRatingValues,unk_97C4D,,front/trade95

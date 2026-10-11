@@ -1195,7 +1195,7 @@ puckpenshot	;Penalty shot / shootout face-off: rink, puck and nets reset, the sh
 	clr.w	Yvel(a3)
 	rts
 
-PenShotTable	;puckpenshot data (94 has no label). Not used
+PenShotTable	;Penalty shot data. Unreferenced
 	dc.b	0,1,2,3,4,5,6,0,0,1,5,3,4,2,0,0
 	dc.b	0,3,5,1,4,0,0,0,0,0
 	dc.w	$FF06,$FFDD,$FFCE,$0023,$FFCE,$FFCE,$FFF6,$0000,$FFF1,$0032,$FFF6,$0000,$FFC4

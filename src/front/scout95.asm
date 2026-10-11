@@ -1326,7 +1326,7 @@ UserNameString	;a1 = NameEntryBuf: the name of name log entry d1 (GetLogName) as
 	movea.l	#NameEntryBuf,a1
 	rts
 
-NullSaveClear	;Does nothing (calls it)
+NullSaveClear	;Does nothing
 	rts
 
 GetPlayerPicture	;Only the picture: a0 = the picture of player d0 of team d1 (the team picture by jersey number, else a generic one)
