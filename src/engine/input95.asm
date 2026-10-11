@@ -386,7 +386,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	beq.w	doplayeracc
 	bra.w	SetShotMode
 
-doinput_islocked	;94 global (doinput branches across). B with the player not the carrier: change player (chgplayer) and
+doinput_islocked	;B with the player not the carrier: change player (chgplayer) and
 	;set $64 bit 6 of the pad's new player
 	move.w	(puckc).w,d5
 	cmp.w	SCnum(a3),d5

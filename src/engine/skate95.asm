@@ -155,7 +155,7 @@ goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets
 	jmp	playeracc
 	rts	;unused
 
-doinput_goaliedive	;(doinput.33) The goalie dive on button A (bit 6): face TempWord1, nopuck 8, the dive SPA $1D4E, crowd
+doinput_goaliedive	;The goalie dive on button A (bit 6): face TempWord1, nopuck 8, the dive SPA $1D4E, crowd
 	;+$96. Jumped to from doinput
 	btst	#6,d1
 	beq.w	doinput_cbut
@@ -179,7 +179,7 @@ rtss15	;The rts of doinput_goaliedive
 ;	95 changes: the y limits $106 / $FEFA, the goalie box in doinput_chkanim, the SPA values.
 
 
-doinput_cbut	;Global: doinput branches here across the global rtss15. Button C (bit 5): new press: face the puck
+doinput_cbut	;Button C (bit 5): new press: face the puck
 	;(vtoa) and go on below; held: hold the SPA frame (SPAcnt $A) at the end of a frame list (SPAlist)
 	btst	#5,d1
 	bne.w	.2
@@ -303,7 +303,7 @@ ClampTargetY	;Clamp target y d1 to $106 / $FEFA (94 $103 / $FEFD), then d1 - d3;
 	;SPAgstickl, then SPAgglover, SPAgglovel, SPAgstickr, SPAgstickl where 94 has SPAghighr, SPAghighl, SPAgstick2r, SPAgstick2l
 	dc.w	$1C86,$1CB8,$205E,$200C,$1CEA,$1D1C,$1C86,$1CB8,$1CEA,$1D1C
 
-doinput_chkanim	;Global: doinput branches here across ClampTargetY. Animation in progress (pflags2 bit 1): rts. A
+doinput_chkanim	;Animation in progress (pflags2 bit 1): rts. A
 	;goalie (position 0) is held inside x $24 / y $E7 of his net (BA_PS_flags bit 1), then playeracc with TempWord1
 	btst	#1,pflags2(a3)
 	beq.w	.0
@@ -349,7 +349,7 @@ doinput_chkanim	;Global: doinput branches here across ClampTargetY. Animation in
 	move.w	(TempWord1).w,d0
 	jmp	doplayeracc
 
-getGoalieSCnum	;(getGoalieSCnum) 95: d0 = SCnum of the goalie of the team of player d0 (the first position 0 going down
+getGoalieSCnum	;d0 = SCnum of the goalie of the team of player d0 (the first position 0 going down
 	;from player d0), -1 none
 	movem.l	d1/a0,-(sp)
 	movea.l	#SortCords,a0
