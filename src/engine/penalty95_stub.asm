@@ -1,7 +1,7 @@
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	penalty95 segment stub. Retail $088F06-$08A055.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -13,7 +13,7 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $088F06-$08A055, read from lst/nhl95.bin.
+; External addresses outside, read from lst/nhl95.bin.
 sfx = $677AC
 song = $678C2
 play_new_song = $67938

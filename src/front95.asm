@@ -1,6 +1,6 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	front95: The menus and screens around the game.
+;	The menus and screens around the game.
 ;	The files of front\ in ROM order, included by nhl95.asm. No org: nhl95.asm sets org 0.
 ;	Each file has its own stub next to it (front\<file>_stub.asm) to build and verify it alone.
 ;

@@ -1,20 +1,18 @@
-; $0920DE  Adapted from period94.asm and stats94.asm: game, player and season stats, League Leaders, line editor, highlights
 ;	2 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $0920DE  From period94.asm: the game statistics screen
-;	Mapped to period94 (87%): GameStatisticsScreen, its scroll step, SetStatScroll, StatScrollRow / StatScrollRowEnd,
+;	Mapped (87%): GameStatisticsScreen, its scroll step, SetStatScroll, StatScrollRow / StatScrollRowEnd
 ;	PrintStatScrollArrows, DisplayTeamStatsScreen, FormatStatValue, TeamStatTextTbl and TeamStatTextTblNoPen. The rest of
-;	period94 is in other 95 files; rtsStatTables, the rts after the tables, starts at $0925AE.
-;	The segment map started this file at $0920BE, but $0920BE-$0920DD is the end of season95's SimTieTbl
-;(26 teams x 3 bytes); GameStatisticsScreen starts at $0920DE.
+;	is in other 95 files; rtsStatTables, the rts after the tables, starts.
+;	The segment map started this file, but is the end 's SimTieTbl
+;(26 teams x 3 bytes); GameStatisticsScreen starts.
 ;the screen head, the arrows and the Strings in DisplayTeamStatsScreen / FormatStatValue as code or dc.b; they are
 ;	written from the retail bytes.
 
 
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 
 GameStatisticsScreen	;Pause menu GAME STATS: both teams' totals
 	;(DisplayTeamStatsScreen). There are more rows than the screen: up / down scroll them (matchupvis the most, $70 or $30 without
@@ -321,15 +319,14 @@ TeamStatTextTblNoPen	;The rows without the power play ones, used when penalties 
 	dc.w	$14,$12
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $0925AE  From stats94.asm: player stats, the 95 season stats, League Leaders, line editor, Stars of the Game
-;	Mapped to stats94 (22%), with period94 and moved in. In ROM order: rtsStatTables; the pause menu
+;	Mapped (22%), with and moved in. In ROM order: rtsStatTables; the pause menu
 ;	PLAYER STATS screen (PlayerStatsScreen ... ScrollArrowTbl2); the 95 season stats save code (InitSeasonStats
 ;	SaveSimGame, the player / team stat blocks in save RAM and the game highlights); the 95 season PLAYER STATS, TEAM STATS
-;	and LEAGUE LEADERS screens (also the pause menu SEASON PLAYERS / SEASON TEAMS); PeriodStatsScreen; the stats94
+;	and LEAGUE LEADERS screens (also the pause menu SEASON PLAYERS / SEASON TEAMS); PeriodStatsScreen
 ;	line editor (LineEditor ... UpdatePlayerAttribute) with the 95 save / load of team lines; DisplayPeriodOver
 ;	FindMaxAttributeTEam, CalculateTeamAttributes, CalculateTeamAttributeValues; and the 95 season NHL HIGHLIGHTS screen.
-;	(no 94 name). follows at $0962EE.
-;$925B0-$92BEB, $933CA-$9342F, $9348A-$95B1D and $95D28-$962ED as dc.b; they are written from the retail bytes
+;	(no 94 name). follows.
+;they are written from the retail bytes
 ;the 94 routines from the 94 source. printz Strings; they are String here.
 ;Local labels are numbered; the names are not kept.
 
@@ -431,7 +428,7 @@ DisplayAttributeScreen	;Stats screen for team a2, d7 = 0 game / 1 playoff
 	movea.w	#(tmstruct-M68K_RAM),a2
 	bra.w	.redraw
 
-UpdateAttributeScroll	;(93 name) Stats screen per frame: scroll 0 ... SelectedPlayerIdx, stop on a 16 line boundary, draw
+UpdateAttributeScroll	; Stats screen per frame: scroll 0 ... SelectedPlayerIdx, stop on a 16 line boundary, draw
 	;the row coming into view
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsAttrib
@@ -578,7 +575,7 @@ DisplayAttributeMenu	;DisplayAttributeMenu
 	dbf	d4,.ent
 	bra.w	SetAttribScrollReg
 
-DisplayAttributeEntry	;(93 name) Stats screen row d3 of Satt: rank, name, then the 5 columns, or for goalies saves, shots
+DisplayAttributeEntry	; Stats screen row d3 of Satt: rank, name, then the 5 columns, or for goalies saves, shots
 	;and save %
 	movea.w	#(Satt-M68K_RAM),a4
 	adda.w	d3,a4
@@ -1997,7 +1994,7 @@ SeasonTeamStatsRun	;Season (or playoff, sflags11 bit 3) team stats screen: team 
 	move.w	#$19,d7
 	bra.w	.2
 
-PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): W,L,T,Pts, then per-game / percentage stats (like 94 DisplayTeamStatsScreen rows)
+PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): W,L,T,Pts, then per-game / percentage stats
 	movem.l	a6,-(sp)
 	movea.l	#StatBuf,a6
 	jsr	(printsmallz).l
@@ -3877,7 +3874,7 @@ TeamLinesOffset	;d0 = save RAM offset of team a2's saved line ($39 bytes per tea
 	move.w	(sp)+,d1
 	rts
 
-DisplayPeriodOver	;(93 name) End of game Stars of the Game box. Called from UpdatePA while RefPen is the game over penalty. Waits for RefCnt
+DisplayPeriodOver	; End of game Stars of the Game box. Called from UpdatePA while RefPen is the game over penalty. Waits for RefCnt
 	;<= $40 and runs once (gmode bit 7); then disflags bit 3 and a vblank. Frames the box, draws a bitmap, then the three best star
 	;scores (FindMaxAttributeTEam). 95: not with sflags9 bit 7
 	cmpi.w	#$40,(RefCnt).w
@@ -3927,7 +3924,7 @@ DisplayPeriodOver	;(93 name) End of game Stars of the Game box. Called from Upda
 .4
 	rts
 
-FindMaxAttributeTEam	;(93 name) Take the highest of the 52 star scores at ThreeStars (26 per team, home first) and clear it. Returns d0 = player
+FindMaxAttributeTEam	; Take the highest of the 52 star scores at ThreeStars (26 per team, home first) and clear it. Returns d0 = player
 	;slot, a2 = its team struct
 	movem.l	d1-d2/a1/a4,-(sp)
 .0
@@ -3954,7 +3951,7 @@ FindMaxAttributeTEam	;(93 name) Take the highest of the 52 star scores at ThreeS
 	movem.l	(sp)+,d1-d2/a1/a4
 	rts
 
-CalculateTeamAttributes	;(93 name) Star score for every roster slot of both teams to ThreeStars (26 longs per team, home first). d5 = GetPeriodTime
+CalculateTeamAttributes	; Star score for every roster slot of both teams to ThreeStars (26 longs per team, home first). d5 = GetPeriodTime
 	;+ d2, the goalie ice time needed. If gsp is 3 and the score is not tied, the scorer of the last goal gets $7FFFFFFF
 	movea.w	#(ThreeStars-M68K_RAM),a4
 	jsr	(GetPeriodTime).l
@@ -3984,7 +3981,7 @@ CalculateTeamAttributes	;(93 name) Star score for every roster slot of both team
 .1
 	rts
 
-CalculateTeamAttributeValues	;(93 name) Star scores of team a2 (a3 = other team) to (a4)+, one long per roster slot. Each starts at the goal difference.
+CalculateTeamAttributeValues	; Star scores of team a2 (a3 = other team) to (a4)+, one long per roster slot. Each starts at the goal difference.
 	;Skaters: goals*11000 + assists*10100 + shots*10, or in a tied game shots*1000 + frames on ice. Goalies on ice at least d5 with
 	;shots against: +32000 if goals against*100/shots <= 4, +75000 more for a shutout. 95: the team stat arrays are 2 bytes on
 	movea.w	a2,a1

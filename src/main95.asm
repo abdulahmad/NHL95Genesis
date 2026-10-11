@@ -1,6 +1,6 @@
-;NHL 95 main segment. Retail $000000-$000771 (1906 bytes), from the lst/nhl95.bin.lst.
-;	Vectors, cartridge header (sega\SegaIDTable95.asm) and SegaInit (sega\SegaInit.asm) as in main94.asm. 95 then adds a region
-;	lock (CHECK_VDP to.regionHang), keeps the checksum call, and holds Begin itself (94 Begin is). TeamList
+;NHL 95 main segment., from the lst/nhl95.bin.lst.
+;	Vectors, cartridge header and SegaInit (sega\SegaInit.asm) as. 95 then adds a region
+;	lock (CHECK_VDP to.regionHang), keeps the checksum call, and holds Begin itself. TeamList
 ;	starts at $772.
 	include	macros\genesis.mac
 
@@ -16,7 +16,7 @@
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-InitialSP = $FFFFF6	;reset vector 0. 93 / 94 name, 24-bit form of $FFFFFFF6. Begin moves the stack to Stack (ram95)
+InitialSP = $FFFFF6	;reset vector 0. 93 / 94 name, 24-bit form of $FFFFFFF6. Begin moves the stack to Stack
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
@@ -61,7 +61,7 @@ Start	;Power on: the Sega hardware init, then the region lock, the checksum and 
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	Region lock. New in 95 (94 CHECK_VDP is only the tst, then the checksum and Begin)
+;	Region lock. New in 95
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -333,4 +333,4 @@ Begin	;cold start, entered from RegionOK. Clear RAM, init sound and menus, go to
 	move.w	(OptLine).l,(TmpOptLine2).l
 	move.w	(OptPlayMode).l,(TempOptPlayMode).l
 	jsr	(orjoy).l		;clear any previous button presses
-	jmp	(Opening).l		;goto title screen and options etc. Last instruction of main95 ($76C-$771). TeamList is $772
+	jmp	(Opening).l		;goto title screen and options etc. Last instruction ($76C-$771). TeamList is $772

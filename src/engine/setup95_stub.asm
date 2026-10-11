@@ -1,7 +1,7 @@
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	setup95 segment stub. Retail $084FE6-$087BA1.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -13,8 +13,8 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $084FE6-$087BA1, read from lst/nhl95.bin.
-ZeroLong = $69A			;main95
+; External addresses outside, read from lst/nhl95.bin.
+ZeroLong = $69A
 TeamList = $772
 playoffseats = $5834
 WriteSRAM = $98E6

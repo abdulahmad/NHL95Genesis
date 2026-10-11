@@ -1,6 +1,6 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	title95 segment stub. Retail $0A12AA-$0A1A59.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -12,8 +12,8 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $0A12AA-$0A1A59, read from lst/nhl95.bin.
-ZeroLong = $69A			;main95
+; External addresses outside, read from lst/nhl95.bin.
+ZeroLong = $69A
 Z80Program = $BD86
 SoundBanks = $D8EC
 SoundCmd = $676D8

@@ -1,14 +1,14 @@
-;	NHL 95 create95. Retail $097C54-$09ACE5 (12434 bytes).
+;	NHL 95.
 ;	New in 95: the season Create Player screens (the created player list, name entry with the letter grid, Modify Ratings
-;	with the attribute points pool, the save RAM create records), Sign Free Agents and Release Players. Moved in: cards94
-;	NameEntryFramer. Each routine comment says New in 95 or names its 94 routine. NameEntryScreen follows at $09ACE6.
+;	with the attribute points pool, the save RAM create records), Sign Free Agents and Release Players. Moved
+;	NameEntryFramer. Each routine comment says New in 95 or names its 94 routine. NameEntryScreen follows.
 ;printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions and left the
 ;	Modify Ratings field routines, the attribute handlers and several tables as dc.b; they are written from the retail bytes.
 ;Local labels are numbered; the names are not kept.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 
 CreateScreenGfx	;set up VDP planes and load create-player graphics/palettes
 	move.l	#VBlank_SetOptions,(vbint).w
@@ -690,7 +690,7 @@ NameEntryFramer	;Framer with the name entry frame charset (nameframechars)
 	move.w	(sp)+,(framercset).w
 	rts
 
-GetCreateName	;Copy player name (CreateListRow-1)*18 from M68K_RAM to a1, 0->-, length to NameEntryLen (like 94 GetLogName)
+GetCreateName	;Copy player name (CreateListRow-1)*18 from M68K_RAM to a1, 0->-, length to NameEntryLen
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#M68K_RAM,a0
 	move.w	(CreateListRow).w,d2

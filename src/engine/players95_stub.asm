@@ -1,6 +1,6 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	players95 segment stub. Retail $0836AC-$083EB1.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -12,8 +12,8 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $0836AC-$083EB1, read from lst/nhl95.bin.
-TeamList = $772			;main95
+; External addresses outside, read from lst/nhl95.bin.
+TeamList = $772
 ReadSRAM = $9952
 randomd0s = $7C62E
 GetPeriodTime = $7D4CA

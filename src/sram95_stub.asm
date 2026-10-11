@@ -1,8 +1,8 @@
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	sram95 segment stub. Retail $009722-$009AC7.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -14,7 +14,7 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $009722-$009AC7, read from lst/nhl95.bin: jsr (x).l carries the address.
+; External addresses outside, read from lst/nhl95.bin: jsr (x).l carries the address.
 ReadJoy1 = $7A4B0
 vcountwait = $7C6BE
 DefaultRosters = $96390

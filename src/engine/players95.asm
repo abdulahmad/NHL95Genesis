@@ -1,14 +1,14 @@
-;	NHL 95 players95. Retail $0836AC-$083EB1 (2054 bytes).
-;	The 95 PuckcIsGoalie, then SetPersonel, SetPlList, TryAddPlayerToList, forcepldata, GetPlayerCount (moved in
-;	95: by team number, GetPlayerCountD7), setplayer, ClampNibble, the 95 StickHandTable and BoostAttribute
+;	NHL 95.
+;	The PuckcIsGoalie, then SetPersonel, SetPlList, TryAddPlayerToList, forcepldata, GetPlayerCount (moved
+;	95: by team number, GetPlayerCountD7), setplayer, ClampNibble, the StickHandTable and BoostAttribute
 ;	AttributeCalc (moved in), restoreteams (moved in), ResetBench, resetplstuff (moved in), priolist and
 ;	sublist (moved in), Create_HotCold_Table / HotColdLoop (moved in).
-;	The start moved to $0836AC: CPgoalie.0 ... $0836AB is the end of CPgoalie. The end moved to $083EB1: doinput is the
-;	start of 95 doinput (doinput.0; the mapped start; is inside it).
+;	The start moved to: CPgoalie.0 ... The end moved to: doinput is the
+;	start of doinput (doinput.0; the mapped start; is inside it).
 ;PuckcIsGoalie, forcepldata, resetplstuff and the tables as dc.b; they are code / data here, read from the retail bytes.
 ;	95 changes: SetPersonel marks the season injuries first (GameFlags bit 3, SetSeasonInjuries); setplayer reads the roster by team
 ;	number (rosterteam, GetRosterName / GetJerseyNumber), maps the stick handling nibble through StickHandTable and pulls some ratings
-;	toward 30 (BoostAttribute); forcepldata lost the Set4WayPlayerStub call; the 95 asstab numbers and SPA values.
+;	toward 30 (BoostAttribute); forcepldata lost the Set4WayPlayerStub call; the asstab numbers and SPA values.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -26,7 +26,7 @@ PuckcIsGoalie	;Z set (eq) when the puck carrier is a goalie (a minus puckc retur
 	rts
 
 setpersonel	;Set personnel on team a2 by PlList (SetPlList): players already on the ice stay
-	;the others take the free sort objects. 95: SetSeasonInjuries first with GameFlags bit 3
+	;the others take the free sort objects. SetSeasonInjuries first with GameFlags bit 3
 	movem.l	d0-d5/a0-a4,-(sp)
 	btst	#3,(GameFlags).w
 	beq.w	.0
@@ -267,7 +267,7 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	move.b	d3,pnum(a3)	;move d3 into pnum (offset on roster)
 	moveq	#$16,d0
 	ext.w	d3
-	add.w	d3,d3	;in NHL92 = asl #1,d3. Accomplishes the same. Doubles d3
+	add.w	d3,d3	;= asl #1,d3. Accomplishes the same. Doubles d3
 	move.w	tmpdst(a0,d3.w),d1	;move tmpdst(a0, d3) into d1
 	bpl.w	.1
 	moveq	#$13,d0
@@ -571,7 +571,7 @@ ResetBench	;Remove all players from penalty box / put all players on their own b
 	bpl.s	.1
 	rts
 
-resetplstuff	;Reset team variables and players on both teams. 95 SPA $B5C
+resetplstuff	;Reset team variables and players on both teams. SPA $B5C
 	;(94 $50C)
 	movem.l	d0-d2/a0-a3,-(sp)
 	movea.w	#(tmstruct-M68K_RAM),a2

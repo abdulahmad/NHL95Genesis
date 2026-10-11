@@ -1,6 +1,6 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	z80old95 segment stub. Retail $07E0E0-$07E36B.
+;	z80old95 segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -12,7 +12,7 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $07E0E0-$07E36B, read from lst/nhl95.bin.
+; External addresses outside, read from lst/nhl95.bin.
 fm_instrument_patches = $79502	;the Z80 ld bc / ld a bytes
 
 ; Main segment code

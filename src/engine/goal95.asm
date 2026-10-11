@@ -1,8 +1,7 @@
-; $08C304  Adapted from checks94.asm: the goal, period and game over, the clock, the controller setup screen
-;	Goal, the 95 AssignTeam / rtsgoal, PenGoalStuff, box ... PPGoalBigTxt
-;	PrintPlayerAssists ... PrintParenNumber, the 95 LockScroll, checkwindow, the 95 SetGoaliesCtl ... PracticeGoalies
+;	Goal, the AssignTeam / rtsgoal, PenGoalStuff, box ... PPGoalBigTxt
+;	PrintPlayerAssists ... PrintParenNumber, the LockScroll, checkwindow, the SetGoaliesCtl ... PracticeGoalies
 ;	PeriodOver, clockcont_0, GameOver / ExitToOpening, clockcont, then the 95 controller setup
-;	screen (SetContTeams ... ReadAllPads). follows at $08D39A.
+;	screen (SetContTeams ... ReadAllPads). follows.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
 ;	the cmp and exg encodings after assembly.
 

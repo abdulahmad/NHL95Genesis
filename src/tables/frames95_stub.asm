@@ -1,10 +1,10 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	frames95 segment stub. Retail $005A34-$008DD7.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-; External addresses outside $005A34-$008DD7: none. Every word is a direction offset inside its own table,
+; External addresses outside: none. Every word is a direction offset inside its own table
 ; a flag, or a frame / time pair; revframetbl is an incbin.
 ; region code
 	org	$5A34

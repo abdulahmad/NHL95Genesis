@@ -1,18 +1,16 @@
-; $09F590  Adapted from scout94.asm and setup94.asm: matchups, scouting report and its text, hot / cold lists
 ;	2 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $09F590  From scout94.asm: matchups and scouting report
-;	Mapped to scout94 (85%): ScoutingReport, PageMatchup ... MatchupLineSlots; moved in: BuildHotColdLists and SortHotColdStarters.
+;	Mapped (85%): ScoutingReport, PageMatchup ... MatchupLineSlots; moved in: BuildHotColdLists and SortHotColdStarters.
 ;the printz / printbigz Strings and the remap bytes after DecompressGraphicsWithCallback as instructions; they are written from
 ;	the retail bytes.
 ;	$20xxxx addresses are save RAM (odd bytes).
 ;Local labels are numbered; the names are not kept.
 
 
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 
 ScoutingReport	;Pregame scouting report: the Ron Barr picture, the text box and the matchups (0 the
 	;teams, 1-6 the players by position) with their ratings and the advantage marks; the text player (ScoutTextPlayer) types
@@ -716,10 +714,9 @@ SortHotColdStarters	;Sum the hot / cold values of the 6 starters of team a0 (sav
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $0A00D6  From setup94.asm: scouting text, hot / cold lists
-;	Mapped to setup94 (58%): StartScoutText, ScoutTextPlayer, ScoutTextNextLine; moved in: CompareHotColdTotals, GetHotColdTotal, the hot / cold
+;	Mapped (58%): StartScoutText, ScoutTextPlayer, ScoutTextNextLine; moved in: CompareHotColdTotals, GetHotColdTotal, the hot / cold
 ;	player lists, PrintPlayerNameRight, GetTeamRating / TeamRatings, HotColdIcon, GetTeamArena / GetTeamNickname
-;	ScoutTextScript, GetPlayerPicture (94 DrawPlayerPicture); the users lists of the scouting text
+;	ScoutTextScript, GetPlayerPicture; the users lists of the scouting text
 ;	(GetHomeUsers ... UserNameString).
 ;CompareHotColdTotals / GetHotColdTotal and ScoutTextScript as dc.b and hid printz Strings; they are written from the retail bytes.
 ;	$20xxxx addresses are save RAM (odd bytes).
@@ -1229,7 +1226,7 @@ TeamRatings	;GetTeamRating values, one byte per team (TeamList order)
 
 ScoutTextScript	;The scouting text lines, each ended by $D, $FF after the last; ScoutTextPlayer skips n $D for line n
 	;substitution chars: ^ arena  = home team  * away team  } away (alt intro)  < > | \ hot/cold players  # home user name (NextHomeUser)  % away user name (NextAwayUser)
-	incbin	..\Extracted\NHL95\Text\ScoutTextScript.bin	;$A0718-$A08DB (452 bytes): 12 lines (0-11), $FF end
+	incbin	..\Extracted\NHL95\Text\ScoutTextScript.bin
 
 GetHomeUsers	;homeusers = the count, then the name log entries of the pads on the home team (pad1user ... pad4user)
 	move.l	a0,-(sp)

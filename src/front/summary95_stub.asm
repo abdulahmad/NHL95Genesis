@@ -1,7 +1,7 @@
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	summary95 segment stub. Retail $0A0D1A-$0A12A9.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -13,7 +13,7 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $0A0D1A-$0A12A9, read from lst/nhl95.bin.
+; External addresses outside, read from lst/nhl95.bin.
 ReadMenuJoy = $7A6AA
 vcountwait = $7C6BE
 printsmallz = $7C6D4

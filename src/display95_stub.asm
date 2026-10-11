@@ -1,7 +1,7 @@
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	display95 segment stub. Retail $00A204-$00A95B.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -13,7 +13,7 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $00A204-$00A95B, read from lst/nhl95.bin.
+; External addresses outside, read from lst/nhl95.bin.
 SPAfallback = $109C
 SPAinjuryfall = $2454
 SPAlist = $5A34

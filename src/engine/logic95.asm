@@ -1,18 +1,16 @@
-; $07FCFC  Adapted from checks94.asm, assign94.asm and onetimer94.asm: the player AI
 ;	6 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $07FCFC  From checks94.asm: asstab, doassignment, the goalie assignments
-;	The 95 asstab (95 order, 34 entries; 94 kept it) and doassignment (94 updateplayers did the asstab call in line), then
-;	the first part of 94 checks94: assgoaliecpu ... ClampYPosition, AdjustFacingDirection, goaliesave and its animation list,
-;	assgoalietopuck. pause95 (the pause menu items) is just before it.
-;$07FDA4-$080425 and $080742-$0807EB as dc.b; they are code here, read from the retail bytes. lost the btst Dn,#imm
+;	The asstab (95 order, 34 entries; 94 kept it) and doassignment, then
+;	ClampYPosition, AdjustFacingDirection, goaliesave and its animation list
+;	assgoalietopuck. (the pause menu items) is just before it.
+;they are code here, read from the retail bytes. lost the btst Dn,#imm
 ;	lines of AdjustFacingDirection and the dead lines in goaliesave.
 ;	95 moves most goalie y limits 3 further out ($E4 to $E7, $104 to $107, $108 to $10B ...); the comments give the 94 values.
 
-asstab	;Jump table of the player logic assignments (92 / 93 / 94 asstab). 95 keeps it here, in a new order: the
+asstab	;Jump table of the player logic assignments. 95 keeps it here, in a new order: the
 	;assignment numbers in asslist and in assinsert d0 are 95 numbers. The comment gives the 95 number, then the 94 one
 	dc.l	rtss2		;0 (94 0)
 	dc.l	pucknorm	;1 (94 $18)
@@ -87,7 +85,7 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 	eor.w	d1,d0	;XOR d1 to d0
 	movem.w	(sp)+,d0-d1
 	bmi.w	.assstart	;branch if d0 is negative
-	cmpi.w	#0,facedir(a3)	;95: by facedir (94: Xpos within $14): face up for 7, 0, 1, down for 3, 4, 5
+	cmpi.w	#0,facedir(a3)	;95: by facedir: face up for 7, 0, 1, down for 3, 4, 5
 	beq.w	.up
 	cmpi.w	#1,facedir(a3)
 	beq.w	.up
@@ -107,7 +105,7 @@ checkanim	;A local of assgoaliecpu in 94; global here: assgoaliectrl branches to
 .slam
 	bset	#1,(sflags4).w	;set bit 1
 	bclr	#3,(sflags4).w	;clear bit 3
-	move.w	#$2A82,d1	;95 goalie celebration SPA; $2B38 one time in 10 (94: SPAgslamtop / SPAgslambot by net)
+	move.w	#$2A82,d1	;95 goalie celebration SPA; $2B38 one time in 10
 	move.w	d0,-(sp)
 	move.w	#$64,d0
 	jsr	(randomd0).l
@@ -531,7 +529,7 @@ AdjustFacingDirection	;Turn facedir one step toward direction d0. show btst Dn,#
 	;three btst lines and the.t /.set targets; written from the retail bytes as 93. Also called from goalieacc
 	move.w	facedir(a3),d1		;facedir
 	sub.w	d1,d0
-	beq.w	rtsskate	;94 rtss2
+	beq.w	rtsskate
 	neg.w	d0
 	andi.w	#4,d0
 	lsr.w	#1,d0
@@ -780,7 +778,7 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 .32
 	rts
 
-saveanim	;94 _saveanim (93 GoalieSaveList): SPA per save type, 95 SPA values (10 words; 94: blocker, glove, pad stack right /
+saveanim	;94 _saveanim: SPA per save type, SPA values (10 words; 94: blocker, glove, pad stack right /
 	;left, kick, butterfly, high shoulder right / left, stick right / left)
 	dc.w	$1C86,$1CB8,$205E,$200C,$1CEA,$1D1C,$1C86,$1CB8,$1CEA,$1D1C
 
@@ -827,9 +825,8 @@ assgoalietopuck	;asstab entry $14. The same as 94
 	bra.w	skatetopuck
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $0807EC  From assign94.asm: the defense assignments
-;	94 assdefd, rtss21 and asswingd (the defense assignments of the defensemen and the wingers).
-;the whole range as dc.b (saveanim runs to $081335); it is code here, read from the retail bytes.
+;	rtss21 and asswingd (the defense assignments of the defensemen and the wingers).
+;the whole range as dc.b (saveanim runs to); it is code here, read from the retail bytes.
 ;	95 changes: assdefd also checks for a puck carrier of the other team before the timer (assdefo, now asstab $C), halves aidef for the
 ;	timer, and with the team defense mode (HmDefMode / AwDefMode) at 1 leaves for assdefdchase when the other team has the puck; asswingd
 ;	then covers the carrier with its own 95 code (.cover). Some y limits move by 2 or 3 ($58 to $56, $9E to $9C, $108 to $10B ...); the
@@ -838,7 +835,7 @@ assgoalietopuck	;asstab entry $14. The same as 94
 ; player a3 is defensive player on defense
 assdefd	;asstab entry 7
 	btst	#5,pflags(a3)	;check if locked in animiation
-	bne.w	rtss21	;exit if so (94 rtss6)
+	bne.w	rtss21	;exit if so
 	btst	#0,(gmode).w	;check if clock running
 	bne.w	donothing	;assnothing if no clock
 	bsr.w	check4bench	;check if going to bench
@@ -915,7 +912,7 @@ assdefd	;asstab entry 7
 	cmp.w	#1,d0
 	beq.w	assdefdchase
 .de01
-	bclr	#7,pflags3(a3)	;95: assdefdchase sets it
+	bclr	#7,pflags3(a3)	;assdefdchase sets it
 	move.w	#$41,temp3(a3)	;'A' ; move 65 dec into temp3
 	cmpi.w	#2,position(a3)	;compare if player is RD
 	beq.w	.de1	;branch if RD
@@ -1151,17 +1148,16 @@ asswingd	;asstab entry 8
 	bra.s	.go
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $080BEA  From checks94.asm: offense assignments, puck handling, skateto
-;	94 asswingo, asscenterd, asscentero, assdefo and assnothing (moved in), pucknorm, puckunflip, puckflip
+;	asscenterd, asscentero, assdefo and assnothing (moved in), pucknorm, puckunflip, puckflip
 ;	puckshadow, findpc, a2touchpuck, Setplass (moved in), assexit / assinsert / assreplace, EvadePC, skateto
-;	check4check (and the 95 check4check2), asspassrec / SkateToTempTarget, assbreakaway, assnearest, skatetopuckinit, skatetopuck,
+;	check4check, asspassrec / SkateToTempTarget, assbreakaway, assnearest, skatetopuckinit, skatetopuck
 ;	avdgoal, breakaway / BreakawayOffsidesFlagSet, chkpuckc, asspuckc, chk4shot, chk4pass, then check4bench (moved in).
-;nearly the whole range as dc.b (saveanim to $81335, $8158E-$81A5B, $81A5E-$82E87); it is code here, read from the retail
+;nearly the whole range as dc.b (saveanim to); it is code here, read from the retail
 ;bytes with the 94 source as the guide. puckflip, Setplass, assexit / assinsert / assreplace.
-;	95 changes, besides the moves: the 95 asstab numbers (assreplace / assinsert d0, .alist, the asslist compares; the comments give the
+;	95 changes, besides the moves: the asstab numbers (assreplace / assinsert d0, .alist, the asslist compares; the comments give the
 ;	94 number), jsr / jmp .l to the routines 95 moved out of range, the y limits moved 2 or 3 out (blue line $58 to $56, goal line $108
 ;	to $10B; the comments give the 94 values), the team defense mode code (HmDefMode / AwDefMode: asscenterd .cover), Practice Mode
-;	(sflags9 bit 7) shortcuts, the 95 checking start for joystick players (check4check), and the shared rts labels rtss6 / rtsskate /
+;	(sflags9 bit 7) shortcuts, the checking start for joystick players (check4check), and the shared rts labels rtss6 / rtsskate /
 ;	rtsskateto in place of rtss2.
 
 asswingo	;asstab entry 9. Winger on offense: a random spot in the puck zone (.dedata). 95: a new spot each time with sflags2 bit 7, and then y at most $4C, else $1E further up
@@ -1507,7 +1503,7 @@ asscentero	;asstab entry $B. Center on offense: a random spot in the puck zone
 ; a3 = goalie
 
 assdefo	;asstab entry $C. assdefo (moved in). Defenseman on offense. 95: back to assdefd at once when the other team has the puck (or nobody), no blue line test; holds no deeper than the other forwards (.lim), and at -$C0 when the other goalie has the puck (PuckcIsGoalie)
-	bclr	#7,pflags3(a3)	;95: assdefdchase sets it
+	bclr	#7,pflags3(a3)	;assdefdchase sets it
 	btst	#5,pflags(a3)
 	bne.w	rtsskate
 	btst	#0,(gmode).w	;#gmclock
@@ -1650,7 +1646,7 @@ donothing	;assnothing (moved in): no assignment, just skate (doplayeracc 8)
 	bne.w	rtss21
 	moveq	#8,d0
 	jmp	(doplayeracc).l
-assfight	;asstab entry $19: an rts (94 assfight and assfwatch are rts only)
+assfight	;asstab entry $19: an rts
 	rts	;assfight - possible location where fighting logic used to be
 
 pucknorm	;asstab entry 1. The puck: follow the carrier, icing / offsides checks, a stoppage when it sits still
@@ -1734,12 +1730,12 @@ puckunflip	;asstab entry 5. Stop the spinning puck
 ; start puck spinning
 ; a3 = puck
 
-puckflip	;Flip the puck (95 SPA $12C0)
+puckflip	;Flip the puck
 	andi.w	#1,d0
 	eor.w	d0,facedir(a3)	;facedir
 	andi.w	#3,facedir(a3)
 	st	SPAcnt(a3)	;SPAcnt
-	move.w	#$12C0,d1	;#SPApflip (95 SPA; 94 $46A)
+	move.w	#$12C0,d1	;#SPApflip
 	jmp	(SetSPA).l
 
 ; assignment for puck shadow
@@ -1755,7 +1751,7 @@ puckshadow	;asstab entry 2. The puck shadow, a siren on goals (95: no horizontal
 	rts
 .siren
 	tst.w	frame(a3)	;frame
-	beq.w	.s0	;94 rtss2
+	beq.w	.s0
 	clr.w	(a3)	;Xpos
 	move.w	#$13C,Ypos(a3)	;Ypos (94 $12C)
 	move.w	#$E,Zpos(a3)	;Zpos
@@ -1912,7 +1908,7 @@ Setplass	;Set player a3's first assignment by position (95 numbers). 94: set pla
 	dc.b	8	;asswingd (94 3)
 	dc.b	$A	;asscenterd (94 5)
 	dc.b	8	;asswingd
-	dc.b	$A	;95: asscenterd
+	dc.b	$A	;asscenterd
 	dc.b	$FF
 
 assexit	;Exit the current assignment of player a3
@@ -1979,7 +1975,7 @@ EvadePC	;skateto extra routine: steer around the puck carrier
 	moveq	#6,d0
 .ex
 	rts
-rtsskateto	;95: skateto's exit
+rtsskateto	;skateto's exit
 	rts
 
 skateto	;Skate a3 to d0 / d1, a0 = extra routine. 95: nothing while locked in an animation
@@ -2295,7 +2291,7 @@ SkateToTempTarget	;Skate to temp3 / temp4
 	move.w	temp4(a3),d1		;temp4
 	lea	rtss6(pc),a0
 	jmp	(skateto).l
-rtss6	;the SkateToTempTarget exit, also asspassrec's and assdefo's (94 rtss6 is before assdefo)
+rtss6	;the SkateToTempTarget exit, also asspassrec's and assdefo's
 	rts
 rtsskate	;95: a second rts. assgoaliecpu, AdjustFacingDirection, assdefo and others branch here
 	rts
@@ -2647,11 +2643,11 @@ skatetopuck	;Skate a3 to the puck; a sweep check (Sweepcheck) close up. assgoali
 .sweep
 	jmp	(Sweepcheck).l
 
-avdgoal	;Do not skate through the goal: correct d0 / d1. 95 goal line $101 (94 $FE)
+avdgoal	;Do not skate through the goal: correct d0 / d1. goal line $101 (94 $FE)
 	clr.w	(deltax).w
 	clr.w	(deltay).w
 	tst.w	position(a3)	;goalie? If so, quit
-	beq.w	rtsskate	;94 rtss2
+	beq.w	rtsskate
 	move.w	(a3),d2	;Xpos
 	eor.w	d0,d2
 	bpl.w	.chbar
@@ -2711,7 +2707,7 @@ avdgoal	;Do not skate through the goal: correct d0 / d1. 95 goal line $101 (94 $
 .ch1
 	move.w	d3,d4
 	eor.w	d2,d4
-	bpl.w	rtsskate	;94 rtss2
+	bpl.w	rtsskate
 	move.w	d0,d4
 	sub.w	(a3),d4	;Xpos
 	muls.w	d2,d4
@@ -2868,7 +2864,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	bra.w	*+4
 .2
 	btst	#5,pflags(a3)
-	bne.w	rtsskate	;94 rtss2
+	bne.w	rtsskate
 	btst	#2,(BA_PS_flags).w
 	bne.w	.3
 	btst	#0,(gmode).w
@@ -3051,7 +3047,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	dc.w	$1E
 	dc.w	$E9	;94 $E6
 
-chk4shot	;Shoot or clear the puck; compshoot is in input95. 95: the breakaway deke always in Practice Mode
+chk4shot	;Shoot or clear the puck; compshoot is. 95: the breakaway deke always in Practice Mode
 	jsr	(chkpk).l
 	bne.w	.pkill	;killing penalty
 	tst.w	(threat).w
@@ -3329,17 +3325,16 @@ check4bench	;check4bench (moved in): go to the bench for a line change, or take 
 	jmp	(Setplass).l
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $08282E  From assign94.asm: the bench and penalty assignments
-;	94 assbench and rtss4, asspenalty, assdopen, assepen (94 asseben, between rtss4 and asspenalty, is in in 95).
-;the whole range as dc.b (it runs from $81A5E to PuckOnAttackHalf); it is code here, read from the retail bytes.
-;	95 changes: the 95 asstab numbers (assdopen $17; 94 $D), the 95 SPA values (the comments give the 94 ones), the bench and box
+;	and rtss4, asspenalty, assdopen, assepen.
+;the whole range as dc.b (it runs from to PuckOnAttackHalf); it is code here, read from the retail bytes.
+;	95 changes: the asstab numbers (assdopen $17; 94 $D), the SPA values (the comments give the 94 ones), the bench and box
 ;	x $98 / $96 (94 $88 / $86), the goalie bench ready animation from GoalieReadySPA, jsr / jmp .l to the routines 95 moved out of
 ;	range, the shared rtsskate (above) in place of rtss3 / rtss4 / rtss2, asspenalty .clrplayer for pads 3 and 4, and the
 ;	attribute byte kept over the penalty box (penboxattr).
 
 assbench	;asstab entry $12. Player a3 goes to the bench: skate to the bench door, hop over (SPA), then setplayer the new player
 	btst	#pfalock,pflags(a3)
-	bne.w	rtsskate	;94 rtss3
+	bne.w	rtsskate
 	cmpi.w	#$64,temp1(a3)
 	beq.w	.done
 	bsr.w	check4bench
@@ -3375,7 +3370,7 @@ assbench	;asstab entry $12. Player a3 goes to the bench: skate to the bench door
 	sub.w	temp3(a3),d0
 	cmp.w	#$20,d0
 	bgt.w	.nodec
-	move.w	#$B5C,d1	;95 SPA (94 $50C)
+	move.w	#$B5C,d1	;SPA (94 $50C)
 	tst.w	position(a3)
 	bne.w	.gli
 	jsr	(GoalieReadySPA).l	;95 (94: 2, SPAgready)
@@ -3396,7 +3391,7 @@ assbench	;asstab entry $12. Player a3 goes to the bench: skate to the bench door
 	bne.w	.x
 	move.w	#$F800,Xvel(a3)
 	move.w	#2,facedir(a3)
-	move.w	#$1E2A,d1	;95 SPA (94 $FAC)
+	move.w	#$1E2A,d1	;SPA (94 $FAC)
 	jsr	(SetSPA).l
 	bset	#pfalock,pflags(a3)
 	move.w	#$64,temp1(a3)
@@ -3437,7 +3432,7 @@ rtss4	;The end of assbench (95 branches go to rtsskate)
 
 asspenalty	;asstab entry $15. Player a3 goes to the penalty box and hops in, then assdopen
 	btst	#5,pflags(a3)
-	bne.w	rtsskate	;94 rtss4
+	bne.w	rtsskate
 	bclr	#1,pflags(a3)
 	beq.w	.nna
 	bset	#2,pflags2(a3)	;set player unavailable (pf2unav)
@@ -3481,7 +3476,7 @@ asspenalty	;asstab entry $15. Player a3 goes to the penalty box and hops in, the
 	bpl.w	rtsskate
 	addq.w	#8,temp1(a3)
 	bset	#pfnc,pflags(a3)
-	move.w	#$B5C,d1	;95 SPA (94 $50C)
+	move.w	#$B5C,d1	;SPA (94 $50C)
 	jsr	(SetSPA).l
 	moveq	#6,d2
 	tst.b	handed(a3)
@@ -3504,7 +3499,7 @@ asspenalty	;asstab entry $15. Player a3 goes to the penalty box and hops in, the
 	move.w	#2,facedir(a3)
 	move.b	attribute(a3),(penboxattr).w	;95: keep the attribute, without bit 3, for assdopen
 	bclr	#3,attribute(a3)
-	move.w	#$1DE0,d1	;95 SPA (94 $F6E)
+	move.w	#$1DE0,d1	;SPA (94 $F6E)
 	jsr	(SetSPA).l
 	bclr	#4,pflags2(a3)
 	moveq	#$17,d0	;assdopen (94 $D)
@@ -3512,9 +3507,9 @@ asspenalty	;asstab entry $15. Player a3 goes to the penalty box and hops in, the
 .st
 	move.w	temp3(a3),d0
 	move.w	temp4(a3),d1
-	movea.l	#rtsskate,a0	;94 rtss2
+	movea.l	#rtsskate,a0
 	bra.w	skateto
-.clrplayer	;take the joystick off player a3 (92 asspenalty .clrplayer, 93 global clrplayer)
+.clrplayer	;take the joystick off player a3
 	btst	#3,pflags(a3)
 	beq.w	rtsskate
 	clr.w	d4
@@ -3522,18 +3517,18 @@ asspenalty	;asstab entry $15. Player a3 goes to the penalty box and hops in, the
 	cmp.w	(c1playernum).w,d0
 	beq.w	.chg
 	moveq	#2,d4
-	cmp.w	(c2playernum).w,d0	;95: pads 3 and 4 too
+	cmp.w	(c2playernum).w,d0	;pads 3 and 4 too
 	beq.w	.chg
 	move.w	#4,d4
 	cmp.w	(c3playernum).w,d0
 	beq.w	.chg
 	move.w	#6,d4
 .chg
-	jmp	(chgplayer).l	;94 changeplayer
+	jmp	(chgplayer).l
 
 assdopen	;asstab entry $17. Add player a3 to the penalty box (PBnum)
 	btst	#5,pflags(a3)
-	bne.w	rtsskate	;94 rtss4
+	bne.w	rtsskate
 	tst.w	position(a3)	;95: only once, and give the attribute back
 	bmi.w	rtsskate
 	move.b	(penboxattr).w,attribute(a3)
@@ -3549,7 +3544,7 @@ assdopen	;asstab entry $17. Add player a3 to the penalty box (PBnum)
 
 assepen	;asstab entry $16. Player a3 leaves the penalty box
 	btst	#5,pflags(a3)
-	bne.w	rtsskate	;94 rtss4
+	bne.w	rtsskate
 	bclr	#1,pflags(a3)
 	beq.w	.nna
 	bset	#pfnc,pflags(a3)	;set player in no collision mode
@@ -3568,7 +3563,7 @@ assepen	;asstab entry $16. Player a3 leaves the penalty box
 	move.w	#$96,(a3)	;94 $86
 	move.w	#2,facedir(a3)
 	bset	#5,pflags(a3)
-	move.w	#$1E2A,d1	;95 SPA (94 $FAC)
+	move.w	#$1E2A,d1	;SPA (94 $FAC)
 	jsr	(SetSPA).l
 	jmp	(SprSort).l
 .nna
@@ -3583,14 +3578,13 @@ assepen	;asstab entry $16. Player a3 leaves the penalty box
 	bra.w	assexit
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $082BD0  From onetimer94.asm: one-timers
-;	94 assonetimer, setonetimeranim, PuckOnAttackHalf, onetimershot, then EndOneTimer (moved in) and the 95
-;	CheckOneTimerFacing. assshoot follows, at the head of logic95.
-;	94 puckvzadj, OneTimerPass, OneTimerTarget and its tables are elsewhere in 95.
-;$082BD0-$082E87 and $082EFE-$082F5F as dc.b; they are code here, read from the retail bytes. PuckOnAttackHalf
-;	(PuckOnAttackHalf), EndOneTimer; CheckOneTimerFacing ($082FB2) is dc.b again.
+;	setonetimeranim, PuckOnAttackHalf, onetimershot, then EndOneTimer (moved in) and the 95
+;	CheckOneTimerFacing. assshoot follows, at the head.
+;	OneTimerPass, OneTimerTarget and its tables are elsewhere in 95.
+;they are code here, read from the retail bytes. PuckOnAttackHalf
+;	(PuckOnAttackHalf), EndOneTimer; CheckOneTimerFacing is dc.b again.
 ;	95 changes: each pad takes the one-timer shooter itself (setc1player ... setc4player by inputjoy; 94 swapped pads 3 / 4 into 1 / 2),
-;	the 95 SPA values and goal line $10B (the comments give the 94 values), the PAL speed $18 (94 $16), the one-timer count at $35E of
+;	the SPA values and goal line $10B (the comments give the 94 values), the PAL speed $18 (94 $16), the one-timer count at $35E
 ;	the team struct (94 $35C), and CheckOneTimerFacing now calls Findhittype.
 
 
@@ -3782,7 +3776,7 @@ assonetimer	;asstab entry $18 (94 $23). 94 Player a3 shooting a one-timer: the p
 
 setonetimeranim	;94 The one-timer animation: d1 = $150A or $176E (94 $7FC / $92E) from the angle to the goal
 	;(vtoa, CheckOneTimerFacing)
-	move.w	#$150A,d1	;95 SPA (94 $7FC)
+	move.w	#$150A,d1	;SPA (94 $7FC)
 	movem.w	d0-d1,-(sp)	;push to stack d0 and d1
 	move.w	(a3),d0	;move XPos of a3 into d0
 	neg.w	d0	;negate d0
@@ -3796,7 +3790,7 @@ setonetimeranim	;94 The one-timer animation: d1 = $150A or $176E (94 $7FC / $92E
 	jsr	(CheckOneTimerFacing).l	;95: Z from Findhittype
 	movem.w	(sp)+,d0-d1	;pop from stack d0 and d1
 	beq.w	.ex
-	move.w	#$176E,d1	;95 SPA (94 $92E)
+	move.w	#$176E,d1	;SPA (94 $92E)
 .ex
 	rts
 
@@ -3867,7 +3861,7 @@ onetimershot	;94 Do the one-timer shot (doshot), credit the last two passers as 
 	rts
 
 EndOneTimer	;End a one-timer for a3: bits cleared, onetimerplayer = -1, SetSPA $B5C (94 $50C)
-	;then assexit (goalie) or Setplass. Called from assonetimer and from $8C606
+	;then assexit (goalie) or Setplass. Called from assonetimer and
 	movem.l	d0/a0,-(sp)
 	bclr	#pf3onetimer,pflags3(a3)
 	bclr	#5,pflags(a3)
@@ -3875,7 +3869,7 @@ EndOneTimer	;End a one-timer for a3: bits cleared, onetimerplayer = -1, SetSPA $
 	clr.w	(onetimerflags).w
 	st	(onetimerplayer).w
 	move.w	d1,-(sp)
-	move.w	#$B5C,d1	;95 SPA (94 $50C)
+	move.w	#$B5C,d1	;SPA (94 $50C)
 	jsr	(SetSPA).l
 	tst.w	position(a3)
 	bpl.w	.0
@@ -3890,7 +3884,7 @@ EndOneTimer	;End a one-timer for a3: bits cleared, onetimerplayer = -1, SetSPA $
 	movem.l	(sp)+,d0/a0
 	rts
 
-CheckOneTimerFacing	;95: Findhittype on direction d0 (the angle to the goal), d0 kept. The Z flag
+CheckOneTimerFacing	;Findhittype on direction d0 (the angle to the goal), d0 kept. The Z flag
 	;picks the one-timer animation in setonetimeranim (94 did nothing here)
 	movem.w	d0,-(sp)
 	jsr	(Findhittype).l
@@ -3898,13 +3892,12 @@ CheckOneTimerFacing	;95: Findhittype on direction d0 (the angle to the goal), d0
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $082FC2  From checks94.asm and assign94.asm: assshoot, the goalie assignments, ChkGoalies
-;	94 assshoot, assgoaliectrl, a2offsides, asseben (moved in), the 95 assdefdchase, setSlotBit (moved
-;	in), assscore and assgoaliebreakwait (moved in), then ChkGoalies, ReturnGoalies, CPgoalie. 94 assgoaliecpu is in
-;	the first part of this file. CPgoalie runs to $0836AB, past the mapped end $08369D (inside CPgoalie): starts at $0836AC.
+;	assgoaliectrl, a2offsides, asseben (moved in), the assdefdchase, setSlotBit (moved
+;	in), assscore and assgoaliebreakwait (moved in), then ChkGoalies, ReturnGoalies, CPgoalie. the 94 version
+;	the first part of this file. CPgoalie runs to, past the mapped end (inside CPgoalie): starts.
 ;most of the range as dc.b (assshoot too); it is code here, read from the retail bytes. setSlotBit
 ;	ChkGoalies, ReturnGoalies and CPgoalie.
-;	95 changes: the 95 asstab numbers, SPA values and limits (the comments give the 94 values), jsr / jmp .l to the routines 95 moved out
+;	95 changes: the asstab numbers, SPA values and limits (the comments give the 94 values), jsr / jmp .l to the routines 95 moved out
 ;	of range (SetShotMode, ShotMode, ...), the shared rtsskate in place of rtss2 / rtss4, the team defense mode
 ;	(assdefdchase), the scorer's celebration in assscore.
 
@@ -3912,7 +3905,7 @@ CheckOneTimerFacing	;95: Findhittype on direction d0 (the angle to the goal), d0
 ; assignment for computer shooting
 assshoot	;asstab entry $1A. assshoot
 	btst	#pfalock,pflags(a3)	;pfalock - animation locked
-	bne.w	rtsskate	;94 rtss2
+	bne.w	rtsskate
 	bclr	#pfna,pflags(a3)	;clear pfna
 	beq.w	.nna
 	jmp	(SetShotMode).l	;95 jmp (94 bra)
@@ -3927,7 +3920,7 @@ assshoot	;asstab entry $1A. assshoot
 	jmp	(ShotMode).l
 
 assgoaliectrl	;asstab entry $1B (94 $1D). The joystick goalie: a stoppage when he leaves his area, else
-	;checkanim when out of the screen box. 95: rtsskate in place of rtss2
+	;checkanim when out of the screen box. rtsskate in place of rtss2
 	btst	#3,pflags(a3)	;is player joystick controlled?
 	bne.w	.goaliectrl	;branch is so
 	bra.w	assexit
@@ -4052,7 +4045,7 @@ a2offsides	;Offsides on a2 (AddPenalty $10) when his team is offside and the puc
 asseben	;asstab entry $13 (94 9). asseben (moved in; assben). Player a3 should exit the bench area.
 	;95: x $98 (94 $88), facedir 7 (94 2), SPA $1E2A (94 $F6E)
 	btst	#5,pflags(a3)
-	bne.w	.x	;94 rtss4
+	bne.w	.x
 	bclr	#1,pflags(a3)
 	beq.w	.1
 	clr.w	Xvel(a3)
@@ -4068,7 +4061,7 @@ asseben	;asstab entry $13 (94 9). asseben (moved in; assben). Player a3 should e
 	neg.w	(a3)
 	move.w	#7,facedir(a3)	;94 2
 	bset	#5,pflags(a3)
-	move.w	#$1E2A,d1	;95 SPA (94 $F6E)
+	move.w	#$1E2A,d1	;SPA (94 $F6E)
 	jmp	(SetSPA).l
 .1
 	move.w	#4,facedir(a3)
@@ -4260,7 +4253,7 @@ assscore	;asstab entry $1C (94 7). assscore (moved in). Players after a goal: sk
 	;celebrate. 95: the scorer, still skating fast ($5000 or more), does the celebration SPA $28DE at once; the scorer's pump is one of
 	;two SPAs (.pumps)
 	btst	#5,pflags(a3)
-	bne.w	.x	;94 assfwatch
+	bne.w	.x
 	bclr	#1,pflags(a3)
 	beq.w	.nna
 	bsr.w	.1
@@ -4290,7 +4283,7 @@ assscore	;asstab entry $1C (94 7). assscore (moved in). Players after a goal: sk
 	move.w	#$28DE,d1
 	jsr	(SetSPA).l
 .nna
-	movea.l	#.x,a0	;94 rtss2
+	movea.l	#.x,a0
 	move.w	temp3(a3),d0
 	move.w	temp4(a3),d1
 	btst	#0,(gmode2).w	;start of code not in 92
@@ -4311,7 +4304,7 @@ assscore	;asstab entry $1C (94 7). assscore (moved in). Players after a goal: sk
 	sub.w	d7,temp1(a3)
 	bpl.w	.ckcon
 	bset	#5,pflags(a3)
-	move.w	#$234C,d1	;95 SPA (94 $E8A)
+	move.w	#$234C,d1	;SPA (94 $E8A)
 	move.w	(shotplayer).w,d0
 	cmp.w	SCnum(a3),d0
 	bne.w	.nopump
@@ -4415,7 +4408,7 @@ ReturnGoalies	;If the computer pulled its goalie, see if it should return him (C
 	move.w	(foy).w,d1
 
 CPgoalie	;See if the computer should pull its goalie: third period, behind by 2, a minute left, the faceoff in the other
-	;zone (d1 = faceoff y). CPgoalie.0 is where was mapped; the routine ends at $0836AB
+	;zone (d1 = faceoff y). CPgoalie.0 is where was mapped; the routine ends
 	cmpi.w	#2,(gsp).w	;check if 3rd period
 	bne.w	rtsskate	;exit if not
 	move.w	tmscore(a1),d0	;tmscore

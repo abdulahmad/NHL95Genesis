@@ -1,4 +1,4 @@
-;	NHL 95 season schedule. Retail $008DD8-$009721 (2378 bytes). New in 95 (94 has no season mode).
+;	NHL 95 season schedule. New in 95 (94 has no season mode).
 ;
 ;	Layout: a day count (192), then one record per day: the number of games (0-12), then two team numbers per game
 ;	(TeamList order, ANH 0 ... WPG 25). Which team is home is not confirmed. 1092 games, 84 per team.
@@ -7,7 +7,7 @@
 ;	Each day is written with the Day macro below: list the matchups as team abbreviations in pairs, and the macro
 ;	emits the game count and the team numbers. A day with no games is just "Day".
 ;
-;	Read by season95: PickSeasonStartDay picks a random day with games; BuildSeasonTeamList, WriteDayGames and
+;	Read: PickSeasonStartDay picks a random day with games; BuildSeasonTeamList, WriteDayGames
 ;	FindDayGames skip to a day (1 count byte + 2 bytes per game) and copy its games.
 ;
 ;	Dates: the schedule stores no dates. DayToDate walks SeasonDay+4 through MonthDays (Oct-Apr: 31,30,31,31,28,31,30),
@@ -256,4 +256,4 @@ SeasonSchedule	;move.b (x).l, movea.l #x (PickSeasonStartDay, BuildSeasonTeamLis
 	Day	OTW,BOS,  TB, NYI,  DET,MTL,  SJ, EDM,  LA, CGY,  ANH,VAN                                                              ;day 191
 	Day	BOS,HFD,  BUF,WSH,  NYR,PHI,  NJ, OTW,  TB, QUE,  FLA,NYI,  CHI,TOR,  STL,WPG,  DAL,DET,  LA, EDM                      ;day 192
 SeasonScheduleEnd	;CountTeamGames stops its scan here (cmpa.l #x,a0)
-	dc.b	$FF	;$9721. Pad to the even address of InitSaveRAM (94 InitSaveRAM)
+	dc.b	$FF	;$9721. Pad to the even address of InitSaveRAM

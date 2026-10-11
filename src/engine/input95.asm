@@ -1,14 +1,13 @@
-;	NHL 95 input95. Retail $083EB2-$084FE5 (4404 bytes).
-;	94 doinput (95: its start is doinput; the mapped start doinput.0 is inside it), doinput_islocked, rtss7, faceoffinput
+;	NHL 95.
+;	the 94 version (95: its start is doinput; the mapped start doinput.0 is inside it), doinput_islocked, rtss7, faceoffinput
 ;	setpassmode, passmode, dopass, passtoa0, then OneTimerTarget and its tables and OneTimerPass (moved in)
 ;	Findhittype, SetShotMode, ShotMode, prepshot, doshot, shotsets, shotdiradj, shotdirmath, puckvzadj
-;	compshoot (moved in). follows at $084FE6.
-;	The 94 doinput parts doinput_cbut ... doinput_ispc, getGoalieSCnum are; the goalie dive (doinput.33) is
-;	doinput_goaliedive; burst, Acheck, changeplayer (95 chgplayer), setc1player ... are; SetLCmode, lineinput
-;	in lines95.
+;	compshoot (moved in). follows.
+;	The the 94 version parts doinput_cbut ... doinput_ispc, getGoalieSCnum are; the goalie dive (doinput.33)
+;	doinput_goaliedive; burst, Acheck, changeplayer, setc1player ... are; SetLCmode, lineinput
 ;except puckvzadj and compshoot (dc.b, read from the retail bytes) and the dead / data bytes noted below. Local labels are
 ;numbered; the names are not kept.
-;	95 changes: four pads (doinput_islocked marks the player of pad c1 ... c4playernum), the 95 asstab numbers and SPA values, the y
+;	95 changes: four pads (doinput_islocked marks the player of pad c1 ... c4playernum), the asstab numbers and SPA values, the y
 ;	limits moved 3 out ($108 to $10B ...), the PAL speed $18 (94 $16), the one-timer table offsets, Findhittype's two masks swapped,
 ;	shotsets $E / $FFF2 (94 $10 / $FFF0), jsr / jmp .l to the routines 95 moved out of range.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
@@ -394,7 +393,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	bra.w	SetShotMode
 
 doinput_islocked	;94 global (doinput branches across). B with the player not the carrier: change player (chgplayer) and
-	;set $64 bit 6 of the pad's new player (95: pads 1 to 4)
+	;set $64 bit 6 of the pad's new player
 	move.w	(puckc).w,d5
 	cmp.w	SCnum(a3),d5
 	beq.w	rtss7
@@ -436,7 +435,7 @@ rtss7	;The doinput_islocked rts
 	rts
 
 faceoffinput	;The faceoff player (assignment $11, 94 $17): store the dpad pull (fodir1 / fodir2) and start the faceoff
-	;swipe on B (95 SPA $1B36 / $1B60; 94 $FEA / $1014)
+	;swipe on B
 	btst	#6,(sflags5).w
 	beq.w	.1
 .0
@@ -966,7 +965,7 @@ prepshot	;Prepare the shot (shot direction), then doshot
 .3
 	bra.w	doshot
 
-doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets, shotdiradj; puckvz. 95: shotpflags,
+doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets, shotdiradj; puckvz. shotpflags
 	;ShotTimer
 	movem.l	d0-d7/a0-a3,-(sp)
 	bclr	#0,(GameFlags).w	;95: a fake shot ends in SPAglidewp without the shot

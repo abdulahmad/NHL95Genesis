@@ -1,8 +1,8 @@
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	hockey95 segment stub. Retail $009AC8-$00A203.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -14,7 +14,7 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $009AC8-$00A203, read from lst/nhl95.bin: jsr / jmp (x).l and movea.l / move.l #x carry the address;
+; External addresses outside, read from lst/nhl95.bin: jsr / jmp (x).l and movea.l / move.l #x carry the address
 ; bsr.w is the displacement word address + displacement. 94 names where the 95 body is the 94 routine.
 KillCrowd = $67988
 newTitleScreen = $A12AA
@@ -72,10 +72,10 @@ SetupTeamForIntermission = $8A572
 PlaceBoardFall = $8C1FA
 updateanim = $A536
 loadTeamStruct = $7CAF0
-updatevel = $8BB6C		;the velocity update 94 updateplayers does in line.
+updatevel = $8BB6C		;the velocity update the 94 version does in line.
 setpads = $AB2A
-updatepadinput = $A95C		;the pad input 94 updateplayers does in line (.tp2).
-; SPA tables (frames95.asm defines them in the full build)
+updatepadinput = $A95C		;the pad input the 94 version does in line (.tp2).
+; SPA tables
 SPAboardtop = $20B0
 SPAboardright = $2122
 SPAboardbot = $219C

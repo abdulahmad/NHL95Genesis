@@ -1,17 +1,15 @@
-; $087BA2  Adapted from setup94.asm: the playoff screen and the playoff tree
 ;	2 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $087BA2  From setup94.asm: PlayoffScreen
-;	94 PlayoffScreen, HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, FormatScore
-;	DrawPlayoffBracket, DrawTeamBlocks, PlayoffScreenDataTable and PlayoffScreenText. PlayoffTreeSetup follows at $088046.
+;	HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, FormatScore
+;	DrawPlayoffBracket, DrawTeamBlocks, PlayoffScreenDataTable and PlayoffScreenText. PlayoffTreeSetup follows.
 ;except PlayoffScreenDataTable (dc.b, read from the retail bytes). the printz / printz2 Strings and the
 ;DecompressGraphicsWithCallback remap bytes as instructions; they are String / dc.b here. Local labels are numbered; the
 ;	names are not kept.
 ;	95 changes: PlayoffScreen returns at once in Shootout (gmode2 bit 0) and also runs for sflags11 bit 2; the shared rts is
-;	rtsLineData (94 rtss2). AddTeamBlock and AddSmallFont are inline, the title uses printbig with the BigFontMap2
+;	rtsLineData. AddTeamBlock and AddSmallFont are inline, the title uses printbig with the BigFontMap2
 ;	tiles, HandlePlayoffInput reads all four pads, the song is 3 (94 $79), the map chars start at $69A (94 $30A).
 
 
@@ -50,11 +48,11 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	moveq	#2,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
-	move.w	#1,d4	;94 AddTeamBlock: the team block tiles from char 1
+	move.w	#1,d4	;the team block tiles from char 1
 	move.w	d4,(teamblocksmapptr).w
 	movea.l	#Teamblocksmap+8,a2
 	jsr	(DoDMA_clearCallbackPointer).l
-	move.l	#SmallFontMap,(smallfontptr).l	;94 AddSmallFont
+	move.l	#SmallFontMap,(smallfontptr).l
 	move.w	d4,(smallfontchars).w
 	movea.l	(smallfontptr).w,a2
 	addq.w	#8,a2
@@ -325,9 +323,8 @@ PlayoffScreenText	;Round titles by gamelevel, printbig Strings with their positi
 	String	$CF,$37,$19,'Champions'
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $088046  From data94.asm, title94.asm and display94.asm: the playoff tree
 ;	PlayoffTreeSetup, DrawPlayoffSprite and SetSframe (its only caller is DrawPlayoffSprite).
-;	follows at $08827C (UpdateScores).
+;	follows (UpdateScores).
 
 
 

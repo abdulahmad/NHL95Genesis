@@ -1,7 +1,6 @@
-; $00AF44  Adapted from sound94.asm: the 95 sound driver and sound bank, the sound calls, the unused 94 driver and samples
-;	The 95 sound driver ($AF44-$676D7) is new in 95; 94 has the driver, most of which is still here ($676D8 on), unused.
+;	The 95 sound driver is new in 95; 94 has the driver, most of which is still here, unused.
 ;	The 68000 side of a song player: SndDriver takes a command in d0 (95 calls it through SoundCmd), runs up to 8 songs of MIDI style
-;	events, and keeps the Z80 program fed. Then the Z80 program (Z80Program) and the sound bank (SoundBanks, $D8EC to $676D7).
+;	events, and keeps the Z80 program fed. Then the Z80 program (Z80Program) and the sound bank (SoundBanks, $D8EC to).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -1165,7 +1164,7 @@ Z80BusRelease	;Give the bus back to the Z80
 	rts
 	opt	oaq+,osq+,oz+
 
-Z80Program	;The Z80 sound program (main95 Begin and Opening2 load it with SndLoadZ80, d1 = $1B63). Starts JP $0600
+Z80Program	;The Z80 sound program. Starts JP $0600
 	incbin	..\Extracted\NHL95\Sound\z80_snd_drv95.bin
 	nop	;$D8EA. Pad to $D8EC (retail 4E71)
 
@@ -1457,8 +1456,7 @@ SoundBanks	;Bank 0 (SndSetBank, Begin and Opening2): the item count, then 4 byte
 	incbin	..\Extracted\NHL95\Sound\Bank\snd95_list_01.bin
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $0676D8  From sound94.asm: the sound calls, the unused 94 driver, the 94 samples and FM patches
-;	The 95 sound calls (SoundCmd ... ChooseSong, hockey94 / display94 / video94 / routines moved in), then what is left of the
+;	The 95 sound calls (SoundCmd ... ChooseSong), then what is left of the
 ;94 sound driver: z80_bus_release_delay ... p_initialZ80 as 94, and no caller in 95, with the RAM moved by -$3FC
 ;	each Z80 bus request but p_initialZ80's replaced by a SoundCmd $D (pause the 95 driver) and ClearAllTrackAndSFXSlots cut down;
 ;	newcheck; then the 94 PCM samples and FM patches (the 94 files).
@@ -1684,7 +1682,7 @@ KillCrowd	;silence the crowd noise (psg)
 	move.b	#$FF,(VDP_PSG).l
 	rts
 
-SoundOff	;(94 p_turnoff): sound driver command $F, every song off
+SoundOff	;sound driver command $F, every song off
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$F,d0
 	bsr.w	SoundCmd
@@ -1752,7 +1750,7 @@ RandomSongs	;8 songs ChooseSong picks from at random
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;The 94 sound driver as 95 keeps it ($67AD0-$682AF, nothing calls it). The 94 source with the 95 changes
+;The 94 sound driver as 95 keeps it (nothing calls it). The 94 source with the 95 changes
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -2080,7 +2078,7 @@ SetChannelVolume	;Set the volume of channel struct a2: note volume (+2) * the vo
 	st	(music_needs_z80_update).w
 	movem.l	(sp)+,d0
 	rts
-.veltab	;attenuation by volume / 8 (93 handle_command_10 .veltab)
+.veltab	;attenuation by volume / 8
 	dc.b	$1A,$18,$16,$14,$12,$10,$0E,$0C,$0A,$08,$06,$04,$03,$02,$01,$00
 .0
 	move.w	d0,-(sp)	;95: pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
@@ -2201,16 +2199,16 @@ newcheck	;start a new check sound: one of 4 sounds $1C-$1F, never the last one a
 	moveq	#3,d0
 	jsr	(randomd0).l	;94: bsr.w
 	addq.w	#1,d0	;1-3 sounds on from the last one
-	add.w	(ltack).w,d0	;last tackle sound (92 ltack)
+	add.w	(ltack).w,d0	;last tackle sound
 	andi.w	#3,d0
 	move.w	d0,(ltack).w
-	addi.w	#$1C,d0	;first check sound (92 SFXcheck = 18)
+	addi.w	#$1C,d0	;first check sound (92 used 18)
 	move.w	d0,-(sp)
 	bsr.w	sfx
 	move.l	(sp)+,d0
 	rts
 
-;	The 94 PCM samples and FM patches, the same bytes as 94 (the 94 files) at $682D6-$79901. The old driver above points at them
+;	The 94 PCM samples and FM patches, the same bytes as 94 (the 94 files). The old driver above points at them
 pcm_sample_table	;(sample address, 0) for PCM patches $60-$6E (lea in handle_command_10)
 	dc.l	sfx_puckget_pcm,0		;patch $60
 	dc.l	sfx_pass_pcm,0		;patch $61
@@ -2228,41 +2226,41 @@ pcm_sample_table	;(sample address, 0) for PCM patches $60-$6E (lea in handle_com
 	dc.l	sfx_crowdcheer_pcm,0		;patch $6D
 	dc.l	sfx_id_0E_pcm,0		;patch $6E
 sfx_shotbh_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_shotbh_pcm.bin	;$6834E-$68541 (94 $1B094-$1B287). sample 2: shotbh
+	incbin	..\Extracted\NHL95\Sound\sfx_shotbh_pcm.bin	;sample 2: shotbh
 	even
 sfx_pass_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_pass_pcm.bin	;$68542-$6926E (94 $1B288-$1BFB4). sample 1: pass
+	incbin	..\Extracted\NHL95\Sound\sfx_pass_pcm.bin	;sample 1: pass
 	dc.b	$FF			;pad: retail leftover byte
 sfx_oooh_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_oooh_pcm.bin	;$69270-$6C4B3 (94 $1BFB6-$1F1F9). sample 12: oooh, sfx_id_0D, sfx_id_0E
+	incbin	..\Extracted\NHL95\Sound\sfx_oooh_pcm.bin	;sample 12: oooh, sfx_id_0D, sfx_id_0E
 	even
 sfx_crowdboo_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_crowdboo_pcm.bin	;$6C4B4-$6EA00 (94 $1F1FA-$21746). sample 11: crowdboo
+	incbin	..\Extracted\NHL95\Sound\sfx_crowdboo_pcm.bin	;sample 11: crowdboo
 	dc.b	$FF			;pad: retail leftover byte
 sfx_check_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_check_pcm.bin	;$6EA02-$70953 (94 $21748-$23699). sample 5: check1, check3
+	incbin	..\Extracted\NHL95\Sound\sfx_check_pcm.bin	;sample 5: check1, check3
 	even
 sfx_crowdcheer_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_crowdcheer_pcm.bin	;$70954-$73833 (94 $2369A-$26579). sample 13: crowdcheer, homewin
+	incbin	..\Extracted\NHL95\Sound\sfx_crowdcheer_pcm.bin	;sample 13: crowdcheer, homewin
 	even
 sfx_id_0E_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_id_0E_pcm.bin	;$73834-$772B2 (94 $2657A-$29FF8). sample 14: sfx_id_0E
+	incbin	..\Extracted\NHL95\Sound\sfx_id_0E_pcm.bin	;sample 14: sfx_id_0E
 	dc.b	$FF			;pad: retail leftover byte
 sfx_playerwall_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_playerwall_pcm.bin	;$772B4-$77763 (94 $29FFA-$2A4A9). sample 6: playerwall, sfx_id_21-23
+	incbin	..\Extracted\NHL95\Sound\sfx_playerwall_pcm.bin	;sample 6: playerwall, sfx_id_21-23
 	even
 sfx_check2_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_check2_pcm.bin	;$77764-$78192 (94 $2A4AA-$2AED8). sample 4: check2, check4
+	incbin	..\Extracted\NHL95\Sound\sfx_check2_pcm.bin	;sample 4: check2, check4
 	dc.b	$FF			;pad: retail leftover byte
 sfx_hithigh_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_hithigh_pcm.bin	;$78194-$786E9 (94 $2AEDA-$2B42F). samples 7 and 10: hithigh, hitlow, check1-4, songs $32 and $35-$37
+	incbin	..\Extracted\NHL95\Sound\sfx_hithigh_pcm.bin	;samples 7 and 10: hithigh, hitlow, check1-4, songs $32 and $35-$37
 	even
 sfx_shotfh_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_shotfh_pcm.bin	;$786EA-$792A1 (94 $2B430-$2BFE7). sample 3: shotfh
+	incbin	..\Extracted\NHL95\Sound\sfx_shotfh_pcm.bin	;sample 3: shotfh
 	even
 sfx_puckget_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_puckget_pcm.bin	;$792A2-$79501 (94 $2BFE8-$2C247). sample 0: puckget
+	incbin	..\Extracted\NHL95\Sound\sfx_puckget_pcm.bin	;sample 0: puckget
 	even
 fm_instrument_patches	;32 FM patches x 32 bytes, byte $1E = pitch bend scale (UpdateChannelFrequencyAndVolume)
-	incbin	..\Extracted\NHL95\Sound\fm_instrument_patches.bin	;$79502-$79901 (94 $2C248-$2C647). 32 FM patches x 32 bytes (byte $1E = pitch bend scale)
+	incbin	..\Extracted\NHL95\Sound\fm_instrument_patches.bin	;32 FM patches x 32 bytes (byte $1E = pitch bend scale)
 	even

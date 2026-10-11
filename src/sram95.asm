@@ -1,7 +1,6 @@
-; $009722  Adapted from sram94.asm: save data
-;	NHL 95 segment $9722-$9AC7, from lst/nhl95.bin.lst. The battery save RAM: 95 keeps $8000 bytes (94: $2000) on the odd bytes at
+;	NHL 95 segment, from lst/nhl95.bin.lst. The battery save RAM: 95 keeps $8000 bytes (94: $2000) on the odd bytes at
 ;	SaveRAM, copies them to M68K_RAM at power on (InitSaveRAM) and protects them with a sum / complement checksum in bytes $7FFE-$7FFF.
-;	94 InitSaveRAM, SRAMWaitVblank, VBcount, ValidateSRAM, ClearSRAM, WriteSRAM, MakeSRAMChecksum, ReadSRAM, then three routines new in 95
+;	SRAMWaitVblank, VBcount, ValidateSRAM, ClearSRAM, WriteSRAM, MakeSRAMChecksum, ReadSRAM, then three routines new in 95
 ;	that build the season leader lists from the save RAM stats. Opening follows at $9AC8.
 ;95 addresses RAM with (x).l here where 94 used (x).w, and indexes the save RAM with a long (d0.l). The at $981E (VBcount)
 ;	and $9972-$9AC7 (the leader list routines, no xref) are written as instructions.
@@ -97,7 +96,7 @@ ValidateSRAM	;Check the save RAM copy in M68K_RAM: byte $7FFF must be the sum of
 	add.b	(a0)+,d0	;add value at a0 to d0 and increment a0
 	dbf	d1,.loop	;loop through RAM d1 times
 	clr.w	d1	;clear d1
-	cmpi.w	#$64,(M68K_RAM).l	;95: ClearSRAM writes $64 to the first word
+	cmpi.w	#$64,(M68K_RAM).l	;ClearSRAM writes $64 to the first word
 	beq.w	.chk
 	addq.w	#1,d1
 .chk
@@ -209,7 +208,7 @@ ReadSRAM	;move into a0 location and increment: copy d1 save RAM bytes from byte 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
 ;Season leader lists. New in 95 ( no xref). The Individual Leaders screen runs one of these through a5
-;	(movea.l #x,a5 at $949EC-$94A46). Save RAM stats are words (2 save RAM bytes, the odd bytes of 2 words) at byte d0 + 2 * player.
+;	(movea.l #x,a5). Save RAM stats are words (2 save RAM bytes, the odd bytes of 2 words) at byte d0 + 2 * player.
 ;	In: d0 = first save RAM byte of the stat, d1 = 2 * players ($548: 26 teams of 26), a0 = value list, a3 = player number list,
 ;	a2 = count word. Out: one value / player number pair per listed player, (a2) = the number listed
 ;

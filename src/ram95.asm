@@ -1,6 +1,6 @@
 ;	NHL 95 RAM map. Equates only, no ROM bytes. 68000 work RAM is $FFFF0000-$FFFFFFFF (M68K_RAM).
 ;	Included by nhl95.asm and by every segment stub, so a name defined here is visible to both builds.
-;	Names follow ram94.asm when the address and the using routine match; the comment gives the 94 address,
+;	Names follow when the address and the using routine match; the comment gives the
 ;	or says New in 95. Keep the entries in address order.
 
 AwardIds	equ	$FFFF0000	;SeasonAwards: the candidate ids (players, or teams), sorted with AwardScores. Shares M68K_RAM
@@ -111,8 +111,8 @@ fofdata2	equ	$FFFFB9C2	;94 $FFFFBDA8. Faceoff sprite entries: word frame, word f
 fofdata	equ	$FFFFB9CA	;94 $FFFFBDB0
 pads	equ	$FFFFB9CE	;94 $FFFFBDB4. 6 pad objects of $1C bytes (95 has no glove object; 94: 7 with glovestruct)
 Joy1Struct	equ	$FFFFB9EA	;94 $FFFFBDD0. pads+$1C
-Joy3Struct	equ	$FFFFBA22	;94 $FFFFBE24. pads+$54 (94: pads+$70)
-Joy4Struct	equ	$FFFFBA3E	;94 $FFFFBE40. pads+$70 (94: pads+$8C)
+Joy3Struct	equ	$FFFFBA22	;94 $FFFFBE24. pads+$54
+Joy4Struct	equ	$FFFFBA3E	;94 $FFFFBE40. pads+$70
 ReplayStarStruct	equ	$FFFFBA5A	;94 $FFFFBE08
 replayactive	equ	$FFFFBA70	;94 $FFFFBE1E
 PadControlBits	equ	$FFFFBA76	;94 $FFFFBE78 (a word; PadControlBits34 $FFFFBE86). 95 keeps the 4 pads' nibbles in one long
@@ -166,7 +166,7 @@ recwins	equ	$FFFFBB4C	;94 $FFFFBF4E. A scratch word (record page wins; assdefo c
 rosterteam	equ	$FFFFBB4E	;setplayer: the team number ($28 of the team struct) for GetRosterName / GetJerseyNumber
 recties	equ	$FFFFBB50	;94 $FFFFBF4A. Record Holders: the row ties (PrintWinRecords)
 reclosses	equ	$FFFFBB52	;94 $FFFFBF4C. Record Holders: the row losses (PrintWinRecords)
-recwincount	equ	$FFFFBB54	;Record Holders: the row wins (PrintWinRecords; 94 recwins)
+recwincount	equ	$FFFFBB54	;Record Holders: the row wins (PrintWinRecords)
 awayhotter	equ	$FFFFBB56	;94 $FFFFBF50. CompareHotColdTotals: the away team is hotter
 awayhotidx	equ	$FFFFBB5A	;94 $FFFFBF54. Hot / cold list index, away (BuildHotColdLists)
 homehotidx	equ	$FFFFBB5C	;94 $FFFFBF56. Hot / cold list index, home
@@ -191,8 +191,8 @@ icingPlayer	equ	$FFFFBB87	;94 $FFFFBF81. The low byte of iflags: SCnum of the pl
 clockram	equ	$FFFFBB8C	;94 $FFFFBF86. The clock chars for the dma list (showclockdma)
 xc1	equ	$FFFFBB94	;94 $FFFFBF8E. Scroll lock x (sfslock)
 yc1	equ	$FFFFBB96	;94 $FFFFBF90. Scroll lock y
-yleader	equ	$FFFFBB98	;94 $FFFFBF92
-fox	equ	$FFFFBB9A	;94 $FFFFBF94. Face off x
+yleader	equ	$FFFFBB98	;94 $
+fox	equ	$FFFFBB9A	;94 $. Face off x
 foy	equ	$FFFFBB9C	;94 $FFFFBF96. Face off y
 fodir1	equ	$FFFFBB9E	;94 $FFFFBF98. Faceoff pull direction (dpad) of the bottom goal team
 fodir2	equ	$FFFFBBA0	;94 $FFFFBF9A. Of the top goal team
@@ -324,8 +324,8 @@ gamevarend	equ	$FFFFCC2C	;End of the RAM StartGame clears from VSCRLPM (94 $FFFF
 SimFlags	equ	$FFFFCC30	;Bit 0 save the cup winner, bit 1 a game was simulated (SaveSimGame)
 tradeteam1	equ	$FFFFCC32	;Trade Players: the first team (word), its 8 byte block
 tradeteam2	equ	$FFFFCC3A	;Trade Players: the second team
-pad1user	equ	$FFFFCC42	;94 homeuser $FFFFD042. Name log entry picked by pad 1 (UserNameEntry, NameEntryScreen a5)
-pad2user	equ	$FFFFCC44	;94 awayuser $FFFFD044. Name log entry picked by pad 2
+pad1user	equ	$FFFFCC42	;$FFFFD042. Name log entry picked by pad 1 (UserNameEntry, NameEntryScreen a5)
+pad2user	equ	$FFFFCC44	;$FFFFD044. Name log entry picked by pad 2
 pad3user	equ	$FFFFCC46	;Name log entry picked by pad 3
 pad4user	equ	$FFFFCC48	;Name log entry picked by pad 4
 FourWayPlay	equ	$FFFFCC4A	;94 $FFFFD046. Four way adaptor in use
@@ -456,7 +456,7 @@ advframe	equ	$FFFFD26E	;94 $FFFFD5A4. Advantage marks step (PrintAdvantageMarks)
 advcount	equ	$FFFFD270	;94 $FFFFD5A6. Advantage marks frame count
 matchuptimer	equ	$FFFFD272	;94 $FFFFD5A8. PeriodStatsScreen: the running total
 matchupslot	equ	$FFFFD274	;94 $FFFFD5AA. The line slot of the matchup (GetMatchupPlayer)
-DispAttribCtr	equ	$FFFFD276	;94 $FFFFD5AC. Roster attribute page; game setup: first line shown (94 setupfirstline)
+DispAttribCtr	equ	$FFFFD276	;94 $FFFFD5AC. Roster attribute page; game setup: first line shown
 VertLineScrolling	equ	$FFFFD278	;94 $FFFFD5AE. Game setup: last line shown
 PlayerScrollCtr	equ	$FFFFD27A	;94 $FFFFD5B0. Scroll step (playoff screen); TeamRosterScreen: nonzero stops the page keys
 SelectedPlayerIdx	equ	$FFFFD27C	;94 $FFFFD5B2. Roster page 0-2; game setup: cursor line
@@ -560,7 +560,7 @@ SndBanks	equ	$FFFFFF36	;4 sound banks (SndSetBank), -1 = none
 ;	SaveRAM+2*n. InitSaveRAM copies it to M68K_RAM, so byte n is also at M68K_RAM+n. These SR names are byte offsets
 ;	(d0 for ReadSRAM / WriteSRAM); code that reads save RAM in place uses SaveRAM+2*name. All
 
-SaveRAM	equ	$200000	;the cartridge save RAM (header SRAM range $200001-$20FFFF)
+SaveRAM	equ	$200000	;the cartridge save RAM (header SRAM range)
 SRAMSize	equ	$8000	;save RAM bytes
 SRCrowdRecords	equ	$B62	;CrowdRecordIO block
 SRTeamRecords	equ	$D22	;the team records, $80 bytes (TeamRecordIO, ReadTeamRecords)

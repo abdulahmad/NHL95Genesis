@@ -1,10 +1,9 @@
-; $07A7B4  Adapted from collide94.asm: checks, falls, walls, puck and goal collisions
 ;	The 94 collision code in a new order: checkcoll, checkwallcoll, wallcollb, wallcoll, checkplcoll, checkcx, checkcheck, CCStart (checkinglist, the 95
-;	checkinglist2, Bcheck, holdcheck, the 95 Sweepcheck), FallDown, checkpuckcoll, puckstick, puckglue, puckbody, rtspuck (the 94 rtss2 place),
+;	checkinglist2, Bcheck, holdcheck, the Sweepcheck), FallDown, checkpuckcoll, puckstick, puckglue, puckbody, rtspuck
 ;	deflect, checkpuckcoll_sfx, checkgoal (the 94.goal code is elsewhere: Goal), checkgoalp, CheckBump, wallcollduringcheck
-;	checkcornercoll94 / cornercollb94, puckgoalie, checkint, the 95 DropPuck. middle95 (94 sroot) follows at $7C512.
-;	written as instructions: a second rts after checkwallcoll ($7A976), checkpuckcoll ... checkpuckcoll_sfx ($7B51A-$7BD8B) and
-;	puckgoalie ($7C154-$7C3FB).
+;	/, puckgoalie, checkint, the DropPuck. follows.
+;	written as instructions: a second rts after checkwallcoll, checkpuckcoll ... checkpuckcoll_sfx
+;	puckgoalie.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 ;	Sort struct (SortCords, $80 each): $40 temp1, $64 bit 3 one-timer, bit 4 wall collision, bit 5 fell, $68 Agl, $73 aggres, $74 Fgt, $75 Chk.
@@ -160,9 +159,9 @@ checkwallcoll	;d2/d3 = x/y to test, a3 = object, wcradiusx/wcradiusy = radius. C
 	cmp.w	d4,d2
 	ble.w	wallcollb
 	rts
-	rts	;$7A976. a second rts, no xref
+	rts	;a second rts, no xref
 
-wallcollb	;Check for puck over wall. a3 = object, d0/d1 = cos/sin of the wall. Not the puck: wallcoll. 95: Zpos above $15
+wallcollb	;Check for puck over wall. a3 = object, d0/d1 = cos/sin of the wall. Not the puck: wallcoll. Zpos above $15
 	;locks the scroll (LockScroll) and goes out of play; above $12 only at x $28-$2A behind the goal line ($110) with Yvel >= $FA0 (SPA $250A on the
 	;next struct, sfx $E, crowd). Out of play: sfslock, pfnc, and while the clock runs penalty 6 (PenOOP) for ltplayer
 	cmpi.w	#$E,SCnum(a3)
@@ -304,7 +303,7 @@ wallcoll	;d0 = cosine, d1 = sine of angle of incidence with wall, a3 = object. B
 	rts
 
 checkplcoll	;check collision with other players. d2/d3 = x/y cords, a3 = struct. Walk up and down the OOlist from a3 and call
-	;checkcx for each object within $10 in y (92 collrad*2). Called from checkcoll
+	;checkcx for each object within $10 in y. Called from checkcoll
 	btst	#5,pflags2(a3)
 	bne.w	.3
 	cmpi.w	#$B,SCnum(a3)	;#11, SCnum
@@ -485,8 +484,8 @@ checkcheck	;player is in contact: look for various contact events. Runs CCStart 
 	movem.l	(sp)+,d0-d4/a0-a3
 	rts
 
-CCStart	;Player a3 is checking player a2. Holds (95 SPA $E10, $E74) go to holdcheck, SPA $F38 (94 SPAsweepchk) to Bcheck;
-	;otherwise only a3 in SPA $11AE (94 SPAburst) checks. Sets a3's check anim from checkinglist (95: 1 in 5 from checkinglist2 when the two
+CCStart	;Player a3 is checking player a2. Holds go to holdcheck, SPA $F38 to Bcheck
+	;otherwise only a3 in SPA $11AE checks. Sets a3's check anim from checkinglist (95: 1 in 5 from checkinglist2 when the two
 	;face each other); a big enough hit on a skater makes a2 fall, with a charging ($16 / $18) or roughing ($1A / $1C) roll from checkagr
 	cmpi.w	#$E10,SPA(a2)
 	beq.w	holdcheck
@@ -1444,7 +1443,7 @@ puckglue	;Player a2 takes the puck (92 puckstick.glue): faceoff and pass stats, 
 	bne.w	.setd0player	;branch if not
 	jsr	(ChkShotStat).l
 	move.w	#$8C,temp5(a2)	;move 8C to temp5 - countdown for faceoff?
-	cmpi.w	#$1D4E,SPA(a2)	;goalie dive animation (94 SPAgdive)
+	cmpi.w	#$1D4E,SPA(a2)	;goalie dive animation
 	bne.w	.setd0player	;branch if not equal
 	move.w	#5,temp5(a2)	;set temp5 to 5
 .setd0player	;93 setd0player. Give control of player d0 to a controller if his team is controlled. 95 tries the pad that had lastplayer first
@@ -1543,7 +1542,7 @@ puckglue	;Player a2 takes the puck (92 puckstick.glue): faceoff and pass stats, 
 	jmp	(setc4player).l
 
 puckbody	;puck hits player a2. a3 = puck, d0 = distance^2 (from checkpuckcoll .ccx). The puck bounces off. A high puck
-	;(Zpos > 8) that is fast makes a2 fall (FallDown, Zpos > $C); a slower one starts SPA $2402 (94 SPAcatch) on a2
+	;(Zpos > 8) that is fast makes a2 fall (FallDown, Zpos > $C); a slower one starts SPA $2402 on a2
 	btst	#pf3onetimer,pflags3(a2)
 	bne.w	rtspuck
 	cmpi.w	#8,Zpos(a3)
@@ -1583,14 +1582,14 @@ puckbody	;puck hits player a2. a3 = puck, d0 = distance^2 (from checkpuckcoll .c
 .1
 	bset	#pfalock,pflags(a2)
 	bne.w	rtspuck
-	move.w	#$2402,d1	;94 SPAcatch
+	move.w	#$2402,d1
 	exg	a2,a3
 	jsr	(SetSPA).l
 	exg	a2,a3
-rtspuck	;Shared rts in the 94 rtss2 place (after puckbody), branched to from this segment
+rtspuck	;Shared rts in the 94 version place (after puckbody), branched to from this segment
 	rts
 
-deflect	;random puck direction on deflection, puck = a3. Entered from puckstick. 95: Zvel = randomd0($400)
+deflect	;random puck direction on deflection, puck = a3. Entered from puckstick. Zvel = randomd0($400)
 	st	(puckc).w
 	move.w	#$1000,d0
 	bsr.w	randomd0s
@@ -1693,10 +1692,10 @@ checkgoal	;look for coll with goal/net. a2 = goal struct, a3 = object, d2/d3 = x
 	jmp	(Goal).l
 .4
 	jsr	(ChkShotStat).l
-	move.w	#$25,-(sp)	;sfx $25 when the clock is stopped (92 SFXpuckpost = 9)
+	move.w	#$25,-(sp)	;sfx $25 when the clock is stopped (92 used 9)
 	btst	#gmclock,(gmode).w	;gmclock: no goal after the whistle
 	bne.w	.5
-	move.w	#8,(sp)	;sfx 8 (92 SFXoooh = 31) and crowd
+	move.w	#8,(sp)	;sfx 8 (92 used 31) and crowd
 	addi.w	#$12C,(crowdlevel).w
 	addi.w	#$28,(CwdExciteLvl).w
 .5
@@ -1842,7 +1841,7 @@ wallcollduringcheck	;during a check, a skater a2 (not a goalie) near the wall: t
 	rts
 
 checkcornercoll94	;Corner circles and side walls for object a3 at d2 / d3 (wcradiusx / wcradiusy); a hit goes to
-	;cornercollb94. 95: end boards $128
+	;95: end boards $128
 	bclr	#pf3wall,pflags3(a3)	;clears bit 4 in pflags3 (not used in 92)
 	move.w	#$98,d4
 	sub.w	(wcradiusx).w,d4
@@ -2003,7 +2002,7 @@ puckgoalie	;puck hits goalie a2. a3 = puck, d0/d1 = goalie - puck x/y. A save bo
 	bset	#2,(sflags4).w	;not reached (after jmp puckflip)
 	rts
 .chkanim
-	cmpi.w	#$1D4E,SPA(a2)	;goalie dive animation (94 SPAgdive)
+	cmpi.w	#$1D4E,SPA(a2)	;goalie dive animation
 	beq.s	.bounceoff	;branch if equal
 	cmpi.w	#$1C86,SPA(a2)	;95: two more goalie anims bounce the puck
 	beq.s	.bounceoff

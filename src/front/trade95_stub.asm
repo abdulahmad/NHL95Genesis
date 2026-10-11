@@ -1,6 +1,6 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	trade95 segment stub. Retail $0962EE-$097C53.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -12,9 +12,9 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $0962EE-$097C53, read from lst/nhl95.bin.
-ZeroLong = $69A			;main95
-TeamList = $772			;main95
+; External addresses outside, read from lst/nhl95.bin.
+ZeroLong = $69A
+TeamList = $772
 SeasonSchedule = $8DD8
 WriteSRAM = $98E6
 MakeSRAMChecksum = $9908

@@ -1,11 +1,10 @@
-; $00A95C  Adapted from input94.asm, title94.asm and setup94.asm: which pad controls which player, team setup
-;	The pad input 94 updateplayers did in line (the 95 updatepadinput); holdplayer, Acheck, burst and setpads
-;	chgplayer (with exit and swpchk); the 95 setcplayer entries and restorepl; clearTeamStats
-;	setteams, InitTeamSructure and setplayercolors. display95 is before it; the sound driver follows at $AF44.
+;	The pad input the 94 version did in line; holdplayer, Acheck, burst and setpads
+;	chgplayer (with exit and swpchk); the setcplayer entries and restorepl; clearTeamStats
+;	setteams, InitTeamSructure and setplayercolors. is before it; the sound driver follows at $AF44.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-updatepadinput	;the end of 94 updateplayers (replay94.tp2 on), called from updateplayers with a3 =
+updatepadinput	;the end of, called from updateplayers with a3 =
 	;object, d6 = SCnum. The pad (1-4) controlling a3 reads its buttons and runs doinput, with d4 = 0 / 2 / 4 / 6 (94 swaps the pad 3 /
 	;4 variables into pads 1 / 2). Then the assignment, collisions and the impact decay
 	cmp.w	(c1playernum).w,d6	;check if cont 1 is puck carrier
@@ -247,10 +246,10 @@ chgplayer	;the pad d4 takes the nearest free skater to where the puck is going (
 	cmp.w	(a1,d4.w),d6
 	beq.w	.same	;player is same so sweep check
 	move.w	d6,d0	;d0 now is new player
-	jmp	(setcplayer).l	;94: setc1player / setc2player
+	jmp	(setcplayer).l	;/ setc2player
 .ex
 	movem.l	(sp)+,d0-d6/a0-a1
-.exit	;94 exit
+.exit
 	rts
 .pass2	;as.top, but a goalie (position 0) may be taken
 	moveq	#-1,d5
@@ -319,7 +318,7 @@ chgplayer	;the pad d4 takes the nearest free skater to where the puck is going (
 .swpchk	;94 swpchk. Sweepcheck
 	jmp	(Sweepcheck).l
 
-setcplayer	;give pad d4 (0 / 2 / 4 / 6) player d0 (94 setc1player / setc2player): restorepl the old one, then
+setcplayer	;give pad d4 (0 / 2 / 4 / 6) player d0: restorepl the old one, then
 	;c1playernum + d4 = d0. Jumped to from chgplayer
 	movem.l	d0/a0-a1,-(sp)
 	movea.l	#c1playernum,a0
@@ -337,7 +336,7 @@ setc1player	;Jumped to from doinput
 	bsr.s	setcplayer
 	move.w	(sp)+,d4
 	rts
-setc2player	;Give pad 2 player d0 (setcplayer, d4 = 2). 94 setc2player did it inline
+setc2player	;Give pad 2 player d0 (setcplayer, d4 = 2). the 94 version did it inline
 	move.w	d4,-(sp)
 	move.w	#2,d4
 	bsr.s	setcplayer

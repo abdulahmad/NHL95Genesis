@@ -1,14 +1,14 @@
-;	NHL 95 replay95. Retail $08D39A-$08DF59 (3008 bytes).
-;	Mapped to replay94 (80%): updatereplay, ReplayMode, ShowReplayIcon / EraseReplayIcon / ShowReplayBanner / EraseReplayBanner,
+;	NHL 95.
+;	Mapped (80%): updatereplay, ReplayMode, ShowReplayIcon / EraseReplayIcon / ShowReplayBanner / EraseReplayBanner
 ;	suba4, adda4, UpdateCameraPos, RevReplayAdj, RestoreReplayFrame and ClampReplayView. 95 adds chkblock and CanBlock
 ;	(the 95 shot block tests) ahead of updatereplay, and a sound driver restart at the top of ReplayMode. checkwindow is in
-;	goal95. follows at $08DF5A.
+;	follows.
 ;	95 packs a replay frame object as 9-bit x and 11-bit frame (94: 10-bit x, 12-bit frame) and saves both PadControlBits words.
 ;Local labels follow where the code is 94 code and are numbered in the new 95 routines; the names are not kept.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 chkblock	;Called with d1 = SPAhook for a player a3 about to check: d1 becomes the shot block
 	;SPAblock ($1E6C) when the puck carrier (shot dir mode set) or the last shooter (ShotTimer running)
 	;is on the other team
@@ -231,7 +231,7 @@ updatereplay	;Called every frame to save replay events, d7 = elapsed frames. 95 
 	move.w	(sp)+,d0
 	move.w	(Hpos).w,(a0)+
 	move.w	(Vpos).w,(a0)+
-rtss8	;rts (rtss8; 93 rtss2)
+rtss8	;rts (rtss8)
 	rts
 
 ReplayMode	;Instant replay play-back control and display code. Called from the pause menu.
@@ -251,7 +251,7 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	move.w	#7,d0
 	move.w	#1,d1
 	jsr	(SoundCmd).l
-	;94 ReplayMode starts here. As 93: a d-pad press picks the nearest object in that direction
+	;the 94 version starts here. As 93: a d-pad press picks the nearest object in that direction
 	;and the camera follows it
 	bclr	#0,(sflags5).w
 	jsr	(forceblack).l
@@ -643,7 +643,7 @@ adda42	;adda4 without the sf2drec look-ahead: stop at the record point, else sho
 	beq.w	rtsAdda4
 	bsr.w	RestoreReplayFrame
 
-adda43	;a4 += replay frame size ($62), wrapping from replayend to M68K_RAM (92 replaystart)
+adda43	;a4 += replay frame size ($62), wrapping from replayend to M68K_RAM
 	adda.w	#$62,a4
 	cmpa.l	#replayend,a4
 	bne.w	rtsAdda4
@@ -694,7 +694,7 @@ RevReplayAdj	;Set sflags4 bit 7 for a reverse angle replay, then fall into Resto
 	; a4 = current replay frame address to convert into normal coordinates
 
 RestoreReplayFrame	;a4 = current replay frame address to convert into normal cordinates (92
-	;SetRCords), then the other replay variables (92 nonshift). 94 flips x/y and frames for the reverse angle
+	;SetRCords), then the other replay variables. 94 flips x/y and frames for the reverse angle
 	movem.l	d0-d2/a0/a6,-(sp)
 	movea.l	#revframetbl,a6
 	movea.l	a4,a0

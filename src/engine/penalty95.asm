@@ -1,12 +1,10 @@
-; $088F06  Adapted from penalty94.asm: penalties, the referee, PenaltyList, icing and offsides
 ;	2 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
 ;	the cmp and exg encodings after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $088F06  From penalty94.asm: penalties, the referee, the scoreboard messages
-;	94 limitfo, Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, PrintPenaltyMessagesString
-;	with LeadSong / ClearLeadSong / LeadSongExit moved in. checkagr follows at $08996E.
+;	Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, PrintPenaltyMessagesString
+;	with LeadSong / ClearLeadSong / LeadSongExit moved in. checkagr follows.
 ;except LeadSong ... LeadSongExit and PrintPenaltyMessagesString (dc.b, read from the retail bytes). the printz
 ;Strings as instructions; they are String here. Local labels are numbered; the names are not kept. Each routine comment
 ;	names its 94 file.
@@ -107,15 +105,15 @@ Stop4Pen	;a0 = PenaltyList penalty + 2. Stop the clock, set the faceoff spot fro
 	bne.w	.5
 	clr.w	d0
 	clr.w	d1
-	cmpi.b	#$E,-2(a0)	;goal (92 PenGoal = 6): center ice
+	cmpi.b	#$E,-2(a0)	;goal (92 used 6): center ice
 	beq.w	.0
 	move.w	(ltx).w,d0
 	move.w	(lty).w,d1
-	cmpi.b	#6,-2(a0)	;OOP (92 PenOOP = $C)
+	cmpi.b	#6,-2(a0)	;OOP (92 used $C)
 	beq.w	.0
 	move.w	(puckx).w,d0
 	move.w	(pucky).w,d1
-	cmpi.b	#$C,-2(a0)	;icing (92 PenIcing = 8)
+	cmpi.b	#$C,-2(a0)	;icing (92 used 8)
 	bne.w	.0
 	move.l	a3,-(sp)
 	movea.w	#(SortCords-M68K_RAM),a3
@@ -162,7 +160,7 @@ Stop4Pen	;a0 = PenaltyList penalty + 2. Stop the clock, set the faceoff spot fro
 	clr.w	(Pencntdwn).w
 	bset	#2,(gmode).w
 	jsr	(play_new_song).l
-	move.w	#SFXwhistle,-(sp)	;whistle (92 SFXwhistle = 10)
+	move.w	#SFXwhistle,-(sp)	;whistle (92 used 10)
 	jsr	(sfx).l
 	movem.l	d1/a0-a3,-(sp)
 	movea.l	#PenBuf,a0
@@ -182,16 +180,16 @@ Stop4Pen	;a0 = PenaltyList penalty + 2. Stop the clock, set the faceoff spot fro
 .7
 	dbf	d0,.6
 	movem.l	(sp)+,d1/a0-a3
-	move.w	#$A,d0	;whistle (92 PenWhistle = $26)
+	move.w	#$A,d0	;whistle (92 used $26)
 	bra.w	SetPA
 
-rtspen	;The shared rts of the penalty routines (94 rtss2)
+rtspen	;The shared rts of the penalty routines
 	rts
 
 AddPenalty	;Add penalty d0 (PenaltyList offset) for player a3. Ignored while the clock is stopped
 	btst	#0,(gmode).w
 	bne.s	rtspen
-	cmp.w	#$C,d0	;icing (92 PenIcing = 8)
+	cmp.w	#$C,d0	;icing (92 used 8)
 	beq.w	AddPenalty2
 	tst.w	(OptPen).w
 	beq.s	rtspen
@@ -199,14 +197,14 @@ AddPenalty	;Add penalty d0 (PenaltyList offset) for player a3. Ignored while the
 	bne.s	rtspen
 	btst	#5,(gmode).w
 	bne.w	AddPenalty2
-	cmp.w	#$10,d0	;offsides (92 PenOffsides = $A)
+	cmp.w	#$10,d0	;offsides (92 used $A)
 	beq.s	rtspen
 
 AddPenalty2	;Forced penalties like faceoff and game over. d0 = penalty number, a3 = player
 	btst	#7,(sflags).w
 	bne.s	rtspen
 	movem.l	d1/a0-a1,-(sp)
-	cmp.w	#$E,d0	;goal (92 PenGoal = 6) and up
+	cmp.w	#$E,d0	;goal (92 used 6) and up
 	blt.w	.1
 	addi.w	#$C8,(crowdlevel).w	;200
 	move.w	#$C,-(sp)	;song $C for the home team
@@ -237,7 +235,7 @@ AddPenalty2	;Forced penalties like faceoff and game over. d0 = penalty number, a
 .3
 	bset	#2,(sflags9).w
 .4
-	bset	#4,pflags2(a3)	;pflags2 bit 4 (92 pf2pen, bit 6 in 92)
+	bset	#4,pflags2(a3)	;pflags2 bit 4
 	beq.w	.5
 	clr.w	(a1)	;player already has a penalty, drop this one
 .5
@@ -636,7 +634,7 @@ checkfornewpen	;Look for a new penalty (entered through AddPenalty / AddPenalty2
 .3
 	bset	#3,(gmode).w
 	bne.s	.0
-	move.w	#$2C,d0	;delayed penalty (92 PenDelay = $24)
+	move.w	#$2C,d0	;delayed penalty (92 used $24)
 	bsr.w	SetPA
 	bra.s	.0
 
@@ -647,7 +645,7 @@ UpdatePA	;Animate the ref in the ref window (RefCnt, SetPA2); game over (RefPen 
 	bpl.w	.0
 	bsr.w	SetPA2
 .0
-	cmpi.w	#4,(RefPen).l	;game over (92 PenEOG = 4)
+	cmpi.w	#4,(RefPen).l	;game over (92 used 4)
 	bne.w	.1
 	jsr	(DisplayPeriodOver).l
 .1
@@ -665,7 +663,7 @@ SetPA	;Start ref animation d0 (penalty number); from $2E up ignored. prefmes, go
 .0
 	clr.w	(RefStep).w
 	bsr.w	prefmes
-	cmp.w	#$E,d0	;goal (92 PenGoal = 6)
+	cmp.w	#$E,d0	;goal (92 used 6)
 	bne.w	.1
 	jsr	(DisplayPlayerAttributeMenu).l
 .1
@@ -816,10 +814,9 @@ PrintPenaltyMessagesString	;93 name. Blank the horizontal mode penalty message l
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $08996E  From data94.asm and others: PenaltyList, penalty and offsides checks
-;	Mapped to data94, but only the tables are data94 (PenaltyList = 94 PenaltyList, PenShotPenalties, linelist); the code is moved in:
+;	Mapped, but only the tables are ; the code is moved
 ;	checkagr, showref, ClearPenaltyBuffer, ClearPenalties / clrTmPdst, puckIChk
-;	ChkOffsides and checkob. follows at $08A056.
+;	ChkOffsides and checkob. follows.
 ;except puckIChk and ChkOffsides (dc.b, read from the retail bytes with the 94 source as the guide). Local labels are numbered
 ;the names are not kept.
 ;	95 changes: the goal line $10B (94 $108), the blue line $52 (94 $54), checkagr's base $32 and the sflags9 penalty options.
@@ -979,7 +976,7 @@ puckIChk	;Icing check: once the puck is loose (puckc negative) past the goal lin
 	bset	#0,(iflags).w	;#ifcgl
 	rts
 
-ChkOffsides	;Offsides: clear the flag of a team that is all back onside (.8, 94 ClearOffsidesIfAllPlayers), then when
+ChkOffsides	;Offsides: clear the flag of a team that is all back onside (.8), then when
 	;puck a3 crosses a blue line ($52, 94 $54) set tmflags bit 4 of the team with a player ahead of it
 	btst	#5,(gmode).w
 	beq.w	.3
@@ -1038,7 +1035,7 @@ ChkOffsides	;Offsides: clear the flag of a team that is all back onside (.8, 94 
 	adda.w	#SCstruct,a0
 	dbf	d2,.6
 	rts
-.8	;94 ClearOffsidesIfAllPlayers
+.8
 	btst	#4,tmflags(a2)
 	beq.s	.3
 	movea.w	tmsort(a2),a0

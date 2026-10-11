@@ -1,7 +1,6 @@
-; $0A0D1A  Adapted from stats94.asm: scoring and penalty summaries
-;	Mapped to stats94 (58%): ScoringSummaryScreen ... DisplayPenaltyEntry (the goal and penalty summaries). crowd95 (updatecrowdf,
+;	Mapped (58%): ScoringSummaryScreen ... DisplayPenaltyEntry (the goal and penalty summaries). (updatecrowdf
 ;	showcrowd) is just before it.
-;ScoringSummaryScreen ... DisplayPenaltyEntry ($0A0D1A-$0A12A9) as dc.b; it is transcribed from the retail bytes.
+;ScoringSummaryScreen ... DisplayPenaltyEntry as dc.b; it is transcribed from the retail bytes.
 ;Local labels are numbered; the names are not kept.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
@@ -179,7 +178,7 @@ PrintPeriodTime	;Print player d0 (byte, negative = none) and go down a row
 .0
 	addq.w	#1,(printy).w
 
-rtsGameStatScroll	;stats94. Shared rts of CheckGameStatScroll
+rtsGameStatScroll	;Shared rts of CheckGameStatScroll
 	rts
 
 GoalTypeTbl	;ScoreSum byte 2 & $7F: SH2, SH, even, PP, PP2
@@ -274,7 +273,7 @@ CheckPenaltyScroll	;As CheckGameStatScroll for the penalty summary
 	cmp.w	(SelectedPlayerIdx).w,d0
 	bgt.w	rtsPenaltyScroll
 
-UpdatePenaltyScroll	;(93 name) Penalty summary: set VertLineScrolling = d0, stop on an entry boundary (24 lines), draw the
+UpdatePenaltyScroll	; Penalty summary: set VertLineScrolling = d0, stop on an entry boundary (24 lines), draw the
 	;entry coming into view, VSRAM = VertLineScrolling - $50
 	move.w	(VertLineScrolling).w,d1
 	move.w	d0,(VertLineScrolling).w
@@ -310,7 +309,7 @@ UpdatePenaltyScroll	;(93 name) Penalty summary: set VertLineScrolling = d0, stop
 	move.w	d0,(a0)
 	move.w	(sp)+,(disflags).w
 
-rtsPenaltyScroll	;stats94. Shared rts of CheckPenaltyScroll
+rtsPenaltyScroll	;Shared rts of CheckPenaltyScroll
 	rts
 
 DisplayPenaltyLineUp	;The penalty entry in the high word of d0 at the top of the window

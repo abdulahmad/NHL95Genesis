@@ -1,7 +1,7 @@
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	control95 segment stub. Retail $00A95C-$00AF43.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -13,9 +13,9 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $00A95C-$00AF43, read from lst/nhl95.bin.
-SPAskate = $2		;main95
-SPAskatewp = $738		;main95
+; External addresses outside, read from lst/nhl95.bin.
+SPAskate = $2
+SPAskatewp = $738
 TeamList = $772
 SPAHold = $E10
 SPAhook = $E74
@@ -28,7 +28,7 @@ checkcoll = $7A7B4
 Sweepcheck = $7B08A
 getpde = $7CAD0
 setpde = $7DBCA
-doassignment = $7FD84		;run a3's assignment (94 updateplayers does the asstab call in line).
+doassignment = $7FD84		;run a3's assignment.
 doinput = $83EB2
 LoadTeamLines = $8A622
 dirtab = $8B9D6

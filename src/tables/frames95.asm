@@ -1,4 +1,4 @@
-;	NHL 95 sprite animation tables (92 / 93 Frames.asm, 94 frames94.asm), then revframetbl. Retail $005A34-$008DD7 (13220 bytes),
+;	NHL 95 sprite animation tables (92 / ), then revframetbl.
 ;	from lst/nhl95.bin.lst (all dc.b there).
 ;	SPAlist is a word, then one table per animation. A table is 8 direction offsets (from .t), a flag word, then
 ;	frame,time word pairs per direction; a negative time ends the direction. SPA<name> is the table offset from
@@ -408,7 +408,7 @@ SPAstopwp_table:	;Frames 403-418
 .6	dc.w	SPFstopwp+12,4,SPFstopwp+13,-4
 .7	dc.w	SPFstopwp+14,4,SPFstopwp+15,-4
 
-SPAshoulderchkl	=	*-SPAlist	; checkinglist ($7AF06) uses it for the 94 shoulderchkl and hipchkl slots
+SPAshoulderchkl	=	*-SPAlist	; checkinglist uses it for the 94 shoulderchkl and hipchkl slots
 SPAshoulderchkl_table:	;Frames 123-130
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -430,7 +430,7 @@ SPAshoulderchkl_table:	;Frames 123-130
 .6	dc.w	SPFshoulderl+6,-24
 .7	dc.w	SPFshoulderl+7,-24
 
-SPAshoulderchkr	=	*-SPAlist	; checkinglist ($7AF06) uses it for the 94 shoulderchkr and hipchkr slots
+SPAshoulderchkr	=	*-SPAlist	; checkinglist uses it for the 94 shoulderchkr and hipchkr slots
 SPAshoulderchkr_table:	;Frames 131-138
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1410,7 +1410,7 @@ SPAgskate_table:	;Frames 852-875
 .6	dc.w	SPFgskate+18,12,SPFgskate+19,8,SPFgskate+20,12,SPFgskate+19,-8
 .7	dc.w	SPFgskate+21,12,SPFgskate+22,8,SPFgskate+23,12,SPFgskate+22,-8
 
-SPAcelebrate	=	*-SPAlist	; the 94 assscore step
+SPAcelebrate	=	*-SPAlist	; the 94 version step
 SPAcelebrate_table:	;Frames 836-851
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1586,7 +1586,7 @@ SPAbglass_table:	;Frames 1000-1004
 .6
 .7	dc.w	SPFbglass,8,SPFbglass+1,8,SPFbglass+2,8,SPFbglass+3,8,SPFbglass+4,-1000
 
-SPAshoulderchkl2	=	*-SPAlist	; The second checking list ($7AF16) left check; FallDown skips the flip after it
+SPAshoulderchkl2	=	*-SPAlist	; The second checking list left check; FallDown skips the flip after it
 SPAshoulderchkl2_table:	;Frames 832-834
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1608,7 +1608,7 @@ SPAshoulderchkl2_table:	;Frames 832-834
 .4
 .5	dc.w	SPFshoulder2+2,-24
 
-SPAshoulderchkr2	=	*-SPAlist	; The second checking list ($7AF16) right check; FallDown skips the flip after it
+SPAshoulderchkr2	=	*-SPAlist	; The second checking list right check; FallDown skips the flip after it
 SPAshoulderchkr2_table:	;Frames 833-835
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1732,7 +1732,7 @@ SPAboardmidr_table:	;Frames 66-1039
 .6
 .7	dc.w	SPFboardmid+24,6,SPFboardmid+25,6,SPFboardmid+26,6,SPFboardmid+27,80,SPFboardmid+26,6,SPFboardmid+24,6,SPFglide+6,-8
 
-SPApump	=	*-SPAlist	; inferred: the word list at $83564 after SPAcelebrate (label), with SPApump2
+SPApump	=	*-SPAlist	; inferred: the word list after SPAcelebrate (label), with SPApump2
 SPApump_table:	;Frames 922-937
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1754,7 +1754,7 @@ SPApump_table:	;Frames 922-937
 .6	dc.w	SPFpump+12,12,SPFpump+13,12,SPFpump+12,12,SPFpump+13,12,SPFpump+12,12,SPFpump+13,-12
 .7	dc.w	SPFpump+14,12,SPFpump+15,12,SPFpump+14,12,SPFpump+15,12,SPFpump+14,12,SPFpump+15,-12
 
-SPAstanley	=	*-SPAlist	; inferred: set at $834C0 (label), before the celebrate step
+SPAstanley	=	*-SPAlist	; inferred: set (label), before the celebrate step
 SPAstanley_table:	;Frames 938-953
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1776,7 +1776,7 @@ SPAstanley_table:	;Frames 938-953
 .6	dc.w	SPFcup+12,12,SPFcup+13,12,SPFcup+12,12,SPFcup+13,12,SPFcup+12,12,SPFcup+13,-12
 .7	dc.w	SPFcup+14,12,SPFcup+15,12,SPFcup+14,12,SPFcup+15,12,SPFcup+14,12,SPFcup+15,-12
 
-SPApump2	=	*-SPAlist	; inferred: the word list at $83564 alternates it with SPApump
+SPApump2	=	*-SPAlist	; inferred: the word list alternates it with SPApump
 SPApump2_table:	;Frames 954-969
 .t	;offset to each direction of animation (0-7)
 	dc.w	.0-.t

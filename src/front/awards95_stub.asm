@@ -1,6 +1,6 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	awards95 segment stub. Retail $09C6F0-$09DA4F.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -12,8 +12,8 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $09C6F0-$09DA4F, read from lst/nhl95.bin.
-TeamList = $772			;main95
+; External addresses outside, read from lst/nhl95.bin.
+TeamList = $772
 MakeSRAMChecksum = $9908
 setvram = $79936
 dobitmap = $79A3C

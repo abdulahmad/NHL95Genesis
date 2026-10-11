@@ -1,23 +1,21 @@
-; $079902  Adapted from video94.asm and display94.asm: VDP helpers, DMA, palettes, sprite frames, rink scroll, decompressor, vblank, pads
 ;	4 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
 ;	the cmp and exg encodings after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $079902  From video94.asm and display94.asm: VDP helpers, DMA, palettes, sprite frames, rink scroll, decompressor, vblank, pads
-;	Three runs in ROM order: the VDP helpers with the vblank transfers ($79902), the sprite frames and rink
-;	scroll ($79D80), then the decompressor, the vblank handlers and the pad reads ($7A02A).
-;	The 94 middle94_1 / vdp helpers in a new order: DoFill, setvram, setVram_0, Vmaddr, dobitmap, DoDMA_clearCallbackPointer
+;	Three runs in ROM order: the VDP helpers with the vblank transfers, the sprite frames and rink
+;	scroll, then the decompressor, the vblank handlers and the pad reads.
+;	The 94 / vdp helpers in a new order: DoFill, setvram, setVram_0, Vmaddr, dobitmap, DoDMA_clearCallbackPointer
 ;	DecompressGraphics (95: no packed graphics), DoDMApro, WaitDMA, forcefade, cramfade, CopyPaletteToCRAM, xyVmMap, remap; then the
 ;	vblank transfers DumpSprites, DumpSprites2, DoDMAlist (ends at the shared rts rtss2), SetScroll2; then DoDMA (95: no Z80
-;bus request). cramfade ($79B54) and DumpSprites ($79C94) are written as instructions.
+;bus request). cramfade and DumpSprites are written as instructions.
 
 
 ; fill vram
 ; d0 = bytes to fill
 ; d1 = vram address
 ; d2 = data to fill with
-DoFill	;Called, middle95. 95 writes the long straight to the vdp (94 went through dmaram)
+DoFill	;Called,. 95 writes the long straight to the vdp (94 went through dmaram)
 	movem.l	d3/a1,-(sp)
 	movea.l	#VDP_DATA,a1
 	andi.l	#$FFFF,d1
@@ -46,7 +44,7 @@ setvram	;Fade every colour to d0, then fall into setVram_0
 	dbf	d1,.0
 	move.w	#$18,(palcount).w
 	bsr.w	forcefade
-setVram_0	;second half of 92 setVram (no fade): clear vram and set the VDP registers from disflags, Map1col
+setVram_0	;second half of the 92 version (no fade): clear vram and set the VDP registers from disflags, Map1col
 	;VmMap1-3, VSPRITES and VSCRLPM. Falls in from setvram, called from EASportsScreen
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -342,7 +340,7 @@ DumpSprites	;Transfer (by dma) scroll stuff, sprite table, vram data in dmalist.
 	bsr.w	SetScroll2
 DumpSprites2	;Transfer sprite table, then the dma list. Falls into DoDMAlist
 	movea.w	#(Satt-M68K_RAM),a0
-	move.w	(Sattsize).w,d0	;93 Sattsize: words
+	move.w	(Sattsize).w,d0	;words
 	move.w	(VSPRITES).w,d1
 	bsr.w	DoDMA
 DoDMAList	;Transfer data from dmalist. Also called
@@ -356,8 +354,8 @@ DoDMAList	;Transfer data from dmalist. Also called
 	bsr.w	DoDMA
 	cmpa.l	#DMAList,a6
 	bne.s	.0
-rtss2	;Shared rts (93 rtss; 94 kept it), branched to from cramfade, updatescroll (below)
-	;middle95, and movea.l #x
+rtss2	;Shared rts, branched to from cramfade, updatescroll (below)
+	;and movea.l #x
 	rts
 
 SetScroll2	;93 Write Hscroll / Vscroll to the vdp. Called from DumpSprites
@@ -431,8 +429,7 @@ DoDMA	;95 drops the 94 Z80 bus request, the sr save and the last word fix for a 
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $079D80  From display94.asm: sprite frames, rink scroll
-;	94 addframe, addframe2, then sizetab (94 kept it), then updatescroll. 95 reads a new 8 byte sprite record (Y, size /
+;	addframe2, then sizetab (94 kept it), then updatescroll. 95 reads a new 8 byte sprite record (Y, size /
 ;	tile high bits, tile / flags, X) and has no horizontal rink case.
 
 addframe	;a3 = sort cord object. Project it with find3d, then addframe2. a5 = dma trans, a6 = sprite attribute table.
@@ -594,7 +591,7 @@ addframe2	;d0/d1 = x/y coord on screen, a3 = object, a5 = dma trans, a6 = sprite
 	move.w	(sp)+,attribute(a3)
 	rts
 
-sizetab	;sprite size code to tile count. 92 video.asm sizetab, used by addframe2 (94 kept it)
+sizetab	;sprite size code to tile count. sizetab, used by addframe2 (94 kept it)
 	dc.b	1,2,3,4,2,4,6,8,3,6,9,$C,4,8,$C,$10
 
 updatescroll	;92 name; 93 show_rink. Using hpos and vpos set scroll cords; queue rink map rows on the dma list (a5) when vertical
@@ -665,14 +662,13 @@ updatescroll	;92 name; 93 show_rink. Using hpos and vpos set scroll cords; queue
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $07A02A  From video94.asm: the decompressor, vblank, pads
-;	94 forceblack, forceblack2, the graphics decompressor (DecompressBytecode, jump_table, the Opcode_* handlers, FlushOutputBuffer; no
-;	caller in 95), AddSmallFont, DecompressGraphicsWithCallback, Framer, AddFramer, the 95 AddFramer2; moved in: VBjsr
-;	VBlank, p_music_vblank (95: pads, then SoundCmd 1), vb2 and IRQ7, VBlank_SetOptions; then
-;	orjoy, the 95 orjoy4way, nodiag, ReadJoy1-4, ReadJoy, jdtab, ReadJoyData ... ResetZ80Bus (95 pauses the sound driver
+;	forceblack2, the graphics decompressor (DecompressBytecode, jump_table, the Opcode_* handlers, FlushOutputBuffer; no
+;	caller in 95), AddSmallFont, DecompressGraphicsWithCallback, Framer, AddFramer, the AddFramer2; moved in: VBjsr
+;	VBlank, p_music_vblank, vb2 and IRQ7, VBlank_SetOptions; then
+;	orjoy, the orjoy4way, nodiag, ReadJoy1-4, ReadJoy, jdtab, ReadJoyData ... ResetZ80Bus (95 pauses the sound driver
 ;	around the pad reads), then the 95 ReadMenuJoy.
-;	written as instructions: forceblack2 ... AddSmallFont ($7A054-$7A263), AddFramer ($7A2EC), VBlank, vb2, VBlank_SetOptions,
-;	ReadJoyData ... ResetZ80Bus ($7A55A-$7A6A9).
+;	written as instructions: forceblack2 ... AddSmallFont, AddFramer, VBlank, vb2, VBlank_SetOptions
+;	ReadJoyData ... ResetZ80Bus.
 
 ; fade all colors to black but don't upset palfadenew
 forceblack	;Called from most screens
@@ -710,7 +706,7 @@ forceblack2	;No xref. forceblack with palcount $64 (one step, CopyPaletteToCRAM)
 	rts
 
 DecompressBytecode	;No caller in 95 (DecompressGraphics skips packed blocks). 93 name. Unpack a0 into the 256 byte ring buffer
-	;at ThreeStars (93 DispAttribCtr)
+	;at ThreeStars
 	movea.w	#(ThreeStars-M68K_RAM),a1
 	movea.w	#(ThreeStars-M68K_RAM),a3
 	movea.w	#(callbackPtr-M68K_RAM),a4
@@ -905,7 +901,7 @@ FlushOutputBuffer	;Write the full ring buffer to vram
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
 
-AddSmallFont	;Jumped to from ReAddSmallFont. 95 loads the map at the address in smallfontptr (94: SmallFontMap)
+AddSmallFont	;Jumped to from ReAddSmallFont. 95 loads the map at the address in smallfontptr
 	move.w	d4,(smallfontchars).w
 	movea.l	(smallfontptr).w,a2
 	addq.w	#8,a2
@@ -918,7 +914,7 @@ DecompressGraphicsWithCallback	;DecompressGraphics, then return 8 bytes past the
 	rts
 
 ; use print x/y/m to set vram address
-Framer	;Draw a d0 x d1 frame at printx / printy from the framer map. 95 takes the map from framermapptr (94: framermap)
+Framer	;Draw a d0 x d1 frame at printx / printy from the framer map. 95 takes the map from framermapptr
 	movem.l	d0-d4/a0-a1,-(sp)
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -1005,7 +1001,7 @@ VBlank	;93 name; 93 Main vblank code for game play (vbint target). DumpSprites w
 	bne.w	.1
 	tst.w	(gameclock).w
 	beq.w	.c
-	subi.w	#$AAA,(gameclock+2).w	;jiffy ($10000/24)
+	subi.w	#$AAA,(gameclock+2).w	;jiffy
 	bcc.w	.c
 	bset	#dfclock,(disflags).w
 	subq.w	#1,(gameclock).w
@@ -1016,7 +1012,7 @@ VBlank	;93 name; 93 Main vblank code for game play (vbint target). DumpSprites w
 	move.w	#SFXbeep2,-(sp)	;SFXbeep2, played when gameclock reaches 60
 	jsr	(sfx).l	;95: jsr (94: bsr.w)
 .c
-	addq.w	#1,(vcount).w	;92 Vcount
+	addq.w	#1,(vcount).w
 	jsr	(p_music_vblank).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rte
@@ -1050,7 +1046,7 @@ vb2	;93 name. Vblank used for palfades only, no dmas (vbint target). No rte here
 IRQ7	;rte only. vb2 falls in; the vector table ($60, $64, ...) points here
 	rte
 
-VBlank_SetOptions	;vbint handler stored by the menus: 92 vb2 (cramfade unless dfng), plus
+VBlank_SetOptions	;vbint handler stored by the menus: the 92 version (cramfade unless dfng), plus
 	;DumpSprites2 when dfok is set
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w
@@ -1156,7 +1152,7 @@ NoJoy	;No buttons, direction 8 (none)
 	clr.w	d3
 	move.w	#8,d0
 	rts
-ReadJoy4	;95: NoJoy without FourWayPlay
+ReadJoy4	;NoJoy without FourWayPlay
 	tst.w	(FourWayPlay).w
 	beq.s	NoJoy
 	move.b	(pad4way4).w,d0
@@ -1342,9 +1338,8 @@ ReadMenuJoy	;Read the menu pad: with sflags12 bit 0 clear, pad menupadnum (ReadJ
 	jmp	(orjoy4way).l
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $07A762  From video94.asm and stats94.asm: ProcessInputWithRepeat, WaitVSyncAndReadInput
 ;ProcessInputWithRepeat and WaitVSyncAndReadInput, which 95 put in front of the collision code
-;	(starts at $7A7B4). WaitVSyncAndReadInput is written as instructions.
+;	(starts). WaitVSyncAndReadInput is written as instructions.
 
 ProcessInputWithRepeat	;93 name. nodiag, then key repeat on d1-d3. 95: first repeat after $19 frames, then every 4 (every $14 with sflags12
 	;bit 0)

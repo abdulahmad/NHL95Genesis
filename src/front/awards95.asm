@@ -1,16 +1,16 @@
-;	NHL 95 awards95. Retail $09C6F0-$09DA4F (4960 bytes).
+;	NHL 95.
 ;	New in 95 (no 94 file): GetTeamUser (UpdateRecords), the end of season awards (SeasonAwards: the award scans, the finalists and
 ;	winner screens) and the playoffs (InitPlayoffs ... CollectSeriesWinners, PlayoffTreeScreen).
-;	The segment map ended this file at $09D9BF; RoundSeriesOffsets / RoundSeriesCounts and PlayoffTreeScreen (to $09DA4F) belong here,
-;	starts at $09DA50 (94 ClearShootout).
-;ScanPresidents ... GetAwardAssists ($09D03E-$09D4CD), RestoreSeasonHeader and PlayoffTreeScreen as dc.b; they are transcribed
+;	The segment map ended this file ; RoundSeriesOffsets / RoundSeriesCounts and PlayoffTreeScreen (to) belong here
+;	starts.
+;ScanPresidents ... GetAwardAssists, RestoreSeasonHeader and PlayoffTreeScreen as dc.b; they are transcribed
 ;from the retail bytes. printz / printz2 Strings and remap bytes as instructions.
 ;	$20xxxx addresses are save RAM (odd bytes).
 ;Local labels are numbered; the names are not kept.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 
 GetTeamUser	;(recuser1) = the name log entry of the pad on team a1 (HmShots 1, else 2), 0 without sflags11 bit 7
 	movem.l	d0-d2,-(sp)

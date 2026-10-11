@@ -1,19 +1,17 @@
-; $07C512  Adapted from video94.asm and many other 94 files: math, text, names, numbers, clock digits, team blocks, team graphics
 ;	2 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $07C512  From video94.asm and many other 94 files: display helpers
 ;	Helpers from many 94 files: sroot, vtoa, find3d
 ;	randomd0s / randomd0, GetHot, vcountwait, printz2, printsmall (ControlCodeJumpTable and the control codes)
 ;	printz, print, eraser, showclock (95: big digits when paused, PutClockDigit), PerLabels / PenShotPenalties2
 ;	makepde / getpde, ReadGoaliePulled, ReadAttributeNibble / GetDefenseStart / ProcessNibble (95: season data versions)
 ;	player name formatting (95: by team struct a2 or team number d7), CalcAttrib and its weight lists, PushTime
 ;	PushNumber, PushNumberWidth, appendz, appstring, setupTeamBlocksMap / CopyTeamBlockMapData, DoDMA_nd2, TeamLogoBitmaps
-;	ResetClock / GetPeriodTime, ClrHor, the 95 AssignPads, waitx, PrintScores1 / PrintTeamNameAndScore
+;	ResetClock / GetPeriodTime, ClrHor, the AssignPads, waitx, PrintScores1 / PrintTeamNameAndScore
 ;	chkpk / chkpk2, printbigz ... PutBigTile, bfasciicon, UnpackPicture, RestoreTeamEnergy
-;	WeightedRandomSelect, AppendTeamName ... TrimSpaces, then setupice. LoadHomeTeamGfx follows at $7DEA0.
+;	WeightedRandomSelect, AppendTeamName ... TrimSpaces, then setupice. LoadHomeTeamGfx follows.
 ;	written as instructions: the ControlCodeJumpTable code, GetDefenseStart, GetForwards, ProcessNibble ... getnameD7,
 ;	FormatPlayerNameLast ... FormatLastName, FormatLastNameAlt, PushNumberWidthZero, GetTeamLogo, DrawTeamLogo, ClrHor, AssignPads,
 ;ReAddFramer, ReAddSmallFont, chkpk, printbigz2, printbig2, RestoreTeamEnergy, AppendTeamName ... TrimSpaces. the printz Strings
@@ -113,7 +111,7 @@ vtoa	;d0/d1 = vector: return d0 = direction 0-7 (8 for no vector) through.dt
 .dt
 	dc.b	1,7,3,5,0,0,4,4,2,6,2,6,1,7,3,5
 
-find3d	;input: d0 = xfield, d1 = yfield, d2 = height off field. Output: d0 = xscreen, d1 = yscreen, or d1 = $4E20 (92 osflag) when off screen. 95: no horizontal rink
+find3d	;input: d0 = xfield, d1 = yfield, d2 = height off field. Output: d0 = xscreen, d1 = yscreen, or d1 = $4E20 when off screen. 95: no horizontal rink
 	;case, range x +-$98, y -$D0..$79
 	sub.w	(Hpos).w,d0
 	sub.w	(Vpos).w,d1
@@ -190,8 +188,8 @@ GetHot	;Push long address of structure to get hot spot from; hot spot x/y return
 	move.l	(sp)+,(sp)
 	rts
 
-vcountwait	;(93 MenuWaitVblank): waits till vcount changes, then resyncs vcount. Saves d0. 94 reads oldvcount twice. Called from PauseMode
-	;hockey94_02 and the stats code
+vcountwait	;waits till vcount changes, then resyncs vcount. Saves d0. 94 reads oldvcount twice. Called from PauseMode
+	;and the stats code
 	move.w	d0,-(sp)
 	move.w	(oldvcount).w,d0
 .0
@@ -268,7 +266,7 @@ ControlCodeJumpTable	;(dc.b). 93 name. printsmall control codes, indexed by -byt
 	dc.l	ControlCode_AddY	;-6: y offset
 	dc.l	ControlCode_SetFont	;-7: char set
 	dc.l	ControlCode_SetMapAndPosition	;-8: attribute, map, x, y
-ControlCode_SetMapAndPosition	;93: printsmall control code -8, next 4 bytes = attribute, map, x, y
+ControlCode_SetMapAndPosition	;the 93 version control code -8, next 4 bytes = attribute, map, x, y
 	bsr.w	ControlCode_SetAttribute
 	bsr.w	ControlCode_SetMap
 	bsr.w	ControlCode_SetX
@@ -474,7 +472,7 @@ PutClockDigit	;Draw big clock digit d0 (0-9, $A the colon) at printx / printy fr
 	movem.w	(sp)+,d0-d7
 	rts
 
-showclockdma	;94 showclock vertical rink body (.3): when dfclock is set queue the clock chars in the dma list (a5); with gmode2 bit 1 shootoutclock is shown. Not in a
+showclockdma	;the 94 version vertical rink body (.3): when dfclock is set queue the clock chars in the dma list (a5); with gmode2 bit 1 shootoutclock is shown. Not in a
 	;stoppage (sflags2 bit 3) or game over (gsp 4)
 	bclr	#3,(disflags).w
 	beq.w	.2
@@ -1503,7 +1501,7 @@ GetPeriodTime	;Return d0 = period length in seconds for the period length option
 .times	;period length in seconds by OptPerlen
 	dc.w	$12C,$258,$4B0,$1E
 
-ClrHor	;No xref. 94 ClrHor: revert the graphics back to vertical ice rink mode: the rink tiles, LoadHomeTeamGfx
+ClrHor	;No xref. revert the graphics back to vertical ice rink mode: the rink tiles, LoadHomeTeamGfx
 	;and the EASN map at their chars, SprSort, and unless paused clear the screen (eraser). 95 no longer prints the scores here
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#7,(sflags).w
@@ -1775,7 +1773,7 @@ AddFonts	;Load the small font at d4 (smallfontchars, smallfontptr = SmallFontMap
 	jsr	(DoDMA_clearCallbackPointer).l
 	rts
 
-chkpk	;No xref. 94 chkpk: with a power play (sflags2 bit 5) chkpk2, else Z set
+chkpk	;No xref. with a power play (sflags2 bit 5) chkpk2, else Z set
 	btst	#5,(sflags2).w	;#sf2pwrplay - check if power play in progress
 	bne.w	chkpk2
 	eori	#4,ccr	;Z flag
@@ -1830,14 +1828,14 @@ printbig1	;printbig with BigFontMap (the AddFonts big font)
 	move.l	#BigFontMap,(bigfontptr).l
 	bra.w	printbigtext
 
-printbig	;print String a1 with the big font at printx / printy. 95: BigFontMap2 (bigfontptr)
+printbig	;print String a1 with the big font at printx / printy. BigFontMap2 (bigfontptr)
 	move.l	#BigFontMap2,(bigfontptr).l
 	bra.w	printbigtext
 
 printbig2	;printbig with BigFontMap3. Falls into printbigtext
 	move.l	#BigFontMap3,(bigfontptr).l
 
-printbigtext	;the 94 printbig body, with the font map at bigfontptr. Lower case is printed as upper case
+printbigtext	;the 94 version body, with the font map at bigfontptr. Lower case is printed as upper case
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	movem.l	d0-d7/a0/a2,-(sp)
@@ -2178,7 +2176,7 @@ TrimSpaces	;Trim the trailing spaces of String a2 and pad it to an even length
 	movem.l	(sp)+,a3
 	rts
 
-setupice	;set all variables, send non purgeable graphics, build sprite frame lists for ice rink (94 setupice). 95 has no reverse rink tiles, loads AddFramer2 and
+setupice	;set all variables, send non purgeable graphics, build sprite frame lists for ice rink. 95 has no reverse rink tiles, loads AddFramer2
 	;AddFonts, and clears c3playernum / c4playernum too
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#1,(disflags).w
@@ -2269,9 +2267,8 @@ setupice	;set all variables, send non purgeable graphics, build sprite frame lis
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $07DEA0  From title94.asm, penalty94.asm and video94.asm: home team graphics, EASN logo, clock text
 ;	LoadHomeTeamGfx and TeamGfxList, EASNLogo and setupEASNmap, FormatAndPrintTime and
-;	PeriodLabelTable. follows at $7DFAC. Written as instructions: TeamGfxList, FormatAndPrintTime, PeriodLabelTable.
+;	PeriodLabelTable. follows. Written as instructions: TeamGfxList, FormatAndPrintTime, PeriodLabelTable.
 ;the printz String in EASNLogo as instructions.
 
 
@@ -2287,7 +2284,7 @@ LoadHomeTeamGfx	;Load the HomeTeam graphics of TeamGfxList to VRAM d4 - $18 (DoD
 	jsr	(DoDMA_clearCallbackPointer).l
 	move.w	(sp)+,d0
 	rts
-TeamGfxList	;(dc.b). LoadHomeTeamGfx: one address per team (TeamList order) in the 95 ArenaGfxBank (ASE and ASW share one)
+TeamGfxList	;(dc.b). LoadHomeTeamGfx: one address per team (TeamList order) in the ArenaGfxBank (ASE and ASW share one)
 	dc.l	ArenaGfxBank,ArenaGfxBank+$4BFA,ArenaGfxBank+$30A,ArenaGfxBank+$614
 	dc.l	ArenaGfxBank+$91E,ArenaGfxBank+$C28,ArenaGfxBank+$F32,ArenaGfxBank+$123C
 	dc.l	ArenaGfxBank+$1546,ArenaGfxBank+$1850,ArenaGfxBank+$1B5A,ArenaGfxBank+$1E64
@@ -2302,14 +2299,14 @@ EASNLogo	;93 name. Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertica
 	bne.w	.x
 	bsr.w	printz
 	String	-(TXPRI+TXMAP1),2,$19	;/ move.b d0,-(a4)
-	movea.l	#EASNmap,a1	;93 EASNmap
+	movea.l	#EASNmap,a1
 	adda.l	4(a1),a1
 	movea.w	#ZeroLong,a2	;a zero long: no palettes
 	clr.w	d0
 	clr.w	d1
 	move.w	(a1),d2	;width and height from the map header
 	move.w	2(a1),d3
-	move.w	(EASNcset).w,d4	;93 EASNcset
+	move.w	(EASNcset).w,d4
 	clr.w	d5
 	bra.w	dobitmap
 .x
@@ -2326,7 +2323,7 @@ FormatAndPrintTime	;No xref. 93 name. d0 bits 14-15 = period, bits 0-13 = second
 	clr.w	d0
 	rol.l	#2,d0
 	movea.l	#PeriodLabelTable,a1
-	bsr.w	PrintSmallListItem	;94 PrintStringFromList
+	bsr.w	PrintSmallListItem
 	addq.w	#2,(printx).w
 	swap	d0
 	lsr.w	#2,d0

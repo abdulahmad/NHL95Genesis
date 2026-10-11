@@ -1,9 +1,8 @@
-; $08827C  Adapted from checks94.asm and penalty94.asm: the scoreboard after a goal, faceoffs
-;	UpdateScores / SetScore / sctab and ClearShotData, then 94 puckfaceoff ... Endfaceoff with
-;	assfaceoff / assfaceoffp1 moved in, checkfo, and the 95 DrawFaceoffWindow
-;	(94 puckfaceoff2 .drawfaceoffwindow). 94 ChkGoalies, ReturnGoalies, CPgoalie and CompLine are not here. penalty95
-;	follows at $088F06.
-;puckfaceoff ... Endfaceoff ($883C8-$88D51) as dc.b; that code is read from the retail bytes with the 94 source as the
+;	UpdateScores / SetScore / sctab and ClearShotData, then ... Endfaceoff with
+;	assfaceoff / assfaceoffp1 moved in, checkfo, and the DrawFaceoffWindow
+;	ReturnGoalies, CPgoalie and CompLine are not here.
+;	follows.
+;puckfaceoff ... Endfaceoff as dc.b; that code is read from the retail bytes with the 94 source as the
 ;guide. the printz / printz2 Strings as instructions; they are String here. Local labels are numbered; the names
 ;	are not kept.
 ;	95 changes: four pads (c1playernum ... c4playernum, cont3team / cont4team), the 95 assignment numbers ($1F, 4, $10, $11, 1) and SPA
@@ -65,7 +64,7 @@ SetScore	;Add to the score of the game in a0. After period 3 a game within one g
 	asl.w	#2,d0
 	movea.w	#TeamList,a1
 	movea.l	(a1,d0.w),a1
-	adda.w	8(a1),a1	;92 ScoreOdds
+	adda.w	8(a1),a1
 	move.b	(a1),d0
 	andi.w	#$70,d0
 	lsr.w	#1,d0	;row * 8
@@ -262,7 +261,7 @@ StartFaceoffLineChange	;Player d0 (sort object) opens the line change box (SetLC
 .1
 	exg	a2,a3
 
-rtsfaceoff	;The shared rts of the faceoff routines (94 rtss2)
+rtsfaceoff	;The shared rts of the faceoff routines
 	rts
 
 WaitForFaceoffLineChanges	;Lock the pads (padcont -1), run both line change timers; when both are done set the

@@ -1,7 +1,7 @@
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	goal95 segment stub. Retail $08C304-$08D399.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -13,8 +13,8 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $08C304-$08D399, read from lst/nhl95.bin.
-ZeroLong = $69A		;main95
+; External addresses outside, read from lst/nhl95.bin.
+ZeroLong = $69A
 Opening2 = $9ADA
 IntermissionStart = $9D18
 sfx = $677AC

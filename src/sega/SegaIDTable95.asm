@@ -1,4 +1,4 @@
-;	NHL 95 cartridge header, $100-$1FF (94 sega\SegaIDTable94.asm). Included by main95.asm; no org here, main95 is at $100 when it
+;	NHL 95 cartridge header, $100-$1FF. Included ; no org here, is at $100 when it
 ;	includes this. The checksum word is the retail value with CHECKSUM=1 and REV=0.
 
 ;					Data	  	No.		Address	Description
@@ -20,7 +20,7 @@
 	dc.l	$00000000,$001FFFFF	; 08	$1A0	cartridge size (start and end address) (8 bytes). 2 MB (94: $FFFFF)
 	dc.l	$00FF0000,$00FFFFFF	; 09	$1A8	RAM size (start and end address) (8 bytes)
 	dc.b	'RA',$F8,$20		; 10	$1B0	external RAM info. (12 bytes): backup RAM, odd bytes
-	dc.l	$00200001,$0020FFFF	; 		$1B4	backup RAM start and end address (94: $203FFF)
+	dc.l	$00200001,$0020FFFF	; 		$1B4	backup RAM start and end address
 	dc.b	'            '		; 11	$1BC	modem info. (12 bytes)
 	dc.b	'                                        '	; 12	$1C8	inhibit to use (40 bytes)
 CountryCode	;The region lock (CHECK_VDP) reads these letters

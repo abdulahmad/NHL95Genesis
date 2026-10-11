@@ -1,11 +1,10 @@
-; $00A204  Adapted from display94.asm, replay94.asm and setup94.asm: video setup, sort coordinates, pads, updateanim, default sprites
 ;	3 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $00A204  From display94.asm: video setup, sort coordinates, pads; then updateanim from replay94.asm
-;	94 setvideo, checksso, setsortcords, setffo, uppads, FormatControllerDisplay, RenderSmallFontChar and ButtonLabelCharTable
+; then updateanim
+;	checksso, setsortcords, setffo, uppads, FormatControllerDisplay, RenderSmallFontChar and ButtonLabelCharTable
 ;	then updateanim ($A536).
 ;	95 has 6 pad objects and no glove object (94: 7 with glovestruct), and keeps the pad nibbles in one long (PadControlBits).
 
@@ -39,7 +38,7 @@ setvideo	;this is not vblank code but sets up ram for vblank transfers. Called o
 	move.l	a6,d0
 	subi.l	#Satt,d0
 	lsr.w	#1,d0	;words
-	move.w	d0,(Sattsize).w	;93 Sattsize
+	move.w	d0,(Sattsize).w
 	move.l	a5,(DMAlistend).w
 	bset	#dfok,(disflags).w	;dfok
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -57,7 +56,7 @@ setsortcords	;setup sort cord graphics: addframe for the 16 objects in OOlist or
 	adda.w	d1,a3	;add offset to next struct
 	jsr	(addframe).l
 	dbf	d0,.top	;loop until done
-rtssdisp	;checksso .ca branches here (94: rtss2)
+rtssdisp	;checksso .ca branches here
 	rts
 
 checksso	;do graphics for sso structure: arrows for the players when they are off screen. Called from setvideo. a5 = dma list,
@@ -180,7 +179,7 @@ setffo	;draw the 6 objects tied to icerink scrolling (the pads; 94: 7 with the g
 	rts
 
 uppads	;update the 6 pad objects and queue new pad labels (FormatControllerDisplay). The pad players come from the
-	;PadControlBits nibbles ($E = no change, $F = none). 95 has no glove object and takes all 6 nibbles from one long (94: PadControlBits34 too)
+	;PadControlBits nibbles ($E = no change, $F = none). 95 has no glove object and takes all 6 nibbles from one long
 	move.w	#5,d4
 	movea.w	#(pads-M68K_RAM),a0
 	movea.w	#(padcont-M68K_RAM),a1
@@ -272,7 +271,6 @@ ButtonLabelCharTable	;Third label character by bits 10-8 of the label code
 	dc.b	' DDLCRX',$FF	;pad byte $FF as 94
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $00A536  From replay94.asm: updateanim
 
 updateanim	;frame switch control on struct a3. Called from updateplayers. 95: no horizontal rink case, and an
 	;animation whose flag has bits 0 and 1 set loops back to the pair in the flag's high byte (SPAskate $1003)
@@ -356,7 +354,6 @@ updateanim	;frame switch control on struct a3. Called from updateplayers. 95: no
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $00A656  From setup94.asm: defaultsprites, defaultsprites2, SprSort
 ;	defaultsprites, defaultsprites2 and SprSort. follows at $A95C.
 
 

@@ -1,6 +1,6 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	replay95 segment stub. Retail $08D39A-$08DF59.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -12,8 +12,8 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $08D39A-$08DF59, read from lst/nhl95.bin.
-ZeroLong = $69A			;main95
+; External addresses outside, read from lst/nhl95.bin.
+ZeroLong = $69A
 revframetbl = $8596
 setvideo = $A204
 SprSort = $A8E6

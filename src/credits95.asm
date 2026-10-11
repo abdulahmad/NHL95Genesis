@@ -1,8 +1,8 @@
-;	NHL 95 credits95. Retail $1A6C28-$1A72BF (1688 bytes). follows at $1A72C0.
-;	The title screen credits (94 Credits / CreditsList): length-prefixed Strings, String -1 ends a screen; newTitleScreen
+;	NHL 95. follows.
+;	The title screen credits: length-prefixed Strings, String -1 ends a screen; newTitleScreen
 ;	prints Credits first, then CreditsList (CreditsPrintRow).
 
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 
 Credits	;94 / 93 Credits. Title screen scroller: the copyright and trademark lines
 	String	'$ 1994 Electronic Arts'

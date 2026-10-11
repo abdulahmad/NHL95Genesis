@@ -1,10 +1,10 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	schedule95 segment stub. Retail $008DD8-$009721.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-; External addresses outside $008DD8-$009721: none. Every byte is a count or a team number.
+; External addresses outside: none. Every byte is a count or a team number.
 ; region code
 	org	$8DD8
 

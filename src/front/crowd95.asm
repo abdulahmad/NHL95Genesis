@@ -1,9 +1,8 @@
-; $0A0B3E  Adapted from hockey94.asm and display94.asm: the crowd meter
 ;	updatecrowdf, the 95 crowd frame table (CrowdFrameTbl), showcrowd ... rtsShowCrowd.
-;	follows at $0A0D1A.
+;	follows.
 
 
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 
 updatecrowdf	;Every game loop, d7 = elapsed frames: the crowd level falls (faster when loud); every $10 frames the next crowd frame of CrowdFrameTbl (crowdtblidx) in crowdframe.
 	;95: a frame table instead of the 94 random frame / time pairs
@@ -145,5 +144,5 @@ ShowCrowdFrame	;sc. Crowd frame d0 (0 = none): its sprites in view as sprite tab
 .3
 	movem.l	(sp)+,d0-d5
 
-rtsShowCrowd	;display94. Shared rts of showcrowd
+rtsShowCrowd	;Shared rts of showcrowd
 	rts

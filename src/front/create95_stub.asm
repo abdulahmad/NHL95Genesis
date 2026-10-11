@@ -1,6 +1,6 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	create95 segment stub. Retail $097C54-$09ACE5.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -12,7 +12,7 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $097C54-$09ACE5, read from lst/nhl95.bin.
+; External addresses outside, read from lst/nhl95.bin.
 WriteSRAM = $98E6
 MakeSRAMChecksum = $9908
 ReadSRAM = $9952

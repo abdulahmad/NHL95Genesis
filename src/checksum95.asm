@@ -1,13 +1,13 @@
-;	NHL 95 checksum95. Retail $1A72C0-$1A730F (80 bytes).
-;	Mapped to checksum94 (100%): ValidationRoutine, the last code in the ROM. The $FF fill $1A7310-$1FFFFF follows (nhl95.asm dcb.b after
+;	NHL 95.
+;	Mapped (100%): ValidationRoutine, the last code in the ROM. The $FF fill follows (nhl95.asm dcb.b after
 ;	this include). The same code as 94 with the 95 long count and sum.
 
-ValidationRoutine	;Called once at power on from main95 ($690). Adds every ROM
+ValidationRoutine	;Called once at power on ($690). Adds every ROM
 	;long from 0 up to this routine, skipping the header long at $18C. Returns if the sum is right, else turns the screen red and hangs.
 	;Uses d0-d1/a0/a4
 	moveq	#0,d0			;sum
 	suba.l	a0,a0			;a0 = ROM address 0
-	move.l	#ValidationRoutine/4,d1	;number of longs below this routine ($69CB0)
+	move.l	#ValidationRoutine/4,d1	;number of longs below this routine
 ValidationLoop	cmpa.w	#$18C,a0		;header long $18C-$18F holds the checksum word $18E
 	bne.s	SkipIncrement
 	addq.w	#4,a0			;skip it, not summed

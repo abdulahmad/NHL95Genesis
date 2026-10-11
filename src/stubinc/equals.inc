@@ -79,7 +79,7 @@ passacc equ $6E
 stickhand equ $71
 endurance equ $72
 handed equ $76		;bit0 set is left handed
-;player struct fields after handed's neighbours, not named in 93 ram93.asm (names from the 92/93/94 comments)
+;player struct fields after handed's neighbours, not named in 93 (names from the 92/93/94 comments)
 pflags3 equ $64		;player flags 3 (92: not used)
 pf3oside equ 0		;offsides
 pf3break equ 1		;on a breakaway
@@ -160,7 +160,7 @@ CC_AddY equ $FA		;-6: add signed byte to printy
 CC_SetFont equ $F9		;-7: char set
 CC_SetMapAndPosition equ $F8		;-8: attribute, map, x, y
 
-;game sound effect numbers (sfx / song argument; 92 / 93 SFX names). 95 maps them through SfxTable
+;game sound effect numbers (sfx / song argument). 95 maps them through SfxTable
 SFXsiren equ $0
 SFXbeep1 equ $1
 SFXbeep2 equ $2

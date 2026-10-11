@@ -1,7 +1,7 @@
-;NHL 95 team data. Retail $000772-$005A33 (21186 bytes), from the lst/nhl95.bin.lst (all dc.b there).
-;	Layout of 94 teamdata94.asm: the team address table, one block per team, playoffseats. 95 still has 26 teams plus the
-;	two all star teams, in the 94 TeamList order. Not here: the dc.l 0 94 kept before TeamList (main95, $69A) and Credits /
-;	CreditsList ($1A6C28).
+;NHL 95 team data., from the lst/nhl95.bin.lst (all dc.b there).
+;	Layout of 94: the team address table, one block per team, playoffseats. 95 still has 26 teams plus the
+;	two all star teams, in the 94 version order. Not here: the dc.l 0 94 kept before TeamList and Credits /
+;	CreditsList.
 
 TeamList	;(94 $30E). label. Team number = index (ANH 0 ... WPG 25, ASE 26, ASW 27), the 94 order
 	dc.l	Anaheim	;0 ANH
@@ -42,8 +42,8 @@ ScoutReport	=	8
 ScoreOdds	=	10
 
 ;------------------------
-; Team block: 6 offset words (the equates above), .pad home and visitor palettes (16 colours each, incbin <team>h95.pal / <team>v95.pal
-; from extractAssets95.js; every 95 palette differs from 94), .sr, .sodds, .ls 8 lines of 8 player numbers (1 = first .pld entry),
+; Team block: 6 offset words (the equates above), .pad home and visitor palettes (16 colours each, incbin <team> / <team>
+; every 95 palette differs from 94), .sr, .sodds, .ls 8 lines of 8 player numbers (1 = first .pld entry)
 ; pld players ended by an empty String, then 4 Strings: city, abbreviation, nickname, arena. Same layout as 94.
 ; Blocks are in ROM order (ASE and ASW first), not TeamList order. 94 put FLA and ANH last; 95 sorts them in by name,
 ; and Dallas sits between LA and MTL where 94 had Minnesota. WPG comes before WSH.
@@ -768,7 +768,7 @@ LosAngeles	;LA, $2762 (94 $1E52)
 .ar	;arena
 	String	'The Great Western Forum'
 
-Dallas	;DAL, $2A24 (94 $214E, after LA as 94 Minnesota)
+Dallas	;DAL, $2A24 (94 $214E)
 .0
 	dc.w	.pld-.0
 	dc.w	.pad-.0

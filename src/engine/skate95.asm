@@ -1,7 +1,6 @@
-; $08B4E0  Adapted from checks94.asm and input94.asm: goalie and skater movement
-;	goalieacc, the goalie dive, doinput_cbut ... getGoalieSCnum, the 95 GoalieReadySPA, dirtab
-;	(and the 95 dirtab2), MaxSpeed ... stopna, the 95 updatevel, SetSPA, stopna2, doplayeracc ... playeracc
-;	follows at $08C304.
+;	goalieacc, the goalie dive, doinput_cbut ... getGoalieSCnum, the GoalieReadySPA, dirtab
+;	MaxSpeed ... stopna, the updatevel, SetSPA, stopna2, doplayeracc ... playeracc
+;	follows.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
@@ -176,10 +175,9 @@ rtss15	;The rts of doinput_goaliedive
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $08B734  From input94.asm: doinput_cbut, ClampTargetY, doinput_chkanim, getGoalieSCnum
-;	94 doinput_cbut, ClampTargetY (with the 10 SPA offsets after it), doinput_chkanim and getGoalieSCnum (95 getGoalieSCnum).
-;doinput_onetimer / doinput_ispc are not in 95 here; doinput_islocked is in input95.
-;	95 changes: the y limits $106 / $FEFA, the goalie box in doinput_chkanim, the 95 SPA values.
+;	ClampTargetY (with the 10 SPA offsets after it), doinput_chkanim and getGoalieSCnum.
+;doinput_onetimer / doinput_ispc are not in 95 here; doinput_islocked is.
+;	95 changes: the y limits $106 / $FEFA, the goalie box in doinput_chkanim, the SPA values.
 
 
 doinput_cbut	;Global: doinput branches here across the global rtss15. Button C (bit 5): new press: face the puck
@@ -373,8 +371,7 @@ getGoalieSCnum	;(getGoalieSCnum) 95: d0 = SCnum of the goalie of the team of pla
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $08B9A8  From checks94.asm: player movement, SetSPA, the goal, the controller setup screen
-;	dirtab, MaxSpeed, dostop, stopna, SetSPA, doplayeracc, noturn0, noturn, playeracc and the goal code, with moved in: crowd94
+;	dirtab, MaxSpeed, dostop, stopna, SetSPA, doplayeracc, noturn0, noturn, playeracc and the goal code, with moved
 ;	stopna2, PenGoalStuff, box / DisplayPlayerAttributeMenu / GoalBigTxt / PPGoalBigTxt, PrintPlayerAssists /
 ;	PrintPlayerGoals / PrintParenNumber, checkwindow, PeriodOver / GameOver / ExitToOpening, clockcont_0 /
 ;	clockcont; and the 95 controller setup screen (SetContTeams ... ReadAllPads).
@@ -400,7 +397,7 @@ GoalieReadySPA	;d1 = the goalie ready SPA: $1B7A near the puck (within $56 in y)
 	move.w	(sp)+,d0
 	rts
 
-dirtab	;X / Y acc speed for each direction 0-7. 95 runspeed $F0 ($A9 = runspeed / sqrt(2); 94 $C8 / $8D)
+dirtab	;X / Y acc speed for each direction 0-7. runspeed $F0 ($A9 = runspeed / sqrt(2); 94 $C8 / $8D)
 	dc.w	0,$F0,$A9,$A9,$F0,0,$A9,$FF57
 	dc.w	0,$FF10,$FF57,$FF57,$FF10,0,$FF57,$A9
 	dc.w	0,0
@@ -508,7 +505,7 @@ stopna	;Slow player a3 by $96 in x and y toward 0, no animation change
 .3
 	rts
 
-updatevel	;The velocity update 94 updateplayers does in line
+updatevel	;The velocity update the 94 version does in line
 	cmpi.w	#$E,SCnum(a3)
 	bne.w	.1
 	cmpi.w	#$150,Ypos(a3)

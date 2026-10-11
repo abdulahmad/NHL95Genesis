@@ -1,12 +1,11 @@
-; $009AC8  Adapted from hockey94.asm: game flow
-;	NHL 95 segment $9AC8-$A203, from lst/nhl95.bin.lst. The game flow from the title screen to the game loop. 95 runs it as one
-;	stretch of code: 94 Opening and Opening2, the 95 main menu exits (season, trades, create player), StartGame and StartPer
-;	without a jump between them, the 95 IntermissionMenu, the game loop, DoGameFrame with 94 periodicevents written in
+;	NHL 95 segment, from lst/nhl95.bin.lst. The game flow from the title screen to the game loop. 95 runs it as one
+;	stretch of code: and Opening2, the 95 main menu exits (season, trades, create player), StartGame and StartPer
+;	without a jump between them, the IntermissionMenu, the game loop, DoGameFrame with the 94 version written
 ;	line, and 94 updateplayers. setvideo follows at $A204.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-Opening	;title screen (newTitleScreen), then into Opening2. Jumped to from Begin (main95)
+Opening	;title screen (newTitleScreen), then into Opening2. Jumped to from Begin
 	jsr	(KillCrowd).l
 	jsr	(newTitleScreen).l
 	bset	#7,(sflags12).w	;Opening2 skips the sound restart
@@ -17,7 +16,7 @@ Opening2	;Restart the sound (unless coming from Opening), reset the stack and cl
 	bclr	#7,(sflags12).w
 	bne.w	.clear
 	jsr	(play_new_song).l	;stop the song
-	move.w	#9,d0	;restart the sound driver as Begin does (main95)
+	move.w	#9,d0	;restart the sound driver as Begin does
 	jsr	(SoundCmd).l
 	move.w	#0,d0	;command 0: load the Z80 program
 	move.w	#$1B63,d1
@@ -79,7 +78,7 @@ Opening2	;Restart the sound (unless coming from Opening), reset the stack and cl
 StartGame	;reset game state for a new game, then start the first period. 95 has no jump from Opening2 (94 jmp (StartGame).w)
 	move.l	#vb2,(vbint).l
 	move	#$2500,sr
-	jsr	(ReadJoy1).l	;pad 1 = $E0 at game start forces 30 second periods (93 ChkShortPeriods)
+	jsr	(ReadJoy1).l	;pad 1 = $E0 at game start forces 30 second periods
 	cmp.b	#$E0,d3
 	bne.w	.chkpen
 	move.w	#3,(OptPerlen).w	;period length index 3 = 30 seconds
@@ -115,7 +114,7 @@ StartGame	;reset game state for a new game, then start the first period. 95 has 
 	jsr	(Create_HotCold_Table).l
 	movea.l	(sp)+,a0
 .2
-	btst	#0,(gmode2).w	;no ScoutingReport in a shootout (94 Opening2) or in Practice Mode
+	btst	#0,(gmode2).w	;no ScoutingReport in a shootout or in Practice Mode
 	bne.w	.3
 	btst	#7,(sflags9).w
 	bne.w	.3
@@ -147,7 +146,7 @@ StartGame	;reset game state for a new game, then start the first period. 95 has 
 
 IntermissionStart	;the PeriodOver tail. PeriodOver jumps here after forceblack: reset the
 	;clock, restart the sound driver, UpdateScores, IntermissionMenu, then GameOver or StartPer
-	jsr	(ResetClock).l	;hockey94_01
+	jsr	(ResetClock).l
 	move.w	d0,-(sp)
 	move.w	(vcount).w,d0
 .vb
@@ -176,7 +175,7 @@ IntermissionStart	;the PeriodOver tail. PeriodOver jumps here after forceblack: 
 	jsr	(SoundCmd).l
 	move.w	#2,-(sp)	;song 2
 	jsr	(song).l
-	jsr	(UpdateScores).l	;94 InitScores
+	jsr	(UpdateScores).l
 	cmpi.w	#4,(gsp).w
 	bne.w	.4
 	jsr	(DisplayTeamStatsForPlayoffs).l
@@ -194,7 +193,7 @@ IntermissionStart	;the PeriodOver tail. PeriodOver jumps here after forceblack: 
 
 StartPer	;start a period: reset stack, rink and clock, face off, run the game loop
 	movea.w	#(Stack-M68K_RAM),sp
-	jsr	(SoundOff).l	;sound off (94 p_turnoff)
+	jsr	(SoundOff).l	;sound off
 	jsr	(setupice).l
 	jsr	(ResetClock).l
 	ori.l	#$F00000,(PadControlBits).w	;94: ori.w #$F000
@@ -266,7 +265,7 @@ Gameloop	;Main loop for game
 	move.b	#1,(VDP_PSG).l
 	bra.s	Gameloop
 
-DoGameFrame	;wait for at least one vblank, then run one frame of game logic. 94 periodicevents is written in line
+DoGameFrame	;wait for at least one vblank, then run one frame of game logic. the 94 version is written in line
 	move.w	(vcount).w,d7
 	sub.w	(oldvcount).w,d7	;number of frames since last loop
 	beq.s	DoGameFrame
@@ -274,7 +273,7 @@ DoGameFrame	;wait for at least one vblank, then run one frame of game logic. 94 
 	tst.w	(ShotTimer).w
 	bmi.w	.periodic
 	sub.w	d7,(ShotTimer).w
-.periodic	;94 periodicevents
+.periodic
 	jsr	(CheckNewCarrier).l
 	jsr	(PenaltyManager).l
 	jsr	(updatecrowdf).l
@@ -329,7 +328,7 @@ IntermissionMenu	;Before the period: at game over (gsp 4) the records (UpdateRec
 	rts
 
 updateplayers	;this routine calls all collision/animation/assignment code for all players. d7 = elapsed frames.
-	;94 replay94; 95 has no puckz or crowd record checks here, and moves the velocity update (updatevel) and the pad input
+	;94 ; 95 has no puckz or crowd record checks here, and moves the velocity update (updatevel) and the pad input
 	;(updatepadinput) out
 	ori.l	#$F,(PadControlBits).w	;94: ori.w #$F
 	movea.w	#(SortCords-M68K_RAM),a3

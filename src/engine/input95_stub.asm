@@ -1,6 +1,6 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	input95 segment stub. Retail $083EB2-$084FE5.
+;	Segment stub.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -12,7 +12,7 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $083EB2-$084FE5, read from lst/nhl95.bin.
+; External addresses outside, read from lst/nhl95.bin.
 holdplayer = $AA18
 burstchk = $AA7A
 setpads = $AB2A

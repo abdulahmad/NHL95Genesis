@@ -1,14 +1,14 @@
-;	NHL 95 setup95. Retail $084FE6-$087BA1 (11196 bytes).
-;	Mapped to data94 (34%), but most of the row is other 94 files moved together: TeamRosterScreen, DisplayPlayerList
+;	NHL 95.
+;	Mapped (34%), but most of the row is other 94 files moved together: TeamRosterScreen, DisplayPlayerList
 ;	getNameandAttrib and its column handlers, DrawTeamScreen; PAttribColumns / GAttribColumns, PlayerPositionText; the 95 game
 ;	setup screen (GameSetUp ... setoptions, DrawTeamBitmap, SetPojoyMode, rewritten for the 13 95 play modes
 ;	the season and the player cards); DefaultMenus, FigureJoy and the playoff routines InitializeGameStructures ... MakeTree
-;	ReadLineData / WriteLineData. follows at $087BA2.
-;code as dc.b at $84FE6-$8546D (TeamRosterScreen ... PrintPlayerLines), $8547A-$8581D (getNameandAttrib ...
-;LoadRosterFont), $861CE and $87468-$874A5 (InitializeGameStructures, OptionRNG); these are read from the retail bytes.
+;	ReadLineData / WriteLineData. follows.
+;code as dc.b (TeamRosterScreen ...
+;these are read from the retail bytes.
 ;	hid the printz / printz2 Strings and the DecompressGraphicsWithCallback remap bytes as instructions. Local labels are numbered;
 ;the names are not kept.
-;	Its RAM names are in ram95.asm: the 94 setup and card words (logoteam ... cardteamnum, DispAttribCtr,
+;	Its RAM names are: the 94 setup and card words (logoteam ... cardteamnum, DispAttribCtr
 ;	setupprevline), the playoff words (gsstruct ... potree), and the 95 setup words (SelectedPlayerIdx, setupvalues, setupdir ...).
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
@@ -303,12 +303,12 @@ PrintPlayerLines	;Print at printx the lines player d0 of team a2 is on (FindPlay
 	jsr	(printsmall).l
 	movem.l	(sp)+,d1/a1
 	rts
-	String	'G'	;not read (93 GoalieRowText)
+	String	'G'	;not read
 	String	'G'
 	String	'G'
 	String	'G'
 
-PlayerStatMenuTxt	;Roster page titles (SkipStrings by SelectedPlayerIdx). The four String 'G' before it (93 GoalieRowText) are not read
+PlayerStatMenuTxt	;Roster page titles (SkipStrings by SelectedPlayerIdx). The four String 'G' before it are not read
 	String	'    Goalies     '
 	String	'    Offense     '
 	String	'    Defense     '
@@ -422,7 +422,7 @@ AttribFighting	;Bit 0 of the nibble is the handedness: drop it, then a rating ou
 	andi.w	#$E,d0	;jump for fighting attrib - ignore bit 0 (remove Handedness)
 	subq.w	#1,d1	;sub 1 from d1
 
-AttribRating	;d0 * 100 / d1; 95 scales it (ScaleAttrib, 94 AttribAdjust) only when SeasonPlayerOut returns nonzero.
+AttribRating	;d0 * 100 / d1; 95 scales it (ScaleAttrib) only when SeasonPlayerOut returns nonzero.
 	;Falls into AttribPrintPct
 	mulu.w	#$64,d0	;'d'   ; mult by 100 dec
 	divu.w	d1,d0	;divide by d1 (usually 100 dec)
@@ -647,7 +647,7 @@ PlayerPositionText	;Position names for the line slots (no xref in)
 	String	'C'
 	String	'RW'
 
-GameSetUp	;The game setup screen, rewritten for 95: ReadLineData, ReadPassBits, the options from TmpOptLine2 /
+GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the options from TmpOptLine2 /
 	;TempOptPlayMode. In a season (GameFlags bit 5) take the season options (ReadSeasonHeader) and the matchup (StepSeasonTeam).
 	;Then setoptions, and the line cursor loop: FixModeOptions, PrintOptions, the logos or matchup bitmaps, GameSetUp_2 for a key;
 	;up / down move SelectedPlayerIdx, left / right step setupvalues (WrapOptionUp / Down), start stores them (SetupStart) and sets the
@@ -911,11 +911,11 @@ GameSetUp_2	;Wait up to $E10 frames (94 $5460) for a key on pad 1 / 2 (pads 3 / 
 .10
 	rts
 
-OptionLimits	;93 setoptions .pslim. Number of values of each setup line (mode, team 1, team 2, length, goalies, user records, penalties,
+OptionLimits	;pslim. Number of values of each setup line (mode, team 1, team 2, length, goalies, user records, penalties
 	;line changes)
 	dc.w	$D1C,$1C03,$202,$303
 
-WrapOptionUp	;93 setoptions .iilimit, the up half: setupvalues(d0) past OptionLimits(d0) goes to 0
+WrapOptionUp	;iilimit, the up half: setupvalues(d0) past OptionLimits(d0) goes to 0
 	movea.l	#OptionLimits,a1
 	clr.w	d2
 	move.b	(a1,d0.w),d2
@@ -935,7 +935,7 @@ WrapOptionDown	;The down half: a negative setupvalues(d0) goes to OptionLimits(d
 .0
 	rts
 
-MoveMenuFrame	;93 setoptions .nms. Keep SelectedPlayerIdx inside DispAttribCtr ... VertLineScrolling; in a season (GameFlags bit 5) line 0 is skipped
+MoveMenuFrame	;nms. Keep SelectedPlayerIdx inside DispAttribCtr ... VertLineScrolling; in a season (GameFlags bit 5) line 0 is skipped
 	move.w	(SelectedPlayerIdx).w,d0
 	sub.w	(DispAttribCtr).w,d0
 	bpl.w	.0
@@ -1325,7 +1325,7 @@ ScrollClearTxt
 ScrollUpTxt
 	String	'{'
 
-GameSetUp_4	;(93 setoptions .psd). Print the value of setup line d0 at printx (OptionValueOffsets / the value Strings);
+GameSetUp_4	;Print the value of setup line d0 at printx (OptionValueOffsets / the value Strings)
 	;teams 1 / 2 go to the team name (TeamList city, IslandersTxt / RangersTxt for teams $D / $E), lines not shown print
 	;BlankValueTxt, Shootout prints N/A for the length. The cursor line is highlighted (PrintSetupTextHi)
 	movem.l	d0-d2/a0-a1,-(sp)
@@ -1418,7 +1418,7 @@ BlankValueTxt	;A blank value
 NATxt	;Not read in 95 (GameSetUp_4 has its own N/A String)
 	String	'N/A                 '
 
-PrintOptionName	;94 PrintOptionNames, one line. Print option name d0 (OptionNames) at printx; lines not shown print BlankNameTxt
+PrintOptionName	;one line. Print option name d0 (OptionNames) at printx; lines not shown print BlankNameTxt
 	movem.l	d0/a1,-(sp)
 	move.w	d0,-(sp)
 	movea.l	#OptionNames,a1
@@ -1494,7 +1494,7 @@ PrintSetupTextHi	;The same with the highlight chars (smallfont3chars)
 	rts
 
 DefaultMenus	;Set the default menu choices for the beginning of the game: the 9 option words from
-	;defmenuoptions to OptPlayMode... Sets sflags11 bit 6 and demoflag. Called once from Begin (main95)
+	;defmenuoptions to OptPlayMode... Sets sflags11 bit 6 and demoflag. Called once from Begin
 	bset	#6,(sflags11).w
 	st	(demoflag).w	;no demo has run yet
 	movea.l	#OptPlayMode,a0	;Start of Menu Options in RAM
@@ -1505,7 +1505,7 @@ DefaultMenus	;Set the default menu choices for the beginning of the game: the 9 
 	dbf	d0,.0
 	rts
 
-defmenuoptions	;(93 DefaultMenus .defom). Mode 0, players 0, teams $E and $17, length 1, goalies 0, user records 1, penalties 0,
+defmenuoptions	;Mode 0, players 0, teams $E and $17, length 1, goalies 0, user records 1, penalties 0
 	;line changes 1
 	dc.w	$0,$0,$E,$17,$1,$0,$1,$0
 	dc.w	$1
@@ -1715,7 +1715,7 @@ LoadSetupTiles	;Data and code (94). Load the TeamBitmaps+8 tiles from char d4 (2
 	jsr	(DoDMA_clearCallbackPointer).l
 	rts
 
-FigureJoy	;(92 / 93 FigureJoy). Set cont1team ... cont4team. In the playoffs (not Shootout, gmode2 bit 0) find this
+FigureJoy	;Set cont1team ... cont4team. In the playoffs (not Shootout, gmode2 bit 0) find this
 	;round's game of the po team and set the teams and pads from .9 (94 .pojoylist; .10 with FourWayPlay); otherwise from
 	;NOPJoyTbl by OptNOP. 95 has no InitializeGameStructures call here. Called from MakeTree and GameSetUp
 	movem.l	d0-d3/a0-a1,-(sp)
@@ -1811,11 +1811,11 @@ FigureJoy	;(92 / 93 FigureJoy). Set cont1team ... cont4team. In the playoffs (no
 	movem.l	(sp)+,d0-d3/a0-a1
 	rts
 
-NOPJoyTbl	;(94 FigureJoy .noplist) cont1team, cont2team by OptNOP
+NOPJoyTbl	;cont1team, cont2team by OptNOP
 	dc.w	$0,$0,$1,$0,$2,$0,$1,$1
 	dc.w	$1,$2,$1,$2,$1,$2
 
-OptionNames	;Option names (93 setoptions .text); 95 adds no Players line
+OptionNames	;Option names; 95 adds no Players line
 	String	'Play Mode    '
 	String	'Team 1       '
 	String	'Team 2       '
@@ -1825,7 +1825,7 @@ OptionNames	;Option names (93 setoptions .text); 95 adds no Players line
 	String	'Penalties    '
 	String	'Line Changes '
 
-OptionValueOffsets	;Offsets of each option's value Strings from OptionValueOffsets (93 setoptions .pl): mode, the two teams (not read), length,
+OptionValueOffsets	;Offsets of each option's value Strings from OptionValueOffsets: mode, the two teams (not read), length
 	;goalies, user records, penalties, line changes. 95 has 13 modes
 	dc.w	$10,$1F0,$1F0,$12A,$182,$1F0,$1AE,$21C
 	String	'Game With Trades    '
@@ -2000,7 +2000,7 @@ DrawVisBlock	;(rewritten). Erase the left logo (setupcardflags bit 2 was set) an
 	move.w	#1,(printx).w
 
 DrawSetupLogo	;94 DrawTeamLogo. Draw the logo of team logoteam (TeamLogoBitmaps) at printx, 6 x 6, palette TeamLogoPalettes
-	;+ team * $20 - $20 (bit 2: home) or - $40. Branched to from DrawHomeBlock; the name DrawTeamLogo is middle95's
+	;+ team * $20 - $20 (bit 2: home) or - $40. Branched to from DrawHomeBlock; the name DrawTeamLogo is 's
 	move.w	#1,(printy).w
 	move.w	(homepicchars).w,d4
 	btst	#2,(setupcardflags).w
@@ -2480,7 +2480,7 @@ SuperDiv	;5 words at a3 divided by 1 word (d0); d0 = remainder on exit
 	movem.l	(sp)+,d1-d2/a0
 	rts
 
-GetShifter	;(92 / 93 GetShifter). Returns d1 = number of games - 1, d2 = first bit of WinBits
+GetShifter	;Returns d1 = number of games - 1, d2 = first bit of WinBits
 	move.l	d0,-(sp)
 	moveq	#-$10,d2
 	moveq	#$10,d1
@@ -2700,7 +2700,7 @@ ResolveGames	;Compute winners and losers for playoff matchups
 	addq.w	#1,(gamelevel).w
 	rts
 
-ContinuePlayoffs	;(93 NewPO). Continue playoffs: read the saved bits (ReadPassBits from pwddatabuffer); after the first
+ContinuePlayoffs	;Continue playoffs: read the saved bits (ReadPassBits from pwddatabuffer); after the first
 	;game rebuild the tree (MakeTree) and set OptNOP = 7 (or $B with FourWayPlay) - pojoy, pojoy moved to the 95 values
 	movem.l	d0-d7/a0-a3,-(sp)
 	movea.w	#(pwddatabuffer-M68K_RAM),a3
@@ -2736,7 +2736,7 @@ ContinuePlayoffs	;(93 NewPO). Continue playoffs: read the saved bits (ReadPassBi
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-NewPO	;(93 SelectRandomPlayoffTree). New playoff tree with Opt1Team (a random
+NewPO	;New playoff tree with Opt1Team (a random
 	;playoffseats row that has it), bosgames 7 and MakeTree for OptPlayMode 2; otherwise bosgames 0, the gsstruct wins cleared, and falls into MakeTree
 	moveq	#$20,d0	;' '   ; 20 = 32 decimal
 	jsr	(randomd0).l
@@ -2813,7 +2813,7 @@ maketree	;Make the playoff tree (potree) from playoffseats and WinBits, then Fig
 	movem.l	(sp)+,d0-d4/a0-a3
 	rts
 
-SetTreeGameTeams	;(94 MakeTree inline). Put the two teams at a0 in game a1: flipped (gsstruct flags bit 0) except for
+SetTreeGameTeams	;Put the two teams at a0 in game a1: flipped (gsstruct flags bit 0) except for
 	;bosgames 2, 3 and 5
 	cmpi.w	#2,(bosgames).w
 	beq.w	.0

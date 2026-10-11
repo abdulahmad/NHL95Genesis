@@ -1,6 +1,6 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	tables95: Team, sprite frame and schedule data.
+;	Team, sprite frame and schedule data.
 ;	The files of tables\ in ROM order, included by nhl95.asm. No org: nhl95.asm sets org 0.
 ;	Each file has its own stub next to it (tables\<file>_stub.asm) to build and verify it alone.
 ;

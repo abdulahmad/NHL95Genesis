@@ -1,17 +1,16 @@
-; $09DA50  Adapted from shootout94.asm, title94.asm and checks94.asm: the shootout and the penalty shot
 ;	3 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $09DA50  From shootout94.asm: the shootout; its setup and skating paths from title94.asm
+; its setup and skating paths
 ;	ClearShootout and InitShooters, then the shootout routines PSandSOpassdir, passdirlist, StartShootoutPath
-;	ShootoutPaths, NextPathPoint, SkatePath and ShootoutShootCheck; then the shootout itself ($9DD3E).
-;passdirlist ... ShootoutShootCheck ($09DAF8-$09DD3D) as dc.b; it is transcribed from the retail bytes.
+;	ShootoutPaths, NextPathPoint, SkatePath and ShootoutShootCheck; then the shootout itself.
+;passdirlist ... ShootoutShootCheck as dc.b; it is transcribed from the retail bytes.
 ;Local labels are numbered; the names are not kept.
 
 
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 
 ClearShootout	;Clear the player structs (SortCords) and the shootout state, then the shooter
 	;lists of both teams (InitShooters)
@@ -229,10 +228,9 @@ ShootoutShootCheck	;Shootout, skater a3 has the puck (gmode2 bit 1): Z set (d0 i
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $09DD3E  From shootout94.asm: the shootout
 ;	NextShooter, CountShootoutGoals, EndShootout, PlayoffRoundScreen and RoundBigTxt, ShootoutWonBy
-;	ShootoutShooters (94 ShootoutShooters) ... PrintShooterNames (the shootout shooters screen).
-;NextShooter ($09DD3E) and ShootoutWonBy+$50 ... PrintShooterNames ($09E036-$09E5EF) as dc.b; they are transcribed from
+;	ShootoutShooters ... PrintShooterNames (the shootout shooters screen).
+;NextShooter and ShootoutWonBy+$50 ... PrintShooterNames as dc.b; they are transcribed
 ;the retail bytes. the printz / printz2 / printbigz Strings as instructions.
 
 
@@ -764,12 +762,11 @@ PrintShooterNames	;Shootout shooters: the shooters' names (FormatPlayerNameShort
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $09E5F0  From checks94.asm: shootout and penalty shot play
-;	Mapped to checks94 (75%): puckshootout, SelectPenaltyShotSkater, puckpenshot, UpdatePenaltyShotEnd, EndPenaltyShotPlay; moved in:
+;	Mapped (75%): puckshootout, SelectPenaltyShotSkater, puckpenshot, UpdatePenaltyShotEnd, EndPenaltyShotPlay; moved
 ;	SetupPenaltyShot, PenaltyShotBox / PenShotBigTxt, PenShotChk / getBAplayerInfo, ShortenMsgTimer
 ;	setInjuryType, getFgtbyte / chkFgtBit1, updatepwrplay / GetLowestPen; the season
 ;	injuries (SetSeasonInjuries ... DeleteInjurySlot, save RAM SRInjuries), CheckInjury and ClearPowerPlay.
-;puckshootout ... UpdatePenaltyShotEnd ($09E5F0-$09ECE5) and SetupPenaltyShot as dc.b; they are transcribed from the retail
+;puckshootout ... UpdatePenaltyShotEnd and SetupPenaltyShot as dc.b; they are transcribed from the retail
 ;bytes. the printz / printbigz / appendz Strings as instructions.
 ;Local labels are numbered; the names are not kept.
 

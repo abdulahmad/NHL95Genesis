@@ -1,19 +1,17 @@
-; $09ACE6  Adapted from cards94.asm and records94.asm: name entry, user names, record holders, record updates
 ;	3 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $09ACE6  From cards94.asm: name entry
-;	Mapped to cards94 (81%): NameEntryScreen, NameLetterGrid, NameEntryHelp, PrintNamePrompt, SyncLetterCursor, FindLetter,
+;	Mapped (81%): NameEntryScreen, NameLetterGrid, NameEntryHelp, PrintNamePrompt, SyncLetterCursor, FindLetter
 ;	PrintNameCursor, PrintCurLetter, LetterGridPos, EnterNameTxt / SelectNameTxt, PrintNameLog, MoveLogArrows, PrintLogArrows,
 ;	GetNameLength, PrintNameField, LetterGrid, GetLogName, StoreUserName and WriteNameRecord (the user records name entry).
-;	The old segment map ended this part at $09B72F, inside UserNameEntry ($09B6F4); UserNameEntry starts at $09B6F4.
+;	The old segment map ended this part, inside UserNameEntry; UserNameEntry starts.
 ;printz / printz2 / printbigz Strings as instructions; they are written from the retail bytes.
 ;Local labels are numbered; the names are not kept.
 
 
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 
 NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Log, then edit the name with the pad (NameEntryScreen)
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -719,13 +717,12 @@ WriteNameRecord	;Clear name slot namelogsel from every saved record (read ReadSR
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $09B6F4  From records94.asm: user name entry and records
-;	Mapped to records94 (84%): UserNameEntry (four pads in 95), the name log checks (NameInUse ... SkipOtherUserName, 94 SkipOtherUserName),
+;	Mapped (84%): UserNameEntry (four pads in 95), the name log checks (NameInUse ... SkipOtherUserName)
 ;	WriteNameLog / ReadNameLog / NameLogIO, ClearNameHelp, PlayoffStatsScreen, RecordHoldersScreen, PrintRecordPage
 ;	PrintRecordTitles, PrintWinRecords, ClearRecordArea, PrintPlayerRecords, PrintRecordName, CalcWinPercents, ReadTeamRecords and
 ;	ClearWinRecords.
-;	The segment map started this file at $09B730 (inside UserNameEntry); the confirmed start is $09B6F4.
-;$09B8D6-$09C019 as dc.b; it is transcribed from the retail bytes. printz / printz2 / printbigz Strings as instructions.
+;	The segment map started this file (inside UserNameEntry); the confirmed start is.
+;it is transcribed from the retail bytes. printz / printz2 / printbigz Strings as instructions.
 ;Local labels are numbered; the names are not kept.
 
 
@@ -1321,11 +1318,10 @@ ClearWinRecords	;Clear bytes 8-$B (wins, games) of the 8 ThreeStars records and 
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $09C01A  From cards94.asm: user records after a game, the setup screen
-;	Mapped to cards94 (67%): UpdateRecords (the user records after a game, four pads in 95), UpdateTeamRecord, UpdateCrowdRecord,
+;	Mapped (67%): UpdateRecords (the user records after a game, four pads in 95), UpdateTeamRecord, UpdateCrowdRecord
 ;	UpdatePlayerRecords, the save RAM record block IO (ReadTeamRecord ... WritePlayerRecord, PlayerRecordOffsets), CountGoalies and
-;	CountPlayers; SetupScreen (93 name) follows them in 95.
-;SetupScreen ($09C5B8) as dc.b; it is transcribed from the retail bytes. its printz Strings and remap bytes.
+;	CountPlayers; SetupScreen follows them in 95.
+;SetupScreen as dc.b; it is transcribed from the retail bytes. its printz Strings and remap bytes.
 ;Local labels are numbered; the names are not kept.
 
 

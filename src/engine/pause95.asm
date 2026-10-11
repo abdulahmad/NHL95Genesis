@@ -1,11 +1,10 @@
-; $07E36C  Adapted from menu94.asm and hockey94.asm: Pausemode, the 95 pause menu and its items
 ;	3 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $07E36C  From menu94.asm: the pause screen and the 95 pause menu; Pausemode from hockey94.asm
-;	94 Pausemode and SetupPauseScreen, then the 95 pause menu ($7E4D6).
+; Pausemode
+;	and SetupPauseScreen, then the 95 pause menu.
 
 
 Pausemode	;(PauseMode). Game is in pause mode now: fade out, stop the sound (unless sflags9 bit 5), run the pause menu
@@ -93,19 +92,18 @@ Pausemode	;(PauseMode). Game is in pause mode now: fade out, stop the sound (unl
 	move.w	(sp)+,(smallfontchars).w
 	rts
 
-SetupPauseScreen	;(dc.b). Draw routine for the pause menu (92 Pausemode .pall / .top): PauseScreenDraw, then KillCrowd
+SetupPauseScreen	;(dc.b). Draw routine for the pause menu: PauseScreenDraw, then KillCrowd
 	jsr	(PauseScreenDraw).l
 	jsr	(KillCrowd).l
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $07E4D6  From menu94.asm: the 95 pause menu
 ;	seta2, InitMenuState / DrawMenuScreen / HandleMenuInput (95: three tabs, INFO / STATS / PAUSE, each with item lists
-;	by game mode), the startpause entries, the 95 PauseScreenDraw and its penalty boxes, RestoreGameScreen (after the pause)
+;	by game mode), the startpause entries, the PauseScreenDraw and its penalty boxes, RestoreGameScreen (after the pause)
 ;	SetMenuPrintX / UpdateMenuSelection / PrintMenuItem, the 95 info page, penalty messages and tabs, then the item lists
 ;	(InfoMenus, StatsMenus, PauseMenus) and their AbortGame / PlayGame.
-;	written as instructions: PauseScreenDraw ($7E816-$7EAC7), ListPenaltyBox, MenuInfoList ... PrintLines, a second rts ($7F366),
-;the item lists and AbortGame / PlayGame ($7F368-$7F97D). the printz / printz2 Strings as instructions; they are String here
+;	written as instructions: PauseScreenDraw, ListPenaltyBox, MenuInfoList ... PrintLines, a second rts
+;the item lists and AbortGame / PlayGame. the printz / printz2 Strings as instructions; they are String here
 ;	(the 40 byte menu box String as dc.w / dc.b, the String macro takes 15 values).
 seta2	;Set a2 to the team struct of the pause pad (menupadnum: cont1team ... cont4team). Called from Pausemode and
 	;HandleMenuInput
@@ -325,7 +323,7 @@ startpause	;Pause on (sfpz)
 	bset	#0,(sflags).w	;sfpz
 	rts
 
-startpause1	;pause initiated by cont 1 (95: menupadnum = 0 for ReadMenuJoy)
+startpause1	;pause initiated by cont 1
 	clr.w	(menupadnum).w
 	bra.s	startpause
 
@@ -588,7 +586,7 @@ ShowPenaltyBoxPlayer	;Print player d0 / 2 + 1 of team a2: jersey number and pena
 rtsmenu	;An rts branched to from ShowPenaltyBox and ListPenaltyBox
 	rts
 
-RestoreGameScreen	;(in the 94 Pausemode ClrHor place). Rebuild the game screen after the pause screen: the vdp maps, palettes
+RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps, palettes
 	;vram, framer, fonts, energy bar, crowd and EASN tiles, the face off screen (disflags bit 4) or the ref tiles, the rink tiles and home team
 	;graphics, then PrintScores1. Called from Pausemode (above)
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1104,7 +1102,7 @@ DrawTab	;The plain tab: $D x 3 of TabBitmap at printx / printy (chars tabchars)
 	move.w	(tabchars).w,d4
 	moveq	#0,d5
 	jmp	(dobitmap).l
-	rts	;$7F366. a second rts, no xref
+	rts	;a second rts, no xref
 
 InfoMenus	;(dc.b). The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0, $7E, $D0): a String header, then items of a
 	;String and a routine (y = the play / resume item, x = the manual goalie toggle; PrintMenuItem), ended by a $FF String
@@ -1291,10 +1289,9 @@ PlayGame	;Pause menu PLAY GAME: sflags9 bit 3 ends the pause menu (HandleMenuInp
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $07F97E  From goalie94.asm and stats94.asm: the pause menu items
 ;	ManualGoalieMenu, SelectGoalieMenu / DisplayPlayerSelectMenu / TimeoutMenu (95: the three tab pause
-;	menu), the 95 PauseScores / PutScoreDigit, SetMenuPadSide and padteams. follows at $7FCFC (asstab).
-;$07F97E-$07FCB9 as dc.b; it is code here, read from the retail bytes.
+;	menu), the PauseScores / PutScoreDigit, SetMenuPadSide and padteams. follows (asstab).
+;it is code here, read from the retail bytes.
 
 
 ManualGoalieMenu	;Pause menu MANUAL GOALIE / AUTO GOALIE: with OptNOP set, toggle goaliemode2
@@ -1372,7 +1369,7 @@ SelectGoalieMenu	;Pause menu CHANGE GOALIE: pick team a2's goalie (or no goalie)
 	bsr.w	ClearMenuBox
 	jsr	(ReadAttributeNibble).l
 	move.w	d0,(menuitem+2).w
-	add.w	(menuitem+2).w,d1	;94 Framer height. Nothing reads it in 95
+	add.w	(menuitem+2).w,d1	;the 94 version height. Nothing reads it in 95
 	move.w	tmgoalie(a2),d0
 	bpl.w	.0
 	moveq	#-1,d0
@@ -1418,7 +1415,7 @@ SelectGoalieMenu	;Pause menu CHANGE GOALIE: pick team a2's goalie (or no goalie)
 	rts
 
 DisplayPlayerSelectMenu	;Draw the goalie list at row $E, x $C, row menuitem in
-	;font set 2: "no goalie", then each goalie by name (95: GetTempPlayerNameAttrib for TempPlOffset, -1 for the away team; 94 printed
+	;font set 2: "no goalie", then each goalie by name (GetTempPlayerNameAttrib for TempPlOffset, -1 for the away team; 94 printed
 	;the roster name and the two digit number)
 	move.w	#$E,(printy).w
 	move.w	(menuitem+2).w,d1

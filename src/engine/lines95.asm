@@ -1,12 +1,10 @@
-; $08A056  Adapted from input94.asm and checks94.asm: line changes, computer lines, saved lines, team line screens
 ;	2 parts in ROM order, each under its banner below.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
 ;	the cmp and exg encodings after assembly.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $08A056  From input94.asm: line changes
-;	94 SetLCmode, SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2, with linebar
-;	getlinee and AvgCline moved in. CompLine follows at $08A3FE.
+;	SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2, with linebar
+;	getlinee and AvgCline moved in. CompLine follows.
 ;except AvgCline (dc.b, read from the retail bytes). a printz String as instructions; it is String here. Local labels
 ;are numbered; the names are not kept.
 ;	95 changes: the team struct offsets, the zero long at $69A (94 $30A).
@@ -215,7 +213,7 @@ lcfound2	;Erase the line change box (eraser) and redraw the scores (PrintScores1
 	jsr	(eraser).l
 	jmp	printscores1
 
-rtslc	;The shared rts of the line change routines (94 rtss2)
+rtslc	;The shared rts of the line change routines
 	rts
 
 linebar	;93 name. Draw the energy bar of line d0 for team a2 at printx / printy (EnergyBarMap, 16 steps)
@@ -294,11 +292,9 @@ AvgCline	;93 name. Return d0 = average energy of the current line on team a2
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $08A3FE  From checks94.asm: computer line changes, saved lines, team screens
 ;	CompLine and AutoLineChange, with moved in: SetupTeamForIntermission, chkatop and ChkShotStat
 ;	EASportsScreen, updatePPTeamTime; andcode: the saved line set routines (DefaultLineData, LoadTeamLines
 ;	CheckTeamLines ...) and six DrawTeamScreen variants. follows at
-;	$08B4E0 (goalieacc).
 ;CompLine, AutoLineChange, ReadTeamSRAM, FixSavedLines, the LineSlotFixTbl handlers and the DrawTeamScreen variants as dc.b
 ;or as wrong code; they are read from the retail bytes. printz Strings and DecompressGraphicsWithCallback remap bytes as
 ;instructions; they are String / dc.b here. Local labels are numbered; the names are not kept.
@@ -883,7 +879,7 @@ LineSlotFixTbl	;CheckTeamLines slot handlers by slot & 7: goalie (the best one),
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-EASportsScreen	;Called from Begin (main95). Show the EA Sports screen (EASportsMap) until a button, or $50 x 4
+EASportsScreen	;Called from Begin. Show the EA Sports screen (EASportsMap) until a button, or $50 x 4
 	;frames
 	move.l	#vb2,(vbint).w	;vblank handler
 	bclr	#1,(disflags).w

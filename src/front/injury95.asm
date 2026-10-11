@@ -1,7 +1,6 @@
-; $09F012  Adapted from collide94.asm, title94.asm, hockey94.asm and penalty94.asm: injuries, the power play box
 ;	setInjuryType, the 95 season injuries (SetSeasonInjuries ... GetInjuryGames), getFgtbyte / chkFgtBit1
-;	CheckInjury, the 95 InsertInjurySlot / DeleteInjurySlot, then the power play box: updatepwrplay, the 95
-;	ClearPowerPlay / rtsPowerPlay, GetLowestPen. follows at $09F590.
+;	CheckInjury, the InsertInjurySlot / DeleteInjurySlot, then the power play box: updatepwrplay, the 95
+;	ClearPowerPlay / rtsPowerPlay, GetLowestPen. follows.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 

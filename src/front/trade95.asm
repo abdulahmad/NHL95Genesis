@@ -1,15 +1,15 @@
-;	NHL 95 trade95. Retail $0962EE-$097C53 (6502 bytes).
+;	NHL 95.
 ;	New in 95: the season roster helpers (GetHighlightSlot, HighlightsHelp, DefaultRosters, GetRosterId, GetCreatedName,
 ;	GetRosterName, Read / WriteTeamRoster, GetJerseyNumber) and the season trades: the Trade Player screen (TradePlayers),
 ;	CheckTrade (roster rules, INVALID TRADE), EvaluateTrade, GMDecision and ExecuteTrade, which moves the players with their
-;	stats, saved lines and line slots. No 94 code. follows at $097C54.
+;	stats, saved lines and line slots. No 94 code. follows.
 ;printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions and left
 ;	HighlightsHelp and ReadTradePads3 as dc.b; they are written from the retail bytes.
 ;Local labels are numbered; the names are not kept.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
 ;	the cmp and exg encodings after assembly.
 
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 
 GetHighlightSlot	;d0 = save RAM offset (SRHighlights + 4 a game) of the highlight slot of HomeTeam's game today, -1 none
 	movem.l	d1-d7/a0-a6,-(sp)

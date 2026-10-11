@@ -1,9 +1,9 @@
-;	NHL 95 season95. Retail $08DF5A-$0920DD (16772 bytes).
+;	NHL 95.
 ;	New in 95: season mode. SeasonMain runs the season from the main flow: SEASON SETUP, the SEASON OPTIONS menu (play games,
 ;	play until a day, standings, team schedule calendar, games today, stats and playoff screens), the simulation of the computer
 ;	games (SimDayGames, SimScore, SimGameStats and the goal weight tables at the end) and the save RAM records. Moved in at the
 ;	head: demoread / HandleJoy1, and RandomSetupTeams (SetupDemo picks random teams). Each routine
-;	comment names its 94 file or says New in 95. follows at $0920DE.
+;	comment names its 94 file or says New in 95. follows.
 ;DayToDate / DateToDay, the season menu actions and the calendar screen as dc.b; they and the tables are read from the
 ;retail bytes. printz / printz2 / printbigz Strings and DecompressGraphicsWithCallback remap bytes as instructions; they
 ;are String / dc.b here. The four goal weight tables at the end as code.
@@ -11,7 +11,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.
 
-	include	macros\genesis.mac	;String (main95.asm includes it in the full build)
+	include	macros\genesis.mac	;String
 
 demoread	;Monitor the pads in demo mode (called every game loop): start on a pad pauses, any other button
 	;ends the demo. 95 checks all four cont*team words and reads pads 3 and 4 when FourWayPlay is set

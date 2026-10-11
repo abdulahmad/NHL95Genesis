@@ -1,7 +1,7 @@
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
-;	main95 segment stub. Retail $000000-$000771.
-;	main95.asm includes macros\genesis.mac itself (it is the first file in nhl95.asm), so this stub does not.
+;	Segment stub.
+;	includes macros\genesis.mac itself (it is the first file in nhl95.asm), so this stub does not.
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -13,7 +13,7 @@
 	include	stubinc\equals.inc	;VDP status bits
 	include	ram95.asm		;RAM map
 
-; External addresses outside $000000-$000771, read from lst/nhl95.bin.
+; External addresses outside, read from lst/nhl95.bin.
 ; The vector longs carry the address itself; jsr / jmp (x).l carry it too; movea.l #x carries it as the immediate.
 IRQ7 = $7A416			;(an rte) Vectors $60-$70 and $7C
 VBjsr = $7A32C			;Vector $78

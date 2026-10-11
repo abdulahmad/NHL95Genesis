@@ -1,10 +1,8 @@
-; $0A1A5A  Adapted from graphics94.asm and title94.asm: player pictures, rink, sprites, fonts, screen maps, logo palettes, arena graphics
-;	3 parts in ROM order, each under its banner below. Retail $0A1A5A-$1A6C27 (1069518 bytes). incbin only (plus the two
+;	3 parts in ROM order, each under its banner below. incbin only (plus the two
 ;	FeaturedPictures tables), no gap and no overlap. Each file is a slice of lst/nhl95.bin written by npm run extractassets
-;	(extractAssets95.js) into Extracted\NHL95\Graphics. follows at $1A6C28.
+;	into Extracted\\Graphics. follows.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $0A1A5A  From graphics94.asm: player pictures, rink, sprites, fonts, screen maps, team logos
 ;	The player pictures (FeaturedPicIdx / FeaturedPictures), the rink, the sprites, the fonts and the screen maps and bitmaps, up to
 ;	the team logos. One slice per asset referenced by the code (the names the code segments use), one per FeaturedPictures picture
 ;	(Card<player>, the line 1 starter of the first team that lists it). A map starts with its 8-byte header (palette and map offsets):
@@ -402,13 +400,13 @@ FeaturedPictures	;The 160 player pictures (GetPlayerPicture)
 	dc.l	CardKevinHatcher,CardSylvainCote,CardTimCheveldae,CardAlexeiZhamnov
 	dc.l	CardKeithTkachuk,CardTeemuSelanne,CardTeppoNumminen,CardDaveManson
 	dc.l	NoPicSkater2,NoPicSkater1,NoPicGoalie1,NoPicGoalie2
-Rinktilelist	;the ice rink map (93 IceRinkMap); Rinktilelist+8 = the rink tiles
+Rinktilelist	;the ice rink map; Rinktilelist+8 = the rink tiles
 	incbin	..\Extracted\NHL95\Graphics\Rinktilelist.map.jim
-Sprites	;the sprite header (94 / 93 Sprites; addframe2): long offsets from here $6730A and $6738A (to frameSprData), then a word
+Sprites	;the sprite header: long offsets from here and (to frameSprData), then a word
 	incbin	..\Extracted\NHL95\Graphics\Sprites.bin
-Spritetiles	;the sprite tiles (93 Sprites+$A; addframe2 adds the frame tile offset)
+Spritetiles	;the sprite tiles
 	incbin	..\Extracted\NHL95\Graphics\Spritetiles.bin
-frameSprData	;the sprite frame data at Sprites + $6738A
+frameSprData
 	incbin	..\Extracted\NHL95\Graphics\frameSprData.bin
 Hotlist	;the hot spot byte pair of each frame (GetHot)
 	incbin	..\Extracted\NHL95\Graphics\HotSpotList.bin
@@ -434,10 +432,10 @@ Teamblocksmap	;the Teamblocksmap map
 	incbin	..\Extracted\NHL95\Graphics\Teamblocksmap.map.jim
 PauseTeamBlocksMap	;the PauseTeamBlocksMap map
 	incbin	..\Extracted\NHL95\Graphics\PauseTeamBlocksMap.map.jim
-FaceOffMap	;the face-off map (94 / 93 FaceOffMap; FaceoffTiles); +8 the tiles
+FaceOffMap	;the face-off map; +8 the tiles
 	incbin	..\Extracted\NHL95\Graphics\FaceOffMap.map.jim
 FaceoffTiles	equ	FaceOffMap	;the same address
-FaceOffSprites	;the face-off sprites (94 / 93 FaceOffSprites; FaceoffTiles2); +8 the tiles
+FaceOffSprites	;the face-off sprites; +8 the tiles
 	incbin	..\Extracted\NHL95\Graphics\FaceOffSprites.map.jim
 FaceoffTiles2	equ	FaceOffSprites	;the same address
 Framermap	;the Framermap map
@@ -584,7 +582,7 @@ ColdIconMap	;the ColdIconMap map
 	incbin	..\Extracted\NHL95\Graphics\ColdIconMap.map.jim
 RonBarrMap	;the RonBarrMap map
 	incbin	..\Extracted\NHL95\Graphics\RonBarrMap.map.jim
-CrowdFrameList	;the crowd sprites (93 CrowdSprites; showcrowd); +8 the tiles
+CrowdFrameList	;the crowd sprites; +8 the tiles
 	incbin	..\Extracted\NHL95\Graphics\CrowdFrameList.map.jim
 TitleScreenImg	;the TitleScreenImg map
 	incbin	..\Extracted\NHL95\Graphics\TitleScreenImg.map.jim
@@ -652,8 +650,7 @@ logoASW	;team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoASW.map.jim
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $1A169A  From title94.asm: team logo palettes
-;	Mapped to title94 (100%): TeamLogoPalettes, one 32 byte palette per team in TeamList order. 25 are the same bytes as the 94 files
+;	Mapped (100%): TeamLogoPalettes, one 32 byte palette per team in TeamList order. 25 are the same bytes as the 94 files
 ;	and keep their 94 names; DAL, ASE and ASW differ and are the 94 stem with 95 added.
 
 TeamLogoPalettes	;Team logo palettes, 16 colors per team (DrawMatchupLogo, NameEntryScreen, DrawTeamBitmap)
@@ -687,35 +684,34 @@ TeamLogoPalettes	;Team logo palettes, 16 colors per team (DrawMatchupLogo, NameE
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalASWA95.pal	;ASW, differs from 94 MatchupPalASWA.pal
 
 ;------------------------------------------------------------------------------------------------------------------------
-; $1A1A1A  From graphics94.asm: ArenaGfxBank, the home team graphics
-;	ArenaGfxBank (94 ArenaGfxBank): the home team graphics LoadHomeTeamGfx loads, $30A bytes per team, read through
-;	TeamGfxList (TeamList order; ASE and ASW share one). One incbin per team in bank order (extractAssets95.js).
+;	ArenaGfxBank: the home team graphics LoadHomeTeamGfx loads, $30A bytes per team, read through
+;	TeamGfxList (TeamList order; ASE and ASW share one). One incbin per team in bank order.
 
 ArenaGfxBank	;LoadHomeTeamGfx: one block of $30A bytes per team (TeamGfxList)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxANH.bin	;$1A1A1A, ANH (ArenaGfxBank+$0)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxBUF.bin	;$1A1D24, BUF (ArenaGfxBank+$30A)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxCGY.bin	;$1A202E, CGY (ArenaGfxBank+$614)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxCHI.bin	;$1A2338, CHI (ArenaGfxBank+$91E)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxDAL.bin	;$1A2642, DAL (ArenaGfxBank+$C28)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxDET.bin	;$1A294C, DET (ArenaGfxBank+$F32)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxEDM.bin	;$1A2C56, EDM (ArenaGfxBank+$123C)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxFLA.bin	;$1A2F60, FLA (ArenaGfxBank+$1546)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxHFD.bin	;$1A326A, HFD (ArenaGfxBank+$1850)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxLA.bin	;$1A3574, LA (ArenaGfxBank+$1B5A)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxMTL.bin	;$1A387E, MTL (ArenaGfxBank+$1E64)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxNJ.bin	;$1A3B88, NJ (ArenaGfxBank+$216E)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxNYI.bin	;$1A3E92, NYI (ArenaGfxBank+$2478)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxNYR.bin	;$1A419C, NYR (ArenaGfxBank+$2782)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxOTW.bin	;$1A44A6, OTW (ArenaGfxBank+$2A8C)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxPHI.bin	;$1A47B0, PHI (ArenaGfxBank+$2D96)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxPIT.bin	;$1A4ABA, PIT (ArenaGfxBank+$30A0)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxQUE.bin	;$1A4DC4, QUE (ArenaGfxBank+$33AA)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxSJ.bin	;$1A50CE, SJ (ArenaGfxBank+$36B4)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxSTL.bin	;$1A53D8, STL (ArenaGfxBank+$39BE)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxTB.bin	;$1A56E2, TB (ArenaGfxBank+$3CC8)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxTOR.bin	;$1A59EC, TOR (ArenaGfxBank+$3FD2)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxVAN.bin	;$1A5CF6, VAN (ArenaGfxBank+$42DC)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxWSH.bin	;$1A6000, WSH (ArenaGfxBank+$45E6)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxWPG.bin	;$1A630A, WPG (ArenaGfxBank+$48F0)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxBOS.bin	;$1A6614, BOS (ArenaGfxBank+$4BFA)
-	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxASEASW.bin	;$1A691E, ASE / ASW (ArenaGfxBank+$4F04)
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxANH.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxBUF.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxCGY.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxCHI.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxDAL.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxDET.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxEDM.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxFLA.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxHFD.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxLA.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxMTL.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxNJ.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxNYI.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxNYR.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxOTW.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxPHI.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxPIT.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxQUE.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxSJ.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxSTL.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxTB.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxTOR.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxVAN.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxWSH.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxWPG.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxBOS.bin
+	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxASEASW.bin
