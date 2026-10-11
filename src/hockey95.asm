@@ -179,7 +179,7 @@ IntermissionStart	;94 setup94 name: the PeriodOver tail. goal95 PeriodOver jumps
 	jsr	(UpdateScores).l	;94 InitScores
 	cmpi.w	#4,(gsp).w
 	bne.w	.4
-	jsr	(AddPOStats).l
+	jsr	(DisplayTeamStatsForPlayoffs).l
 .4
 	bset	#5,(sflags11).w
 	bsr.w	IntermissionMenu

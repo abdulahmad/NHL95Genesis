@@ -201,7 +201,7 @@ vcountwait	;(93 MenuWaitVblank): waits till vcount changes, then resyncs vcount.
 	move.w	(sp)+,d0
 	rts
 
-printz2	;printsmall with the String after the call (93 printsmallz)
+printsmallz	;printsmall with the String after the call (93 printsmallz) IDA: printz2.
 	move.l	a1,-(sp)
 	movea.l	4(sp),a1
 	bsr.w	printsmall
@@ -730,7 +730,7 @@ getnameD7	;95 only. getname for player d0 of team number d7
 getname	;(93 getname) a1 = mesarea "NN First Last" for player d0 of team struct a2. 95 reads the number with GetJerseyNumber
 	movem.l	d0-d3/d7-a0/a2-a3,-(sp)
 	move.w	Xvel(a2),d7
-	bsr.w	getplayername	;get to start of player name
+	bsr.w	GetPlayerNamePointer	;get to start of player name
 getnamebody	;getnameD7 joins here
 	move.l	a0,-(sp)
 	movea.w	#(mesarea-M68K_RAM),a3
@@ -739,7 +739,7 @@ getnamebody	;getnameD7 joins here
 	adda.w	(a0),a0
 	jsr	(GetJerseyNumber).l
 	move.b	(jerseynum).w,d0
-	bsr.w	d0toascii
+	bsr.w	ConverByteToDigits
 	bsr.w	appendz	;add space after JNo
 	String	' '
 	movea.l	(sp)+,a1
@@ -791,7 +791,7 @@ FormatPlayerNameWithAttribD7	;95 only. FormatPlayerNameWithAttrib for team d7
 FormatPlayerNameWithAttrib	;93 name. a1 = mesarea string "NN F. Last" for player d0 of team a2, built in TextBuffer (93 name). Called from PenaltyShotBox and others
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	move.w	Xvel(a2),d7
-	bsr.w	getplayername
+	bsr.w	GetPlayerNamePointer
 
 NameWithAttrib	;shared body of FormatPlayerNameWithAttrib
 	move.l	a0,-(sp)
@@ -799,7 +799,7 @@ NameWithAttrib	;shared body of FormatPlayerNameWithAttrib
 	adda.w	(a0),a0
 	jsr	(GetJerseyNumber).l
 	move.b	(jerseynum).w,d0
-	bsr.w	d0toascii
+	bsr.w	ConverByteToDigits
 	move.b	#$20,(a1)+
 	movea.l	(sp)+,a0
 	move.w	(a0)+,d0
@@ -825,7 +825,7 @@ FormatPlayerNameD7	;95 only. FormatPlayerName for team d7
 	adda.w	(a0),a0
 	jsr	(GetJerseyNumber).l
 	move.b	(jerseynum).w,d0
-	bsr.w	d0toascii
+	bsr.w	ConverByteToDigits
 	move.b	#$20,(a1)+
 	movea.l	(sp)+,a0
 	move.w	(a0)+,d0
@@ -844,13 +844,13 @@ FormatPlayerNameD7	;95 only. FormatPlayerName for team d7
 FormatPlayerName	;93 name. a1 = mesarea string "NN Last" for player d0 of team a2, built in TextBuffer. Called from DisplayPlayerAttributeMenu and others
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	move.w	Xvel(a2),d7
-	bsr.w	getplayername
+	bsr.w	GetPlayerNamePointer
 	move.l	a0,-(sp)
 	movea.w	#(TextBuffer-M68K_RAM),a1
 	adda.w	(a0),a0
 	jsr	(GetJerseyNumber).l
 	move.b	(jerseynum).w,d0
-	bsr.w	d0toascii
+	bsr.w	ConverByteToDigits
 	move.b	#$20,(a1)+
 	movea.l	(sp)+,a0
 	move.w	(a0)+,d0
@@ -868,12 +868,12 @@ FormatPlayerName	;93 name. a1 = mesarea string "NN Last" for player d0 of team a
 
 FormatPlayerNameLast	;94 only. FormatPlayerNameShort without the leading space ("Last", space padded). Branches into FormatLastName
 	movem.l	d0-d3/a0/a2,-(sp)
-	bsr.w	getplayername
+	bsr.w	GetPlayerNamePointer
 	movea.w	#(TextBuffer-M68K_RAM),a1
 	bra.w	FormatLastName
 FormatPlayerNameShort	;93 name. a1 = mesarea string " Last" for player d0 of team a2, space padded to 12 characters
 	movem.l	d0-d3/a0/a2,-(sp)
-	bsr.w	getplayername
+	bsr.w	GetPlayerNamePointer
 	movea.w	#(TextBuffer-M68K_RAM),a1
 	move.b	#$20,(a1)+
 FormatLastName	;Skip the first name, copy the last name, pad; branched to from FormatPlayerNameLast, so global
@@ -957,7 +957,7 @@ getplayernameD7	;95 only. getplayername for team d7
 	movem.l	d0/d7/a2,-(sp)
 	bra.w	getnamea0
 
-getplayername	;(93 GetPlayerNamePointer) loops through team roster to get to d0 player: a0 = name string of player d0 (roster offset) of team struct a2. Each
+GetPlayerNamePointer	;(93 GetPlayerNamePointer) loops through team roster to get to d0 player: a0 = name string of player d0 (roster offset) of team struct a2. Each IDA: getplayername.
 	;record is a length word String and 8 more bytes
 	movem.l	d0/d7/a2,-(sp)
 	move.w	Xvel(a2),d7
@@ -968,7 +968,7 @@ getnamea0	;shared tail of getplayername: GetRosterName, a0 = the name
 	movem.l	(sp)+,d0/d7/a2
 	rts
 
-d0toascii	;(93 ConverByteToDigits) converts decimal number in d0 to ascii: two ascii digits of bcd byte d0 to (a1)+, a leading 0 becomes a space ($F0 + '0')
+ConverByteToDigits	;(93 ConverByteToDigits) converts decimal number in d0 to ascii: two ascii digits of bcd byte d0 to (a1)+, a leading 0 becomes a space ($F0 + '0') IDA: d0toascii.
 	move.w	d0,-(sp)	;push to stack
 	lsr.b	#4,d0	;divide by 16 (get upper digit in d0)
 	bne.w	.0
@@ -1700,7 +1700,7 @@ GetPeriodTimeRemaining	;93 name. Return d0 = (gsp << 14 | PerTimeTotal) - gamecl
 	sub.w	(gameclock).w,d0
 	rts
 
-PrintScores1	;93 printscores1. Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; period name gsp of PerLabels, or name 4
+printscores1	;93 printscores1. Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; period name gsp of PerLabels, or name 4
 	;of PenShotPenalties2 with gmode2 bit 1) and EASNLogo, then unless sflags3 bit 0 the score box (Framer 8 x 5 at $17, $17) with both team
 	;names and scores (PrintTeamNameAndScore). sflags5 bit 7 sets crowdnoisedelay = $78. 95 has no horizontal rink scoreboard
 	movem.l	d0-d2/a0-a3,-(sp)
@@ -2259,7 +2259,7 @@ setupice	;set all variables, send non purgeable graphics, build sprite frame lis
 	adda.w	#$1C,a3
 	jsr	(addframe2).l
 	move.l	a5,(DMAlistend).w
-	jsr	(DoDMAlist).l
+	jsr	(DoDMAList).l
 	move.w	(sp)+,(disflags).w
 	move.l	#VBlank,(vbint).w	;video94_1
 	bclr	#0,(disflags).w

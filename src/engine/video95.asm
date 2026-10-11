@@ -345,7 +345,7 @@ DumpSprites2	;93 name (display94). Transfer sprite table, then the dma list. Fal
 	move.w	(Sattsize).w,d0	;93 Sattsize: words
 	move.w	(VSPRITES).w,d1
 	bsr.w	DoDMA
-DoDMAlist	;(display94). Transfer data from dmalist. Also called from middle95
+DoDMAList	;(display94). Transfer data from dmalist. Also called from middle95
 	movea.l	(DMAlistend).w,a6
 	cmpa.l	#DMAList,a6
 	beq.w	rtss2	;list empty

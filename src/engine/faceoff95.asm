@@ -234,8 +234,8 @@ SetFaceoffComputerLine	;(checks94). Line changes on and team d0 not on a pad (or
 	beq.w	rtsfaceoff
 .0
 	jsr	(CompLine).l
-	jsr	(SetPersonel).l
-	jsr	(PrintScores1).l
+	jsr	(setpersonel).l
+	jsr	(printscores1).l
 	move.w	#$2710,(crowdnoisedelay).w
 	rts
 
@@ -414,10 +414,10 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 	move.w	#$3C,(yleader).w
 	jsr	(ResetBench).l
 	movea.w	#(HmShots-M68K_RAM),a2
-	jsr	(SetPersonel).l
+	jsr	(setpersonel).l
 	jsr	(forcepldata).l
 	adda.w	#tmsize,a2
-	jsr	(SetPersonel).l
+	jsr	(setpersonel).l
 	jsr	(forcepldata).l
 	jsr	(resetplstuff).l
 	btst	#7,(sflags9).w
@@ -559,7 +559,7 @@ puckfaceoff2	;(checks94). Puck assignment 4. First call: set up the faceoff: cle
 	move.w	(SongNum).w,-(sp)
 	jsr	(song).l
 .26
-	jsr	(PrintScores1).l
+	jsr	(printscores1).l
 	st	(palcount).w
 	btst	#5,(sflags9).w
 	bne.w	.27
@@ -680,7 +680,7 @@ updatefaceoff	;(checks94). Faceoff count down: fofdata frame from temp1; at 0 er
 	jsr	(eraser).l
 .3
 	bset	#3,(disflags).w
-	jmp	PrintScores1
+	jmp	printscores1
 
 Endfaceoff	;(checks94). Drop the puck: sfx $2C, reload the ref tiles (RefTiles), clear the faceoff flags, pick the winner
 	;(.ftab from the two fofdata2 frames and randomd0) and the puck direction (fodir1 / fodir2 or random, dirtab); assignment 1
@@ -875,7 +875,7 @@ DrawFaceoffWindow	;95 only (94 puckfaceoff2 .drawfaceoffwindow). The faceoff win
 	bclr	#0,(sflags6).w
 	tst.w	(OptLine).w
 	bne.w	.2
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ADDY,$A,TXS_ATTR,4
 	moveq	#$C,d0
 	moveq	#3,d1
@@ -886,7 +886,7 @@ DrawFaceoffWindow	;95 only (94 puckfaceoff2 .drawfaceoffwindow). The faceoff win
 	bne.w	.1
 	exg	d0,d1
 .1
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ADDX,1,TXS_ADDY,$FE
 	movea.l	#linelist,a1
 	jsr	(PrintSmallListItem).l

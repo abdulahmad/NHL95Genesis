@@ -18,7 +18,7 @@ ScoringSummaryScreen	;stats94 ScoringSummaryScreen (93 name). "Scoring Summary":
 	addq.w	#3,(printx).w
 	clr.w	d0
 	jsr	(PutTeamBlock).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,4,3,0,7,TXS_FONT,3,'^^Per^^Time^^Tm^^Goal/Assist^^^^^^P/S^^^',TXS_FONT,0
 	clr.l	d0
 	move.w	(ScoreSumbytes).w,d0
@@ -191,7 +191,7 @@ GoalTypeTbl	;stats94 GoalTypeTbl (93 name). ScoreSum byte 2 & $7F: SH2, SH, even
 
 DrawScrollArrowsPenalty	;stats94 DrawScrollArrowsPenalty (93 name). Summary screen up / down arrows (ScrollArrowTbl). Saves d0-d1/a1
 	movem.l	d0-d1/a1,-(sp)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$3,$1,$9,TXS_FONT,$1,$0
 	clr.w	d0
 	move.w	(VertLineScrolling).w,d1
@@ -226,7 +226,7 @@ PenaltySummaryScreen	;stats94 PenaltySummaryScreen (93 name). "Penalties": one 3
 	addq.w	#3,(printx).w
 	clr.w	d0
 	jsr	(PutTeamBlock).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$3,$0,$7,TXS_FONT,$3,'^^Per^^Time^^Tm^^Player/Penalty^^^min^^^',TXS_FONT,$0,$0
 	clr.l	d0
 	move.w	(PenSumLength).w,d0

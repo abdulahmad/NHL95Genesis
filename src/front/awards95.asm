@@ -73,7 +73,7 @@ SeasonAwards	;95 only. End of season awards: for each of the 9 awards the finali
 	rts
 
 PrintAwardTitle	;95 only. Print award AwardIndex: name, description and second line (PrintCentered)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$0,TXS_ATTR,$1,TXS_MAP,$1,TXS_Y,$2
 	move.w	(AwardIndex).w,d0
 	movea.l	#AwardNames,a1
@@ -206,7 +206,7 @@ AwardWinnerNop	;95 only. Does nothing (AwardsLoop calls it after DrawWinnerPanel
 PrintFinalists	;95 only. "FINALISTS:" and the 3 finalists (player names, or teams for a team award), the highlight (AwardHilite) moving every AwardCycle frames; in winner mode (BA_PS_flags bit 1) only the winner (AwardWinner) stays
 	btst	#1,(BA_PS_flags).w
 	bne.w	.1
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$0,TXS_ATTR,$1,TXS_MAP,$1,TXS_X,$11,TXS_Y,$6,'FINALISTS:'
 	move.w	(AwardFlashTimer).w,d0
 	ext.l	d0
@@ -308,7 +308,7 @@ PrintFinalists	;95 only. "FINALISTS:" and the 3 finalists (player names, or team
 	rts
 
 FlashWinnerCaption	;95 only. Flash "The Winner !" (AwardFlashTimer: on $1E frames, off to $3C)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$0,TXS_ATTR,$1,TXS_MAP,$1,TXS_X,$11,TXS_Y,$6,'          '
 	move.w	#2,(printfontset).w
 	move.w	(AwardFlashTimer).w,d0
@@ -319,7 +319,7 @@ FlashWinnerCaption	;95 only. Flash "The Winner !" (AwardFlashTimer: on $1E frame
 	blt.w	.0
 	clr.w	(AwardFlashTimer).w
 .0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ATTR,$1,TXS_MAP,$1,TXS_X,$12,TXS_Y,$6,'The Winner !'
 	rts
 

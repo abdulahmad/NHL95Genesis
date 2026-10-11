@@ -406,7 +406,7 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 	;1-6: the position (MatchupPosNames), the two players and their ratings
 	tst.w	(matchup).w
 	bne.w	.3
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$0,$1,$16,$16,TXS_FONT,$1,$0
 	lea	StatsText(pc),a1
 	move.w	#0,d7
@@ -455,7 +455,7 @@ PrintMatchupRatings	;scout94 PrintMatchupRatings. Matchup 0: the rating names (S
 	adda.w	(a1),a1
 .5
 	dbf	d0,.4
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$0,$1,$C,$13,TXS_FONT,$1,$0
 	jsr	(printsmall).l
 	move.w	#$18,(printy).w

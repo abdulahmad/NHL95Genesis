@@ -26,7 +26,7 @@ PuckcIsGoalie	;95 only. Z set (eq) when the puck carrier is a goalie (a minus pu
 	movem.l	(sp)+,d0/a0
 	rts
 
-SetPersonel	;(93 setpersonel) Set personnel on team a2 by PlList (SetPlList): players already on the ice stay,
+setpersonel	;(93 setpersonel) Set personnel on team a2 by PlList (SetPlList): players already on the ice stay,
 	;the others take the free sort objects. 95: SetSeasonInjuries first with GameFlags bit 3
 	movem.l	d0-d5/a0-a4,-(sp)
 	btst	#3,(GameFlags).w

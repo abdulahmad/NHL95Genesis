@@ -144,7 +144,7 @@ DrawMenuScreen	;93 name. Call the draw routine, clear the menu box, print the it
 	jsr	(a0)
 	bsr.w	ClearMenuBox
 RedrawMenu	;95 only, no IDA label. Print the menu items and fade in. Called from the menu items below (ManualGoalieMenu, SelectGoalieMenu, TimeoutMenu) after they clear the box
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ATTR,4,TXS_Y,$C
 	jsr	(SetMenuPrintX).l
 	jsr	(UpdateMenuSelection).l
@@ -573,7 +573,7 @@ ShowPenaltyBoxPlayer	;95 only. Print player d0 / 2 + 1 of team a2: jersey number
 	move.b	(jerseynum).w,d0
 	move.w	(printx).w,-(sp)
 	movea.w	#(TextBuffer-M68K_RAM),a1
-	jsr	(d0toascii).l
+	jsr	(ConverByteToDigits).l
 	movea.w	#(mesarea-M68K_RAM),a1
 	move.w	#4,(a1)
 	jsr	(print).l
@@ -672,7 +672,7 @@ RestoreGameScreen	;95 only (in the 94 Pausemode ClrHor place). Rebuild the game 
 	cmp.w	(vcount).w,d0
 	beq.s	.5
 	bset	#3,(disflags).w
-	jsr	(PrintScores1).l
+	jsr	(printscores1).l
 	btst	#3,(sflags2).w
 	bne.w	.6
 	move.w	#$64,(palcount).w
@@ -751,7 +751,7 @@ UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to s
 	movea.l	(menulist).w,a1
 	adda.l	(menuitemoffset).w,a1
 	jsr	(printsmall).l	;the menu title
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	dc.w	$28	;String: menu box top, rows of blanks
 	dc.b	$F9,$00,$FB,$01,$20,$FB,$FF,$FA,$01,$20,$FB,$FF,$FA,$01,$20,$FB
 	dc.b	$FF,$FA,$01,$20,$FB,$12,$20,$FB,$FF,$FA,$FF,$20,$FB,$FF,$FA,$FF
@@ -769,11 +769,11 @@ UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to s
 	bsr.w	SetMenuPrintX
 	move.w	(menuitem+2).w,d0
 	beq.w	.8
-	jsr	(printz2).l	;more items above
+	jsr	(printsmallz).l	;more items above
 	String	TXS_ATTR,0,TXS_FONT,0,TXS_ADDX,1,TXS_ADDY,1,$7B,TXS_ADDY,$FF,0	;the up arrow
 .8
 	bsr.w	SetMenuPrintX
-	jsr	(printz2).l	;start of an item row
+	jsr	(printsmallz).l	;start of an item row
 	String	TXS_FONT,0,TXS_ADDX,2,TXS_ADDY,2
 	move.l	a1,-(sp)
 	movea.l	(menulist).w,a1
@@ -793,7 +793,7 @@ UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to s
 	bsr.w	SetMenuPrintX
 	addq.w	#1,(printy).w
 	move	sr,-(sp)
-	jsr	(printz2).l	;more items below
+	jsr	(printsmallz).l	;more items below
 	String	TXS_ATTR,0,TXS_ADDX,1
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#1,d0
@@ -807,7 +807,7 @@ UpdateMenuSelection	;93 name. Clamp menuitem to the list, scroll menuitem+2 to s
 .10
 	bsr.w	SetMenuPrintX
 	addq.w	#1,(printy).w
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,0,TXS_ATTR,0,TXS_ADDX,1,$7D,0	;the down arrow
 	subq.w	#1,(printy).w
 .11
@@ -867,7 +867,7 @@ PrintMenuItem	;93 name. printsmall item String a1 (advanced past it). y: START G
 	String	'  AUTO GOALIE   '
 
 ClearMenuBox	;95 only. eraser $12 x $C at $B, $B
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ATTR,4,TXS_X,$B,TXS_Y,$B
 	moveq	#$12,d0
 	moveq	#$C,d1
@@ -1409,7 +1409,7 @@ SelectGoalieMenu	;stats94 SelectGoalieMenu. Pause menu CHANGE GOALIE: pick team 
 	blt.w	.x
 .set
 	move.w	d0,tmgoalie(a2)
-	jsr	(SetPersonel).l
+	jsr	(setpersonel).l
 .x
 	move.w	(sp)+,(menuitem+2).w
 	move.w	(sp)+,(menuitem).w
@@ -1430,12 +1430,12 @@ DisplayPlayerSelectMenu	;stats94 DisplayPlayerSelectMenu. Draw the goalie list a
 	bne.w	.1
 	move.w	#2,(printfontset).w
 .1
-	bsr.w	printz2
+	bsr.w	printsmallz
 	String	'                 '	;clear the row
 	tst.w	d0
 	bne.w	.player
 	move.w	#$C,(printx).w
-	bsr.w	printz2
+	bsr.w	printsmallz
 	String	'no goalie'
 	bra.w	.next
 .player
@@ -1464,7 +1464,7 @@ TimeoutMenu	;stats94 TimeoutMenu. Pause menu TIMEOUT for team a2: drop the item 
 	move.l	#$23A,(menuitemoffset).w
 	bset	#2,tmflags(a2)
 	move.w	#0,(printfontset).w
-	bsr.w	printz2
+	bsr.w	printsmallz
 	String	TXS_X,$10,TXS_Y,$E,'Timeout',TXS_X,$14,TXS_Y,$10	;$FD x, $FC y
 	movea.l	tmdata(a2),a1
 	adda.w	4(a1),a1	;team name String

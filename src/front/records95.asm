@@ -307,7 +307,7 @@ NameLetterGrid	;Name entry: letter grid and its key help (cards94 NameLetterGrid
 	jsr	(ClearNameHelp).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$18,$11,$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	dc.w	$44;String length
 	dc.b	'{}[]',$FA,$1,$FD,$18,'=Select letter',$FA,$2
 	dc.b	$FD,$18,'C=Enter letter',$FA,$2,$FD,$18,'A=Go back'
@@ -337,7 +337,7 @@ NameEntryHelp	;Name entry: name log key help text (cards94 NameEntryHelp)
 	jsr	(ClearNameHelp).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$18,$11,$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	dc.w	$42;String length
 	dc.b	'{}=Select',$FA,$1,$FD,$1B,'name',$FA,$2
 	dc.b	$FD,$19,'B=Enter/edit',$FA,$1,$FD,$1B,'name'
@@ -542,15 +542,15 @@ PrintNameField	;Name entry: print the 12-char name field at a1 ("-" pads) and th
 	move.w	#4,(a1)
 	move.b	(a0,d4.w),2(a1)
 	move.b	#0,3(a1)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,1
 	cmpi.b	#$20,2(a1)
 	bne.w	.2
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,3
 .2
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,0
 	movem.l	(sp)+,a0-a1
 .3
@@ -905,7 +905,7 @@ RecordHoldersScreen	;records94 RecordHoldersScreen. Pause menu RECORD HOLDERS: t
 	jsr	(eraser).l
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP3),$7,$2,'Record Holders',-(TXPRI+TXMAP3),$1,$9
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$3,$5,$8,TXS_FONT,$1,'Name',TXS_FONT,$0,$0
 	bsr.w	PrintRecordTitles
 	bsr.w	PrintWinRecords
@@ -981,7 +981,7 @@ SaveRecTitles	;records94 SaveRecTitles. PrintRecordTitles String, page 2
 PrintWinRecords	;records94 PrintWinRecords. Record Holders page 0: name (PrintRecordName), win %, wins, losses, ties of the 7 rows
 	;in winsort order
 	movem.l	d0-d7/a0-a6,-(sp)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$3,$2,$A,TXS_FONT,$0,$0
 	move.w	#6,d7
 	movea.l	#winsort,a0
@@ -1048,7 +1048,7 @@ ClearRecordArea	;records94 ClearRecordArea. Record Holders: erase the record row
 	move.w	(printx).w,-(sp)
 	move.w	(printy).w,-(sp)
 	move.w	(printm).w,-(sp)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$3,$0,$A,$0
 	move.w	#$28,d0
 	move.w	#$12,d1
@@ -1062,7 +1062,7 @@ ClearRecordArea	;records94 ClearRecordArea. Record Holders: erase the record row
 PrintPlayerRecords	;records94 PrintPlayerRecords. Record Holders pages 1 (goals, recsort1) and 2 (saves, recsort2): name, value,
 	;"by TEAM vs. TEAM" of the 7 rows
 	movem.l	d0-d7/a0-a6,-(sp)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$3,$2,$A,TXS_FONT,$0,$0
 	move.w	#6,d7
 	movea.l	#recsort1,a0

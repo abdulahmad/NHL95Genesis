@@ -16,7 +16,7 @@
 ; External addresses outside $0A0D1A-$0A12A9, read from lst/nhl95.bin.
 ReadMenuJoy = $7A6AA		;video95
 vcountwait = $7C6BE		;middle95
-printz2 = $7C6D4		;middle95
+printsmallz = $7C6D4		;middle95
 printsmall = $7C6E6		;middle95
 printz = $7C810		;middle95
 print = $7C822		;middle95

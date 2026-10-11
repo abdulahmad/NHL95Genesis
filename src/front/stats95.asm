@@ -104,28 +104,28 @@ rtsStatScroll	;rts of StatScrollRow / StatScrollRowEnd
 PrintStatScrollArrows	;period94 PrintStatScrollArrows. Scroll arrows (printz2): up ($7B) when VertLineScrolling > 0, down
 	;($7D) when it is below matchupvis
 	movem.l	d0-d7/a0-a6,-(sp)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,1
 	tst.w	(VertLineScrolling).w
 	beq.w	.0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,4,3,'$',9,TXS_FONT,1,'{'
 	bra.w	.1
 .0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,4,3,'$',9,TXS_FONT,1,' '
 .1
 	move.w	(matchupvis).w,d0
 	cmp.w	(VertLineScrolling).w,d0
 	beq.w	.2
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,4,3,'$',$19,TXS_FONT,1,'}'
 	bra.w	.3
 .2
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,4,3,'$',$19,TXS_FONT,1,' '
 .3
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,0
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -372,7 +372,7 @@ DisplayAttributeScreen	;stats94 DisplayAttributeScreen (93 name). Stats screen f
 	String	-(TXPRI+TXMAP3),7,4,'Playoff',-(TXPRI+TXMAP3),$17,4,'Stats',-(TXPRI+TXMAP3),$E,1,0
 	bra.w	.team
 .title
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,4,3,$C,$1A,TXS_FONT,3,'A^-^Switch^Teams',TXS_FONT,0,0
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP3),8,4,'Player',-(TXPRI+TXMAP3),$15,4,'Stats',-(TXPRI+TXMAP3),$E,1
@@ -483,7 +483,7 @@ DisplayAttributeLineDown	;stats94 DisplayAttributeLineDown (93 name)
 	bra.w	DisplayAttributeEntry
 
 DisplayAttributeMenu	;stats94 DisplayAttributeMenu (93 name)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,4,3,4,9,TXS_FONT,1,'Player',TXS_ADDX,7,0
 	lea	AttributeMenuTxt(pc),a1
 	moveq	#5,d3
@@ -501,9 +501,9 @@ DisplayAttributeMenu	;stats94 DisplayAttributeMenu (93 name)
 	addq.w	#1,d3
 	cmp.w	#5,d3
 	blt.s	.0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,4,3,9,7,0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,1
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),$A,7,0
@@ -749,7 +749,7 @@ AttributeTitleTxt	;stats94 AttributeTitleTxt (93 name). Sort column titles
 
 DrawScrollArrowsAttribute	;stats94 DrawScrollArrowsAttribute (93 name). Up / down arrows (ScrollArrowTbl2). Saves d0-d1/a1
 	movem.l	d0-d1/a1,-(sp)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,4,3,'$',$C,TXS_FONT,3,0
 	clr.w	d0
 	move.w	(VertLineScrolling).w,d1
@@ -1520,7 +1520,7 @@ SeasonAttributeDraw	;95 only. Draw the season player stats screen for team d7 (S
 	clr.w	(PlayerScrollCtr).w
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),$5,$1,$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$3,$B,$1A,TXS_FONT,$3,'A,B^-^Switch^Teams',TXS_FONT,$0,$0
 	btst	#3,(sflags11).w
 	bne.w	.1
@@ -1641,7 +1641,7 @@ SeasonAttribLineDown	;stats94 DisplayAttributeLineDown
 	bra.w	SeasonAttributeEntry
 
 SeasonAttributeMenu	;stats94 DisplayAttributeMenu (3 columns: G, A, Pts). Headers, sort title, sorted player list at Satt, draws 6 rows
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$3,$4,$9,TXS_FONT,$1,'Player',TXS_ADDX,$7,$0
 	lea	SeasonAttributeMenuTxt(pc),a1
 	moveq	#3,d3
@@ -1659,9 +1659,9 @@ SeasonAttributeMenu	;stats94 DisplayAttributeMenu (3 columns: G, A, Pts). Header
 	addq.w	#1,d3
 	cmp.w	#3,d3
 	blt.s	.0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$3,$9,$7,$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$1
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),$A,$7,$0
@@ -1884,7 +1884,7 @@ SeasonAttributeTitleTxt	;stats94 AttributeTitleTxt. Sort column titles
 
 SeasonScrollArrows	;stats94 DrawScrollArrowsAttribute. Up / down arrows (SeasonScrollArrowTbl). Saves d0-d1/a1
 	movem.l	d0-d1/a1,-(sp)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$3,'$',$C,TXS_FONT,$3,$0
 	clr.w	d0
 	move.w	(VertLineScrolling).w,d1
@@ -1965,7 +1965,7 @@ SeasonTeamStatsRun	;95 only. Season (or playoff, sflags11 bit 3) team stats scre
 .2
 	movea.l	#StatBuf,a0
 	jsr	(ReadSeasonTeamRecord).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$2,$B,$1A,TXS_FONT,$1,'A,B^-^Switch^Teams',TXS_FONT,$0,$0
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),$E,$6,$0
@@ -2000,9 +2000,9 @@ SeasonTeamStatsRun	;95 only. Season (or playoff, sflags11 bit 3) team stats scre
 PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): W,L,T,Pts, then per-game / percentage stats (like 94 DisplayTeamStatsScreen rows)
 	movem.l	a6,-(sp)
 	movea.l	#StatBuf,a6
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$2,$3,$9,'Wins,Losses,Ties,Pts  ',$0
 	clr.w	(rosterscroll).w
 	clr.w	d0
@@ -2012,7 +2012,7 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	move.w	#2,d1
 	jsr	(PushNumberWidth).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	',',$0
 	clr.w	d0
 	move.b	$C(a6),d0
@@ -2020,7 +2020,7 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	move.w	#2,d1
 	jsr	(PushNumberWidth).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	',',$0
 	clr.w	d0
 	move.b	$B(a6),d0
@@ -2029,7 +2029,7 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	move.w	#2,d1
 	jsr	(PushNumberWidth).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	',',$0
 	move.w	(sp)+,d0
 	add.w	(sp),d0
@@ -2037,7 +2037,7 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	move.w	#3,d1
 	jsr	(PushNumberWidth).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$2,$3,$B,'Goals Scored Per Game',TXS_X,$1E
 	move.w	(rosterscroll).w,d1
 	clr.l	d0
@@ -2055,13 +2055,13 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	move.w	#3,d1
 	jsr	(PushNumberWidth).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	'.',$0
 	move.w	(sp)+,d0
 	move.w	#2,d1
 	jsr	(PushNumberWidthZero).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$2,$3,$D,'Goals Allowed Per Game',TXS_X,$1E,$0
 	move.w	(rosterscroll).w,d1
 	clr.w	d0
@@ -2079,13 +2079,13 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	move.w	#3,d1
 	jsr	(PushNumberWidth).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	'.',$0
 	move.w	(sp)+,d0
 	move.w	#2,d1
 	jsr	(PushNumberWidthZero).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$2,$3,$F,'Penalty Minutes Per Game',TXS_X,$1E,$0
 	move.w	(rosterscroll).w,d1
 	clr.l	d0
@@ -2103,13 +2103,13 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	move.w	#3,d1
 	jsr	(PushNumberWidth).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	'.',$0
 	move.w	(sp)+,d0
 	move.w	#2,d1
 	jsr	(PushNumberWidthZero).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$2,$3,$11,'Save Percentage',TXS_X,$1F
 	move.w	8(a6),d3
 	move.w	d3,d2
@@ -2126,9 +2126,9 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	move.w	#3,d1
 	jsr	(PushNumberWidth).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	'%',$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$2,$3,$13,'Shooting Percentage',TXS_X,$1F
 	move.w	6(a6),d3
 	move.w	(a6),d2
@@ -2141,9 +2141,9 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	move.w	#3,d1
 	jsr	(PushNumberWidth).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	'%',$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$2,$3,$15,'Shots Per Game',TXS_X,$1E,$0
 	move.w	(rosterscroll).w,d1
 	clr.l	d0
@@ -2161,13 +2161,13 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	move.w	#3,d1
 	jsr	(PushNumberWidth).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	'.',$0
 	move.w	(sp)+,d0
 	move.w	#2,d1
 	jsr	(PushNumberWidthZero).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$2,$3,$17,'Shots Allowed Per Game',TXS_X,$1E,$0
 	move.w	(rosterscroll).w,d1
 	clr.l	d0
@@ -2185,7 +2185,7 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	move.w	#3,d1
 	jsr	(PushNumberWidth).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	'.',$0
 	move.w	(sp)+,d0
 	move.w	#2,d1
@@ -3103,13 +3103,13 @@ LeadersHelp	;95 only. League Leaders footer: printz2 "[]=Change Stats  B=Team Le
 	beq.w	.0
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),2,$1A,0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,1,'[]=Change Stats       B=Team Leaders ',TXS_FONT,0,0
 	bra.w	.1
 .0
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),2,$1A,0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,1,'[]=Change Stats  B=Individual Leaders',TXS_FONT,0,0
 .1
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -3241,13 +3241,13 @@ PeriodStatsCaption	;PeriodStatsScreen .5: caption "Shots" + "[ For Goals" or "Go
 	beq.w	.0
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$11,5,'Shots',-(TXPRI+TXMAP2),$F,$1A,0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,1,'[ For Goals',TXS_FONT,0,0
 	rts
 .0
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$11,5,'Goals',-(TXPRI+TXMAP2),$F,$1A,0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,1,'For Shots ]',TXS_FONT,0,0
 	rts
 
@@ -3331,7 +3331,7 @@ LineEditorRedraw	;stats94 LineEditorRedraw: clear and redraw the whole editor (a
 	jsr	(seta2).l
 
 LineEditorReturn	;95 only. Line editor: back from the exit menu (load, copy or save lines): clear the screen and redraw the lines
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_MAP,$2,TXS_X,$0,TXS_Y,$0
 	moveq	#$28,d0
 	moveq	#$1C,d1
@@ -3406,15 +3406,15 @@ SelectAttributeItem	;stats94 SelectAttributeItem: build the list of players for 
 	dbf	d0,.1
 	jsr	(PlayerSelectBg).l
 	jsr	(ClearAttributeArea2).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$0,$3,$1,$0,$0
 	moveq	#$12,d0
 	moveq	#3,d1
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$15,TXS_Y,$0
 	moveq	#$12,d0
 	moveq	#3,d1
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$2,$2,$1,'{Select  Player}',$0
 	clr.w	d0
 	bra.w	.6
@@ -3502,7 +3502,7 @@ PrintAttribHeader	;stats94 PrintAttribHeader: player list column header (PAttrib
 .4
 	move.w	#2,(printy).w
 .5
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ATTR,$4,TXS_X,$3,TXS_ADDY,$1,'                        ',TXS_X,$5
 	cmp.w	(VertLineScrolling).w,d2
 	bne.w	.6
@@ -3515,7 +3515,7 @@ PrintAttribHeader	;stats94 PrintAttribHeader: player list column header (PAttrib
 .6
 	clr.w	d0
 	move.b	0(a3,d2.w),d0
-	jsr	(getNameandAttrib).l
+	jsr	(GetNameandAttrib).l
 	addq.w	#1,d2
 	dbf	d1,.5
 	rts
@@ -3541,11 +3541,11 @@ DrawAttributeMenu	;stats94 DrawAttributeMenu: draw the line icons for the cursor
 	bsr.w	DrawMenuIcon
 .2
 	dbf	d5,.1
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$2,$8,$7,TXS_FONT,$1,$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$0,TXS_Y,$7,'                                       ',$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$15,TXS_Y,$7
 	move.w	d6,d0
 	jsr	(getname).l
@@ -3576,7 +3576,7 @@ DrawMenuIcon	;stats94 DrawMenuIcon: draw line d5 (name, then its player slots) a
 	movea.l	#linelist,a1
 	move.w	#$8000,(printa).w
 	jsr	(PrintSmallListItem).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	' Line',$0
 	move.w	(a0),(printx).w
 	move.w	d5,d4
@@ -3587,7 +3587,7 @@ DrawMenuIcon	;stats94 DrawMenuIcon: draw line d5 (name, then its player slots) a
 	lea	$16C(a2),a3
 .1
 	move.w	(a0),(printx).w
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ADDX,$FF,TXS_ADDY,$2,TXS_ATTR,$6
 	clr.w	d0
 	move.b	0(a3,d4.w),d0
@@ -3606,7 +3606,7 @@ DrawMenuIcon	;stats94 DrawMenuIcon: draw line d5 (name, then its player slots) a
 	rts
 
 ClearAttributeArea	;stats94 ClearAttributeArea: erase the line area and print the position header (LD RD LW C RW)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_MAP,$2,TXS_X,$0,TXS_Y,$A
 	moveq	#$28,d0
 	moveq	#$12,d1
@@ -3618,7 +3618,7 @@ ClearAttributeArea	;stats94 ClearAttributeArea: erase the line area and print th
 	beq.w	.0
 	move.w	(MenuIconPosTable-6).l,(printx).l
 .0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	dc.w	$22;String length
 	dc.b	$FE,$4,$FB,$FD,$FA,$2,'LD',$FB
 	dc.b	$FE,$FA,$2,'RD',$FB,$FE,$FA,$2
@@ -3685,7 +3685,7 @@ ExitAttributeScreen	;stats94 ExitAttributeScreen (95 rewrite): exit box; Start l
 	move.w	#$18,d0
 	move.w	#9,d1
 	jsr	(Framer).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	dc.w	$32;String length
 	dc.b	$F8,$4,$2,$9,$B,$F9,$2,'Start = Exit'
 	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$F9,$0,$0
@@ -3703,7 +3703,7 @@ ExitAttributeScreen	;stats94 ExitAttributeScreen (95 rewrite): exit box; Start l
 	move.w	#$18,d0
 	move.w	#9,d1
 	jsr	(Framer).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	dc.w	$5E;String length
 	dc.b	$F8,$4,$2,$9,$B,$F9,$2,'Start = Exit'
 	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$FD,$9,$FC
@@ -3717,7 +3717,7 @@ ExitAttributeScreen	;stats94 ExitAttributeScreen (95 rewrite): exit box; Start l
 	move.w	#$18,d0
 	move.w	#7,d1
 	jsr	(Framer).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	dc.w	$48;String length
 	dc.b	$F8,$4,$2,$9,$B,$F9,$2,'Start = Exit'
 	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$FD,$9,$FC

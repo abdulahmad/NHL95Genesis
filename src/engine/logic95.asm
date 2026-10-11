@@ -4388,7 +4388,7 @@ ChkGoalies	;A computer team down with its goalie in: pull him on a delayed penal
 	btst	#gmpendel,(gmode).w	;#gmpendel - delayed penalty called
 	beq.w	.nopen
 	st	tmgoalie(a2)	;sets to FFFF (no goalie)
-	bra.w	SetPersonel
+	bra.w	setpersonel
 .nopen
 	cmp.w	(cont1team).w,d0
 	beq.w	rtsskate	;exit if team is joy controlled
@@ -4435,4 +4435,4 @@ CPgoalie	;See if the computer should pull its goalie: third period, behind by 2,
 	tst.w	d1
 	bmi.w	rtsskate	;exit if d1 negative (faceoff in own zone)
 	st	tmgoalie(a2)	;set to FFFF (no goalie)
-	bra.w	SetPersonel
+	bra.w	setpersonel

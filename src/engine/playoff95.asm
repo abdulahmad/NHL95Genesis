@@ -135,13 +135,13 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 .4
 	move.b	(a0)+,(printx+1).w
 	move.b	(a0)+,(printy+1).w
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ATTR,3
 	jsr	(FormatScore).l
 	adda.w	#$10,a2
 	dbf	d4,.4
 .5
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,0,1,$41,1,0
 	lea	PlayoffScreenText(pc),a1
 	move.w	(gamelevel).w,d0

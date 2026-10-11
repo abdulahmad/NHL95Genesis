@@ -428,7 +428,7 @@ ShootoutShooters	;shootout94 ShootoutShooters. Pause menu SHOOTOUT SETUP: pick t
 	jsr	(DrawTeamScreen6).l
 	clr.w	(DispAttribCtr).w
 	clr.w	(PlayerScrollCtr).w
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_MAP,$2,TXS_X,$0,TXS_Y,$0
 	moveq	#$28,d0
 	moveq	#$1C,d1
@@ -502,15 +502,15 @@ ShooterSelectList	;shootout94 ShooterSelectList. Shootout shooters: the "{Select
 	dbf	d0,.loop
 	jsr	(PlayerSelectBg).l
 	jsr	(ClearShooterScreen).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$0,$3,$1,$0,$0
 	moveq	#$12,d0
 	moveq	#3,d1
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$15,TXS_Y,$0
 	moveq	#$12,d0
 	moveq	#3,d1
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$2,$2,$1,'{Select  Player}',$0
 	clr.w	d0
 	bra.w	.6
@@ -616,7 +616,7 @@ PrintShooterList	;shootout94 PrintShooterList. Shootout shooters: the player lis
 .5
 	move.w	#2,(printy).w
 .loop3
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ATTR,$4,TXS_X,$5,TXS_ADDY,$1,'                      ',TXS_X,$5
 	cmp.w	(VertLineScrolling).w,d2
 	bne.w	.6
@@ -629,7 +629,7 @@ PrintShooterList	;shootout94 PrintShooterList. Shootout shooters: the player lis
 .6
 	clr.w	d0
 	move.b	(a3,d2.w),d0
-	jsr	(getNameandAttrib).l
+	jsr	(GetNameandAttrib).l
 	addq.w	#1,d2
 	dbf	d1,.loop3
 	rts
@@ -686,31 +686,31 @@ ResetShooterScroll	;shootout94 ResetShooterScroll. Clear the list scroll words p
 	clr.w	(palfadenew+$7A).w
 	rts
 PrintShooterSlots	;shootout94 PrintShooterSlots. Shootout shooters: "Shooters" 1. ... 5. and "Goalie"
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$0,TXS_MAP,$2,TXS_X,$0,TXS_Y,$A
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ATTR,$4
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$7,TXS_Y,$C,'Shooters'
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$3,TXS_Y,$E,'1. ',$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$3,TXS_Y,$10,'2. ',$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$3,TXS_Y,$12,'3. ',$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$3,TXS_Y,$14,'4. ',$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$3,TXS_Y,$16,'5. ',$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$1A,TXS_Y,$C,'Goalie'
 	rts
 PrintShooterBox	;shootout94 PrintShooterBox. Shootout shooters: the selected player (getname), centred
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,$4,$2,$8,$7,TXS_FONT,$1,$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$0,TXS_Y,$7,'                                       ',$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$15,TXS_Y,$7
 	movea.l	#homeshooters,a1
 	cmpa.l	#HmShots,a2
@@ -731,7 +731,7 @@ PrintShooterBox	;shootout94 PrintShooterBox. Shootout shooters: the selected pla
 PrintShooterNames	;shootout94 PrintShooterNames. Shootout shooters: the shooters' names (FormatPlayerNameShort), slot TestList
 	;highlighted
 	movem.l	d0-d7/a0-a6,-(sp)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$6,TXS_Y,$E,TXS_ATTR,$6,TXS_FONT,$0
 	move.w	#0,d1
 	movea.l	#homeshooters,a0
@@ -1048,10 +1048,10 @@ puckpenshot	;checks94 puckpenshot. Penalty shot / shootout face-off: rink, puck 
 	move.w	#$3C,(yleader).w
 	jsr	(ResetBench).l
 	movea.w	#(HmShots-M68K_RAM),a2
-	jsr	(SetPersonel).l
+	jsr	(setpersonel).l
 	bsr.w	SetupPenaltyShot
 	adda.w	#tmsize,a2
-	jsr	(SetPersonel).l
+	jsr	(setpersonel).l
 	bsr.w	SetupPenaltyShot
 	jsr	(resetplstuff).l
 	move.l	a3,-(sp)

@@ -171,7 +171,7 @@ Goal	;(checks94 checkgoal .goal) A goal: the shootout count (shootoutteam, sohom
 	bsr.w	PenGoalStuff
 .23
 	bclr	#3,(BA_PS_flags).w
-	jsr	(PrintScores1).l
+	jsr	(printscores1).l
 	move.w	#$2710,(crowdnoisedelay).w
 	btst	#0,(gmode2).w
 	beq.w	.24
@@ -1119,7 +1119,7 @@ DrawSetupTeamBlock	;Wrong code in IDA. 95 only. Draw team block d1 (Teamblocksma
 PrintSetupStr	;Wrong code in IDA. 95 only. Print String a1 (printz2 $FE,5,$FF,1,$F9,0, then printsmall)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a1,-(sp)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ATTR,5,TXS_MAP,1,TXS_FONT,0
 	movea.l	(sp)+,a1
 	jsr	(printsmall).l
@@ -1129,7 +1129,7 @@ PrintSetupStr	;Wrong code in IDA. 95 only. Print String a1 (printz2 $FE,5,$FF,1,
 PrintSetupStrHi	;Wrong code in IDA. 95 only. The same highlighted ($F9,1)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a1,-(sp)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ATTR,5,TXS_MAP,1,TXS_FONT,1
 	movea.l	(sp)+,a1
 	jsr	(printsmall).l

@@ -797,15 +797,15 @@ TradePlayers	;95 only. Trade Player screen (main flow): the two rosters with pos
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$8,$10,$0
 	bsr.w	DrawTradeLogo
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$2,TXS_X,$15,TXS_Y,$7,'POSITION',TXS_X,$1F,'RATING'
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$2,TXS_X,$15,TXS_Y,$11,'POSITION',TXS_X,$1F,'RATING'
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	dc.w	$16;String length
 	dc.b	$F9,$1,$FD,$4,$FC,$19,'A',$FD
 	dc.b	$C,'B',$FD,$16,'C',$FD,$1F,'Start'
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	dc.w	$26;String length
 	dc.b	$FD,$2,$FC,$1A,'Team',$FD,$A,'Cancel'
 	dc.b	$FD,$14,'Player',$FD,$1E,'Evaluate',$F9,$0
@@ -942,19 +942,19 @@ DrawTradeRosterRows	;95 only. Draw the roster rows of team d7 (name, position, r
 	ext.l	d0
 	adda.l	d0,a4
 .0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$0,'                                       ',$0
 	move.w	#6,(printx).w
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$0
 	cmp.w	d5,d6
 	bne.w	.1
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$1
 .1
 	tst.b	(a4)
 	beq.w	.2
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	'*',$0
 .2
 	move.w	#8,(printx).w
@@ -1141,7 +1141,7 @@ CheckTrade	;95 only. Check the trade: players chosen on both teams, at most thre
 	move.w	#$1E,d0
 	move.w	#$E,d1
 	jsr	(Framer).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$3,TXS_X,$D,TXS_Y,$B,'INVALID  TRADE'
 	move.w	(StatWork+$14).w,d0
 	movea.l	#InvalidTradeText,a1
@@ -1358,9 +1358,9 @@ rtsTrade	;rts
 EvaluateTrade	;95 only. Evaluate Trade screen: the chosen players of both teams; A cancel, B modify, C execute, start propose (GMDecision)
 	jsr	(forceblack).l
 	jsr	(GMDecision).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$1,TXS_X,$1,TXS_Y,$19,'     A        B         C       Start',$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$1,TXS_X,$1,TXS_Y,$1A,'   Cancel   Modify   Execute   Propose'
 .0
 	jsr	(printbigz).l
@@ -1369,7 +1369,7 @@ EvaluateTrade	;95 only. Evaluate Trade screen: the chosen players of both teams;
 	bclr	#2,(disflags).w
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$0,$0,$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$0,TXS_X,$F,TXS_Y,$9
 	movea.l	#TradeRoster1,a0
 .1
@@ -1378,7 +1378,7 @@ EvaluateTrade	;95 only. Evaluate Trade screen: the chosen players of both teams;
 	move.w	(HomeTeam).w,d7
 .3
 	bsr.w	PrintTradeNames
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$0,TXS_X,$F,TXS_Y,$13
 .4
 	movea.l	#TradeRoster2,a0
@@ -1546,9 +1546,9 @@ GMDecisionRetry	;95 only. GMDecision: back to the trade screen (CreateScreenGfx,
 	bsr.w	CreateScreenGfx
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),$B,$2,'GM DECISION'
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$1,TXS_X,$8,TXS_Y,$1A,'B=Modify',TXS_X,$12,'Start=Continue'
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$2,TXS_X,$12,TXS_Y,$8,'FOR',$0
 	move.w	(HomeTeam).w,d1
 	jsr	(printz).l
@@ -1599,7 +1599,7 @@ GMDecisionRetry	;95 only. GMDecision: back to the trade screen (CreateScreenGfx,
 	bgt.w	.4
 	move.w	(VisTeam).w,d7
 .4
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$0,TXS_X,$9,TXS_Y,$11,'ADVANTAGE',TXS_ADDY,$1,TXS_X,$9,$0
 	movea.l	#TeamList,a1
 	asl.w	#2,d7
@@ -1623,11 +1623,11 @@ GMDecisionRetry	;95 only. GMDecision: back to the trade screen (CreateScreenGfx,
 	moveq	#0,d5
 	jsr	(dobitmap).l
 .6
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$0,TXS_X,$4,TXS_Y,$8
 	movea.l	#tradeteam1,a0
 	bsr.w	PrintTradedPlayers
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$0,TXS_X,$17,TXS_Y,$8
 	movea.l	#tradeteam2,a0
 	bsr.w	PrintTradedPlayers

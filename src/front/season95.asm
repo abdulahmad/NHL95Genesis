@@ -2641,9 +2641,9 @@ MenuPlayUntil	;95 only. Play Until A Day: pick the day with A (month) / B (day),
 	jsr	(Framer).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$7,$C,$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$2,'Please complete human',TXS_X,$7,TXS_Y,$D,'controlled games before'
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	dc.w	$3C;String length
 	dc.b	$FD,$7,$FA,$1,$F9,$2,'selecting autoplay.',$FD
 	dc.b	$7,$FA,$2,$F9,$2,'Press START to continue.',$F9,$0
@@ -2665,15 +2665,15 @@ MenuPlayUntil	;95 only. Play Until A Day: pick the day with A (month) / B (day),
 	jsr	(Framer).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$7,$C,$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$2,'Autoplay games until this',TXS_X,$7,TXS_Y,$D,'day...',TXS_FONT,$0,$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$7,TXS_Y,$12,TXS_FONT,$2,'Press A to change Month',$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$7,TXS_Y,$13,TXS_FONT,$2,'Press B to change Day',$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$7,TXS_Y,$14,TXS_FONT,$2,'Press C to cancel',$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$7,TXS_Y,$15,TXS_FONT,$2,'Press Start to autoplay',TXS_FONT,$0,$0
 	move.b	(SeasonDay).w,d0
 	addq.b	#1,d0
@@ -2780,7 +2780,7 @@ AutoplayMessage	;95 only. AUTOPLAYING GAMES. DO NOT PRESS RESET !!, d0 = 0
 	jsr	(Framer).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$7,$C,$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	dc.w	$46;String length
 	dc.b	$F9,$2,$FA,$3,'AUTOPLAYING GAMES.',$FA,$2,$FD
 	dc.b	$7,'DO NOT PRESS RESET !!',$FA,$2,$FD,$7,'Please wait...',$F9
@@ -2792,14 +2792,14 @@ PrintAutoplayDay	;95 only. Print the AutoplayDay date
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$A,$F,$0
 	move.w	(printx).w,-(sp)
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$2,'               ',$0
 	move.w	(sp)+,(printx).w
 	move.b	(SeasonDay).w,-(sp)
 	move.b	(AutoplayDay).w,(SeasonDay).w
 	jsr	(MakeDateString).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,$0
 	move.b	(sp)+,(SeasonDay).w
 	rts
@@ -3021,13 +3021,13 @@ CalendarScreen	;95 only. CALENDAR (team schedule): {} change team, [] change mon
 	String	-TXMAP1,$C,$2,'CALENDAR',$0
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$1,$7,$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	dc.w	$38;String length
 	dc.b	$F9,$1,'[ ]',$FD,$1,$FA,$1,'= Change'
 	dc.b	$FD,$1,$FA,$1,'Month',$FD,$1,$FA
 	dc.b	$2,'{ }',$FD,$1,$FA,$1,'= Change',$FD
 	dc.b	$1,$FA,$1,'Team',$0
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$1,TXS_Y,$15,'START',TXS_X,$1,TXS_ADDY,$1,'= Exit',TXS_FONT,$0,$0
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w

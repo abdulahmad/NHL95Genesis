@@ -199,7 +199,7 @@ lcfound	;(input94) Line d2 was picked: store it ($2E), set tmline (getlchoice) a
 	jsr	(loadTeamStruct).l
 	bclr	#1,tmflags(a2)
 	move.w	d0,tmline(a2)
-	jsr	(SetPersonel).l
+	jsr	(setpersonel).l
 
 lcfound2	;(input94) Erase the line change box (eraser) and redraw the scores (PrintScores1)
 	btst	#7,(sflags).w
@@ -213,7 +213,7 @@ lcfound2	;(input94) Erase the line change box (eraser) and redraw the scores (Pr
 	addq.w	#1,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
-	jmp	PrintScores1
+	jmp	printscores1
 
 rtslc	;The shared rts of the line change routines (94 rtss2)
 	rts
@@ -407,8 +407,8 @@ AutoLineChange	;(checks94) Computer line change on the fly: puck in the player's
 	cmp.w	#$C00,d0
 	bhi.w	rtslc
 	bsr.w	CompLine
-	jsr	(SetPersonel).l
-	jsr	(PrintScores1).l
+	jsr	(setpersonel).l
+	jsr	(printscores1).l
 	jmp	compshoot
 
 SetupTeamForIntermission	;(penalty94) 93 name. Reset the bench (ResetBench), then for each team SetupTeamLine. Called from hockey95

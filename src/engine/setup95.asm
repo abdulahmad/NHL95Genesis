@@ -54,7 +54,7 @@ TeamRosterScreen	;93 name (94 stats94). "Team Roster" screen for team a2: DrawTe
 	move.w	#$2C,d0
 .1
 	jsr	(PutTeamBlock).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	dc.w	$5A
 	dc.b	$F8,$4,$2,$1,$B,$F9,$2,$5E,$23,$5E,$5E,$50
 	dc.b	$6C,$61,$79,$65,$72,$FD,$19,$4C,$69,$6E,$65,$73
@@ -138,7 +138,7 @@ TeamRosterScreen	;93 name (94 stats94). "Team Roster" screen for team a2: DrawTe
 DisplayPlayerList	;93 name (94 stats94). Draw roster page SelectedPlayerIdx: the title (PlayerStatMenuTxt), the scroll marks, the column header
 	;(PAttribColumns, or GAttribColumns for goalies) and up to 5 rows from rosterscroll: getNameandAttrib, then the lines the player
 	;is on (PrintPlayerLines); the first row is highlighted
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,4,3,2,8,TXS_FONT,1,0
 	move.w	(SelectedPlayerIdx).w,d0
 	lea	PlayerStatMenuTxt(pc),a1
@@ -170,15 +170,15 @@ DisplayPlayerList	;93 name (94 stats94). Draw roster page SelectedPlayerIdx: the
 	sub.w	(rosterscroll).w,d0
 	cmp.w	#1,d0
 	ble.w	.3
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$10,$7D,0
 .3
 	tst.w	(rosterscroll).w
 	beq.w	.4
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,3,$7B,0
 .4
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_X,$16,TXS_Y,8
 .5
 	movea.l	#PAttribColumns,a1
@@ -199,7 +199,7 @@ DisplayPlayerList	;93 name (94 stats94). Draw roster page SelectedPlayerIdx: the
 .8
 	jsr	(printsmall).l
 	move.l	(a1),d4
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_ALL,4,2,0,0,TXS_FONT,0,0
 	move.w	#$E,(printy).w
 	move.w	(printy).w,-(sp)
@@ -224,14 +224,14 @@ DisplayPlayerList	;93 name (94 stats94). Draw roster page SelectedPlayerIdx: the
 	movem.w	d0-d1,-(sp)
 	cmp.w	(recwins).w,d0
 	bne.w	.11
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,2
 .11
-	jsr	(getNameandAttrib).l
+	jsr	(GetNameandAttrib).l
 	move.w	#$17,(printx).w
 	bsr.w	PrintPlayerLines
 	movem.w	(sp)+,d0-d1
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	TXS_FONT,0
 	addq.w	#1,d0
 	addq.w	#2,(printy).w
@@ -317,7 +317,7 @@ ExitAttributeScreen2	;94 stats94 name. TeamRosterScreen start: forceblack and ba
 	jsr	(forceblack).l
 	jmp	DrawMenuScreen
 
-getNameandAttrib	;(93 GetNameandAttrib). Print player d0's name, then at x $21 (94 $1E) the column d4 picks (attribjmp; above 2
+GetNameandAttrib	;(93 GetNameandAttrib). Print player d0's name, then at x $21 (94 $1E) the column d4 picks (attribjmp; above 2
 	;a rating through CalcAttrib, the jump offset in the low word). 95 keeps the team and player in screenarg / attribplayer
 	movem.l	d0-d4/a0-a1/a4-a5,-(sp)
 	move.w	Xvel(a2),(screenarg).w
@@ -456,7 +456,7 @@ AttribWeight	;93 name. Weight: 140 + 8 * rating lb
 	addi.w	#$8C,d0	;add 140 lbs (minimum weight)
 	jsr	(PushNumber).l
 	jsr	(printsmall).l
-	jsr	(printz2).l
+	jsr	(printsmallz).l
 	String	' lb  '
 	rts
 
@@ -2164,7 +2164,7 @@ PlayerCardTimer	;94 only. Player cards, called each frame from GameSetUp_2 while
 	adda.w	(a2),a2
 	move.b	(a2),d0
 	ext.w	d0
-	jsr	(d0toascii).l
+	jsr	(ConverByteToDigits).l
 	move.w	#$2000,4(a3)
 	movea.l	(sp)+,a1
 	jsr	(appstring).l
@@ -2263,19 +2263,19 @@ InitializeGameStructures	;93 name. Random team pairs for all 8 gsstruct games, n
 	movea.w	#(gsstruct-M68K_RAM),a1
 	moveq	#7,d2
 .0
-	bsr.w	OptionRNG
+	bsr.w	GetRandomUnusedTeam
 	move.w	d0,(a1)
-	bsr.w	OptionRNG
+	bsr.w	GetRandomUnusedTeam
 	move.w	d0,2(a1)
 	adda.w	#$10,a1
 	dbf	d2,.0
 	rts
 
-OptionRNG	;(93 GetRandomUnusedTeam). d0 = a random team 0-25 not yet set in d3, and set its bit
+GetRandomUnusedTeam	;(93 GetRandomUnusedTeam). d0 = a random team 0-25 not yet set in d3, and set its bit IDA: OptionRNG.
 	moveq	#$1A,d0
 	jsr	(randomd0).l
 	bset	d0,d3
-	bne.s	OptionRNG
+	bne.s	GetRandomUnusedTeam
 	rts
 
 ReadPassBits	;93 name. Translate the saved bits at a3 (5 words) to the playoff variables; the 5 words are kept
@@ -2350,7 +2350,7 @@ EncodePW	;93 name. After a playoff game compute winners and save the bits if nee
 	move.w	#1,(OptPlayMode).w	;continue playoffs
 	move.w	#1,(TempOptPlayMode).w
 	bsr.w	ResolveGames
-	bsr.w	MakeTree
+	bsr.w	maketree
 	cmpi.w	#4,(gamelevel).w
 	beq.w	.0	;finished playoffs
 	tst.w	(gamenum).w
@@ -2362,7 +2362,7 @@ EncodePW	;93 name. After a playoff game compute winners and save the bits if nee
 	beq.w	.1
 	movea.w	#(tpassbits-M68K_RAM),a3
 	bsr.w	ReadPassBits
-	bra.w	MakeTree
+	bra.w	maketree
 .0
 	movea.w	#(pwddatabuffer-M68K_RAM),a3
 	bsr.w	ClrPassBits
@@ -2493,7 +2493,7 @@ GetShifter	;(92 / 93 GetShifter). Returns d1 = number of games - 1, d2 = first b
 	move.l	(sp)+,d0
 	rts
 
-AddPOStats	;(93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to its packed playoff totals. Called from hockey95
+DisplayTeamStatsForPlayoffs	;(93 DisplayTeamStatsForPlayoffs). Add the po team's game stats to its packed playoff totals. Called from hockey95 IDA: AddPOStats.
 	cmpi.w	#1,(OptPlayMode).w
 	blt.w	.4
 	bsr.w	ReadTeamStats
@@ -2708,7 +2708,7 @@ ContinuePlayoffs	;(93 NewPO). Continue playoffs: read the saved bits (ReadPassBi
 	move.w	(gamelevel).w,d0
 	or.w	(bosgames).w,d0
 	beq.w	.4
-	bsr.w	MakeTree
+	bsr.w	maketree
 	moveq	#7,d0
 	tst.w	(FourWayPlay).w
 	beq.w	.0
@@ -2762,7 +2762,7 @@ NewPO	;(93 SelectRandomPlayoffTree). New playoff tree with Opt1Team (a random
 	clr.w	(gamelevel).w	;0-3 for the depth into the playoff tree
 	move.w	#7,(bosgames).w	;0-6 game of series or 7 if not in best of seven
 	cmpi.w	#2,(OptPlayMode).w	;play mode on Main Menu
-	beq.w	MakeTree	;jump to make playoff tree if play mode is 2
+	beq.w	maketree	;jump to make playoff tree if play mode is 2
 	clr.w	(bosgames).w	;best of seven: game 0
 	moveq	#7,d0	;clr games won
 	movea.w	#(gsstruct-M68K_RAM),a0	;Game struct variables start
@@ -2772,7 +2772,7 @@ NewPO	;(93 SelectRandomPlayoffTree). New playoff tree with Opt1Team (a random
 	adda.w	#$10,a0	;gssize
 	dbf	d0,.2
 
-MakeTree	;(93 maketree). Make the playoff tree (potree) from playoffseats and WinBits, then FigureJoy
+maketree	;(93 maketree). Make the playoff tree (potree) from playoffseats and WinBits, then FigureJoy
 	movem.l	d0-d4/a0-a3,-(sp)
 	move.w	(postarts).w,d1
 	asl.w	#4,d1
