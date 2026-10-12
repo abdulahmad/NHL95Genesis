@@ -1499,7 +1499,7 @@ front/create95.asm,$099E46,10,CrScale,code,new in 95,header
 front/create95.asm,$099E50,2,CommitNone1,code,new in 95,header
 front/create95.asm,$099E52,2,CommitNone2,code,new in 95,header
 front/create95.asm,$099E54,28,CrScaleEven,code,new in 95,header
-front/create95.asm,$099E70,28,CrScaleTable,code,new in 95,header
+front/create95.asm,$099E70,28,CrScaleLookup,code,new in 95,header
 front/create95.asm,$099E8C,242,SignFreeAgents,code,new in 95,header
 front/create95.asm,$099F7E,70,FreeAgentRedraw,code,new in 95,header
 front/create95.asm,$099FC4,568,FreeAgentLoop,code,new in 95,header

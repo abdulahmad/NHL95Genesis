@@ -1555,7 +1555,7 @@ $099E46,CrScale,,,front/create95
 $099E50,CommitNone1,,,front/create95
 $099E52,CommitNone2,,,front/create95
 $099E54,CrScaleEven,,,front/create95
-$099E70,CrScaleTable,,,front/create95
+$099E70,CrScaleLookup,,CrScaleTable,front/create95
 $099E8C,SignFreeAgents,loc_99E8C,,front/create95
 $099F7E,FreeAgentRedraw,loc_99F7E,,front/create95
 $099FC4,FreeAgentLoop,loc_99FC4,,front/create95

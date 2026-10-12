@@ -2319,7 +2319,7 @@ CommitAttribJumps	;Jump table indexed by mode (16 entries)
 	dc.l	CrScale
 	dc.l	CrScale
 	dc.l	CrScaleEven
-	dc.l	CrScaleTable
+	dc.l	CrScaleLookup
 	dc.l	CrScale
 	dc.l	CrScale
 	dc.l	CrScale
@@ -2349,7 +2349,7 @@ CrScaleEven	;Scale even part of d3 via CrScale, keep low bit of d3
 	or.w	d2,d3
 	rts
 
-CrScaleTable	;CrScale, then d3 = byte lookup in StickHandTable+$10[d3]
+CrScaleLookup	;CrScale, then d3 = byte lookup in StickHandTable+$10[d3]
 	bsr.s	CrScale
 	movem.l	d0/a0,-(sp)
 	movea.l	#StickHandTable+$10,a0
@@ -2570,7 +2570,7 @@ FreeAgentLoop	;SignFreeAgents: input loop
 .9
 	bra.w	.0
 
-PositionCountFns	;Per-position rating routines
+PositionCountFns	;Per-position roster index routines (end of the position group in the roster)
 	dc.l	GetGoalieCountD7
 	dc.l	GetDefenseStartD7
 	dc.l	GetPlayerCountD7
