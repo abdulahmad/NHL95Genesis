@@ -1,7 +1,5 @@
-;	The pad input per player (updatepadinput), holdplayer, Acheck, burst and setpads, chgplayer (with exit and
-;	swpchk); the setcplayer entries and restorepl; clearTeamStats, setteams, InitTeamStructure and setplayercolors.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	Pad control: which pad controls which player (pad input, hold, check, speed burst,
+;	player switching), and team setup (team stats clear, teams, team structures and colors).
 
 updatepadinput	;Pad input for a player. Called from updateplayers with a3 = the
 	;object, d6 = SCnum. The pad (1-4) controlling a3 reads its buttons and runs doinput, with d4 = 0 / 2 / 4 / 6 (94 swaps the pad 3 /

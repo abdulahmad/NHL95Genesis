@@ -1,6 +1,5 @@
-;	3 parts in ROM order, each under its banner below.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	Display setup: sort coordinates, pad objects and button labels, the animation frame
+;	update, and the default sprites and sprite sort.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; then updateanim

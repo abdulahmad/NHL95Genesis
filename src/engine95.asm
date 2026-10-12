@@ -1,11 +1,6 @@
-;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;
-;	The game engine (one assembly: PC-relative branches cross every file in it).
-;	The files of engine\ in ROM order, included by nhl95.asm. No org: nhl95.asm sets org 0.
-;	Each file has its own stub next to it (engine\<file>_stub.asm) to build and verify it alone.
-;
-;	sound\z80old95.asm sits between and in the ROM, so it is included here.
-;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+;	The game engine: includes the files of engine\ in ROM order (one assembly, since
+;	PC-relative branches cross every file in it), plus the old Z80 program that sits
+;	among them.
 
 	include	engine\video95.asm		; $079902  VDP helpers, DMA, palettes, sprite frames, rink scroll, the decompressor, vblank, pads
 	include	engine\collide95.asm		; $07A7B4  checks, falls, wall, puck and goal collisions

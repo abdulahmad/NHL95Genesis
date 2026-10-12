@@ -1,8 +1,7 @@
-;	The battery save RAM: 95 keeps $8000 bytes (94: $2000) on the odd bytes at SaveRAM, copies them to M68K_RAM at
-;	power on (InitSaveRAM) and protects them with a sum / complement checksum in bytes $7FFE-$7FFF.
-;	SRAMWaitVblank, VBcount, ValidateSRAM, ClearSRAM, WriteSRAM, MakeSRAMChecksum, ReadSRAM, then three routines that
-;	build the season leader lists from the save RAM stats (New in 95).
-;	95 addresses RAM with (x).l here where 94 used (x).w, and indexes the save RAM with a long (d0.l).
+;	Battery save RAM: $8000 bytes kept on the odd bytes at SaveRAM, copied to M68K_RAM at
+;	power on (InitSaveRAM) and protected by a sum / complement checksum in the last two bytes.
+;	Routines to validate, clear, read and write it. New in 95: the season leader lists built
+;	from the save RAM stats.
 
 InitSaveRAM	;Called from Begin. Copy the $8000 byte save RAM (the odd bytes at SaveRAM) to M68K_RAM and check its checksum
 	;(ValidateSRAM; ValidSRAM 0 = good, -1 = bad). A bad save RAM is cleared (ClearSRAM) and read again. Two power-on tests that never return:

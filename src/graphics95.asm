@@ -1,5 +1,6 @@
-;	3 parts in ROM order, each under its banner below. incbin only (plus the two FeaturedPictures tables).
-;	Each file is a slice of the ROM written by npm run extractassets into Extracted\\Graphics.
+;	Graphics data, incbins from Extracted\Graphics: player pictures, rink, sprites, fonts,
+;	screen maps and bitmaps, team logo palettes and the arena graphics. A map starts with
+;	its 8-byte header (palette and map offsets), so a reference to its tiles is Label+8.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	The player pictures (FeaturedPicIdx / FeaturedPictures), the rink, the sprites, the fonts and the screen maps and bitmaps, up to

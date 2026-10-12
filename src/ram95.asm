@@ -1,7 +1,5 @@
-;	NHL 95 RAM map. Equates only, no ROM bytes. 68000 work RAM is $FFFF0000-$FFFFFFFF (M68K_RAM).
-;	Included by nhl95.asm and by every segment stub, so a name defined here is visible to both builds.
-;	Names follow when the address and the using routine match; the comment gives the
-;	or says New in 95. Keep the entries in address order.
+;	RAM map: equates only, no ROM bytes. 68000 work RAM is $FFFF0000-$FFFFFFFF (M68K_RAM).
+;	Keep the entries in address order.
 
 AwardIds	equ	$FFFF0000	;SeasonAwards: the candidate ids (players, or teams), sorted with AwardScores. Shares M68K_RAM
 M68K_RAM	equ	$FFFF0000

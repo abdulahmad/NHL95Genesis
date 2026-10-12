@@ -1,5 +1,6 @@
-;	NHL 95 main: vectors, cartridge header and SegaInit (sega\SegaInit.asm), then a region lock (CHECK_VDP to
-;	.regionHang), the checksum call, and Begin.
+;	Startup: the 68000 vectors, the cartridge header, Sega's init program, a region lock,
+;	the checksum call and Begin.
+
 	include	macros\genesis.mac
 
 ;	68000

@@ -1,5 +1,4 @@
-;	ValidationRoutine, the last code in the ROM. The $FF fill follows (nhl95.asm dcb.b after this include).
-;	The same code as 94 with a new long count and sum.
+;	ROM checksum check (ValidationRoutine), followed by the $FF fill to the end of the ROM.
 
 ValidationRoutine	;Called once at power on ($690). Adds every ROM
 	;long from 0 up to this routine, skipping the header long at $18C. Returns if the sum is right, else turns the screen red and hangs.

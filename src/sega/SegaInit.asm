@@ -1,6 +1,5 @@
-;	Sega's power on program, $200-$2F9 (94 sega\SegaInit.asm), as Sega wrote it, with the ports named. Included
-;	right after Start; no org here. It falls through hot_start into CHECK_VDP at $2FA. 94 puts an org $2FA before
-;	CHECK_VDP; 95 needs none, the program ends at $2F9.
+;	Sega's Genesis power on program, with the ports named. Runs from reset before anything
+;	else and falls through hot_start into CHECK_VDP.
 
 ;****************************************************************
 ;																* GENESIS / MEGA DRIVE HARD INITIAL PROGRAM * * 1989 11/30 * *

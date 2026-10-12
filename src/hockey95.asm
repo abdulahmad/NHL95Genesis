@@ -1,8 +1,6 @@
-;	The game flow from the title screen to the game loop, as one stretch of code: Opening and Opening2, the main menu
-;	exits (season, trades, create player), StartGame and StartPer without a jump between them, Intermission,
-;	the game loop, DoGameFrame and updateplayers.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	Game flow from the title screen to the game loop: Opening, the main menu exits (season,
+;	trades, create player), StartGame and StartPer, intermission, the game loop, DoGameFrame
+;	and updateplayers.
 
 Opening	;Title screen (newTitleScreen), then into Opening2. Jumped to from Begin
 	jsr	(KillCrowd).l

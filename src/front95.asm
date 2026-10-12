@@ -1,10 +1,4 @@
-;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;
-;	The menus and screens around the game.
-;	The files of front\ in ROM order, included by nhl95.asm. No org: nhl95.asm sets org 0.
-;	Each file has its own stub next to it (front\<file>_stub.asm) to build and verify it alone.
-;
-;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+;	The menus and screens around the game: includes the files of front\ in ROM order.
 
 	include	front\season95.asm		; $08DF5A  season mode
 	include	front\stats95.asm		; $0920DE  game, player and season stats, League Leaders, line editor, highlights

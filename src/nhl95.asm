@@ -1,14 +1,8 @@
-;
-;	Top level of the full NHL 95 ROM build. The listing is output\nhl95 .lst.
-;	The includes are in ROM order; the address on each line is where the file (or the first file of a list) starts in
-;	lst/nhl95.bin. One file per subsystem (hockey, main, teamdata, frames, ram, video, middle, logic, penalty, sound,
-;	checksum, graphics). The tables\, engine\ and front\ lists give their files in ROM order. A file lives in the
-;	folder of its subsystem but is included where its bytes are (sound\z80old95.asm is in the engine list).
-;	docs/FILE_ORIGINS.md gives the origin of every routine.
-;	The org for a segment build goes in its _stub.asm, next to the file. Do not put an org in a file these lists include: this
-;	file sets org 0.
-;	(the RAM map), stubinc\ports.inc and stubinc\equals.inc are equates only, so they come first.
-;
+;	Top level of the ROM build. Includes the equates and then every module in ROM order;
+;	each file assembles at the address after the one before it. The tables, engine and front
+;	folders each have a list file that includes their files in ROM order. Only this file
+;	sets an org; a segment build sets its own in its _stub.asm.
+
 	include	stubinc\ports.inc	;IO_* / VDP_* ports. Equates only
 	include	stubinc\equals.inc	;VDP status bits. Equates only
 	include	ram95.asm		;RAM map. Equates only

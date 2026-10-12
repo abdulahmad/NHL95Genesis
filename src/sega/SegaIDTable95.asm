@@ -1,5 +1,6 @@
-;	NHL 95 cartridge header, $100-$1FF. Included ; no org here, is at $100 when it
-;	includes this. The checksum word is the retail value with CHECKSUM=1 and REV=0.
+;	Cartridge header: console name, copyright and date, game titles, serial number,
+;	checksum, I/O support, ROM and RAM ranges and region codes. The checksum word is the
+;	retail value with CHECKSUM=1.
 
 ;					Data No. Address	Description
 	dc.b	'SEGA GENESIS    '	; 01	$100	Sega Genesis ID (16 bytes)
