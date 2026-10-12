@@ -1,10 +1,7 @@
-	include	macros\genesis.mac	;String
-;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;
-;	Segment stub.
-;
-;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+;	Segment build for crowd95.asm: sets its origin and the outside routines and data it uses,
+;	then includes crowd95.asm on its own for checking against the ROM.
 
+	include	macros\genesis.mac	;String
 ; region code
 	org	$A0B3E
 

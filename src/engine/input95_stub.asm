@@ -1,8 +1,5 @@
-;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;
-;	Segment stub.
-;
-;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+;	Segment build for input95.asm: sets its origin and the outside routines and data it uses,
+;	then includes input95.asm on its own for checking against the ROM.
 
 ; region code
 	org	$83EB2

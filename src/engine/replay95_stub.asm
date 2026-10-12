@@ -1,8 +1,5 @@
-;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;
-;	Segment stub.
-;
-;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+;	Segment build for replay95.asm: sets its origin and the outside routines and data it uses,
+;	then includes replay95.asm on its own for checking against the ROM.
 
 ; region code
 	org	$8D39A

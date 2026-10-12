@@ -1,10 +1,7 @@
-	include	macros\genesis.mac	;Day
-;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;
-;	Segment stub.
-;
-;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+;	Segment build for schedule95.asm: sets its origin and the outside routines and data it uses,
+;	then includes schedule95.asm on its own for checking against the ROM.
 
+	include	macros\genesis.mac	;Day
 ; External addresses outside: none. Every byte is a count or a team number.
 ; region code
 	org	$8DD8

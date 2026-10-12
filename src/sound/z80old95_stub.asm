@@ -1,3 +1,6 @@
+;	Segment build for z80old95.asm: sets its origin and the outside routines and data it uses,
+;	then includes z80old95.asm on its own for checking against the ROM.
+
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
 ;	z80old95 segment stub.

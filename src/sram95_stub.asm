@@ -1,10 +1,7 @@
-	include	macros\genesis.mac	;String
+;	Segment build for sram95.asm: sets its origin and the outside routines and data it uses,
+;	then includes sram95.asm on its own for checking against the ROM.
 
-;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;
-;	Segment stub.
-;
-;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	include	macros\genesis.mac	;String
 
 ; region code
 	org	$9722

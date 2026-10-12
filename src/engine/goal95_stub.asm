@@ -1,10 +1,7 @@
-	include	macros\genesis.mac	;String
-;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;
-;	Segment stub.
-;
-;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+;	Segment build for goal95.asm: sets its origin and the outside routines and data it uses,
+;	then includes goal95.asm on its own for checking against the ROM.
 
+	include	macros\genesis.mac	;String
 ; region code
 	org	$8C304
 

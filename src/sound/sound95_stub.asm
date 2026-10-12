@@ -1,10 +1,7 @@
-	include	macros\genesis.mac	;String, SndItem
-;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;
-;	Segment stub.
-;
-;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+;	Segment build for sound95.asm: sets its origin and the outside routines and data it uses,
+;	then includes sound95.asm on its own for checking against the ROM.
 
+	include	macros\genesis.mac	;String, SndItem
 ; region code
 	org	$AF44
 

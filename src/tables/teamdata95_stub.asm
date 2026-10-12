@@ -1,10 +1,7 @@
-	include	macros\genesis.mac	;String, Player
+;	Segment build for teamdata95.asm: sets its origin and the outside routines and data it uses,
+;	then includes teamdata95.asm on its own for checking against the ROM.
 
-;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;
-;	Segment stub.
-;
-;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	include	macros\genesis.mac	;String, Player
 
 ; External addresses outside: none. TeamList and the team block offsets point inside the segment.
 ; region code
