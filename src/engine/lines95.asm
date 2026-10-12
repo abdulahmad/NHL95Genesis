@@ -442,13 +442,13 @@ DefaultLineData	;Copy the default line sets of the 28 teams (TeamList + 6, 8 x 8
 	movea.l	#TeamList,a3
 	move.w	#$1B,d1
 	clr.w	d7
-.loop
+.team
 	move.w	d7,d0
 	asl.w	#2,d0
 	movea.l	(a3,d0.w),a1
 	adda.w	6(a1),a1
 	move.w	#7,d2
-.loop2
+.set
 	move.b	(a1)+,(a0)+
 	move.b	(a1)+,(a0)+
 	move.b	(a1)+,(a0)+
@@ -457,19 +457,20 @@ DefaultLineData	;Copy the default line sets of the 28 teams (TeamList + 6, 8 x 8
 	move.b	(a1)+,(a0)+
 	move.b	(a1)+,(a0)+
 	move.b	(a1)+,(a0)+
-	dbf	d2,.loop2
+	dbf	d2,.set
 	move.b	#$64,(a0)+
 	addq.w	#1,d7
-	dbf	d1,.loop
+	dbf	d1,.team
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LoadTeamLines	;The line sets of team struct a2 ($16C): from save RAM (SRLines + team * $41) when there is save RAM and
-	;line changes are on, else from the team data. Jumped to from InitTeamStructure
+LoadTeamLines	;The line sets of team struct a2 ($16C) from save RAM (SRLines + team * $41) when it is valid, else
+	;(or with line changes on and sflags11 bit 6) from the team data; line changes on: sets 0 and 2-7, off: sets 1-7.
+	;Jumped to from InitTeamStructure
 	tst.w	(OptLine).w
-	beq.w	.3
+	beq.w	.nolc
 	tst.w	(ValidSRAM).w
-	bmi.w	.0
+	bmi.w	.teamdata
 	movem.l	d0-d2,-(sp)
 	move.l	#SRLines,d0
 	move.w	Xvel(a2),d2
@@ -480,12 +481,12 @@ LoadTeamLines	;The line sets of team struct a2 ($16C): from save RAM (SRLines + 
 	jsr	(ReadSRAM).l
 	movem.l	(sp)+,d0-d2
 	btst	#6,(sflags11).w
-	bne.w	.0
-	bra.w	.1
-.0
+	bne.w	.teamdata
+	bra.w	.copy
+.teamdata
 	movea.l	$1E(a2),a0
 	adda.w	6(a0),a0
-.1
+.copy
 	lea	$16C(a2),a1
 	move.l	(a0)+,(a1)+
 	move.l	(a0)+,(a1)+
@@ -495,9 +496,9 @@ LoadTeamLines	;The line sets of team struct a2 ($16C): from save RAM (SRLines + 
 	move.l	(a0)+,(a1)+
 	dbf	d0,.loop
 	rts
-.3
+.nolc
 	tst.w	(ValidSRAM).w
-	bmi.w	.4
+	bmi.w	.teamdata2
 	movem.l	d0-d2,-(sp)
 	move.l	#SRLines,d0
 	move.w	Xvel(a2),d2
@@ -507,11 +508,11 @@ LoadTeamLines	;The line sets of team struct a2 ($16C): from save RAM (SRLines + 
 	movea.l	#ThreeStars,a0
 	jsr	(ReadSRAM).l
 	movem.l	(sp)+,d0-d2
-	bra.w	.5
-.4
+	bra.w	.copy2
+.teamdata2
 	movea.l	$1E(a2),a0
 	adda.w	6(a0),a0
-.5
+.copy2
 	moveq	#$D,d0
 	addq.w	#8,a0
 	lea	$16C(a2),a1
@@ -530,7 +531,7 @@ FixSavedLines	;Unreferenced. Clamp the saved line slots of team d7 in the 4 Team
 	jsr	(GetPlayerCountD7).l
 	move.w	d0,d5
 	move.w	#3,d6
-.loop
+.rec
 	movea.l	#TeamRecordSRAM,a0
 	move.w	d6,d0
 	asl.w	#3,d0
@@ -542,60 +543,60 @@ FixSavedLines	;Unreferenced. Clamp the saved line slots of team d7 in the 4 Team
 	movea.l	#ThreeStars,a0
 	jsr	(ReadSRAM).l
 	cmpi.b	#$64,-1(a0,d1.w)
-	bne.w	.2
+	bne.w	.nextrec
 	movem.l	d0-d1/a0,-(sp)
 	lsr.w	#3,d1
 	subq.w	#1,d1
-.loop2
-	bsr.w	.loop3
-	bsr.w	.loop5
-	bsr.w	.loop5
-	bsr.w	.loop7
-	bsr.w	.loop7
-	bsr.w	.loop7
-	bsr.w	.loop9
+.line
+	bsr.w	.goalie
+	bsr.w	.defense
+	bsr.w	.defense
+	bsr.w	.forward
+	bsr.w	.forward
+	bsr.w	.forward
+	bsr.w	.extra
 	addq.w	#1,a0
-	dbf	d1,.loop2
+	dbf	d1,.line
 	movem.l	(sp)+,d0-d1/a0
 	jsr	(WriteSRAM).l
-.2
-	dbf	d6,.loop
+.nextrec
+	dbf	d6,.rec
 	jsr	(MakeSRAMChecksum).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-.loop3
+.goalie
 	cmp.b	(a0),d3
-	bge.w	.loop4
+	bge.w	.nextslot
 	subq.b	#1,(a0)
-	bra.s	.loop3
-.loop4
+	bra.s	.goalie
+.nextslot
 	addq.w	#1,a0
 	rts
-.loop5
+.defense
 	cmp.b	(a0),d5
-	bge.w	.loop6
+	bge.w	.dlow
 	subq.b	#1,(a0)
-	bra.s	.loop5
-.loop6
+	bra.s	.defense
+.dlow
 	cmp.b	(a0),d4
-	blt.s	.loop4
+	blt.s	.nextslot
 	addq.b	#1,(a0)
-	bra.s	.loop6
-.loop7
+	bra.s	.dlow
+.forward
 	cmp.b	(a0),d4
-	bge.w	.loop8
+	bge.w	.flow
 	subq.b	#1,(a0)
-	bra.s	.loop7
-.loop8
+	bra.s	.forward
+.flow
 	cmp.b	(a0),d3
-	blt.s	.loop4
+	blt.s	.nextslot
 	addq.b	#1,(a0)
-	bra.s	.loop8
-.loop9
+	bra.s	.flow
+.extra
 	cmp.b	(a0),d5
-	bge.s	.loop4
+	bge.s	.nextslot
 	subq.b	#1,(a0)
-	bra.s	.loop9
+	bra.s	.extra
 
 CheckSavedLines	;CheckTeamLines for tradeteam1 and tradeteam2. Called from the trade code
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -610,7 +611,7 @@ CheckTeamLines	;Check the saved lines of team d7 in the 4 TeamRecordSRAM records
 	;with bit 7 set is refilled by LineSlotFixTbl (slot & 7), then written back (WriteSRAM, MakeSRAMChecksum)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#3,d6
-.loop
+.rec
 	movea.l	#TeamRecordSRAM,a0
 	move.w	d6,d2
 	asl.w	#3,d2
@@ -624,36 +625,36 @@ CheckTeamLines	;Check the saved lines of team d7 in the 4 TeamRecordSRAM records
 	movem.l	d0-d1/a0,-(sp)
 	jsr	(ReadSRAM).l
 	cmpi.b	#$64,-1(a0,d1.w)
-	bne.w	.4
+	bne.w	.invalid
 	clr.w	d5
 	subq.w	#2,d1
-.loop2
+.slot
 	tst.b	(a0,d5.w)
-	bpl.w	.2
+	bpl.w	.nextslot
 	move.w	d5,d4
 	andi.w	#7,d4
 	asl.w	#2,d4
 	movea.l	#LineSlotFixTbl,a2
 	movea.l	(a2,d4.w),a2
 	jsr	(a2)
-.2
+.nextslot
 	addq.w	#1,d5
-	dbf	d1,.loop2
+	dbf	d1,.slot
 	movem.l	(sp)+,d0-d1/a0
 	jsr	(WriteSRAM).l
-.loop3
-	dbf	d6,.loop
+.nextrec
+	dbf	d6,.rec
 	jsr	(MakeSRAMChecksum).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-.4
+.invalid
 	movem.l	(sp)+,d0-d1/a0
-	bra.s	.loop3
+	bra.s	.nextrec
 
 LineSlotFixTbl	;CheckTeamLines slot handlers by slot & 7: goalie (the best one), defense, defense, forward, forward
 	;forward, extra, none
-	dc.l	.0,.4,.4,.20,.20,.20,.33,.3
-.0
+	dc.l	.goalie,.defense,.defense,.forward,.forward,.forward,.extra,.none
+.goalie
 	movem.l	d0-d7/a3,-(sp)
 	jsr	(GetGoalieCountD7).l
 	subq.w	#1,d0
@@ -661,7 +662,7 @@ LineSlotFixTbl	;CheckTeamLines slot handlers by slot & 7: goalie (the best one),
 	clr.w	d0
 	clr.w	d6
 	move.b	#$FF,d4
-.loop
+.grate
 	jsr	(GetRosterName).l
 	adda.w	(a1),a1
 	move.b	1(a1),d3
@@ -672,15 +673,15 @@ LineSlotFixTbl	;CheckTeamLines slot handlers by slot & 7: goalie (the best one),
 	move.b	d3,d4
 .2
 	addq.w	#1,d0
-	dbf	d1,.loop
+	dbf	d1,.grate
 	addq.w	#1,d6
 	move.b	d6,(a0,d5.w)
 	movem.l	(sp)+,d0-d7/a3
 	rts
-.3
+.none
 	clr.b	(a0,d5.w)
 	rts
-.4
+.defense
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#6,(sflags6).w
 	jsr	(GetPlayerCountD7).l
@@ -688,31 +689,31 @@ LineSlotFixTbl	;CheckTeamLines slot handlers by slot & 7: goalie (the best one),
 	jsr	(GetDefenseStartD7).l
 	clr.w	d1
 	movea.l	#linemarkbuf,a1
-.loop2
+.dcand
 	cmp.w	d0,d2
-	ble.w	.8
+	ble.w	.dpick
 	btst	#6,(sflags6).w
-	bne.w	.6
-	bsr.w	.loop6
-	beq.w	.7
-.6
+	bne.w	.dadd
+	bsr.w	.inlines
+	beq.w	.dnext
+.dadd
 	move.b	d0,(a1)+
 	addq.w	#1,d1
-.7
+.dnext
 	addq.w	#1,d0
-	bra.s	.loop2
-.8
+	bra.s	.dcand
+.dpick
 	tst.w	d1
-	bne.w	.9
+	bne.w	.dbest
 	bset	#6,(sflags6).w
-	bra.w	.12
-.9
+	bra.w	.dany
+.dbest
 	movea.l	#linemarkbuf,a1
 	subq.w	#1,d1
-	bmi.w	.12
+	bmi.w	.dany
 	clr.w	d4
 	move.b	#$FF,d3
-.loop3
+.drate
 	move.b	(a1,d1.w),d0
 	ext.w	d0
 	movem.l	d6/a1,-(sp)
@@ -738,44 +739,44 @@ LineSlotFixTbl	;CheckTeamLines slot handlers by slot & 7: goalie (the best one),
 	move.w	d0,d4
 	move.b	d2,d3
 .11
-	dbf	d1,.loop3
+	dbf	d1,.drate
 	addq.b	#1,d4
 	move.b	d4,(a0,d5.w)
-	bra.w	.16
-.12
+	bra.w	.ddone
+.dany
 	jsr	(GetDefenseStartD7).l
-.loop4
+.dtry
 	addq.w	#1,d0
 	movem.w	d1/d5,-(sp)
 	andi.w	#$FFF8,d5
 	move.w	#7,d1
-.loop5
+.dline
 	cmp.b	(a0,d5.w),d0
 	beq.w	.15
 	addq.w	#1,d5
-	dbf	d1,.loop5
+	dbf	d1,.dline
 .15
 	tst.w	d1
 	movem.w	(sp)+,d1/d5
-	bpl.s	.loop4
+	bpl.s	.dtry
 	move.b	d0,(a0,d5.w)
-.16
+.ddone
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-.loop6
+.inlines
 	movem.l	d0-d2/a0,-(sp)
 	move.w	(gameclock).w,d1
 	subq.w	#2,d1
 	addq.b	#1,d0
-.loop7
+.search
 	cmp.b	(a0,d1.w),d0
-	beq.w	.19
-	dbf	d1,.loop7
+	beq.w	.found
+	dbf	d1,.search
 	move.w	#1,d0
-.19
+.found
 	movem.l	(sp)+,d0-d2/a0
 	rts
-.20
+.forward
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#6,(sflags6).w
 	jsr	(GetDefenseStartD7).l
@@ -783,31 +784,31 @@ LineSlotFixTbl	;CheckTeamLines slot handlers by slot & 7: goalie (the best one),
 	jsr	(GetGoalieCountD7).l
 	clr.w	d1
 	movea.l	#linemarkbuf,a1
-.loop8
+.fcand
 	cmp.w	d0,d2
-	ble.w	.24
+	ble.w	.fpick
 	btst	#6,(sflags6).w
-	bne.w	.22
-	bsr.s	.loop6
-	beq.w	.23
-.22
+	bne.w	.fadd
+	bsr.s	.inlines
+	beq.w	.fnext
+.fadd
 	move.b	d0,(a1)+
 	addq.w	#1,d1
-.23
+.fnext
 	addq.w	#1,d0
-	bra.s	.loop8
-.24
+	bra.s	.fcand
+.fpick
 	tst.w	d1
-	bne.w	.25
+	bne.w	.fbest
 	bset	#6,(sflags6).w
-	bra.w	.28
-.25
+	bra.w	.fany
+.fbest
 	movea.l	#linemarkbuf,a1
 	subq.w	#1,d1
-	bmi.w	.28
+	bmi.w	.fany
 	clr.w	d4
 	move.b	#$FF,d3
-.loop9
+.frate
 	move.b	(a1,d1.w),d0
 	ext.w	d0
 	movem.l	d6/a1,-(sp)
@@ -834,39 +835,39 @@ LineSlotFixTbl	;CheckTeamLines slot handlers by slot & 7: goalie (the best one),
 	move.w	d0,d4
 	move.b	d2,d3
 .27
-	dbf	d1,.loop9
+	dbf	d1,.frate
 	addq.b	#1,d4
 	move.b	d4,(a0,d5.w)
-	bra.w	.32
-.28
+	bra.w	.fdone
+.fany
 	jsr	(GetGoalieCountD7).l
-.loop10
+.ftry
 	addq.w	#1,d0
 	movem.w	d1/d5,-(sp)
 	andi.w	#$FFF8,d5
 	move.w	#7,d1
-.loop11
+.fline
 	cmp.b	(a0,d5.w),d0
 	beq.w	.31
 	addq.w	#1,d5
-	dbf	d1,.loop11
+	dbf	d1,.fline
 .31
 	tst.w	d1
 	movem.w	(sp)+,d1/d5
-	bpl.s	.loop10
+	bpl.s	.ftry
 	move.b	d0,(a0,d5.w)
-.32
+.fdone
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-.33
+.extra
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(GetGoalieCountD7).l
-.loop12
-	bsr.w	.loop6
-	bne.w	.35
+.xtry
+	bsr.w	.inlines
+	bne.w	.xset
 	addq.w	#1,d0
-	bra.s	.loop12
-.35
+	bra.s	.xtry
+.xset
 	addq.w	#1,d0
 	move.b	d0,(a0,d5.w)
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1036,9 +1037,9 @@ DrawTeamScreen2	;A DrawTeamScreen for the season / stats screens: screenarg is t
 	;first row / row count of the bitmap
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
-.loop
+.0
 	btst	#0,(disflags).w
-	bne.s	.loop
+	bne.s	.0
 	clr.w	(Hscroll).w
 	clr.w	(Vscroll).w
 	jsr	(SetScroll2).l
@@ -1125,9 +1126,9 @@ DrawTeamScreen2	;A DrawTeamScreen for the season / stats screens: screenarg is t
 DrawTeamScreen3	;The same with SmallFontMap
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
-.loop
+.0
 	btst	#0,(disflags).w
-	bne.s	.loop
+	bne.s	.0
 	clr.w	(Hscroll).w
 	clr.w	(Vscroll).w
 	jsr	(SetScroll2).l
@@ -1214,12 +1215,12 @@ DrawTeamScreen4NoSetup	;DrawTeamScreen4 without the screen setup (forceblack, sc
 	movem.l	d0-d1/a2,-(sp)
 	bra.w	DrawTeamScreen4Body
 
-DrawTeamScreen4	;The same as DrawTeamScreen3, the team block tiles with dma (Teamblocksmap+8)
+DrawTeamScreen4	;The same as DrawTeamScreen3 with the team block tiles decompressed (Teamblocksmap+8)
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
-.loop
+.0
 	btst	#0,(disflags).w
-	bne.s	.loop
+	bne.s	.0
 	clr.w	(Hscroll).w
 	clr.w	(Vscroll).w
 	jsr	(SetScroll2).l
@@ -1307,9 +1308,9 @@ DrawTeamScreen4Body	;DrawTeamScreen4 after the screen setup; DrawTeamScreen4NoSe
 DrawTeamScreen5	;DrawTeamScreen4 with three small fonts and palette word $A00
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
-.loop
+.0
 	btst	#0,(disflags).w
-	bne.s	.loop
+	bne.s	.0
 	clr.w	(Hscroll).w
 	clr.w	(Vscroll).w
 	jsr	(SetScroll2).l
@@ -1393,9 +1394,9 @@ DrawTeamScreen6	;The team blocks (screen6chars1), the bitmap, Screen6Tiles1 / 2 
 	;the big font and the framer
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
-.loop
+.0
 	btst	#0,(disflags).w
-	bne.s	.loop
+	bne.s	.0
 	clr.w	(Hscroll).w
 	clr.w	(Vscroll).w
 	jsr	(SetScroll2).l
