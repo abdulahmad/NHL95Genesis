@@ -85,4 +85,4 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
   1. Section banners inside src .asm: DONE. Routine-name lists, ROM addresses and per-version weeds replaced by short
      plain English dividers (15 files). Kept as-is: teamdata95 data layout banners, SegaInit (Sega's own banners), stubs.
   2. Include line address maps: DONE (nhl95, main95, engine95, front95; plain descriptions kept). Rule above updated: no ROM addresses on include lines.
-  3. NHLPA93SNES src/routines/** file header comments: TODO (per module folder).
+  3. NHLPA93SNES src/routines/** routine headers: DONE (all 448 files, one commit per folder; see its docs/HANDOFF.md).
