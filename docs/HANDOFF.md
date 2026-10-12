@@ -10,7 +10,7 @@ ROMs (gitignored, never commit): lst/nhl95.bin.
 Windows: `npm run build:retail` (extractassets, build95.bat, fixopcodes, verify);
 segments: `npm run seg:<name>` (all keys in package.json `seg:*`).
 Linux (wine): `apt install wine wine32` (dpkg --add-architecture i386), `export WINEDEBUG=-all`, then
-1. `node tools/extractAssets95.js lst/nhl95.bin` (once, fills Extracted/)
+1. `node tools/extractAssets95.js lst/nhl95.bin` (once, fills Extracted/) Accepts the one retail ROM (SHA-1 09e87b07...); other ROMs are refused.
 2. `wine cmd /c "set rev=0&& set checksum=1&& build95.bat"`
 3. `node tools/fixopcodes.js "output/nhl95 .lst" output/nhl95.bin`
 4. `node tools/verifyRom.js output/modified_nhl95.bin <reference ROM>` must print MATCH
@@ -79,3 +79,4 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
 - Header rewrite 2 (story-style file headers, model 93G hockey93/main93/menu93): all 95G modules done. MATCH.
 - Segment stubs moved to src/stubinc/ (buildseg.bat <name> assembles stubinc\<name>_stub.asm; seg:* scripts take the bare name). MATCH.
 - Undone: the z80old95 inlining. src/sound/z80old95.asm restored (engine95.asm includes sound\z80old95.asm at $07E0E0); Z80OldProgram macro and Z80OLD_SEG removed from sound95.asm; stubinc/z80old95_stub.asm back to its normal form. sound95 stays in src/. MATCH (ROM + all segments).
+- Extractor takes any known retail ROM: SHA-1 detection (one retail version, 1994.JUL -00), per-version offset map, clear refusal of unknown ROMs. verify_all.sh extracts fresh first. Fresh extract + ROM + all segments MATCH.

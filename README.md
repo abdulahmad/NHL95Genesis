@@ -3,6 +3,13 @@
 Bitwise rebuild of NHL 95 for the Sega Genesis. Every segment is matched: the full build is byte for byte the retail ROM (SHA-1 `09e87b076aa4cd6f057a1d65bb50fd889b509b44`), and each segment also builds and verifies on its own.
 
 The reference ROM is `lst/nhl95.bin` (2 MB). It is what every build is compared with. Do not use a different ROM. The listing it was transcribed from is `lst/nhl95.bin.lst`, an IDA LST in ASM68K / MRI mode with no address column (`loc_` / `sub_` names are the address).
+## Supported ROMs
+NHL 95 had one retail release; `tools/extractAssets95.js` accepts only that ROM, found by SHA-1, and refuses any other (bad dump, hack, prototype) with its SHA-1, size and header. The slices are kept as a per-version map from retail address, so a new version only needs a row with its SHA-1 and offsets.
+
+| Version | Header | File | Size | SHA-1 |
+| --- | --- | --- | --- | --- |
+| Retail | `1994.JUL`, `GM T-50856 -00` | `lst/nhl95.bin` | 2 MB | `09e87b076aa4cd6f057a1d65bb50fd889b509b44` |
+
 
 The source follows [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis): its file names, routine names, RAM names and comments, with [NHLPA93Genesis](https://github.com/abdulahmad/NHLPA93Genesis) where 94 does not have the routine. A comment `;95: ...` marks a 94 routine 95 changed; `95 only.` marks a routine 94 does not have.
 

@@ -9,6 +9,29 @@ if (!fs.existsSync(romPath)) {
   console.error('Missing ' + romPath + '. Put the IDA ROM at lst/nhl95.bin first.');
   process.exit(1);
 }
+
+// Known retail ROMs. NHL 95 had one retail release (1994.JUL, GM T-50856 -00); slices are
+// at its addresses. A new version goes here with its SHA-1 and a map from retail address to its own.
+const VERSIONS = [
+  { id: 'retail', label: 'NHL 95 retail (1994.JUL, GM T-50856 -00)', file: 'lst/nhl95.bin',
+    sha1: '09e87b076aa4cd6f057a1d65bb50fd889b509b44', size: 0x200000, serial: 'GM T-50856 -00',
+    map: (a) => a },
+];
+
+// Find the version of a ROM by SHA-1. Size and header are only used to explain a refusal.
+function detectVersion(data) {
+  const sha1 = require('crypto').createHash('sha1').update(data).digest('hex');
+  const v = VERSIONS.find((x) => x.sha1 === sha1);
+  if (v) return v;
+  const date = data.subarray(0x118, 0x120).toString('latin1');
+  const serial = data.subarray(0x180, 0x18E).toString('latin1');
+  const near = VERSIONS.find((x) => x.size === data.length && x.serial === serial);
+  let msg = `Unknown ROM ${romPath}: SHA-1 ${sha1}, ${data.length} bytes, header date '${date}', serial '${serial}'.\n`;
+  if (near) msg += `Header matches ${near.label}, but the SHA-1 does not (bad dump, hack, or byte-swapped/interleaved file?).\n`;
+  msg += 'Supported ROMs:\n' + VERSIONS.map((x) => `  ${x.label}: SHA-1 ${x.sha1} (${x.file})`).join('\n');
+  console.error(msg + '\nAborting extraction.');
+  process.exit(1);
+}
 // Slices: name, folder under Extracted, start, end (exclusive).
 const assets = [
     // NHL 95 team palettes, src/teamdata95.asm .pad of each team block (block + $C): home then visitor, 32 bytes each, in ROM order.
@@ -579,9 +602,11 @@ const assets = [
 ];
 const outRoot = path.join(ROOT, 'Extracted');
 const rom = fs.readFileSync(romPath);
+const version = detectVersion(rom);
+console.log('ROM: ' + version.label);
 for (const asset of assets) {
   const dir = path.join(outRoot, asset.folder);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, asset.name), rom.subarray(asset.start, asset.end));
+  fs.writeFileSync(path.join(dir, asset.name), rom.subarray(version.map(asset.start), version.map(asset.end - 1) + 1));
 }
 console.log('Extracted ' + assets.length + ' slices to ' + outRoot + '.');
