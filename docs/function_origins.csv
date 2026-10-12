@@ -173,7 +173,7 @@ hockey95.asm,$009D18,186,IntermissionStart,code,setup94,name
 hockey95.asm,$009DD2,286,StartPer,code,hockey94,name
 hockey95.asm,$009EF0,50,Gameloop,code,hockey94,name
 hockey95.asm,$009F22,176,DoGameFrame,code,hockey94,name
-hockey95.asm,$009FD2,562,IntermissionMenu,code,new in 95,header
+hockey95.asm,$009FD2,562,Intermission,code,new in 95,header
 display95.asm,$00A204,120,setvideo,code,display94,name
 display95.asm,$00A27C,30,setsortcords,code,display94,name
 display95.asm,$00A29A,2,rtssdisp,code,display94,follows setsortcords

@@ -1,5 +1,5 @@
 ;	The game flow from the title screen to the game loop, as one stretch of code: Opening and Opening2, the main menu
-;	exits (season, trades, create player), StartGame and StartPer without a jump between them, the IntermissionMenu,
+;	exits (season, trades, create player), StartGame and StartPer without a jump between them, Intermission,
 ;	the game loop, DoGameFrame and updateplayers.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
 ;	cmp encoding after assembly.
@@ -144,7 +144,7 @@ StartGame	;Reset game state for a new game, then start the first period. 95 has 
 	jsr	(setupice).l
 
 IntermissionStart	;The PeriodOver tail. PeriodOver jumps here after forceblack: reset the
-	;clock, restart the sound driver, UpdateScores, IntermissionMenu, then GameOver or StartPer
+	;clock, restart the sound driver, UpdateScores, Intermission, then GameOver or StartPer
 	jsr	(ResetClock).l
 	move.w	d0,-(sp)
 	move.w	(vcount).w,d0
@@ -180,7 +180,7 @@ IntermissionStart	;The PeriodOver tail. PeriodOver jumps here after forceblack: 
 	jsr	(AddPlayoffTeamStats).l
 .4
 	bset	#5,(sflags11).w
-	bsr.w	IntermissionMenu
+	bsr.w	Intermission
 	bclr	#5,(sflags11).w
 	cmpi.w	#4,(gsp).w	;game over from the menu
 	bne.w	.5
@@ -304,22 +304,22 @@ DoGameFrame	;Wait for at least one vblank, then run one frame of game logic. in 
 	jmp	(setvideo).l
 	rts	;Not reached
 
-IntermissionMenu	;Before the period: at game over (gsp 4) the records (UpdateRecords); outside a shootout the auto line
+Intermission	;Before the period: at game over (gsp 4) the records (UpdateRecords); outside a shootout the auto line
 	;change and every sort object's Xpos to 0; then the pause menu (Pausemode with sflags12 bit 0). Called from StartGame
 	cmpi.w	#4,(gsp).w
-	bne.w	.0
+	bne.w	.1
 	move.w	#0,(gameclock).w
 	jsr	(UpdateRecords).l
-.0
+.1
 	btst	#0,(gmode2).w
 	bne.w	.menu
 	jsr	(SetupTeamForIntermission).l
 	moveq	#$F,d0	;Sortobjs-1
 	movea.w	#(SortCords-M68K_RAM),a0
-.1
+.clr
 	clr.w	(a0)	;Xpos
 	adda.w	#SCstruct,a0
-	dbf	d0,.1
+	dbf	d0,.clr
 .menu
 	bset	#0,(sflags12).w
 	jsr	(Pausemode).l

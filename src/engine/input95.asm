@@ -49,7 +49,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	andi.w	#$F,(TempWord1).w
 	jsr	(setpads).l
 	btst	#7,d1	;start button
-	beq.w	.7
+	beq.w	.nostart
 	tst.w	d4
 	beq.w	startpause1
 	cmp.w	#2,d4
@@ -58,7 +58,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	beq.w	startpause3
 	cmp.w	#6,d4
 	beq.w	startpause4
-.7
+.nostart
 	btst	#0,(sflags2).w
 	bne.w	faceoffinput
 	btst	#3,pflags2(a3)

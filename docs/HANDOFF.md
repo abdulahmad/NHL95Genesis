@@ -59,4 +59,6 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
   94->95 consistency check are listed in docs/name_review_95.md (last "Local labels" row). New-in-95 done:
   video, summary, replay, display, control, main, crowd, hockey, playoff, shootout, players, logic, injury,
   input, skate.
-  Next: close the open consistency items, then remaining new-in-95 routines, data labels / equates, NHLPA93SNES.
+  94->95 consistency items and the 10 differently named routines: DONE (docs/name_review_95.md).
+  Next: remaining new-in-95 routines (season, stats, create, trade, setup, sound, awards, pause, middle, lines,
+  records, goal, collide, penalty, scout, faceoff, title), data labels / equates, NHLPA93SNES.

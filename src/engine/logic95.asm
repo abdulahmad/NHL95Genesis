@@ -402,7 +402,7 @@ checkanim	;Goalie animation check; assgoaliectrl branches here too
 	blt.w	.18
 	btst	#3,(gameclock+1).w	;94 bit 1, bne
 	beq.w	.18
-	bra.w	.19
+	bra.w	.save
 .18
 	cmpi.w	#$22,2(a0)
 	bhi.w	.de5
@@ -412,7 +412,7 @@ checkanim	;Goalie animation check; assgoaliectrl branches here too
 	blt.w	.22
 	cmpi.w	#$D,2(a0)
 	bhi.w	.20
-.19
+.save
 	cmpi.w	#$10B,(pucky).w
 	bgt.w	.20
 	cmpi.w	#$FEF5,(pucky).w
@@ -4273,11 +4273,11 @@ assscore	;asstab entry $1C (94 7). Players after a goal: skate to the scoring en
 	btst	#0,(gmode2).w	;shootout? count down the shootout delay and keep the players near center ice
 	beq.w	.noso
 	tst.w	(shootoutdelay).w
-	beq.w	.2
+	beq.w	.chkx
 	subq.w	#1,(shootoutdelay).w
-	bne.w	.2
+	bne.w	.chkx
 	bset	#2,(sflags2).w
-.2
+.chkx
 	cmpi.w	#$98,(a3)	;94 $88
 	bgt.w	.3
 	cmpi.w	#$FF68,(a3)	;94 $FF78

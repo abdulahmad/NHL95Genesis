@@ -51,9 +51,9 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals 
 	jsr	(stop_current_song).l
 	move.w	d0,-(sp)
 	move.w	(vcount).w,d0
-.8
+.loop
 	cmp.w	(vcount).w,d0
-	beq.s	.8
+	beq.s	.loop
 	move.w	(sp)+,d0
 	move.w	#SFXsiren,-(sp)
 	jsr	(sfx).l
@@ -66,9 +66,9 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals 
 	exg	a2,a1
 .9
 	btst	#1,(gmode).w
-	beq.w	.10
+	beq.w	.addg
 	exg	a2,a1
-.10
+.addg
 	addq.w	#1,tmscore(a2)
 	btst	#5,(sflags4).w
 	beq.w	.11
@@ -81,18 +81,18 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals 
 	addq.w	#1,$35C(a2)
 .12
 	btst	#5,(sflags2).w
-	beq.w	.15
+	beq.w	.14
 	btst	#6,(sflags2).w
-	bne.w	.14
+	bne.w	.13
 	cmpa.l	#AwShots,a2
-	bne.w	.15
-.13
+	bne.w	.14
+.loop2
 	addq.w	#1,$358(a2)
-	bra.w	.15
-.14
+	bra.w	.14
+.13
 	cmpa.l	#tmstruct,a2
-	beq.s	.13
-.15
+	beq.s	.loop2
+.14
 	movem.l	d0/a2,-(sp)
 	move.w	(gsp).w,d0
 	add.w	d0,d0
@@ -100,18 +100,18 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals 
 	addq.w	#1,$344(a2)
 	movem.l	(sp)+,d0/a2
 	bclr	#7,(sflags8).w
-	beq.w	.16
+	beq.w	.15
 	addq.w	#1,$360(a2)
-.16
+.15
 	cmpa.w	#(tmstruct-M68K_RAM),a2
-	bne.w	.17
+	bne.w	.16
 	move.w	(HomeTeam).w,(HmTeam).w
 	move.w	#3,(SongIndex).w
 	jsr	(ChooseSong).l
 	move.w	#$100,(songdelay).w
 	move.w	(SongNum).w,-(sp)
 	move.w	(sp)+,(delayedsong).w
-.17
+.16
 	cmpi.w	#$168,(ScoreSumbytes).w
 	bne.w	.sum
 	subq.w	#6,(ScoreSumbytes).w
@@ -293,46 +293,46 @@ ShowGoalBox	;Goal box: close both line change boxes (lcfound2), then the scorer 
 	moveq	#$13,d0
 	move.w	#5,d1	;5 rows: no assist
 	tst.b	4(a4)
-	bmi.w	.1
+	bmi.w	.frame
 	addq.w	#2,d1	;7: one assist
 	tst.b	5(a4)
-	bmi.w	.1
+	bmi.w	.frame
 	addq.w	#1,d1	;8: two assists
-.1
+.frame
 	jsr	(Framer).l
 	jsr	(CountGoalies).l
 	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	(homegoalies).w,(recwins).w
 	btst	#7,2(a4)
-	beq.w	.2
+	beq.w	.1
 	adda.w	#tmsize,a2
 	move.w	(awaygoalies).w,(recwins).w
-.2
+.1
 	lea	GoalBigTxt(pc),a1
 	bclr	#0,(sflags9).w
-	beq.w	.3
+	beq.w	.2
 	lea	PPGoalBigTxt(pc),a1
-.3
+.2
 	clr.w	d0
 	move.b	3(a4),d0	;scorer
 	addi.w	#$B6,d0
 	cmpi.b	#3,(a2,d0.w)
-	bne.w	.5
+	bne.w	.print
 	movem.w	d1,-(sp)
 	clr.w	d1
 	move.b	3(a4),d1
 	cmp.w	(recwins).w,d1
 	movem.w	(sp)+,d1
-	blt.w	.5
+	blt.w	.print
 	adda.w	(a1),a1	;HAT TRICK!
 	move.w	d0,-(sp)
 	move.w	Xvel(a2),d0
 	cmp.w	(HomeTeam).w,d0
-	bne.w	.4
+	bne.w	.3
 	move.w	#0,d0
-.4
+.3
 	move.w	(sp)+,d0
-.5
+.print
 	jsr	(printbig1).l
 	clr.w	d0
 	move.b	3(a4),d0
@@ -346,14 +346,14 @@ ShowGoalBox	;Goal box: close both line change boxes (lcfound2), then the scorer 
 	move.b	3(a4),d1
 	cmp.w	(recwins).w,d1
 	movem.w	(sp)+,d1
-	blt.w	.6
+	blt.w	.5
 	jsr	(PrintPlayerGoals).l
-.6
+.5
 	clr.w	d0
 	move.b	4(a4),d0	;first assist
-	bmi.w	.7
+	bmi.w	.6
 	bclr	#5,(sflags4).w
-	bne.w	.7
+	bne.w	.6
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$E,6,'Assist by:',-(TXPRI+TXMAP1),$C,7
 	move.w	d0,-(sp)
@@ -363,7 +363,7 @@ ShowGoalBox	;Goal box: close both line change boxes (lcfound2), then the scorer 
 	jsr	(PrintPlayerAssists).l
 	clr.w	d0
 	move.b	5(a4),d0	;second assist
-	bmi.w	.7
+	bmi.w	.6
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$C,8,0
 	move.w	d0,-(sp)
@@ -371,7 +371,7 @@ ShowGoalBox	;Goal box: close both line change boxes (lcfound2), then the scorer 
 	jsr	(print).l
 	move.w	(sp)+,d0
 	jsr	(PrintPlayerAssists).l
-.7
+.6
 	bclr	#5,(sflags4).w
 	movem.l	(sp)+,d0-d2/a0-a4
 	rts

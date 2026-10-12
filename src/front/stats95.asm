@@ -3185,16 +3185,16 @@ PeriodStatsScreen	;Both team logos, goals/shots by period and total; left/right 
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP3),9,2,'Period',-(TXPRI+TXMAP3),$15,2,'Stats',-(TXPRI+TXMAP2),6,1
 	btst	#1,(sflags7).w
-	beq.w	.1
+	beq.w	.0
 	jsr	(printz).l
 	dc.w	$001C	;String length: too many arguments for the String macro
 	dc.b	$BE,$C,7,'1',$BE,$11,7,'2',$BE,$16,7,'3',$BE,$1A,7,'OT',$BE,' ',7,'Total',0
-	bra.w	.2
-.1
+	bra.w	.1
+.0
 	jsr	(printz).l
 	dc.w	$0016	;String length: too many arguments for the String macro
 	dc.b	$BE,$C,7,'1',$BE,$11,7,'2',$BE,$16,7,'3',$BE,' ',7,'Total'
-.2
+.1
 	bsr.w	PeriodStatsCaption
 	bsr.w	PeriodStatsColumns
 	move.w	#$18,(palcount).w
@@ -3203,18 +3203,18 @@ PeriodStatsScreen	;Both team logos, goals/shots by period and total; left/right 
 	btst	#7,d1
 	bne.w	.exit
 	btst	#2,d1
-	bne.w	.title
+	bne.w	.3
 	btst	#3,d1
-	bne.w	.4
+	bne.w	.2
 	bra.s	.loop2
-.4
+.2
 	tst.w	(matchup).w
 	bne.s	.loop2
 	st	(matchup).w
 	bsr.w	PeriodStatsCaption
 	bsr.w	PeriodStatsColumns
 	bra.s	.loop2
-.title
+.3
 	tst.w	(matchup).w
 	beq.s	.loop2
 	clr.w	(matchup).w

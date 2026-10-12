@@ -178,7 +178,7 @@ $009D18,IntermissionStart,,,hockey95
 $009DD2,StartPer,loc_9DD2,,hockey95
 $009EF0,Gameloop,loc_9EF0,,hockey95
 $009F22,DoGameFrame,sub_9F22,,hockey95
-$009FD2,IntermissionMenu,sub_9FD2,,hockey95
+$009FD2,Intermission,sub_9FD2,IntermissionMenu,hockey95
 $00A01C,updateplayers,sub_A01C,,hockey95
 $00A204,setvideo,sub_A204,,display95
 $00A27C,setsortcords,sub_A27C,,display95

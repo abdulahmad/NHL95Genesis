@@ -101,7 +101,7 @@ ShowCrowdFrame	;Crowd frame d0 (0 = none): its sprites in view as sprite table e
 	subi.w	#$80,d2
 	addi.w	#$70,d3
 	move.w	(sp)+,d4
-.find
+.loop2
 	cmp.w	(a0),d2
 	bgt.w	.next
 	cmp.w	(a0),d3
@@ -136,11 +136,11 @@ ShowCrowdFrame	;Crowd frame d0 (0 = none): its sprites in view as sprite table e
 	move.w	d5,(a6)+
 	addq.w	#1,d6
 	cmp.w	#$40,d6
-	beq.w	.3
+	beq.w	.x
 .next
 	addq.w	#8,a0
-	dbf	d4,.find
-.3
+	dbf	d4,.loop2
+.x
 	movem.l	(sp)+,d0-d5
 
 rtsShowCrowd	;Shared rts of showcrowd

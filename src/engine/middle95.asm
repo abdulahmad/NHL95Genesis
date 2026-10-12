@@ -637,10 +637,10 @@ GetGoalieCountD7	;d0 = goalies on team d7: from the season data in save RAM (SRR
 	adda.w	$A(a0),a0
 	move.w	(a0),d1
 	clr.w	d0
-.1
+.count
 	addq.w	#1,d0
 	asl.w	#4,d1
-	bne.s	.1
+	bne.s	.count
 	movem.l	(sp)+,d1/d7-a0
 	rts
 
@@ -878,13 +878,13 @@ FormatLastName	;Skip the first name, copy the last name, pad; branched to from F
 .loop2
 	move.b	(a0)+,(a1)+
 	cmpa.l	a0,a2
-	beq.w	.0
+	beq.w	.pad
 	tst.b	(a0)
 	bne.s	.loop2
-	bra.w	.0
+	bra.w	.pad
 .loop3
 	move.b	#$20,(a1)+
-.0
+.pad
 	cmpa.w	#(TextBuffer+12-M68K_RAM),a1
 	blt.s	.loop3
 	bsr.w	FinalizeTextBuffer
@@ -1840,12 +1840,12 @@ printbigtext	;Print with the font map at bigfontptr. Lower case is printed as up
 	add.w	(BigFontChars).w,d6
 	move.w	(a1)+,d3
 	subq.w	#2,d3
-	bra.w	.3
+	bra.w	.1
 .0
 	move.b	(a1)+,d0
-	beq.w	.3
+	beq.w	.1
 	ext.w	d0
-	bpl.w	.1
+	bpl.w	.nocom
 	neg.w	d0
 	move.w	d0,d6
 	asl.w	#8,d6
@@ -1864,8 +1864,8 @@ printbigtext	;Print with the font map at bigfontptr. Lower case is printed as up
 	ext.w	d5
 	move.w	d5,(printy).w
 	subq.w	#2,d3
-	bra.w	.3
-.1
+	bra.w	.1
+.nocom
 	cmp.b	#$61,d0
 	blt.w	.2
 	cmp.b	#$7A,d0
@@ -1875,7 +1875,7 @@ printbigtext	;Print with the font map at bigfontptr. Lower case is printed as up
 	move.w	d3,-(sp)
 	bsr.w	PrintBigChar
 	move.w	(sp)+,d3
-.3
+.1
 	dbf	d3,.0
 	move.w	d4,(printx).w
 	move.w	d5,(printy).w

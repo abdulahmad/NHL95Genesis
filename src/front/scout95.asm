@@ -827,7 +827,7 @@ UpdateScoutingDisplay	;Text player of ScoutingReport: types the ScoutTextScript 
 	addq.w	#1,(mesarea).w
 .10
 	movea.w	#(mesarea-M68K_RAM),a1
-.11
+.loop4
 	cmp.w	#$18,d0
 	ble.w	.12
 	bsr.w	ScrollDisplayUp
@@ -875,16 +875,16 @@ rtsScoutText	equ	*	;Shared rts of ScoutTextPlayer / ScoutTextNextLine
 	bra.w	.append
 .20
 	jsr	(NextHomeHotPlayer).l
-	bra.w	.29
+	bra.w	.roster
 .21
 	jsr	(NextAwayHotPlayer).l
-	bra.w	.29
+	bra.w	.roster
 .22
 	jsr	(NextHomeColdPlayer).l
-	bra.w	.29
+	bra.w	.roster
 .23
 	jsr	(NextAwayColdPlayer).l
-	bra.w	.29
+	bra.w	.roster
 .24
 	movea.l	#tmstruct,a1
 	tst.w	(awayhotter).w
@@ -901,7 +901,7 @@ rtsScoutText	equ	*	;Shared rts of ScoutTextPlayer / ScoutTextNextLine
 	movea.w	#(tmstruct-M68K_RAM),a1
 .team
 	move.w	tmgoalie(a1),d1
-.29
+.roster
 	movea.l	tmdata(a1),a1
 	adda.w	(a1),a1
 	bra.w	.pn
@@ -929,9 +929,9 @@ rtsScoutText	equ	*	;Shared rts of ScoutTextPlayer / ScoutTextNextLine
 	move.w	(a1),d1
 	subq.w	#2,d1
 	tst.b	1(a1,d1.w)
-	bne.w	.11
+	bne.w	.loop4
 	subq.w	#1,d1
-	bra.w	.11
+	bra.w	.loop4
 
 ScrollDisplayUp	;Next text line of ScoutTextPlayer; at 7 lines scroll the 8 rows up
 	clr.w	(DispAttribCtr).w
@@ -1035,22 +1035,22 @@ HotColdIcon	;The hot or cold icon by player iconplayer of team a2, or erase it
 	move.w	#$1C,(iconplayer+$2).w
 .0
 	move.w	#0,d0
-.1
+.loop
 	move.w	(a0)+,d1
 	cmp.w	(iconplayer).w,d1
 	beq.w	.hot
-	dbf	d0,.1
+	dbf	d0,.loop
 	movea.l	#awaycoldplayer,a0
 	cmpa.l	#tmstruct,a2
-	bne.w	.2
+	bne.w	.1
 	movea.l	#homecoldplayer,a0
-.2
+.1
 	move.w	#0,d0
-.3
+.loop2
 	move.w	(a0)+,d1
 	cmp.w	(iconplayer).w,d1
 	beq.w	.cold
-	dbf	d0,.3
+	dbf	d0,.loop2
 	move.w	(iconplayer+$2).w,(printx).w
 	move.w	#$11,(printy).w
 	move.w	#2,d0
@@ -1061,11 +1061,11 @@ HotColdIcon	;The hot or cold icon by player iconplayer of team a2, or erase it
 .hot
 	move.w	(hoticonchars).w,d4
 	movea.l	#HotIconMap,a0
-	bra.w	.6
+	bra.w	.draw
 .cold
 	move.w	(coldiconchars).w,d4
 	movea.l	#ColdIconMap,a0
-.6
+.draw
 	move.w	(iconplayer+$2).w,(printx).w
 	move.w	#$11,(printy).w
 	movea.l	a0,a1

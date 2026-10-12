@@ -147,7 +147,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **hockey94** (308 bytes): StartGame
 - **setup94** (186 bytes): IntermissionStart
 - **hockey94** (512 bytes): StartPer, Gameloop, DoGameFrame
-- **new in 95** (562 bytes): IntermissionMenu
+- **new in 95** (562 bytes): Intermission
 
 ### display95
 

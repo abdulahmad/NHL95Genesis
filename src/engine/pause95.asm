@@ -1417,7 +1417,7 @@ DrawGoalieSelectList	;Draw the goalie list at row $E, x $C, row menuitem in
 	move.w	#$E,(printy).w
 	move.w	(menuitem+2).w,d1
 	moveq	#0,d0
-.0
+.row
 	move.w	#$C,(printx).w
 	move.w	#0,(printfontset).w
 	cmp.w	(menuitem).w,d0
@@ -1446,7 +1446,7 @@ DrawGoalieSelectList	;Draw the goalie list at row $E, x $C, row menuitem in
 .next
 	addq.w	#1,(printy).w
 	addq.w	#1,d0
-	dbf	d1,.0
+	dbf	d1,.row
 	rts
 
 TimeoutMenu	;Pause menu TIMEOUT for team a2: drop the item (menuitemoffset $23A: the pause

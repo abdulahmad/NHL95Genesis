@@ -213,7 +213,7 @@ DisplayPlayerList	;Draw roster page SelectedPlayerIdx: the title (PlayerStatMenu
 	move.w	(TempWord2).w,d0
 	add.w	(rosterscroll).w,d0
 	move.w	d0,(recwins).w
-.10
+.row
 	move.w	#1,(printx).w
 	movem.w	d0-d1,-(sp)
 	cmp.w	(recwins).w,d0
@@ -229,7 +229,7 @@ DisplayPlayerList	;Draw roster page SelectedPlayerIdx: the title (PlayerStatMenu
 	String	CC_SetFont,0
 	addq.w	#1,d0
 	addq.w	#2,(printy).w
-	dbf	d1,.10
+	dbf	d1,.row
 	rts
 
 PrintPlayerLines	;Print at printx the lines player d0 of team a2 is on (FindPlayerLine for the 7 line slots at $16C(a2)...)
@@ -2122,9 +2122,9 @@ PlayerCardTimer	;Player cards, called each frame from ReadSetupPads while cardde
 	jsr	(UnpackPicture).l
 	movea.l	#picturebuf,a2
 	move.w	(vcount).w,d3
-.10
+.loop
 	cmp.w	(vcount).w,d3
-	beq.s	.10
+	beq.s	.loop
 	move.w	#6,d3
 	move.w	#6,d2
 	clr.w	d0
@@ -2585,26 +2585,26 @@ ResolveGames	;Compute winners and losers for playoff matchups
 	mulu.w	d1,d3
 	adda.w	d3,a0
 	cmpi.w	#7,(bosgames).w
-	beq.w	.11
-.0
+	beq.w	.notbos
+.loop
 	cmpi.w	#4,4(a0)
-	beq.w	.3
+	beq.w	.b1
 	cmpi.w	#4,6(a0)
-	beq.w	.3
+	beq.w	.b1
 	clr.w	d3
 	btst	#0,$E(a0)
-	beq.w	.1
+	beq.w	.0
 	eori.w	#2,d3
-.1
+.0
 	move.w	$A(a0),d0
 	sub.w	$C(a0),d0
-	bpl.w	.2
+	bpl.w	.win
 	eori.w	#2,d3
-.2
+.win
 	addq.w	#1,4(a0,d3.w)
-.3
+.b1
 	suba.w	#$10,a0
-	dbf	d1,.0
+	dbf	d1,.loop
 	addq.w	#1,(bosgames).w
 	cmpi.w	#7,(bosgames).w
 	beq.w	.nextround
@@ -2626,11 +2626,11 @@ ResolveGames	;Compute winners and losers for playoff matchups
 	adda.w	d3,a0
 .cr0
 	cmp.w	(gamenum).w,d1
-	beq.w	.6
+	beq.w	.crn
 	cmpi.w	#4,4(a0)
-	beq.w	.6
+	beq.w	.crn
 	cmpi.w	#4,6(a0)
-	beq.w	.6
+	beq.w	.crn
 	addq.w	#1,4(a0)
 	move.l	#$C8,d0	;200
 	jsr	(randomd0).l
@@ -2639,7 +2639,7 @@ ResolveGames	;Compute winners and losers for playoff matchups
 	subq.w	#1,4(a0)
 	addq.w	#1,6(a0)
 	bra.s	.cr0
-.6
+.crn
 	suba.w	#$10,a0
 	dbf	d1,.cr0
 	movea.w	#(tpassbits-M68K_RAM),a3
@@ -2653,15 +2653,15 @@ ResolveGames	;Compute winners and losers for playoff matchups
 	mulu.w	d1,d3
 	adda.w	d3,a0
 	clr.w	d3
-.8
+.loop2
 	cmpi.w	#4,4(a0)
-	beq.w	.9
+	beq.w	.2
 	bset	d1,d3
-.9
+.2
 	clr.w	4(a0)
 	clr.w	6(a0)
 	suba.w	#$10,a0
-	dbf	d1,.8
+	dbf	d1,.loop2
 	moveq	#1,d1
 	asl.w	d2,d1
 	subq.w	#1,d1
@@ -2671,20 +2671,20 @@ ResolveGames	;Compute winners and losers for playoff matchups
 	addq.w	#1,(gamelevel).w
 .10
 	rts
-.11
+.notbos
 	clr.w	d3	;solve for no best of 7 playoffs (much simpler)
-.12
+.loop3
 	move.w	$A(a0),d0
 	cmp.w	$C(a0),d0
-	bhi.w	.13
+	bhi.w	.3
 	bset	d1,d3
-.13
+.3
 	btst	#0,$E(a0)
-	beq.w	.14
+	beq.w	.nb2
 	bchg	d1,d3
-.14
+.nb2
 	suba.w	#$10,a0
-	dbf	d1,.12
+	dbf	d1,.loop3
 	moveq	#1,d1
 	asl.w	d2,d1
 	subq.w	#1,d1
