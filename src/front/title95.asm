@@ -438,16 +438,16 @@ CupExit	;Leave StanleyCupScreen (CupReadPads on start: drop its return address)
 CupVBlank	;StanleyCupScreen vblank: the sprites, cramfade, vcount, the music; nothing with disflags bit 2; rte
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#2,(disflags).w
-	bne.w	.1
+	bne.w	.skip
 	movea.w	#(Satt-M68K_RAM),a0
 	move.w	(Sattsize).w,d0
-	beq.w	.0
+	beq.w	.nodma
 	clr.w	(Sattsize).w
 	move.w	(VSPRITES).w,d1
 	jsr	(DoDMA).l
-.0
+.nodma
 	jsr	(cramfade).l
-.1
+.skip
 	addq.w	#1,(vcount).w
 	jsr	(p_music_vblank).l
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -482,13 +482,13 @@ CupBuildSprites	;StanleyCupScreen: the sprite list at Satt from the animated Cup
 	move.w	(cupframe).w,d2
 	addq.w	#1,(cupticks).w
 	cmpi.w	#$A,(cupticks).w
-	blt.w	.0
+	blt.w	.add
 	clr.w	(cupticks).w
 	addq.w	#1,(cupframe).w
 	cmpi.w	#$E,(cupframe).w
-	blt.w	.0
+	blt.w	.add
 	clr.w	(cupframe).w
-.0
+.add
 	jsr	(AddSpriteFrame).l
 	cmpa.w	#(Satt-M68K_RAM),a6
 	bne.w	.1
@@ -531,10 +531,10 @@ AddSpriteFrame	;Add the sprites of frame d2 of a0, offset by d0 / d1, to the spr
 	add.w	d0,(a6)+
 	addq.w	#1,d6
 	cmp.w	#$40,d6
-	beq.w	.1
+	beq.w	.full
 	addq.w	#8,a0
 	dbf	d4,.loop
-.1
+.full
 	movem.l	(sp)+,d0-d5/a0
 .exit
 	rts
