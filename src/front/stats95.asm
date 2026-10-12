@@ -767,9 +767,9 @@ InitSeasonStats	;New season: clear the player stat blocks (SRGoals on, $1B6C byt
 	lea	(M68K_RAM).l,a0
 	move.w	#$6DC,d0
 	clr.l	d1
-.0
+.loop
 	move.l	d1,(a0)+
-	dbf	d0,.0
+	dbf	d0,.loop
 	move.l	#SRGoals,d0
 	move.l	#$1B6C,d1
 	movea.l	#M68K_RAM,a0
@@ -777,9 +777,9 @@ InitSeasonStats	;New season: clear the player stat blocks (SRGoals on, $1B6C byt
 	lea	(LeaderValues).w,a0
 	move.w	#$42,d0
 	clr.l	d1
-.1
+.loop2
 	move.l	d1,(a0)+
-	dbf	d0,.1
+	dbf	d0,.loop2
 	move.l	#SRTeamBlock2,d0
 	move.l	#$104,d1
 	movea.l	#LeaderValues,a0
@@ -787,9 +787,9 @@ InitSeasonStats	;New season: clear the player stat blocks (SRGoals on, $1B6C byt
 	lea	(M68K_RAM).l,a0
 	move.w	#$103,d0
 	clr.l	d1
-.2
+.loop3
 	move.b	d1,(a0)+
-	dbf	d0,.2
+	dbf	d0,.loop3
 	move.l	#SRTeamStats,d0
 	move.l	#$104,d1
 	movea.l	#M68K_RAM,a0
@@ -798,9 +798,9 @@ InitSeasonStats	;New season: clear the player stat blocks (SRGoals on, $1B6C byt
 	lea	(M68K_RAM).l,a0
 	move.w	#$179,d0
 	clr.l	d1
-.3
+.loop4
 	move.b	d1,(a0)+
-	dbf	d0,.3
+	dbf	d0,.loop4
 	move.l	#SRInjuries,d0
 	move.l	#$17A,d1
 	movea.l	#M68K_RAM,a0
@@ -905,7 +905,7 @@ AddPlayerSeasonStats	;Add the goals, assists, shots, penalty minutes and games p
 .0
 	movem.l	d0/a1,-(sp)
 	bsr.w	ReadStatBlock
-.1
+.loop
 	clr.w	d2
 	move.b	$B6(a1),d2
 	andi.w	#$7FFF,(a0,d0.w)
@@ -916,7 +916,7 @@ AddPlayerSeasonStats	;Add the goals, assists, shots, penalty minutes and games p
 .2
 	addq.w	#1,a1
 	addq.w	#2,d0
-	dbf	d7,.1
+	dbf	d7,.loop
 	bsr.w	WriteStatBlock
 	movem.l	(sp),d0/a1
 	move.l	#SRAssists,d2
@@ -925,13 +925,13 @@ AddPlayerSeasonStats	;Add the goals, assists, shots, penalty minutes and games p
 	move.l	#SRPOAssists,d2
 .3
 	bsr.w	ReadStatBlock
-.4
+.loop2
 	clr.w	d2
 	move.b	$D0(a1),d2
 	add.w	d2,(a0,d0.w)
 	addq.w	#1,a1
 	addq.w	#2,d0
-	dbf	d7,.4
+	dbf	d7,.loop2
 	bsr.w	WriteStatBlock
 	movem.l	(sp),d0/a1
 	move.l	#SRShots,d2
@@ -940,7 +940,7 @@ AddPlayerSeasonStats	;Add the goals, assists, shots, penalty minutes and games p
 	move.l	#SRPOShots,d2
 .5
 	bsr.w	ReadStatBlock
-.6
+.loop3
 	clr.w	d2
 	move.b	$EA(a1),d2
 	andi.w	#$7FFF,(a0,d0.w)
@@ -951,7 +951,7 @@ AddPlayerSeasonStats	;Add the goals, assists, shots, penalty minutes and games p
 .7
 	addq.w	#1,a1
 	addq.w	#2,d0
-	dbf	d7,.6
+	dbf	d7,.loop3
 	bsr.w	WriteStatBlock
 	movem.l	(sp),d0/a1
 	move.l	a4,-(sp)
@@ -962,7 +962,7 @@ AddPlayerSeasonStats	;Add the goals, assists, shots, penalty minutes and games p
 	move.l	#SRPOPenMin,d2
 .8
 	bsr.w	ReadStatBlock
-.9
+.loop4
 	clr.w	d2
 	cmp.w	d6,d0
 	bgt.w	.13
@@ -995,7 +995,7 @@ AddPlayerSeasonStats	;Add the goals, assists, shots, penalty minutes and games p
 	addq.w	#1,a1
 	addq.w	#2,a4
 	addq.w	#2,d0
-	dbf	d7,.9
+	dbf	d7,.loop4
 	bsr.w	WriteStatBlock
 	movea.l	(sp)+,a4
 	movem.l	(sp),d0/a1
@@ -1005,7 +1005,7 @@ AddPlayerSeasonStats	;Add the goals, assists, shots, penalty minutes and games p
 	move.l	#SRPOGamesPlayed,d2
 .15
 	bsr.w	ReadStatBlock
-.16
+.loop5
 	clr.w	d2
 	tst.w	$138(a1)
 	beq.w	.17
@@ -1015,7 +1015,7 @@ AddPlayerSeasonStats	;Add the goals, assists, shots, penalty minutes and games p
 .17
 	addq.w	#2,a1
 	addq.w	#2,d0
-	dbf	d7,.16
+	dbf	d7,.loop5
 	bsr.w	WriteStatBlock
 	movem.l	(sp)+,d0/a1
 	jsr	(MakeSRAMChecksum).l
@@ -1084,7 +1084,7 @@ SaveGameHighlights	;Pick today's highlight of HomeTeam's game (most goals, best 
 	bsr.w	BestGoalieSaves
 	tst.w	tmscore(a3)
 	bne.w	.5
-.4
+.loop
 	move.w	Xvel(a2),d0
 	mulu.w	#$1A,d0
 	add.w	d3,d0
@@ -1093,7 +1093,7 @@ SaveGameHighlights	;Pick today's highlight of HomeTeam's game (most goals, best 
 	bra.w	.6
 .5
 	cmp.w	#$18,d2
-	bgt.s	.4
+	bgt.s	.loop
 .6
 	movem.l	(sp),a2-a3
 	bsr.w	MostAssists
@@ -1151,7 +1151,7 @@ BestGoalieSaves	;d2 / d3 = the most saves (shots against - goals against) and it
 	movea.l	a2,a3
 	adda.l	#$B6,a2
 	adda.l	#$EA,a3
-.0
+.loop
 	move.b	(a3,d0.w),d4
 	sub.b	(a2,d0.w),d4
 	bpl.w	.1
@@ -1163,7 +1163,7 @@ BestGoalieSaves	;d2 / d3 = the most saves (shots against - goals against) and it
 	move.w	d0,d3
 .2
 	addq.w	#1,d0
-	dbf	d1,.0
+	dbf	d1,.loop
 	movem.l	(sp)+,d4-d6/a2-a3
 	rts
 
@@ -1176,14 +1176,14 @@ MostAssists	;d2 / d3 = the most assists and its roster slot among the skaters of
 	clr.w	d3
 	move.l	a2,-(sp)
 	adda.l	#$D0,a2
-.0
+.loop
 	cmp.b	(a2,d0.w),d2
 	bge.w	.1
 	move.b	(a2,d0.w),d2
 	move.w	d0,d3
 .1
 	addq.w	#1,d0
-	dbf	d1,.0
+	dbf	d1,.loop
 	movea.l	(sp)+,a2
 	rts
 
@@ -1196,14 +1196,14 @@ MostGoals	;d2 / d3 = the most goals and its roster slot among the skaters of tea
 	clr.w	d3
 	move.l	a2,-(sp)
 	adda.l	#$B6,a2
-.0
+.loop
 	cmp.b	(a2,d0.w),d2
 	bge.w	.1
 	move.b	(a2,d0.w),d2
 	move.w	d0,d3
 .1
 	addq.w	#1,d0
-	dbf	d1,.0
+	dbf	d1,.loop
 	movea.l	(sp)+,a2
 	rts
 
@@ -1403,11 +1403,11 @@ MarkSeasonRosters	;Set bit 15 of every player's goals and shots words in save RA
 	clr.w	d7
 	movea.l	#SaveRAM+2*SRGoals,a0
 	movea.l	#SaveRAM+2*SRShots,a1
-.0
+.loop
 	jsr	(GetGoalieCountD7).l
 	subq.w	#1,d0
 	clr.w	d1
-.1
+.loop2
 	move.w	(a0,d1.w),d2
 	ori.w	#$80,d2
 	move.w	d2,(a0,d1.w)
@@ -1415,12 +1415,12 @@ MarkSeasonRosters	;Set bit 15 of every player's goals and shots words in save RA
 	ori.w	#$80,d2
 	move.w	d2,(a1,d1.w)
 	addq.w	#4,d1
-	dbf	d0,.1
+	dbf	d0,.loop2
 	addq.w	#1,d7
 	adda.l	#$68,a0
 	adda.l	#$68,a1
 	cmp.w	#$1A,d7
-	blt.s	.0
+	blt.s	.loop
 	jsr	(MakeSRAMChecksum).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -1504,7 +1504,7 @@ SeasonStatsListDraw	;Draw the season player stats screen for team d7 (SeasonStat
 	jsr	(dobitmap).l
 	clr.w	(DispAttribCtr).w
 	clr.w	(VertLineScrolling).w
-.0
+.loop
 	jsr	(ReadTeamPlayerStats).l
 	clr.w	(PlayerScrollCtr).w
 	jsr	(printz).l
@@ -1527,7 +1527,7 @@ SeasonStatsListDraw	;Draw the season player stats screen for team d7 (SeasonStat
 	jsr	(DrawSeasonStatsLogo).l
 	bsr.w	DrawSeasonStatsList
 	bsr.w	SeasonScrollArrows
-.3
+.loop2
 	jsr	(vcountwait).l
 	jsr	(orjoy4way).l
 	btst	#7,d3
@@ -1551,33 +1551,33 @@ SeasonStatsListDraw	;Draw the season player stats screen for team d7 (SeasonStat
 	bne.w	.5
 	neg.w	d0
 	btst	#1,d3
-	beq.w	.6
+	beq.w	.loop3
 .5
 	move.w	d0,(PlayerScrollCtr).w
-.6
+.loop3
 	bsr.w	SeasonStatsListScroll
-	bra.s	.3
+	bra.s	.loop2
 .7
 	add.w	(DispAttribCtr).w,d0
 	cmp.w	#$FFFF,d0
-	blt.s	.6
+	blt.s	.loop3
 	cmp.w	#2,d0
-	bgt.s	.6
+	bgt.s	.loop3
 	move.w	d0,(DispAttribCtr).w
 	bsr.w	DrawSeasonStatsList
 	bsr.w	SeasonScrollArrows
-	bra.s	.6
+	bra.s	.loop3
 .8
 	subq.w	#1,d7
-	bpl.w	.0
+	bpl.w	.loop
 	move.w	#$19,d7
-	bra.w	.0
+	bra.w	.loop
 .9
 	addq.w	#1,d7
 	cmp.w	#$1A,d7
-	bne.w	.0
+	bne.w	.loop
 	clr.w	d7
-	bra.w	.0
+	bra.w	.loop
 
 SeasonStatsListScroll	;Per-frame scroll of the player list
 	move.w	(PlayerScrollCtr).w,d0
@@ -1635,10 +1635,10 @@ DrawSeasonStatsList	;Headers, sort title, sorted player list at Satt, draws 6 ro
 	lea	SeasonStatColumnHeaders(pc),a1
 	moveq	#3,d3
 	tst.w	(DispAttribCtr).w
-	bmi.w	.0
+	bmi.w	.loop
 	adda.w	(a1),a1
 	clr.w	d3
-.0
+.loop
 	move.w	#$8000,(printa).w
 	cmp.w	(DispAttribCtr).w,d3
 	bne.w	.1
@@ -1647,7 +1647,7 @@ DrawSeasonStatsList	;Headers, sort title, sorted player list at Satt, draws 6 ro
 	jsr	(printsmall).l
 	addq.w	#1,d3
 	cmp.w	#3,d3
-	blt.s	.0
+	blt.s	.loop
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$4,$3,$9,$7,$0
 	jsr	(printsmallz).l
@@ -1662,17 +1662,17 @@ DrawSeasonStatsList	;Headers, sort title, sorted player list at Satt, draws 6 ro
 	movea.w	#(Satt-M68K_RAM),a3
 	clr.l	d6
 	tst.w	(DispAttribCtr).w
-	bpl.w	.2
+	bpl.w	.loop2
 	jsr	(GetGoalieCountD7).l
 	bset	d0,d6
 	subq.w	#1,d6
 	not.l	d6
-.2
+.loop2
 	moveq	#-1,d4
 	st	d5
 	jsr	(GetPlayerCountD7).l
 	bra.w	.5
-.3
+.loop3
 	btst	d0,d6
 	bne.w	.5
 	clr.w	d2
@@ -1694,14 +1694,14 @@ DrawSeasonStatsList	;Headers, sort title, sorted player list at Satt, draws 6 ro
 	move.l	d2,d4
 	move.w	d0,d5
 .5
-	dbf	d0,.3
+	dbf	d0,.loop3
 	bset	d5,d6
 	move.b	d5,(a3)+
-	bpl.s	.2
+	bpl.s	.loop2
 	moveq	#5,d0
-.6
+.loop4
 	st	0(a3,d0.w)
-	dbf	d0,.6
+	dbf	d0,.loop4
 	move.w	a3,d0
 	subi.w	#(Satt+6-M68K_RAM),d0
 	bpl.w	.7
@@ -1714,12 +1714,12 @@ DrawSeasonStatsList	;Headers, sort title, sorted player list at Satt, draws 6 ro
 	move.w	d0,(VertLineScrolling).w
 .8
 	moveq	#5,d4
-.9
+.loop5
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	add.w	d4,d3
 	bsr.w	DrawSeasonStatsRow
-	dbf	d4,.9
+	dbf	d4,.loop5
 	bra.w	SeasonStatsListScrollReg
 
 DrawSeasonStatsRow	;Draws list row d3 (rank, name, 3 stat columns or goalie saves/shots/save %)
@@ -1754,7 +1754,7 @@ DrawSeasonStatsRow	;Draws list row d3 (rank, name, 3 stat columns or goalie save
 	tst.w	(DispAttribCtr).w
 	bmi.w	.2
 	clr.w	d5
-.0
+.loop
 	clr.w	d0
 	move.b	(a4),d0
 	move.w	d5,d1
@@ -1771,8 +1771,8 @@ DrawSeasonStatsRow	;Draws list row d3 (rank, name, 3 stat columns or goalie save
 	addq.w	#2,(printx).w
 	addq.w	#1,d5
 	cmp.w	#3,d5
-	bne.s	.0
-	bra.w	.5
+	bne.s	.loop
+	bra.w	.exit
 .2
 	clr.w	d0
 	move.b	(a4),d0
@@ -1811,7 +1811,7 @@ DrawSeasonStatsRow	;Draws list row d3 (rank, name, 3 stat columns or goalie save
 	jsr	(print).l
 	jsr	(printz).l
 	String	'%',$0
-.5
+.exit
 	rts
 
 SeasonGetStatColumn	;d2 = stat column d1 for player d0; goalies: columns 1-2 read column 1 (A), others set sflags5 bit 2 (skip)
@@ -1947,11 +1947,11 @@ SeasonTeamStatsRun	;Season (or playoff, sflags11 bit 3) team stats screen: team 
 	bne.w	.1
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP2),$4,$2,'Season',-(TXPRI+TXMAP2),$11,$2,'Team',-(TXPRI+TXMAP2),$1A,$2,'Stats'
-	bra.w	.2
+	bra.w	.loop
 .1
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP2),$8,$2,'Playoff',-(TXPRI+TXMAP2),$17,$2,'Teams'
-.2
+.loop
 	movea.l	#StatBuf,a0
 	jsr	(ReadSeasonTeamRecord).l
 	jsr	(printsmallz).l
@@ -1961,7 +1961,7 @@ SeasonTeamStatsRun	;Season (or playoff, sflags11 bit 3) team stats screen: team 
 	move.w	d7,d0
 	jsr	(DrawTeamStatsLogo).l
 	bsr.w	PrintSeasonTeamStats
-.3
+.loop2
 	jsr	(vcountwait).l
 	jsr	(orjoy4way).l
 	btst	#7,d3
@@ -1973,18 +1973,18 @@ SeasonTeamStatsRun	;Season (or playoff, sflags11 bit 3) team stats screen: team 
 	bne.w	.6
 	btst	#4,d1
 	bne.w	.5
-	bra.s	.3
+	bra.s	.loop2
 .5
 	addq.w	#1,d7
 	cmp.w	#$1A,d7
-	bne.s	.2
+	bne.s	.loop
 	clr.w	d7
-	bra.s	.2
+	bra.s	.loop
 .6
 	subq.w	#1,d7
-	bpl.w	.2
+	bpl.w	.loop
 	move.w	#$19,d7
-	bra.w	.2
+	bra.w	.loop
 
 PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): W,L,T,Pts, then per-game / percentage stats
 	movem.l	a6,-(sp)
@@ -2219,16 +2219,16 @@ LeagueLeadersScreen	;League Leaders screen (season menu): team/individual stat l
 	move.w	(StatWork).w,d5
 	add.w	d5,d5
 	move.w	0(a0,d5.w),(StatWork+$A).w
-.0
+.loop
 	bsr.w	BuildLeaders
-.1
+.loop2
 	bsr.w	PrintLeadersHeader
 	bsr.w	PrintTeamCategory
 	move.w	#$18,(palcount).w
 	bsr.w	DrawLeaderRows
 	bsr.w	LeadersScrollArrows
 	bsr.w	LeadersHelp
-.2
+.loop3
 	bsr.w	ReadLeadersPad
 	tst.w	d1
 	beq.w	.10
@@ -2245,50 +2245,50 @@ LeagueLeadersScreen	;League Leaders screen (season menu): team/individual stat l
 	move.w	(StatWork).w,d5
 	add.w	d5,d5
 	move.w	0(a0,d5.w),(StatWork+$A).w
-	bra.s	.0
+	bra.s	.loop
 .3
 	btst	#2,d1
 	beq.w	.6
 	bsr.w	ClearLeadersArea
 	subq.w	#1,(StatWork+2).w
-	bpl.w	.4
+	bpl.w	.loop4
 	movea.l	#.5,a0
 	move.w	(StatWork).w,d0
 	add.w	d0,d0
 	move.w	0(a0,d0.w),d0
 	move.w	d0,(StatWork+2).w
-.4
+.loop4
 	movea.l	#.8,a0
 	move.w	(StatWork).w,d5
 	add.w	d5,d5
 	move.w	0(a0,d5.w),(StatWork+$A).w
 	clr.w	(SeasonGameCount).w
 	move.w	#7,(StatWork+$6).w
-	bra.w	.0
+	bra.w	.loop
 .5
 	dc.w	6,3
 .6
 	btst	#0,d1
 	beq.w	.7
 	tst.w	(SeasonGameCount).w
-	beq.w	.2
+	beq.w	.loop3
 	subq.w	#1,(SeasonGameCount).w
 	subq.w	#1,(StatWork+$6).w
-	bra.w	.1
+	bra.w	.loop2
 .7
 	btst	#1,d1
 	beq.w	.9
 	move.w	(StatWork+$6).w,d0
 	cmp.w	(StatWork+$A).w,d0
-	bge.w	.2
+	bge.w	.loop3
 	addq.w	#1,(SeasonGameCount).w
 	addq.w	#1,(StatWork+$6).w
-	bra.w	.1
+	bra.w	.loop2
 .8
 	dc.w	$19,$13
 .9
 	btst	#3,d1
-	beq.w	.2
+	beq.w	.loop3
 	bsr.w	ClearLeadersArea
 	addq.w	#1,(StatWork+2).w
 	movea.l	#.5,a0
@@ -2296,9 +2296,9 @@ LeagueLeadersScreen	;League Leaders screen (season menu): team/individual stat l
 	add.w	d0,d0
 	move.w	0(a0,d0.w),d0
 	cmp.w	(StatWork+2).w,d0
-	bge.w	.4
+	bge.w	.loop4
 	clr.w	(StatWork+2).w
-	bra.w	.4
+	bra.w	.loop4
 .10
 	jmp	(Opening2).l
 .11
@@ -2384,44 +2384,44 @@ LeaderModeText
 
 ReadLeadersPad	;League Leaders: wait (frame-synced) until a joypad reports input; d1 = buttons
 	move.l	#$5460,d6
-.0
+.loop
 	move.w	#$64,d6
 .1
 	move.w	(vcount).w,d1
 	sub.w	(oldvcount).w,d1
-	beq.s	.0
+	beq.s	.loop
 	move.w	(vcount).w,(oldvcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.2
-	bra.w	.6
+	bra.w	.exit
 .2
 	jsr	(ReadJoy2).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.3
-	bra.w	.6
+	bra.w	.exit
 .3
 	jsr	(ReadJoy3).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.4
-	bra.w	.6
+	bra.w	.exit
 .4
 	jsr	(ReadJoy4).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.5
-	bra.w	.6
+	bra.w	.exit
 .5
-	dbf	d6,.0
-.6
+	dbf	d6,.loop
+.exit
 	rts
 
 ClearLeadersArea	;League Leaders: clear a $28x$14 text area with tile $7FF (individual mode only; team mode returns at once)
 	tst.w	(StatWork).w
-	beq.w	.0
+	beq.w	.exit
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$28,d0
 	move.w	#$14,d1
@@ -2430,7 +2430,7 @@ ClearLeadersArea	;League Leaders: clear a $28x$14 text area with tile $7FF (indi
 	String	-TXMAP1,$0,$7,$0
 	jsr	(eraser).l
 	movem.l	(sp)+,d0-d7/a0-a6
-.0
+.exit
 	rts
 
 BuildLeaders	;League Leaders: build sorted team leader list for category StatWork+2 (TeamLeaderJumps) or individual list
@@ -2454,7 +2454,7 @@ LeadersPoints	;Points: 2*wins+ties per team, sort descending
 	movea.l	#picturebuf,a0
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
-.0
+.loop
 	move.b	d4,(a0)+
 	clr.w	d0
 	move.b	(a2),d0
@@ -2463,7 +2463,7 @@ LeadersPoints	;Points: 2*wins+ties per team, sort descending
 	move.w	d0,(a1)+
 	addq.w	#3,a2
 	addq.w	#1,d4
-	dbf	d3,.0
+	dbf	d3,.loop
 	movea.l	#picturebuf,a0
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
@@ -2481,7 +2481,7 @@ LeadersGoalsAvg	;Goals Avg: goals*100/games per team, sort descending
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
 	movea.l	#StandingsRecs,a3
-.0
+.loop
 	move.b	d4,(a0)+
 	move.w	0(a2),d0
 	beq.w	.1
@@ -2496,7 +2496,7 @@ LeadersGoalsAvg	;Goals Avg: goals*100/games per team, sort descending
 	addq.w	#3,a3
 	adda.w	#$A,a2
 	addq.w	#1,d4
-	dbf	d3,.0
+	dbf	d3,.loop
 	movea.l	#LeaderTeamTbls+$1A,a0
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
@@ -2514,7 +2514,7 @@ LeadersGoalsAllowed	;Goals Allowed Avg: goals against*100/games per team, sort a
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
 	movea.l	#StandingsRecs,a3
-.0
+.loop
 	move.b	d4,(a0)+
 	move.w	2(a2),d0
 	beq.w	.1
@@ -2529,7 +2529,7 @@ LeadersGoalsAllowed	;Goals Allowed Avg: goals against*100/games per team, sort a
 	addq.w	#3,a3
 	adda.w	#$A,a2
 	addq.w	#1,d4
-	dbf	d3,.0
+	dbf	d3,.loop
 	movea.l	#LeaderTeamTbls+$34,a0
 	bsr.w	SortLeadersUp
 	bra.w	BuildLeadersDone
@@ -2547,7 +2547,7 @@ LeadersField4	;Unreferenced: field 4 *100/games per team, sort descending
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
 	movea.l	#StandingsRecs,a3
-.0
+.loop
 	move.b	d4,(a0)+
 	move.w	4(a2),d0
 	beq.w	.1
@@ -2562,7 +2562,7 @@ LeadersField4	;Unreferenced: field 4 *100/games per team, sort descending
 	addq.w	#3,a3
 	adda.w	#$A,a2
 	addq.w	#1,d4
-	dbf	d3,.0
+	dbf	d3,.loop
 	movea.l	#LeaderTeamTbls+$4E,a0
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
@@ -2577,7 +2577,7 @@ LeadersSavePct	;Save Percentage: (shots against - goals against)*100/shots again
 	movea.l	#LeaderTeamTbls+$68,a0
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
-.0
+.loop
 	move.b	d4,(a0)+
 	move.w	8(a2),d0
 	move.w	d0,d1
@@ -2592,7 +2592,7 @@ LeadersSavePct	;Save Percentage: (shots against - goals against)*100/shots again
 	move.w	d1,(a1)+
 	adda.w	#$A,a2
 	addq.w	#1,d4
-	dbf	d3,.0
+	dbf	d3,.loop
 	movea.l	#LeaderTeamTbls+$68,a0
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
@@ -2607,7 +2607,7 @@ LeadersShootPct	;Shooting Percentage: goals*100/shots per team, sort descending
 	movea.l	#LeaderTeamTbls+$82,a0
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
-.0
+.loop
 	move.b	d4,(a0)+
 	clr.w	d1
 	move.w	6(a2),d0
@@ -2623,7 +2623,7 @@ LeadersShootPct	;Shooting Percentage: goals*100/shots per team, sort descending
 	move.w	d1,(a1)+
 	adda.w	#$A,a2
 	addq.w	#1,d4
-	dbf	d3,.0
+	dbf	d3,.loop
 	movea.l	#LeaderTeamTbls+$82,a0
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
@@ -2641,7 +2641,7 @@ LeadersShotsAvg	;Shots Avg: shots*100/games per team, sort descending
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
 	movea.l	#StandingsRecs,a3
-.0
+.loop
 	move.b	d4,(a0)+
 	move.w	6(a2),d0
 	beq.w	.1
@@ -2656,7 +2656,7 @@ LeadersShotsAvg	;Shots Avg: shots*100/games per team, sort descending
 	addq.w	#3,a3
 	adda.w	#$A,a2
 	addq.w	#1,d4
-	dbf	d3,.0
+	dbf	d3,.loop
 	movea.l	#LeaderTeamTbls+$9C,a0
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
@@ -2674,7 +2674,7 @@ LeadersShotsAllowed	;Shots Allowed Avg: shots against*100/games per team, sort a
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
 	movea.l	#StandingsRecs,a3
-.0
+.loop
 	move.b	d4,(a0)+
 	move.w	8(a2),d0
 	beq.w	.1
@@ -2689,7 +2689,7 @@ LeadersShotsAllowed	;Shots Allowed Avg: shots against*100/games per team, sort a
 	addq.w	#3,a3
 	adda.w	#$A,a2
 	addq.w	#1,d4
-	dbf	d3,.0
+	dbf	d3,.loop
 	movea.l	#LeaderTeamTbls+$B6,a0
 	bsr.w	SortLeadersUp
 	bra.w	BuildLeadersDone
@@ -2700,12 +2700,12 @@ BuildLeadersDone	;Shared exit of the team leader builders
 
 SortLeadersDown	;League Leaders: bubble sort word values at TeamLeaderValues (25 pairs) descending, swapping index bytes at a0
 	movea.l	#TeamLeaderValues,a1
-.0
+.loop
 	clr.w	d1
 	clr.w	d0
 	clr.w	(TempWord1).w
 	move.w	#$18,d2
-.1
+.loop2
 	move.w	0(a1,d1.w),d5
 	move.w	2(a1,d1.w),d6
 	cmp.w	d5,d6
@@ -2722,19 +2722,19 @@ SortLeadersDown	;League Leaders: bubble sort word values at TeamLeaderValues (25
 .2
 	addq.w	#1,d0
 	addq.w	#2,d1
-	dbf	d2,.1
+	dbf	d2,.loop2
 	tst.w	(TempWord1).w
-	bne.s	.0
+	bne.s	.loop
 	rts
 
 SortLeadersUp	;League Leaders: same bubble sort, ascending
 	movea.l	#TeamLeaderValues,a1
-.0
+.loop
 	clr.w	d1
 	clr.w	d0
 	clr.w	(TempWord1).w
 	move.w	#$18,d2
-.1
+.loop2
 	move.w	0(a1,d1.w),d5
 	move.w	2(a1,d1.w),d6
 	cmp.w	d5,d6
@@ -2751,9 +2751,9 @@ SortLeadersUp	;League Leaders: same bubble sort, ascending
 .2
 	addq.w	#1,d0
 	addq.w	#2,d1
-	dbf	d2,.1
+	dbf	d2,.loop2
 	tst.w	(TempWord1).w
-	bne.s	.0
+	bne.s	.loop
 	rts
 
 BuildPlayerLeaders	;League Leaders: individual mode, dispatch on category StatWork+2 through PlayerLeaderJumps
@@ -2828,7 +2828,7 @@ GatherAndSort	;Call a5 to fill values at LeaderValues / players at LeaderPlayers
 	subq.w	#2,d2
 	beq.w	.rtsSortValues
 	bmi.w	.rtsSortValues
-.0
+.loop
 	move.w	0(a1,d0.w),d5
 	move.w	2(a1,d0.w),d6
 	cmp.w	d5,d6
@@ -2844,7 +2844,7 @@ GatherAndSort	;Call a5 to fill values at LeaderValues / players at LeaderPlayers
 	move.w	(sp)+,2(a0,d0.w)
 .1
 	addq.w	#2,d0
-	dbf	d2,.0
+	dbf	d2,.loop
 	tst.w	(TempWord1).w
 	bne.s	.sortValuesDown
 
@@ -2859,7 +2859,7 @@ GatherAndSort	;Call a5 to fill values at LeaderValues / players at LeaderPlayers
 	subq.w	#2,d2
 	beq.s	.rtsSortValues
 	bmi.s	.rtsSortValues
-.2
+.loop2
 	move.w	0(a1,d0.w),d5
 	move.w	2(a1,d0.w),d6
 	cmp.w	d5,d6
@@ -2875,7 +2875,7 @@ GatherAndSort	;Call a5 to fill values at LeaderValues / players at LeaderPlayers
 	move.w	(sp)+,2(a0,d0.w)
 .3
 	addq.w	#2,d0
-	dbf	d2,.2
+	dbf	d2,.loop2
 	tst.w	(TempWord1).w
 	bne.s	.sortValuesUp
 	rts
@@ -2890,7 +2890,7 @@ DrawLeaderRows	;Draw the leader rows (StatWork+8 rows from StatWork+4): when Sta
 	movea.l	(a5,d0.w),a5
 	movea.l	a5,a0
 	move.w	#9,(printy).w
-.0
+.loop
 	move.w	#5,(printx).w
 	movea.l	#BlankLine40,a1
 	jsr	(print).l
@@ -2928,7 +2928,7 @@ DrawLeaderRows	;Draw the leader rows (StatWork+8 rows from StatWork+4): when Sta
 	addq.w	#1,(printy).w
 	addq.w	#1,d6
 	cmp.w	(StatWork+$8).w,d6
-	blt.w	.0
+	blt.w	.loop
 	bra.w	rtsLeaderRows
 
 LeaderPrintJumps	;Value print handlers per category (StatWork+2)
@@ -2971,7 +2971,7 @@ DrawPlayerLeaderRows	;Sorted list rows: rank, player name (TeamList, d7 = value 
 	clr.w	d6
 	movea.l	#LeaderValues,a5
 	move.w	#9,(printy).w
-.0
+.loop
 	move.w	#5,(printx).w
 	movea.l	#BlankLine40,a1
 	jsr	(print).l
@@ -3051,7 +3051,7 @@ DrawPlayerLeaderRows	;Sorted list rows: rank, player name (TeamList, d7 = value 
 	addq.w	#1,(printy).w
 	addq.w	#1,d6
 	cmp.w	(StatWork+$8).w,d6
-	blt.w	.0
+	blt.w	.loop
 	bra.w	rtsLeaderRows
 
 rtsLeaderRows	;rts (DrawLeaderRows)
@@ -3840,9 +3840,9 @@ CopyTeamLines	;B in exit menu: copy the loaded line data (a0, 56 bytes) into tea
 	movem.l	d0-d7/a0-a6,-(sp)
 	lea	$16C(a2),a1
 	move.w	#$D,d0
-.0
+.loop
 	move.l	(a0)+,(a1)+
-	dbf	d0,.0
+	dbf	d0,.loop
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -4064,7 +4064,7 @@ HighlightsScreen	;Season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
 	bsr.w	DrawHighlightPage
-.1
+.loop
 	cmpi.w	#$FFFF,(setupdir).w
 	beq.w	.2
 	bsr.w	DrawHighlightPage
@@ -4085,9 +4085,9 @@ HighlightsScreen	;Season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left
 	btst	#7,d1
 	bne.w	.12
 	btst	#2,d1
-	bne.w	.8
+	bne.w	.loop3
 	btst	#3,d1
-	bne.w	.7
+	bne.w	.loop2
 	btst	#1,d1
 	beq.w	.5
 	bra.w	.11
@@ -4096,41 +4096,41 @@ HighlightsScreen	;Season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left
 	beq.w	.6
 	bra.w	.9
 .6
-	bra.s	.1
-.7
+	bra.s	.loop
+.loop2
 	move.w	#$FFFF,(setupdir).w
 	movem.w	d0,-(sp)
 	move.b	(SeasonDay).w,d0
 	cmp.b	(GamesTodayDay).w,d0
 	movem.w	(sp)+,d0
-	beq.w	.1
+	beq.w	.loop
 	move.w	#3,(setupdir).w
 	addq.b	#1,(SeasonDay).w
 	jsr	(DayHasGames).l
-	beq.s	.7
+	beq.s	.loop2
 	jsr	(BuildSeasonTeamList).l
 	clr.w	(rosterscroll).w
-	bra.w	.1
-.8
+	bra.w	.loop
+.loop3
 	move.w	#$FFFF,(setupdir).w
 	tst.b	(SeasonDay).w
-	beq.w	.1
+	beq.w	.loop
 	move.w	#2,(setupdir).w
 	jsr	(PrevSeasonDay).l
 	jsr	(DayHasGames).l
-	beq.s	.8
+	beq.s	.loop3
 	jsr	(BuildSeasonTeamList).l
 	clr.w	(rosterscroll).w
-	bra.w	.1
+	bra.w	.loop
 .9
 	move.w	#0,(setupdir).w
 	tst.w	(rosterscroll).w
 	bne.w	.10
 	move.w	#$FFFF,(setupdir).w
-	bra.w	.1
+	bra.w	.loop
 .10
 	subq.w	#1,(rosterscroll).w
-	bra.w	.1
+	bra.w	.loop
 .11
 	move.w	#1,(setupdir).w
 	movem.w	d0,-(sp)
@@ -4138,10 +4138,10 @@ HighlightsScreen	;Season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left
 	move.w	(rosterscroll).w,d0
 	cmp.b	(SeasonTeams+$1).w,d0
 	movem.w	(sp)+,d0
-	blt.w	.1
+	blt.w	.loop
 	subq.w	#1,(rosterscroll).w
 	move.w	#$FFFF,(setupdir).w
-	bra.w	.1
+	bra.w	.loop
 .12
 	jsr	(forceblack).l
 	move.b	(SeasonDay).w,d0
@@ -4155,23 +4155,23 @@ HighlightsScreen	;Season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left
 
 ReadHighlightsPad	;Highlights joypad wait: each frame poll joypads (ReadJoy1-4 + ProcessInputWithRepeat) until d1 != 0
 	move.l	#$5460,d6
-.0
+.loop
 	move.w	#$64,d6
 	move.w	(vcount).w,d1
 	sub.w	(oldvcount).w,d1
-	beq.s	.0
+	beq.s	.loop
 	move.w	(vcount).w,(oldvcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.1
-	bra.w	.5
+	bra.w	.exit
 .1
 	jsr	(ReadJoy2).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.2
-	bra.w	.5
+	bra.w	.exit
 .2
 	tst.w	(FourWayPlay).w
 	beq.w	.4
@@ -4179,16 +4179,16 @@ ReadHighlightsPad	;Highlights joypad wait: each frame poll joypads (ReadJoy1-4 +
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.3
-	bra.w	.5
+	bra.w	.exit
 .3
 	jsr	(ReadJoy4).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.4
-	bra.w	.5
+	bra.w	.exit
 .4
-	dbf	d6,.0
-.5
+	dbf	d6,.loop
+.exit
 	rts
 
 PrintHighlightsTitle	;print big title NHL HIGHLIGHTS
@@ -4276,10 +4276,10 @@ PrintStatHighlight	;print a highlight record of type 4: player name + stat line 
 	move.w	(a0),d0
 	movea.l	#mesarea,a1
 	bra.w	.1
-.0
+.loop
 	move.b	(a0)+,(a1)+
 .1
-	dbf	d0,.0
+	dbf	d0,.loop
 	movea.l	#mesarea,a3
 	jsr	(appendz).l
 	String	' ',$0
