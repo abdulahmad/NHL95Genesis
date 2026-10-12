@@ -4,7 +4,7 @@
 ;	(TeamList order, ANH 0 ... WPG 25). Which team is home is not confirmed. 1092 games, 84 per team.
 ;	Ends with a $FF pad before InitSaveRAM.
 ;
-;	Each day is written with the Day macro below: list the matchups as team abbreviations in pairs, and the macro
+;	Each day is written with the Day macro (macros/genesis.mac): list the matchups as team abbreviations in pairs, and the macro
 ;	emits the game count and the team numbers. A day with no games is just "Day".
 ;
 ;	Read: PickSeasonStartDay picks a random day with games; BuildSeasonTeamList, WriteDayGames
@@ -16,50 +16,6 @@
 ;	is SeasonDay n-1. With it on, the records rotate under the same dates.
 
 ;	Team numbers ANH ... WPG: stubinc/equals.inc
-
-;	Day: one schedule record. Args are team abbreviations in pairs (up to 12 games). Emits the game count, then the teams.
-Day	MACRO
-	IF NARG&1
-	FAIL	Day needs an even number of teams
-	ENDIF
-	dc.b	NARG/2
-	IF NARG>1
-	dc.b	\1,\2
-	ENDIF
-	IF NARG>3
-	dc.b	\3,\4
-	ENDIF
-	IF NARG>5
-	dc.b	\5,\6
-	ENDIF
-	IF NARG>7
-	dc.b	\7,\8
-	ENDIF
-	IF NARG>9
-	dc.b	\9,\10
-	ENDIF
-	IF NARG>11
-	dc.b	\11,\12
-	ENDIF
-	IF NARG>13
-	dc.b	\13,\14
-	ENDIF
-	IF NARG>15
-	dc.b	\15,\16
-	ENDIF
-	IF NARG>17
-	dc.b	\17,\18
-	ENDIF
-	IF NARG>19
-	dc.b	\19,\20
-	ENDIF
-	IF NARG>21
-	dc.b	\21,\22
-	ENDIF
-	IF NARG>23
-	dc.b	\23,\24
-	ENDIF
-	ENDM
 
 SeasonSchedule	;The season schedule (read by PickSeasonStartDay, BuildSeasonTeamList, WriteDayGames, ...)
 	dc.b	192	;days

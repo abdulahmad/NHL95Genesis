@@ -1,3 +1,4 @@
+	include	macros\genesis.mac	;Day
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
 ;	Segment stub.
