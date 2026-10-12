@@ -1,7 +1,7 @@
 ;	NHL 95 rosters and trades.
 ;	New in 95: the season roster helpers (GetHighlightSlot, HighlightsHelp, DefaultRosters, GetRosterId, GetCreatedName,
 ;	GetRosterName, Read / WriteTeamRoster, GetJerseyNumber) and the season trades: the Trade Player screen (TradePlayers),
-;	CheckTrade (roster rules, INVALID TRADE), EvaluateTrade, GMDecision and ExecuteTrade, which moves the players with
+;	CheckTrade (roster rules, INVALID TRADE), EvaluateTrade, GMDecisionScreen and ExecuteTrade, which moves the players with
 ;	their stats, saved lines and line slots.
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
@@ -24,8 +24,8 @@ GetHighlightSlot	;d0 = save RAM offset (SRHighlights + 4 a game) of the highligh
 	sub.w	d5,d1
 .0
 	move.l	#SRHighlights,d0
-	bra.w	.2
-.loop
+	bra.w	.next
+.day
 	clr.l	d3
 	move.b	(a6)+,d3
 	move.w	d3,d4
@@ -33,19 +33,19 @@ GetHighlightSlot	;d0 = save RAM offset (SRHighlights + 4 a game) of the highligh
 	adda.w	d4,a6
 	asl.w	#2,d3
 	add.l	d3,d0
-.2
-	dbf	d1,.loop
+.next
+	dbf	d1,.day
 	move.b	(a6)+,d3
-.loop2
+.game
 	move.b	(a6),d4
 	cmp.b	(HomeTeam+1).w,d4
-	beq.w	.4
+	beq.w	.done
 	addq.l	#4,d0
 	addq.l	#2,a6
-	dbf	d3,.loop2
+	dbf	d3,.game
 	move.w	#$FFFF,d0
-	bra.w	.4
-.4
+	bra.w	.done
+.done
 	movem.l	(sp)+,d1-d7/a0-a6
 	rts
 
@@ -59,18 +59,19 @@ HighlightsHelp	;HighlightsScreen help line: {} More games, [] Change day (called
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DefaultRosters	;Build the default roster tables for the 28 teams in RAM (RosterTable $38 bytes a team: player ids, then the goalie, forward and defense counts; RosterRatings $20 a team) from TeamList
+DefaultRosters	;Build the default roster tables for the 28 teams in RAM (RosterTable $38 bytes a team: player ids, then the
+	;goalie, defense and forward counts; RosterRatings $20 a team) from TeamList
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#0,d1
 	movea.l	#RosterTable,a6
 	movea.l	#RosterRatings,a4
-.loop
+.team
 	clr.w	d2
 	movea.l	a6,a0
 	move.w	#$19,d5
-.loop2
+.clr
 	move.w	#$8000,(a0)+
-	dbf	d5,.loop2
+	dbf	d5,.clr
 	movea.l	a6,a0
 	movea.l	a4,a2
 	movea.l	#TeamList,a1
@@ -78,20 +79,20 @@ DefaultRosters	;Build the default roster tables for the 28 teams in RAM (RosterT
 	asl.w	#2,d0
 	movea.l	(a1,d0.w),a1
 	adda.w	(a1),a1
-	bra.w	.3
-.loop3
+	bra.w	.store
+.player
 	cmpi.w	#2,(a1)
-	beq.w	.4
+	beq.w	.counts
 	addq.w	#1,d2
-.3
+.store
 	move.b	d1,(a0)+
 	move.b	d2,(a0)+
 	adda.w	(a1),a1
 	move.b	(a1),d4
 	move.b	d4,(a2)+
 	addq.w	#8,a1
-	bra.s	.loop3
-.4
+	bra.s	.player
+.counts
 	movem.l	d1-d7/a0,-(sp)
 	move.w	d1,d7
 	movea.l	#TeamList,a0
@@ -100,10 +101,10 @@ DefaultRosters	;Build the default roster tables for the 28 teams in RAM (RosterT
 	adda.w	$A(a0),a0
 	move.w	(a0),d1
 	clr.w	d0
-.loop4
+.goalies
 	addq.w	#1,d0
 	asl.w	#4,d1
-	bne.s	.loop4
+	bne.s	.goalies
 	movea.l	a6,a0
 	move.b	d0,$34(a0)
 	move.w	d0,d4
@@ -124,19 +125,19 @@ DefaultRosters	;Build the default roster tables for the 28 teams in RAM (RosterT
 	adda.l	#$20,a4
 	addq.w	#1,d1
 	cmp.w	#$1C,d1
-	blt.w	.loop
+	blt.w	.team
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
 GetRosterId	;d0 = roster id word of player d0 of team d7 (season roster in save RAM SRRosters, or d7 << 8 | d0 outside a season)
 	movem.l	d1/d6-d7/a0,-(sp)
 	btst	#6,(sflags11).w
-	beq.w	.0
+	beq.w	.season
 	asl.w	#8,d7
 	andi.w	#$FF,d0
 	or.w	d7,d0
-	bra.w	.1
-.0
+	bra.w	.done
+.season
 	mulu.w	#$38,d7
 	add.w	d0,d0
 	ext.l	d0
@@ -146,7 +147,7 @@ GetRosterId	;d0 = roster id word of player d0 of team d7 (season roster in save 
 	movea.l	#SRAMbyte,a0
 	jsr	(ReadSRAM).l
 	move.w	(a0),d0
-.1
+.done
 	movem.l	(sp)+,d1/d6-d7/a0
 	rts
 
@@ -155,38 +156,39 @@ GetCreatedName	;a1 = player record of roster id d0 (created players from save RA
 	bra.w	GetRosterNameTail
 	rts
 
-GetRosterName	;a1 = player record of player d0 of team d7: TeamList outside a season, else from the season roster (team $1C: the created players at $5D22)
+GetRosterName	;a1 = player record of player d0 of team d7: TeamList outside a season, else from the season roster
+	;(team $1C: the free agent list SRFreeAgentList)
 	movem.l	d0-d1/d5-d7/a0,-(sp)
 	btst	#6,(sflags11).w
-	beq.w	.2
+	beq.w	.season
 	move.w	d7,d6
 	movea.l	#TeamList,a1
 	asl.w	#2,d6
 	movea.l	(a1,d6.w),a1
 	adda.w	(a1),a1
-	bra.w	.1
-.loop
+	bra.w	.next
+.skip
 	adda.w	(a1),a1
 	addq.w	#8,a1
-.1
-	dbf	d0,.loop
+.next
+	dbf	d0,.skip
 	movem.l	(sp)+,d0-d1/d5-d7/a0
 	rts
-.2
+.season
 	cmp.w	#$1C,d7
-	bne.w	.3
+	bne.w	.team
 	add.w	d0,d0
 	ext.l	d0
 	addi.l	#SRFreeAgentList,d0
-	bra.w	.4
-.3
+	bra.w	.read
+.team
 	move.w	d7,d6
 	mulu.w	#$38,d7
 	add.w	d0,d0
 	ext.l	d0
 	add.l	d7,d0
 	addi.l	#SRRosters,d0
-.4
+.read
 	moveq	#2,d1
 	movea.l	#SRAMbyte,a0
 	jsr	(ReadSRAM).l
@@ -196,7 +198,7 @@ GetRosterNameTail	;GetCreatedName / GetRosterName: a1 = the player record of ros
 	move.w	d0,-(sp)
 	andi.w	#$1F00,d0
 	cmp.w	#$1E00,d0
-	bne.w	.0
+	bne.w	.team
 	move.w	(sp)+,d0
 	andi.w	#$FF,d0
 	asl.w	#5,d0
@@ -206,8 +208,8 @@ GetRosterNameTail	;GetCreatedName / GetRosterName: a1 = the player record of ros
 	movea.l	#CreatedPlayerBuf+$2,a0
 	jsr	(ReadSRAM).l
 	movea.l	a0,a1
-	bra.w	.3
-.0
+	bra.w	.done
+.team
 	move.w	(sp)+,d0
 	move.w	d0,d6
 	lsr.w	#8,d6
@@ -217,13 +219,13 @@ GetRosterNameTail	;GetCreatedName / GetRosterName: a1 = the player record of ros
 	asl.w	#2,d6
 	movea.l	(a1,d6.w),a1
 	adda.w	(a1),a1
-	bra.w	.2
-.loop
+	bra.w	.next
+.skip
 	adda.w	(a1),a1
 	addq.w	#8,a1
-.2
-	dbf	d0,.loop
-.3
+.next
+	dbf	d0,.skip
+.done
 	movem.l	(sp)+,d0-d1/d5-d7/a0
 	rts
 
@@ -251,24 +253,24 @@ WriteTeamRoster	;Write team d7's $38 byte season roster to save RAM SRRosters an
 GetJerseyNumber	;jerseynum = the jersey number byte of player d0 of team d7 (TeamList or the season roster)
 	movem.l	d0-d1/a0,-(sp)
 	btst	#6,(sflags11).w
-	beq.w	.2
+	beq.w	.season
 	move.w	d7,-(sp)
 	movea.l	#TeamList,a0
 	asl.w	#2,d7
 	movea.l	(a0,d7.w),a0
 	adda.w	(a0),a0
-	bra.w	.1
-.loop
+	bra.w	.next
+.skip
 	adda.w	(a0),a0
 	addq.w	#8,a0
-.1
-	dbf	d0,.loop
+.next
+	dbf	d0,.skip
 	adda.w	(a0),a0
 	clr.w	(CreatedPlayerBuf).w
 	move.b	(a0),(jerseynum).w
 	move.w	(sp)+,d7
-	bra.w	.3
-.2
+	bra.w	.done
+.season
 	move.w	d7,d1
 	asl.w	#5,d1
 	ext.l	d1
@@ -279,11 +281,12 @@ GetJerseyNumber	;jerseynum = the jersey number byte of player d0 of team d7 (Tea
 	movea.l	#CreatedPlayerBuf,a0
 	clr.b	(a0)+
 	jsr	(ReadSRAM).l
-.3
+.done
 	movem.l	(sp)+,d0-d1/a0
 	rts
 
-MoveSavedLines	;Fix team d7's saved line players (save RAM SRJerseyNums) after player d0 left
+FixJerseyNumber	;Give player d0 of team d7 a jersey number no teammate has (save RAM SRJerseyNums): step it up in BCD,
+	;99 wrapping to 1, until it is unique
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d0,d2
 	jsr	(GetPlayerCountD7).l
@@ -296,181 +299,184 @@ MoveSavedLines	;Fix team d7's saved line players (save RAM SRJerseyNums) after p
 	moveq	#$20,d1
 	movem.l	d0-d1/a0,-(sp)
 	jsr	(ReadSRAM).l
-.loop
+.retry
 	move.b	(a0,d2.w),d4
 	move.w	d3,d5
 	subq.w	#1,d5
 	clr.w	d0
-.loop2
+.cmp
 	cmp.w	d0,d2
-	beq.w	.3
+	beq.w	.next
 	cmp.b	(a0,d0.w),d4
-	bne.w	.3
+	bne.w	.next
 	addq.b	#1,d4
 	move.b	d4,d6
 	andi.w	#$F,d6
 	cmp.b	#$A,d6
-	bne.w	.2
+	bne.w	.set
 	addi.b	#$10,d4
 	andi.w	#$F0,d4
 	cmp.b	#$A0,d4
-	bne.w	.2
+	bne.w	.set
 	move.b	#1,d4
-.2
+.set
 	move.b	d4,(a0,d2.w)
-	bra.s	.loop
-.3
+	bra.s	.retry
+.next
 	addq.w	#1,d0
-	dbf	d5,.loop2
+	dbf	d5,.cmp
 	movem.l	(sp)+,d0-d1/a0
 	jsr	(WriteSRAM).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ExecuteTrade	;Do the trade: sort the chosen players of both teams (tradeteam1 / tradeteam2), move each to the other team (MoveTradedPlayer) and close the gaps (RemoveTradedPlayer)
+ExecuteTrade	;Do the trade: tag the chosen players of both lists with their position (TagTradePositions), take each out
+	;of his team (ExtractTradedPlayer) and put him into the other (InsertTradedPlayer), keeping the list numbers right
+	;(ShiftTradeDown / ShiftTradeUp); then CheckSavedLines
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#tradeteam1,a0
-	bsr.w	SortTradePlayers
+	bsr.w	TagTradePositions
 	movea.l	#tradeteam2,a0
-	bsr.w	SortTradePlayers
+	bsr.w	TagTradePositions
 	movea.w	#(tradeteam1-M68K_RAM),a0
 	movea.w	#(tradeteam2-M68K_RAM),a1
 	move.w	#2,d6
-.loop
+.slot
 	movea.l	#M68K_RAM,a2
 	move.w	(a0),(TradeFromTeam).w
 	move.w	(a0,d6.w),d0
-	bmi.w	.1
+	bmi.w	.team2
 	move.w	d0,(TempWord1).w
-	bsr.w	MoveTradedPlayer
+	bsr.w	ExtractTradedPlayer
 	bsr.w	ShiftTradeDown
-.1
+.team2
 	movea.l	#TradeBuf,a2
 	move.w	(a1),(TradeFromTeam).w
 	move.w	(a1,d6.w),d0
-	bmi.w	.2
+	bmi.w	.add1
 	move.w	d0,(TempWord1).w
-	bsr.w	MoveTradedPlayer
+	bsr.w	ExtractTradedPlayer
 	exg	a1,a0
 	bsr.w	ShiftTradeDown
 	exg	a1,a0
-.2
+.add1
 	movea.l	#M68K_RAM,a2
 	move.w	(a1),(TradeToTeam).w
 	move.w	(a0,d6.w),d5
-	bmi.w	.6
+	bmi.w	.add2
 	andi.w	#$FF00,d5
 	move.w	(a1),d7
 	cmp.w	#0,d5
 	bne.w	.3
 	jsr	(GetGoalieCountD7).l
-	bra.w	.5
+	bra.w	.pos
 .3
 	cmp.w	#$100,d5
 	bne.w	.4
 	jsr	(GetDefenseStartD7).l
-	bra.w	.5
+	bra.w	.pos
 .4
 	jsr	(GetPlayerCountD7).l
-.5
+.pos
 	or.w	d0,d5
 	move.w	d5,(TempWord2).w
-	bsr.w	RemoveTradedPlayer
+	bsr.w	InsertTradedPlayer
 	movem.l	d0-d7/a0-a6,-(sp)
 	exg	a0,a1
 	bsr.w	ShiftTradeUp
 	exg	a0,a1
 	movem.l	(sp)+,d0-d7/a0-a6
-.6
+.add2
 	movea.l	#TradeBuf,a2
 	move.w	(a0),(TradeToTeam).w
 	move.w	(a1,d6.w),d5
-	bmi.w	.10
+	bmi.w	.next
 	andi.w	#$FF00,d5
 	move.w	(a0),d7
 	cmp.w	#0,d5
 	bne.w	.7
 	jsr	(GetGoalieCountD7).l
-	bra.w	.9
+	bra.w	.pos2
 .7
 	cmp.w	#$100,d5
 	bne.w	.8
 	jsr	(GetDefenseStartD7).l
-	bra.w	.9
+	bra.w	.pos2
 .8
 	jsr	(GetPlayerCountD7).l
-.9
+.pos2
 	or.w	d0,d5
 	move.w	d5,(TempWord2).w
-	bsr.w	RemoveTradedPlayer
+	bsr.w	InsertTradedPlayer
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	ShiftTradeUp
 	movem.l	(sp)+,d0-d7/a0-a6
-.10
+.next
 	addq.w	#2,d6
 	cmp.w	#8,d6
-	blt.w	.loop
+	blt.w	.slot
 	jsr	(CheckSavedLines).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SortTradePlayers	;Sort the chosen players of a trade list by position (goalies, forwards, defense)
+TagTradePositions	;Put the position (0 goalie, 1 forward, 2 defense) in the high byte of each chosen player of a trade list
 	move.w	(a0)+,d7
 	move.w	#2,d6
-.loop
+.player
 	move.w	(a0)+,d1
-	bmi.w	.2
+	bmi.w	.next
 	andi.w	#$FF,d1
 	move.w	#0,d2
 	jsr	(GetGoalieCountD7).l
 	cmp.w	d0,d1
-	blt.w	.1
+	blt.w	.set
 	move.w	#1,d2
 	jsr	(GetDefenseStartD7).l
 	cmp.w	d0,d1
-	blt.w	.1
+	blt.w	.set
 	move.w	#2,d2
-.1
+.set
 	move.b	d2,-2(a0)
-.2
-	dbf	d6,.loop
+.next
+	dbf	d6,.player
 	rts
 
-ShiftTradeUp	;Trade list: player numbers after a removed player move up one
+ShiftTradeUp	;Trade list: the later player numbers at or after an inserted player (TempWord2) go up one
 	move.b	(TempWord2+1).w,d0
 .loop
 	tst.w	(a0,d6.w)
 	bmi.w	.exit
 	cmp.b	1(a0,d6.w),d0
-	bgt.w	.1
+	bgt.w	.next
 	addq.b	#1,1(a0,d6.w)
-.1
+.next
 	addq.w	#2,d6
 	cmp.w	#8,d6
 	blt.s	.loop
 .exit
 	rts
 
-ShiftTradeDown	;Trade list: player numbers after an added player move down one
+ShiftTradeDown	;Trade list: the later player numbers after a removed player (d0) go down one
 	movem.l	d0-d7/a0-a6,-(sp)
 	addq.w	#2,d6
 	cmp.w	#8,d6
-	bge.w	.2
-.loop
+	bge.w	.done
+.next
 	tst.w	(a0,d6.w)
-	bmi.w	.2
+	bmi.w	.done
 	cmp.b	1(a0,d6.w),d0
-	bgt.w	.1
+	bgt.w	.skip
 	subq.b	#1,1(a0,d6.w)
-.1
+.skip
 	addq.w	#2,d6
 	cmp.w	#8,d6
-	blt.s	.loop
-.2
+	blt.s	.next
+.done
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-MoveTradedPlayer	;Insert traded player TempWord1 of team TradeFromTeam into team TradeToTeam: roster, player stats (ReadTeamPlayerStats / WriteTeamPlayerStats), saved lines and line slots
+ExtractTradedPlayer	;Take player TempWord1 out of team TradeFromTeam into the buffer a2 (roster id, jersey, stats, injury):
+	;roster, jersey numbers, player stats, saved lines (FixLinesRemoved) and injury slot
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a2,-(sp)
 	bset	#7,(GameFlags).w
@@ -496,13 +502,13 @@ MoveTradedPlayer	;Insert traded player TempWord1 of team TradeFromTeam into team
 	andi.w	#$FF,d0
 	move.w	#$19,d1
 	sub.w	d0,d1
-	beq.w	.1
-.loop
+	beq.w	.jdone
+.jersey
 	move.b	1(a0,d0.w),d2
 	move.b	d2,(a0,d0.w)
 	addq.w	#1,d0
-	dbf	d1,.loop
-.1
+	dbf	d1,.jersey
+.jdone
 	movem.l	(sp)+,d0-d1/a0
 	jsr	(WriteSRAM).l
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -512,47 +518,47 @@ MoveTradedPlayer	;Insert traded player TempWord1 of team TradeFromTeam into team
 	andi.w	#$FF,d0
 	add.w	d0,d0
 	move.w	#$32,d3
-.loop2
+.roster
 	move.w	2(a0,d0.w),d1
 	move.w	d1,(a0,d0.w)
 	addq.w	#2,d0
 	cmp.w	d3,d0
-	blt.s	.loop2
+	blt.s	.roster
 	move.w	#$8000,(a0,d0.w)
 	move.w	(TempWord1).w,d0
 	lsr.w	#8,d0
 	add.w	d0,d0
-	movea.l	#TradeStatOffsets,a3
+	movea.l	#TradeCountOffsets,a3
 	move.w	(a3,d0.w),d0
 	subq.b	#1,(a0,d0.w)
 	jsr	(WriteTeamRoster).l
 	cmp.w	#$19,d7
-	bgt.w	.6
+	bgt.w	.injury
 	jsr	(ReadTeamPlayerStats).l
 	movea.l	#ThreeStars,a3
 	move.w	#4,d6
-.loop3
+.stat
 	move.w	(TempWord1).w,d0
 	andi.w	#$FF,d0
 	add.w	d0,d0
 	move.w	(a3,d0.w),d3
 	move.w	d3,(a2)+
 	move.w	#$32,d3
-.loop4
+.shift
 	move.w	2(a3,d0.w),d1
 	move.w	d1,(a3,d0.w)
 	addq.w	#2,d0
 	cmp.w	d3,d0
-	blt.s	.loop4
+	blt.s	.shift
 	clr.w	(a3,d0.w)
 	adda.w	#$34,a3
-	dbf	d6,.loop3
+	dbf	d6,.stat
 	jsr	(WriteTeamPlayerStats).l
 	move.w	#3,d6
-.loop5
-	bsr.w	FixSavedLine
-	dbf	d6,.loop5
-.6
+.lines
+	bsr.w	FixLinesRemoved
+	dbf	d6,.lines
+.injury
 	movea.l	(sp)+,a2
 	move.w	(TempWord1).w,d1
 	andi.w	#$FF,d1
@@ -568,10 +574,11 @@ MoveTradedPlayer	;Insert traded player TempWord1 of team TradeFromTeam into team
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-TradeStatOffsets	;Roster count bytes per position ($34 goalies, $36 defense, $35 forwards)
+TradeCountOffsets	;Roster count byte per position ($34 goalies, $36 forwards, $35 defense)
 	dc.w	$34,$36,$35
 
-FixSavedLine	;Fix saved line block d6 (TeamRecordSRAM) of team TradeFromTeam after an added player
+FixLinesRemoved	;Fix saved line block d6 (TeamRecordSRAM) of team TradeFromTeam after a removed player: later slots
+	;down one, his own slots $FF (refilled by CheckSavedLines), except slot numbers 1-2
 	movea.l	#TeamRecordSRAM,a0
 	move.w	d6,d2
 	asl.w	#3,d2
@@ -589,22 +596,22 @@ FixSavedLine	;Fix saved line block d6 (TeamRecordSRAM) of team TradeFromTeam aft
 	move.w	(TempWord1).w,d3
 	andi.w	#$FF,d3
 	addq.w	#1,d3
-.loop
+.slot
 	cmp.b	(a0,d1.w),d3
-	bgt.w	.2
-	beq.w	.1
+	bgt.w	.next
+	beq.w	.same
 	cmpi.b	#1,(a0,d1.w)
-	ble.w	.2
+	ble.w	.next
 	subq.b	#1,(a0,d1.w)
-	bra.w	.2
-.1
+	bra.w	.next
+.same
 	cmp.b	#1,d3
-	beq.w	.2
+	beq.w	.next
 	cmp.b	#2,d3
-	beq.w	.2
+	beq.w	.next
 	move.b	#$FF,(a0,d1.w)
-.2
-	dbf	d1,.loop
+.next
+	dbf	d1,.slot
 	movem.l	(sp)+,d0-d1/a0
 	jsr	(WriteSRAM).l
 .exit
@@ -616,7 +623,8 @@ TeamRecordSRAM	;Save RAM blocks of the saved team lines (offset, size a team)
 	dc.l	SRSavedLines2,$39
 	dc.l	SRSavedLines3,$39
 
-RemoveTradedPlayer	;Remove the traded player from his old team: roster, stats, saved lines and line slots
+InsertTradedPlayer	;Put the player in the buffer a2 into team TradeToTeam at TempWord2: roster, player stats, saved lines
+	;(FixLinesInserted), jersey number (FixJerseyNumber) and injury slot
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a2,-(sp)
 	bset	#7,(GameFlags).w
@@ -627,54 +635,54 @@ RemoveTradedPlayer	;Remove the traded player from his old team: roster, stats, s
 	jsr	(ReadTeamRoster).l
 	add.w	d0,d0
 	move.w	#$34,d3
-	bra.w	.1
-.loop
+	bra.w	.rnext
+.roster
 	move.w	-2(a0,d3.w),d1
 	move.w	d1,(a0,d3.w)
-.1
+.rnext
 	subq.w	#2,d3
 	cmp.w	d0,d3
-	ble.w	.2
-	bra.s	.loop
-.2
+	ble.w	.put
+	bra.s	.roster
+.put
 	move.w	(a2)+,(a0,d0.w)
 	move.w	(a2)+,(CreatedPlayerBuf).w
 	move.w	(TempWord2).w,d0
 	lsr.w	#8,d0
 	add.w	d0,d0
-	movea.l	#TradeStatOffsets2,a3
+	movea.l	#TradeCountOffsets2,a3
 	move.w	(a3,d0.w),d0
 	addq.b	#1,(a0,d0.w)
 	jsr	(WriteTeamRoster).l
 	cmp.w	#$19,d7
-	bgt.w	.10
+	bgt.w	.injury
 	jsr	(ReadTeamPlayerStats).l
 	movea.l	#ThreeStars,a3
 	move.w	#4,d6
-.loop2
+.stat
 	move.w	(TempWord2).w,d0
 	andi.w	#$FF,d0
 	add.w	d0,d0
 	move.w	#$34,d3
-	bra.w	.5
-.loop3
+	bra.w	.snext
+.shift
 	move.w	-2(a3,d3.w),d1
 	move.w	d1,(a3,d3.w)
-.5
+.snext
 	subq.w	#2,d3
 	cmp.w	d0,d3
-	ble.w	.6
-	bra.s	.loop3
-.6
+	ble.w	.sput
+	bra.s	.shift
+.sput
 	move.w	(a2)+,d1
 	move.w	d1,(a3,d3.w)
 	adda.w	#$34,a3
-	dbf	d6,.loop2
+	dbf	d6,.stat
 	jsr	(WriteTeamPlayerStats).l
 	move.w	#3,d6
-.loop4
-	bsr.w	FixSavedLine2
-	dbf	d6,.loop4
+.lines
+	bsr.w	FixLinesInserted
+	dbf	d6,.lines
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#ThreeStars,a0
 	move.w	(TradeToTeam).w,d7
@@ -688,13 +696,13 @@ RemoveTradedPlayer	;Remove the traded player from his old team: roster, stats, s
 	move.w	(TempWord2).w,d0
 	andi.w	#$FF,d0
 	move.w	#$19,d1
-.loop5
+.jersey
 	cmp.w	d0,d1
-	beq.w	.9
+	beq.w	.jput
 	move.b	-1(a0,d1.w),d2
 	move.b	d2,(a0,d1.w)
-	dbf	d1,.loop5
-.9
+	dbf	d1,.jersey
+.jput
 	move.b	(jerseynum).w,(a0,d1.w)
 	movem.l	(sp)+,d0-d1/a0
 	jsr	(WriteSRAM).l
@@ -702,8 +710,8 @@ RemoveTradedPlayer	;Remove the traded player from his old team: roster, stats, s
 	move.w	(TempWord2).w,d0
 	andi.w	#$FF,d0
 	move.w	(TradeToTeam).w,d7
-	jsr	(MoveSavedLines).l
-.10
+	jsr	(FixJerseyNumber).l
+.injury
 	move.w	(TempWord2).w,d1
 	andi.w	#$FF,d1
 	move.w	(TradeToTeam).w,d7
@@ -717,10 +725,10 @@ RemoveTradedPlayer	;Remove the traded player from his old team: roster, stats, s
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-TradeStatOffsets2	;As TradeStatOffsets, for RemoveTradedPlayer
+TradeCountOffsets2	;As TradeCountOffsets, for InsertTradedPlayer
 	dc.w	$34,$36,$35
 
-FixSavedLine2	;Fix saved line block d6 of team TradeToTeam after a removed player
+FixLinesInserted	;Fix saved line block d6 of team TradeToTeam after an inserted player: slots at or after him up one
 	movea.l	#TeamRecordSRAM,a0
 	move.w	d6,d2
 	asl.w	#3,d2
@@ -738,18 +746,19 @@ FixSavedLine2	;Fix saved line block d6 of team TradeToTeam after a removed playe
 	move.w	(TempWord2).w,d3
 	andi.w	#$FF,d3
 	addq.w	#1,d3
-.loop
+.slot
 	cmp.b	(a0,d1.w),d3
-	bgt.w	.1
+	bgt.w	.next
 	addq.b	#1,(a0,d1.w)
-.1
-	dbf	d1,.loop
+.next
+	dbf	d1,.slot
 	movem.l	(sp)+,d0-d1/a0
 	jsr	(WriteSRAM).l
 .exit
 	rts
 
-TradePlayers	;Trade Player screen (main flow): the two rosters with position / rating, A cancel, B modify, C team, start evaluates the trade (CheckTrade, EvaluateTrade)
+TradePlayers	;Trade Player screen: the two rosters with position / rating; A team, B cancel, C choose player, start checks
+	;the trade (CheckTrade) and goes on to TradeDone
 	jsr	(forceblack).l
 	bsr.w	TradeGfx
 	jsr	(printbigz).l
@@ -766,19 +775,19 @@ TradePlayers	;Trade Player screen (main flow): the two rosters with position / r
 	movea.l	#TradeRoster1,a0
 	movea.l	#TradeWork,a1
 	btst	#3,(sflags10).w
-	bne.w	.0
-	bsr.w	DrawTradeTeam
+	bne.w	.vis
+	bsr.w	BuildTradeRoster
 	bsr.w	rtsTrade
-.0
+.vis
 	movea.l	#TradeRoster2,a0
 .1
 	movea.l	#TradeWork+$6,a1
 	move.w	(VisTeam).w,d7
 	bclr	#3,(sflags10).w
-	bne.w	.2
-	bsr.w	DrawTradeTeam
+	bne.w	.drawn
+	bsr.w	BuildTradeRoster
 	bsr.w	rtsTrade
-.2
+.drawn
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
 	jsr	(printz).l
@@ -786,7 +795,7 @@ TradePlayers	;Trade Player screen (main flow): the two rosters with position / r
 	bsr.w	DrawHomeTradeRoster
 	bsr.w	DrawVisTradeRoster
 	move.w	#$FFFF,(setupdir).w
-.loop
+.redraw
 	move.w	(HomeTeam).w,d1
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$8,$6,$0
@@ -807,104 +816,104 @@ TradePlayers	;Trade Player screen (main flow): the two rosters with position / r
 	dc.w	$26	;String length
 	dc.b	$FD,$2,$FC,$1A,'Team',$FD,$A,'Cancel'
 	dc.b	$FD,$14,'Player',$FD,$1E,'Evaluate',$F9,$0
-.loop2
+.input
 	cmpi.w	#$FFFF,(setupdir).w
-	beq.w	.5
+	beq.w	.read
 	bsr.w	DrawHomeTradeRoster
 	bsr.w	DrawVisTradeRoster
-.5
+.read
 	move.w	#$FFFF,(setupdir).w
 	bsr.w	ReadTradePads
 	tst.w	d1
 	beq.w	TradeExit
 	move.w	#$FFFF,(setupdir).w
 	btst	#7,d1
-	bne.w	.21
+	bne.w	.evaluate
 	btst	#5,d1
-	bne.w	.19
+	bne.w	.mark
 	btst	#6,d1
-	bne.w	.18
+	bne.w	.switch
 	btst	#0,d1
-	bne.w	.14
+	bne.w	.up
 	btst	#1,d1
 .6
-	bne.w	.9
+	bne.w	.down
 .7
 	btst	#4,d1
-	beq.s	.loop2
+	beq.s	.input
 .8
 	bra.w	TradeExit
-.9
+.down
 	movea.l	#TradeData+$4,a0
 	movea.l	#TradeData+$6,a1
 .10
 	movea.l	#TradeData,a2
 	move.w	(TradeWork+$4).l,d3
 	tst.w	(TradeData+$C).l
-	beq.w	.11
+	beq.w	.chkdown
 	movea.l	#TradeData+$8,a0
 	movea.l	#TradeData+$A,a1
 	movea.l	#TradeData+$2,a2
 	move.w	(TradeWork+$A).l,d3
-.11
+.chkdown
 	subq.w	#1,d3
 	cmpi.w	#5,(a2)
-	blt.w	.12
+	blt.w	.curdown
 	cmp.w	(a1),d3
-	beq.w	.loop2
+	beq.w	.input
 	addq.w	#1,(a0)
 	addq.w	#1,(a1)
-	bra.w	.13
-.12
+	bra.w	.moved
+.curdown
 	addq.w	#1,(a2)
-.13
+.moved
 	move.w	#1,(setupdir).w
-	bra.w	.loop2
-.14
+	bra.w	.input
+.up
 	movea.l	#TradeData+$4,a0
 	movea.l	#TradeData+$6,a1
 	movea.l	#TradeData,a2
 	tst.w	(TradeData+$C).l
-	beq.w	.15
+	beq.w	.chkup
 	movea.l	#TradeData+$8,a0
 	movea.l	#TradeData+$A,a1
 	movea.l	#TradeData+$2,a2
-.15
+.chkup
 	tst.w	(a2)
-	bne.w	.16
+	bne.w	.curup
 	tst.w	(a0)
-	beq.w	.loop2
+	beq.w	.input
 	subq.w	#1,(a0)
 	subq.w	#1,(a1)
-	bra.w	.17
-.16
+	bra.w	.movedup
+.curup
 	subq.w	#1,(a2)
-.17
+.movedup
 	move.w	#0,(setupdir).w
-	bra.w	.loop2
-.18
+	bra.w	.input
+.switch
 	move.w	#6,(setupdir).w
 	eori.w	#1,(TradeData+$C).l
-	bra.w	.loop2
-.19
+	bra.w	.input
+.mark
 	move.w	#5,(setupdir).w
 	move.w	(TradeData).l,d0
 	add.w	(TradeData+$4).l,d0
 	movea.l	#TradeRoster1,a0
 	tst.w	(TradeData+$C).l
-	beq.w	.20
+	beq.w	.toggle
 	move.w	(TradeData+$2).l,d0
 	add.w	(TradeData+$8).l,d0
 	movea.l	#TradeRoster2,a0
-.20
+.toggle
 	asl.w	#2,d0
 	eori.b	#1,(a0,d0.w)
-	bra.w	.loop2
-.21
+	bra.w	.input
+.evaluate
 	bsr.w	CheckTrade
 	bne.w	TradeDone
 	move.w	#7,(setupdir).w
-	bra.w	.loop
+	bra.w	.redraw
 
 DrawHomeTradeRoster	;Draw the roster of HomeTeam with the chosen marks; falls into DrawTradeRosterRows
 	move.w	(TradeData).l,d5
@@ -939,22 +948,22 @@ DrawTradeRosterRows	;Draw the roster rows of team d7 (name, position, rating), *
 	asl.w	#2,d0
 	ext.l	d0
 	adda.l	d0,a4
-.loop
+.row
 	jsr	(printsmallz).l
 	String	CC_SetX,$0,'                                       ',$0
 	move.w	#6,(printx).w
 	jsr	(printsmallz).l
 	String	CC_SetFont,$0
 	cmp.w	d5,d6
-	bne.w	.1
+	bne.w	.mark
 	jsr	(printsmallz).l
 	String	CC_SetFont,$1
-.1
+.mark
 	tst.b	(a4)
-	beq.w	.2
+	beq.w	.name
 	jsr	(printsmallz).l
 	String	'*',$0
-.2
+.name
 	move.w	#8,(printx).w
 	clr.w	d0
 	move.b	2(a4),d0
@@ -975,7 +984,7 @@ DrawTradeRosterRows	;Draw the roster rows of team d7 (name, position, rating), *
 	addq.w	#1,(printy).w
 	addq.w	#1,d6
 	cmp.w	#6,d6
-	blt.w	.loop
+	blt.w	.row
 	rts
 
 PositionLetters	;G, F, D
@@ -985,24 +994,24 @@ PositionLetters	;G, F, D
 
 ReadTradePads	;Wait up to $5460 frames for a pad 1 / 2 press (ProcessInputWithRepeat), d1 = buttons
 	move.l	#$5460,d6
-.loop
+.wait
 	move.w	(vcount).w,d1
 	sub.w	(oldvcount).w,d1
-	beq.s	.loop
+	beq.s	.wait
 	move.w	(vcount).w,(oldvcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
-	beq.w	.1
+	beq.w	.pad2
 	bra.w	.exit
-.1
+.pad2
 	jsr	(ReadJoy2).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
-	beq.w	.2
+	beq.w	.next
 	bra.w	.exit
-.2
-	dbf	d6,.loop
+.next
+	dbf	d6,.wait
 .exit
 	rts
 
@@ -1024,7 +1033,9 @@ TradeExit	;Leave the trade screen: set setupcardflags bit 6 and go to Opening2
 	bset	#6,(setupcardflags).w
 	jmp	Opening2
 
-CheckTrade	;Check the trade: players chosen on both teams, at most three a team, and after it each team has 17-25 players, 2-3 goalies, 9-15 forwards and 6-15 defensemen; else INVALID TRADE with the reason (InvalidTradeText). d0 = 1 valid
+CheckTrade	;Check the trade: players chosen on both teams, at most three a team, and after it each team has 17-25 players,
+	;2-3 goalies, 9-15 forwards and 6-15 defensemen; else INVALID TRADE with the reason (InvalidTradeText). Z clear
+	;when valid
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#StatWork,a0
 	movea.l	#TradeRoster1,a1
@@ -1037,38 +1048,38 @@ CheckTrade	;Check the trade: players chosen on both teams, at most three a team,
 	clr.w	d0
 	move.w	#5,d1
 	movea.l	#StatWork,a0
-.loop
+.sum
 	add.w	(a0)+,d0
-	dbf	d1,.loop
+	dbf	d1,.sum
 	tst.w	d0
-	bne.w	.3
+	bne.w	.chk
 	move.w	#0,(StatWork+$14).w
-	bra.w	.7
-.loop2
+	bra.w	.invalid
+.oneside
 	move.w	#2,(StatWork+$14).w
-	bra.w	.7
-.loop3
+	bra.w	.invalid
+.toomany
 	move.w	#3,(StatWork+$14).w
-	bra.w	.7
-.3
+	bra.w	.invalid
+.chk
 	move.w	(StatWork).w,d0
 	add.w	(StatWork+2).w,d0
 	add.w	(SeasonGameCount).w,d0
 	cmp.w	#3,d0
-	bgt.s	.loop3
+	bgt.s	.toomany
 	move.w	(StatWork+$A).w,d0
 	add.w	(StatWork+$C).w,d0
 	add.w	(StatWork+$E).w,d0
 	cmp.w	#3,d0
-	bgt.s	.loop3
+	bgt.s	.toomany
 	move.w	(StatWork).w,d0
 	add.w	(StatWork+2).w,d0
 	add.w	(SeasonGameCount).w,d0
-	beq.s	.loop2
+	beq.s	.oneside
 	move.w	(StatWork+$A).w,d0
 	add.w	(StatWork+$C).w,d0
 	add.w	(StatWork+$E).w,d0
-	beq.s	.loop2
+	beq.s	.oneside
 	move.w	(TradeWork+$4).l,d0
 	sub.w	(StatWork).w,d0
 	sub.w	(StatWork+2).w,d0
@@ -1077,63 +1088,63 @@ CheckTrade	;Check the trade: players chosen on both teams, at most three a team,
 	add.w	(StatWork+$C).w,d0
 	add.w	(StatWork+$E).w,d0
 	cmp.w	#$19,d0
-	ble.w	.5
-.loop4
+	ble.w	.chkmin
+.counts
 	move.w	#1,(StatWork+$14).w
-	bra.w	.7
-.5
+	bra.w	.invalid
+.chkmin
 	cmp.w	#$11,d0
-	bge.w	.6
-	bra.s	.loop4
-.6
+	bge.w	.chkpos
+	bra.s	.counts
+.chkpos
 	move.w	(TradeWork).l,d0
 	sub.w	(StatWork).w,d0
 	add.w	(StatWork+$A).w,d0
 	cmp.w	#2,d0
-	blt.s	.loop4
+	blt.s	.counts
 	cmp.w	#3,d0
-	bgt.s	.loop4
+	bgt.s	.counts
 	move.w	(TradeWork+$6).l,d0
 	sub.w	(StatWork+$A).w,d0
 	add.w	(StatWork).w,d0
 	cmp.w	#2,d0
-	blt.s	.loop4
+	blt.s	.counts
 	cmp.w	#3,d0
-	bgt.s	.loop4
+	bgt.s	.counts
 	move.w	(TradeWork+$2).l,d0
 	sub.w	(TradeWork).l,d0
 	sub.w	(StatWork+2).w,d0
 	add.w	(StatWork+$C).w,d0
 	cmp.w	#9,d0
-	blt.s	.loop4
+	blt.s	.counts
 	cmp.w	#$F,d0
-	bgt.s	.loop4
+	bgt.s	.counts
 	move.w	(TradeWork+$8).l,d0
 	sub.w	(TradeWork+$6).l,d0
 	sub.w	(StatWork+$C).w,d0
 	add.w	(StatWork+2).w,d0
 	cmp.w	#9,d0
-	blt.w	.loop4
+	blt.w	.counts
 	cmp.w	#$F,d0
-	bgt.w	.loop4
+	bgt.w	.counts
 	move.w	(TradeWork+$4).l,d0
 	sub.w	(TradeWork+$2).l,d0
 	sub.w	(SeasonGameCount).w,d0
 	add.w	(StatWork+$E).w,d0
 	cmp.w	#6,d0
-	blt.w	.loop4
+	blt.w	.counts
 	cmp.w	#$F,d0
-	bgt.w	.loop4
+	bgt.w	.counts
 	move.w	(TradeWork+$A).l,d0
 	sub.w	(TradeWork+$8).l,d0
 	sub.w	(StatWork+$E).w,d0
 	add.w	(SeasonGameCount).w,d0
 	cmp.w	#6,d0
-	blt.w	.loop4
+	blt.w	.counts
 	cmp.w	#$F,d0
-	bgt.w	.loop4
-	bra.w	.8
-.7
+	bgt.w	.counts
+	bra.w	.valid
+.invalid
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$5,$A,$0
 	move.w	#$1E,d0
@@ -1151,13 +1162,13 @@ CheckTrade	;Check the trade: players chosen on both teams, at most three a team,
 	move.w	#$1E,d0
 	move.w	#$E,d1
 	jsr	(eraser).l
-	bra.w	.9
-.8
+	bra.w	.fail
+.valid
 	move.w	#1,d0
-	bra.w	.10
-.9
+	bra.w	.done
+.fail
 	clr.w	d0
-.10
+.done
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -1166,23 +1177,23 @@ CountChosen	;Count the chosen players of a trade list by position into the three
 	clr.w	2(a0)
 	clr.w	4(a0)
 	subq.w	#1,d0
-.loop
+.player
 	tst.b	(a1)
-	beq.w	.3
+	beq.w	.next
 	tst.b	1(a1)
-	beq.w	.2
+	beq.w	.goalie
 	cmpi.b	#1,1(a1)
-	beq.w	.1
+	beq.w	.fwd
 	addq.w	#1,4(a0)
-	bra.w	.3
-.1
+	bra.w	.next
+.fwd
 	addq.w	#1,2(a0)
-	bra.w	.3
-.2
+	bra.w	.next
+.goalie
 	addq.w	#1,(a0)
-.3
+.next
 	tst.l	(a1)+
-	dbf	d0,.loop
+	dbf	d0,.player
 	rts
 
 InvalidTradeText	;INVALID TRADE reasons (PrintSmallListItem)
@@ -1203,15 +1214,15 @@ BuildTradeList	;Trade list of team d7: the chosen players ($FFFF = none)
 	move.w	#$FFFF,2(a1)
 	move.w	#$FFFF,4(a1)
 	subq.w	#1,d6
-.loop
+.player
 	tst.b	(a2)
-	beq.w	.1
+	beq.w	.next
 	clr.w	d0
 	move.b	2(a2),d0
 	move.w	d0,(a1)+
-.1
+.next
 	tst.l	(a2)+
-	dbf	d6,.loop
+	dbf	d6,.player
 	rts
 
 TradeGfx	;Trade screen video set up and graphics
@@ -1293,7 +1304,8 @@ DrawTradeLogo	;Draw the team block of team d1
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawTradeTeam	;Set up the trade rosters of HomeTeam and VisTeam
+BuildTradeRoster	;Trade roster a0 of team d7: per player a chosen flag, position, number and overall rating (CalcAttrib,
+	;AttribAdjust when out); the goalie / defense start / player counts at a1
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(GetGoalieCountD7).l
 	move.w	d0,(a1)
@@ -1304,17 +1316,17 @@ DrawTradeTeam	;Set up the trade rosters of HomeTeam and VisTeam
 	subq.w	#1,d0
 	movea.l	a0,a2
 	clr.w	d1
-.loop
+.player
 	clr.l	(a2)
 	move.b	d1,2(a2)
 	move.w	#0,d3
 	cmp.w	(a1),d1
-	blt.w	.1
+	blt.w	.pos
 	move.w	#1,d3
 	cmp.w	2(a1),d1
-	blt.w	.1
+	blt.w	.pos
 	move.w	#2,d3
-.1
+.pos
 	move.b	d3,1(a2)
 	movem.l	d0-d1/d4,-(sp)
 	move.l	a2,-(sp)
@@ -1323,14 +1335,14 @@ DrawTradeTeam	;Set up the trade rosters of HomeTeam and VisTeam
 	move.w	d0,(screenarg).w
 	movea.l	#tmstruct,a2
 	cmp.w	(HomeTeam).w,d7
-	beq.w	.2
+	beq.w	.team
 	movea.l	#AwShots,a2
-.2
+.team
 	move.l	(PAttribOverallMask).l,d4
 	tst.w	d3
-	bne.w	.3
+	bne.w	.calc
 	move.l	(GAttribOverallMask).l,d4
-.3
+.calc
 	jsr	(CalcAttrib).l
 	mulu.w	#$64,d0
 	divu.w	d1,d0
@@ -1338,24 +1350,25 @@ DrawTradeTeam	;Set up the trade rosters of HomeTeam and VisTeam
 	move.w	(screenarg).w,d0
 	jsr	(SeasonPlayerOut).l
 	movem.l	(sp)+,d0
-	beq.w	.4
+	beq.w	.store
 	jsr	(AttribAdjust).l
-.4
+.store
 	movea.l	(sp)+,a2
 	move.b	d0,3(a2)
 	movem.l	(sp)+,d0-d1/d4
 	tst.l	(a2)+
 	addq.w	#1,d1
-	dbf	d0,.loop
+	dbf	d0,.player
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
 rtsTrade	;rts
 	rts
 
-EvaluateTrade	;Evaluate Trade screen: the chosen players of both teams; A cancel, B modify, C execute, start propose (GMDecision)
+EvaluateTrade	;Evaluate Trade screen (GMDecisionGfx): the chosen players of both teams; A cancel, B modify, C execute,
+	;start propose (GMDecisionScreen)
 	jsr	(forceblack).l
-	jsr	(GMDecision).l
+	jsr	(GMDecisionGfx).l
 	jsr	(printsmallz).l
 	String	CC_SetFont,$1,CC_SetX,$1,CC_SetY,$19,'     A        B         C       Start',$0
 	jsr	(printsmallz).l
@@ -1384,39 +1397,39 @@ EvaluateTrade	;Evaluate Trade screen: the chosen players of both teams; A cancel
 	move.w	(TradeWork+$A).l,d3
 	move.w	(VisTeam).w,d7
 	bsr.w	PrintTradeNames
-.loop
+.input
 	bsr.w	ReadEvalTradePads
 	tst.w	d1
-	beq.w	.loop2
+	beq.w	.exit
 	btst	#7,d1
 .7
-	bne.w	.12
+	bne.w	.propose
 	btst	#6,d1
-	bne.w	.11
+	bne.w	.cancel
 	btst	#4,d1
-	bne.w	.10
+	bne.w	.modify
 	btst	#5,d1
-	bne.w	.8
-	bra.s	.loop
-.8
+	bne.w	.execute
+	bra.s	.input
+.execute
 	jsr	(forceblack).l
 	jsr	(ExecuteTrade).l
-.loop2
+.exit
 	bset	#6,(setupcardflags).w
 	jmp	Opening2
-.10
+.modify
 	bset	#3,(sflags10).w
 	jmp	TradePlayers
-.11
-	bra.s	.loop2
-.12
-	jmp	GMDecisionRetry
+.cancel
+	bra.s	.exit
+.propose
+	jmp	GMDecisionScreen
 
 PrintTradeNames	;Print the chosen players of a trade list with their position
 	subq.w	#1,d3
-.loop
+.player
 	tst.b	(a0)
-	beq.w	.1
+	beq.w	.next
 	move.w	#$F,(printx).w
 	clr.w	d0
 	move.b	2(a0),d0
@@ -1434,9 +1447,9 @@ PrintTradeNames	;Print the chosen players of a trade list with their position
 	jsr	(PushNumberWidth).l
 	jsr	(printsmall).l
 	addq.w	#1,(printy).w
-.1
+.next
 	tst.l	(a0)+
-	dbf	d3,.loop
+	dbf	d3,.player
 	rts
 
 PositionLetters2	;G, F, D
@@ -1444,31 +1457,32 @@ PositionLetters2	;G, F, D
 	String	'F',$0
 	String	'D',$0
 
-ReadEvalTradePads	;As ReadTradePads
+ReadEvalTradePads	;Wait for a pad 1 / 2 press (ProcessInputWithRepeat), d1 = buttons; the frame count is reset every frame, so
+	;there is no timeout
 	move.l	#$5460,d6
-.loop
+.wait
 	move.w	#$64,d6
 	move.w	(vcount).w,d1
 	sub.w	(oldvcount).w,d1
-	beq.s	.loop
+	beq.s	.wait
 	move.w	(vcount).w,(oldvcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
-	beq.w	.1
+	beq.w	.pad2
 	bra.w	.exit
-.1
+.pad2
 	jsr	(ReadJoy2).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
-	beq.w	.2
+	beq.w	.next
 	bra.w	.exit
-.2
-	dbf	d6,.loop
+.next
+	dbf	d6,.wait
 .exit
 	rts
 
-GMDecision	;GM DECISION: rate both sides of the trade (TradeValue) and show which team has the ADVANTAGE; B modify, start continue
+GMDecisionGfx	;The trade graphics (TradeGfx), the GM decision bitmap, both team logos with their palettes and team blocks
 	jsr	(TradeGfx).l
 	jsr	(printz).l
 	String	-TXMAP2,$E,$10,$0
@@ -1507,9 +1521,9 @@ GMDecision	;GM DECISION: rate both sides of the trade (TradeValue) and show whic
 	movea.l	#palfadenew+$40,a0
 	movea.l	#palfadenew+$60,a1
 	move.w	#7,d0
-.loop
+.pal
 	move.l	(a0)+,(a1)+
-	dbf	d0,.loop
+	dbf	d0,.pal
 	jsr	(printz).l
 	String	-(TXPRI+TXPAL3+TXMAP2),$8,$12,$0
 	movea.l	#TeamLogoBitmaps,a0
@@ -1540,7 +1554,8 @@ GMDecision	;GM DECISION: rate both sides of the trade (TradeValue) and show whic
 	bsr.w	DrawTradeLogo
 	rts
 
-GMDecisionRetry	;GMDecision: back to the trade screen (CreateScreenGfx, TradePlayers)
+GMDecisionScreen	;GM DECISION: rate both sides (TradeValue); a difference of 2 or more shows the ADVANTAGE team and start
+	;executes the trade, else start just leaves; B back to TradePlayers
 	bsr.w	CreateScreenGfx
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),$B,$2,'GM DECISION'
@@ -1570,12 +1585,12 @@ GMDecisionRetry	;GMDecision: back to the trade screen (CreateScreenGfx, TradePla
 	move.w	d0,(TempWord2).w
 .2
 	sub.w	(TempWord1).w,d0
-	bpl.w	.3
+	bpl.w	.diff
 	neg.w	d0
-.3
+.diff
 	clr.w	(rosterteam).w
 	cmp.w	#2,d0
-	blt.w	.5
+	blt.w	.even
 	st	(rosterteam).w
 	move.w	(StatWork+$3C).w,d4
 	jsr	(printz).l
@@ -1594,9 +1609,9 @@ GMDecisionRetry	;GMDecision: back to the trade screen (CreateScreenGfx, TradePla
 	move.w	(HomeTeam).w,d7
 	move.w	(TempWord2).w,d0
 	cmp.w	(TempWord1).w,d0
-	bgt.w	.4
+	bgt.w	.winner
 	move.w	(VisTeam).w,d7
-.4
+.winner
 	jsr	(printsmallz).l
 	String	CC_SetFont,$0,CC_SetX,$9,CC_SetY,$11,'ADVANTAGE',CC_AddY,$1,CC_SetX,$9,$0
 	movea.l	#TeamList,a1
@@ -1604,8 +1619,8 @@ GMDecisionRetry	;GMDecision: back to the trade screen (CreateScreenGfx, TradePla
 	movea.l	(a1,d7.w),a1
 	adda.w	4(a1),a1
 	jsr	(printsmall).l
-	bra.w	.6
-.5
+	bra.w	.players
+.even
 	move.w	(StatWork+$3C).w,d4
 	jsr	(printz).l
 	String	-TXMAP1,$0,$B,$0
@@ -1620,7 +1635,7 @@ GMDecisionRetry	;GMDecision: back to the trade screen (CreateScreenGfx, TradePla
 	moveq	#7,d3
 	moveq	#0,d5
 	jsr	(dobitmap).l
-.6
+.players
 	jsr	(printsmallz).l
 	String	CC_SetFont,$0,CC_SetX,$4,CC_SetY,$8
 	movea.l	#tradeteam1,a0
@@ -1633,22 +1648,22 @@ GMDecisionRetry	;GMDecision: back to the trade screen (CreateScreenGfx, TradePla
 	bclr	#2,(disflags).w
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$0,$0,$0
-.loop
+.input
 	bsr.w	ReadGMDecisionPads
 	tst.w	d1
-	beq.w	.9
+	beq.w	.exit
 	btst	#7,d1
-	bne.w	.8
+	bne.w	.execute
 	btst	#4,d1
-	beq.s	.loop
+	beq.s	.input
 	bset	#3,(sflags10).w
 	jmp	TradePlayers
-.8
+.execute
 	tst.w	(rosterteam).w
-	bmi.w	.9
+	bmi.w	.exit
 	jsr	(forceblack).l
 	jsr	(ExecuteTrade).l
-.9
+.exit
 	bset	#6,(setupcardflags).w
 	jmp	Opening2
 
@@ -1656,79 +1671,79 @@ PrintTradedPlayers	;Print the players of a trade list (up to 3)
 	move.w	(printx).w,-(sp)
 	move.w	(a0)+,d7
 	move.w	#2,d6
-.loop
+.player
 	move.w	(a0)+,d0
-	bmi.w	.1
+	bmi.w	.done
 	andi.w	#$FF,d0
 	jsr	(FormatPlayerInitialD7).l
 	jsr	(printsmall).l
 	addq.w	#1,(printy).w
 	move.w	(sp),(printx).w
-	dbf	d6,.loop
-.1
+	dbf	d6,.player
+.done
 	move.w	(sp)+,(printx).w
 	rts
 
-ReadGMDecisionPads	;Wait up to $5460 frames for a pad press (pads 3, 4 with FourWayPlay), d1 = buttons
+ReadGMDecisionPads	;Wait for a pad press (pads 3, 4 with FourWayPlay), d1 = buttons; no timeout, as ReadEvalTradePads
 	move.l	#$5460,d6
-.loop
+.wait
 	move.w	#$64,d6
 	move.w	(vcount).w,d1
 	sub.w	(oldvcount).w,d1
-	beq.s	.loop
+	beq.s	.wait
 	move.w	(vcount).w,(oldvcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
-	beq.w	.1
+	beq.w	.pad2
 	bra.w	.exit
-.1
+.pad2
 	jsr	(ReadJoy2).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
-	beq.w	.2
+	beq.w	.chkfour
 	bra.w	.exit
-.2
+.chkfour
 	tst.w	(FourWayPlay).w
-	beq.w	.4
+	beq.w	.next
 	jsr	(ReadJoy3).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
-	beq.w	.3
+	beq.w	.pad4
 	bra.w	.exit
-.3
+.pad4
 	jsr	(ReadJoy4).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
-	beq.w	.4
+	beq.w	.next
 	bra.w	.exit
-.4
-	dbf	d6,.loop
+.next
+	dbf	d6,.wait
 .exit
 	rts
 
 TradeValue	;d0 = trade value of the d3 players at a0: each rating (byte 3) mapped through TradeRatingSteps / TradeRatingValues
 	subq.w	#1,d3
 	clr.w	d0
-.loop
+.player
 	tst.b	(a0)
-	beq.w	.3
+	beq.w	.next
 	move.b	3(a0),d1
 	movea.l	#TradeRatingSteps,a1
 	movea.l	#TradeRatingValues,a2
 	clr.w	d4
-.loop2
+.step
 	cmp.b	(a1,d4.w),d1
-	blt.w	.2
+	blt.w	.value
 	addq.w	#1,d4
-	bra.s	.loop2
-.2
+	bra.s	.step
+.value
 	move.b	(a2,d4.w),d4
 	ext.w	d4
 	add.w	d4,d0
-.3
+.next
 	tst.l	(a0)+
-	dbf	d3,.loop
+	dbf	d3,.player
 	rts
 
 TradeRatingSteps	;Rating steps

@@ -402,14 +402,14 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | DrawHomeTradeRoster | ok |
 | DrawTradeLogo | ok |
 | DrawTradeRosterRows | ok |
-| DrawTradeTeam | ok |
+| BuildTradeRoster | renamed (was DrawTradeTeam; body checked) |
 | DrawVisTradeRoster | ok |
 | EvaluateTrade | ok |
 | ExecuteTrade | ok |
-| FixSavedLine | ok |
-| FixSavedLine2 | ok |
-| GMDecision | ok |
-| GMDecisionRetry | ok |
+| FixLinesRemoved | renamed (was FixSavedLine; body checked) |
+| FixLinesInserted | renamed (was FixSavedLine2; body checked) |
+| GMDecisionGfx | renamed (was GMDecision; body checked) |
+| GMDecisionScreen | renamed (was GMDecisionRetry; body checked) |
 | GetCreatedName | ok |
 | GetHighlightSlot | ok |
 | GetJerseyNumber | ok |
@@ -418,8 +418,8 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | GetRosterNameTail | ok |
 | HighlightsHelp | ok |
 | InvalidTradeText | ok |
-| MoveSavedLines | ok |
-| MoveTradedPlayer | ok |
+| FixJerseyNumber | renamed (was MoveSavedLines; body checked) |
+| ExtractTradedPlayer | renamed (was MoveTradedPlayer; body checked) |
 | PositionLetters | ok |
 | PositionLetters2 | ok |
 | PrintTradeNames | ok |
@@ -428,10 +428,10 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | ReadGMDecisionPads | ok |
 | ReadTeamRoster | ok |
 | ReadTradePads | ok |
-| RemoveTradedPlayer | ok |
+| InsertTradedPlayer | renamed (was RemoveTradedPlayer; body checked) |
 | ShiftTradeDown | ok |
 | ShiftTradeUp | ok |
-| SortTradePlayers | ok |
+| TagTradePositions | renamed (was SortTradePlayers; body checked) |
 | TeamRecordSRAM | ok |
 | TradeDone | ok |
 | TradeExit | ok |
@@ -440,8 +440,8 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | TradeRatingSteps | ok |
 | TradeRatingValues | ok |
 | TradeRulesText | ok |
-| TradeStatOffsets | ok |
-| TradeStatOffsets2 | ok |
+| TradeCountOffsets | renamed (was TradeStatOffsets; body checked) |
+| TradeCountOffsets2 | renamed (was TradeStatOffsets2; body checked) |
 | TradeValue | ok |
 | WriteTeamRoster | ok |
 | rtsTrade | ok |
@@ -1498,7 +1498,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | new-in-95 locals: season | NOT a name review: routine names, headers and forward locals not checked by full body read; 83 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: stats | NOT a name review: routine names, headers and forward locals not checked by full body read; 57 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: create | NOT a name review: routine names, headers and forward locals not checked by full body read; 61 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
-| new-in-95 locals: trade | NOT a name review: routine names, headers and forward locals not checked by full body read; 54 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
+| new-in-95 locals: trade | full body read of every new-in-95 routine (50): renamed MoveTradedPlayer->ExtractTradedPlayer (takes the player out) and RemoveTradedPlayer->InsertTradedPlayer (puts him in; names were reversed), FixSavedLine->FixLinesRemoved, FixSavedLine2->FixLinesInserted, MoveSavedLines->FixJerseyNumber (makes the jersey number unique), SortTradePlayers->TagTradePositions (no sort), TradeStatOffsets(2)->TradeCountOffsets(2), DrawTradeTeam->BuildTradeRoster (draws nothing), GMDecision->GMDecisionGfx (graphics only), GMDecisionRetry->GMDecisionScreen (the GM DECISION screen); headers fixed for these and DefaultRosters (count order), GetRosterName (no SRAM address), ShiftTradeUp/Down, TradePlayers (buttons), CheckTrade (Z flag result), EvaluateTrade, ReadEvalTradePads / ReadGMDecisionPads (no timeout); locals named in all routines with branches (CheckTrade error setters were auto .loop names, not loops) |
 | new-in-95 locals: setup | full body read of every new-in-95 routine (23): names ok; headers fixed: GetSetupValues, UpdateSetupLogos, DrawSetupLogo (broken text); locals: FindPlayerLine .next/.found, PrintOptionName .hi (was auto .loop2, not a loop)/.nothi/.normal/.done/.chksel, UpdateSetupLogos .changed/.delay/.swaph/.homeblk/.vis/.swapv/.visblk, DrawSetupLogo .gotchars/.vispal/.pal/.draw, StepSeasonTeam .prev/.chk, SetTreeGameTeams .noflip |
 | new-in-95 locals: sound | full body read of every new-in-95 routine (33; SoundBanks item list only scanned, it is data): routine names and headers ok; ROM address removed from the Z80Program pad comment; locals named in SndLoadZ80, SndUpdate (event decoder: .events/.event/.running/.ctrl/.chkloop/.prog/.bend/.chkend/.delay/.nextslot ...), SndStartSeq, SndStopSeq, SndPutZ80Cmd, SndUploadBlock, SndReadBlock, SndWriteBlock, SndPauseZ80, SndResumeZ80, SndStopAll, SndClearNotes, SndReleaseNotes, SndUpdateNotes, SndStreamZ80, SndFindBankItem, SndSetBank, SndLoadList, SndFreeBlocks, SndResetBlocks, Z80BusRequest, sfxplay; SndDriver dispatch keeps .0-.15 |
 | new-in-95 locals: awards | full body read of every new-in-95 routine (68): names ok; headers fixed: GetTeamUser (tmstruct), SelkeScore (score formula); locals named in GetTeamUser, SeasonAwards, PrintFinalists (.blank String, .player, .item ...), FlashWinnerCaption, AwardsLoop, SortAwardScores, ScanPresidents, ScanAllPlayers, SortSeeds, CalcSeedPoints, SetupPlayoffs, RestoreSeasonHeader, NextPlayoffRound, InitPlayoffSeries, BuildPlayoffDayGames, ReadPlayoffSchedule, RecordPlayoffGame, CollectSeriesWinners, PlayoffTreeScreen |

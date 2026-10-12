@@ -2552,7 +2552,7 @@ FreeAgentLoop	;SignFreeAgents: input loop
 	move.w	(TempWord1).w,-(sp)
 	move.w	(TempWord2).w,-(sp)
 	move.w	(TempMaxSpd).w,-(sp)
-	jsr	(RemoveTradedPlayer).l
+	jsr	(InsertTradedPlayer).l
 	move.w	(sp)+,(TempMaxSpd).w
 	move.w	(sp)+,(TempWord2).w
 	move.w	(sp)+,(TempWord1).w
@@ -2858,7 +2858,7 @@ ReleaseRedraw	;ReleasePlayers: redraw the roster
 	move.w	d0,(TradeData+$6).l
 	movea.l	#TradeRoster1,a0
 	movea.l	#TradeWork,a1
-	bsr.w	DrawTradeTeam
+	bsr.w	BuildTradeRoster
 	bsr.w	rtsCreate5
 	move.w	#$FFFF,(setupdir).w
 
@@ -2957,7 +2957,7 @@ ReleaseLoop	;ReleasePlayers: input loop
 	move.b	2(a0),(TempWord1+1).w
 	move.w	(TradeData+$C).l,(TempRawSpd).w
 	movea.l	#M68K_RAM,a2
-	jsr	(MoveTradedPlayer).l
+	jsr	(ExtractTradedPlayer).l
 	move.w	(TradeData+$C).l,(tradeteam1).w
 	move.w	(TradeData+$C).l,(tradeteam2).w
 	jsr	(CheckSavedLines).l

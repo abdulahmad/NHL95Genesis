@@ -521,7 +521,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 ### front/trade95
 
-- **new in 95** (6502 bytes): GetHighlightSlot, HighlightsHelp, GetRosterId, GetCreatedName, GetRosterName, GetRosterNameTail, ReadTeamRoster, WriteTeamRoster, GetJerseyNumber, MoveSavedLines, ExecuteTrade, ShiftTradeUp, ShiftTradeDown, MoveTradedPlayer, FixSavedLine, RemoveTradedPlayer, FixSavedLine2, DrawTradeRoster1, DrawTradeRoster2, DrawTradeRosterRows, ReadTradePads, TradeDone, TradeExit, CheckTrade, CountChosen, BuildTradeList, TradeGfx, DrawTradeLogo, DrawTradeTeam, EvaluateTrade, PrintTradeNames, ReadTradePads2, GMDecision, GMDecisionRetry, ReadTradePads3, TradeValue
+- **new in 95** (6502 bytes): GetHighlightSlot, HighlightsHelp, GetRosterId, GetCreatedName, GetRosterName, GetRosterNameTail, ReadTeamRoster, WriteTeamRoster, GetJerseyNumber, FixJerseyNumber, ExecuteTrade, ShiftTradeUp, ShiftTradeDown, ExtractTradedPlayer, FixLinesRemoved, InsertTradedPlayer, FixLinesInserted, DrawTradeRoster1, DrawTradeRoster2, DrawTradeRosterRows, ReadTradePads, TradeDone, TradeExit, CheckTrade, CountChosen, BuildTradeList, TradeGfx, DrawTradeLogo, BuildTradeRoster, EvaluateTrade, PrintTradeNames, ReadTradePads2, GMDecisionGfx, GMDecisionScreen, ReadTradePads3, TradeValue
 
 ### front/create95
 

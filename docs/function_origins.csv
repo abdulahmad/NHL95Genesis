@@ -1319,17 +1319,17 @@ front/trade95.asm,$096506,96,GetRosterNameTail,code,new in 95,header
 front/trade95.asm,$096566,30,ReadTeamRoster,code,new in 95,header
 front/trade95.asm,$096584,36,WriteTeamRoster,code,new in 95,header
 front/trade95.asm,$0965A8,96,GetJerseyNumber,code,new in 95,header
-front/trade95.asm,$096608,132,MoveSavedLines,code,new in 95,header
+front/trade95.asm,$096608,132,FixJerseyNumber,code,new in 95,header
 front/trade95.asm,$09668C,364,ExecuteTrade,code,new in 95,header
 front/trade95.asm,$0967F8,34,ShiftTradeUp,code,new in 95,header
 front/trade95.asm,$09681A,48,ShiftTradeDown,code,new in 95,header
-front/trade95.asm,$09684A,352,MoveTradedPlayer,code,new in 95,header
-front/trade95.asm,$0969AA,6,TradeStatOffsets,data,new in 95,header
-front/trade95.asm,$0969B0,132,FixSavedLine,code,new in 95,header
+front/trade95.asm,$09684A,352,ExtractTradedPlayer,code,new in 95,header
+front/trade95.asm,$0969AA,6,TradeCountOffsets,data,new in 95,header
+front/trade95.asm,$0969B0,132,FixLinesRemoved,code,new in 95,header
 front/trade95.asm,$096A34,32,TeamRecordSRAM,data,new in 95,header
-front/trade95.asm,$096A54,350,RemoveTradedPlayer,code,new in 95,header
-front/trade95.asm,$096BB2,6,TradeStatOffsets2,data,new in 95,header
-front/trade95.asm,$096BB8,818,FixSavedLine2,code,new in 95,header
+front/trade95.asm,$096A54,350,InsertTradedPlayer,code,new in 95,header
+front/trade95.asm,$096BB2,6,TradeCountOffsets2,data,new in 95,header
+front/trade95.asm,$096BB8,818,FixLinesInserted,code,new in 95,header
 front/trade95.asm,$096EEA,46,DrawTradeRoster1,code,new in 95,header
 front/trade95.asm,$096F18,42,DrawTradeRoster2,code,new in 95,header
 front/trade95.asm,$096F42,234,DrawTradeRosterRows,code,new in 95,header
@@ -1343,14 +1343,14 @@ front/trade95.asm,$097338,216,TradeRulesText,data,new in 95,header
 front/trade95.asm,$097410,42,BuildTradeList,code,new in 95,header
 front/trade95.asm,$09743A,322,TradeGfx,code,new in 95,header
 front/trade95.asm,$09757C,48,DrawTradeLogo,code,new in 95,header
-front/trade95.asm,$0975AC,192,DrawTradeTeam,code,new in 95,header
-front/trade95.asm,$09766C,2,rtsTrade,code,new in 95,follows DrawTradeTeam
+front/trade95.asm,$0975AC,192,BuildTradeRoster,code,new in 95,header
+front/trade95.asm,$09766C,2,rtsTrade,code,new in 95,follows BuildTradeRoster
 front/trade95.asm,$09766E,322,EvaluateTrade,code,new in 95,header
 front/trade95.asm,$0977B0,96,PrintTradeNames,code,new in 95,header
 front/trade95.asm,$097810,12,PositionLetters2,data,new in 95,header
 front/trade95.asm,$09781C,76,ReadTradePads2,code,new in 95,header
-front/trade95.asm,$097868,254,GMDecision,code,new in 95,header
-front/trade95.asm,$097966,552,GMDecisionRetry,code,new in 95,header
+front/trade95.asm,$097868,254,GMDecisionGfx,code,new in 95,header
+front/trade95.asm,$097966,552,GMDecisionScreen,code,new in 95,header
 front/trade95.asm,$097B8E,128,ReadTradePads3,code,new in 95,header
 front/trade95.asm,$097C0E,56,TradeValue,code,new in 95,header
 front/trade95.asm,$097C46,7,TradeRatingSteps,data,new in 95,header
