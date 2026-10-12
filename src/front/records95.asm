@@ -1634,7 +1634,7 @@ UpdateUserRecord	;Team record block d1 (a pad's name log entry) for the pad's te
 	movea.l	#AwShots,a2
 	move.w	(HomeTeam).w,d3
 	move.w	(VisTeam).w,d4
-.4
+.loop
 	exg	a1,a2
 	bsr.w	GetTeamUser
 	move.w	(recuser1).w,d2
@@ -1644,7 +1644,7 @@ UpdateUserRecord	;Team record block d1 (a pad's name log entry) for the pad's te
 	movea.l	#tmstruct,a2
 	move.w	(VisTeam).w,d3
 	move.w	(HomeTeam).w,d4
-	bra.s	.4
+	bra.s	.loop
 .6
 	bra.w	UpdateTeamRecord
 .x
