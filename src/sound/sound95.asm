@@ -95,70 +95,70 @@ SndLoadZ80	;Command 0: copy the Z80 program a0 (d1 bytes; it must start with JP 
 	move.w	#$100,(IO_Z80BUS).l
 	move.w	#$100,(IO_Z80RES).l
 	cmpi.b	#$C3,(a0)
-	bne.s	.1
+	bne.s	.bad
 	cmpi.b	#0,1(a0)
-	bne.s	.1
+	bne.s	.bad
 	lea	(Z80_RAM).l,a1
 	subi.w	#1,d1
-.loop
+.copy
 	move.b	(a0)+,(a1)+
-	dbf	d1,.loop
-	bra.s	.2
-.1
+	dbf	d1,.copy
+	bra.s	.reset
+.bad
 	move.w	#6,d0
-	bra.w	.12
-.2
+	bra.w	.err
+.reset
 	move.w	#0,(IO_Z80RES).l
 	move.w	#0,(IO_Z80BUS).l
 	move.w	#$1F4,d0
-.loop2
-	dbf	d0,.loop2
+.delay
+	dbf	d0,.delay
 	move.w	#$100,(IO_Z80RES).l
-.loop3
+.waitz80
 	bsr.w	Z80BusRequest
 	cmpi.b	#$FF,(Z80_RAM+$4F).l
-	beq.s	.6
+	beq.s	.ready
 	bsr.w	Z80BusRelease
 	move.w	#$1388,d0
-.loop4
-	dbf	d0,.loop4
-	bra.s	.loop3
-.6
+.pause
+	dbf	d0,.pause
+	bra.s	.waitz80
+.ready
 	bsr.w	Z80BusRelease
 	lea	(SndBanks).l,a0
 	move.w	#3,d0
-.loop5
+.clrbanks
 	move.l	#$FFFFFFFF,(a0)+
-	dbf	d0,.loop5
+	dbf	d0,.clrbanks
 	lea	(SndSeqPtr).l,a0
 	move.w	#7,d0
-.loop6
+.clrptr
 	move.l	#$FFFFFFFF,(a0)+
-	dbf	d0,.loop6
+	dbf	d0,.clrptr
 	lea	(SndSeqPos).l,a0
 	move.w	#7,d0
-.loop7
+.clrpos
 	move.l	#0,(a0)+
-	dbf	d0,.loop7
+	dbf	d0,.clrpos
 	lea	(SndSeqId).l,a0
 	move.w	#7,d0
-.loop8
+.clrid
 	move.w	#$FFFF,(a0)+
-	dbf	d0,.loop8
+	dbf	d0,.clrid
 	lea	(SndSeqState).l,a0
 	move.w	#7,d0
-.loop9
+.clrstate
 	move.l	#0,(a0)+
-	dbf	d0,.loop9
+	dbf	d0,.clrstate
 	bsr.w	SndClearNotes
 	lea	(SndDrvRAM).l,a0
 	move.w	#$1234,(a0)
 	andi	#$FE,ccr
 	clr.w	d0
-	bra.s	.13
-.12
+	bra.s	.done
+.err
 	ori	#1,ccr
-.13
+.done
 	move	(sp)+,sr
 	movem.l	(sp)+,d1/a0-a2
 	rts
@@ -169,7 +169,7 @@ SndUpdate	;Command 1, once a frame: note timers (SndUpdateNotes), sample streami
 	movem.l	d0-d7/a0-a6,-(sp)
 	lea	(SndDrvRAM).l,a0
 	cmpi.w	#$1234,(a0)
-	bne.w	.22
+	bne.w	.off
 	bsr.w	SndUpdateNotes
 	bsr.w	SndStreamZ80
 	lea	(SndSeqIndex).l,a0
@@ -180,15 +180,15 @@ SndUpdate	;Command 1, once a frame: note timers (SndUpdateNotes), sample streami
 	lea	(SndSeqTempo).l,a3
 	lea	(SndSeqFrac).l,a2
 	lea	(SndSeqState).l,a1
-.loop
+.slot
 	move.w	(SndSeqIndex).l,d6
 	lsl.w	#1,d6
 	move.w	d6,d7
 	lsl.w	#1,d7
 	cmpi.l	#$FFFFFFFF,(a6,d7.w)
-	beq.w	.21
+	beq.w	.nextslot
 	tst.w	(a4,d6.w)
-	beq.s	.2
+	beq.s	.events
 	move.w	(a3,d6.w),d1
 	add.w	(a2,d6.w),d1
 	move.w	d1,d2
@@ -197,37 +197,37 @@ SndUpdate	;Command 1, once a frame: note timers (SndUpdateNotes), sample streami
 	add.w	(a1,d7.w),d1
 	move.w	#0,(a1,d7.w)
 	cmp.w	(a4,d6.w),d1
-	bge.s	.1
+	bge.s	.due
 	move.w	(a4,d6.w),d3
 	sub.w	d1,d3
 	move.w	d3,(a4,d6.w)
 	move.w	d2,(a2,d6.w)
-	bra.w	.21
-.1
+	bra.w	.nextslot
+.due
 	sub.w	(a4,d6.w),d1
 	lsl.w	#8,d1
 	or.w	d2,d1
 	move.w	d1,(a2,d6.w)
 	clr.w	(a4,d6.w)
-.2
+.events
 	movea.l	(a6,d7.w),a0
 	move.l	(a5,d7.w),d5
-.loop2
+.skipdelay
 	tst.b	(a0,d5.l)
-	bpl.s	.4
+	bpl.s	.event
 	addi.l	#1,d5
-	bra.s	.loop2
-.4
+	bra.s	.skipdelay
+.event
 	addi.l	#1,d5
 	tst.b	(a0,d5.l)
-	bpl.s	.5
+	bpl.s	.running
 	move.b	(a0,d5.l),2(a1,d7.w)
 	addi.l	#1,d5
-.5
+.running
 	move.b	2(a1,d7.w),d0
 	andi.b	#$F0,d0
 	cmpi.b	#$90,d0
-	bne.w	.10
+	bne.w	.ctrl
 	move.w	(SndSeqIndex).l,d0
 	lsl.w	#8,d0
 	lsl.w	#4,d0
@@ -238,17 +238,17 @@ SndUpdate	;Command 1, once a frame: note timers (SndUpdateNotes), sample streami
 	move.b	2(a1,d7.w),d0
 	bsr.w	SndPutZ80Cmd
 	tst.w	d0
-	beq.s	.6
+	beq.s	.notelen
 	addi.w	#1,(a1,d7.w)
-	bra.w	.21
-.6
+	bra.w	.nextslot
+.notelen
 	clr.l	d0
 	move.b	2(a0,d5.l),d0
-	bpl.s	.7
+	bpl.s	.len
 	andi.l	#$7F,d0
 	lsl.l	#7,d0
 	or.b	3(a0,d5.l),d0
-.7
+.len
 	lsl.l	#8,d0
 	move.w	(a3,d6.w),d3
 	divu.w	d3,d0
@@ -262,23 +262,23 @@ SndUpdate	;Command 1, once a frame: note timers (SndUpdateNotes), sample streami
 	or.b	d1,d0
 	bsr.w	SndAddNote
 	addi.l	#2,d5
-.loop3
+.skiplen
 	tst.b	(a0,d5.l)
 	bpl.s	.9
 	addi.l	#1,d5
-	bra.s	.loop3
+	bra.s	.skiplen
 .9
 	addi.l	#1,d5
-	bra.w	.19
-.10
+	bra.w	.delay
+.ctrl
 	cmpi.b	#$B0,d0
-	bne.w	.14
+	bne.w	.prog
 	cmpi.b	#$12,(a0,d5.l)
-	bne.s	.11
-	bra.s	.12
-.11
+	bne.s	.chkloop
+	bra.s	.sendctrl
+.chkloop
 	cmpi.b	#$75,(a0,d5.l)
-	bne.s	.12
+	bne.s	.sendctrl
 	clr.l	d0
 	move.b	1(a0,d5.l),d0
 	lsl.l	#1,d0
@@ -297,8 +297,8 @@ SndUpdate	;Command 1, once a frame: note timers (SndUpdateNotes), sample streami
 	add.l	d0,d1
 	move.l	d1,d5
 	move.l	d5,(a5,d7.w)
-	bra.w	.loop
-.12
+	bra.w	.slot
+.sendctrl
 	move.w	(SndSeqIndex).l,d0
 	lsl.w	#8,d0
 	lsl.w	#4,d0
@@ -311,13 +311,13 @@ SndUpdate	;Command 1, once a frame: note timers (SndUpdateNotes), sample streami
 	tst.w	d0
 	beq.s	.13
 	addi.w	#1,(a1,d7.w)
-	bra.w	.21
+	bra.w	.nextslot
 .13
 	addi.l	#2,d5
-	bra.s	.19
-.14
+	bra.s	.delay
+.prog
 	cmpi.b	#$C0,d0
-	bne.s	.16
+	bne.s	.bend
 	move.w	(SndSeqIndex).l,d0
 	lsl.w	#8,d0
 	lsl.w	#4,d0
@@ -329,13 +329,13 @@ SndUpdate	;Command 1, once a frame: note timers (SndUpdateNotes), sample streami
 	tst.w	d0
 	beq.s	.15
 	addi.w	#1,(a1,d7.w)
-	bra.s	.21
+	bra.s	.nextslot
 .15
 	addi.l	#1,d5
-	bra.s	.19
-.16
+	bra.s	.delay
+.bend
 	cmpi.b	#$E0,d0
-	bne.s	.18
+	bne.s	.chkend
 	move.w	(SndSeqIndex).l,d0
 	lsl.w	#8,d0
 	lsl.w	#4,d0
@@ -347,34 +347,34 @@ SndUpdate	;Command 1, once a frame: note timers (SndUpdateNotes), sample streami
 	tst.w	d0
 	beq.s	.17
 	addi.w	#1,(a1,d7.w)
-	bra.s	.21
+	bra.s	.nextslot
 .17
 	addi.l	#1,d5
-	bra.s	.19
-.18
+	bra.s	.delay
+.chkend
 	cmpi.b	#$FF,2(a1,d7.w)
-	bne.s	.19
+	bne.s	.delay
 	move.l	#$FFFFFFFF,(a6,d7.w)
-	bra.s	.21
-.19
+	bra.s	.nextslot
+.delay
 	move.l	d5,(a5,d7.w)
 	clr.w	d2
 	move.b	(a0,d5.l),d2
-	bpl.s	.20
+	bpl.s	.setdelay
 	andi.b	#$7F,d2
 	lsl.w	#7,d2
 	or.b	1(a0,d5.l),d2
-.20
+.setdelay
 	move.w	d2,(a4,d6.w)
 	tst.w	d2
-	bne.s	.21
-	bra.w	.loop
-.21
+	bne.s	.nextslot
+	bra.w	.slot
+.nextslot
 	lea	(SndSeqIndex).l,a0
 	addi.w	#1,(a0)
 	cmpi.w	#8,(a0)
-	blt.w	.loop
-.22
+	blt.w	.slot
+.off
 	andi	#$FE,ccr
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -389,15 +389,15 @@ SndStartSeq	;Command 4: play song d1 (bank item type 3) in the first free slot, 
 	move.w	d4,$138(a0)
 	lea	(SndSeqPtr).l,a1
 	clr.w	d0
-.loop
+.find
 	cmpi.l	#$FFFFFFFF,(a1)+
-	beq.s	.1
+	beq.s	.free
 	addi.w	#1,d0
 	cmpi	#8,d0	;retail CMPI (0C40). No .w, so fixopcodes.js leaves it
-	bne.s	.loop
+	bne.s	.find
 	move.w	#7,d0
-	bra.s	.2
-.1
+	bra.s	.err
+.free
 	move.w	d0,$130(a0)
 	lsl.w	#8,d0
 	lsl.w	#4,d0
@@ -406,7 +406,7 @@ SndStartSeq	;Command 4: play song d1 (bank item type 3) in the first free slot, 
 	bsr.w	SndPutZ80Cmd
 	move.w	#3,d0
 	bsr.w	SndFindBankItem
-	bcs.s	.2
+	bcs.s	.err
 	clr.l	d1
 	move.b	(a0),d1
 	lsl.w	#8,d1
@@ -430,10 +430,10 @@ SndStartSeq	;Command 4: play song d1 (bank item type 3) in the first free slot, 
 	move.w	$132(a1),$42(a1,d0.w)
 	move.w	(sp)+,0(a1)
 	clr.w	d0
-	bra.s	.3
-.2
+	bra.s	.done
+.err
 	ori	#1,ccr
-.3
+.done
 	movem.l	(sp)+,d1-d4/a0-a1
 	rts
 
@@ -441,16 +441,16 @@ SndStopSeq	;Command 5: stop the slot playing song id d1 and release its notes. C
 	movem.l	d1-d2/a0,-(sp)
 	lea	(SndSeqId).l,a0
 	clr.w	d0
-.loop
+.find
 	cmp.w	(a0)+,d1
-	beq.s	.1
+	beq.s	.found
 	addi.w	#1,d0
 	cmpi	#8,d0	;retail CMPI (0C40). No .w, so fixopcodes.js leaves it
-	bne.s	.loop
+	bne.s	.find
 	move.w	#3,d0
 	ori	#1,ccr
-	bra.s	.2
-.1
+	bra.s	.done
+.found
 	lea	(SndDrvRAM).l,a0
 	move.w	d0,SndStopSlot-SndDrvRAM(a0)
 	lsl.w	#1,d0
@@ -463,7 +463,7 @@ SndStopSeq	;Command 5: stop the slot playing song id d1 and release its notes. C
 	move.w	SndStopSlot-SndDrvRAM(a0),d0
 	bsr.w	SndReleaseNotes
 	clr.w	d0
-.2
+.done
 	movem.l	(sp)+,d1-d2/a0
 	rts
 
@@ -472,24 +472,24 @@ SndPutZ80Cmd	;Queue the 4 byte Z80 command d0 (Z80_RAM+$D + 4 * count, count at 
 	lea	(SndDrvRAM).l,a0
 	move.w	0(a0),-(sp)
 	move.w	#0,0(a0)
-.loop
+.wait
 	bsr.w	Z80BusRequest
 	lea	(Z80_RAM+$B).l,a0
 	tst.b	(a0)
-	beq.s	.2
+	beq.s	.free
 	move.w	#0,(IO_Z80BUS).l
 	move.w	#$64,d1
-.loop2
+.delay
 	subi.w	#1,d1
-	bne.s	.loop2
-	bra.s	.loop
-.2
+	bne.s	.delay
+	bra.s	.wait
+.free
 	adda.l	#1,a0
 	cmpi.b	#$10,(a0)
-	blt.s	.3
+	blt.s	.put
 	move.w	#$FFFF,d0
-	bra.s	.4
-.3
+	bra.s	.done
+.put
 	clr.w	d1
 	move.b	(a0),d1
 	lsl.w	#2,d1
@@ -504,7 +504,7 @@ SndPutZ80Cmd	;Queue the 4 byte Z80 command d0 (Z80_RAM+$D + 4 * count, count at 
 	addi.b	#1,d1
 	move.b	d1,(a0)
 	clr.w	d0
-.4
+.done
 	bsr.w	Z80BusRelease
 	lea	(SndDrvRAM).l,a0
 	move.w	(sp)+,0(a0)
@@ -523,44 +523,44 @@ SndUploadBlock	;Copy d1 bytes from a0 to free Z80 RAM as block d0 (the 42 six by
 	move.b	(Z80_RAM+6).l,d2
 	add.w	d1,d2
 	cmpi.w	#$1F00,d2
-	bcs.s	.0
+	bcs.s	.room
 	bsr.w	Z80BusRelease
 	lea	(SndDrvRAM).l,a1
 	move.w	(sp)+,(a1)
 	move.w	#4,d0
 	ori	#1,ccr
-	bra.w	.6
-.0
+	bra.w	.done
+.room
 	lea	(Z80_RAM+$100).l,a1
 	move.w	#$29,d2
-.loop
+.chkdup
 	cmpi.b	#0,(a1)
-	bne.s	.2
+	bne.s	.nextdup
 	cmp.b	1(a1),d0
-	bne.s	.2
+	bne.s	.nextdup
 	bsr.w	Z80BusRelease
 	lea	(SndDrvRAM).l,a1
 	move.w	(sp)+,(a1)
 	move.w	#3,d0
 	ori	#1,ccr
-	bra.w	.6
-.2
+	bra.w	.done
+.nextdup
 	adda.l	#6,a1
-	dbf	d2,.loop
+	dbf	d2,.chkdup
 	lea	(Z80_RAM+$100).l,a1
 	move.w	#$29,d2
-.loop2
+.findfree
 	cmpi.b	#$FF,(a1)
-	beq.s	.4
+	beq.s	.free
 	adda.l	#6,a1
-	dbf	d2,.loop2
+	dbf	d2,.findfree
 	bsr.w	Z80BusRelease
 	lea	(SndDrvRAM).l,a1
 	move.w	(sp)+,(a1)
 	move.w	#7,d0
 	ori	#1,ccr
-	bra.w	.6
-.4
+	bra.w	.done
+.free
 	move.b	#0,(a1)
 	move.b	d0,1(a1)
 	move.w	d1,d2
@@ -577,10 +577,10 @@ SndUploadBlock	;Copy d1 bytes from a0 to free Z80 RAM as block d0 (the 42 six by
 	lsl.w	#8,d2
 	move.b	(Z80_RAM+6).l,d2
 	subi.w	#1,d1
-.loop3
+.copy
 	move.b	(a0)+,(a1,d2.w)
 	addi.w	#1,d2
-	dbf	d1,.loop3
+	dbf	d1,.copy
 	move.b	d2,(Z80_RAM+6).l
 	lsr.w	#8,d2
 	move.b	d2,(Z80_RAM+5).l
@@ -588,7 +588,7 @@ SndUploadBlock	;Copy d1 bytes from a0 to free Z80 RAM as block d0 (the 42 six by
 	lea	(SndDrvRAM).l,a1
 	move.w	(sp)+,(a1)
 	clr.w	d0
-.6
+.done
 	movem.l	(sp)+,d1-d2/a0-a1
 	rts
 
@@ -600,21 +600,21 @@ SndReadBlock	;Command $B: copy Z80 block d1 to a0. Carry set and d0 = 3 when the
 	bsr.w	Z80BusRequest
 	lea	(Z80_RAM+$100).l,a1
 	move.w	#$29,d2
-.loop
+.find
 	cmpi.b	#0,(a1)
-	bne.s	.1
+	bne.s	.next
 	cmp.b	1(a1),d1
-	beq.s	.2
-.1
+	beq.s	.found
+.next
 	adda.l	#6,a1
-	dbf	d2,.loop
+	dbf	d2,.find
 	bsr.w	Z80BusRelease
 	lea	(SndDrvRAM).l,a1
 	move.w	(sp)+,(a1)
 	move.w	#3,d0
 	ori	#1,ccr
-	bra.w	.4
-.2
+	bra.w	.done
+.found
 	move.b	3(a1),d2
 	lsl.w	#8,d2
 	move.b	2(a1),d2
@@ -623,15 +623,15 @@ SndReadBlock	;Command $B: copy Z80 block d1 to a0. Carry set and d0 = 3 when the
 	lsl.w	#8,d3
 	move.b	5(a1),d3
 	lea	(Z80_RAM).l,a1
-.loop2
+.copy
 	move.b	(a1,d3.w),(a0)+
 	addi.w	#1,d3
-	dbf	d2,.loop2
+	dbf	d2,.copy
 	bsr.w	Z80BusRelease
 	lea	(SndDrvRAM).l,a1
 	move.w	(sp)+,(a1)
 	clr.w	d0
-.4
+.done
 	movem.l	(sp)+,d1-d3/a0-a1
 	rts
 
@@ -643,21 +643,21 @@ SndWriteBlock	;Command $C: copy a0 over Z80 block d1. Carry set and d0 = 3 when 
 	bsr.w	Z80BusRequest
 	lea	(Z80_RAM+$100).l,a1
 	move.w	#$29,d2
-.loop
+.find
 	cmpi.b	#0,(a1)
-	bne.s	.1
+	bne.s	.next
 	cmp.b	1(a1),d1
-	beq.s	.2
-.1
+	beq.s	.found
+.next
 	adda.l	#6,a1
-	dbf	d2,.loop
+	dbf	d2,.find
 	bsr.w	Z80BusRelease
 	lea	(SndDrvRAM).l,a1
 	move.w	(sp)+,(a1)
 	move.w	#3,d0
 	ori	#1,ccr
-	bra.w	.4
-.2
+	bra.w	.done
+.found
 	move.b	3(a1),d2
 	lsl.w	#8,d2
 	move.b	2(a1),d2
@@ -666,15 +666,15 @@ SndWriteBlock	;Command $C: copy a0 over Z80 block d1. Carry set and d0 = 3 when 
 	lsl.w	#8,d3
 	move.b	5(a1),d3
 	lea	(Z80_RAM).l,a1
-.loop2
+.copy
 	move.b	(a0)+,(a1,d3.w)
 	addi.w	#1,d3
-	dbf	d2,.loop2
+	dbf	d2,.copy
 	bsr.w	Z80BusRelease
 	lea	(SndDrvRAM).l,a1
 	move.w	(sp)+,(a1)
 	clr.w	d0
-.4
+.done
 	movem.l	(sp)+,d1-d3/a0-a1
 	rts
 
@@ -684,12 +684,12 @@ SndPauseZ80	;Command $D: Z80_RAM+$50 = $FF (pause)
 	move.w	(a0),-(sp)
 	move.w	#0,(a0)
 	btst	#8,(IO_Z80BUS).l
-	bne.s	.0
+	bne.s	.busreq
 	move.b	#$FF,(Z80_RAM+$50).l
 	move.w	(sp)+,(a0)
 	movea.l	(sp)+,a0
 	rts
-.0
+.busreq
 	bsr.w	Z80BusRequest
 	move.b	#$FF,(Z80_RAM+$50).l
 	bsr.w	Z80BusRelease
@@ -703,12 +703,12 @@ SndResumeZ80	;Command $E: Z80_RAM+$50 = 0 (resume)
 	move.w	(a0),-(sp)
 	move.w	#0,(a0)
 	btst	#8,(IO_Z80BUS).l
-	bne.s	.0
+	bne.s	.busreq
 	move.b	#0,(Z80_RAM+$50).l
 	move.w	(sp)+,(a0)
 	movea.l	(sp)+,a0
 	rts
-.0
+.busreq
 	bsr.w	Z80BusRequest
 	move.b	#0,(Z80_RAM+$50).l
 	bsr.w	Z80BusRelease
@@ -723,9 +723,9 @@ SndStopAll	;Command $F (SoundOff): free every song slot, send Z80 command $FF an
 	move.w	#0,(a0)
 	lea	(SndSeqPtr).l,a1
 	move.w	#7,d0
-.loop
+.clr
 	move.l	#$FFFFFFFF,(a1)+
-	dbf	d0,.loop
+	dbf	d0,.clr
 	move.w	#$FF,d0
 	bsr.w	SndPutZ80Cmd
 	bsr.w	SndClearNotes
@@ -742,9 +742,9 @@ SndClearNotes	;No notes: SndNoteCount 0, SndNotes all -1
 	lea	(SndNotes).l,a1
 	move.w	#$1F,d1
 	move.l	#$FFFFFFFF,d0
-.loop
+.clr
 	move.l	d0,(a1)+
-	dbf	d1,.loop
+	dbf	d1,.clr
 	move.w	(sp)+,0(a0)
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
@@ -757,19 +757,19 @@ SndReleaseNotes	;Set the timer of every note of slot d0 to 1 (released next fram
 	lea	(SndNotes).l,a1
 	move.w	$122(a0),d1
 	clr.w	d2
-.loop
+.note
 	cmpi.w	#0,d1
-	beq.s	.2
+	beq.s	.done
 	move.b	3(a1),d2
 	lsr.b	#4,d2
 	cmp.w	d0,d2
-	bne.s	.1
+	bne.s	.next
 	move.w	#1,(a1)
-.1
+.next
 	adda.l	#4,a1
 	subi.w	#1,d1
-	bra.s	.loop
-.2
+	bra.s	.note
+.done
 	move.w	(sp)+,0(a0)
 	movem.l	(sp)+,d0-d2/a0-a1
 	rts
@@ -790,13 +790,13 @@ SndUpdateNotes	;Count down the note timers; at 0 send the note off ($8x) and rem
 	movem.l	d0-d1/a0-a2,-(sp)
 	lea	(SndDrvRAM).l,a2
 	cmpi.w	#0,SndNoteCount-SndDrvRAM(a2)
-	beq.s	.3
+	beq.s	.done
 	lea	(SndNotes).l,a0
-.loop
+.note
 	cmpi.w	#$FFFF,(a0)
-	beq.s	.3
+	beq.s	.done
 	subi.w	#1,(a0)
-	bne.s	.2
+	bne.s	.next
 	move.b	3(a0),d0
 	andi.b	#$F0,d0
 	lsl.w	#8,d0
@@ -806,10 +806,10 @@ SndUpdateNotes	;Count down the note timers; at 0 send the note off ($8x) and rem
 	ori.b	#$80,d0
 	bsr.w	SndPutZ80Cmd
 	tst.w	d0
-	beq.s	.1
+	beq.s	.remove
 	addi.w	#1,(a0)
-	bra.s	.2
-.1
+	bra.s	.next
+.remove
 	lea	(SndNotes).l,a1
 	move.w	(SndNoteCount).l,d0
 	subi.w	#1,d0
@@ -817,11 +817,11 @@ SndUpdateNotes	;Count down the note timers; at 0 send the note off ($8x) and rem
 	move.l	(a1,d0.w),(a0)
 	move.l	#$FFFFFFFF,(a1,d0.w)
 	subi.w	#1,$122(a2)
-	bra.s	.loop
-.2
+	bra.s	.note
+.next
 	adda.w	#4,a0
-	bra.s	.loop
-.3
+	bra.s	.note
+.done
 	movem.l	(sp)+,d0-d1/a0-a2
 	rts
 
@@ -830,28 +830,28 @@ SndStreamZ80	;Answer the Z80's sample request (Z80_RAM+$4D: 1 start sample Z80_R
 	movem.l	d1-d2/a0,-(sp)
 	bsr.w	Z80BusRequest
 	tst.b	(Z80_RAM+$4D).l
-	beq.w	.8
+	beq.w	.done
 	cmpi.b	#1,(Z80_RAM+$4D).l
-	bne.s	.2
+	bne.s	.buf1
 	clr.w	d1
 	move.b	(Z80_RAM+$4E).l,d1
 	move.w	#1,d0
 	bsr.w	SndFindBankItem
-	bcs.w	.8
+	bcs.w	.done
 	cmpa.l	#$FFFFFFFF,a0
-	beq.w	.8
+	beq.w	.done
 	lea	(SndDrvRAM).l,a1
 	move.l	a0,SndStreamBase-SndDrvRAM(a1)
-.loop
+.rdhi
 	move.b	(a0),d0
 	cmp.b	(a0),d0
-	bne.s	.loop
+	bne.s	.rdhi
 	lsl.w	#8,d0
 	adda.l	#1,a0
-.loop2
+.rdlo
 	move.b	(a0),d0
 	cmp.b	(a0),d0
-	bne.s	.loop2
+	bne.s	.rdlo
 	move.w	d0,$12E(a1)
 	adda.l	#1,a0
 	movea.l	$126(a1),a0
@@ -863,58 +863,58 @@ SndStreamZ80	;Answer the Z80's sample request (Z80_RAM+$4D: 1 start sample Z80_R
 	move.b	(Z80_RAM+8).l,d0
 	addi.l	#Z80_RAM,d0
 	movea.l	d0,a1
-	bra.w	.4
-.2
+	bra.w	.copy
+.buf1
 	cmpi.b	#2,(Z80_RAM+$4D).l
-	bne.s	.3
+	bne.s	.buf2
 	movea.l	(SndStreamPtr).l,a0
 	cmpa.l	#0,a0
-	beq.w	.8
+	beq.w	.done
 	clr.l	d0
 	move.b	(Z80_RAM+7).l,d0
 	lsl.w	#8,d0
 	move.b	(Z80_RAM+8).l,d0
 	addi.l	#Z80_RAM,d0
 	movea.l	d0,a1
-	bra.s	.4
-.3
+	bra.s	.copy
+.buf2
 	cmpi.b	#3,(Z80_RAM+$4D).l
-	bne.w	.8
+	bne.w	.done
 	movea.l	(SndStreamPtr).l,a0
 	cmpa.l	#0,a0
-	beq.w	.8
+	beq.w	.done
 	clr.l	d0
 	move.b	(Z80_RAM+9).l,d0
 	lsl.w	#8,d0
 	move.b	(Z80_RAM+$A).l,d0
 	addi.l	#Z80_RAM,d0
 	movea.l	d0,a1
-.4
+.copy
 	move.w	#$FF,d1
-.loop3
+.copybyte
 	move.b	(a0)+,(a1)+
-	dbeq	d1,.loop3
-	beq.s	.6
+	dbeq	d1,.copybyte
+	beq.s	.end
 	lea	(SndDrvRAM).l,a1
 	addi.l	#$100,SndStreamPtr-SndDrvRAM(a1)
-	bra.s	.8
-.6
+	bra.s	.done
+.end
 	suba.l	#1,a1
 	clr.l	d0
 	move.w	(SndStreamLoop).l,d0
 	cmpi	#$FFFF,d0	;retail CMPI (0C40). No .w, so fixopcodes.js leaves it
-	beq.s	.7
+	beq.s	.stop
 	move.b	#$FF,(a1)
 	lea	(SndDrvRAM).l,a1
 	movea.l	SndStreamBase-SndDrvRAM(a1),a0
 	adda.l	#2,a0
 	adda.l	d0,a0
 	move.l	a0,$12A(a1)
-	bra.s	.8
-.7
+	bra.s	.done
+.stop
 	lea	(SndDrvRAM).l,a1
 	move.l	#0,SndStreamPtr-SndDrvRAM(a1)
-.8
+.done
 	move.b	#0,(Z80_RAM+$4D).l
 	bsr.w	Z80BusRelease
 	movem.l	(sp)+,d1-d2/a0
@@ -925,9 +925,9 @@ SndFindBankItem	;Find bank item type d0, id d1 in the 4 banks (SndBanks): a0 = i
 	movem.l	d1-d4/a1-a2,-(sp)
 	lea	(SndBanks).l,a1
 	move.w	#3,d2
-.loop
+.bank
 	cmpi.l	#$FFFFFFFF,(a1)
-	beq.w	.3
+	beq.w	.nextbank
 	movea.l	(a1),a0
 	movea.l	a0,a2
 	clr.l	d3
@@ -938,18 +938,18 @@ SndFindBankItem	;Find bank item type d0, id d1 in the 4 banks (SndBanks): a0 = i
 	lsl.w	#2,d4
 	adda.l	d4,a2
 	adda.l	#2,a2
-.loop2
+.item
 	cmp.b	(a0),d0
-	bne.s	.2
+	bne.s	.nextitem
 	cmp.b	1(a0),d1
-	bne.s	.2
+	bne.s	.nextitem
 	move.b	2(a0),d0
 	lsl.w	#8,d0
 	move.b	3(a0),d0
 	movea.l	a2,a0
 	andi	#$FE,ccr
-	bra.s	.4
-.2
+	bra.s	.done
+.nextitem
 	clr.l	d4
 	move.b	2(a0),d4
 	lsl.w	#8,d4
@@ -957,24 +957,24 @@ SndFindBankItem	;Find bank item type d0, id d1 in the 4 banks (SndBanks): a0 = i
 	adda.l	d4,a2
 	adda.l	#4,a0
 	subi.w	#1,d3
-	bne.s	.loop2
-.3
+	bne.s	.item
+.nextbank
 	adda.l	#4,a1
-	dbf	d2,.loop
+	dbf	d2,.bank
 	move.w	#3,d0
 	ori	#1,ccr
-.4
+.done
 	movem.l	(sp)+,d1-d4/a1-a2
 	rts
 
 SndSetBank	;Command 6: bank d1 (0-3) is at a0; tell the Z80 too (Z80_RAM+$51). Carry set and d0 = 3 for d1 above 3
 	movem.l	d1/a1-a2,-(sp)
 	cmpi.w	#4,d1
-	bcs.s	.0
+	bcs.s	.ok
 	move.w	#3,d0
 	ori	#1,ccr
-	bra.s	.1
-.0
+	bra.s	.done
+.ok
 	lsl.w	#2,d1
 	lea	(SndBanks).l,a1
 	move.l	a0,(a1,d1.w)
@@ -994,7 +994,7 @@ SndSetBank	;Command 6: bank d1 (0-3) is at a0; tell the Z80 too (Z80_RAM+$51). C
 	bsr.w	Z80BusRelease
 	move.w	(sp)+,(a1)
 	clr.w	d0
-.1
+.done
 	movem.l	(sp)+,d1/a1-a2
 	rts
 
@@ -1002,34 +1002,34 @@ SndLoadList	;Command 7: upload the patches (types 0 and 4) of load list d1 (bank
 	movem.l	d1/a0-a1,-(sp)
 	move.w	#$B,d0
 	bsr.w	SndFindBankItem
-	bcs.w	.4
+	bcs.w	.done
 	movea.l	a0,a1
-.loop
+.entry
 	cmpi.b	#$FF,(a1)
-	bne.s	.1
+	bne.s	.find
 	clr.w	d0
-	bra.s	.4
-.1
+	bra.s	.done
+.find
 	clr.w	d0
 	move.b	(a1),d0
 	clr.w	d1
 	move.b	1(a1),d1
 	bsr.w	SndFindBankItem
-	bcs.s	.4
+	bcs.s	.done
 	cmpi.b	#0,(a1)
-	beq.s	.2
+	beq.s	.upload
 	cmpi.b	#4,(a1)
-	bne.s	.3
-.2
+	bne.s	.next
+.upload
 	move.w	d0,d1
 	clr.w	d0
 	move.b	1(a1),d0
 	bsr.w	SndUploadBlock
-	bcs.s	.4
-.3
+	bcs.s	.done
+.next
 	adda.l	#2,a1
-	bra.s	.loop
-.4
+	bra.s	.entry
+.done
 	movem.l	(sp)+,d1/a0-a1
 	rts
 
@@ -1039,23 +1039,23 @@ SndFreeBlocks	;Command 8: free the Z80 blocks of list a0 (word pairs ended by -1
 	move.w	(a1),-(sp)
 	move.w	#0,(a1)
 	bsr.w	Z80BusRequest
-.loop
+.entry
 	cmpi.w	#$FFFF,(a0)
-	beq.w	.9
+	beq.w	.done
 	lea	(Z80_RAM+$100).l,a1
 	move.w	(a0),d0
 	move.w	2(a0),d1
 	move.w	#$29,d2
-.loop2
+.find
 	cmp.b	(a1),d0
-	bne.s	.2
+	bne.s	.nextblk
 	cmp.b	1(a1),d1
-	beq.s	.3
-.2
+	beq.s	.found
+.nextblk
 	adda.l	#6,a1
-	dbf	d2,.loop2
-	bra.w	.8
-.3
+	dbf	d2,.find
+	bra.w	.next
+.found
 	move.b	2(a1),d0
 	lsl.w	#8,d0
 	move.b	3(a1),d0
@@ -1066,14 +1066,14 @@ SndFreeBlocks	;Command 8: free the Z80 blocks of list a0 (word pairs ended by -1
 	move.w	d1,d2
 	add.w	d0,d2
 	lea	(Z80_RAM).l,a2
-.loop3
+.move
 	cmpi.w	#$1F00,d2
-	beq.s	.5
+	beq.s	.clear
 	move.b	(a2,d2.w),(a2,d1.w)
 	addi.w	#1,d2
 	addi.w	#1,d1
-	bra.s	.loop3
-.5
+	bra.s	.move
+.clear
 	clr.w	d1
 	move.b	4(a1),d1
 	lsl.w	#8,d1
@@ -1086,22 +1086,22 @@ SndFreeBlocks	;Command 8: free the Z80 blocks of list a0 (word pairs ended by -1
 	move.b	#$FF,5(a1)
 	lea	(Z80_RAM+$100).l,a1
 	move.w	#$29,d2
-.loop4
+.fix
 	cmpi.b	#$FF,(a1)
-	beq.s	.7
+	beq.s	.nextfix
 	clr.w	d3
 	move.b	4(a1),d3
 	lsl.w	#8,d3
 	move.b	5(a1),d3
 	cmp.w	d1,d3
-	bcs.s	.7
+	bcs.s	.nextfix
 	sub.w	d0,d3
 	move.b	d3,5(a1)
 	lsr.w	#8,d3
 	move.b	d3,4(a1)
-.7
+.nextfix
 	adda.l	#6,a1
-	dbf	d2,.loop4
+	dbf	d2,.fix
 	lea	(Z80_RAM+5).l,a1
 	clr.w	d1
 	move.b	(a1),d1
@@ -1111,10 +1111,10 @@ SndFreeBlocks	;Command 8: free the Z80 blocks of list a0 (word pairs ended by -1
 	move.b	d1,1(a1)
 	lsr.w	#8,d1
 	move.b	d1,(a1)
-.8
+.next
 	adda.l	#4,a0
-	bra.w	.loop
-.9
+	bra.w	.entry
+.done
 	bsr.w	Z80BusRelease
 	lea	(SndDrvRAM).l,a1
 	move.w	(sp)+,(a1)
@@ -1130,9 +1130,9 @@ SndResetBlocks	;Command 9: free all Z80 blocks (Z80_RAM+$100 all $FF, free point
 	bsr.w	Z80BusRequest
 	lea	(Z80_RAM+$100).l,a0
 	move.w	#$FB,d0
-.loop
+.clr
 	move.b	#$FF,(a0)+
-	dbf	d0,.loop
+	dbf	d0,.clr
 	lea	(Z80_RAM+3).l,a0
 	lea	(Z80_RAM+5).l,a1
 	move.b	(a0)+,(a1)+
@@ -1154,9 +1154,9 @@ SndSendZ80	;Command $A: queue Z80 command d1 with interrupts off
 
 Z80BusRequest	;Stop the Z80 and wait for the bus
 	move.w	#$100,(IO_Z80BUS).l
-.loop
+.wait
 	btst	#8,(IO_Z80BUS).l
-	bne.s	.loop
+	bne.s	.wait
 	rts
 
 Z80BusRelease	;Give the bus back to the Z80
@@ -1166,7 +1166,7 @@ Z80BusRelease	;Give the bus back to the Z80
 
 Z80Program	;The Z80 sound program. Starts JP $0600
 	incbin	..\Extracted\NHL95\Sound\z80_snd_drv95.bin
-	nop	;$D8EA. Pad to $D8EC (retail 4E71)
+	nop	;Pad (retail 4E71)
 
 SoundBanks	;Bank 0 (SndSetBank, Begin and Opening2): the item count, then 4 bytes per item
 	;(type, id, size), then the items in that order. Type 0 = patch (uploaded to the Z80 by a load list), 1 = sample (streamed),
@@ -1540,54 +1540,54 @@ sfx	;Play sound effect number, one word passed on stack. 95: through SfxTable to
 
 sfxplay	;Play sound d0 ($32-$55 are songs, PlayingSong; below, SfxTable). Sound $2D / $2E: a nop. song branches here
 	cmp.w	#$2E,d0
-	beq.w	.0
+	beq.w	.nop
 	cmp.w	#$2D,d0
-	bne.w	.1
-.0
+	bne.w	.chksong
+.nop
 	nop
-.1
+.chksong
 	cmp.w	#$55,d0
-	bgt.w	.9
+	bgt.w	.done
 	cmp.w	#$32,d0
-	blt.w	.2
+	blt.w	.sfx
 	move.w	d0,(PlayingSong).w
-	bra.w	.8
-.2
+	bra.w	.play
+.sfx
 	movea.l	#SfxTable,a1
 	tst.b	(a1,d0.w)
-	bmi.w	.9
+	bmi.w	.done
 	cmpi.b	#$26,(a1,d0.w)
-	bne.w	.6
+	bne.w	.chklast
 	movem.l	d0-d4/a0-a1,-(sp)
 	movea.l	#SndSeqPtr,a0
 	movea.w	#(SndSeqId-M68K_RAM),a1
 	move.w	#7,d4
 	clr.w	d3
-.loop
+.slot
 	cmpi.l	#$FFFFFFFF,(a0)
-	beq.w	.4
+	beq.w	.nextslot
 	cmpi.w	#$31,(a1,d3.w)
-	ble.w	.4
+	ble.w	.nextslot
 	move.w	(a1,d3.w),d1
 	move.w	#5,d0
 	move.w	#$FFFF,d2
 	jsr	(SndDriver).l
-	bra.w	.5
-.4
+	bra.w	.stopped
+.nextslot
 	addq.w	#4,a0
 	addq.w	#2,d3
-	dbf	d4,.loop
-.5
+	dbf	d4,.slot
+.stopped
 	movem.l	(sp)+,d0-d4/a0-a1
-.6
+.chklast
 	cmp.w	#$B,d0
-	beq.w	.7
+	beq.w	.lookup
 	cmp.w	#$C,d0
-	beq.w	.7
+	beq.w	.lookup
 	move.w	d0,(lastsfx).w
-.7
+.lookup
 	move.b	(a1,d0.w),d0
-.8
+.play
 	ext.w	d0
 	move.w	d0,d1
 	move.w	#4,d0
@@ -1595,7 +1595,7 @@ sfxplay	;Play sound d0 ($32-$55 are songs, PlayingSong; below, SfxTable). Sound 
 	move.w	#$7F,d3
 	move.w	#$100,d4
 	jsr	(SoundCmd).l
-.9
+.done
 	movem.l	(sp)+,d0-d7/a0-a6
 	move.l	(sp),2(sp)
 	addq.w	#2,sp
