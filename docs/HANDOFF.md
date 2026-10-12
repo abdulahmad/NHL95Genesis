@@ -60,6 +60,9 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
   video, summary, replay, display, control, main, crowd, hockey, playoff, shootout, players, logic, injury,
   input, skate.
   94->95 consistency items and the 10 differently named routines: DONE (docs/name_review_95.md).
-  New-in-95 locals: DONE in all modules (backward branch targets .loop/.loopN, single rts exits .exit,
-  tools_ll/autoloop.py); data labels / equates usage check DONE.
+  New-in-95 locals: backward branch targets were first auto-named .loop/.loopN and single rts exits .exit
+  (tools_ll/autoloop.py); that was not a name review.
+  Full body read of new-in-95 routines (names, headers, locals) DONE: penalty.
+  TODO (full body read still needed): season, stats, create, trade, setup, sound, awards, pause, middle, lines, records, goal, collide, scout, faceoff, title.
+  Data labels / equates usage check DONE.
   Next: NHLPA93SNES names and locals (93G names first, then 92G, then behavior).
