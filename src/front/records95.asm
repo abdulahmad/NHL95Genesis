@@ -1075,7 +1075,7 @@ PrintPlayerRecords	;Record Holders pages 1 (goals, recsort1) and 2 (saves, recso
 	move.b	4(a2,d0.w),d5
 .1
 	tst.b	d5
-	beq.w	.8
+	beq.w	.none
 	bsr.w	PrintRecordName
 	move.w	#$12,(printx).w
 	move.w	d0,-(sp)
@@ -1120,10 +1120,10 @@ PrintPlayerRecords	;Record Holders pages 1 (goals, recsort1) and 2 (saves, recso
 .7
 	andi.w	#$FF,d0
 	jsr	(AppendTeamName).l
-	bra.w	.9
-.8
+	bra.w	.print
+.none
 	movea.l	#RecParenTxt,a1
-.9
+.print
 	jsr	(printsmall).l
 	addq.w	#2,(printy).w
 	dbf	d7,.loop
@@ -1208,8 +1208,8 @@ CalcWinPercents	;For the 8 user record blocks at ThreeStars: the win % (winpcts)
 	move.b	0(a0,d1.w),d0
 	move.b	0(a0,d2.w),d3
 	cmp.b	d3,d0
-	bgt.w	.3
-	blt.w	.2
+	bgt.w	.next
+	blt.w	.swap
 	movem.l	d1-d3,-(sp)
 	add.w	d1,d1
 	add.w	d2,d2
@@ -1217,8 +1217,8 @@ CalcWinPercents	;For the 8 user record blocks at ThreeStars: the win % (winpcts)
 	move.w	0(a6,d2.w),d3
 	cmp.w	d3,d0
 	movem.l	(sp)+,d1-d3
-	bgt.w	.3
-	blt.w	.2
+	bgt.w	.next
+	blt.w	.swap
 	movem.l	d1-d3,-(sp)
 	add.w	d1,d1
 	add.w	d2,d2
@@ -1226,14 +1226,14 @@ CalcWinPercents	;For the 8 user record blocks at ThreeStars: the win % (winpcts)
 	move.w	0(a5,d2.w),d3
 	cmp.w	d3,d0
 	movem.l	(sp)+,d1-d3
-	bge.w	.3
-.2
+	bge.w	.next
+.swap
 	move.b	(a1),d0
 	move.b	-1(a1),d1
 	move.b	d0,-1(a1)
 	move.b	d1,(a1)
 	st	d6
-.3
+.next
 	dbf	d7,.loop4
 	tst.w	d6
 	bne.s	.loop3
@@ -1280,13 +1280,13 @@ ReadTeamRecords	;Read the $80 byte records from save RAM SRTeamRecords and sort 
 	move.b	4(a0,d2.w),d3
 .1
 	cmp.b	d3,d0
-	bge.w	.2
+	bge.w	.next
 	move.b	(a1),d0
 	move.b	-1(a1),d1
 	move.b	d0,-1(a1)
 	move.b	d1,(a1)
 	st	d6
-.2
+.next
 	dbf	d7,.loop3
 	tst.w	d6
 	bne.s	.loop2

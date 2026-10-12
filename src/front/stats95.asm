@@ -139,10 +139,10 @@ DisplayTeamStatsScreen	;Team blocks (PutTeamBlock), then each TeamStatTextTbl ro
 	moveq	#$E,d6
 	lea	TeamStatTextTbl(pc),a1
 	tst.w	(OptPen).w
-	bne.w	.loop
+	bne.w	.row
 	move.w	#$A,d6
 	lea	TeamStatTextTblNoPen(pc),a1
-.loop
+.row
 	move.w	(a1),d0
 	lsr.w	#1,d0
 	neg.w	d0
@@ -158,7 +158,7 @@ DisplayTeamStatsScreen	;Team blocks (PutTeamBlock), then each TeamStatTextTbl ro
 	bsr.w	PrintStatValue
 	lea	4(a0),a1
 	addq.w	#2,(printy).w
-	dbf	d6,.loop
+	dbf	d6,.row
 	rts
 PrintStatValue	;Print TeamStatTextTbl entry a0 for team a2 centred at printx: the
 	;value (offsets $A and $354 are times, PushTime), "/second" if any, " (pct%)" for passing; offset $FFFF is the shooting percentage
@@ -600,7 +600,7 @@ DrawStatsRow	;Stats screen row d3 of Satt: rank, name, then the 5 columns, or fo
 	tst.w	(DispAttribCtr).w
 	bmi.w	.goalie
 	clr.w	d5
-.0
+.col
 	clr.w	d0
 	move.b	(a4),d0
 	move.w	d5,d1
@@ -616,7 +616,7 @@ DrawStatsRow	;Stats screen row d3 of Satt: rank, name, then the 5 columns, or fo
 	jsr	(print).l
 	addq.w	#1,d5
 	cmp.w	#5,d5
-	bne.s	.0
+	bne.s	.col
 	bra.w	.x
 .goalie
 	clr.w	d0
@@ -3521,15 +3521,15 @@ DrawLineIcons	;Draw the line icons for the cursor's line, then the selected play
 .0
 	move.b	(a0),d0
 	cmp.b	(redrawicons).w,d0
-	beq.w	.1
+	beq.w	.line
 	move.b	d0,(redrawicons).w
 	jsr	(ClearLineArea).l
-.1
+.line
 	btst	d5,(redrawicons).w
 	beq.w	.2
 	bsr.w	DrawLineIcon
 .2
-	dbf	d5,.1
+	dbf	d5,.line
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$4,$2,$8,$7,CC_SetFont,$1,$0
 	jsr	(printsmallz).l
@@ -3574,7 +3574,7 @@ DrawLineIcon	;Draw line d5 (name, then its player slots) at LineIconPosTable
 	move.w	2(a0),(printy).w
 	move.w	4(a0),d3
 	lea	$16C(a2),a3
-.1
+.slot
 	move.w	(a0),(printx).w
 	jsr	(printsmallz).l
 	String	CC_AddX,$FF,CC_AddY,$2,CC_SetAttribute,$6
@@ -3583,15 +3583,15 @@ DrawLineIcon	;Draw line d5 (name, then its player slots) at LineIconPosTable
 	subq.w	#1,d0
 	jsr	(FormatPlayerNameShort).l
 	cmp.w	(setupvalues).w,d4
-	bne.w	.2
+	bne.w	.nocur
 	move.w	d0,d6
 	move.w	(printa).w,d7
 	move.w	#2,(printfontset).w
-.2
+.nocur
 	jsr	(printsmall).l
 	clr.w	(printfontset).w
 	addq.w	#1,d4
-	dbf	d3,.1
+	dbf	d3,.slot
 	rts
 
 ClearLineArea	;Erase the line area and print the position header (LD RD LW C RW)
@@ -3810,12 +3810,12 @@ SetLineSlot	;Put player d0 in line slot d2 of team a2 (swap if already in that l
 	andi.w	#$FFF8,d1
 	lea	0(a0,d1.w),a1
 	moveq	#5,d1
-.0
+.find
 	cmp.b	1(a1,d1.w),d0
-	dbeq	d1,.0
-	bne.w	.1
+	dbeq	d1,.find
+	bne.w	.put
 	move.b	0(a0,d2.w),1(a1,d1.w)
-.1
+.put
 	move.b	d0,0(a0,d2.w)
 	movem.l	(sp)+,d0-d2/a0-a1
 	rts

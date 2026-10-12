@@ -1480,3 +1480,10 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | tradeteam1 | ok |
 | tradeteam2 | ok |
 | turnstep | ok |
+
+## Local labels
+
+| scope | status |
+|---|---|
+| routines with the same structure as 94 | 94 local names propagated (24 renames) |
+| everything else | open |

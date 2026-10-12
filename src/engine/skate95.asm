@@ -182,11 +182,11 @@ rtss15	;The rts of doinput_goaliedive
 doinput_cbut	;Button C (bit 5): new press: face the puck
 	;(vtoa) and go on below; held: hold the SPA frame (SPAcnt $A) at the end of a frame list (SPAlist)
 	btst	#5,d1
-	bne.w	.2
+	bne.w	.press
 	btst	#5,d3
-	bne.w	.0
+	bne.w	.held
 	bra.w	doinput_chkanim
-.0
+.held
 	movem.l	d0-d3/a0-a3,-(sp)
 	movea.l	#SPAlist,a0
 	adda.w	SPA(a3),a0
@@ -204,7 +204,7 @@ doinput_cbut	;Button C (bit 5): new press: face the puck
 	bpl.s	rtss15
 	move.w	#$A,SPAcnt(a3)
 	rts
-.2
+.press
 	btst	#5,pflags(a3)
 	bne.w	doinput_chkanim
 	movem.w	d0-d1,-(sp)
@@ -241,10 +241,10 @@ doinput_cbut	;Button C (bit 5): new press: face the puck
 	muls.w	d1,d1
 	add.l	d1,d0
 	cmp.l	#$384,d0
-	bhi.w	.5
+	bhi.w	.far
 	movem.w	(sp)+,d0-d1
-	bra.w	.7
-.5
+	bra.w	.near
+.far
 	jsr	(sroot).l
 	moveq	#1,d2
 	add.w	d0,d2
@@ -259,7 +259,7 @@ doinput_cbut	;Button C (bit 5): new press: face the puck
 	muls.w	d4,d0
 	divs.w	d2,d0
 	divs.w	d2,d1
-.7
+.near
 	add.w	d3,d1
 	move.w	d1,d2
 	cmpi.w	#$22,2(a0)
@@ -274,10 +274,10 @@ doinput_cbut	;Button C (bit 5): new press: face the puck
 	movea.l	#puckcross,a0
 	move.w	#$10B,d3
 	btst	#7,pflags(a3)
-	beq.w	.8	;branch if bottom net
+	beq.w	.save	;branch if bottom net
 	neg.w	d3	;negate d3 (-108 hex)
 	addq.w	#4,a0	;puckcross+4 (for bottom goalie)
-.8
+.save
 	jsr	(goaliesave).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts

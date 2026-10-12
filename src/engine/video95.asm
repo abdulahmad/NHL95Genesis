@@ -995,7 +995,7 @@ VBlank	;Main vblank code for game play (vbint target). DumpSprites when dfok is 
 	bne.w	.c
 .0
 	btst	#1,(gmode2).w	;penalty shot / shootout clock
-	bne.w	.1
+	bne.w	.soclock
 	tst.w	(gameclock).w
 	beq.w	.c
 	subi.w	#$AAA,(gameclock+2).w	;jiffy
@@ -1013,7 +1013,7 @@ VBlank	;Main vblank code for game play (vbint target). DumpSprites when dfok is 
 	jsr	(p_music_vblank).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rte
-.1
+.soclock
 	tst.w	(shootoutclock).w
 	beq.s	.c
 	subi.w	#$AAA,(shootoutjiffy).w

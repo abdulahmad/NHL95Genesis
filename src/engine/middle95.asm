@@ -187,9 +187,9 @@ vcountwait	;Waits till vcount changes, then resyncs vcount. Saves d0. 94 reads o
 	;and the stats code
 	move.w	d0,-(sp)
 	move.w	(oldvcount).w,d0
-.0
+.wait
 	cmp.w	(vcount).w,d0
-	beq.s	.0
+	beq.s	.wait
 	move.w	(vcount).w,(oldvcount).w
 	move.w	(sp)+,d0
 	rts
@@ -1315,7 +1315,7 @@ PutTeamBlock	;Draw team block d0 (TeamBlockMaps, teamblockwidth wide, 2 rows) at
 	movea.w	#(TeamBlockMaps-M68K_RAM),a1
 	adda.w	d0,a1
 	moveq	#1,d2
-.0
+.row
 	jsr	(xyVmMap).l
 	move.w	(teamblockwidth).w,d1
 	subq.w	#1,d1
@@ -1323,7 +1323,7 @@ PutTeamBlock	;Draw team block d0 (TeamBlockMaps, teamblockwidth wide, 2 rows) at
 	move.w	(a1)+,(a0)
 	dbf	d1,.1
 	addq.w	#1,(printy).w
-	dbf	d2,.0
+	dbf	d2,.row
 	move.w	(teamblockwidth).w,d0
 	add.w	d0,(printx).w
 	subq.w	#2,(printy).w

@@ -3792,8 +3792,8 @@ PuckOnAttackHalf	;d0 = 1 when the puck is on the half of the goal player a3 shoo
 .cont
 	tst.w	d0	;check if d0 is 0
 	bpl.w	.plus	;branch if higher
-	bra.w	.0
-	move.w	(passdir).w,d0	;code never used from here up to _0
+	bra.w	.minus
+	move.w	(passdir).w,d0	;code never used from here up to .minus
 	addq.w	#4,d0
 	andi.w	#7,d0
 	move.w	facedir(a3),d1
@@ -3815,7 +3815,7 @@ PuckOnAttackHalf	;d0 = 1 when the puck is on the half of the goal player a3 shoo
 	subq.w	#1,d1
 	andi.w	#7,d1
 	beq.w	.plus
-.0
+.minus
 	move.w	#0,d0
 	bra.w	.ex
 .plus
@@ -4318,12 +4318,12 @@ assgoaliebreakwait	;asstab entry $1D (94 $20). Goalie waits for the breakaway sk
 	btst	#5,pflags(a3)	;check if animation locked
 	bne.w	.exit	;exit if so
 	btst	#2,(BA_PS_flags).w	;check if pen shot
-	bne.w	.1	;branch if so
+	bne.w	.park	;branch if so
 	btst	#0,(gmode2).w	;check for shootout
-	bne.w	.1	;branch if so
+	bne.w	.park	;branch if so
 	nop
 	bra.w	assexit
-.1
+.park
 	clr.w	Xvel(a3)	;clear Xvel
 	clr.w	Yvel(a3)	;clear Yvel
 	movem.l	d0/a0,-(sp)	;push d0 and a0 on stack

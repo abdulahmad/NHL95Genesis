@@ -256,16 +256,16 @@ CountShootoutGoals	;Shootout: count the goals and end it when one team cannot ca
 	;(EndShootout)
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#0,(shootoutteam+1).w
-	beq.w	.0
+	beq.w	.switch
 	cmpi.w	#5,(shootoutround).w
-	blt.w	.0
+	blt.w	.switch
 	move.w	(homeshootgoals).w,d0
 	cmp.w	(awayshootgoals).w,d0
-	beq.w	.0
+	beq.w	.switch
 	bset	#3,(gmode2).w
 	jsr	(EndShootout).l
 	bra.w	.x
-.0
+.switch
 	eori.w	#1,(shootoutteam).w
 	bne.w	.x
 	addq.w	#1,(homeshootnum).w
@@ -586,10 +586,10 @@ PrintShooterList	;Shootout shooters: the player list rows (getNameandAttrib); th
 .1
 	tst.w	(a1)
 	dbmi	d0,.loop2
-	bpl.w	.2
+	bpl.w	.found
 	subq.w	#1,(DispAttribCtr).w
 	bra.s	.loop
-.2
+.found
 	cmpa.l	#PAttribOverall,a1
 	bne.w	.3
 	movea.l	#ShooterOverallTxt,a1
