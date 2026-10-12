@@ -142,14 +142,14 @@ CreatePlayer	;Create Player screen entry: load graphics, draw title, init player
 	bsr.w	PrintEditName
 .4
 	bsr.w	MoveListMarkers
-.5
+.loop
 	move.w	(vcount).w,d0
-.6
+.loop2
 	cmp.w	(vcount).w,d0
-	beq.s	.6
+	beq.s	.loop2
 	jsr	(ReadJoy1).l
 	tst.w	d1
-	beq.s	.5
+	beq.s	.loop
 	tst.w	(NameEntryMode).w
 	bne.w	.7
 	move.w	#1,d0
@@ -328,19 +328,19 @@ NameEntry	;Create Player name entry: toggle grid/edit mode, draw letter grid + h
 	String	-(TXPRI+TXMAP1),$A,$F,$0
 	movea.l	#CreateLetterGrid,a0
 	moveq	#4,d0
-.0
+.loop
 	moveq	#5,d1
 	movea.l	#mesarea,a1
 	move.w	#$E,(a1)+
-.1
+.loop2
 	move.b	(a0)+,(a1)+
 	move.b	#$20,(a1)+
-	dbf	d1,.1
+	dbf	d1,.loop2
 	movea.w	#(mesarea-M68K_RAM),a1
 	jsr	(print).l
 	addq.w	#2,(printy).w
 	subi.w	#$C,(printx).w
-	dbf	d0,.0
+	dbf	d0,.loop
 	jsr	(printz).l
 	String	-TXMAP2,$16,$E,$0
 	moveq	#$16,d0
@@ -388,7 +388,7 @@ NameEntry	;Create Player name entry: toggle grid/edit mode, draw letter grid + h
 
 NameEntryDone	;NameEntry: return
 	movem.l	(sp)+,d0-d7/a0-a6
-.0
+.exit
 	rts
 
 NameEntryBg	;Draw name entry background graphic (NameEntryBgMap) at the printz position
@@ -464,7 +464,7 @@ NameListHelp	;Print help text for name list mode (D-Pad up/down / START exit / B
 	jsr	(printsmallz).l
 	String	CC_SetFont,$0
 	movem.l	(sp)+,d0-d7/a0-a6
-.1
+.exit
 	rts
 
 FixFirstLetter	;Normalize first letter of name buffer to a letter grid char (unknown -> A)
@@ -491,11 +491,11 @@ FindGridLetter	;Find char d0 in letter grid table, return index in d0 ($1E if no
 .0
 	clr.w	d0
 	move.w	#$1E,d3
-.1
+.loop
 	cmp.b	(a0,d0.w),d1
 	beq.w	.2
 	addq.w	#1,d0
-	dbf	d3,.1
+	dbf	d3,.loop
 	move.w	#$1E,d0
 .2
 	movem.l	(sp)+,d1-d3/a0-a6
@@ -545,14 +545,14 @@ DrawCreateList	;Draw list of up to 6 player names starting at player CreateListT
 	move.w	(CreateListTop).l,(CreateListRow).w
 	addq.w	#1,(CreateListRow).w
 	movea.l	#StatWork,a1
-.1
+.loop
 	bsr.w	GetCreateName
 	move.w	(printx).w,-(sp)
 	bsr.w	PrintEditName
 	move.w	(sp)+,(printx).w
 	addq.w	#1,(printy).w
 	addq.w	#1,(CreateListRow).w
-	dbf	d7,.1
+	dbf	d7,.loop
 	move.w	(sp)+,(CreateListRow).w
 	move.w	(sp)+,(NameEntryLen).w
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -603,7 +603,7 @@ CountNameLength	;Count name length of name buffer NameEntryBuf into NameEntryLen
 	move.w	#$11,d3
 	movea.l	#NameEntryBuf,a0
 	clr.w	(NameEntryLen).w
-.0
+.loop
 	cmpi.b	#$2D,(a0)
 	bne.w	.1
 	tst.b	(a0)+
@@ -613,7 +613,7 @@ CountNameLength	;Count name length of name buffer NameEntryBuf into NameEntryLen
 	beq.w	.3
 	addq.w	#1,(NameEntryLen).w
 .2
-	dbf	d3,.0
+	dbf	d3,.loop
 .3
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -626,7 +626,7 @@ PrintEditName	;Print 18-char name from a1 with - padding, highlight cursor char 
 	move.w	(NameEntryLen).w,d0
 	move.w	#0,d3
 	move.w	#$16,(a0)+
-.0
+.loop
 	cmp.w	#8,d3
 	bne.w	.1
 	move.b	#$20,(a0)+
@@ -643,7 +643,7 @@ PrintEditName	;Print 18-char name from a1 with - padding, highlight cursor char 
 	move.b	d1,(a0)+
 	addq.w	#1,d3
 	cmp.w	#$12,d3
-	blt.s	.0
+	blt.s	.loop
 	movea.l	#StatBuf,a1
 	move.w	(printx).w,d7
 	move.l	a1,-(sp)
@@ -696,7 +696,7 @@ GetCreateName	;Copy player name (CreateListRow-1)*18 from M68K_RAM to a1, 0->-, 
 	mulu.w	#$12,d2
 	move.w	#0,(NameEntryLen).w
 	move.w	#$11,d3
-.0
+.loop
 	move.b	(a0,d2.w),d0
 	beq.w	.1
 	bra.w	.2
@@ -714,7 +714,7 @@ GetCreateName	;Copy player name (CreateListRow-1)*18 from M68K_RAM to a1, 0->-, 
 .4
 	addq.w	#1,(NameEntryLen).w
 	addq.w	#1,d2
-	dbf	d3,.0
+	dbf	d3,.loop
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -731,7 +731,7 @@ SaveCreateName	;Save entered name to the created-player record (new or existing)
 	movem.l	d1-d3/a1,-(sp)
 	movea.l	#SaveRAM+2*SRFreeAgentList,a1
 	move.w	#0,d2
-.0
+.loop
 	move.w	(a1,d2.w),d3
 	andi.w	#$FF,d3
 	lsl.w	#8,d3
@@ -742,7 +742,7 @@ SaveCreateName	;Save entered name to the created-player record (new or existing)
 	beq.w	.1
 	addq.w	#4,d2
 	cmp.w	#$68,d2
-	blt.s	.0
+	blt.s	.loop
 	clr.w	d2
 .1
 	asr.w	#2,d2
@@ -763,10 +763,10 @@ CopyNameWords	;Copy length-prefixed name at TempBuffer into a0 as words
 	move.w	(a1),d0
 	subq.w	#1,d0
 	clr.w	d1
-.0
+.loop
 	move.b	(a1)+,d1
 	move.w	d1,(a0)+
-	dbf	d0,.0
+	dbf	d0,.loop
 	rts
 
 SaveNameNext	;SaveCreateName: next name character
@@ -775,7 +775,7 @@ SaveNameNext	;SaveCreateName: next name character
 	movea.l	#SaveRAM+2*SRCreatedPlayers,a0
 	clr.w	d6
 	move.w	#$13,d5
-.0
+.loop
 	tst.b	1(a0)
 	bne.w	.1
 	tst.b	3(a0)
@@ -783,7 +783,7 @@ SaveNameNext	;SaveCreateName: next name character
 .1
 	adda.l	#$40,a0
 	addq.w	#1,d6
-	dbf	d5,.0
+	dbf	d5,.loop
 	bra.w	SaveNameEnd
 .2
 	bsr.s	CopyNameWords
@@ -793,12 +793,12 @@ SaveNameNext	;SaveCreateName: next name character
 	cmp.b	#$1A,d0
 	bge.w	SaveNameLoop2
 	clr.w	(CreateWork).l
-.3
+.loop2
 	tst.b	1(a0)
 	bmi.w	.4
 	addq.l	#4,a0
 	addq.w	#1,(CreateWork).l
-	bra.s	.3
+	bra.s	.loop2
 .4
 	move.b	d6,3(a0)
 	andi.w	#$FF,d6
@@ -827,13 +827,13 @@ InvalidName	;SaveCreateName: "Invalid Name. Make sure player has both a first an
 	dc.b	$6,$FA,$1,'Make sure player has',$FD,$6,$FA,$1
 	dc.b	'both a first and last name.'
 	move.w	(vcount).w,d0
-.0
+.loop
 	cmp.w	(vcount).w,d0
-	beq.s	.0
+	beq.s	.loop
 .1
 	jsr	(ReadJoy1).l
 	tst.w	d1
-	beq.s	.0
+	beq.s	.loop
 
 InvalidNameWait	;SaveCreateName: wait for a key, close the box
 	jsr	(printsmallz).l
@@ -846,7 +846,7 @@ SaveNameFail	;SaveCreateName: d0 = -1
 
 SaveNameRet	;SaveCreateName: return
 	movem.l	(sp)+,d0-d7/a0-a6
-.0
+.exit
 	rts
 
 ReadCreatedPlayers	;Read created players: load $36-byte list from save RAM SRFreeAgentList, build 18-byte name records at M68K_RAM and ids at CreatedIds, count in createdcount, add an empty slot if room
@@ -866,7 +866,7 @@ ReadCreatedPlayers	;Read created players: load $36-byte list from save RAM SRFre
 	move.w	#$FFFF,d5
 .4
 	bra.w	.6
-.5
+.loop
 	tst.w	(a0)+
 	bmi.w	.6
 	move.w	-2(a0),d0
@@ -882,16 +882,16 @@ ReadCreatedPlayers	;Read created players: load $36-byte list from save RAM SRFre
 	addq.w	#1,(createdcount).l
 .6
 	addq.w	#1,d5
-	dbf	d6,.5
+	dbf	d6,.loop
 	cmpi.w	#$14,(createdcount).l
 	bge.w	.8
 	move.w	(SaveRAM+2*SRCreateCount).l,d0
 	cmp.b	#$14,d0
 	bge.w	.8
 	move.w	#$11,d0
-.7
+.loop2
 	move.b	#0,(a2)+
-	dbf	d0,.7
+	dbf	d0,.loop2
 	move.w	#$8000,(a3)
 	addq.w	#1,(createdcount).l
 .8
@@ -906,7 +906,7 @@ BuildEnteredName	;Build the entered name (from NameEntryBuf, spaces/dashes dropp
 	subq.w	#1,d0
 	clr.w	d5
 	clr.w	d6
-.0
+.loop
 	cmp.w	#8,d6
 	bne.w	.1
 	move.b	#$20,(a0)+
@@ -921,7 +921,7 @@ BuildEnteredName	;Build the entered name (from NameEntryBuf, spaces/dashes dropp
 	addq.w	#1,d5
 .2
 	addq.w	#1,d6
-	dbf	d0,.0
+	dbf	d0,.loop
 	btst	#0,d5
 	beq.w	.3
 	move.b	#0,(a0)
@@ -943,10 +943,10 @@ BuildEnteredName	;Build the entered name (from NameEntryBuf, spaces/dashes dropp
 	movea.w	#(StatWork-M68K_RAM),a0
 	move.w	(a0)+,d0
 	subq.w	#1,d0
-.5
+.loop2
 	cmpi.b	#$20,(a0)+
 	beq.w	.6
-	dbf	d0,.5
+	dbf	d0,.loop2
 	bra.w	.7
 .6
 	clr.w	d0
@@ -962,33 +962,33 @@ FormatNameRecord	;Format name string at a1 into an 18-byte record at a2: first n
 	move.w	(a1)+,d7
 	subq.w	#3,d7
 	move.w	#7,d6
-.0
+.loop
 	cmpi.b	#$20,(a1)
 	beq.w	.1
 	move.b	(a1)+,d0
 	move.b	d0,(a2)+
 	subq.w	#1,d7
-	dbf	d6,.0
+	dbf	d6,.loop
 .1
 	tst.w	d6
 	bmi.w	.3
-.2
+.loop2
 	move.b	#$2D,(a2)+
-	dbf	d6,.2
+	dbf	d6,.loop2
 .3
 	addq.w	#1,a1
 	subq.w	#1,d7
 	move.w	#9,d6
-.4
+.loop3
 	move.b	(a1)+,d0
 	move.b	d0,(a2)+
 	subq.w	#1,d6
-	dbf	d7,.4
+	dbf	d7,.loop3
 	tst.w	d6
 	bmi.w	.6
-.5
+.loop4
 	move.b	#$2D,(a2)+
-	dbf	d6,.5
+	dbf	d6,.loop4
 .6
 	movem.l	(sp)+,d0-d7/a1-a2
 	rts
@@ -1020,9 +1020,9 @@ InitCreateRecord2	;InitCreateRecord without the bset (NewCreateRecord enters her
 .1
 	adda.w	(a0),a0
 	move.w	#7,d0
-.2
+.loop
 	move.b	(a1)+,(a0)+
-	dbf	d0,.2
+	dbf	d0,.loop
 	movem.l	(sp)+,d0-d1/a0
 	jsr	(WriteSRAM).l
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1136,9 +1136,9 @@ ClearCreatedPlayers	;Clear the created players list at CreatedList (26 x $8000 +
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#CreatedList,a0
 	move.w	#$19,d6
-.0
+.loop
 	move.w	#$8000,(a0)+
-	dbf	d6,.0
+	dbf	d6,.loop
 	move.b	#0,(a0)
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -1169,11 +1169,11 @@ DeleteCreatedPlayer	;Delete created player #TempWord1: remove it from the save R
 	move.w	#$19,d1
 	sub.w	d0,d1
 	beq.w	.1
-.0
+.loop
 	move.b	1(a0,d0.w),d2
 	move.b	d2,(a0,d0.w)
 	addq.w	#1,d0
-	dbf	d1,.0
+	dbf	d1,.loop
 .1
 	movem.l	(sp)+,d0-d1/a0
 	jsr	(WriteSRAM).l
@@ -1189,12 +1189,12 @@ DeleteCreatedPlayer	;Delete created player #TempWord1: remove it from the save R
 	bra.w	.4
 .2
 	move.w	#$32,d3
-.3
+.loop2
 	move.w	2(a0,d0.w),d1
 	move.w	d1,(a0,d0.w)
 	addq.w	#2,d0
 	cmp.w	d3,d0
-	blt.s	.3
+	blt.s	.loop2
 	move.w	#$8000,(a0,d0.w)
 .4
 	subq.b	#1,$35(a0)
@@ -1204,22 +1204,22 @@ DeleteCreatedPlayer	;Delete created player #TempWord1: remove it from the save R
 	jsr	(ReadTeamPlayerStats).l
 	movea.l	#StatBuf,a3
 	move.w	#4,d6
-.5
+.loop3
 	move.w	(TempWord1).w,d0
 	andi.w	#$FF,d0
 	add.w	d0,d0
 	move.w	(a3,d0.w),d3
 	move.w	d3,(a2)+
 	move.w	#$32,d3
-.6
+.loop4
 	move.w	2(a3,d0.w),d1
 	move.w	d1,(a3,d0.w)
 	addq.w	#2,d0
 	cmp.w	d3,d0
-	blt.s	.6
+	blt.s	.loop4
 	clr.w	(a3,d0.w)
 	adda.w	#$34,a3
-	dbf	d6,.5
+	dbf	d6,.loop3
 	jsr	(WriteTeamPlayerStats).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	bclr	#7,(GameFlags).w
@@ -1341,17 +1341,17 @@ ModifyRatings	;Create Player "Modify Ratings" screen: load graphics/text, then j
 	bsr.w	PrintCreateName
 	clr.w	(CreateCursorY).l
 	move.w	#2,(CreateCursorX).l
-.0
+.loop
 	bsr.w	DrawRatings
-.1
+.loop2
 	move.w	(vcount).w,d0
-.2
+.loop3
 	cmp.w	(vcount).w,d0
-	beq.s	.2
+	beq.s	.loop3
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
-	beq.s	.1
+	beq.s	.loop2
 	btst	#7,d1
 	beq.w	.3
 	jsr	(CommitCreatedPlayer).l
@@ -1363,14 +1363,14 @@ ModifyRatings	;Create Player "Modify Ratings" screen: load graphics/text, then j
 	bne.w	.5
 	cmpi.w	#1,(CreateCursorX).l
 	beq.w	.4
-	bra.s	.1
+	bra.s	.loop2
 .4
 	move.w	#2,(CreateCursorX).l
 	move.w	#1,(CreateCursorY).l
-	bra.s	.0
+	bra.s	.loop
 .5
 	subq.w	#1,(CreateCursorY).l
-	bra.s	.0
+	bra.s	.loop
 .6
 	btst	#1,d1
 	beq.w	.9
@@ -1379,56 +1379,56 @@ ModifyRatings	;Create Player "Modify Ratings" screen: load graphics/text, then j
 	cmp.w	(CreateCursorY).l,d4
 	ble.w	.7
 	addq.w	#1,(CreateCursorY).l
-	bra.w	.0
+	bra.w	.loop
 .7
 	cmpi.w	#2,(CreateCursorX).l
 	beq.w	.8
 	cmpi.w	#3,(CreateCursorX).l
-	bne.w	.1
+	bne.w	.loop2
 .8
 	move.w	#1,(CreateCursorX).l
 	clr.w	(CreateCursorY).l
-	bra.w	.0
+	bra.w	.loop
 .9
 	btst	#3,d1
 	beq.w	.13
 	move.w	(CreateCursorX).l,d6
 	addq.w	#1,d6
 	cmp.w	#4,d6
-	blt.w	.10
+	blt.w	.loop4
 	clr.w	d6
-.10
+.loop4
 	bsr.w	LastFieldRow
-.11
+.loop5
 	cmp.w	(CreateCursorY).l,d4
 	bge.w	.12
 	subq.w	#1,(CreateCursorY).l
-	bra.s	.11
+	bra.s	.loop5
 .12
 	move.w	d6,(CreateCursorX).l
-	bra.w	.0
+	bra.w	.loop
 .13
 	btst	#2,d1
 	beq.w	.14
 	move.w	(CreateCursorX).l,d6
 	subq.w	#1,d6
-	bpl.s	.10
+	bpl.s	.loop4
 	move.w	#3,d6
-	bra.s	.10
+	bra.s	.loop4
 .14
 	btst	#6,d1
 	beq.w	.15
 	move.w	#$FFFF,d0
 	bsr.w	EditField
-	bra.w	.0
+	bra.w	.loop
 .15
 	btst	#4,d1
 	beq.w	.16
 	move.w	#1,d0
 	bsr.w	EditField
-	bra.w	.0
+	bra.w	.loop
 .16
-	bra.w	.1
+	bra.w	.loop2
 .17
 	bset	#6,(setupcardflags).w
 	jmp	Opening2
@@ -1440,13 +1440,13 @@ PrintCreateName	;Prints Name First:/Last: from CreateRecord+2 (split at the spac
 	movea.l	#TextBuffer,a0
 	movea.l	#CreateRecord+$2,a1
 	move.w	#2,(mesarea).w
-.0
+.loop
 	move.b	(a1)+,d0
 	cmp.b	#$20,d0
 	beq.w	.1
 	move.b	d0,(a0)+
 	addq.w	#1,(mesarea).w
-	bra.s	.0
+	bra.s	.loop
 .1
 	clr.b	(a0)
 	addq.w	#1,(mesarea).w
@@ -1460,15 +1460,15 @@ PrintCreateName	;Prints Name First:/Last: from CreateRecord+2 (split at the spac
 	move.w	#2,(mesarea).w
 	move.w	(CreateRecord).l,d6
 	subq.w	#3,d6
-.2
+.loop2
 	move.b	(a1)+,d0
 	subq.w	#1,d6
 	cmp.b	#$20,d0
-	bne.s	.2
-.3
+	bne.s	.loop2
+.loop3
 	move.b	(a1)+,(a0)+
 	addq.w	#1,(mesarea).w
-	dbf	d6,.3
+	dbf	d6,.loop3
 	clr.b	(a0)
 	addq.w	#1,(mesarea).w
 	andi.w	#$FFFE,(mesarea).w
@@ -1483,17 +1483,17 @@ DrawRatings	;Redraws every rating cell (4 columns x rows from LastFieldRow, each
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d6
 	clr.w	d7
-.0
+.loop
 	bsr.w	LastFieldRow
-.1
+.loop2
 	bsr.w	DrawField
 	addq.w	#1,d7
 	cmp.w	d4,d7
-	ble.s	.1
+	ble.s	.loop2
 	clr.w	d7
 	addq.w	#1,d6
 	cmp.w	#4,d6
-	blt.s	.0
+	blt.s	.loop
 	bsr.w	rtsCreate3
 	bsr.w	PrintUnallocated
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1805,12 +1805,12 @@ FieldHighlight	;Set normal text color, highlight if (d6,d7) is the cursor (Creat
 	jsr	(printsmallz).l
 	String	CC_SetFont,0
 	cmp.w	(CreateCursorX).l,d6
-	bne.w	.0
+	bne.w	.exit
 	cmp.w	(CreateCursorY).l,d7
-	bne.w	.0
+	bne.w	.exit
 	jsr	(printsmallz).l
 	String	CC_SetFont,1
-.0
+.exit
 	rts
 
 SkaterFieldTbls	;Skater field-routine tables by column
@@ -2033,12 +2033,12 @@ AdjustAttrib	;Adjust attribute selected by d4 bit by d0, paying from points pool
 	move.w	d1,(CreatePoints).l
 	movea.l	#AttribDeltas,a0
 	swap	d4
-.0
+.loop
 	btst	#$F,d4
 	bne.w	.1
 	addq.w	#1,a0
 	asl.w	#1,d4
-	bra.s	.0
+	bra.s	.loop
 .1
 	tst.w	d0
 	bpl.w	.2
@@ -2191,9 +2191,9 @@ ClearAttribDeltas	;Clear 16-byte attribute buffer AttribDeltas
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#AttribDeltas,a0
 	move.w	#3,d0
-.0
+.loop
 	clr.l	(a0)+
-	dbf	d0,.0
+	dbf	d0,.loop
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -2206,10 +2206,10 @@ LoadCreateTemplate	;Copy 32-word player template (index CreateIndex) from SRCrea
 	add.w	d1,d1
 	adda.w	d1,a0
 	movea.l	#CreateRecord,a1
-.0
+.loop
 	move.w	(a0)+,d2
 	move.b	d2,(a1)+
-	dbf	d0,.0
+	dbf	d0,.loop
 	clr.w	(CreateType).l
 	move.b	-1(a1),(CreateType+1).l
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -2252,7 +2252,7 @@ CommitCreatedPlayer	;Commit created player: store type bits, add attribute delta
 	adda.w	(a0),a0
 	movea.l	#AttribDeltas,a2
 	move.w	#$F,d0
-.0
+.loop
 	move.w	d0,d1
 	lsr.w	#1,d1
 	movem.l	d1/a0,-(sp)
@@ -2284,7 +2284,7 @@ CommitCreatedPlayer	;Commit created player: store type bits, add attribute delta
 .3
 	or.w	d3,d2
 	move.b	d2,(a0,d1.w)
-	dbf	d0,.0
+	dbf	d0,.loop
 	movea.l	#CreateRecord,a0
 	clr.l	d0
 	move.w	(CreateIndex).l,d0
@@ -2399,9 +2399,9 @@ SignFreeAgents	;Sign Free Agents screen: draw, input loop
 	String	CC_SetX,$3,'Switch Team',CC_SetX,$12,'Sign Player',CC_SetX,' Exit',CC_SetFont,$0
 	move.w	#3,d0
 	movea.l	#AttribDeltas,a0
-.0
+.loop
 	clr.l	(a0)+
-	dbf	d0,.0
+	dbf	d0,.loop
 .1
 	clr.w	(TradeData+$C).l
 .2
@@ -2436,13 +2436,13 @@ FreeAgentLoop	;SignFreeAgents: input loop
 	bsr.w	FreeAgentTeamBlock
 	bsr.w	DrawFreeAgents
 	bsr.w	FreeAgentArrows
-.0
+.loop
 	cmpi.w	#$FFFF,(setupdir).w
-	beq.w	.1
+	beq.w	.loop2
 	bsr.w	FreeAgentTeamBlock
 	bsr.w	DrawFreeAgents
 	bsr.w	FreeAgentArrows
-.1
+.loop2
 	move.w	#$FFFF,(setupdir).w
 	bsr.w	ReadFreeAgentPads
 	tst.w	d1
@@ -2455,7 +2455,7 @@ FreeAgentLoop	;SignFreeAgents: input loop
 	bra.s	FreeAgentLoop
 .2
 	tst.w	(TradeData+$4).l
-	beq.s	.1
+	beq.s	.loop2
 	subq.w	#1,(TradeData+$4).l
 	subq.w	#1,(TradeData+$6).l
 	bra.s	FreeAgentLoop
@@ -2473,7 +2473,7 @@ FreeAgentLoop	;SignFreeAgents: input loop
 	andi.w	#$FF,d0
 	subq.w	#1,d0
 	cmp.w	(TradeData+$6).l,d0
-	ble.s	.1
+	ble.s	.loop2
 	addq.w	#1,(TradeData+$4).l
 	addq.w	#1,(TradeData+$6).l
 	bra.w	FreeAgentLoop
@@ -2568,7 +2568,7 @@ FreeAgentLoop	;SignFreeAgents: input loop
 .8
 	bra.w	FreeAgentRedraw
 .9
-	bra.w	.0
+	bra.w	.loop
 
 PositionCountFns	;Per-position roster index routines (end of the position group in the roster)
 	dc.l	GetGoalieCountD7
@@ -2678,7 +2678,7 @@ DrawFreeAgents	;Draw visible free agent rows (pos, name, rating)
 	ext.l	d0
 	adda.l	d0,a4
 	adda.l	d0,a3
-.0
+.loop
 	jsr	(printsmallz).l
 	String	CC_SetX,$0,'                                       ',$0
 	move.w	#$B,(printx).w
@@ -2729,7 +2729,7 @@ DrawFreeAgents	;Draw visible free agent rows (pos, name, rating)
 	move.w	(TradeData+$4).l,d0
 	add.w	d6,d0
 	cmp.w	(TradeData+$6).l,d0
-	ble.w	.0
+	ble.w	.loop
 	rts
 
 PositionLetters3	;Position letters G/F/D
@@ -2739,26 +2739,26 @@ PositionLetters3	;Position letters G/F/D
 
 ReadFreeAgentPads	;Wait for a joypad press (polls both pads via ReadJoy1/ReadJoy2 + ProcessInputWithRepeat each frame); d1 = buttons
 	move.l	#$5460,d6
-.0
+.loop
 	move.w	#$64,d6
 	move.w	(vcount).w,d1
 	sub.w	(oldvcount).w,d1
-	beq.s	.0
+	beq.s	.loop
 	move.w	(vcount).w,(oldvcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.1
-	bra.w	.3
+	bra.w	.exit
 .1
 	jsr	(ReadJoy2).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.2
-	bra.w	.3
+	bra.w	.exit
 .2
-	dbf	d6,.0
-.3
+	dbf	d6,.loop
+.exit
 	rts
 
 FreeAgentExit	;Exit free-agent screen: set bit 6 of setupcardflags, jump to Opening2
@@ -2795,7 +2795,7 @@ BuildFreeAgentList	;Copy the free agent list (SRFreeAgentList, count in SRFreeAg
 	movea.l	#TradeRoster1,a1
 	movea.l	#TradeRoster2,a5
 	clr.w	d6
-.0
+.loop
 	move.l	(a0)+,d1
 	move.b	d1,d2
 	andi.w	#$FF,d2
@@ -2805,7 +2805,7 @@ BuildFreeAgentList	;Copy the free agent list (SRFreeAgentList, count in SRFreeAg
 	move.w	d2,(a1)+
 	move.w	d6,(a5)+
 	addq.w	#1,d6
-	dbf	d0,.0
+	dbf	d0,.loop
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -2866,12 +2866,12 @@ ReleaseLoop	;ReleasePlayers: input loop
 	bsr.w	ReleaseTeamBlock
 	bsr.w	DrawReleaseRoster
 	bsr.w	ReleaseArrows
-.0
+.loop
 	cmpi.w	#$FFFF,(setupdir).w
-	beq.w	.1
+	beq.w	.loop2
 	bsr.w	ReleaseTeamBlock
 	bsr.w	DrawReleaseRoster
-.1
+.loop2
 	move.w	#$FFFF,(setupdir).w
 	bsr.w	ReadReleasePads
 	tst.w	d1
@@ -2884,7 +2884,7 @@ ReleaseLoop	;ReleasePlayers: input loop
 	bra.s	ReleaseLoop
 .2
 	tst.w	(TradeData+$4).l
-	beq.s	.1
+	beq.s	.loop2
 	subq.w	#1,(TradeData+$4).l
 	subq.w	#1,(TradeData+$6).l
 	bra.s	ReleaseLoop
@@ -2902,7 +2902,7 @@ ReleaseLoop	;ReleasePlayers: input loop
 	jsr	(GetPlayerCountD7).l
 	subq.w	#1,d0
 	cmp.w	(TradeData+$6).l,d0
-	ble.s	.1
+	ble.s	.loop2
 	addq.w	#1,(TradeData+$4).l
 	addq.w	#1,(TradeData+$6).l
 	bra.w	ReleaseLoop
@@ -2963,12 +2963,12 @@ ReleaseLoop	;ReleasePlayers: input loop
 	jsr	(CheckSavedLines).l
 	movea.l	#SaveRAM+2*SRFreeAgentList,a0
 	clr.w	(rosterscroll).w
-.8
+.loop3
 	tst.b	1(a0)
 	bmi.w	.9
 	addq.l	#4,a0
 	addq.w	#1,(rosterscroll).w
-	bra.s	.8
+	bra.s	.loop3
 .9
 	move.w	(M68K_RAM).l,d0
 	andi.w	#$1FFF,d0
@@ -2990,25 +2990,25 @@ ReleaseLoop	;ReleasePlayers: input loop
 	movea.l	#M68K_RAM+4,a2
 .10
 	move.w	#4,d6
-.11
+.loop4
 	move.w	(rosterscroll).w,d0
 	andi.w	#$FF,d0
 	add.w	d0,d0
 	move.w	#$34,d3
 	bra.w	.13
-.12
+.loop5
 	move.w	-2(a3,d3.w),d1
 	move.w	d1,(a3,d3.w)
 .13
 	subq.w	#2,d3
 	cmp.w	d0,d3
 	ble.w	.14
-	bra.s	.12
+	bra.s	.loop5
 .14
 	move.w	(a2)+,d1
 	move.w	d1,(a3,d3.w)
 	adda.w	#$34,a3
-	dbf	d6,.11
+	dbf	d6,.loop4
 	jsr	(WriteTeamPlayerStats).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	movea.l	#SaveRAM+2*SRFreeAgentJerseys,a0
@@ -3031,7 +3031,7 @@ ReleaseLoop	;ReleasePlayers: input loop
 .15
 	bra.w	ReleaseRedraw
 .16
-	bra.w	.0
+	bra.w	.loop
 	dc.l	GetGoalieCountD7,GetDefenseStartD7,GetPlayerCountD7	;unused pointers
 
 PositionMinChecks	;Roster-minimum check per position code (0 G, 1 F, 2 D); Z set = cannot release
@@ -3133,7 +3133,7 @@ DrawReleaseRoster	;Draw the visible roster rows (pos letter, name, rating) with 
 	asl.w	#2,d0
 	ext.l	d0
 	adda.l	d0,a4
-.0
+.loop
 	jsr	(printsmallz).l
 	String	CC_SetX,0,'                                       ',0
 	move.w	#$B,(printx).w
@@ -3166,7 +3166,7 @@ DrawReleaseRoster	;Draw the visible roster rows (pos letter, name, rating) with 
 	move.w	(TradeData+$4).l,d0
 	add.w	d6,d0
 	cmp.w	(TradeData+$6).l,d0
-	ble.w	.0
+	ble.w	.loop
 	rts
 
 PositionLetters4	;Position letter strings G/F/D for PrintSmallListItem
@@ -3176,23 +3176,23 @@ PositionLetters4	;Position letter strings G/F/D for PrintSmallListItem
 
 ReadReleasePads	;Wait for a joypad press on any of up to 4 pads (4-way play if FourWayPlay); d1 = buttons
 	move.l	#$5460,d6
-.0
+.loop
 	move.w	#$64,d6
 	move.w	(vcount).w,d1
 	sub.w	(oldvcount).w,d1
-	beq.s	.0
+	beq.s	.loop
 	move.w	(vcount).w,(oldvcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.1
-	bra.w	.5
+	bra.w	.exit
 .1
 	jsr	(ReadJoy2).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.2
-	bra.w	.5
+	bra.w	.exit
 .2
 	tst.w	(FourWayPlay).w
 	beq.w	.4
@@ -3200,16 +3200,16 @@ ReadReleasePads	;Wait for a joypad press on any of up to 4 pads (4-way play if F
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.3
-	bra.w	.5
+	bra.w	.exit
 .3
 	jsr	(ReadJoy4).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.4
-	bra.w	.5
+	bra.w	.exit
 .4
-	dbf	d6,.0
-.5
+	dbf	d6,.loop
+.exit
 	rts
 
 ReleaseExit	;Exit Release Player screen: set bit 6 of setupcardflags, jump to Opening2
