@@ -28,13 +28,13 @@ ScoringSummaryScreen	;"Scoring Summary": one 4 row entry per goal (6 bytes each 
 .0
 	move.w	d0,(SelectedPlayerIdx).w
 	move.w	(VertLineScrolling).w,d0
-.1
+.toend
 	jsr	(vcountwait).l
 	bsr.w	UpdateScoringScroll
 	move.w	(VertLineScrolling).w,d0
 	subq.w	#2,d0
 	cmp.w	(SelectedPlayerIdx).w,d0
-	bge.s	.1
+	bge.s	.toend
 	clr.w	(PlayerScrollCtr).w
 .2
 	jsr	(vcountwait).l
@@ -236,13 +236,13 @@ PenaltySummaryScreen	;"Penalties": one 3 row entry per penalty (4 bytes each fro
 .0
 	move.w	d0,(SelectedPlayerIdx).w
 	move.w	(VertLineScrolling).w,d0
-.1
+.toend
 	jsr	(vcountwait).l
 	bsr.w	UpdatePenaltyScroll
 	move.w	(VertLineScrolling).w,d0
 	subq.w	#2,d0
 	cmp.w	(SelectedPlayerIdx).w,d0
-	bge.s	.1
+	bge.s	.toend
 	clr.w	(PlayerScrollCtr).w
 .2
 	jsr	(vcountwait).l

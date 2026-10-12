@@ -55,7 +55,7 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
   - Phase A (93): DONE, all modules. Renames propagated to 94/95/NHLPA93SNES.
   - Phase B (94): DONE (all src modules, RAM names, equates; docs/name_review_94.md).
   - Phase C (95): DONE (all modules, ram95, graphics95, frames95, sound95; docs/name_review_95.md).
-- Local label pass (95): 94 local names propagated (prop.py, then align.py for routines whose 95 locals
-  were renumbered). New-in-95 routines done: video, summary, replay, display, control, main, crowd,
-  hockey, playoff. Next: remaining new-in-95 routines by full body (names + locals; list via tools_ll/newnum.py with
-  92/93/94 as parents), then data labels / equates by usage, then NHLPA93SNES.
+- Local label pass (95): 94 local names propagated (prop.py, align.py, consist.py hand-align). Open items of the
+  94->95 consistency check are listed in docs/name_review_95.md (last "Local labels" row). New-in-95 done:
+  video, summary, replay, display, control, main, crowd, hockey, playoff (injury etc. pending in git stash).
+  Next: close the open consistency items, then remaining new-in-95 routines, data labels / equates, NHLPA93SNES.

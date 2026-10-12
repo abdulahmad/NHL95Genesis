@@ -113,7 +113,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	tst.w	position(a3)
 	beq.w	.12
 	btst	#2,(BA_PS_flags).w
-	bne.w	.37
+	bne.w	.noswitch
 	bra.w	.bhold
 .12
 	btst	#6,(sflags5).w
@@ -135,19 +135,19 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	jmp	chgplayer
 .bhold
 	btst	#4,d3
-	beq.w	.24
+	beq.w	.bpress
 	tst.w	(holdreset).w
-	bne.w	.24
+	bne.w	.bpress
 	tst.w	d4
 	beq.w	.c1
 	tst.b	(bholdtimer+1).w
-	beq.w	.37
+	beq.w	.noswitch
 	subq.b	#1,(bholdtimer+1).w
 	bpl.w	.17
 	move.b	#0,(bholdtimer+1).w
 .17
 	tst.b	(bholdtimer+1).w
-	bne.w	.24
+	bne.w	.bpress
 	tst.w	d4
 	beq.w	.18
 	tst.w	(goaliemode2).w
@@ -155,11 +155,11 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 .18
 	tst.w	(goaliemode1).w
 .19
-	bne.w	.24
-	bra.w	.32
+	bne.w	.bpress
+	bra.w	.goalie
 .c1
 	tst.b	(bholdtimer).w
-	beq.w	.37
+	beq.w	.noswitch
 	subq.b	#1,(bholdtimer).w
 	bpl.w	.21
 	move.b	#0,(bholdtimer).w
@@ -171,24 +171,24 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 .22
 	tst.w	(goaliemode1).w
 .23
-	bne.w	.24
+	bne.w	.bpress
 	tst.b	(bholdtimer).w
-	beq.w	.32
-.24
+	beq.w	.goalie
+.bpress
 	btst	#4,d1
-	beq.w	.26
+	beq.w	.brel
 	tst.w	d4
 	bne.w	.25
 	move.b	#$11,(bholdtimer).w
-	bra.w	.37
+	bra.w	.noswitch
 .25
 	move.b	#$11,(bholdtimer+1).w
-	bra.w	.37
-.26
+	bra.w	.noswitch
+.brel
 	btst	#4,d2
-	beq.w	.37
+	beq.w	.noswitch
 	btst	#4,d3
-	bne.w	.37
+	bne.w	.noswitch
 	move.w	(bholdtimer).w,d0
 	tst.w	d4
 	beq.w	.29
@@ -203,7 +203,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	tst.w	(goaliemode1).w
 .28
 	bne.w	.15
-	bra.w	.32
+	bra.w	.goalie
 .29
 	move.b	#$11,(bholdtimer).w
 	andi.w	#$FF00,d0
@@ -216,7 +216,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	tst.w	(goaliemode1).w
 .31
 	bne.w	.15
-.32
+.goalie
 	tst.w	(holdreset).w
 	bne.w	.15
 	move.w	#5,d0
@@ -247,7 +247,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	jmp	setc3player
 .36
 	jmp	setc4player
-.37
+.noswitch
 	tst.w	position(a3)
 	bne.w	.38
 	jmp	doinput_goaliedive

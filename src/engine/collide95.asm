@@ -1680,15 +1680,15 @@ checkgoal	;Look for coll with goal/net. a2 = goal struct, a3 = object, d2/d3 = x
 	btst	#pfgoal,pflags(a3)
 	bne.w	wallcoll
 	cmpi.w	#$D,Zpos(a3)
-	beq.w	.4
+	beq.w	.stat
 	subq.w	#1,d4
 	cmp.w	d4,d2
-	bgt.w	.4
+	bgt.w	.stat
 	neg.w	d4
 	cmp.w	d4,d2
-	blt.w	.4
+	blt.w	.stat
 	jmp	(Goal).l
-.4
+.stat
 	jsr	(ChkShotStat).l
 	move.w	#$25,-(sp)	;sfx $25 when the clock is stopped (92 used 9)
 	btst	#gmclock,(gmode).w	;gmclock: no goal after the whistle

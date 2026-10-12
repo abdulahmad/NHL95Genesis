@@ -1360,9 +1360,9 @@ ProcessInputWithRepeat	;nodiag, then key repeat on d1-d3. 95: first repeat after
 
 WaitVSyncAndReadInput	;Wait for the next vblank, read the menu pad (ReadMenuJoy, nodiag) until a new button press
 	move.w	(vcount).w,d1
-.rj0
+.wait
 	cmp.w	(vcount).w,d1
-	beq.s	.rj0
+	beq.s	.wait
 	bsr.w	ReadMenuJoy
 	bsr.w	nodiag
 	tst.b	d1

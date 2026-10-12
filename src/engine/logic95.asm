@@ -363,10 +363,10 @@ checkanim	;Goalie animation check; assgoaliectrl branches here too
 	muls.w	d1,d1
 	add.l	d1,d0
 	cmp.l	#$384,d0
-	bhi.w	.14
+	bhi.w	.far
 	movem.w	(sp)+,d0-d1
 	bra.w	.near
-.14
+.far
 	jsr	(sroot).l
 	moveq	#1,d2
 	add.w	d0,d2
@@ -618,23 +618,23 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 	blt.w	.7
 	movem.l	(sp)+,d0
 	addq.w	#6,d0
-	bra.w	.18
+	bra.w	.done
 .7
 	movem.l	(sp)+,d0
-	bra.w	.18
+	bra.w	.done
 .low
 	addq.w	#4,d0
 	cmpi.w	#8,2(a0)	;puckcross frames
 	bls.w	.15
 	cmpi.w	#2,facedir(a3)
-	beq.w	.18
+	beq.w	.done
 	cmpi.w	#6,facedir(a3)
-	beq.w	.18
+	beq.w	.done
 	tst.w	(puckc).w
-	bmi.w	.18
+	bmi.w	.done
 	subq.w	#2,d0
 	bsr.w	.9
-	bra.w	.18
+	bra.w	.done
 .9	;Pad stack: slide the goalie 6 toward the middle, d0 by net and hand
 	move.w	d1,-(sp)
 	move.w	#$1000,d1
@@ -676,10 +676,10 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 .16
 	cmp.w	#$FFF0,d0
 	movem.l	(sp)+,d0
-	bgt.w	.18
+	bgt.w	.done
 .17
 	addq.w	#4,d0
-.18
+.done
 	add.w	d0,d0
 	lea	saveanim(pc),a1
 	move.w	(a1,d0.w),d1	;SPA of the save

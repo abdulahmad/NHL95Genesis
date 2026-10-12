@@ -1014,9 +1014,9 @@ CalcAttribRating	;The rating sum of CalcAttrib: d0 / d1 = weighted sum of the at
 	clr.w	d1
 	moveq	#$F,d2
 	swap	d4
-.0
+.bit
 	btst	d2,d4
-	beq.w	.10
+	beq.w	.next
 	move.w	d2,d3
 	lsr.w	#1,d3
 	neg.w	d3
@@ -1046,9 +1046,9 @@ CalcAttribRating	;The rating sum of CalcAttrib: d0 / d1 = weighted sum of the at
 	beq.w	.5
 	move.w	d3,-(sp)
 	subq.w	#2,d5
-.4
+.attribadd
 	add.w	(sp),d3
-	dbf	d5,.4
+	dbf	d5,.attribadd
 	asr.w	#1,d3
 	tst.w	(sp)+
 .5
@@ -1079,19 +1079,19 @@ CalcAttribRating	;The rating sum of CalcAttrib: d0 / d1 = weighted sum of the at
 	opt	osq+
 .7
 	cmp.b	#$63,d3
-	ble.w	.8
+	ble.w	.pos
 	move.b	#$63,d3
 	subq.b	#1,-1(a4,d2.w)
 	opt	oaq-
 	addi.w	#1,(CreatePoints).l
 	opt	oaq+
-.8
+.pos
 	neg.w	d2
 .9
 	add.w	d3,d0
 	addi.w	#$64,d1
-.10
-	dbf	d2,.0
+.next
+	dbf	d2,.bit
 	cmpa.l	#AttribWgtList,a6
 	beq.w	.11
 	move.w	#$64,d1

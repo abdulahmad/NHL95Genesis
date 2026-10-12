@@ -36,7 +36,7 @@ Pausemode	;(PauseMode). Game is in pause mode now: fade out, stop the sound (unl
 	lea	SetupPauseScreen(pc),a1	;screen draw routine
 	jsr	(InitMenuState).l
 	move.l	#$708,(pausetimeout).w
-.2
+.loop
 	jsr	(vcountwait).l
 	jsr	(ReadMenuJoy).l
 	tst.w	d1
@@ -50,7 +50,7 @@ Pausemode	;(PauseMode). Game is in pause mode now: fade out, stop the sound (unl
 .4
 	jsr	(ProcessInputWithRepeat).l
 	jsr	(HandleMenuInput).l
-	bne.s	.2	;eq = leave pause
+	bne.s	.loop	;eq = leave pause
 .5
 	jsr	(forceblack).l
 	btst	#7,(sflags9).w
@@ -180,10 +180,10 @@ HandleMenuInput	;Pause menu pad d1: right / left move between the three tabs (me
 	bra.w	UpdateMenuSelection
 .up
 	btst	#0,d1	;ubut
-	beq.w	.6
+	beq.w	.sel
 	subq.w	#1,(menuitem).w	;next higher item
 	bra.w	UpdateMenuSelection
-.6
+.sel
 	btst	#5,d1	;cbut
 	bne.w	.7
 	beq.w	.flip
@@ -1300,11 +1300,11 @@ ManualGoalieMenu	;Pause menu MANUAL GOALIE / AUTO GOALIE: with OptNOP set, toggl
 	beq.w	.chkso
 	bsr.w	SetMenuPadSide
 	btst	#1,(sflags).w
-	beq.w	.1
+	beq.w	.g1
 	eori.w	#1,(goaliemode2).w
 	jsr	(RedrawMenu).l
 	bra.w	.chkso
-.1
+.g1
 	eori.w	#1,(goaliemode1).w
 	bsr.w	RedrawMenu	;the same call as a bsr
 .chkso

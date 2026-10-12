@@ -711,7 +711,7 @@ GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the 
 	move.w	#$FFFF,(setupdir).w
 	move.w	#$18,(palcount).w	;24
 	bclr	#2,(disflags).w	;dfng: fade in graphics now
-.8
+.fix
 	bsr.w	FixModeOptions
 	bsr.w	PrintOptions
 	cmpi.w	#1,(setupshown).w
@@ -751,24 +751,24 @@ GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the 
 	bra.w	.17
 .16
 	btst	#3,d1
-	beq.w	.8
+	beq.w	.fix
 	move.w	#3,(setupdir).w
 	move.w	(SelectedPlayerIdx).w,d0
 	movea.l	#setupvalues,a0
 	addq.b	#1,(a0,d0.w)
 	bsr.w	WrapOptionUp
-	bra.w	.8
+	bra.w	.fix
 .17
 	move.w	#2,(setupdir).w
 	move.w	(SelectedPlayerIdx).w,d0
 	movea.l	#setupvalues,a0
 	subq.b	#1,(a0,d0.w)
 	bsr.w	WrapOptionDown
-	bra.w	.8
+	bra.w	.fix
 .18
 	move.w	#0,(setupdir).w
 	tst.w	(SelectedPlayerIdx).w
-	beq.w	.8
+	beq.w	.fix
 	subq.w	#1,(SelectedPlayerIdx).w
 	cmpi.b	#$C,(setupvalues).w
 	bne.w	.19
@@ -777,11 +777,11 @@ GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the 
 	subq.w	#1,(SelectedPlayerIdx).w
 .19
 	btst	#4,(setupcardflags).w
-	beq.w	.8
+	beq.w	.fix
 	cmpi.w	#2,(SelectedPlayerIdx).w
-	bne.w	.8
+	bne.w	.fix
 	subq.w	#1,(SelectedPlayerIdx).w
-	bra.w	.8
+	bra.w	.fix
 .20
 	move.w	#$FFFF,(setupdir).w
 	movem.w	d0,-(sp)
@@ -789,7 +789,7 @@ GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the 
 	subq.w	#1,d0
 	cmp.w	(SelectedPlayerIdx).w,d0
 	movem.w	(sp)+,d0
-	beq.w	.8
+	beq.w	.fix
 	move.w	#1,(setupdir).w
 	addq.w	#1,(SelectedPlayerIdx).w
 	cmpi.b	#$C,(setupvalues).w
@@ -799,15 +799,15 @@ GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the 
 	cmpi.w	#5,(SelectedPlayerIdx).w
 	bne.w	.21
 	subq.w	#1,(SelectedPlayerIdx).w
-	bra.w	.8
+	bra.w	.fix
 .21
 	btst	#4,(setupcardflags).w
-	beq.w	.8
+	beq.w	.fix
 	cmpi.w	#2,(SelectedPlayerIdx).w
-	bne.w	.8
+	bne.w	.fix
 .22
 	addq.w	#1,(SelectedPlayerIdx).w
-	bra.w	.8
+	bra.w	.fix
 .23
 	clr.w	(demoflag).w
 	move.w	(VDP_CNTR).l,(seed).w

@@ -3203,7 +3203,7 @@ PeriodStatsScreen	;Both team logos, goals/shots by period and total; left/right 
 	btst	#7,d1
 	bne.w	.exit
 	btst	#2,d1
-	bne.w	.5
+	bne.w	.title
 	btst	#3,d1
 	bne.w	.4
 	bra.s	.loop2
@@ -3214,7 +3214,7 @@ PeriodStatsScreen	;Both team logos, goals/shots by period and total; left/right 
 	bsr.w	PeriodStatsCaption
 	bsr.w	PeriodStatsColumns
 	bra.s	.loop2
-.5
+.title
 	tst.w	(matchup).w
 	beq.s	.loop2
 	clr.w	(matchup).w
@@ -3678,7 +3678,7 @@ LineEditorExit	;Exit box (rewritten in 95): Start leaves, A original lines, B lo
 	dc.w	$32	;String length
 	dc.b	$F8,$4,$2,$9,$B,$F9,$2,'Start = Exit'
 	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$F9,$0,$0
-	bra.w	.2
+	bra.w	.loop
 .0
 	bsr.w	TeamLinesOffset
 	movea.l	#StatBuf,a0
@@ -3698,7 +3698,7 @@ LineEditorExit	;Exit box (rewritten in 95): Start leaves, A original lines, B lo
 	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$FD,$9,$FC
 	dc.b	$F,'B = Load Team Line',$FD,$9,$FC,$11,'C = Save Team Line',$F9
 	dc.b	$0,$0
-	bra.w	.2
+	bra.w	.loop
 .1
 	bclr	#1,(sflags10).w
 	jsr	(printz).l
@@ -3711,12 +3711,12 @@ LineEditorExit	;Exit box (rewritten in 95): Start leaves, A original lines, B lo
 	dc.b	$F8,$4,$2,$9,$B,$F9,$2,'Start = Exit'
 	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$FD,$9,$FC
 	dc.b	$F,'C = Save Team Line',$F9,$0,$0
-	bra.w	.2
-.2
+	bra.w	.loop
+.loop
 	jsr	(vcountwait).l
 	jsr	(ReadMenuJoy).l
 	tst.w	d1
-	beq.s	.2
+	beq.s	.loop
 	btst	#7,d1
 	beq.w	.3
 	bra.w	.7
@@ -3727,7 +3727,7 @@ LineEditorExit	;Exit box (rewritten in 95): Start leaves, A original lines, B lo
 	bra.w	LineEditorReturn
 .4
 	btst	#6,(sflags11).w
-	bne.s	.2
+	bne.s	.loop
 	btst	#4,d1
 	beq.w	.5
 	btst	#1,(sflags10).w
@@ -3741,7 +3741,7 @@ LineEditorExit	;Exit box (rewritten in 95): Start leaves, A original lines, B lo
 	jsr	(SaveTeamLines).l
 	bra.w	LineEditorReturn
 .6
-	bra.s	.2
+	bra.s	.loop
 .7
 	jmp	(ExitStatsScreen).l
 
