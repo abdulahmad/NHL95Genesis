@@ -1375,12 +1375,12 @@ GetPlayerPicture	;Only the picture: a0 = the picture of player d0 of team d1 (th
 	movea.l	(a0,d2.w),a0
 	adda.w	6(a0),a0
 	clr.w	d4
-.3
+.loop
 	cmp.b	(a0)+,d0
 	beq.w	.4
 	addq.w	#1,d4
 	cmp.w	#6,d4
-	blt.s	.3
+	blt.s	.loop
 	move.w	d5,d0
 	bra.w	.5
 .4
