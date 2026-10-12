@@ -81,3 +81,8 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
 - Undone: the z80old95 inlining. src/sound/z80old95.asm restored (engine95.asm includes sound\z80old95.asm at $07E0E0); Z80OldProgram macro and Z80OLD_SEG removed from sound95.asm; stubinc/z80old95_stub.asm back to its normal form. sound95 stays in src/. MATCH (ROM + all segments).
 - Extractor takes any known retail ROM: SHA-1 detection (one retail version, 1994.JUL -00), per-version offset map, clear refusal of unknown ROMs. verify_all.sh extracts fresh first. Fresh extract + ROM + all segments MATCH.
 - Build pre-step: every entry point (npm build:*/seg:* scripts and the .bat files) runs tools/prebuild.js first. It checks the ROM (path, SHA-1, size; stops with a message naming the exact file and version if it is missing or wrong, ROMs are not in the repo) and re-runs the extractor when Extracted/ is missing or incomplete. The extractor writes Extracted/.extract-complete.json last (ROM SHA-1, extractor SHA-1, every file and size). npm scripts set NHL_PREBUILD_DONE=1 so the .bat does not repeat it; verify_all.sh runs it with Linux node. Tested with Windows npm/cmd under wine: fresh build auto-extracts and MATCHes; missing ROM stops with the message. MATCH.
+- Cleanup run (Oct 2026), three tasks in order:
+  1. Section banners inside src .asm: DONE. Routine-name lists, ROM addresses and per-version weeds replaced by short
+     plain English dividers (15 files). Kept as-is: teamdata95 data layout banners, SegaInit (Sega's own banners), stubs.
+  2. Include/incbin line address maps (nhl95.asm and others): TODO.
+  3. NHLPA93SNES src/routines/** file header comments: TODO (per module folder).
