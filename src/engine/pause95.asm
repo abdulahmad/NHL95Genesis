@@ -284,22 +284,22 @@ SetStatsMenuItems	;menulist = StatsMenus, menuitemoffset by mode: GameFlags bit 
 	btst	#3,(GameFlags).w
 	beq.w	.0
 	move.l	#$F0,(menuitemoffset).l
-	bra.w	.3
+	bra.w	.set
 .0
 	btst	#0,(sflags10).w
 	beq.w	.1
 	move.l	#$74,(menuitemoffset).l
-	bra.w	.3
+	bra.w	.set
 .1
 	btst	#0,(gmode2).w
 	beq.w	.2
 	move.l	#$66,(menuitemoffset).l
-	bra.w	.3
+	bra.w	.set
 .2
 	btst	#7,(sflags9).w
-	beq.w	.3
+	beq.w	.set
 	move.l	#$66,(menuitemoffset).l
-.3
+.set
 	move.l	#StatsMenus,(menulist).l
 	rts
 
@@ -516,29 +516,29 @@ ShowPenaltyBox	;The players in the penalty box list of team a2 ($9C, -1 ends; wi
 	;ShowPenaltyBoxPlayer each
 	lea	$9C(a2),a0
 	clr.w	d7
-.loop
+.count
 	tst.b	(a0)+
-	bmi.w	.1
+	bmi.w	.counted
 	addq.w	#1,d7
-	bra.s	.loop
-.1
+	bra.s	.count
+.counted
 	btst	#5,(sflags9).w
-	beq.w	.2
+	beq.w	.list
 	sub.w	impact(a2),d7
-.2
+.list
 	lea	$9C(a2),a0
-.loop2
+.next
 	clr.w	d0
 	subq.w	#1,d7
 	bmi.w	rtsmenu
 	move.b	(a0)+,d0
 	bmi.w	rtsmenu
 	bsr.w	ShowPenaltyBoxPlayer
-	bra.s	.loop2
+	bra.s	.next
 
 ListPenaltyBox	;Unreferenced. ShowPenaltyBox without the count: every player in the box list of team a2
 	lea	$9C(a2),a0
-.loop
+.next
 	clr.w	d0
 	move.b	(a0)+,d0
 	bmi.w	rtsmenu
@@ -547,13 +547,13 @@ ListPenaltyBox	;Unreferenced. ShowPenaltyBox without the count: every player in 
 .1
 	subq.w	#1,d7
 	bmi.w	rtsmenu
-	bra.s	.loop
+	bra.s	.next
 
 ShowPenaltyBoxPlayer	;Print player d0 / 2 + 1 of team a2: jersey number and penalty time left (tmpdst), one line down, up to
 	;printy $13
 	move.w	d7,-(sp)
 	cmpi.w	#$13,(printy).w
-	bhi.w	.0
+	bhi.w	.full
 	move.w	$68(a2,d0.w),d2
 	andi.w	#$7FF,d2
 	lsr.w	#1,d0
@@ -578,7 +578,7 @@ ShowPenaltyBoxPlayer	;Print player d0 / 2 + 1 of team a2: jersey number and pena
 	jsr	(print).l
 	move.w	(sp)+,(printx).w
 	addq.w	#1,(printy).w
-.0
+.full
 	move.w	(sp)+,d7
 
 rtsmenu	;An rts branched to from ShowPenaltyBox and ListPenaltyBox
@@ -604,9 +604,9 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	move.w	#$FC00,(VSCRLPM).w
 	movea.w	#(palfadenew-M68K_RAM),a0
 	moveq	#$1F,d1
-.loop
+.clrpal
 	clr.l	(a0)+
-	dbf	d1,.loop
+	dbf	d1,.clrpal
 	jsr	(setplayercolors).l
 	jsr	(setupIceRinkPal).l
 	jsr	(setVram_0).l
@@ -626,9 +626,9 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(setupEASNmap).l
 	btst	#4,(disflags).w
-	beq.w	.1
+	beq.w	.ref
 	btst	#3,(sflags2).w
-	bne.w	.1
+	bne.w	.ref
 	move.w	(ExtraChars).w,d4
 	movea.l	#FaceoffTiles+8,a2
 	jsr	(DecompressGraphicsPlain).l
@@ -636,18 +636,18 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	movea.l	#FaceoffTiles2+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(DrawFaceoffWindow).l
-	bra.w	.4
-.1
+	bra.w	.rink
+.ref
 	move.w	(ExtraChars).w,d4
 	btst	#7,(sflags).w
 	beq.w	.2
 	movea.l	#RefTilesHor+8,a2
-	bra.w	.3
+	bra.w	.load
 .2
 	movea.l	#RefTiles+8,a2
-.3
+.load
 	jsr	(DecompressGraphicsPlain).l
-.4
+.rink
 	move.w	(disflags).w,-(sp)
 	bset	#2,(disflags).w
 	move.w	#$7D0,(Oldrow).w
@@ -664,9 +664,9 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	move	#$2300,sr
 	jsr	(SprSort).l
 	move.w	(vcount).w,d0
-.loop2
+.wait
 	cmp.w	(vcount).w,d0
-	beq.s	.loop2
+	beq.s	.wait
 	bset	#3,(disflags).w
 	jsr	(printscores1).l
 	btst	#3,(sflags2).w
@@ -681,24 +681,24 @@ ClearOldFrames	;Oldframe = -1 for the 16 sort objects, the 4 sso and the 6 pads,
 	movea.l	#SortCords,a0
 	move.w	#$80,d0
 	move.w	#$F,d1
-.loop
+.sort
 	st	8(a0)
 	adda.w	d0,a0
-	dbf	d1,.loop
+	dbf	d1,.sort
 	movea.l	#sso,a0
 	move.w	#$14,d0
 	move.w	#3,d1
-.loop2
+.sso
 	st	8(a0)
 	adda.w	d0,a0
-	dbf	d1,.loop2
+	dbf	d1,.sso
 	movea.l	#pads,a0
 	move.w	#$1C,d0
 	move.w	#5,d1
-.loop3
+.pads
 	st	8(a0)
 	adda.w	d0,a0
-	dbf	d1,.loop3
+	dbf	d1,.pads
 	movem.l	(sp)+,d0-d1/a0-a3
 	rts
 
@@ -874,8 +874,8 @@ DrawMenuInfo	;With no menu list: clear the box and run draw routine menuitem of 
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(ClearMenuBox).l
 	btst	#5,(sflags9).w
-	bne.w	.3
-.loop
+	bne.w	.done
+.get
 	move.w	(menuitem).w,d0
 	bpl.w	.1
 	clr.w	(menuitem).w
@@ -885,12 +885,12 @@ DrawMenuInfo	;With no menu list: clear the box and run draw routine menuitem of 
 	movea.l	#MenuInfoList,a0
 	movea.l	(a0,d0.w),a0
 	cmpa.l	#0,a0
-	bne.w	.2
+	bne.w	.draw
 	clr.w	(menuitem).w
-	bra.s	.loop
-.2
+	bra.s	.get
+.draw
 	jsr	(a0)
-.3
+.done
 	movem.l	(sp)+,d0-d7/a0-a6
 	andi	#$FB,ccr
 	rts
@@ -928,24 +928,25 @@ PrintLines	;print the Strings at a1 up to a $FF String
 .x
 	rts
 
-ShowPenaltyMessages	;Every $78 frames show the next queued penalty (penaltymsgs): its name (Penaltylist) and the player
-	;(FormatPlayerNumInitial) centred at $14, $F / $11, and take him off the penalty box count. d1 = 1 when the queue is empty
+ShowPenaltyMessages	;Every $78 frames show the last queued penalty (penaltymsgs) and remove it: its name (Penaltylist) and
+	;the player (FormatPlayerNumInitial) centred at $14, $F / $11, and take him off the penalty box count.
+	;d1 = 1 when the queue is empty
 	movem.l	d0-d6/a0-a3,-(sp)
 	subq.w	#1,(menutimer).w
-	bpl.w	.8
-.loop
+	bpl.w	.notempty
+.next
 	movea.l	#penaltymsgs,a0
 	tst.w	(a0)
-	beq.w	.7
+	beq.w	.empty
 	move.l	a0,-(sp)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$A,$F,'                    '	;clear the two message lines
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$A,$11,'                    '
 	movea.l	(sp)+,a0
-.loop2
+.end
 	tst.w	(a0)+
-	bne.s	.loop2
+	bne.s	.end
 	subq.l	#4,a0
 	clr.w	d0
 	move.b	(a0),d0
@@ -953,8 +954,8 @@ ShowPenaltyMessages	;Every $78 frames show the next queued penalty (penaltymsgs)
 	adda.w	(a1,d0.w),a1
 	clr.w	d2
 	move.b	1(a1),d2
-	beq.w	.6
-	bmi.w	.6
+	beq.w	.skip
+	bmi.w	.skip
 	move.w	#$78,(menutimer).w
 	clr.w	d0
 	move.b	1(a0),d0
@@ -988,28 +989,28 @@ ShowPenaltyMessages	;Every $78 frames show the next queued penalty (penaltymsgs)
 	bclr	#7,d0
 	add.w	d0,d0
 	lea	$9C(a2),a4
-.loop3
+.find
 	cmp.b	(a4)+,d0
-	beq.w	.4
+	beq.w	.found
 	tst.b	-1(a4)
-	bmi.w	.5
-	bra.s	.loop3
-.4
+	bmi.w	.done
+	bra.s	.find
+.found
 	subq.w	#1,impact(a2)
 	bsr.w	ShowPenaltyBoxes
-.5
+.done
 	movem.l	(sp)+,d0-d7/a0-a6
 	clr.w	(a0)
-	bra.w	.8
-.6
+	bra.w	.notempty
+.skip
 	clr.w	(a0)
-	bra.w	.loop
-.7
+	bra.w	.next
+.empty
 	move.w	#1,d1
-	bra.w	.9
-.8
+	bra.w	.exit
+.notempty
 	move.w	#0,d1
-.9
+.exit
 	movem.l	(sp)+,d0-d6/a0-a3
 	rts
 
@@ -1486,12 +1487,12 @@ PauseScores	;The two scores in big digits on the pause screen (PutScoreDigit): h
 	divu.w	#$A,d0
 	move.l	d0,-(sp)
 	tst.w	d0
-	bne.w	.0
+	bne.w	.tens
 	addq.w	#2,(printx).w
-	bra.w	.1
-.0
+	bra.w	.ones
+.tens
 	bsr.w	PutScoreDigit
-.1
+.ones
 	move.l	(sp)+,d0
 	swap	d0
 	bsr.w	PutScoreDigit
@@ -1503,12 +1504,12 @@ PauseScores	;The two scores in big digits on the pause screen (PutScoreDigit): h
 	divu.w	#$A,d0
 	move.l	d0,-(sp)
 	tst.w	d0
-	bne.w	.2
+	bne.w	.tens2
 	addq.w	#2,(printx).w
-	bra.w	.3
-.2
+	bra.w	.ones2
+.tens2
 	bsr.w	PutScoreDigit
-.3
+.ones2
 	move.l	(sp)+,d0
 	swap	d0
 	bsr.w	PutScoreDigit
