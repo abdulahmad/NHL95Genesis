@@ -477,10 +477,10 @@ DrawStatsList	;Draw the stats screen column headers (the selected column highlig
 	lea	StatColumnHeaders(pc),a1
 	moveq	#5,d3
 	tst.w	(DispAttribCtr).w
-	bmi.w	.0
+	bmi.w	.head
 	adda.w	(a1),a1
 	clr.w	d3
-.0
+.head
 	move.w	#$8000,(printa).w
 	cmp.w	(DispAttribCtr).w,d3
 	bne.w	.1
@@ -489,7 +489,7 @@ DrawStatsList	;Draw the stats screen column headers (the selected column highlig
 	jsr	(printsmall).l
 	addq.w	#1,d3
 	cmp.w	#5,d3
-	blt.s	.0
+	blt.s	.head
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,4,3,9,7,0
 	jsr	(printsmallz).l
@@ -504,19 +504,19 @@ DrawStatsList	;Draw the stats screen column headers (the selected column highlig
 	movea.w	#(Satt-M68K_RAM),a3
 	clr.l	d6
 	tst.w	(DispAttribCtr).w
-	bpl.w	.2
+	bpl.w	.sort
 	jsr	(GetGoalieCount).l
 	bset	d0,d6
 	subq.w	#1,d6
 	not.l	d6
-.2
+.sort
 	moveq	#-1,d4
 	st	d5
 	jsr	(GetPlayerCount).l
-	bra.w	.6
-.3
+	bra.w	.next
+.player
 	btst	d0,d6
-	bne.w	.6
+	bne.w	.next
 	clr.w	d2
 	bclr	#2,(sflags5).w
 	move.w	(DispAttribCtr).w,d1
@@ -524,7 +524,7 @@ DrawStatsList	;Draw the stats screen column headers (the selected column highlig
 	bsr.w	GetStatColumn
 .4
 	btst	#2,(sflags5).w
-	bne.w	.6
+	bne.w	.next
 	ext.l	d2
 	asl.l	#8,d2
 	movem.l	d7/a0,-(sp)
@@ -535,18 +535,18 @@ DrawStatsList	;Draw the stats screen column headers (the selected column highlig
 	move.b	#$FF,d2
 	sub.b	(a1),d2
 	cmp.l	d4,d2
-	ble.w	.6
+	ble.w	.next
 	move.l	d2,d4
 	move.w	d0,d5
-.6
-	dbf	d0,.3
+.next
+	dbf	d0,.player
 	bset	d5,d6
 	move.b	d5,(a3)+
-	bpl.s	.2
+	bpl.s	.sort
 	moveq	#5,d0
-.7
+.pad
 	st	0(a3,d0.w)
-	dbf	d0,.7
+	dbf	d0,.pad
 	move.w	a3,d0
 	subi.w	#(Satt+6-M68K_RAM),d0
 	bpl.w	.8
@@ -3155,9 +3155,9 @@ PeriodStatsScreen	;Both team logos, goals/shots by period and total; left/right 
 	movea.l	#palfadenew+$40,a0
 	movea.l	#palfadenew+$60,a1
 	move.w	#7,d0
-.0
+.loop
 	move.l	(a0)+,(a1)+
-	dbf	d0,.0
+	dbf	d0,.loop
 	jsr	(printz).l
 	String	-(TXPRI+TXPAL3+TXMAP2),2,$10,0
 	movea.l	#TeamLogoBitmaps,a0
@@ -3198,30 +3198,30 @@ PeriodStatsScreen	;Both team logos, goals/shots by period and total; left/right 
 	bsr.w	PeriodStatsCaption
 	bsr.w	PeriodStatsColumns
 	move.w	#$18,(palcount).w
-.3
+.loop2
 	jsr	(WaitVSyncAndReadInput).l	;left (bit 2) goals, right (bit 3) shots, start exits
 	btst	#7,d1
-	bne.w	.6
+	bne.w	.exit
 	btst	#2,d1
 	bne.w	.5
 	btst	#3,d1
 	bne.w	.4
-	bra.s	.3
+	bra.s	.loop2
 .4
 	tst.w	(matchup).w
-	bne.s	.3
+	bne.s	.loop2
 	st	(matchup).w
 	bsr.w	PeriodStatsCaption
 	bsr.w	PeriodStatsColumns
-	bra.s	.3
+	bra.s	.loop2
 .5
 	tst.w	(matchup).w
-	beq.s	.3
+	beq.s	.loop2
 	clr.w	(matchup).w
 	bsr.w	PeriodStatsCaption
 	bsr.w	PeriodStatsColumns
-	bra.s	.3
-.6
+	bra.s	.loop2
+.exit
 	movem.l	(sp)+,d0-d7/a0-a6
 	jmp	(ExitStatsScreen).l
 
@@ -3465,20 +3465,20 @@ SelectLinePlayer	;Build the list of players for the slot and let the user pick o
 PrintAttribHeader	;Player list column header (PAttribColumns page DispAttribCtr), then 6 rows of names, selected row highlighted
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$16,$1,$0
-.0
+.top
 	movea.l	#PAttribColumns,a1
 	move.w	(DispAttribCtr).w,d0
 	bra.w	.2
-.1
+.next
 	adda.w	(a1),a1
 	addq.w	#4,a1
 .2
 	tst.w	(a1)
-	dbmi	d0,.1
-	bpl.w	.3
+	dbmi	d0,.next
+	bpl.w	.found
 	subq.w	#1,(DispAttribCtr).w
-	bra.s	.0
-.3
+	bra.s	.top
+.found
 	jsr	(print).l
 	move.l	(a1),d4
 	movea.w	#(Satt-M68K_RAM),a3

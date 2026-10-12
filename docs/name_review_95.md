@@ -1487,3 +1487,4 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 |---|---|
 | routines with the same structure as 94 | 94 local names propagated (24 renames) |
 | everything else | open |
+| prop.py MISMATCH routines (renumbered in 95) | 76 locals given the 94 name where the instruction at the label matches a unique 94 label (tools_ll/align.py): doinput, dopass, Pausemode, HandleMenuInput, UpdateMenuSelection, ManualGoalieMenu, printsmall, stats/scout/summary/shootout/records screens ... |

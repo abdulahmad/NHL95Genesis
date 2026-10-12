@@ -174,23 +174,23 @@ DisplayPlayerList	;Draw roster page SelectedPlayerIdx: the title (PlayerStatMenu
 .4
 	jsr	(printsmallz).l
 	String	CC_SetX,$16,CC_SetY,8
-.5
+.top
 	movea.l	#PAttribColumns,a1
 	move.w	(DispAttribCtr).w,d0
 	tst.w	(SelectedPlayerIdx).w
 	bne.w	.7
 	movea.l	#GAttribColumns,a1
 	bra.w	.7
-.6
+.next
 	adda.w	(a1),a1
 	addq.w	#4,a1
 .7
 	tst.w	(a1)
-	dbmi	d0,.6
-	bpl.w	.8
+	dbmi	d0,.next
+	bpl.w	.found
 	subq.w	#1,(DispAttribCtr).w
-	bra.s	.5
-.8
+	bra.s	.top
+.found
 	jsr	(printsmall).l
 	move.l	(a1),d4
 	jsr	(printsmallz).l

@@ -507,7 +507,7 @@ ShooterSelectList	;Shootout shooters: the "{Select Player}" list for slot TestLi
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$4,$2,$2,$1,'{Select  Player}',$0
 	clr.w	d0
-	bra.w	.6
+	bra.w	.scroll
 .loop2
 	jsr	(vcountwait).l
 	jsr	(ReadMenuJoy).l
@@ -518,25 +518,25 @@ ShooterSelectList	;Shootout shooters: the "{Select Player}" list for slot TestLi
 	bra.w	ShootersRedraw
 .3
 	btst	#5,d1
-	bne.w	.10
+	bne.w	.pick
 	moveq	#1,d0
 	btst	#1,d1
-	bne.w	.6
+	bne.w	.scroll
 	btst	#3,d1
-	bne.w	.4
+	bne.w	.page
 	moveq	#-1,d0
 	btst	#0,d1
-	bne.w	.6
+	bne.w	.scroll
 	btst	#2,d1
-	bne.w	.4
+	bne.w	.page
 	bra.s	.loop2
-.4
+.page
 	add.w	(DispAttribCtr).w,d0
 	bmi.s	.loop2
 	move.w	d0,(DispAttribCtr).w
 	bsr.w	PrintShooterList
 	bra.s	.loop2
-.6
+.scroll
 	add.w	(VertLineScrolling).w,d0
 	bmi.s	.loop2
 	cmp.w	(screentimer).w,d0
@@ -553,7 +553,7 @@ ShooterSelectList	;Shootout shooters: the "{Select Player}" list for slot TestLi
 .9
 	bsr.w	PrintShooterList
 	bra.w	.loop2
-.10
+.pick
 	movea.w	#(Satt-M68K_RAM),a3
 	adda.w	(VertLineScrolling).w,a3
 	clr.w	d0
@@ -1358,35 +1358,35 @@ PenShotBigTxt	;PenaltyShotBox big text
 PenShotChk	;A breakaway shooter hit: a penalty shot when penalty d0 allows one (PenShotPenalties); d0 = the penalty
 	movem.l	d1-d3/a0,-(sp)
 	btst	#pf3break,pflags3(a2)	;breakaway
-	beq.w	.0
+	beq.w	.loop
 	btst	#3,(gmode).w
-	bne.w	.0
+	bne.w	.loop
 	movem.w	d2,-(sp)
 	move.w	(PBnum).w,d2
 	andi.w	#$FF00,d2
 	movem.w	(sp)+,d2
-	bne.w	.0
+	bne.w	.loop
 	btst	#3,(BA_PS_flags).w
 	beq.w	.1
-.0
+.loop
 	move.w	#$FFFF,d1
-	bra.w	.3
+	bra.w	.end
 .1
 	movea.l	#PenShotPenalties,a0
 	move.w	(a0,d0.w),d1
-	bmi.w	.3
+	bmi.w	.end
 	move.w	SCnum(a2),d2	;SCnum
 	movem.w	d0-d1,-(sp)
 	move.w	d2,d0
 	jsr	(getBAplayerInfo).l
 	movem.w	(sp)+,d0-d1
-	bpl.w	.2
+	bpl.w	.found
 	bclr	#3,(BA_PS_flags).w
-	bra.s	.0
-.2
+	bra.s	.loop
+.found
 	move.w	d1,(pspenalty).w
 	move.w	d1,d0	;return the penalty shot penalty
-.3
+.end
 	movem.l	(sp)+,d1-d3/a0
 	rts
 

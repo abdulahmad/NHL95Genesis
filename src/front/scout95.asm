@@ -176,7 +176,7 @@ ScoutingReport	;Pregame scouting report: the Ron Barr picture, the text box and 
 	clr.w	(asv).w	;fast text flag
 	move.w	#$7F00,(screentimer).w
 	move.l	#$E10,(scoutwait).w
-.7
+.top
 	moveq	#0,d0
 	jsr	(waitx).l	;d1 = new presses
 	subq.w	#1,(matchuptimer).w
@@ -185,7 +185,7 @@ ScoutingReport	;Pregame scouting report: the Ron Barr picture, the text box and 
 .8
 	bsr.w	PrintAdvantageMarks	;advantage marks
 	btst	#7,d1	;sbut
-	bne.w	.14
+	bne.w	.exit
 	cmpi.w	#$10E,(matchuptimer).w
 	beq.w	.9
 	btst	#5,d1	;cbut
@@ -213,20 +213,20 @@ ScoutingReport	;Pregame scouting report: the Ron Barr picture, the text box and 
 	st	(asv).w	;down: type the rest without delays
 .12
 	btst	#1,(waitxpad+1).w	;down held (waitx pad bits)
-	beq.w	.13
+	beq.w	.upd
 	st	(asv).w
-.13
+.upd
 	jsr	(UpdateScoutingDisplay).l
 	subq.w	#1,(screentimer).w
-	bpl.w	.7
+	bpl.w	.top
 	tst.w	(OptNOP).w
-	beq.w	.14
+	beq.w	.exit
 	move.w	#$FFFF,(screentimer).w	;else wait for start, up to scoutwait frames
 	jsr	(AnyPadAssigned).l
-	bne.w	.7
+	bne.w	.top
 	subq.l	#1,(scoutwait).w
-	bpl.w	.7
-.14
+	bpl.w	.top
+.exit
 	move.w	#0,(printfontset).w	;char set 0
 	rts
 
@@ -401,12 +401,12 @@ GetMatchupLogo	;a0 = the logo bitmap of team d3 (TeamLogoBitmaps)
 PrintMatchupRatings	;Matchup 0: the rating names (ScoutRatingText) and both team ratings
 	;1-6: the position, the two players and their ratings
 	tst.w	(matchup).w
-	bne.w	.3
+	bne.w	.matchup
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$0,$1,$16,$16,CC_SetFont,$1,$0
 	lea	ScoutRatingText(pc),a1
 	move.w	#0,d7
-.0
+.loop
 	move.w	(a1),d0
 	asr.w	#1,d0
 	neg.w	d0
@@ -425,7 +425,7 @@ PrintMatchupRatings	;Matchup 0: the rating names (ScoutRatingText) and both team
 .2
 	addq.w	#1,d7
 	tst.w	(a1)
-	bpl.s	.0
+	bpl.s	.loop
 	move.w	#2,(printfontset).w
 	jsr	(printz).l
 	String	-TXMAP1,$0,$19,'                                        ',$0
@@ -441,16 +441,16 @@ PrintMatchupRatings	;Matchup 0: the rating names (ScoutRatingText) and both team
 	exg	a0,a2
 	bsr.w	PrintMatchupRating	;visitors
 	move.w	d0,(visrating).w
-	bra.w	.8
-.3
+	bra.w	.x
+.matchup
 	move.w	(matchup).w,d0
 	subq.w	#1,d0
 	movea.l	#MatchupPosNames,a1	;position name of matchup - 1
 	bra.w	.5
-.4
+.loop2
 	adda.w	(a1),a1
 .5
-	dbf	d0,.4
+	dbf	d0,.loop2
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$0,$1,$C,$13,CC_SetFont,$1,$0
 	jsr	(printsmall).l
@@ -500,7 +500,7 @@ PrintMatchupRatings	;Matchup 0: the rating names (ScoutRatingText) and both team
 	String	-TXMAP1,$6,$18,$0
 	bsr.w	PrintTwoSpaces
 	jsr	(printsmall).l
-.8
+.x
 	rts
 
 MatchupPosNames	;Position names of matchups 1-6
@@ -753,11 +753,11 @@ UpdateScoutingDisplay	;Text player of ScoutingReport: types the ScoutTextScript 
 	bsr.w	ScrollDisplayUp
 	movea.l	a1,a2
 	bra.w	.3
-.2
+.loop
 	cmpi.b	#$D,(a2)+
-	bne.s	.2
+	bne.s	.loop
 .3
-	dbf	d0,.2
+	dbf	d0,.loop
 	suba.l	a1,a2
 	move.w	a2,d0
 .4
@@ -797,11 +797,11 @@ UpdateScoutingDisplay	;Text player of ScoutingReport: types the ScoutTextScript 
 	st	(PlayerScrollCtr).w
 	movea.w	#(TextBuffer-M68K_RAM),a0
 	clr.w	d1
-.5
+.loop2
 	cmpi.b	#$D,(a2)
-	beq.w	.9
+	beq.w	.print
 	addq.w	#1,d0
-.6
+.loop3
 	move.b	(a2),(a0)+
 	addq.w	#1,d1
 	cmpi.b	#$2C,(a2)
@@ -812,13 +812,13 @@ UpdateScoutingDisplay	;Text player of ScoutingReport: types the ScoutTextScript 
 	addi.w	#$28,(typedelay).w
 .8
 	cmpi.b	#$20,(a2)+
-	bne.s	.5
+	bne.s	.loop2
 	cmpi.b	#$20,(a2)
-	beq.s	.6
+	beq.s	.loop3
 	subq.w	#1,d0
 	suba.w	a1,a2
 	move.w	a2,(PlayerScrollCtr).w
-.9
+.print
 	move.w	d1,(mesarea).w
 	addq.w	#2,(mesarea).w
 	btst	#0,d1
@@ -845,34 +845,34 @@ rtsScoutText	equ	*	;Shared rts of ScoutTextPlayer / ScoutTextNextLine
 	rts
 .14
 	bsr.w	NextHomeUser
-	bra.w	.36
+	bra.w	.append
 .15
 	bsr.w	NextAwayUser
-	bra.w	.36
+	bra.w	.append
 .16
 	move.l	a2,-(sp)
 	movea.l	#tmstruct,a2
 	jsr	(GetTeamNickname).l
 	movea.l	(sp)+,a2
-	bra.w	.36
+	bra.w	.append
 .17
 	move.l	a2,-(sp)
 	movea.l	#AwShots,a2
 	jsr	(GetTeamNickname).l
 	movea.l	(sp)+,a2
-	bra.w	.36
+	bra.w	.append
 .18
 	move.l	a2,-(sp)
 	movea.l	#tmstruct,a2
 	jsr	(GetTeamArena).l
 	movea.l	(sp)+,a2
-	bra.w	.36
+	bra.w	.append
 .19
 	move.l	a2,-(sp)
 	movea.l	#AwShots,a2
 	jsr	(GetTeamArena).l
 	movea.l	(sp)+,a2
-	bra.w	.36
+	bra.w	.append
 .20
 	jsr	(NextHomeHotPlayer).l
 	bra.w	.29
@@ -893,7 +893,7 @@ rtsScoutText	equ	*	;Shared rts of ScoutTextPlayer / ScoutTextNextLine
 .25
 	movea.l	tmdata(a1),a1
 	adda.w	4(a1),a1
-	bra.w	.36
+	bra.w	.append
 .26
 	movea.w	#(AwShots-M68K_RAM),a1
 	bra.w	.28
@@ -905,16 +905,16 @@ rtsScoutText	equ	*	;Shared rts of ScoutTextPlayer / ScoutTextNextLine
 	movea.l	tmdata(a1),a1
 	adda.w	(a1),a1
 	bra.w	.31
-.30
+.loop5
 	adda.w	(a1),a1
 	addq.w	#8,a1
 .31
-	dbf	d1,.30
-	bra.w	.36
+	dbf	d1,.loop5
+	bra.w	.append
 .32
 	movea.l	(AwayTeamRosterPtr).w,a1
 	adda.w	4(a1),a1
-	bra.w	.36
+	bra.w	.append
 .33
 	movea.l	(AwayTeamRosterPtr).w,a1
 	bra.w	.35
@@ -922,7 +922,7 @@ rtsScoutText	equ	*	;Shared rts of ScoutTextPlayer / ScoutTextNextLine
 	movea.l	(HomeTeamRosterPtr).w,a1
 .35
 	adda.w	4(a1),a1
-.36
+.append
 	addq.w	#1,(PlayerScrollCtr).w
 	add.w	(a1),d0
 	subq.w	#1,d0

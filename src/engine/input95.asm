@@ -68,29 +68,29 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	movem.l	d0-d2/a0/a3,-(sp)
 	move.w	(lastplayer).w,d0
 	cmp.w	SCnum(a3),d0
-	bne.w	.8
+	bne.w	.noot
 	tst.w	(passplayer).w
-	bmi.w	.8
+	bmi.w	.noot
 	tst.w	(onetimerplayer).w
-	bpl.w	.8
+	bpl.w	.noot
 	btst	#5,d1
-	beq.w	.8
+	beq.w	.noot
 	move.w	(passplayer).w,d0
 	asl.w	#7,d0
 	movea.l	#SortCords,a3
 	adda.w	d0,a3
 	tst.w	position(a3)
-	beq.w	.8
+	beq.w	.noot
 	btst	#3,pflags(a3)
-	bne.w	.8
+	bne.w	.noot
 	btst	#pf3onetimer,pflags3(a3)
-	bne.w	.8
+	bne.w	.noot
 	move.w	d4,(inputjoy).w
 	move.w	#$18,d0
 	jsr	(assreplace).l
 	movem.l	(sp)+,d0-d2/a0/a3
 	rts
-.8
+.noot
 	movem.l	(sp)+,d0-d2/a0/a3
 	btst	#pf3onetimer,pflags3(a3)
 	bne.w	.9
@@ -114,10 +114,10 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	beq.w	.12
 	btst	#2,(BA_PS_flags).w
 	bne.w	.37
-	bra.w	.16
+	bra.w	.bhold
 .12
 	btst	#6,(sflags5).w
-	bne.w	.16
+	bne.w	.bhold
 	tst.w	d4
 	beq.w	.13
 	tst.w	(goaliemode2).w
@@ -125,21 +125,21 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 .13
 	tst.w	(goaliemode1).w
 .14
-	beq.w	.16
+	beq.w	.bhold
 	movem.w	d0,-(sp)
 	move.w	SCnum(a3),d0
 	cmp.w	(puckc).w,d0
 	movem.w	(sp)+,d0
-	beq.w	.16
+	beq.w	.bhold
 .15
 	jmp	chgplayer
-.16
+.bhold
 	btst	#4,d3
 	beq.w	.24
 	tst.w	(holdreset).w
 	bne.w	.24
 	tst.w	d4
-	beq.w	.20
+	beq.w	.c1
 	tst.b	(bholdtimer+1).w
 	beq.w	.37
 	subq.b	#1,(bholdtimer+1).w
@@ -157,7 +157,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 .19
 	bne.w	.24
 	bra.w	.32
-.20
+.c1
 	tst.b	(bholdtimer).w
 	beq.w	.37
 	subq.b	#1,(bholdtimer).w
@@ -485,7 +485,7 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 .0
 	move.w	SCnum(a3),(lastplayer).w	;$52 = offset of player on ice
 	bclr	#3,(sflags5).w	;Not in NHL Hockey Source
-	beq.w	.2
+	beq.w	.noot
 	jsr	(OneTimerTarget).l
 	move.w	#9,(onetimerheight).w
 	btst	#2,(sflags6).w
@@ -493,13 +493,13 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	move.w	#$20,(onetimerheight).w
 .1
 	jsr	(OneTimerPass).l
-	bra.w	.8
-.2
+	bra.w	.exit
+.noot
 	moveq	#8,d0	;moves 8 into d0
 	tst.w	position(a3)	;checks if goalie
-	beq.w	.3
+	beq.w	.calc
 	move.b	passacc(a3),d0
-.3
+.calc
 	asl.w	#2,d0	;d0 = passacc for player, 8 for goalie
 	asr.w	#1,d0	;change from NHL Hockey Source,
 	addi.w	#$A0,d0
@@ -516,14 +516,14 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	blt.w	.5
 	adda.w	#$300,a1
 	btst	#2,(BA_PS_flags).w
-	bne.w	.7
+	bne.w	.nopp
 .5
 	cmpa.l	a1,a3	;Check to see if passing to self
-	beq.w	.6
+	beq.w	.next
 	tst.w	position(a1)	;position(a1)
-	ble.w	.6
+	ble.w	.next
 	btst	#2,pflags2(a1)	;check if player is unavailable
-	bne.w	.6
+	bne.w	.next
 	move.w	(a1),d0	;X Position of receiving player
 	sub.w	(puckx).w,d0	;sub puckx from d0
 	move.w	Ypos(a1),d1	;Y position of receiving player
@@ -538,22 +538,22 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	asl.w	#3,d0	;mult d0 by 8 (700 decimal max)
 	muls.w	d0,d0	;square d0 = max is 490000 decimal
 	cmp.l	#$10000,d0
-	bhi.w	.6
+	bhi.w	.next
 	muls.w	d1,d1	;square d1 (dX)
 	muls.w	d2,d2	;square d2 (dY)
 	add.l	d1,d2	;add together
 	cmp.l	d4,d2	;compare d4 to d2
-	bhi.w	.6
+	bhi.w	.next
 	move.l	d2,d4	;move d2 into d4
 	movea.l	a1,a0	;move a1 address into a0 (receiving player)
-.6
+.next
 	adda.w	#SCstruct,a1	;Skip to next player (80 hex is length of player struct)
 	dbf	d3,.5
 	tst.l	d4	;check if there's a player to pass to
-	bmi.w	.7
+	bmi.w	.nopp
 	bsr.w	passtoa0
-	bra.w	.8
-.7
+	bra.w	.exit
+.nopp
 	move.w	(passdir).w,d0	;just hit puck in pass dir not to any player
 	asl.w	#2,d0
 	movea.l	#dirtab,a0
@@ -574,7 +574,7 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	jsr	(randomd0).l
 	move.w	d0,(puckvz).w
 	btst	#1,(GameFlags).w
-	beq.w	.8
+	beq.w	.exit
 	clr.w	(puckvz).w
 	move.w	(puckvx).w,d0
 	asr.w	#2,d0
@@ -582,19 +582,19 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	move.w	(puckvy).w,d0
 	asr.w	#2,d0
 	move.w	d0,(puckvy).w
-.8
+.exit
 	tst.w	position(a3)	;$34 = position
-	bne.w	.11
+	bne.w	.notgoalie
 	tst.w	(puckvy).w
 	btst	#7,pflags(a3)
-	beq.w	.9
-	bmi.w	.10
-	bra.w	.11
-.9
-	bmi.w	.11
-.10
+	beq.w	.g0
+	bmi.w	.nvy
+	bra.w	.notgoalie
+.g0
+	bmi.w	.notgoalie
+.nvy
 	neg.w	(puckvy).w	;negative velocity on puck
-.11
+.notgoalie
 	move.w	(puckvx).w,d0
 	move.w	(puckvy).w,d1
 	jsr	(vtoa).l

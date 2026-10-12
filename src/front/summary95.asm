@@ -45,13 +45,13 @@ ScoringSummaryScreen	;"Scoring Summary": one 4 row entry per goal (6 bytes each 
 .3
 	moveq	#-2,d0
 	btst	#0,d3
-	bne.w	.4
+	bne.w	.set
 	neg.w	d0
 	btst	#1,d3
-	beq.w	.5
-.4
+	beq.w	.scroll
+.set
 	move.w	d0,(PlayerScrollCtr).w
-.5
+.scroll
 	bsr.w	CheckScoringScroll
 	bra.s	.2
 
@@ -253,13 +253,13 @@ PenaltySummaryScreen	;"Penalties": one 3 row entry per penalty (4 bytes each fro
 .3
 	moveq	#-2,d0
 	btst	#0,d3
-	bne.w	.4
+	bne.w	.set
 	neg.w	d0
 	btst	#1,d3
-	beq.w	.5
-.4
+	beq.w	.scroll
+.set
 	move.w	d0,(PlayerScrollCtr).w
-.5
+.scroll
 	bsr.w	CheckPenaltyScroll
 	bra.s	.2
 

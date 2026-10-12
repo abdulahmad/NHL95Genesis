@@ -114,11 +114,11 @@ StartGame	;Reset game state for a new game, then start the first period. 95 has 
 	movea.l	(sp)+,a0
 .2
 	btst	#0,(gmode2).w	;no ScoutingReport in a shootout or in Practice Mode
-	bne.w	.3
+	bne.w	.noso
 	btst	#7,(sflags9).w
-	bne.w	.3
+	bne.w	.noso
 	jsr	(ScoutingReport).l
-.3
+.noso
 	clr.w	(ScoreSumbytes).w
 	clr.w	(PenSumLength).w
 	clr.w	(gsp).w	;first period

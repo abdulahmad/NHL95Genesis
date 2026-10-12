@@ -55,7 +55,6 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
   - Phase A (93): DONE, all modules. Renames propagated to 94/95/NHLPA93SNES.
   - Phase B (94): DONE (all src modules, RAM names, equates; docs/name_review_94.md).
   - Phase C (95): DONE (all modules, ram95, graphics95, frames95, sound95; docs/name_review_95.md).
-- Local label pass (95): 94 local names propagated by prop.py to the 95 routines with the same local
-  structure (doinput_cbut, stats/records/shootout helpers, VBlank, vcountwait ...). Not started: routines whose
-  95 locals were renumbered (doinput, dopass, Pausemode, HandleMenuInput, UpdateMenuSelection, stats/scout
-  screens ...; list via prop.py MISMATCH output), the 95-only routines, and the data label / equate usage check.
+- Local label pass (95): 94 local names propagated (prop.py, then align.py for routines whose 95 locals
+  were renumbered). Next: new-in-95 routines by full body (names + locals; list via tools_ll/newnum.py with
+  92/93/94 as parents), then data labels / equates by usage, then NHLPA93SNES.

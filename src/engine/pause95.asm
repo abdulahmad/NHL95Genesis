@@ -16,9 +16,9 @@ Pausemode	;(PauseMode). Game is in pause mode now: fade out, stop the sound (unl
 	jsr	(forceblack).l	;fade screen to black
 	move.w	d0,-(sp)
 	move.w	(vcount).w,d0
-.0
+.vb
 	cmp.w	(vcount).w,d0
-	beq.s	.0	;wait for the next vblank
+	beq.s	.vb	;wait for the next vblank
 	move.w	(sp)+,d0
 	btst	#sfpz,(sflags).w
 	beq.w	.1
@@ -83,11 +83,11 @@ Pausemode	;(PauseMode). Game is in pause mode now: fade out, stop the sound (unl
 	jsr	(setvideo).l
 	move.w	#$18,(palcount).w
 	btst	#5,(sflags11).w
-	beq.w	.8
+	beq.w	.wait
 	move.w	#$FFFF,(palcount).w
-.8
+.wait
 	tst.w	(palcount).w
-	bpl.s	.8
+	bpl.s	.wait
 	move.w	(vcount).w,(oldvcount).w
 	move.w	(sp)+,(smallfontchars).w
 	rts
@@ -151,11 +151,11 @@ HandleMenuInput	;Pause menu pad d1: right / left move between the three tabs (me
 	;down / up the item, C (bit 5) runs the item routine (seta2 first); ne = stay in the menu (PlayGame sets sflags9 bit 3 to leave). With
 	;sflags9 bit 5 only ShowPenaltyMessages runs
 	btst	#7,d1	;sbut
-	bne.w	.11
+	bne.w	.flip
 	btst	#5,(sflags9).w
 	beq.w	.0
 	bsr.w	ShowPenaltyMessages
-	bra.w	.11
+	bra.w	.flip
 .0
 	btst	#3,d1
 	beq.w	.2
@@ -175,10 +175,10 @@ HandleMenuInput	;Pause menu pad d1: right / left move between the three tabs (me
 	bra.w	.12
 .4
 	btst	#1,d1	;dbut
-	beq.w	.5
+	beq.w	.up
 	addq.w	#1,(menuitem).w	;next lower item
 	bra.w	UpdateMenuSelection
-.5
+.up
 	btst	#0,d1	;ubut
 	beq.w	.6
 	subq.w	#1,(menuitem).w	;next higher item
@@ -186,10 +186,10 @@ HandleMenuInput	;Pause menu pad d1: right / left move between the three tabs (me
 .6
 	btst	#5,d1	;cbut
 	bne.w	.7
-	beq.w	.11
+	beq.w	.flip
 .7
 	cmpi.l	#ZeroLong,(menulist).w
-	beq.w	.11
+	beq.w	.flip
 	bsr.w	seta2
 	move.w	(menuitem).w,d0	;find the handler of the selected item
 	movea.l	(menulist).w,a0
@@ -199,11 +199,11 @@ HandleMenuInput	;Pause menu pad d1: right / left move between the three tabs (me
 	cmpi.l	#$4FF00,(a0)	;the $FF String: no items
 	beq.w	.10
 	bra.w	.9
-.8
+.next
 	addq.w	#4,a0
 .9
 	adda.w	(a0),a0
-	dbf	d0,.8
+	dbf	d0,.next
 	movea.l	(a0),a0
 	bclr	#3,(sflags9).w
 	move.b	(sflags12).w,-(sp)
@@ -214,7 +214,7 @@ HandleMenuInput	;Pause menu pad d1: right / left move between the three tabs (me
 	eori	#4,ccr
 .10
 	rts
-.11
+.flip
 	eori	#4,ccr	;invert Z
 	rts
 .12
@@ -709,7 +709,7 @@ SetMenuPrintX	;printx = $A (95; 94 4)
 UpdateMenuSelection	;Clamp menuitem to the list, scroll menuitem+2 to show it, and print 4 items from printy $C (the
 	;selected one in the highlight attribute) with the up / down arrows; no menu (menulist $69A): DrawMenuInfo
 	btst	#5,(sflags9).w
-	bne.w	.11
+	bne.w	.x
 	cmpi.l	#ZeroLong,(menulist).w
 	bne.w	.0
 	jmp	(DrawMenuInfo).l
@@ -724,12 +724,12 @@ UpdateMenuSelection	;Clamp menuitem to the list, scroll menuitem+2 to show it, a
 	adda.w	(a0),a0
 	adda.w	(a0),a0
 	bra.w	.3
-.2
+.next
 	adda.w	(a0),a0
 	addq.w	#4,a0
 	tst.w	2(a0)	;negative: the last item
 .3
-	dbmi	d0,.2
+	dbmi	d0,.next
 	addq.w	#1,d0
 	sub.w	d0,(menuitem).w	;no item below the last
 	move.w	(menuitem).w,d0
@@ -739,9 +739,9 @@ UpdateMenuSelection	;Clamp menuitem to the list, scroll menuitem+2 to show it, a
 .4
 	subq.w	#3,d0
 	cmp.w	(menuitem+2).w,d0
-	ble.w	.5
+	ble.w	.print
 	move.w	d0,(menuitem+2).w	;scroll down
-.5
+.print
 	bsr.s	SetMenuPrintX
 	move.w	#$D,(printy).w
 	movea.l	(menulist).w,a1
@@ -755,19 +755,19 @@ UpdateMenuSelection	;Clamp menuitem to the list, scroll menuitem+2 to show it, a
 	adda.w	(a1),a1
 	move.w	(menuitem+2).w,d0	;skip to the first item shown
 	bra.w	.7
-.6
+.skip
 	adda.w	(a1),a1
 	addq.w	#4,a1
 .7
-	dbf	d0,.6
+	dbf	d0,.skip
 	moveq	#3,d1	;4 rows
 	move.w	#$C,(printy).w
 	bsr.w	SetMenuPrintX
 	move.w	(menuitem+2).w,d0
-	beq.w	.8
+	beq.w	.row
 	jsr	(printsmallz).l	;more items above
 	String	CC_SetAttribute,0,CC_SetFont,0,CC_AddX,1,CC_AddY,1,$7B,CC_AddY,$FF,0	;the up arrow
-.8
+.row
 	bsr.w	SetMenuPrintX
 	jsr	(printsmallz).l	;start of an item row
 	String	CC_SetFont,0,CC_AddX,2,CC_AddY,2
@@ -776,15 +776,15 @@ UpdateMenuSelection	;Clamp menuitem to the list, scroll menuitem+2 to show it, a
 	adda.l	(menuitemoffset).w,a1
 	jsr	(printsmall).l
 	cmp.w	(menuitem).w,d0
-	bne.w	.9
+	bne.w	.nosel
 	jsr	(printsmall).l	;the selected item marker
-.9
+.nosel
 	movea.l	(sp)+,a1
 	bsr.w	PrintMenuItem	;the item text
 	addq.w	#1,d0
 	addq.w	#4,a1
 	tst.w	2(a1)	;negative: the last item
-	dbmi	d1,.8
+	dbmi	d1,.row
 	bpl.w	.10
 	bsr.w	SetMenuPrintX
 	addq.w	#1,(printy).w
@@ -806,7 +806,7 @@ UpdateMenuSelection	;Clamp menuitem to the list, scroll menuitem+2 to show it, a
 	jsr	(printsmallz).l
 	String	CC_SetFont,0,CC_SetAttribute,0,CC_AddX,1,$7D,0	;the down arrow
 	subq.w	#1,(printy).w
-.11
+.x
 	rts
 
 PrintMenuItem	;printsmall item String a1 (advanced past it). y: START GAME, RESUME GAME or EXIT GAME by gsp and sfpz
@@ -1297,24 +1297,24 @@ ManualGoalieMenu	;Pause menu MANUAL GOALIE / AUTO GOALIE: with OptNOP set, toggl
 	;5 / $B by its mode, when BA_Sktr_SCnum is on its side (setc1player / setc2player)
 	movem.l	d0-d7/a0-a6,-(sp)
 	tst.w	(OptNOP).w
-	beq.w	.2
+	beq.w	.chkso
 	bsr.w	SetMenuPadSide
 	btst	#1,(sflags).w
 	beq.w	.1
 	eori.w	#1,(goaliemode2).w
 	jsr	(RedrawMenu).l
-	bra.w	.2
+	bra.w	.chkso
 .1
 	eori.w	#1,(goaliemode1).w
 	bsr.w	RedrawMenu	;the same call as a bsr
-.2
+.chkso
 	btst	#0,(gmode2).w
-	bne.w	.3
+	bne.w	.so
 	btst	#2,(BA_PS_flags).w
 	beq.w	.x
-.3
+.so
 	btst	#1,(sflags).w
-	bne.w	.8
+	bne.w	.p2
 	cmpi.w	#2,(OptNOP).w
 	bne.w	.4
 	cmpi.w	#5,(BA_Sktr_SCnum).w
@@ -1330,15 +1330,15 @@ ManualGoalieMenu	;Pause menu MANUAL GOALIE / AUTO GOALIE: with OptNOP set, toggl
 	move.w	#6,d0
 .6
 	tst.w	(goaliemode1).w
-	bne.w	.7
+	bne.w	.set1
 	move.w	#5,d0
 	cmpi.w	#2,(OptNOP).w
-	bne.w	.7
+	bne.w	.set1
 	move.w	#$B,d0
-.7
+.set1
 	jsr	(setc1player).l
 	bra.w	.x
-.8
+.p2
 	cmpi.w	#2,(OptNOP).w
 	bne.w	.9
 	cmpi.w	#5,(BA_Sktr_SCnum).w
@@ -1350,9 +1350,9 @@ ManualGoalieMenu	;Pause menu MANUAL GOALIE / AUTO GOALIE: with OptNOP set, toggl
 .10
 	move.w	#6,d0
 	tst.w	(goaliemode2).w
-	bne.w	.11
+	bne.w	.set2
 	move.w	#$B,d0
-.11
+.set2
 	jsr	(setc2player).l
 .x
 	movem.l	(sp)+,d0-d7/a0-a6

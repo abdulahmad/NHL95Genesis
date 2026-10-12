@@ -911,18 +911,18 @@ RecordHoldersScreen	;Pause menu RECORD HOLDERS: the save RAM records (PrintRecor
 	jmp	(ExitStatsScreen).l
 .0
 	tst.w	(TempWord1).w
-	bne.w	.1
+	bne.w	.right
 	btst	#6,d3
-	beq.w	.1
+	beq.w	.right
 	btst	#5,d3
-	beq.w	.1
+	beq.w	.right
 	bsr.w	ClearWinRecords
 	bsr.w	CalcWinPercents
 	bsr.w	PrintWinRecords
 	bra.s	.loop
-.1
+.right
 	btst	#3,d1
-	beq.w	.2
+	beq.w	.left
 	cmpi.w	#2,(TempWord1).w
 	beq.s	.loop
 	bsr.w	ClearRecordArea
@@ -930,7 +930,7 @@ RecordHoldersScreen	;Pause menu RECORD HOLDERS: the save RAM records (PrintRecor
 	bsr.w	PrintRecordTitles
 	bsr.w	PrintRecordPage
 	bra.s	.loop
-.2
+.left
 	btst	#2,d1
 	beq.s	.loop
 	tst.w	(TempWord1).w

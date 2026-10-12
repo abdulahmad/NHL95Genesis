@@ -117,10 +117,10 @@ ValidateSRAM	;Check the save RAM copy in M68K_RAM: byte $7FFF must be the sum of
 .2
 	swap	d0	;swap d0 word size
 	tst.w	d1	;test d1
-	bne.w	.3	;branch if d1 not 0
+	bne.w	.bad	;branch if d1 not 0
 	clr.w	(ValidSRAM).l	;clear
 	bra.w	.x	;branch to exit
-.3
+.bad
 	st	(ValidSRAM).l	;set
 .x
 	rts

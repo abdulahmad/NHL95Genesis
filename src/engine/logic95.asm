@@ -4031,7 +4031,7 @@ asseben	;asstab entry $13 (94 9). Player a3 should exit the bench area.
 	btst	#5,pflags(a3)
 	bne.w	.x
 	bclr	#1,pflags(a3)
-	beq.w	.1
+	beq.w	.nna
 	clr.w	Xvel(a3)
 	clr.w	Yvel(a3)
 	move.w	SCnum(a3),d0
@@ -4047,7 +4047,7 @@ asseben	;asstab entry $13 (94 9). Player a3 should exit the bench area.
 	bset	#5,pflags(a3)
 	move.w	#$1E2A,d1	;SPA (94 $F6E)
 	jmp	(SetSPA).l
-.1
+.nna
 	move.w	#4,facedir(a3)
 	bclr	#pfnc,pflags(a3)
 	bclr	#5,pflags2(a3)
@@ -4271,7 +4271,7 @@ assscore	;asstab entry $1C (94 7). Players after a goal: skate to the scoring en
 	move.w	temp3(a3),d0
 	move.w	temp4(a3),d1
 	btst	#0,(gmode2).w	;shootout? count down the shootout delay and keep the players near center ice
-	beq.w	.4
+	beq.w	.noso
 	tst.w	(shootoutdelay).w
 	beq.w	.2
 	subq.w	#1,(shootoutdelay).w
@@ -4281,10 +4281,10 @@ assscore	;asstab entry $1C (94 7). Players after a goal: skate to the scoring en
 	cmpi.w	#$98,(a3)	;94 $88
 	bgt.w	.3
 	cmpi.w	#$FF68,(a3)	;94 $FF78
-	bgt.w	.4
+	bgt.w	.noso
 .3
 	clr.w	d1
-.4
+.noso
 	sub.w	d7,temp1(a3)
 	bpl.w	.ckcon
 	bset	#5,pflags(a3)

@@ -216,28 +216,28 @@ printsmall	;print String a1 with the small font at printx / printy (control code
 .0
 	move.b	(a1)+,d0
 	ext.w	d0
-	bgt.w	.1
+	bgt.w	.nocom
 	neg.w	d0
 	asl.w	#2,d0
 	movea.l	#ControlCodeJumpTable,a2
 	movea.l	(a2,d0.w),a2
 	jsr	(a2)
 	bra.w	.4
-.1
+.nocom
 	cmp.b	#$40,d0
-	bne.w	.2
+	bne.w	.noblank
 	move.w	#$7FF,d0
-	bra.w	.3
-.2
+	bra.w	.p
+.noblank
 	cmp.b	#$5E,d0
-	beq.w	.5
+	beq.w	.skip
 	asl.w	#1,d0
 	movea.l	(smallfontptr).w,a2
 	adda.l	4(a2),a2
 	move.w	4(a2,d0.w),d0
 	move.w	(printfontset).w,d1
 	add.w	(a3,d1.w),d0
-.3
+.p
 	add.w	d2,d0
 	move.w	d0,(a0)
 	addq.w	#1,(printx).w
@@ -246,7 +246,7 @@ printsmall	;print String a1 with the small font at printx / printy (control code
 	movem.l	(sp)+,d0-d3/a0/a2-a3
 	move.w	(sp)+,(disflags).w
 	rts
-.5
+.skip
 	addq.w	#1,(printx).w
 	bsr.w	xyVmMap
 	bra.s	.4

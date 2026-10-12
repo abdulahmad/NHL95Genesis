@@ -763,10 +763,10 @@ checkfo	;Check for faceoff sprites: the 3 fofdata2 entries (frame, flags) as Fac
 	beq.w	.7
 	movea.w	#(fofdata2-M68K_RAM),a3
 	moveq	#2,d0
-.0
+.loop
 	move.w	(a3),d4
-	bmi.w	.6
-	beq.w	.6
+	bmi.w	.next
+	beq.w	.next
 	movea.l	#FaceOffSprites,a2
 	adda.l	4(a2),a2
 	subq.w	#1,d4
@@ -831,8 +831,8 @@ checkfo	;Check for faceoff sprites: the 3 fofdata2 entries (frame, flags) as Fac
 	addq.w	#8,a2
 	dbf	d5,.1
 	addq.w	#4,a3
-.6
-	dbf	d0,.0
+.next
+	dbf	d0,.loop
 .7
 	rts
 
