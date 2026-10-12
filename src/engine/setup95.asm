@@ -538,10 +538,10 @@ FindPlayerLine	;Find player d0 (0 based) in the 6 slots of line a3: d1 = the lin
 	clr.w	d1
 .loop
 	cmp.w	#6,d3
-	bge.w	.1
+	bge.w	.next
 	cmp.b	(a3),d0
-	beq.w	.3
-.1
+	beq.w	.found
+.next
 	tst.b	(a3)+
 	addq.w	#1,d3
 	andi.w	#7,d3
@@ -550,7 +550,7 @@ FindPlayerLine	;Find player d0 (0 based) in the 6 slots of line a3: d1 = the lin
 .2
 	dbf	d2,.loop
 	move.w	#-1,d1
-.3
+.found
 	movem.l	(sp)+,d0/d2-d3/a3
 	rts
 
@@ -1425,30 +1425,30 @@ PrintOptionName	;Print option name d0 (OptionNames) at printx; lines not shown p
 	cmpi.w	#3,(setupshown).w
 	bne.w	.2
 	cmp.w	#2,d0
-	ble.w	.3
+	ble.w	.chksel
 	movea.l	#BlankNameTxt,a1
 .2
 	cmpi.w	#1,(setupshown).w
-	bne.w	.3
+	bne.w	.chksel
 	tst.w	d0
-	beq.w	.3
+	beq.w	.chksel
 	movea.l	#BlankNameTxt,a1
-.3
+.chksel
 	cmp.w	(SelectedPlayerIdx).w,d0
-	bne.w	.5
-.loop2
+	bne.w	.nothi
+.hi
 	bsr.w	PrintSetupTextHi
-	bra.w	.7
-.5
+	bra.w	.done
+.nothi
 	btst	#4,(setupcardflags).w
-	beq.w	.6
+	beq.w	.normal
 	cmpi.w	#1,(SelectedPlayerIdx).w
-	bne.w	.6
+	bne.w	.normal
 	cmp.w	#2,d0
-	beq.s	.loop2
-.6
+	beq.s	.hi
+.normal
 	bsr.w	PrintSetupText
-.7
+.done
 	movem.l	(sp)+,d0/a1
 	rts
 
@@ -1504,8 +1504,8 @@ defmenuoptions	;Mode 0, players 0, teams $E and $17, length 1, goalies 0, user r
 	dc.w	$0,$0,$E,$17,$1,$0,$1,$0
 	dc.w	$1
 
-GetSetupValues	;setupvalues from the options: line 0 from ModeToSetupMode(OptPlayMode); in Regular Game (sflags11 bit 6) all 8
-	;from Opt1team ... OptLine
+GetSetupValues	;setupvalues from the options: line 0 = ModeToSetupMode(OptPlayMode) (1 instead of 0 with
+	;sflags11 bit 6), lines 1-7 from Opt1team ... OptLine
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(OptPlayMode).w,d0
 	movea.l	#ModeToSetupMode,a0
@@ -1902,58 +1902,59 @@ DrawTeamBitmap	;dobitmap entry d1 of TeamBitmaps (d4 from the caller)
 	moveq	#0,d5
 	jmp	dobitmap
 
-UpdateSetupLogos	;When a team changed (setuphome / setupvis against setupvalues 1 / 2) erase the card text (EraseCardText)
-	;restart carddelay and draw the changed team's block (DrawHomeBlock / DrawVisBlock)
+UpdateSetupLogos	;When a team changed (setupcardflags bit 6, or setuphome / setupvis against setupvalues 1 / 2):
+	;erase the card text when carddelay < 0, restart carddelay and redraw both logos (DrawHomeBlock /
+	;DrawVisBlock; in modes 3-5 a team that is not HomeTeam / VisTeam is drawn on the other side)
 	bclr	#6,(setupcardflags).w
-	bne.w	.0
+	bne.w	.changed
 	move.b	(setuphome+1).w,d0
 	cmp.b	(setupvalues+1).w,d0
-	bne.w	.0
+	bne.w	.changed
 	move.b	(setupvis+1).w,d0
 	cmp.b	(setupvalues+2).w,d0
 	beq.w	.exit
-.0
+.changed
 	tst.w	(carddelay).w
-	bpl.w	.1
+	bpl.w	.delay
 	bsr.w	EraseCardText
-.1
+.delay
 	move.w	#$B4,(carddelay).l
 	move.b	(setupvalues+1).w,(logoteam+1).w
 	move.w	(logoteam).w,(setuphome).w
 	cmpi.b	#3,(setupvalues).w
-	beq.w	.2
+	beq.w	.swaph
 	cmpi.b	#4,(setupvalues).w
-	beq.w	.2
+	beq.w	.swaph
 	cmpi.b	#5,(setupvalues).w
-	bne.w	.3
-.2
+	bne.w	.homeblk
+.swaph
 	movem.w	d0,-(sp)
 	move.w	(logoteam).w,d0
 	cmp.w	(HomeTeam).w,d0
 	movem.w	(sp)+,d0
-	beq.w	.3
+	beq.w	.homeblk
 	bsr.w	DrawVisBlock
-	bra.w	.4
-.3
+	bra.w	.vis
+.homeblk
 	bsr.w	DrawHomeBlock
-.4
+.vis
 	move.b	(setupvalues+2).w,(logoteam+1).w
 	move.w	(logoteam).w,(setupvis).w
 	cmpi.b	#3,(setupvalues).w
-	beq.w	.5
+	beq.w	.swapv
 	cmpi.b	#4,(setupvalues).w
-	beq.w	.5
+	beq.w	.swapv
 	cmpi.b	#5,(setupvalues).w
-	bne.w	.6
-.5
+	bne.w	.visblk
+.swapv
 	movem.w	d0,-(sp)
 	move.w	(logoteam).w,d0
 	cmp.w	(VisTeam).w,d0
 	movem.w	(sp)+,d0
-	beq.w	.6
+	beq.w	.visblk
 	bsr.w	DrawHomeBlock
 	bra.w	.exit
-.6
+.visblk
 	bsr.w	DrawVisBlock
 .exit
 	rts
@@ -1994,13 +1995,13 @@ DrawVisBlock	;Erase the left logo (setupcardflags bit 2 was set) and draw logo l
 	move.w	#1,(printx).w
 
 DrawSetupLogo	;Draw the logo of team logoteam at printx, 6 x 6, palette TeamLogoPalettes
-	;+ team * $20 - $20 (bit 2: home) or - $40. Branched to from DrawHomeBlock; the name DrawTeamLogo is 's
+	;+ team * $20 - $20 (bit 2: home) or - $40; ends DrawHomeBlock / DrawVisBlock (pops their registers)
 	move.w	#1,(printy).w
 	move.w	(homepicchars).w,d4
 	btst	#2,(setupcardflags).w
-	bne.w	.0
+	bne.w	.gotchars
 	move.w	(vispicchars).w,d4
-.0
+.gotchars
 	move.w	(logoteam).w,d3
 	asl.w	#2,d3
 	movea.l	#TeamLogoBitmaps,a0
@@ -2011,12 +2012,12 @@ DrawSetupLogo	;Draw the logo of team logoteam at printx, 6 x 6, palette TeamLogo
 	asl.w	#3,d3
 	movea.l	#TeamLogoPalettes,a0
 	btst	#2,(setupcardflags).w
-	beq.w	.1
+	beq.w	.vispal
 	subi.w	#$20,d3
-	bra.w	.2
-.1
+	bra.w	.pal
+.vispal
 	subi.w	#$40,d3
-.2
+.pal
 	adda.w	d3,a0
 	adda.l	(a2)+,a1
 	move.w	#6,d3
@@ -2027,9 +2028,9 @@ DrawSetupLogo	;Draw the logo of team logoteam at printx, 6 x 6, palette TeamLogo
 	move.l	(palfadenew+$26).w,-(sp)
 	move.w	#4,d5
 	btst	#2,(setupcardflags).w
-	beq.w	.3
+	beq.w	.draw
 	move.w	#2,d5
-.3
+.draw
 	jsr	(dobitmap).l
 	move.l	(sp)+,(palfadenew+$26).w
 	move.l	(sp)+,(palfadenew+$22).w
@@ -2216,12 +2217,12 @@ ClearLogoPalettes	;Clear the two logo palette longs and set palcount
 StepSeasonTeam	;Step the season matchup (setupdir 2: PrevSeasonTeam, else NextSeasonTeam) until one is found; setupvalues
 	;1 / 2 = its two teams from SeasonTeams
 	cmpi.w	#2,(setupdir).w
-	beq.w	.0
+	beq.w	.prev
 	jsr	(NextSeasonTeam).l
-	bra.w	.1
-.0
+	bra.w	.chk
+.prev
 	jsr	(PrevSeasonTeam).l
-.1
+.chk
 	tst.w	(seasonteamsel).w
 	bmi.s	StepSeasonTeam
 	move.l	a1,-(sp)
@@ -2810,16 +2811,16 @@ maketree	;Make the playoff tree (potree) from playoffseats and WinBits, then Fig
 SetTreeGameTeams	;Put the two teams at a0 in game a1: flipped (gsstruct flags bit 0) except for
 	;bosgames 2, 3 and 5
 	cmpi.w	#2,(bosgames).w
-	beq.w	.0
+	beq.w	.noflip
 	cmpi.w	#3,(bosgames).w
-	beq.w	.0
+	beq.w	.noflip
 	cmpi.w	#5,(bosgames).w
-	beq.w	.0
+	beq.w	.noflip
 	bset	#0,$E(a1)
 	move.b	(a0)+,3(a1)
 	move.b	(a0)+,1(a1)
 	rts
-.0
+.noflip
 	bclr	#0,$E(a1)
 	move.b	(a0)+,1(a1)
 	move.b	(a0)+,3(a1)
