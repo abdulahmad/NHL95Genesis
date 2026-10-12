@@ -1510,3 +1510,4 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | new-in-95 locals: scout | routine names verified; 1 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: faceoff | routine names verified; 1 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: title | routine names verified; 4 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
+| data labels / equates (usage check) | every equate and global label checked for references: all unreferenced ones are marked as such in their comment; TmpJoyPuckCarrier removed (not used in 95, it shared PlayerChked's address); duplicate-address equates are RAM overlays used by different screens; SPAcelebrate / SPAstanley comments fixed |

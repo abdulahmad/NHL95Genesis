@@ -1408,7 +1408,7 @@ SPAgskate_table:	;Frames 852-875
 .6	dc.w	SPFgskate+18,12,SPFgskate+19,8,SPFgskate+20,12,SPFgskate+19,-8
 .7	dc.w	SPFgskate+21,12,SPFgskate+22,8,SPFgskate+23,12,SPFgskate+22,-8
 
-SPAcelebrate	=	*-SPAlist	; the 94 step
+SPAcelebrate	=	*-SPAlist	; goal celebration
 SPAcelebrate_table:	;Frames 836-851
 .t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t
@@ -1752,7 +1752,7 @@ SPApump_table:	;Frames 922-937
 .6	dc.w	SPFpump+12,12,SPFpump+13,12,SPFpump+12,12,SPFpump+13,12,SPFpump+12,12,SPFpump+13,-12
 .7	dc.w	SPFpump+14,12,SPFpump+15,12,SPFpump+14,12,SPFpump+15,12,SPFpump+14,12,SPFpump+15,-12
 
-SPAstanley	=	*-SPAlist	; inferred: set (label), before the celebrate step
+SPAstanley	=	*-SPAlist	; before the celebrate step
 SPAstanley_table:	;Frames 938-953
 .t	;Offset to each direction of animation (0-7)
 	dc.w	.0-.t

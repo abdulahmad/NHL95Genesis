@@ -499,7 +499,6 @@ shootoutdelay	equ	$FFFFDB9A	;94 $FFFFDED0
 waitxpad	equ	$FFFFDB9E	;94 $FFFFDED4. waitx: buttons held
 inputjoy	equ	$FFFFDBA2	;94 $FFFFDED8
 PlayerChked	equ	$FFFFDBA4	;94 $FFFFDEDC. Last player FallDown made fall
-TmpJoyPuckCarrier	equ	$FFFFDBA4	;94 $FFFFDEDA
 PlayerChking	equ	$FFFFDBA8	;94 $FFFFDEE0. The player who hit him
 hoticonchars	equ	$FFFFDBAC	;First vram char of the hot icon (ScoutingReport, HotIconMap)
 coldiconchars	equ	$FFFFDBAE	;First vram char of the cold icon (ColdIconMap)
