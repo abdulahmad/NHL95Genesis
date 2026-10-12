@@ -1,6 +1,9 @@
 ;	New in 95: the sound driver. SndDriver (called through SoundCmd) takes a command in d0,
 ;	plays up to 8 songs of MIDI style events and keeps the Z80 program fed. Followed by the
-;	Z80 program, the sound bank and the old, unused driver.
+;	Z80 program, the sound bank and the old, unused driver; last, the old Z80 program (macro
+;	Z80OldProgram) that engine95.asm places at $07E0E0.
+
+	if	~def(Z80OLD_SEG)	;the z80old95 segment build wants only Z80OldProgram
 
 	opt	oaq-,osq-,oz-	;the driver writes addi / subi #1-8 and 0(An) (SNASM would make them addq / subq and (An))
 
@@ -2261,3 +2264,19 @@ sfx_puckget_pcm
 fm_instrument_patches	;32 FM patches x 32 bytes, byte $1E = pitch bend scale (UpdateChannelFrequencyAndVolume)
 	incbin	..\Extracted\NHL95\Sound\fm_instrument_patches.bin	;32 FM patches x 32 bytes (byte $1E = pitch bend scale)
 	even
+
+	endif	;~def(Z80OLD_SEG)
+
+;	The old Z80 sound program, still loaded by p_initialZ80 (which nothing calls). Its bytes sit
+;	between fourway95 and pause95 ($07E0E0), so engine95.asm expands this macro there.
+
+Z80OldProgram	macro
+Z80_Program_Code	;First byte of the Z80 program (movea.l in p_initialZ80). p_initialZ80 copies $295
+	;bytes from here
+	dc.b	$18
+	incbin	..\Extracted\NHL95\Sound\z80_snd_drv93.bin	;the Z80 driver after its first byte, up to the ld bc of the FM patch bank address
+	dc.b	fm_instrument_patches&$FF,((fm_instrument_patches>>8)&$7F)|$80	;Z80 ld bc,$8000+(fm_instrument_patches&$7FFF): bank window address of the FM patches
+	dc.b	$09,$3E,fm_instrument_patches>>15	;Z80 add hl,bc / ld a,bank (32K bank) of the FM patches
+	incbin	..\Extracted\NHL95\Sound\z80_snd_drv93_end.bin	;rest of the Z80 driver
+	dc.b	$FF			;pad: retail leftover byte (94 $FF)
+	endm

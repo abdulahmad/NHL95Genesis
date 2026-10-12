@@ -16,7 +16,7 @@
 	include	hockey95.asm		; $009AC8  game flow: Opening, the main menu exits, StartGame, StartPer, Gameloop
 	include	display95.asm		; $00A204  setvideo, sort coordinates, pads, updateanim, default sprites, SprSort
 	include	control95.asm		; $00A95C  which pad controls which player, team setup
-	include	sound\sound95.asm		; $00AF44  the 95 sound driver, its Z80 program and sound bank, the sound calls, the unused 94 driver and samples
+	include	sound95.asm			; $00AF44  the 95 sound driver, its Z80 program and sound bank, the sound calls, the unused 94 driver and samples
 	include	engine95.asm		; $079902: the game engine (one assembly: PC-relative branches cross every file in it)
 	include	front95.asm		; $08DF5A: the menus and screens around the game
 	include	graphics95.asm		; $0A1A5A  player pictures, rink, sprites, fonts, screen maps, logo palettes, arena graphics

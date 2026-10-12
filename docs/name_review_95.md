@@ -1017,7 +1017,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | rtsCreate4 | ok |
 | rtsCreate5 | ok |
 
-## sound/sound95
+## sound95
 
 | name | verdict |
 |---|---|

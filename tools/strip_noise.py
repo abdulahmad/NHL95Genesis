@@ -23,7 +23,7 @@ SRC = os.path.join(ROOT, 'src')
 LISTING = os.path.join(ROOT, 'output', 'nhl95 .lst')
 IDA_LST = os.path.join(ROOT, 'lst', 'nhl95.bin.lst')
 NAME_MAP = os.path.join(ROOT, 'docs', 'name_map.csv')
-SUBSYSTEMS = ('sound', 'engine', 'front')
+SUBSYSTEMS = ('engine', 'front')
 
 IDA_NAME = r'(?:sub|loc|locret|unk|byte|word|dword|off|nullsub)_[0-9A-Fa-f]+'
 HEX = r'\$[0-9A-Fa-f]+'

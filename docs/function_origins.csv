@@ -203,82 +203,82 @@ control95.asm,$00ADAE,154,restorepl,code,input94,name
 control95.asm,$00AE48,142,clearTeamStats,code,setup94,name
 control95.asm,$00AED6,46,setteams,code,setup94,name
 control95.asm,$00AF04,64,InitTeamStructure,code,setup94,name
-sound/sound95.asm,$00AF44,194,SndDriver,code,new in 95,no 94 match
-sound/sound95.asm,$00B006,262,SndLoadZ80,code,new in 95,header
-sound/sound95.asm,$00B10C,684,SndUpdate,code,new in 95,header
-sound/sound95.asm,$00B3B8,194,SndStartSeq,code,new in 95,header
-sound/sound95.asm,$00B47A,98,SndStopSeq,code,new in 95,header
-sound/sound95.asm,$00B4DC,130,SndPutZ80Cmd,code,new in 95,header
-sound/sound95.asm,$00B55E,284,SndUploadBlock,code,new in 95,header
-sound/sound95.asm,$00B67A,138,SndReadBlock,code,new in 95,header
-sound/sound95.asm,$00B704,138,SndWriteBlock,code,new in 95,header
-sound/sound95.asm,$00B78E,60,SndPauseZ80,code,new in 95,header
-sound/sound95.asm,$00B7CA,60,SndResumeZ80,code,new in 95,header
-sound/sound95.asm,$00B806,56,SndStopAll,code,new in 95,header
-sound/sound95.asm,$00B83E,58,SndClearNotes,code,new in 95,header
-sound/sound95.asm,$00B878,74,SndReleaseNotes,code,new in 95,header
-sound/sound95.asm,$00B8C2,44,SndAddNote,code,new in 95,header
-sound/sound95.asm,$00B8EE,124,SndUpdateNotes,code,new in 95,header
-sound/sound95.asm,$00B96A,352,SndStreamZ80,code,new in 95,header
-sound/sound95.asm,$00BACA,126,SndFindBankItem,code,new in 95,header
-sound/sound95.asm,$00BB48,92,SndSetBank,code,new in 95,header
-sound/sound95.asm,$00BBA4,84,SndLoadList,code,new in 95,header
-sound/sound95.asm,$00BBF8,278,SndFreeBlocks,code,new in 95,header
-sound/sound95.asm,$00BD0E,74,SndResetBlocks,code,new in 95,header
-sound/sound95.asm,$00BD58,16,SndSendZ80,code,new in 95,header
-sound/sound95.asm,$00BD68,20,Z80BusRequest,code,new in 95,header
-sound/sound95.asm,$00BD7C,10,Z80BusRelease,code,new in 95,header
-sound/sound95.asm,$00BD86,7014,Z80Program,data,new in 95,follows Z80BusRelease
-sound/sound95.asm,$00D8EC,368108,SoundBanks,data,new in 95,follows Z80Program
-sound/sound95.asm,$0676D8,16,SoundCmd,code,new in 95,no 94 match
-sound/sound95.asm,$0676E8,40,UpdateCwdExcite,code,hockey94,name
-sound/sound95.asm,$067710,90,updatesound,code,display94,name
-sound/sound95.asm,$06776A,66,CheckLateGameSong,code,hockey94,name
-sound/sound95.asm,$0677AC,26,sfx,code,video94,name
-sound/sound95.asm,$0677C6,202,sfxplay,code,new in 95,header
-sound/sound95.asm,$067890,50,SfxTable,data,new in 95,header
-sound/sound95.asm,$0678C2,70,song,code,video94,name
-sound/sound95.asm,$067908,48,StartSong,code,new in 95,header
-sound/sound95.asm,$067938,38,stop_current_song,code,sound94,name
-sound/sound95.asm,$06795E,42,stop_current_song2,code,new in 95,header
-sound/sound95.asm,$067988,42,KillCrowd,code,display94,name
-sound/sound95.asm,$0679B2,18,SoundOff,code,new in 95,header
-sound/sound95.asm,$0679C4,92,ChooseSong,code,title94,name
-sound/sound95.asm,$067A20,168,TeamSongs,data,title94,name
-sound/sound95.asm,$067AC8,8,RandomSongs,data,title94,name
-sound/sound95.asm,$067AD0,12,z80_bus_release_delay,code,sound94,name
-sound/sound95.asm,$067ADC,70,UploadCommandBufferToZ80,code,sound94,name
-sound/sound95.asm,$067B22,2,rtscmd10,code,sound94,fingerprint rtscmd10
-sound/sound95.asm,$067B24,74,ProcessOneMusicTrack,code,sound94,name
-sound/sound95.asm,$067B6E,16,command_jump_table,data,sound94,name
-sound/sound95.asm,$067B7E,50,handle_command_00,code,sound94,name
-sound/sound95.asm,$067BB0,34,ReleaseChannelAndNote,code,sound94,name
-sound/sound95.asm,$067BD2,26,StopPCMChannel,code,sound94,name
-sound/sound95.asm,$067BEC,2,rtsfx,code,sound94,fingerprint StopPCMChannel
-sound/sound95.asm,$067BEE,326,handle_command_10,code,sound94,name
-sound/sound95.asm,$067D34,974,UpdateChannelFrequencyAndVolume,code,sound94,name
-sound/sound95.asm,$068102,130,SetChannelVolume,code,sound94,name
-sound/sound95.asm,$068184,26,handle_command_40,code,sound94,name
-sound/sound95.asm,$06819E,56,handle_command_60,code,sound94,name
-sound/sound95.asm,$0681D6,62,handle_command_30,code,sound94,name
-sound/sound95.asm,$068214,2,handle_command_skip,code,sound94,name
-sound/sound95.asm,$068216,146,p_initialZ80,code,sound94,name
-sound/sound95.asm,$0682A8,8,ClearAllTrackAndSFXSlots,code,sound94,name
-sound/sound95.asm,$0682B0,38,newcheck,code,collide94,name
-sound/sound95.asm,$0682D6,120,pcm_sample_table,data,sound94,name
-sound/sound95.asm,$06834E,500,sfx_shotbh_pcm,data,sound94,name
-sound/sound95.asm,$068542,3374,sfx_pass_pcm,data,sound94,name
-sound/sound95.asm,$069270,12868,sfx_oooh_pcm,data,sound94,name
-sound/sound95.asm,$06C4B4,9550,sfx_crowdboo_pcm,data,sound94,name
-sound/sound95.asm,$06EA02,8018,sfx_check_pcm,data,sound94,name
-sound/sound95.asm,$070954,12000,sfx_crowdcheer_pcm,data,sound94,name
-sound/sound95.asm,$073834,14976,sfx_id_0E_pcm,data,sound94,name
-sound/sound95.asm,$0772B4,1200,sfx_playerwall_pcm,data,sound94,name
-sound/sound95.asm,$077764,2608,sfx_check2_pcm,data,sound94,name
-sound/sound95.asm,$078194,1366,sfx_hithigh_pcm,data,sound94,name
-sound/sound95.asm,$0786EA,3000,sfx_shotfh_pcm,data,sound94,name
-sound/sound95.asm,$0792A2,608,sfx_puckget_pcm,data,sound94,name
-sound/sound95.asm,$079502,1024,fm_instrument_patches,data,sound94,name
+sound95.asm,$00AF44,194,SndDriver,code,new in 95,no 94 match
+sound95.asm,$00B006,262,SndLoadZ80,code,new in 95,header
+sound95.asm,$00B10C,684,SndUpdate,code,new in 95,header
+sound95.asm,$00B3B8,194,SndStartSeq,code,new in 95,header
+sound95.asm,$00B47A,98,SndStopSeq,code,new in 95,header
+sound95.asm,$00B4DC,130,SndPutZ80Cmd,code,new in 95,header
+sound95.asm,$00B55E,284,SndUploadBlock,code,new in 95,header
+sound95.asm,$00B67A,138,SndReadBlock,code,new in 95,header
+sound95.asm,$00B704,138,SndWriteBlock,code,new in 95,header
+sound95.asm,$00B78E,60,SndPauseZ80,code,new in 95,header
+sound95.asm,$00B7CA,60,SndResumeZ80,code,new in 95,header
+sound95.asm,$00B806,56,SndStopAll,code,new in 95,header
+sound95.asm,$00B83E,58,SndClearNotes,code,new in 95,header
+sound95.asm,$00B878,74,SndReleaseNotes,code,new in 95,header
+sound95.asm,$00B8C2,44,SndAddNote,code,new in 95,header
+sound95.asm,$00B8EE,124,SndUpdateNotes,code,new in 95,header
+sound95.asm,$00B96A,352,SndStreamZ80,code,new in 95,header
+sound95.asm,$00BACA,126,SndFindBankItem,code,new in 95,header
+sound95.asm,$00BB48,92,SndSetBank,code,new in 95,header
+sound95.asm,$00BBA4,84,SndLoadList,code,new in 95,header
+sound95.asm,$00BBF8,278,SndFreeBlocks,code,new in 95,header
+sound95.asm,$00BD0E,74,SndResetBlocks,code,new in 95,header
+sound95.asm,$00BD58,16,SndSendZ80,code,new in 95,header
+sound95.asm,$00BD68,20,Z80BusRequest,code,new in 95,header
+sound95.asm,$00BD7C,10,Z80BusRelease,code,new in 95,header
+sound95.asm,$00BD86,7014,Z80Program,data,new in 95,follows Z80BusRelease
+sound95.asm,$00D8EC,368108,SoundBanks,data,new in 95,follows Z80Program
+sound95.asm,$0676D8,16,SoundCmd,code,new in 95,no 94 match
+sound95.asm,$0676E8,40,UpdateCwdExcite,code,hockey94,name
+sound95.asm,$067710,90,updatesound,code,display94,name
+sound95.asm,$06776A,66,CheckLateGameSong,code,hockey94,name
+sound95.asm,$0677AC,26,sfx,code,video94,name
+sound95.asm,$0677C6,202,sfxplay,code,new in 95,header
+sound95.asm,$067890,50,SfxTable,data,new in 95,header
+sound95.asm,$0678C2,70,song,code,video94,name
+sound95.asm,$067908,48,StartSong,code,new in 95,header
+sound95.asm,$067938,38,stop_current_song,code,sound94,name
+sound95.asm,$06795E,42,stop_current_song2,code,new in 95,header
+sound95.asm,$067988,42,KillCrowd,code,display94,name
+sound95.asm,$0679B2,18,SoundOff,code,new in 95,header
+sound95.asm,$0679C4,92,ChooseSong,code,title94,name
+sound95.asm,$067A20,168,TeamSongs,data,title94,name
+sound95.asm,$067AC8,8,RandomSongs,data,title94,name
+sound95.asm,$067AD0,12,z80_bus_release_delay,code,sound94,name
+sound95.asm,$067ADC,70,UploadCommandBufferToZ80,code,sound94,name
+sound95.asm,$067B22,2,rtscmd10,code,sound94,fingerprint rtscmd10
+sound95.asm,$067B24,74,ProcessOneMusicTrack,code,sound94,name
+sound95.asm,$067B6E,16,command_jump_table,data,sound94,name
+sound95.asm,$067B7E,50,handle_command_00,code,sound94,name
+sound95.asm,$067BB0,34,ReleaseChannelAndNote,code,sound94,name
+sound95.asm,$067BD2,26,StopPCMChannel,code,sound94,name
+sound95.asm,$067BEC,2,rtsfx,code,sound94,fingerprint StopPCMChannel
+sound95.asm,$067BEE,326,handle_command_10,code,sound94,name
+sound95.asm,$067D34,974,UpdateChannelFrequencyAndVolume,code,sound94,name
+sound95.asm,$068102,130,SetChannelVolume,code,sound94,name
+sound95.asm,$068184,26,handle_command_40,code,sound94,name
+sound95.asm,$06819E,56,handle_command_60,code,sound94,name
+sound95.asm,$0681D6,62,handle_command_30,code,sound94,name
+sound95.asm,$068214,2,handle_command_skip,code,sound94,name
+sound95.asm,$068216,146,p_initialZ80,code,sound94,name
+sound95.asm,$0682A8,8,ClearAllTrackAndSFXSlots,code,sound94,name
+sound95.asm,$0682B0,38,newcheck,code,collide94,name
+sound95.asm,$0682D6,120,pcm_sample_table,data,sound94,name
+sound95.asm,$06834E,500,sfx_shotbh_pcm,data,sound94,name
+sound95.asm,$068542,3374,sfx_pass_pcm,data,sound94,name
+sound95.asm,$069270,12868,sfx_oooh_pcm,data,sound94,name
+sound95.asm,$06C4B4,9550,sfx_crowdboo_pcm,data,sound94,name
+sound95.asm,$06EA02,8018,sfx_check_pcm,data,sound94,name
+sound95.asm,$070954,12000,sfx_crowdcheer_pcm,data,sound94,name
+sound95.asm,$073834,14976,sfx_id_0E_pcm,data,sound94,name
+sound95.asm,$0772B4,1200,sfx_playerwall_pcm,data,sound94,name
+sound95.asm,$077764,2608,sfx_check2_pcm,data,sound94,name
+sound95.asm,$078194,1366,sfx_hithigh_pcm,data,sound94,name
+sound95.asm,$0786EA,3000,sfx_shotfh_pcm,data,sound94,name
+sound95.asm,$0792A2,608,sfx_puckget_pcm,data,sound94,name
+sound95.asm,$079502,1024,fm_instrument_patches,data,sound94,name
 engine/video95.asm,$079902,52,DoFill,code,video94,name
 engine/video95.asm,$079936,22,setvram,code,video94,name
 engine/video95.asm,$07994C,214,setVram_0,code,video94,name
@@ -525,7 +525,7 @@ engine/fourway95.asm,$07E082,28,ReadJoySwapPad4,code,fourway94,name
 engine/fourway95.asm,$07E09E,30,Read4WayPort1,code,new in 95,header
 engine/fourway95.asm,$07E0BC,30,Read4WayPort2,code,new in 95,header
 engine/fourway95.asm,$07E0DA,6,ReadJoyJmp,code,new in 95,header
-sound/z80old95.asm,$07E0E0,652,Z80_Program_Code,data,sound94,name
+sound95.asm,$07E0E0,652,Z80_Program_Code,data,sound94,name
 engine/pause95.asm,$07E36C,348,Pausemode,code,hockey94,name
 engine/pause95.asm,$07E4C8,14,SetupPauseScreen,code,hockey94,name
 engine/pause95.asm,$07E4D6,80,seta2,code,hockey94,name

@@ -69,3 +69,4 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
 - Day macro (schedule record) now lives in src/macros/genesis.mac with the other macros; schedule95_stub includes it. MATCH.
 - Header rewrite (file header comments, 92 style): 93G and 94G done; 95G top level, lists, main, ram, macros, sega, stubinc, hockey, checksum, sram, credits, control, display, graphics, engine\, front\, tables\, sound\ and all stubs done. Header rewrite complete in 93G, 94G and 95G.
 - Restructure: tables95.asm inlined into nhl95.asm; teamdata95, frames95, schedule95 (and stubs) moved from src/tables/ to src/. MATCH (ROM + all segments).
+- Restructure: sound95 (and stub) moved from src/sound/ to src/; z80old95.asm inlined into sound95.asm as the Z80OldProgram macro (engine95.asm expands it at $07E0E0; segment z80old95 = src/z80old95_stub.asm with Z80OLD_SEG). src/sound/ removed. MATCH.

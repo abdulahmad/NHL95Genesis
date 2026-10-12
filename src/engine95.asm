@@ -1,12 +1,12 @@
 ;	The game engine: includes the files of engine\ in ROM order (one assembly, since
-;	PC-relative branches cross every file in it), plus the old Z80 program that sits
-;	among them.
+;	PC-relative branches cross every file in it), plus the old Z80 program (the Z80OldProgram
+;	macro of sound95.asm) that sits among them.
 
 	include	engine\video95.asm		; $079902  VDP helpers, DMA, palettes, sprite frames, rink scroll, the decompressor, vblank, pads
 	include	engine\collide95.asm		; $07A7B4  checks, falls, wall, puck and goal collisions
 	include	engine\middle95.asm		; $07C512  math, text, names, numbers, clock digits, team blocks, team graphics
 	include	engine\fourway95.asm		; $07DFAC  four-player adaptor
-	include	sound\z80old95.asm		; $07E0E0  the 94 Z80 program, unused
+	Z80OldProgram			; $07E0E0  the 94 Z80 program, unused (macro in sound95.asm)
 	include	engine\pause95.asm		; $07E36C  Pausemode, the 95 pause menu and its items
 	include	engine\logic95.asm		; $07FCFC  the player AI: assignments, puck handling, skateto, one-timers, goalie AI
 	include	engine\players95.asm		; $0836AC  SetPersonel, SetPlList, player attributes, the bench, hot / cold
