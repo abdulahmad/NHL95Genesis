@@ -2,11 +2,7 @@
 ;	it with the pad and draws the playoff sprite.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, PrintSeriesScore, DrawTreeArrow,
-;	DrawTeamBlocks, VBlank_Playoff and PlayoffScreenText.
-;	95 changes: PlayoffScreen returns at once in Shootout (gmode2 bit 0) and also runs for sflags11 bit 2; AddTeamBlock and
-;	AddSmallFont are inline, the title uses printbig with the BigFontMap2 tiles, HandlePlayoffInput reads all four pads, the
-;	song is 3 (94 $79), the map chars start at $69A (94 $30A).
+;	The playoff tree screen: pad input, scrolling, series scores and team blocks.
 
 
 
@@ -319,7 +315,7 @@ PlayoffScreenText	;Round titles by gamelevel, printbig Strings with their positi
 	String	$CF,$37,$19,'Champions'
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	PlayoffTreeSetup, DrawPlayoffSprite and SetSframe (its only caller is DrawPlayoffSprite).
+;	The playoff tree setup and its sprite.
 
 
 

@@ -3,12 +3,8 @@
 ;	vertical blank and reads the pads with key repeat.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Three runs in ROM order: the VDP helpers with the vblank transfers, the sprite frames and rink
-;	scroll, then the decompressor, the vblank handlers and the pad reads.
-;	The VDP helpers: DoFill, setVram, setVram_0, Vmaddr, dobitmap, DecompressGraphicsPlain, DecompressGraphics
-;	(95: no packed graphics), DoDMApro, WaitDMA, forcefade, cramfade, CopyPaletteToCRAM, xyVmMap, remap; then the
-;	vblank transfers DumpSprites, DumpSprites2, DoDMAlist (ends at the shared rts rtss2), SetScroll2; then DoDMA
-;	(95: no Z80 bus request).
+;	VDP helpers: filling and copying VRAM, decompressing graphics, palette fades and the vblank
+; transfers.
 
 
 ; fill vram
@@ -429,8 +425,7 @@ DoDMA	;95 drops the 94 Z80 bus request, the sr save and the last word fix for a 
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	addframe2, then sizetab, then updatescroll. 95 reads a new 8 byte sprite record (Y, size / tile high bits,
-;	tile / flags, X) and has no horizontal rink case.
+;	Adding sprite frames and scrolling the rink.
 
 addframe	;a3 = sort cord object. Project it with find3d, then addframe2. a5 = dma trans, a6 = sprite attribute table.
 	;Called from setsortcords
@@ -662,10 +657,7 @@ updatescroll	;Using hpos and vpos set scroll cords; queue rink map rows on the d
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	forceblack2, the graphics decompressor (DecompressBytecode, jump_table, the Opcode_* handlers, FlushOutputBuffer;
-;	unused), AddSmallFont, DecompressGraphicsWithCallback, Framer, AddFramer, AddFramer2, VBjsr, VBlank,
-;	p_music_vblank, vb2 and IRQ7, VBlank_SetOptions; then orjoy, orjoy4way, nodiag, ReadJoy1-4, ReadJoy, jdtab,
-;	ReadJoyData ... ResetZ80Bus (95 pauses the sound driver around the pad reads), then ReadMenuJoy.
+;	The graphics decompressor, the vblank handlers and the pad reads.
 
 ; fade all colors to black but don't upset palfadenew
 forceblack	;Called from most screens
@@ -1335,7 +1327,7 @@ ReadMenuJoy	;Read the menu pad: with sflags12 bit 0 clear, pad menupadnum (ReadJ
 	jmp	(orjoy4way).l
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	ProcessInputWithRepeat and WaitVSyncAndReadInput.
+;	Key repeat on the pad input.
 
 ProcessInputWithRepeat	;nodiag, then key repeat on d1-d3. 95: first repeat after $19 frames, then every 4 (every $14 with sflags12
 	;bit 0)

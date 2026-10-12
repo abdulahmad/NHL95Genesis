@@ -2,9 +2,7 @@
 ;	and his messages, plays the song for the leading team and watches for icing and offsides.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, ClearPenaltyMessage,
-;	LeadSong / ClearLeadSong / LeadSongExit.
-;	95 changes: the team struct offsets (tmpdst $68, the penalty box list $9C), RefRamMap at $DBBE, the new sounds.
+;	Calling penalties, the penalty displays, the referee and the leading team's song.
 
 
 
@@ -772,9 +770,7 @@ ClearPenaltyMessage	;Blank the horizontal mode penalty message line (22 spaces a
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	checkagr, showref, ClearPenaltyBuffer, ClearPenalties / clrTmPdst, puckIChk, ChkOffsides and checkob.
-;	95 changes: the goal line $10B (94 $108), the blue line $52 (94 $54), checkagr's base $32 and the sflags9
-;	penalty options.
+;	Aggression checks, the referee display, clearing penalties, icing and offsides.
 
 
 

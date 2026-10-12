@@ -172,9 +172,7 @@ rtss15	;The rts of doinput_goaliedive
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	ClampTargetY (with the 10 SPA offsets after it), doinput_chkanim and getGoalieSCnum.
-;doinput_islocked follows.
-;	95 changes: the y limits $106 / $FEFA, the goalie box in doinput_chkanim, the SPA values.
+;	Pad input helpers: limiting the target y and the goalie's animation checks.
 
 
 doinput_cbut	;Button C (bit 5): new press: face the puck
@@ -368,10 +366,8 @@ getGoalieSCnum	;d0 = SCnum of the goalie of the team of player d0 (the first pos
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	dirtab, MaxSpeed, dostop, stopna, SetSPA, doplayeracc, noturn0, noturn, playeracc and the goal code:
-;	stopna2, PenGoalStuff, box / ShowGoalBox / GoalBigTxt / PPGoalBigTxt, PrintPlayerAssists /
-;	PrintPlayerGoals / PrintParenNumber, checkwindow, PeriodOver / GameOver / ExitToOpening, clockcont_0 /
-;	clockcont; then the controller setup screen (SetContTeams ... ReadAllPads). New in 95: the controller setup screen.
+;	Skating speed and stopping, goals and their messages, period and game end, the clock,
+; and the controller setup screen.
 
 
 GoalieReadySPA	;d1 = the goalie ready SPA: $1B7A near the puck (within $56 in y) or in a shootout, else $1C54

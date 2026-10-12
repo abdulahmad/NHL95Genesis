@@ -2,8 +2,7 @@
 ;	manual goalie, goalie selection and timeouts, and shows the scores on the pause screen.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; Pausemode
-;	and SetupPauseScreen, then the 95 pause menu.
+;	Entering pause mode and setting up the pause screen.
 
 
 Pausemode	;(PauseMode). Game is in pause mode now: fade out, stop the sound (unless sflags9 bit 5), run the pause menu
@@ -97,11 +96,7 @@ SetupPauseScreen	;Draw routine for the pause menu: PauseScreenDraw, then KillCro
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	seta2, InitMenuState / DrawMenuScreen / HandleMenuInput (95: three tabs, INFO / STATS / PAUSE, each with item lists
-;	by game mode), the startpause entries, the PauseScreenDraw and its penalty boxes, RestoreGameScreen (after the pause)
-;	SetMenuPrintX / UpdateMenuSelection / PrintMenuItem, the 95 info page, penalty messages and tabs, then the item lists
-;	(InfoMenus, StatsMenus, PauseMenus) and their AbortGame / PlayGame.
-;	The 40 byte menu box String is dc.w / dc.b (the String macro takes 15 values).
+;	The pause menu: its tabs, item lists and drawing, and restoring the game screen afterwards.
 seta2	;Set a2 to the team struct of the pause pad (menupadnum: cont1team ... cont4team). Called from Pausemode and
 	;HandleMenuInput
 	movea.l	#tmstruct,a2
@@ -747,7 +742,7 @@ UpdateMenuSelection	;Clamp menuitem to the list, scroll menuitem+2 to show it, a
 	adda.l	(menuitemoffset).w,a1
 	jsr	(printsmall).l	;the menu title
 	jsr	(printsmallz).l
-	dc.w	$28	;String: menu box top, rows of blanks
+	dc.w	$28	;String length (too many arguments for the String macro): menu box top, rows of blanks
 	dc.b	$F9,$00,$FB,$01,$20,$FB,$FF,$FA,$01,$20,$FB,$FF,$FA,$01,$20,$FB
 	dc.b	$FF,$FA,$01,$20,$FB,$12,$20,$FB,$FF,$FA,$FF,$20,$FB,$FF,$FA,$FF
 	dc.b	$20,$FB,$FF,$FA,$FF,$20
@@ -1287,8 +1282,7 @@ PlayGame	;Pause menu PLAY GAME: sflags9 bit 3 ends the pause menu (HandleMenuInp
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	ManualGoalieMenu, SelectGoalieMenu / DrawGoalieSelectList / TimeoutMenu (the three tab pause menu),
-;	PauseScores / PutScoreDigit, SetMenuPadSide and padteams.
+;	Goalie and timeout menu items, the pause screen scores and the pad sides.
 
 
 ManualGoalieMenu	;Pause menu MANUAL GOALIE / AUTO GOALIE: with OptNOP set, toggle goaliemode2
