@@ -3,8 +3,7 @@
 ;	three stars and the highlights of the day's games.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	GameStatisticsScreen, its scroll step, SetStatScroll, StatScrollRow / StatScrollRowEnd, PrintStatScrollArrows,
-;	DisplayTeamStatsScreen, PrintStatValue, TeamStatTextTbl and TeamStatTextTblNoPen.
+;	The game statistics screens.
 
 
 	include	macros\genesis.mac	;String
@@ -314,12 +313,8 @@ TeamStatTextTblNoPen	;The rows without the power play ones, used when penalties 
 	dc.w	$14,$12
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	rtsStatTables; the pause menu PLAYER STATS screen (PlayerStatsScreen ... ScrollArrowTbl2); the season stats save
-;	code (InitSeasonStats, SaveSimGame, the player / team stat blocks in save RAM and the game highlights); the season
-;	PLAYER STATS, TEAM STATS and LEAGUE LEADERS screens (also the pause menu SEASON PLAYERS / SEASON TEAMS); the
-;	PeriodStatsScreen line editor (LineEditor ... SetLineSlot) with save / load of team lines; ShowThreeStars,
-;	TakeTopStarScore, CalcStarScores, CalcTeamStarScores; and the season NHL HIGHLIGHTS screen.
-;	New in 95: the season stats, leaders and highlights screens.
+;	The player stats screen, saving season stats, the season stats and leaders screens, the line editor,
+; the three stars and the season highlights. New in 95: the season stats, leaders and highlights screens.
 
 
 

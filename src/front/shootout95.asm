@@ -2,8 +2,7 @@
 ;	to the next shooter, counts the goals, runs the shooters screen and plays penalty shots.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	The shootout setup and skating paths: ClearShootout and InitShooters, then PSandSOpassdir, passdirlist,
-;	StartShootoutPath, ShootoutPaths, NextPathPoint, SkatePath and ShootoutShootCheck; then the shootout itself.
+;	Shootout setup and the shooters' skating paths.
 
 
 
@@ -225,8 +224,7 @@ ShootoutShootCheck	;Shootout, skater a3 has the puck (gmode2 bit 1): Z set (d0 i
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	NextShooter, CountShootoutGoals, EndShootout, ShootoutModeBox and ShootoutModeBigTxt, ShootoutWonBy,
-;	ShootoutShooters ... PrintShooterNames (the shootout shooters screen).
+;	Shooter turns, the shootout result and the shooters screen.
 
 
 NextShooter	;Shootout: the next shooter (BA_Team, BA_Goalie_SCnum, StartShootoutPath), or the end
@@ -757,10 +755,7 @@ PrintShooterNames	;Shootout shooters: the shooters' names (FormatPlayerNameShort
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	puckshootout, SelectPenaltyShotSkater, puckpenshot, UpdatePenaltyShotEnd, EndPenaltyShotPlay, SetupPenaltyShot,
-;	PenaltyShotBox / PenShotBigTxt, PenShotChk / getBAplayerInfo, ShortenMsgTimer, setInjuryType, getFgtbyte /
-;	chkFgtBit1, updatepwrplay / GetLowestPen; the season injuries (SetSeasonInjuries ... DeleteInjurySlot, save RAM
-;	SRInjuries), CheckInjury and ClearPowerPlay.
+;	Penalty shots, season injuries and power plays.
 
 
 

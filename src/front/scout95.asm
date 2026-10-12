@@ -4,8 +4,7 @@
 ;	$20xxxx addresses are save RAM (odd bytes).
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	ScoutingReport, PageMatchup ... MatchupLineSlots, BuildHotColdLists and SortHotColdStarters.
-;	$20xxxx addresses are save RAM (odd bytes).
+;	The scouting report and its matchup pages.
 
 
 
@@ -713,10 +712,7 @@ SortHotColdStarters	;Sum the hot / cold values of the 6 starters of team a0 (sav
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	StartScoutText, ScoutTextPlayer, ScoutTextNextLine, CompareHotColdTotals, GetHotColdTotal, the hot / cold player
-;	lists, PrintPlayerNameRight, GetTeamRating / TeamRatings, HotColdIcon, GetTeamArena / GetTeamNickname,
-;	ScoutTextScript, GetPlayerPicture; the users lists of the scouting text (GetHomeUsers ... UserNameString).
-;	$20xxxx addresses are save RAM (odd bytes).
+;	The scouting text, hot and cold players and team ratings.
 
 
 

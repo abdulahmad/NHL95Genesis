@@ -2,9 +2,7 @@
 ;	the playoff stats, and updates the saved records after each game.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	NameEntryScreen, NameLetterGrid, NameEntryHelp, PrintNamePrompt, SyncLetterCursor, FindLetter, PrintNameCursor,
-;	PrintCurLetter, LetterGridPos, EnterNameTxt / SelectNameTxt, PrintNameLog, MoveLogArrows, PrintLogArrows,
-;	GetNameLength, PrintNameField, LetterGrid, GetLogName, StoreUserName and WriteNameRecord (the user records name entry).
+;	The user name entry screen.
 
 
 
@@ -714,10 +712,7 @@ WriteNameRecord	;Clear name slot namelogsel from every saved record (read ReadSR
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	UserNameEntry (four pads in 95), the name log checks (NameInUse ... SkipOtherUserName), WriteNameLog /
-;	ReadNameLog / NameLogIO, ClearNameHelp, PlayoffStatsScreen, RecordHoldersScreen, PrintRecordPage, PrintRecordTitles,
-;	PrintWinRecords, ClearRecordArea, PrintPlayerRecords, PrintRecordName, CalcWinPercents, ReadTeamRecords and
-;	ClearWinRecords.
+;	User name entry for each pad, the name log, and the records screens.
 
 
 
@@ -1313,9 +1308,7 @@ ClearWinRecords	;Clear bytes 8-$B (wins, games) of the 8 ThreeStars records and 
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	UpdateRecords (the user records after a game, four pads in 95), UpdateTeamRecord, UpdateCrowdRecord,
-;	UpdatePlayerRecords, the save RAM record block IO (ReadTeamRecord ... WritePlayerRecord, PlayerRecordOffsets),
-;	CountGoalies and CountPlayers.
+;	Updating the user records after a game and reading and writing them in save RAM.
 
 
 
