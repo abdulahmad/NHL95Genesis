@@ -93,13 +93,13 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 .noot
 	movem.l	(sp)+,d0-d2/a0/a3
 	btst	#pf3onetimer,pflags3(a3)
-	bne.w	.9
+	bne.w	.islocked
 	btst	#5,pflags(a3)
 	bne.w	doinput_islocked
-.9
+.islocked
 	move.w	(puckc).w,d5
 	cmp.w	SCnum(a3),d5
-	beq.w	.41
+	beq.w	.ispc
 	tst.w	position(a3)
 	beq.w	.11
 	btst	#pf3onetimer,pflags3(a3)
@@ -286,7 +286,7 @@ doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2
 	move.w	d0,facedir(a3)
 .40
 	jmp	burstchk
-.41
+.ispc
 	bsr.w	checkob
 	tst.w	position(a3)
 	bne.w	.42
@@ -1178,12 +1178,12 @@ shotdiradj	;a3 = shooter. Where to shoot for a computer player or a one timer
 	moveq	#5,d1
 	movea.w	#(SortCords-SCstruct-M68K_RAM),a0	;SC Struct start - 80
 	btst	#6,pflags(a3)
-	bne.w	.1
+	bne.w	.g
 	adda.w	#6*SCstruct,a0
-.1
+.g
 	adda.w	#SCstruct,a0
 	tst.w	position(a0)
-	dbeq	d1,.1
+	dbeq	d1,.g
 	bne.w	.setpassdir
 	move.b	Xvel(a0),d0
 	ext.w	d0	;sign extend d0

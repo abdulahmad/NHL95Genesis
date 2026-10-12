@@ -708,10 +708,10 @@ GetPlayerName	;a1 = mesarea "NN First Last" (getname) for player TempPlOffset (b
 	movem.l	d0/a2,-(sp)
 	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	(TempPlOffset).w,d0
-	bpl.w	.0
+	bpl.w	.get
 	andi.w	#$FF,d0
 	adda.w	#tmsize,a2	;away team
-.0
+.get
 	bsr.w	getname
 	movem.l	(sp)+,d0/a2
 	rts
@@ -1215,10 +1215,10 @@ PushNumberWidth	;Right-justified number
 	move.l	a1,d0	;move a1 into d0
 	subi.w	#(PushWidthBuf-M68K_RAM),d0
 	btst	#0,d0	;test bit 0 of d0
-	beq.w	.5
+	beq.w	.even
 	clr.b	(a1)+	;clear byte at a1 and increment
 	addq.w	#1,d0	;add 1 to d0
-.5
+.even
 	movea.w	#(PushWidthBuf-M68K_RAM),a1
 	move.w	d0,(a1)	;move d0 into a1 address location
 	movem.l	(sp)+,d0-d3	;push from stack
@@ -1477,11 +1477,11 @@ ResetClock	;gameclock = PerTimeTotal = the period length (GetPeriodTime; $258 in
 	;(gmclock). Called from StartPer
 	bsr.w	GetPeriodTime	;d0 = period length in seconds
 	cmpi.w	#3,(gsp).w	;overtime?
-	blt.w	.0
+	blt.w	.set
 	tst.w	(OptPlayMode).w
-	bne.w	.0
+	bne.w	.set
 	move.w	#$258,d0	;OptPlayMode 0 overtime is always 10:00
-.0
+.set
 	move.w	d0,(gameclock).w
 	move.w	d0,(PerTimeTotal).w
 	bset	#0,(gmode).w

@@ -113,9 +113,9 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals 
 	move.w	(sp)+,(delayedsong).w
 .17
 	cmpi.w	#$168,(ScoreSumbytes).w
-	bne.w	.18
+	bne.w	.sum
 	subq.w	#6,(ScoreSumbytes).w
-.18
+.sum
 	movea.w	#(ScoreSum-M68K_RAM),a0
 	adda.w	(ScoreSumbytes).w,a0
 	addq.w	#6,(ScoreSumbytes).w
@@ -127,10 +127,10 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals 
 	move.b	d0,(a0)+
 	addi.w	#$1E,(CwdExciteLvl).w
 	cmpa.w	#(tmstruct-M68K_RAM),a2
-	beq.w	.19
+	beq.w	.home
 	subi.w	#$14,(CwdExciteLvl).w
 	bset	#7,-1(a0)
-.19
+.home
 	move.w	$18(a2),d0
 	move.b	d0,(a0)+
 	move.w	#$FFFF,(a0)
@@ -431,7 +431,7 @@ checkwindow	;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the p
 	bne.w	.dd
 	movea.l	#puckx,a3
 	move.w	(puckc).w,d0
-	bmi.w	.1
+	bmi.w	.ok
 	asl.w	#7,d0
 	movea.l	#SortCords,a3
 	adda.w	d0,a3
@@ -441,15 +441,15 @@ checkwindow	;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the p
 	beq.w	.gd
 	add.w	d0,(yleader).w
 	cmpi.w	#$32,(yleader).w
-	blt.w	.1
+	blt.w	.ok
 	move.w	#$32,(yleader).w
-	bra.w	.1
+	bra.w	.ok
 .gd
 	sub.w	d0,(yleader).w
 	cmpi.w	#$FFCE,(yleader).w
-	bgt.w	.1
+	bgt.w	.ok
 	move.w	#$FFCE,(yleader).w
-.1
+.ok
 	move.w	Yvel(a3),d2
 	asr.w	#7,d2
 	add.w	Ypos(a3),d2

@@ -249,7 +249,7 @@ getlinee	;d0 = line number, a2 = team struct. Return d0 = energy level of this l
 	movea.l	#priolist,a0
 	move.w	tmap(a2),d4
 	bra.w	.next
-.0
+.loop
 	clr.w	d5
 	move.b	(a0,d4.w),d5
 	beq.w	.next
@@ -259,7 +259,7 @@ getlinee	;d0 = line number, a2 = team struct. Return d0 = energy level of this l
 	addq.w	#1,d1
 	add.w	$32(a2,d3.w),d0
 .next
-	dbf	d4,.0
+	dbf	d4,.loop
 	divu.w	d1,d0
 	movem.l	(sp)+,d1-d5/a0-a3
 	rts
@@ -301,7 +301,7 @@ CompLine	;The computer picks a line for team a2 (a1 = other team): on a power pl
 	moveq	#3,d0
 	move.w	tmap(a2),d1
 	sub.w	tmap(a1),d1
-	beq.w	.3
+	beq.w	.nopwr
 	bpl.w	.0
 	addq.w	#2,d0
 .0
@@ -319,11 +319,11 @@ CompLine	;The computer picks a line for team a2 (a1 = other team): on a power pl
 .ex
 	movem.l	(sp)+,d0-d2/a0
 	rts
-.3
+.nopwr
 	cmpa.w	#(tmstruct-M68K_RAM),a2
 	bne.w	.away
 	moveq	#2,d1
-	lea	.5(pc),a0
+	lea	.hl1(pc),a0
 	cmpi.w	#2,(gsp).w
 	bne.w	.h0
 	move.w	tmscore(a2),d2
@@ -341,13 +341,13 @@ CompLine	;The computer picks a line for team a2 (a1 = other team): on a power pl
 	bls.w	.away
 	move.w	(a0,d1.w),tmline(a2)
 	bra.s	.ex
-.5
+.hl1
 	dc.w	0,1,2,0,1,0,1
 	dc.w	2,0,1,2,0,2,0
 	dc.w	0,1,0,0,1,0,1
 .away
 	moveq	#2,d1
-	lea	.8(pc),a0
+	lea	.al1(pc),a0
 	cmpi.w	#2,(gsp).w
 	bne.w	.a0
 	move.w	tmscore(a2),d2
@@ -363,7 +363,7 @@ CompLine	;The computer picks a line for team a2 (a1 = other team): on a power pl
 	dbhi	d1,.a0
 	move.w	-(a0),tmline(a2)
 	bra.w	.ex
-.8
+.al1
 	dc.w	0,1,2
 	dc.w	0,2,1
 	dc.w	0,1,0

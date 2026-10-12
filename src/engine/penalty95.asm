@@ -328,7 +328,7 @@ InProgress	;Ref in progress: update the graphics, stats and penalty information
 .top
 	movea.w	#(PenBuf-M68K_RAM),a0
 	tst.w	(a0)+
-	beq.w	.11
+	beq.w	.exit
 .1
 	tst.w	(a0)+
 	bne.s	.1
@@ -398,11 +398,11 @@ InProgress	;Ref in progress: update the graphics, stats and penalty information
 	mulu.w	#$3C,d2	;60
 	bset	#$D,d2	;tmpdst bit 13
 	tst.w	tmpdst(a2,d0.w)
-	bmi.w	.6
+	bmi.w	.st
 	btst	#4,tmpdst(a2,d0.w)
-	beq.w	.6
+	beq.w	.st
 	bset	#$C,d2	;keep byte bit 4 (word bit 12) of an old penalty time
-.6
+.st
 	move.w	d2,tmpdst(a2,d0.w)
 	andi.w	#$EFFF,d2
 	moveq	#$34,d1	;(MaxRos-1)*2+2
@@ -440,7 +440,7 @@ InProgress	;Ref in progress: update the graphics, stats and penalty information
 	bne.w	.top
 	bsr.w	SetPA
 	bra.w	.ex
-.11
+.exit
 	movea.w	#(tmstruct-M68K_RAM),a2
 	bsr.w	coinsearch
 	adda.w	#tmsize,a2
@@ -508,7 +508,7 @@ ProcessPenaltyList	;a2 = team. Walk the penalty box list ($9C, 94 $9A): the firs
 	move.b	(a0)+,d0
 	bmi.w	.done
 	btst	#6,tmpdst(a2,d0.w)	;coincidental
-	bne.w	.7
+	bne.w	.coinpen
 	subq.w	#1,d1
 	bmi.s	.next
 	move.w	d0,(a1)+
@@ -541,24 +541,24 @@ ProcessPenaltyList	;a2 = team. Walk the penalty box list ($9C, 94 $9A): the firs
 .6
 	jsr	(sfx).l
 	rts
-.7
+.coinpen
 	subq.w	#1,tmpdst(a2,d0.w)	;coincidental penalty
 	btst	#3,tmpdst(a2,d0.w)
 	beq.s	.next
 	btst	#4,tmpdst(a2,d0.w)
-	bne.w	.8
+	bne.w	.clr
 	move.w	#$1000,tmpdst(a2,d0.w)
 	bra.w	RemovePlayerFromList
-.8
+.clr
 	clr.w	tmpdst(a2,d0.w)	;falls into RemovePlayerFromList
 
 RemovePlayerFromList	;Remove the entry before a0 from a penalty box list by shifting the rest down. Return a0 =
 	;removed slot
 	moveq	#$FFFFFFFF,d2
-.0
+.shift
 	addq.w	#1,d2
 	move.b	(a0,d2.w),-1(a0,d2.w)
-	bpl.s	.0
+	bpl.s	.shift
 	subq.w	#1,a0
 	rts
 
@@ -578,9 +578,9 @@ releasepl	;The player's penalty time is up, so let him out (if appropriate). a2 
 	bset	#0,(AwShots+tmflags).w	;visitors tmflags: tmflcc
 	movea.l	#priolist,a0
 	tst.w	tmgoalie(a2)
-	bpl.w	.1
+	bpl.w	.gin
 	addq.w	#1,a0
-.1
+.gin
 	clr.w	position(a3)
 	move.b	(a0,d1.w),position+1(a3)
 	jsr	(Setplass).l

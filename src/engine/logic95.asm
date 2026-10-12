@@ -787,9 +787,9 @@ assgoalietopuck	;asstab entry $14. Goalie skates to the loose puck
 	bne.w	assexit	;exit if clock stopped
 	bsr.w	check4bench
 	bclr	#1,pflags(a3)	;new assignment
-	beq.w	.0
+	beq.w	.nna
 	clr.w	temp1(a3)
-.0
+.nna
 	sub.b	d7,temp1(a3)
 	bpl.w	.go
 	move.b	aidef(a3),d0	;aidef
@@ -2866,7 +2866,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	btst	#3,pflags(a3)
 	bne.w	assexit
 	bclr	#1,pflags(a3)
-	beq.w	.7
+	beq.w	.nna
 	btst	#pf3break,pflags3(a3)
 	beq.w	.4
 	move.w	#SFXbeep1,-(sp)
@@ -2890,7 +2890,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	move.w	(VDP_CNTR).l,d0
 	andi.w	#3,d0
 	move.w	d0,temp3(a3)
-.7
+.nna
 	sub.b	d7,temp1(a3)
 	bpl.w	.nodec
 	move.b	aioff(a3),temp1(a3)
@@ -3188,9 +3188,9 @@ chk4pass	;Pass to a free teammate (dopass)
 	moveq	#6,d0
 	jsr	(randomd0).l
 	cmpi.w	#6,SCnum(a3)
-	blt.w	.0
+	blt.w	.dp1
 	addq.w	#6,d0
-.0
+.dp1
 	tst.w	position(a3)
 	beq.w	.1
 	cmpi.w	#$28,(puckx).w
@@ -3283,10 +3283,10 @@ check4bench	;Go to the bench for a line change, or take the new position
 	btst	#4,pflags2(a3)
 	bne.w	rtsskate
 	tst.b	newpos(a3)
-	bpl.w	.0
+	bpl.w	.b
 	tst.b	newpnum(a3)
 	bmi.w	rtsskate
-.0
+.b
 	move.b	newpnum(a3),d0
 	cmp.b	pnum(a3),d0
 	beq.w	.samepl

@@ -30,11 +30,11 @@ setpersonel	;Set personnel on team a2 by PlList: players already on the ice stay
 .0
 	movea.w	$22(a2),a3
 	moveq	#5,d4	;# of players on team for loop
-.1
+.l0
 	st	newpos(a3)	;set newpos (FF)
 	st	newpnum(a3)	;set newpnum
 	adda.w	#SCstruct,a3	;add size of player struct to a3
-	dbf	d4,.1
+	dbf	d4,.l0
 	bsr.w	SetPlList
 	moveq	#5,d4
 	movea.w	#(PlList-M68K_RAM),a4	;list of players we want on ice
@@ -70,9 +70,9 @@ setpersonel	;Set personnel on team a2 by PlList: players already on the ice stay
 	adda.w	#SCstruct,a3
 	tst.b	newpnum(a3)
 	dbmi	d3,.6
-	bpl.w	.7
+	bpl.w	.chkpos
 	movea.w	a3,a0
-.7
+.chkpos
 	tst.w	position(a3)
 	dbpl	d3,.6
 	move.b	6(a4,d4.w),$60(a0)
@@ -157,19 +157,19 @@ TryAddPlayerToList	;d0 = player number (1 based), d4 = PlList slot. Put d0 in th
 	subq.w	#1,d0
 	add.w	d0,d0
 	tst.w	$68(a2,d0.w)
-	bgt.w	.1
+	bgt.w	.no
 	cmpi.w	#$FFFD,$68(a2,d0.w)
-	beq.w	.1
+	beq.w	.no
 	cmpi.w	#$FFFC,$68(a2,d0.w)
-	beq.w	.1
+	beq.w	.no
 	moveq	#5,d0
-.0
+.s2
 	cmp.b	(a4,d0.w),d1
-	dbeq	d0,.0
-	beq.w	.1
+	dbeq	d0,.s2
+	beq.w	.no
 	move.b	d1,(a4,d4.w)
 	rts
-.1
+.no
 	clr.w	d1
 	rts
 

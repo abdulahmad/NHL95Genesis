@@ -47,32 +47,32 @@ checkcoll	;d2 = new x coord, d3 = new y coord, a3 = struct of object. Check wall
 	move.w	(a0,d0.w),d1
 .2
 	cmp.w	#$F,d1	;Sortobjs-1
-	beq.w	.3
+	beq.w	.cl2
 	clr.w	d4
 	move.b	1(a1,d1.w),d4	;next higher object number
 	cmp.w	(a2,d4.w),d3
-	ble.w	.3
+	ble.w	.cl2
 	addq.w	#1,(a0,d0.w)
 	subq.w	#1,(a0,d4.w)
 	move.b	d4,(a1,d1.w)
 	move.b	d0,1(a1,d1.w)
 	addq.w	#1,d1
 	bra.s	.2
-.3
+.cl2
 	move.w	(a0,d0.w),d1
-	beq.w	.5
+	beq.w	.ex2
 .4
 	clr.w	d4
 	move.b	-1(a1,d1.w),d4	;next lower object number
 	cmp.w	(a2,d4.w),d3
-	bge.w	.5
+	bge.w	.ex2
 	subq.w	#1,(a0,d0.w)
 	addq.w	#1,(a0,d4.w)
 	move.b	d4,(a1,d1.w)
 	move.b	d0,-1(a1,d1.w)
 	subq.w	#1,d1
 	bne.s	.4
-.5
+.ex2
 	move.w	d3,(a2,d0.w)
 	rts
 .restoreold
@@ -94,28 +94,28 @@ checkwallcoll	;d2/d3 = x/y to test, a3 = object, wcradiusx/wcradiusy = radius. C
 	addi.w	#$4C,d4
 	addi.w	#$4C,d5
 	cmp.w	d5,d3
-	bgt.w	.0
+	bgt.w	.ctc
 	cmp.w	d4,d2
-	blt.w	.1
+	blt.w	.circle
 	neg.w	d4
 	cmp.w	d4,d2
-	bgt.w	.1
+	bgt.w	.circle
 	movea.w	#(SortCords+(13*SCstruct)-M68K_RAM),a2
 	bsr.w	checkgoal
-	bra.w	.2
-.0
+	bra.w	.exit
+.ctc
 	neg.w	d5
 	cmp.w	d5,d3
-	blt.w	.2
+	blt.w	.exit
 	cmp.w	d4,d2
-	blt.w	.1
+	blt.w	.circle
 	neg.w	d4
 	cmp.w	d4,d2
-	bgt.w	.1
+	bgt.w	.circle
 	movea.w	#(SortCords+(12*SCstruct)-M68K_RAM),a2
 	bsr.w	checkgoal
-	bra.w	.2
-.1
+	bra.w	.exit
+.circle
 	sub.w	d4,d2
 	sub.w	d5,d3
 	move.w	d3,d0
@@ -125,7 +125,7 @@ checkwallcoll	;d2/d3 = x/y to test, a3 = object, wcradiusx/wcradiusy = radius. C
 	muls.w	d2,d2
 	add.l	d2,d3
 	cmp.l	#$1690,d3
-	bls.w	.2
+	bls.w	.exit
 	exg	d0,d3
 	bsr.w	sroot	;distance from the circle center
 	exg	d0,d3
@@ -136,7 +136,7 @@ checkwallcoll	;d2/d3 = x/y to test, a3 = object, wcradiusx/wcradiusy = radius. C
 	asl.l	#8,d1
 	divs.w	d3,d1
 	bsr.w	wallcollb
-.2
+.exit
 	movem.w	(sp)+,d2-d5
 	move.w	Wallcos(a3),d0
 	or.w	Wallsin(a3),d0
@@ -314,17 +314,17 @@ checkplcoll	;Check collision with other players. d2/d3 = x/y cords, a3 = struct.
 	move.w	(a0,d0.w),d1
 .0
 	cmp.w	#$F,d1	;#sortobjs-1
-	beq.w	.1
+	beq.w	.cl
 	clr.w	d4
 	move.b	1(a1,d1.w),d4	;next higher object number
 	move.w	(a2,d4.w),d5
 	sub.w	d3,d5
 	cmp.w	#$10,d5	;#collrad*2
-	bgt.w	.1
+	bgt.w	.cl
 	bsr.w	checkcx
 	addq.w	#1,d1
 	bra.s	.0
-.1
+.cl
 	move.w	(a0,d0.w),d1
 	beq.w	.ex
 .2
@@ -960,20 +960,20 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	bne.w	.34
 	st	(puckc).w	;clear out puck carrier
 	btst	#gmhl,(gmode).w	;check if highlight
-	bne.w	.31
+	bne.w	.snd
 	cmpi.w	#$109C,SPA(a2)
-	bne.w	.31
+	bne.w	.snd
 	move.w	facedir(a2),d0	;facedir into d0
 	andi.w	#3,d0	;pass first 2 bits of d0
-	bne.w	.31
+	bne.w	.snd
 	btst	#4,pflags2(a2)	;check if player is unavailable
-	bne.w	.31
+	bne.w	.snd
 	move.w	#$190,d0
 	bsr.w	randomd0
 	cmp.w	impact(a2),d0	;compare impact to d0
-	bgt.w	.31
+	bgt.w	.snd
 	btst	#gmclock,(gmode).w	;check if clock running
-	bne.w	.31
+	bne.w	.snd
 	exg	a2,a3
 	move.w	#$2454,d1
 	jsr	(SetSPA).l
@@ -1002,7 +1002,7 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	move.l	#$12,d0	;Pen Roughing
 	jsr	(AddPenalty2).l
 	jmp	(Stop4Pen).l
-.31
+.snd
 	move.w	#$B,-(sp)	;#SFXcrowdcheer
 	btst	#pfteam,pflags(a2)	;check team
 	bne.w	.32

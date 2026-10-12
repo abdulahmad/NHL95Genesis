@@ -321,9 +321,9 @@ remap	;Write d0 chars at a0 to vram d1, each pixel through the colour map at a1.
 	lsr.w	#1,d4
 	move.b	(a1,d4.w),d4
 	btst	#0,d2
-	bne.w	.2
+	bne.w	.lo
 	lsr.w	#4,d4
-.2
+.lo
 	andi.w	#$F,d4
 	or.b	d4,d3
 	ror.w	#4,d3

@@ -2346,9 +2346,9 @@ EncodePW	;After a playoff game compute winners and save the bits if needed
 	bsr.w	ResolveGames
 	bsr.w	maketree
 	cmpi.w	#4,(gamelevel).w
-	beq.w	.0	;finished playoffs
+	beq.w	.userwon	;finished playoffs
 	tst.w	(gamenum).w
-	bmi.w	.0	;po team out, same as a win
+	bmi.w	.userwon	;po team out, same as a win
 	movea.w	#(pwddatabuffer-M68K_RAM),a3
 	bsr.w	WritePassBits
 	jsr	(WriteLineData).l
@@ -2357,7 +2357,7 @@ EncodePW	;After a playoff game compute winners and save the bits if needed
 	movea.w	#(tpassbits-M68K_RAM),a3
 	bsr.w	ReadPassBits
 	bra.w	maketree
-.0
+.userwon
 	movea.w	#(pwddatabuffer-M68K_RAM),a3
 	bsr.w	ClrPassBits
 	jsr	(WriteLineData).l
@@ -2522,9 +2522,9 @@ AddPlayoffTeamStats	;Add the po team's game stats to its packed playoff totals.
 	bset	d2,d3
 	subq.w	#1,d3	;d3 = max value
 	cmp.w	d3,d1
-	ble.w	.3
+	ble.w	.pack
 	move.w	d3,d1	;clamp
-.3
+.pack
 	not.l	d3
 	move.w	d4,d5
 	andi.w	#$F,d5

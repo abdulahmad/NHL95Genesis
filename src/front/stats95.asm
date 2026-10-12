@@ -179,7 +179,7 @@ PrintStatValue	;Print TeamStatTextTbl entry a0 for team a2 centred at printx: th
 	jsr	(appstring).l
 	jsr	(appendz).l
 	String	'%'
-	bra.w	.6
+	bra.w	.x
 .1
 	move.w	(a0),d0
 	move.w	(a2,d0.w),d0
@@ -198,14 +198,14 @@ PrintStatValue	;Print TeamStatTextTbl entry a0 for team a2 centred at printx: th
 .4
 	jsr	(appstring).l
 	move.w	2(a0),d0
-	bmi.w	.6
+	bmi.w	.x
 	jsr	(appendz).l
 	String	'/'
 	move.w	(a2,d0.w),d0
 	jsr	(PushNumber).l
 	jsr	(appstring).l
 	cmpi.w	#$14,(a0)
-	bne.w	.6
+	bne.w	.x
 	jsr	(appendz).l
 	String	' ('
 	move.w	(a0),d0
@@ -220,7 +220,7 @@ PrintStatValue	;Print TeamStatTextTbl entry a0 for team a2 centred at printx: th
 	jsr	(appstring).l
 	jsr	(appendz).l
 	String	'%)'
-.6
+.x
 	movea.w	a3,a1
 	move.w	(a1),d0
 	lsr.w	#1,d0

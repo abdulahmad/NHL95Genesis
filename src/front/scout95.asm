@@ -745,18 +745,18 @@ UpdateScoutingDisplay	;Text player of ScoutingReport: types the ScoutTextScript 
 	addq.w	#2,(SelectedPlayerIdx).w
 	movea.w	#(setupvalues-M68K_RAM),a0
 	move.w	(a0,d0.w),d0
-	bpl.w	.1
+	bpl.w	.para
 	move.w	#$7FFF,(typedelay).w
 	move.w	#$1E0,(screentimer).w
 	rts
-.1
+.para
 	bsr.w	ScrollDisplayUp
 	movea.l	a1,a2
-	bra.w	.3
+	bra.w	.cnt
 .loop
 	cmpi.b	#$D,(a2)+
 	bne.s	.loop
-.3
+.cnt
 	dbf	d0,.loop
 	suba.l	a1,a2
 	move.w	a2,d0
@@ -767,11 +767,11 @@ UpdateScoutingDisplay	;Text player of ScoutingReport: types the ScoutTextScript 
 	cmpi.b	#$24,(a2)
 	beq.w	.24
 	cmpi.b	#$7B,(a2)
-	beq.w	.34
+	beq.w	.home
 	cmpi.b	#$7D,(a2)
-	beq.w	.33
+	beq.w	.away
 	cmpi.b	#$5B,(a2)
-	beq.w	.27
+	beq.w	.hmtm
 	cmpi.b	#$5D,(a2)
 	beq.w	.26
 	cmpi.b	#$3C,(a2)
@@ -807,10 +807,10 @@ UpdateScoutingDisplay	;Text player of ScoutingReport: types the ScoutTextScript 
 	cmpi.b	#$2C,(a2)
 	beq.w	.7
 	cmpi.b	#$2E,(a2)
-	bne.w	.8
+	bne.w	.nopause
 .7
 	addi.w	#$28,(typedelay).w
-.8
+.nopause
 	cmpi.b	#$20,(a2)+
 	bne.s	.loop2
 	cmpi.b	#$20,(a2)
@@ -896,31 +896,31 @@ rtsScoutText	equ	*	;Shared rts of ScoutTextPlayer / ScoutTextNextLine
 	bra.w	.append
 .26
 	movea.w	#(AwShots-M68K_RAM),a1
-	bra.w	.28
-.27
+	bra.w	.team
+.hmtm
 	movea.w	#(tmstruct-M68K_RAM),a1
-.28
+.team
 	move.w	tmgoalie(a1),d1
 .29
 	movea.l	tmdata(a1),a1
 	adda.w	(a1),a1
-	bra.w	.31
+	bra.w	.pn
 .loop5
 	adda.w	(a1),a1
 	addq.w	#8,a1
-.31
+.pn
 	dbf	d1,.loop5
 	bra.w	.append
 .32
 	movea.l	(AwayTeamRosterPtr).w,a1
 	adda.w	4(a1),a1
 	bra.w	.append
-.33
+.away
 	movea.l	(AwayTeamRosterPtr).w,a1
-	bra.w	.35
-.34
+	bra.w	.tname
+.home
 	movea.l	(HomeTeamRosterPtr).w,a1
-.35
+.tname
 	adda.w	4(a1),a1
 .append
 	addq.w	#1,(PlayerScrollCtr).w

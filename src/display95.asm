@@ -244,9 +244,9 @@ QueuePadLabel	;Queue the 3 character label of a pad object. d1 = label code: bit
 .0
 	lsr.w	#8,d2
 	andi.w	#7,d2
-	bne.w	.1
+	bne.w	.btn
 	addq.w	#4,2(a0)
-.1
+.btn
 	move.b	(a4,d2.w),d2
 	moveq	#2,d0
 
