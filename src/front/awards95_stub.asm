@@ -2,7 +2,7 @@
 ;	then includes awards95.asm on its own for checking against the ROM.
 
 ; region code
-	org	$9C6F0
+	org	$9C766
 
 ; includes for stubs to replace removed code
 	include	stubinc\ports.inc	;IO_* / VDP_* ports

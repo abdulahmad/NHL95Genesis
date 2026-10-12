@@ -34,23 +34,23 @@ Sizes run from a label to the next one, so the vectors ($0-$FF) and the header b
 | `engine/fourway95` | $07DFAC-$07E0DF | 308 | fourway94 70%, new in 95 30% |
 | `sound95` Z80OldProgram | $07E0E0-$07E36B | 652 | sound94 100% |
 | `engine/pause95` | $07E36C-$07FCFB | 6544 | new in 95 67%, menu94 16%, hockey94 7%, stats94 6%, goalie94 4% |
-| `engine/logic95` | $07FCFC-$0836AB | 14768 | checks94 65%, assign94 20%, onetimer94 6%, new in 95 6%, input94 1%, data94 1%, cards94 1%, title94 1%, collide94 <1% |
-| `engine/players95` | $0836AC-$083EB1 | 2054 | collide94 72%, new in 95 9%, crowd94 7%, data94 6%, setup94 4%, hockey94 2%, stats94 1% |
+| `engine/logic95` | $07FCFC-$0836CB | 14800 | checks94 65%, assign94 20%, onetimer94 6%, new in 95 6%, input94 1%, data94 1%, cards94 1%, title94 1%, collide94 <1% |
+| `engine/players95` | $0836CC-$083EB1 | 2022 | collide94 72%, new in 95 9%, crowd94 7%, data94 6%, setup94 4%, hockey94 2%, stats94 1% |
 | `engine/input95` | $083EB2-$084FE7 | 4406 | input94 85%, onetimer94 13%, checks94 1% |
 | `engine/setup95` | $084FE8-$087BA1 | 11194 | optsetup94 47%, data94 25%, stats94 15%, new in 95 10%, attract94 2%, title94 1% |
 | `engine/playoff95` | $087BA2-$08827B | 1754 | setup94 68%, data94 21%, title94 6%, display94 6% |
-| `engine/faceoff95` | $08827C-$088F05 | 3210 | checks94 70%, penalty94 10%, display94 7%, assign94 6%, new in 95 6%, hockey94 <1%, collide94 <1% |
-| `engine/penalty95` | $088F06-$08A055 | 4432 | penalty94 56%, data94 20%, checks94 11%, title94 6%, collide94 4%, display94 2% |
-| `engine/lines95` | $08A056-$08B4DF | 5258 | new in 95 64%, input94 14%, penalty94 10%, checks94 7%, attract94 3%, period94 1%, collide94 <1% |
+| `engine/faceoff95` | $08827C-$088F6F | 3316 | checks94 70%, penalty94 10%, display94 7%, assign94 6%, new in 95 6%, hockey94 <1%, collide94 <1% |
+| `engine/penalty95` | $088F70-$08A02B | 4284 | penalty94 56%, data94 20%, checks94 11%, title94 6%, collide94 4%, display94 2% |
+| `engine/lines95` | $08A02C-$08B4DF | 5300 | new in 95 64%, input94 14%, penalty94 10%, checks94 7%, attract94 3%, period94 1%, collide94 <1% |
 | `engine/skate95` | $08B4E0-$08C303 | 3620 | checks94 61%, input94 19%, new in 95 11%, title94 7%, crowd94 2% |
 | `engine/goal95` | $08C304-$08D399 | 4246 | new in 95 47%, checks94 17%, data94 11%, hockey94 8%, replay94 7%, setup94 3%, penalty94 3%, title94 3% |
 | `engine/replay95` | $08D39A-$08DF59 | 3008 | replay94 85%, new in 95 15% |
 | `front/season95` | $08DF5A-$0920DD | 16772 | new in 95 99%, hockey94 1% |
-| `front/stats95` | $0920DE-$0962ED | 16912 | new in 95 47%, stats94 29%, period94 18%, data94 6%, cards94 <1% |
-| `front/trade95` | $0962EE-$097C53 | 6502 | new in 95 100% |
+| `front/stats95` | $0920DE-$09638F | 17074 | new in 95 47%, stats94 29%, period94 18%, data94 6%, cards94 <1% |
+| `front/trade95` | $096390-$097C53 | 6340 | new in 95 100% |
 | `front/create95` | $097C54-$09ACE5 | 12434 | new in 95 98%, cards94 2% |
-| `front/records95` | $09ACE6-$09C6EF | 6666 | cards94 58%, records94 30%, new in 95 7%, stats94 5%, title94 1% |
-| `front/awards95` | $09C6F0-$09DA4F | 4960 | new in 95 99%, cards94 1% |
+| `front/records95` | $09ACE6-$09C765 | 6784 | cards94 58%, records94 30%, new in 95 7%, stats94 5%, title94 1% |
+| `front/awards95` | $09C766-$09DA4F | 4842 | new in 95 99%, cards94 1% |
 | `front/shootout95` | $09DA50-$09F011 | 5570 | checks94 34%, shootout94 33%, title94 11%, records94 6%, penalty94 5%, data94 4%, period94 4%, collide94 2% |
 | `front/injury95` | $09F012-$09F58F | 1406 | new in 95 34%, hockey94 22%, collide94 22%, penalty94 20%, title94 2% |
 | `front/scout95` | $09F590-$0A0B3D | 5550 | scout94 50%, setup94 13%, graphics94 12%, crowd94 11%, cards94 5%, title94 4%, period94 3%, new in 95 2% |

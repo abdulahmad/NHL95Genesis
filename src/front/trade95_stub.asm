@@ -2,7 +2,7 @@
 ;	then includes trade95.asm on its own for checking against the ROM.
 
 ; region code
-	org	$962EE
+	org	$96390
 
 ; includes for stubs to replace removed code
 	include	stubinc\ports.inc	;IO_* / VDP_* ports

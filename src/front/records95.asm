@@ -1804,3 +1804,38 @@ SetupScreen	;Common start of the stats screens: blank, scroll 0, 40 cell mode, t
 	bclr	#2,(disflags).w
 	movem.l	(sp)+,d0-d1/a2
 	rts
+
+GetTeamUser	;(recuser1) = the name log entry of the pad on team a1 (tmstruct 1, else 2), 0 without sflags11 bit 7
+	movem.l	d0-d2,-(sp)
+	btst	#7,(sflags11).w
+	bne.w	.on
+	clr.w	(recuser1).w
+	bra.w	.done
+.on
+	move.w	#1,d0
+	cmpa.l	#tmstruct,a1
+	beq.w	.chk
+	move.w	#2,d0
+.chk
+	clr.w	(recuser1).w
+	cmp.w	(cont1team).w,d0
+	bne.w	.2
+	move.w	(pad1user).w,(recuser1).w
+	bra.w	.done
+.2
+	cmp.w	(cont2team).w,d0
+	bne.w	.3
+	move.w	(pad2user).w,(recuser1).w
+	bra.w	.done
+.3
+	cmp.w	(cont3team).w,d0
+	bne.w	.4
+	move.w	(pad3user).w,(recuser1).w
+	bra.w	.done
+.4
+	cmp.w	(cont4team).w,d0
+	bne.w	.done
+	move.w	(pad4user).w,(recuser1).w
+.done
+	movem.l	(sp)+,d0-d2
+	rts

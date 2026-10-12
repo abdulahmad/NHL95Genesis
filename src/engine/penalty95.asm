@@ -9,44 +9,6 @@
 
 
 
-limitfo	;Limit the faceoff spot to 5-20 feet from the walls of the rink, for every player in PenBuf (.1 is 93.lf).
-	;the blue line is $56 (94 $58)
-	movem.l	d0-d1/a0-a1,-(sp)
-	movea.w	#(PenBuf-M68K_RAM),a0
-.loop
-	bsr.w	.lf
-	addq.w	#2,a0
-	tst.w	(a0)
-	bne.s	.loop
-	movem.l	(sp)+,d0-d1/a0-a1
-	rts
-.lf
-	move.b	1(a0),d0
-	andi.w	#$7F,d0
-	asl.w	#7,d0	;scsize
-	movea.w	#(SortCords-M68K_RAM),a1
-	move.w	#$56,d1
-	btst	#7,pflags(a1,d0.w)
-	bne.w	.2
-	neg.w	d1
-	cmp.w	(foy).w,d1
-	blt.w	.5
-	move.w	#$FFBF,(foy).w	;-.nuy = -65
-	bra.w	.sx
-.2
-	cmp.w	(foy).w,d1
-	bgt.w	.5
-	move.w	#$41,(foy).w
-.sx
-	move.w	#$46,d0
-	tst.w	(fox).w
-	bpl.w	.4
-	neg.w	d0
-.4
-	move.w	d0,(fox).w
-.5
-	rts
-
 LeadSong	;Not in a shootout (gmode2 bit 1) and one team has more players on ice (tmap): once (sflags2 bit 5) ChooseSong
 	;with SongIndex 1 (home) or 4, and sflags8 bit 6; sflags2 bit 6 keeps which team. sflags2 is put back on exit. Called from puckfaceoff2
 	movem.l	d0/a0-a3,-(sp)
@@ -1229,12 +1191,3 @@ checkob	;Offside watch (gmode bit 5): with a player of the attacking side past t
 PenShotPenalties	;The penalty shot penalty number for penalty number d0 (word offset), -1 none. Used by PenShotChk
 	dc.w	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,$38,$3C
 	dc.w	$36,$3A,$2E,$30,$34,-1,-1,-1,-1,-1,-1,-1
-
-linelist	;Text list for the line choices. Used by SetLCmode2 and DrawFaceoffWindow
-	String	'Sc1'
-	String	'Sc2'
-	String	'Chk'
-	String	'PP1'
-	String	'PP2'
-	String	'PK1'
-	String	'PK2'

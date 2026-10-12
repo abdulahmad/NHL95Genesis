@@ -3,7 +3,8 @@
 
 	include	macros\genesis.mac	;String
 ; region code
-	org	$88F06
+limitfo = $88F06
+	org	$88F70
 
 ; includes for stubs to replace removed code
 	include	stubinc\ports.inc	;IO_* / VDP_* ports

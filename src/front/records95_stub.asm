@@ -47,7 +47,6 @@ ReadTeamStats = $877AC
 PlayerStatsList = $925B2
 NameEntryFramer = $986B6
 CreateRatingsGfx = $98AFE
-GetTeamUser = $9C6F0
 SmallFontMap = $139094
 BigFontMap2 = $15F46C
 ControllerBgMap = $164AC8

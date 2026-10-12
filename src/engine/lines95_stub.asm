@@ -3,7 +3,7 @@
 
 	include	macros\genesis.mac	;String
 ; region code
-	org	$8A056
+	org	$8A02C
 
 ; includes for stubs to replace removed code
 	include	stubinc\ports.inc	;IO_* / VDP_* ports
@@ -42,7 +42,6 @@ GetPlayerCountD7 = $83904
 ResetBench = $83D5E
 priolist = $83E16
 CompShoot = $84FB6
-linelist = $8A02C
 doplayeracc = $8BCFA
 box = $8C694
 GetRosterName = $9649E		;a1 = name String of player d0 of team d7 (season roster aware)

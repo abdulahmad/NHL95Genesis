@@ -33,7 +33,6 @@ loadTeamStruct = $7CAF0
 ReadGoaliePulled = $7CB0A
 chkpk = $7D884
 chkpk2 = $7D894
-PuckcIsGoalie = $836AC		;eq when the puck carrier is a goalie
 setpersonel = $836CC
 setplayer = $83960
 dopass = $844F8

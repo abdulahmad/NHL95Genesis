@@ -3,6 +3,7 @@
 
 	include	macros\genesis.mac	;String
 ; region code
+SeasonSchedule = $8DD8
 	org	$920DE
 
 ; includes for stubs to replace removed code
@@ -87,8 +88,6 @@ MakeDateString = $8F16A
 ReadStandings = $8F332
 GamesTodayGfx = $90360
 StandingsGfx = $91936
-GetHighlightSlot = $962EE
-HighlightsHelp = $96350
 GetRosterId = $96454
 GetRosterName = $9649E		;a1 = name String of player d0 of team d7 (season roster aware)
 TickTeamInjuries = $9F192

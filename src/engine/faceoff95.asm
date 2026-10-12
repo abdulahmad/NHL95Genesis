@@ -885,3 +885,41 @@ DrawFaceoffWindow	;Draw the faceoff window (FaceOffMap) at x $36 or $BE
 	jsr	(PrintSmallListItem).l
 .exit
 	rts
+
+limitfo	;Limit the faceoff spot to 5-20 feet from the walls of the rink, for every player in PenBuf (.1 is 93.lf).
+	;the blue line is $56 (94 $58)
+	movem.l	d0-d1/a0-a1,-(sp)
+	movea.w	#(PenBuf-M68K_RAM),a0
+.loop
+	bsr.w	.lf
+	addq.w	#2,a0
+	tst.w	(a0)
+	bne.s	.loop
+	movem.l	(sp)+,d0-d1/a0-a1
+	rts
+.lf
+	move.b	1(a0),d0
+	andi.w	#$7F,d0
+	asl.w	#7,d0	;scsize
+	movea.w	#(SortCords-M68K_RAM),a1
+	move.w	#$56,d1
+	btst	#7,pflags(a1,d0.w)
+	bne.w	.2
+	neg.w	d1
+	cmp.w	(foy).w,d1
+	blt.w	.5
+	move.w	#$FFBF,(foy).w	;-.nuy = -65
+	bra.w	.sx
+.2
+	cmp.w	(foy).w,d1
+	bgt.w	.5
+	move.w	#$41,(foy).w
+.sx
+	move.w	#$46,d0
+	tst.w	(fox).w
+	bpl.w	.4
+	neg.w	d0
+.4
+	move.w	d0,(fox).w
+.5
+	rts

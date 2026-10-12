@@ -71,3 +71,8 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
 - Restructure: tables95.asm inlined into nhl95.asm; teamdata95, frames95, schedule95 (and stubs) moved from src/tables/ to src/. MATCH (ROM + all segments).
 - Restructure: sound95 (and stub) moved from src/sound/ to src/; z80old95.asm inlined into sound95.asm as the Z80OldProgram macro (engine95.asm expands it at $07E0E0; segment z80old95 = src/z80old95_stub.asm with Z80OLD_SEG). src/sound/ removed. MATCH.
 - Restructure: root .js tools (extractAssets95, fixopcodes, verifyRom, verifySegment) moved to tools/; run them from the repo root as node tools/<name>.js (default ROM / Extracted / output paths are resolved from the repo root). Fresh extract + ROM + all segments MATCH.
+- Boundary moves (Task D, routine names/headers only): PuckcIsGoalie players95 -> logic95 (assignment helper);
+  limitfo penalty95 -> faceoff95 (faceoff spot); linelist penalty95 -> lines95 (line change text);
+  GetHighlightSlot + HighlightsHelp trade95 -> stats95 (highlights screen); GetTeamUser awards95 -> records95
+  (user names). Stub orgs/equates, package.json, list comments, ROM map, csv records updated. MATCH.
+  FILE_ORIGINS.md ranges updated; its origin percentages were not regenerated.

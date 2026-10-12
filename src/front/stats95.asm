@@ -4436,3 +4436,53 @@ DrawHighlightLogo	;Draw team logo d1 (from Teamblocksmap graphics, palette teamb
 	jsr	(dobitmap).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
+
+GetHighlightSlot	;d0 = save RAM offset (SRHighlights + 4 a game) of the highlight slot of HomeTeam's game today, -1 none
+	movem.l	d1-d7/a0-a6,-(sp)
+	clr.w	d1
+	move.b	(SeasonDay).w,d1
+	clr.w	d2
+	move.b	(SeasonStartDay).w,d2
+	movea.l	#SeasonSchedule,a6
+	clr.w	d5
+	move.b	(a6)+,d5
+	add.w	d2,d1
+	cmp.w	d5,d1
+	blt.w	.0
+	sub.w	d5,d1
+.0
+	move.l	#SRHighlights,d0
+	bra.w	.next
+.day
+	clr.l	d3
+	move.b	(a6)+,d3
+	move.w	d3,d4
+	add.w	d4,d4
+	adda.w	d4,a6
+	asl.w	#2,d3
+	add.l	d3,d0
+.next
+	dbf	d1,.day
+	move.b	(a6)+,d3
+.game
+	move.b	(a6),d4
+	cmp.b	(HomeTeam+1).w,d4
+	beq.w	.done
+	addq.l	#4,d0
+	addq.l	#2,a6
+	dbf	d3,.game
+	move.w	#$FFFF,d0
+	bra.w	.done
+.done
+	movem.l	(sp)+,d1-d7/a0-a6
+	rts
+
+HighlightsHelp	;HighlightsScreen help line: {} More games, [] Change day (called from HighlightsScreen)
+	movem.l	d0-d7/a0-a6,-(sp)
+	move.w	(smallfontchars).w,-(sp)
+	move.w	(smallfont2chars).w,(smallfontchars).w
+	jsr	(printz).l
+	String	-TXMAP1,2,$19,'{} More games',-TXMAP1,$19,$19,'[] Change day'
+	move.w	(sp)+,(smallfontchars).w
+	movem.l	(sp)+,d0-d7/a0-a6
+	rts

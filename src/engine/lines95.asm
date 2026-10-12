@@ -8,6 +8,15 @@
 
 
 
+linelist	;Text list for the line choices. Used by SetLCmode2 and DrawFaceoffWindow
+	String	'Sc1'
+	String	'Sc2'
+	String	'Chk'
+	String	'PP1'
+	String	'PP2'
+	String	'PK1'
+	String	'PK2'
+
 SetLCmode	;Open the line change box for team of player a3 (loadTeamStruct): not with line changes off (OptLine) or
 	;sflags7 bit 4, once (tmflags bit 1); sets pflags2 bit 3 (line change mode) and falls into SetLCmode2
 	tst.w	(OptLine).w

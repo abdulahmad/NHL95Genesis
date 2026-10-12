@@ -659,7 +659,7 @@ $08356C,assgoaliebreakwait,,,engine/logic95
 $0835C6,ChkGoalies,sub_835C6,,engine/logic95
 $08362E,ReturnGoalies,,,engine/logic95
 $083662,CPgoalie,loc_83662,,engine/logic95
-$0836AC,PuckcIsGoalie,,,engine/players95
+$0836AC,PuckcIsGoalie,,,engine/logic95
 $0836CC,SetPersonel,sub_836CC,,engine/players95
 $083786,SetPlList,sub_83786,,engine/players95
 $083846,TryAddPlayerToList,sub_83846,,engine/players95
@@ -828,7 +828,7 @@ $088BBA,updatefaceoff,,,engine/faceoff95
 $088C3C,Endfaceoff,,,engine/faceoff95
 $088D52,checkfo,sub_88D52,,engine/faceoff95
 $088E42,DrawFaceoffWindow,sub_88E42,,engine/faceoff95
-$088F06,limitfo,sub_88F06,,engine/penalty95
+$088F06,limitfo,sub_88F06,,engine/faceoff95
 $088F70,LeadSong,,,engine/penalty95
 $08900A,ClearLeadSong,,,engine/penalty95
 $089012,LeadSongExit,,,engine/penalty95
@@ -862,7 +862,7 @@ $089C2E,PenaltyList,,PenaltyNames,engine/penalty95
 $089C2E,PenaltyNames,unk_89C2E,,engine/penalty95
 $089F5C,checkob,sub_89F5C,,engine/penalty95
 $089FFC,PenShotPenalties,unk_89FFC,,engine/penalty95
-$08A02C,linelist,unk_8A02C,,engine/penalty95
+$08A02C,linelist,unk_8A02C,,engine/lines95
 $08A056,SetLCmode,loc_8A056,,engine/lines95
 $08A094,SetLCmode2,sub_8A094,,engine/lines95
 $08A13A,setlccords,sub_8A13A,,engine/lines95
@@ -1336,8 +1336,8 @@ $096242,GoalText,,SaveText,front/stats95
 $09624A,PrintGameScore2,,,front/stats95
 $0962A4,PrintScore2,,,front/stats95
 $0962BE,DrawHighlightLogo,,DrawTeamLogo4,front/stats95
-$0962EE,GetHighlightSlot,sub_962EE,,front/trade95
-$096350,HighlightsHelp,,,front/trade95
+$0962EE,GetHighlightSlot,sub_962EE,,front/stats95
+$096350,HighlightsHelp,,,front/stats95
 $096390,DefaultRosters,sub_96390,,front/trade95
 $096454,GetRosterId,sub_96454,,front/trade95
 $096494,GetCreatedName,sub_96494,,front/trade95
@@ -1669,7 +1669,7 @@ $09C52A,PlayerRecordOffsets,unk_9C52A,,front/records95
 $09C564,CountGoalies,sub_9C564,,front/records95
 $09C58E,CountPlayers,sub_9C58E,,front/records95
 $09C5B8,SetupScreen,,,front/records95
-$09C6F0,GetTeamUser,sub_9C6F0,,front/awards95
+$09C6F0,GetTeamUser,sub_9C6F0,,front/records95
 $09C766,SeasonAwards,sub_9C766,,front/awards95
 $09C7BE,PrintAwardTitle,sub_9C7BE,,front/awards95
 $09C802,PrintCentered,sub_9C802,,front/awards95

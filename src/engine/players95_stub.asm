@@ -2,7 +2,7 @@
 ;	then includes players95.asm on its own for checking against the ROM.
 
 ; region code
-	org	$836AC
+	org	$836CC
 
 ; includes for stubs to replace removed code
 	include	stubinc\ports.inc	;IO_* / VDP_* ports

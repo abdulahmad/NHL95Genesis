@@ -4413,3 +4413,15 @@ CPgoalie	;See if the computer should pull its goalie: third period, behind by 2,
 	bmi.w	rtsskate	;exit if d1 negative (faceoff in own zone)
 	st	tmgoalie(a2)	;set to FFFF (no goalie)
 	bra.w	setpersonel
+
+PuckcIsGoalie	;Z set (eq) when the puck carrier is a goalie (a minus puckc returns ne). Called from assdefo
+	movem.l	d0/a0,-(sp)
+	move.w	(puckc).w,d0
+	bmi.w	.x
+	movea.l	#SortCords,a0
+	asl.w	#7,d0
+	adda.w	d0,a0
+	tst.w	position(a0)
+.x
+	movem.l	(sp)+,d0/a0
+	rts

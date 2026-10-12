@@ -2,18 +2,6 @@
 ;	the bench, sort priority lists and the hot / cold table.
 
 
-PuckcIsGoalie	;Z set (eq) when the puck carrier is a goalie (a minus puckc returns ne). Called from assdefo
-	movem.l	d0/a0,-(sp)
-	move.w	(puckc).w,d0
-	bmi.w	.x
-	movea.l	#SortCords,a0
-	asl.w	#7,d0
-	adda.w	d0,a0
-	tst.w	position(a0)
-.x
-	movem.l	(sp)+,d0/a0
-	rts
-
 setpersonel	;Set personnel on team a2 by PlList: players already on the ice stay
 	;the others take the free sort objects. SetSeasonInjuries first with GameFlags bit 3
 	movem.l	d0-d5/a0-a4,-(sp)

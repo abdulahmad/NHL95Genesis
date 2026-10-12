@@ -651,7 +651,7 @@ engine/logic95.asm,$08356C,90,assgoaliebreakwait,code,assign94,name
 engine/logic95.asm,$0835C6,104,ChkGoalies,code,checks94,name
 engine/logic95.asm,$08362E,52,ReturnGoalies,code,checks94,name
 engine/logic95.asm,$083662,74,CPgoalie,code,checks94,name
-engine/players95.asm,$0836AC,32,PuckcIsGoalie,code,new in 95,header
+engine/logic95.asm,$0836AC,32,PuckcIsGoalie,code,new in 95,header
 engine/players95.asm,$0836CC,186,SetPersonel,code,collide94,name
 engine/players95.asm,$083786,192,SetPlList,code,collide94,name
 engine/players95.asm,$083846,58,TryAddPlayerToList,code,collide94,name
@@ -820,7 +820,7 @@ engine/faceoff95.asm,$088BBA,130,updatefaceoff,code,checks94,name
 engine/faceoff95.asm,$088C3C,278,Endfaceoff,code,checks94,name
 engine/faceoff95.asm,$088D52,240,checkfo,code,display94,name
 engine/faceoff95.asm,$088E42,196,DrawFaceoffWindow,code,new in 95,header
-engine/penalty95.asm,$088F06,106,limitfo,code,penalty94,name
+engine/faceoff95.asm,$088F06,106,limitfo,code,penalty94,name
 engine/penalty95.asm,$088F70,154,LeadSong,code,title94,name
 engine/penalty95.asm,$08900A,8,ClearLeadSong,code,title94,name
 engine/penalty95.asm,$089012,10,LeadSongExit,code,title94,name
@@ -853,7 +853,7 @@ engine/penalty95.asm,$089B3A,244,ChkOffsides,code,checks94,name
 engine/penalty95.asm,$089C2E,814,PenaltyList,data,data94,name
 engine/penalty95.asm,$089F5C,160,checkob,code,checks94,name
 engine/penalty95.asm,$089FFC,48,PenShotPenalties,data,data94,name
-engine/penalty95.asm,$08A02C,42,linelist,data,data94,name
+engine/lines95.asm,$08A02C,42,linelist,data,data94,name
 engine/lines95.asm,$08A056,62,SetLCmode,code,input94,name
 engine/lines95.asm,$08A094,166,SetLCmode2,code,input94,name
 engine/lines95.asm,$08A13A,68,setlccords,code,input94,name
@@ -1310,8 +1310,8 @@ front/stats95.asm,$096242,8,SaveText,data,new in 95,follows AssistText
 front/stats95.asm,$09624A,90,PrintGameScore2,code,new in 95,header
 front/stats95.asm,$0962A4,26,PrintScore2,code,new in 95,header
 front/stats95.asm,$0962BE,48,DrawTeamLogo4,code,new in 95,header
-front/trade95.asm,$0962EE,98,GetHighlightSlot,code,new in 95,header
-front/trade95.asm,$096350,260,HighlightsHelp,code,new in 95,header
+front/stats95.asm,$0962EE,98,GetHighlightSlot,code,new in 95,header
+front/stats95.asm,$096350,260,HighlightsHelp,code,new in 95,header
 front/trade95.asm,$096454,64,GetRosterId,code,new in 95,header
 front/trade95.asm,$096494,10,GetCreatedName,code,new in 95,header
 front/trade95.asm,$09649E,104,GetRosterName,code,new in 95,header
@@ -1603,7 +1603,7 @@ front/records95.asm,$09C522,8,WritePlayerRecord,code,cards94,name
 front/records95.asm,$09C52A,58,PlayerRecordOffsets,data,cards94,name
 front/records95.asm,$09C564,84,CountGoalies,code,cards94,name
 front/records95.asm,$09C5B8,312,SetupScreen,code,stats94,name
-front/awards95.asm,$09C6F0,118,GetTeamUser,code,new in 95,header
+front/records95.asm,$09C6F0,118,GetTeamUser,code,new in 95,header
 front/awards95.asm,$09C766,88,SeasonAwards,code,new in 95,header
 front/awards95.asm,$09C7BE,68,PrintAwardTitle,code,new in 95,header
 front/awards95.asm,$09C802,28,PrintCentered,code,cards94,name
