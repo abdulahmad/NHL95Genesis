@@ -536,7 +536,7 @@ FindPlayerLine	;Find player d0 (0 based) in the 6 slots of line a3: d1 = the lin
 	clr.w	d3
 	addq.w	#1,d0
 	clr.w	d1
-.0
+.loop
 	cmp.w	#6,d3
 	bge.w	.1
 	cmp.b	(a3),d0
@@ -548,7 +548,7 @@ FindPlayerLine	;Find player d0 (0 based) in the 6 slots of line a3: d1 = the lin
 	bne.w	.2
 	addq.w	#1,d1
 .2
-	dbf	d2,.0
+	dbf	d2,.loop
 	move.w	#-1,d1
 .3
 	movem.l	(sp)+,d0/d2-d3/a3
@@ -914,19 +914,19 @@ WrapOptionUp	;Wrap up: setupvalues(d0) past OptionLimits(d0) goes to 0
 	clr.w	d2
 	move.b	(a1,d0.w),d2
 	cmp.b	(a0,d0.w),d2
-	bgt.w	.0
+	bgt.w	.exit
 	clr.b	(a0,d0.w)
-.0
+.exit
 	rts
 
 WrapOptionDown	;Wrap down: a negative setupvalues(d0) goes to OptionLimits(d0) - 1
 	tst.b	(a0,d0.w)
-	bpl.w	.0
+	bpl.w	.exit
 	movea.l	#OptionLimits,a1
 	move.b	(a1,d0.w),d2
 	subq.b	#1,d2
 	move.b	d2,(a0,d0.w)
-.0
+.exit
 	rts
 
 MoveMenuFrame	;Keep SelectedPlayerIdx inside DispAttribCtr ... VertLineScrolling; in a season (GameFlags bit 5) line 0 is skipped
@@ -1417,10 +1417,10 @@ PrintOptionName	;Print option name d0 (OptionNames) at printx; lines not shown p
 	move.w	d0,-(sp)
 	movea.l	#OptionNames,a1
 	bra.w	.1
-.0
+.loop
 	adda.w	(a1),a1
 .1
-	dbf	d0,.0
+	dbf	d0,.loop
 	move.w	(sp)+,d0
 	cmpi.w	#3,(setupshown).w
 	bne.w	.2
@@ -1436,7 +1436,7 @@ PrintOptionName	;Print option name d0 (OptionNames) at printx; lines not shown p
 .3
 	cmp.w	(SelectedPlayerIdx).w,d0
 	bne.w	.5
-.4
+.loop2
 	bsr.w	PrintSetupTextHi
 	bra.w	.7
 .5
@@ -1445,7 +1445,7 @@ PrintOptionName	;Print option name d0 (OptionNames) at printx; lines not shown p
 	cmpi.w	#1,(SelectedPlayerIdx).w
 	bne.w	.6
 	cmp.w	#2,d0
-	beq.s	.4
+	beq.s	.loop2
 .6
 	bsr.w	PrintSetupText
 .7
@@ -1911,7 +1911,7 @@ UpdateSetupLogos	;When a team changed (setuphome / setupvis against setupvalues 
 	bne.w	.0
 	move.b	(setupvis+1).w,d0
 	cmp.b	(setupvalues+2).w,d0
-	beq.w	.7
+	beq.w	.exit
 .0
 	tst.w	(carddelay).w
 	bpl.w	.1
@@ -1952,10 +1952,10 @@ UpdateSetupLogos	;When a team changed (setuphome / setupvis against setupvalues 
 	movem.w	(sp)+,d0
 	beq.w	.6
 	bsr.w	DrawHomeBlock
-	bra.w	.7
+	bra.w	.exit
 .6
 	bsr.w	DrawVisBlock
-.7
+.exit
 	rts
 
 DrawHomeBlock	;Erase the right logo (setupcardflags bit 3 was set) and draw logo logoteam at x $21
