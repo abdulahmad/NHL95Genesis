@@ -271,11 +271,11 @@ SetPauseMenuItems	;menulist = PauseMenus, menuitemoffset by mode: tmflags bit 2 
 	move.l	#$1D2,(menuitemoffset).l
 .2
 	btst	#3,(GameFlags).w
-	beq.w	.3
+	beq.w	.exit
 	cmpi.w	#4,(gsp).w
-	bne.w	.3
+	bne.w	.exit
 	move.l	#$AA,(menuitemoffset).l
-.3
+.exit
 	rts
 
 SetStatsMenuItems	;menulist = StatsMenus, menuitemoffset by mode: GameFlags bit 3 $F0, sflags10 bit 0 $74, shootout or Practice
@@ -309,12 +309,12 @@ SetInfoMenuItems	;menulist = InfoMenus, menuitemoffset $7E in a shootout, $D0 in
 	btst	#0,(gmode2).w
 	beq.w	.0
 	move.l	#$7E,(menuitemoffset).l
-	bra.w	.1
+	bra.w	.exit
 .0
 	btst	#7,(sflags9).w
-	beq.w	.1
+	beq.w	.exit
 	move.l	#$D0,(menuitemoffset).l
-.1
+.exit
 	rts
 
 startpause	;Pause on (sfpz)
@@ -516,29 +516,29 @@ ShowPenaltyBox	;The players in the penalty box list of team a2 ($9C, -1 ends; wi
 	;ShowPenaltyBoxPlayer each
 	lea	$9C(a2),a0
 	clr.w	d7
-.0
+.loop
 	tst.b	(a0)+
 	bmi.w	.1
 	addq.w	#1,d7
-	bra.s	.0
+	bra.s	.loop
 .1
 	btst	#5,(sflags9).w
 	beq.w	.2
 	sub.w	impact(a2),d7
 .2
 	lea	$9C(a2),a0
-.3
+.loop2
 	clr.w	d0
 	subq.w	#1,d7
 	bmi.w	rtsmenu
 	move.b	(a0)+,d0
 	bmi.w	rtsmenu
 	bsr.w	ShowPenaltyBoxPlayer
-	bra.s	.3
+	bra.s	.loop2
 
 ListPenaltyBox	;Unreferenced. ShowPenaltyBox without the count: every player in the box list of team a2
 	lea	$9C(a2),a0
-.0
+.loop
 	clr.w	d0
 	move.b	(a0)+,d0
 	bmi.w	rtsmenu
@@ -547,7 +547,7 @@ ListPenaltyBox	;Unreferenced. ShowPenaltyBox without the count: every player in 
 .1
 	subq.w	#1,d7
 	bmi.w	rtsmenu
-	bra.s	.0
+	bra.s	.loop
 
 ShowPenaltyBoxPlayer	;Print player d0 / 2 + 1 of team a2: jersey number and penalty time left (tmpdst), one line down, up to
 	;printy $13
@@ -604,9 +604,9 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	move.w	#$FC00,(VSCRLPM).w
 	movea.w	#(palfadenew-M68K_RAM),a0
 	moveq	#$1F,d1
-.0
+.loop
 	clr.l	(a0)+
-	dbf	d1,.0
+	dbf	d1,.loop
 	jsr	(setplayercolors).l
 	jsr	(setupIceRinkPal).l
 	jsr	(setVram_0).l
@@ -664,9 +664,9 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	move	#$2300,sr
 	jsr	(SprSort).l
 	move.w	(vcount).w,d0
-.5
+.loop2
 	cmp.w	(vcount).w,d0
-	beq.s	.5
+	beq.s	.loop2
 	bset	#3,(disflags).w
 	jsr	(printscores1).l
 	btst	#3,(sflags2).w
@@ -681,24 +681,24 @@ ClearOldFrames	;Oldframe = -1 for the 16 sort objects, the 4 sso and the 6 pads,
 	movea.l	#SortCords,a0
 	move.w	#$80,d0
 	move.w	#$F,d1
-.0
+.loop
 	st	8(a0)
 	adda.w	d0,a0
-	dbf	d1,.0
+	dbf	d1,.loop
 	movea.l	#sso,a0
 	move.w	#$14,d0
 	move.w	#3,d1
-.1
+.loop2
 	st	8(a0)
 	adda.w	d0,a0
-	dbf	d1,.1
+	dbf	d1,.loop2
 	movea.l	#pads,a0
 	move.w	#$1C,d0
 	move.w	#5,d1
-.2
+.loop3
 	st	8(a0)
 	adda.w	d0,a0
-	dbf	d1,.2
+	dbf	d1,.loop3
 	movem.l	(sp)+,d0-d1/a0-a3
 	rts
 
@@ -875,7 +875,7 @@ DrawMenuInfo	;With no menu list: clear the box and run draw routine menuitem of 
 	jsr	(ClearMenuBox).l
 	btst	#5,(sflags9).w
 	bne.w	.3
-.0
+.loop
 	move.w	(menuitem).w,d0
 	bpl.w	.1
 	clr.w	(menuitem).w
@@ -887,7 +887,7 @@ DrawMenuInfo	;With no menu list: clear the box and run draw routine menuitem of 
 	cmpa.l	#0,a0
 	bne.w	.2
 	clr.w	(menuitem).w
-	bra.s	.0
+	bra.s	.loop
 .2
 	jsr	(a0)
 .3
@@ -933,7 +933,7 @@ ShowPenaltyMessages	;Every $78 frames show the next queued penalty (penaltymsgs)
 	movem.l	d0-d6/a0-a3,-(sp)
 	subq.w	#1,(menutimer).w
 	bpl.w	.8
-.0
+.loop
 	movea.l	#penaltymsgs,a0
 	tst.w	(a0)
 	beq.w	.7
@@ -943,9 +943,9 @@ ShowPenaltyMessages	;Every $78 frames show the next queued penalty (penaltymsgs)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$A,$11,'                    '
 	movea.l	(sp)+,a0
-.1
+.loop2
 	tst.w	(a0)+
-	bne.s	.1
+	bne.s	.loop2
 	subq.l	#4,a0
 	clr.w	d0
 	move.b	(a0),d0
@@ -988,12 +988,12 @@ ShowPenaltyMessages	;Every $78 frames show the next queued penalty (penaltymsgs)
 	bclr	#7,d0
 	add.w	d0,d0
 	lea	$9C(a2),a4
-.3
+.loop3
 	cmp.b	(a4)+,d0
 	beq.w	.4
 	tst.b	-1(a4)
 	bmi.w	.5
-	bra.s	.3
+	bra.s	.loop3
 .4
 	subq.w	#1,impact(a2)
 	bsr.w	ShowPenaltyBoxes
@@ -1003,7 +1003,7 @@ ShowPenaltyMessages	;Every $78 frames show the next queued penalty (penaltymsgs)
 	bra.w	.8
 .6
 	clr.w	(a0)
-	bra.w	.0
+	bra.w	.loop
 .7
 	move.w	#1,d1
 	bra.w	.9
@@ -1546,10 +1546,10 @@ SetMenuPadSide	;sflags bit 1 set when the team of pad menupadnum is above 1, els
 	movem.l	(sp)+,d0/a0-a1
 	ble.w	.0
 	bset	#1,(sflags).w
-	bra.w	.1
+	bra.w	.exit
 .0
 	bclr	#1,(sflags).w
-.1
+.exit
 	rts
 
 padteams	;The team word of each pad (SetMenuPadSide)
