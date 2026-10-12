@@ -1510,5 +1510,6 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | new-in-95 locals: scout | NOT a name review: routine names, headers and forward locals not checked by full body read; 1 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: faceoff | NOT a name review: routine names, headers and forward locals not checked by full body read; 1 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: title | NOT a name review: routine names, headers and forward locals not checked by full body read; 4 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
+| new-in-95 locals: collide | full body read of every new-in-95 routine (checkinglist2, rtspuck, DropPuck): names and headers ok; DropPuck .0 a trivial skip |
 | new-in-95 locals: penalty | full body read of every new-in-95 routine (rtspen): name and header ok; no locals |
 | data labels / equates (usage check) | every equate and global label checked for references: all unreferenced ones are marked as such in their comment; TmpJoyPuckCarrier removed (not used in 95, it shared PlayerChked's address); duplicate-address equates are RAM overlays used by different screens; SPAcelebrate / SPAstanley comments fixed |
