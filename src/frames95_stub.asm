@@ -12,4 +12,4 @@
 	include	ram95.asm		;RAM map
 
 ; Main segment code
-	include	tables\frames95.asm
+	include	frames95.asm

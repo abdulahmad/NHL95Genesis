@@ -68,3 +68,4 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
   Next: NHLPA93SNES names and locals (93G names first, then 92G, then behavior).
 - Day macro (schedule record) now lives in src/macros/genesis.mac with the other macros; schedule95_stub includes it. MATCH.
 - Header rewrite (file header comments, 92 style): 93G and 94G done; 95G top level, lists, main, ram, macros, sega, stubinc, hockey, checksum, sram, credits, control, display, graphics, engine\, front\, tables\, sound\ and all stubs done. Header rewrite complete in 93G, 94G and 95G.
+- Restructure: tables95.asm inlined into nhl95.asm; teamdata95, frames95, schedule95 (and stubs) moved from src/tables/ to src/. MATCH (ROM + all segments).

@@ -115,7 +115,7 @@ def include_lines(path):
 
 
 def source_order(path='nhl95.asm'):
-    """The source files in ROM order: nhl95.asm and the include lists it names (tables95.asm ...) are
+    """The source files in ROM order: nhl95.asm and the include lists it names (engine95.asm, front95.asm) are
     expanded, main95.asm is followed by its sega\\ files."""
     files = []
     for f in include_lines(path):

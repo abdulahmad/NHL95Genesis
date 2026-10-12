@@ -45,116 +45,116 @@ main95.asm,$0006A0,2,AdrErr,code,data94,follows BusErr
 main95.asm,$0006A2,2,InvOpCode,code,data94,fingerprint Illinst
 main95.asm,$0006A4,2,DivBy0,code,data94,fingerprint Illinst
 main95.asm,$0006A6,204,Begin,code,hockey94,name
-tables/teamdata95.asm,$000772,112,TeamList,data,teamdata94,name
-tables/teamdata95.asm,$0007E2,720,AllStarsEast,data,teamdata94,name
-tables/teamdata95.asm,$000AB2,692,AllStarsWest,data,teamdata94,name
-tables/teamdata95.asm,$000D66,708,Anaheim,data,teamdata94,name
-tables/teamdata95.asm,$00102A,730,Boston,data,teamdata94,name
-tables/teamdata95.asm,$001304,732,Buffalo,data,teamdata94,name
-tables/teamdata95.asm,$0015E0,734,Calgary,data,teamdata94,name
-tables/teamdata95.asm,$0018BE,736,Chicago,data,teamdata94,name
-tables/teamdata95.asm,$001B9E,766,Detroit,data,teamdata94,name
-tables/teamdata95.asm,$001E9C,754,Edmonton,data,teamdata94,name
-tables/teamdata95.asm,$00218E,736,Florida,data,teamdata94,name
-tables/teamdata95.asm,$00246E,756,Hartford,data,teamdata94,name
-tables/teamdata95.asm,$002762,706,LosAngeles,data,teamdata94,name
-tables/teamdata95.asm,$002A24,724,Dallas,data,teamdata94,name
-tables/teamdata95.asm,$002CF8,752,Montreal,data,teamdata94,name
-tables/teamdata95.asm,$002FE8,2240,NewJersey,data,teamdata94,name
-tables/teamdata95.asm,$0038A8,758,Ottawa,data,teamdata94,name
-tables/teamdata95.asm,$003B9E,734,Philadelphia,data,teamdata94,name
-tables/teamdata95.asm,$003E7C,752,Pittsburgh,data,teamdata94,name
-tables/teamdata95.asm,$00416C,742,Quebec,data,teamdata94,name
-tables/teamdata95.asm,$004452,708,SanJose,data,teamdata94,name
-tables/teamdata95.asm,$004716,744,StLouis,data,teamdata94,name
-tables/teamdata95.asm,$0049FE,696,TampaBay,data,teamdata94,name
-tables/teamdata95.asm,$004CB6,754,Toronto,data,teamdata94,name
-tables/teamdata95.asm,$004FA8,742,Vancouver,data,teamdata94,name
-tables/teamdata95.asm,$00528E,712,Winnipeg,data,teamdata94,name
-tables/teamdata95.asm,$005556,734,Washington,data,teamdata94,name
-tables/teamdata95.asm,$005834,512,playoffseats,data,teamdata94,name
-tables/frames95.asm,$005A34,2,SPAlist,data,frames94,name
-tables/frames95.asm,$005A36,786,SPAskate_table,data,frames94,name
-tables/frames95.asm,$005D48,274,SPAskateturn_table,data,frames94,follows SPAskate_table
-tables/frames95.asm,$005E5A,786,SPAskate2_table,data,frames94,follows SPAskateturn_table
-tables/frames95.asm,$00616C,786,SPAskatewp_table,data,frames94,name
-tables/frames95.asm,$00647E,274,SPAskatewp2_table,data,frames94,follows SPAskatewp_table
-tables/frames95.asm,$006590,50,SPAglide_table,data,frames94,name
-tables/frames95.asm,$0065C2,50,SPAglidewp_table,data,frames94,follows SPAglide_table
-tables/frames95.asm,$0065F4,82,SPAturnl_table,data,frames94,name
-tables/frames95.asm,$006646,82,SPAturnr_table,data,frames94,name
-tables/frames95.asm,$006698,82,SPAturnlwp_table,data,frames94,follows SPAturnr_table
-tables/frames95.asm,$0066EA,82,SPAturnrwp_table,data,frames94,follows SPAturnlwp_table
-tables/frames95.asm,$00673C,82,SPAstop_table,data,frames94,name
-tables/frames95.asm,$00678E,82,SPAstopwp_table,data,frames94,follows SPAstop_table
-tables/frames95.asm,$0067E0,50,SPAshoulderchkl_table,data,frames94,name
-tables/frames95.asm,$006812,50,SPAshoulderchkr_table,data,frames94,name
-tables/frames95.asm,$006844,50,SPAHold_table,data,frames94,name
-tables/frames95.asm,$006876,50,SPAHold2_table,data,frames94,name
-tables/frames95.asm,$0068A8,50,SPAhook_table,data,frames94,name
-tables/frames95.asm,$0068DA,146,SPAhook2_table,data,frames94,name
-tables/frames95.asm,$00696C,114,SPAsweepchk_table,data,frames94,name
-tables/frames95.asm,$0069DE,242,SPAfallfwd_table,data,frames94,name
-tables/frames95.asm,$006AD0,274,SPAfallback_table,data,frames94,name
-tables/frames95.asm,$006BE2,274,SPAburst_table,data,frames94,name
-tables/frames95.asm,$006CF4,162,SPApflip_table,data,frames94,name
-tables/frames95.asm,$006D96,114,SPApassf_table,data,frames94,name
-tables/frames95.asm,$006E08,82,SPApassf2_table,data,frames94,follows SPApassf_table
-tables/frames95.asm,$006E5A,114,SPApassb_table,data,frames94,name
-tables/frames95.asm,$006ECC,114,SPApassb2_table,data,frames94,follows SPApassb_table
-tables/frames95.asm,$006F3E,306,SPAshotf_table,data,frames94,name
-tables/frames95.asm,$007070,306,SPAfakeshotf_table,data,frames94,follows SPAshotf_table
-tables/frames95.asm,$0071A2,306,SPAshotb_table,data,frames94,name
-tables/frames95.asm,$0072D4,306,SPAfakeshotb_table,data,frames94,follows SPAshotb_table
-tables/frames95.asm,$007406,210,SPAskateback_table,data,frames94,name
-tables/frames95.asm,$0074D8,146,SPAstumble_table,data,frames94,name
-tables/frames95.asm,$00756A,42,SPAfaceoff_table,data,frames94,name
-tables/frames95.asm,$007594,26,SPAfaceoffr_table,data,frames94,name
-tables/frames95.asm,$0075AE,218,SPAgready_table,data,frames94,name
-tables/frames95.asm,$007688,50,SPAgready2_table,data,frames94,name
-tables/frames95.asm,$0076BA,50,SPAgglover_table,data,frames94,name
-tables/frames95.asm,$0076EC,50,SPAgglovel_table,data,frames94,name
-tables/frames95.asm,$00771E,50,SPAgstickr_table,data,frames94,name
-tables/frames95.asm,$007750,50,SPAgstickl_table,data,frames94,name
-tables/frames95.asm,$007782,146,SPAgdive_table,data,frames94,name
-tables/frames95.asm,$007814,74,SPAwallright_table,data,frames94,name
-tables/frames95.asm,$00785E,66,SPAwallleft_table,data,frames94,name
-tables/frames95.asm,$0078A0,178,SPAblock_table,data,frames94,follows SPAwallleft_table
-tables/frames95.asm,$007952,74,SPAsiren_table,data,frames94,name
-tables/frames95.asm,$00799C,50,SPAflail_table,data,frames94,name
-tables/frames95.asm,$0079CE,114,SPAgswing_table,data,frames94,name
-tables/frames95.asm,$007A40,82,SPAgstackl_table,data,frames94,name
-tables/frames95.asm,$007A92,82,SPAgstackr_table,data,frames94,name
-tables/frames95.asm,$007AE4,114,SPAboardtop_table,data,frames94,name
-tables/frames95.asm,$007B56,122,SPAboardright_table,data,frames94,name
-tables/frames95.asm,$007BD0,114,SPAboardbot_table,data,frames94,name
-tables/frames95.asm,$007C42,122,SPAboardleft_table,data,frames94,name
-tables/frames95.asm,$007CBC,50,SPAboardchk_table,data,frames94,name
-tables/frames95.asm,$007CEE,146,SPAgskate_table,data,frames94,name
-tables/frames95.asm,$007D80,114,SPAcelebrate_table,data,frames94,name
-tables/frames95.asm,$007DF2,42,SPAgstackalt1_table,data,frames94,follows SPAcelebrate_table
-tables/frames95.asm,$007E1C,26,SPAgstackalt2_table,data,frames94,follows SPAgstackalt1_table
-tables/frames95.asm,$007E36,82,SPAcatch_table,data,frames94,name
-tables/frames95.asm,$007E88,66,SPAinjuryfall_table,data,frames94,name
-tables/frames95.asm,$007ECA,66,SPAinjury1_table,data,frames94,name
-tables/frames95.asm,$007F0C,50,SPAinjury2_table,data,frames94,follows SPAinjury1_table
-tables/frames95.asm,$007F3E,38,SPAbglass_table,data,frames94,name
-tables/frames95.asm,$007F64,26,SPAshoulderchkl2_table,data,frames94,follows SPAbglass_table
-tables/frames95.asm,$007F7E,26,SPAshoulderchkr2_table,data,frames94,follows SPAshoulderchkl2_table
-tables/frames95.asm,$007F98,50,SPAglideback_table,data,frames94,name
-tables/frames95.asm,$007FCA,306,SPAflip_table,data,frames94,name
-tables/frames95.asm,$0080FC,162,SPAboardmidl_table,data,frames94,name
-tables/frames95.asm,$00819E,162,SPAboardmidr_table,data,frames94,name
-tables/frames95.asm,$008240,210,SPApump_table,data,frames94,name
-tables/frames95.asm,$008312,210,SPAstanley_table,data,frames94,name
-tables/frames95.asm,$0083E4,210,SPApump2_table,data,frames94,follows SPAstanley_table
-tables/frames95.asm,$0084B6,98,SPAgslamtop_table,data,frames94,name
-tables/frames95.asm,$008518,42,SPAgextra1_table,data,frames94,follows SPAgslamtop_table
-tables/frames95.asm,$008542,42,SPAgextra2_table,data,frames94,follows SPAgextra1_table
-tables/frames95.asm,$00856C,42,SPAgslambot_table,data,frames94,name
-tables/frames95.asm,$008596,2114,revframetbl,data,graphics94,name
-tables/schedule95.asm,$008DD8,2377,SeasonSchedule,data,new in 95,file
-tables/schedule95.asm,$009721,1,SeasonScheduleEnd,data,new in 95,follows SeasonSchedule
+teamdata95.asm,$000772,112,TeamList,data,teamdata94,name
+teamdata95.asm,$0007E2,720,AllStarsEast,data,teamdata94,name
+teamdata95.asm,$000AB2,692,AllStarsWest,data,teamdata94,name
+teamdata95.asm,$000D66,708,Anaheim,data,teamdata94,name
+teamdata95.asm,$00102A,730,Boston,data,teamdata94,name
+teamdata95.asm,$001304,732,Buffalo,data,teamdata94,name
+teamdata95.asm,$0015E0,734,Calgary,data,teamdata94,name
+teamdata95.asm,$0018BE,736,Chicago,data,teamdata94,name
+teamdata95.asm,$001B9E,766,Detroit,data,teamdata94,name
+teamdata95.asm,$001E9C,754,Edmonton,data,teamdata94,name
+teamdata95.asm,$00218E,736,Florida,data,teamdata94,name
+teamdata95.asm,$00246E,756,Hartford,data,teamdata94,name
+teamdata95.asm,$002762,706,LosAngeles,data,teamdata94,name
+teamdata95.asm,$002A24,724,Dallas,data,teamdata94,name
+teamdata95.asm,$002CF8,752,Montreal,data,teamdata94,name
+teamdata95.asm,$002FE8,2240,NewJersey,data,teamdata94,name
+teamdata95.asm,$0038A8,758,Ottawa,data,teamdata94,name
+teamdata95.asm,$003B9E,734,Philadelphia,data,teamdata94,name
+teamdata95.asm,$003E7C,752,Pittsburgh,data,teamdata94,name
+teamdata95.asm,$00416C,742,Quebec,data,teamdata94,name
+teamdata95.asm,$004452,708,SanJose,data,teamdata94,name
+teamdata95.asm,$004716,744,StLouis,data,teamdata94,name
+teamdata95.asm,$0049FE,696,TampaBay,data,teamdata94,name
+teamdata95.asm,$004CB6,754,Toronto,data,teamdata94,name
+teamdata95.asm,$004FA8,742,Vancouver,data,teamdata94,name
+teamdata95.asm,$00528E,712,Winnipeg,data,teamdata94,name
+teamdata95.asm,$005556,734,Washington,data,teamdata94,name
+teamdata95.asm,$005834,512,playoffseats,data,teamdata94,name
+frames95.asm,$005A34,2,SPAlist,data,frames94,name
+frames95.asm,$005A36,786,SPAskate_table,data,frames94,name
+frames95.asm,$005D48,274,SPAskateturn_table,data,frames94,follows SPAskate_table
+frames95.asm,$005E5A,786,SPAskate2_table,data,frames94,follows SPAskateturn_table
+frames95.asm,$00616C,786,SPAskatewp_table,data,frames94,name
+frames95.asm,$00647E,274,SPAskatewp2_table,data,frames94,follows SPAskatewp_table
+frames95.asm,$006590,50,SPAglide_table,data,frames94,name
+frames95.asm,$0065C2,50,SPAglidewp_table,data,frames94,follows SPAglide_table
+frames95.asm,$0065F4,82,SPAturnl_table,data,frames94,name
+frames95.asm,$006646,82,SPAturnr_table,data,frames94,name
+frames95.asm,$006698,82,SPAturnlwp_table,data,frames94,follows SPAturnr_table
+frames95.asm,$0066EA,82,SPAturnrwp_table,data,frames94,follows SPAturnlwp_table
+frames95.asm,$00673C,82,SPAstop_table,data,frames94,name
+frames95.asm,$00678E,82,SPAstopwp_table,data,frames94,follows SPAstop_table
+frames95.asm,$0067E0,50,SPAshoulderchkl_table,data,frames94,name
+frames95.asm,$006812,50,SPAshoulderchkr_table,data,frames94,name
+frames95.asm,$006844,50,SPAHold_table,data,frames94,name
+frames95.asm,$006876,50,SPAHold2_table,data,frames94,name
+frames95.asm,$0068A8,50,SPAhook_table,data,frames94,name
+frames95.asm,$0068DA,146,SPAhook2_table,data,frames94,name
+frames95.asm,$00696C,114,SPAsweepchk_table,data,frames94,name
+frames95.asm,$0069DE,242,SPAfallfwd_table,data,frames94,name
+frames95.asm,$006AD0,274,SPAfallback_table,data,frames94,name
+frames95.asm,$006BE2,274,SPAburst_table,data,frames94,name
+frames95.asm,$006CF4,162,SPApflip_table,data,frames94,name
+frames95.asm,$006D96,114,SPApassf_table,data,frames94,name
+frames95.asm,$006E08,82,SPApassf2_table,data,frames94,follows SPApassf_table
+frames95.asm,$006E5A,114,SPApassb_table,data,frames94,name
+frames95.asm,$006ECC,114,SPApassb2_table,data,frames94,follows SPApassb_table
+frames95.asm,$006F3E,306,SPAshotf_table,data,frames94,name
+frames95.asm,$007070,306,SPAfakeshotf_table,data,frames94,follows SPAshotf_table
+frames95.asm,$0071A2,306,SPAshotb_table,data,frames94,name
+frames95.asm,$0072D4,306,SPAfakeshotb_table,data,frames94,follows SPAshotb_table
+frames95.asm,$007406,210,SPAskateback_table,data,frames94,name
+frames95.asm,$0074D8,146,SPAstumble_table,data,frames94,name
+frames95.asm,$00756A,42,SPAfaceoff_table,data,frames94,name
+frames95.asm,$007594,26,SPAfaceoffr_table,data,frames94,name
+frames95.asm,$0075AE,218,SPAgready_table,data,frames94,name
+frames95.asm,$007688,50,SPAgready2_table,data,frames94,name
+frames95.asm,$0076BA,50,SPAgglover_table,data,frames94,name
+frames95.asm,$0076EC,50,SPAgglovel_table,data,frames94,name
+frames95.asm,$00771E,50,SPAgstickr_table,data,frames94,name
+frames95.asm,$007750,50,SPAgstickl_table,data,frames94,name
+frames95.asm,$007782,146,SPAgdive_table,data,frames94,name
+frames95.asm,$007814,74,SPAwallright_table,data,frames94,name
+frames95.asm,$00785E,66,SPAwallleft_table,data,frames94,name
+frames95.asm,$0078A0,178,SPAblock_table,data,frames94,follows SPAwallleft_table
+frames95.asm,$007952,74,SPAsiren_table,data,frames94,name
+frames95.asm,$00799C,50,SPAflail_table,data,frames94,name
+frames95.asm,$0079CE,114,SPAgswing_table,data,frames94,name
+frames95.asm,$007A40,82,SPAgstackl_table,data,frames94,name
+frames95.asm,$007A92,82,SPAgstackr_table,data,frames94,name
+frames95.asm,$007AE4,114,SPAboardtop_table,data,frames94,name
+frames95.asm,$007B56,122,SPAboardright_table,data,frames94,name
+frames95.asm,$007BD0,114,SPAboardbot_table,data,frames94,name
+frames95.asm,$007C42,122,SPAboardleft_table,data,frames94,name
+frames95.asm,$007CBC,50,SPAboardchk_table,data,frames94,name
+frames95.asm,$007CEE,146,SPAgskate_table,data,frames94,name
+frames95.asm,$007D80,114,SPAcelebrate_table,data,frames94,name
+frames95.asm,$007DF2,42,SPAgstackalt1_table,data,frames94,follows SPAcelebrate_table
+frames95.asm,$007E1C,26,SPAgstackalt2_table,data,frames94,follows SPAgstackalt1_table
+frames95.asm,$007E36,82,SPAcatch_table,data,frames94,name
+frames95.asm,$007E88,66,SPAinjuryfall_table,data,frames94,name
+frames95.asm,$007ECA,66,SPAinjury1_table,data,frames94,name
+frames95.asm,$007F0C,50,SPAinjury2_table,data,frames94,follows SPAinjury1_table
+frames95.asm,$007F3E,38,SPAbglass_table,data,frames94,name
+frames95.asm,$007F64,26,SPAshoulderchkl2_table,data,frames94,follows SPAbglass_table
+frames95.asm,$007F7E,26,SPAshoulderchkr2_table,data,frames94,follows SPAshoulderchkl2_table
+frames95.asm,$007F98,50,SPAglideback_table,data,frames94,name
+frames95.asm,$007FCA,306,SPAflip_table,data,frames94,name
+frames95.asm,$0080FC,162,SPAboardmidl_table,data,frames94,name
+frames95.asm,$00819E,162,SPAboardmidr_table,data,frames94,name
+frames95.asm,$008240,210,SPApump_table,data,frames94,name
+frames95.asm,$008312,210,SPAstanley_table,data,frames94,name
+frames95.asm,$0083E4,210,SPApump2_table,data,frames94,follows SPAstanley_table
+frames95.asm,$0084B6,98,SPAgslamtop_table,data,frames94,name
+frames95.asm,$008518,42,SPAgextra1_table,data,frames94,follows SPAgslamtop_table
+frames95.asm,$008542,42,SPAgextra2_table,data,frames94,follows SPAgextra1_table
+frames95.asm,$00856C,42,SPAgslambot_table,data,frames94,name
+frames95.asm,$008596,2114,revframetbl,data,graphics94,name
+schedule95.asm,$008DD8,2377,SeasonSchedule,data,new in 95,file
+schedule95.asm,$009721,1,SeasonScheduleEnd,data,new in 95,follows SeasonSchedule
 sram95.asm,$009722,244,InitSaveRAM,code,sram94,name
 sram95.asm,$009816,8,SRAMWaitVblank,code,sram94,name
 sram95.asm,$00981E,10,VBcount,data,sram94,name

@@ -20,9 +20,9 @@ Sizes run from a label to the next one, so the vectors ($0-$FF) and the header b
 | `main95` | $000200-$000771 | 1144 | new in 95 81%, hockey94 18%, data94 1%, teamdata94 <1%, main94 <1% |
 | `sega/SegaIDTable95` | $0001F0-$0001FF | 16 | sega/SegaIDTable94 100% |
 | `sega/SegaInit` | $000200-$0002F9 | 250 | sega/SegaInit 100% |
-| `tables/teamdata95` | $000772-$005A33 | 21186 | teamdata94 100% |
-| `tables/frames95` | $005A34-$008DD7 | 13220 | frames94 84%, graphics94 16% |
-| `tables/schedule95` | $008DD8-$009721 | 2378 | new in 95 100% |
+| `teamdata95` | $000772-$005A33 | 21186 | teamdata94 100% |
+| `frames95` | $005A34-$008DD7 | 13220 | frames94 84%, graphics94 16% |
+| `schedule95` | $008DD8-$009721 | 2378 | new in 95 100% |
 | `sram95` | $009722-$009AC7 | 934 | sram94 63%, new in 95 37% |
 | `hockey95` | $009AC8-$00A203 | 1852 | hockey94 44%, new in 95 30%, setup94 25% |
 | `display95` | $00A204-$00A95B | 1880 | display94 44%, setup94 41%, replay94 15% |
@@ -70,8 +70,8 @@ Where the routines and tables of each 94 file ended up in 95: bytes, then the la
 | sega/SegaIDTable94 | `sega/SegaIDTable95` 16 (1) |
 | sega/SegaInit | `sega/SegaInit` 250 (27) |
 | main94 | `main95` 0 (1) |
-| teamdata94 | `tables/teamdata95` 21186 (28), `credits95` 1688 (2), `main95` 4 (1) |
-| frames94 | `tables/frames95` 11106 (79) |
+| teamdata94 | `teamdata95` 21186 (28), `credits95` 1688 (2), `main95` 4 (1) |
+| frames94 | `frames95` 11106 (79) |
 | hockey94 | `hockey95` 820 (4), `engine/pause95` 480 (8), `engine/goal95` 344 (2), `front/injury95` 310 (1), `main95` 204 (1), `front/season95` 158 (3), `engine/middle95` 126 (3), `sound/sound95` 106 (2), `front/crowd95` 88 (1), `engine/players95` 32 (1), `engine/faceoff95` 16 (1), `engine/video95` 6 (1) |
 | menu94 | `engine/pause95` 1016 (6), `engine/middle95` 22 (1) |
 | stats94 | `front/stats95` 4906 (52), `engine/setup95` 1702 (16), `front/summary95` 1424 (18), `engine/pause95` 414 (3), `front/records95` 312 (1), `engine/middle95` 110 (3), `engine/video95` 24 (1), `engine/players95` 18 (1) |
@@ -88,7 +88,7 @@ Where the routines and tables of each 94 file ended up in 95: bytes, then the la
 | data94 | `engine/setup95` 2750 (29), `front/stats95` 1000 (5), `engine/penalty95` 904 (3), `engine/middle95` 502 (16), `engine/goal95` 488 (4), `engine/playoff95` 362 (1), `front/shootout95` 242 (2), `engine/logic95` 136 (1), `engine/players95` 114 (2), `engine/video95` 16 (1), `main95` 8 (4) |
 | sram94 | `sram95` 592 (8) |
 | sound94 | `sound/sound95` 73266 (33), `sound/z80old95` 652 (1), `engine/video95` 352 (13) |
-| graphics94 | `graphics95` 1067982 (282), `tables/frames95` 2114 (1), `front/scout95` 692 (1) |
+| graphics94 | `graphics95` 1067982 (282), `frames95` 2114 (1), `front/scout95` 692 (1) |
 | onetimer94 | `engine/logic95` 928 (5), `engine/input95` 592 (6) |
 | fourway94 | `engine/fourway95` 216 (5) |
 | crowd94 | `front/scout95` 606 (9), `engine/collide95` 204 (2), `engine/players95` 138 (3), `engine/skate95` 74 (1) |
@@ -101,7 +101,7 @@ Where the routines and tables of each 94 file ended up in 95: bytes, then the la
 | goalie94 | `engine/pause95` 232 (1) |
 | title94 | `front/title95` 1294 (7), `graphics95` 896 (1), `front/shootout95` 622 (14), `control95` 524 (1), `engine/middle95` 382 (4), `sound/sound95` 268 (3), `engine/skate95` 266 (1), `engine/penalty95` 252 (5), `front/scout95` 202 (1), `engine/setup95` 114 (3), `engine/goal95` 112 (3), `engine/playoff95` 106 (1), `engine/logic95` 82 (1), `front/records95` 74 (1), `front/injury95` 34 (2) |
 | checksum94 | `checksum95` 80 (1) |
-| new in 95 | `sound/sound95` 379148 (33), `front/season95` 16614 (178), `front/create95` 12218 (178), `front/stats95` 7928 (85), `front/trade95` 6502 (45), `front/awards95` 4932 (66), `engine/pause95` 4402 (36), `engine/lines95` 3384 (15), `tables/schedule95` 2378 (2), `engine/goal95` 2006 (26), `engine/middle95` 1702 (35), `engine/setup95` 1082 (15), `main95` 928 (11), `engine/logic95` 840 (3), `front/title95` 674 (8), `hockey95` 562 (1), `front/injury95` 480 (9), `front/records95` 460 (7), `engine/replay95` 452 (2), `engine/skate95` 384 (3), `sram95` 342 (3), `engine/video95` 274 (4), `control95` 262 (5), `engine/faceoff95` 196 (1), `engine/players95` 188 (4), `front/scout95` 130 (6), `front/crowd95` 98 (1), `engine/fourway95` 92 (4), `engine/collide95` 44 (2) |
+| new in 95 | `sound/sound95` 379148 (33), `front/season95` 16614 (178), `front/create95` 12218 (178), `front/stats95` 7928 (85), `front/trade95` 6502 (45), `front/awards95` 4932 (66), `engine/pause95` 4402 (36), `engine/lines95` 3384 (15), `schedule95` 2378 (2), `engine/goal95` 2006 (26), `engine/middle95` 1702 (35), `engine/setup95` 1082 (15), `main95` 928 (11), `engine/logic95` 840 (3), `front/title95` 674 (8), `hockey95` 562 (1), `front/injury95` 480 (9), `front/records95` 460 (7), `engine/replay95` 452 (2), `engine/skate95` 384 (3), `sram95` 342 (3), `engine/video95` 274 (4), `control95` 262 (5), `engine/faceoff95` 196 (1), `engine/players95` 188 (4), `front/scout95` 130 (6), `front/crowd95` 98 (1), `engine/fourway95` 92 (4), `engine/collide95` 44 (2) |
 
 ## Routines in each 95 file
 
@@ -123,16 +123,16 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 - **sega/SegaInit** (250 bytes): SegaInit, h_s, cold_start, security, japan, reg_init, r_int1, dma_fill, z80_clr, z801, z802, clr_wk, c_wk1, clr_col, c_col1, clr_vsc, c_vsc1, clr_psg, c_psg1, hot_start
 
-### tables/teamdata95
+### teamdata95
 
 - **teamdata94** (21186 bytes): (tables only)
 
-### tables/frames95
+### frames95
 
 - **frames94** (11106 bytes): (tables only)
 - **graphics94** (2114 bytes): (tables only)
 
-### tables/schedule95
+### schedule95
 
 - **new in 95** (2378 bytes): (tables only)
 

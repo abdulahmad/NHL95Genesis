@@ -10,7 +10,7 @@ if (!fs.existsSync(romPath)) {
 }
 // Slices: name, folder under Extracted, start, end (exclusive).
 const assets = [
-    // NHL 95 team palettes, src/tables/teamdata95.asm .pad of each team block (block + $C): home then visitor, 32 bytes each, in ROM order.
+    // NHL 95 team palettes, src/teamdata95.asm .pad of each team block (block + $C): home then visitor, 32 bytes each, in ROM order.
     // Every one differs from 94, so each is the 94 file stem (93 stem for MIN / LI / NY / TBY) with 95 added.
     { name: 'ASEh95.pal', folder: 'NHL95/Graphics/Pals', start: 0x000007EE, end: 0x0000080E }, // ASE home
     { name: 'ASEv95.pal', folder: 'NHL95/Graphics/Pals', start: 0x0000080E, end: 0x0000082E }, // ASE visitor
@@ -68,7 +68,7 @@ const assets = [
     { name: 'WPGv95.pal', folder: 'NHL95/Graphics/Pals', start: 0x000052BA, end: 0x000052DA }, // WPG visitor
     { name: 'WSHh95.pal', folder: 'NHL95/Graphics/Pals', start: 0x00005562, end: 0x00005582 }, // WSH home
     { name: 'WSHv95.pal', folder: 'NHL95/Graphics/Pals', start: 0x00005582, end: 0x000055A2 }, // WSH visitor
-    // NHL 95 revframetbl, src/tables/frames95.asm after the SPA tables: one word per sprite frame (1057), the frame RestoreReplayFrame shows for a reverse angle replay.
+    // NHL 95 revframetbl, src/frames95.asm after the SPA tables: one word per sprite frame (1057), the frame RestoreReplayFrame shows for a reverse angle replay.
     // 94 kept it at the end of graphics94 (NHL94/Graphics/revframetbl.bin, 880 words).
     { name: 'revframetbl.bin', folder: 'NHL95/Graphics', start: 0x00008596, end: 0x00008DD8 }, // revframetbl
     // NHL 95 ScoutTextScript (scout95): the scouting text lines, each ended by $D, $FF after the last (94: NHL94/Text/ScoutTextScript.bin)

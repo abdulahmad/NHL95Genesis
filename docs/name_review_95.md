@@ -164,7 +164,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | Read4WayPort2 | ok |
 | ReadJoyJmp | ok |
 
-## tables/schedule95
+## schedule95
 
 | name | verdict |
 |---|---|
@@ -1055,7 +1055,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | sfxplay | ok |
 | stop_current_song2 | renamed from play_new_song2 |
 
-## tables/frames95
+## frames95
 
 | name | verdict |
 |---|---|

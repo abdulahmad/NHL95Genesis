@@ -13,4 +13,4 @@
 	include	ram95.asm		;RAM map
 
 ; Main segment code
-	include	tables\teamdata95.asm
+	include	teamdata95.asm

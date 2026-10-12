@@ -10,10 +10,9 @@ The source follows [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis): i
 
 | Path | What it is |
 | --- | --- |
-| `src/nhl95.asm` | Top level of the full build: the equates, `org 0`, then in ROM order the trunk files and the three include lists, each with its start address. |
-| `src/tables95.asm`, `engine95.asm`, `front95.asm` | Include lists: the files of `tables\`, `engine\` and `front\` in ROM order, each with its start address. No code and no `org`. `engine95.asm` is one assembly (PC-relative branches cross every file in it). `sound\z80old95.asm` sits between `fourway95` and `pause95` in the ROM, so `engine95.asm` includes it. |
-| `src/<file>95.asm` | The trunk, in `src/` itself: `main95` (vectors, header, region lock), `sram95`, `hockey95` (game flow), `display95`, `control95`, `graphics95` (the player pictures, rink, sprites, fonts, screen maps, team logo palettes and arena graphics, $0A1A5A-$1A6C27), `credits95` and `checksum95`. |
-| `src/tables/` | Team data, sprite frame tables, the season schedule: `teamdata95`, `frames95`, `schedule95`. |
+| `src/nhl95.asm` | Top level of the full build: the equates, `org 0`, then in ROM order the trunk files and the two include lists, each with its start address. |
+| `src/engine95.asm`, `front95.asm` | Include lists: the files of `engine\` and `front\` in ROM order, each with its start address. No code and no `org`. `engine95.asm` is one assembly (PC-relative branches cross every file in it). `sound\z80old95.asm` sits between `fourway95` and `pause95` in the ROM, so `engine95.asm` includes it. |
+| `src/<file>95.asm` | The trunk, in `src/` itself: `main95` (vectors, header, region lock), `teamdata95` (team data), `frames95` (sprite frame tables), `schedule95` (the season schedule), `sram95`, `hockey95` (game flow), `display95`, `control95`, `graphics95` (the player pictures, rink, sprites, fonts, screen maps, team logo palettes and arena graphics, $0A1A5A-$1A6C27), `credits95` and `checksum95`. |
 | `src/sound/` | `sound95` (the 95 sound driver, its Z80 program and banks, the sound calls) and `z80old95` (the unused 94 Z80 program). |
 | `src/engine/` | The game engine, $079902-$08DF59, one file per subsystem: `video95`, `collide95`, `middle95`, `fourway95`, `pause95`, `logic95` (the player AI), `players95`, `input95`, `setup95`, `playoff95`, `faceoff95`, `penalty95`, `lines95`, `skate95`, `goal95`, `replay95`. |
 | `src/front/` | The menus and screens around the game: `season95`, `stats95`, `trade95`, `create95`, `records95`, `awards95`, `shootout95`, `injury95`, `scout95`, `crowd95`, `summary95`, `title95`. |

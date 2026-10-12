@@ -1,6 +1,6 @@
 ;	Top level of the ROM build. Includes the equates and then every module in ROM order;
-;	each file assembles at the address after the one before it. The tables, engine and front
-;	folders each have a list file that includes their files in ROM order. Only this file
+;	each file assembles at the address after the one before it. The engine and front folders
+;	each have a list file that includes their files in ROM order. Only this file
 ;	sets an org; a segment build sets its own in its _stub.asm.
 
 	include	stubinc\ports.inc	;IO_* / VDP_* ports. Equates only
@@ -9,7 +9,9 @@
 
 	org	0			;the ROM starts at 0. Without an org SNASM writes a short, misaligned bin (the stubs carry their own org)
 	include	main95.asm		; $000000  vectors, cartridge header, SegaInit, the 95 region lock, Begin
-	include	tables95.asm		; $000772: team, sprite frame and schedule data
+	include	teamdata95.asm		; $000772  team data: TeamList and one block per team
+	include	frames95.asm		; $005A34  sprite animation tables and revframetbl
+	include	schedule95.asm		; $008DD8  the season schedule
 	include	sram95.asm		; $009722  battery save RAM: init, read / write, checksum, leader list builders
 	include	hockey95.asm		; $009AC8  game flow: Opening, the main menu exits, StartGame, StartPer, Gameloop
 	include	display95.asm		; $00A204  setvideo, sort coordinates, pads, updateanim, default sprites, SprSort
