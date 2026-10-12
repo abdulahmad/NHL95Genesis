@@ -512,7 +512,7 @@ $07DBCA,setpde,sub_7DBCA,,engine/middle95
 $07DBD8,SeasonPlayerOut,sub_7DBD8,,engine/middle95
 $07DC0A,WeightedRandomSelect,loc_7DC0A,,engine/middle95
 $07DC36,AppendTeamName,,,engine/middle95
-$07DC62,StartText,,,engine/middle95
+$07DC62,CopyString,,StartText,engine/middle95
 $07DC76,AppendUserName,,,engine/middle95
 $07DCDE,NoNameTxt,,,engine/middle95
 $07DCE0,TrimSpaces,,,engine/middle95

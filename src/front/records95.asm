@@ -1094,7 +1094,7 @@ PrintPlayerRecords	;Record Holders pages 1 (goals, recsort1) and 2 (saves, recso
 	move.w	#$19,(printx).w
 	movea.l	#RecHolderByTxt,a1
 	movea.l	#mesarea,a3
-	jsr	(StartText).l
+	jsr	(CopyString).l
 	move.w	d0,-(sp)
 	cmpi.w	#1,(TempWord1).w
 	bne.w	.4

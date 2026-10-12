@@ -2107,7 +2107,7 @@ AppendTeamName	;Append the city name of team d0 (TeamList block Strings) to a1 (
 	jsr	(appstring).l
 	movem.l	(sp)+,d0/a0-a3
 	rts
-StartText	;Copy String a1 (length word first) to a3
+CopyString	;Copy String a1 (length word first) to a3
 	movem.l	d0,-(sp)
 	move.w	(a1),d0
 	subq.w	#1,d0
@@ -2146,7 +2146,7 @@ AppendUserName	;Append user name d2 (12 bytes of the name log at namelog, spaces
 	movea.l	a1,a3
 	move.l	a3,-(sp)
 	movea.l	#NoNameTxt,a1
-	jsr	(StartText).l
+	jsr	(CopyString).l
 	movea.l	(sp)+,a2
 	bsr.w	TrimSpaces
 .x

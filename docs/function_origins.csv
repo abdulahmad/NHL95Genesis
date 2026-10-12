@@ -505,7 +505,7 @@ engine/middle95.asm,$07DBCA,14,setpde,code,collide94,name
 engine/middle95.asm,$07DBD8,50,SeasonPlayerOut,code,new in 95,header
 engine/middle95.asm,$07DC0A,44,WeightedRandomSelect,code,checks94,name
 engine/middle95.asm,$07DC36,44,AppendTeamName,code,cards94,name
-engine/middle95.asm,$07DC62,20,StartText,code,cards94,name
+engine/middle95.asm,$07DC62,20,CopyString,code,cards94,name
 engine/middle95.asm,$07DC76,104,AppendUserName,code,cards94,name
 engine/middle95.asm,$07DCDE,2,NoNameTxt,data,cards94,name
 engine/middle95.asm,$07DCE0,38,TrimSpaces,code,cards94,name

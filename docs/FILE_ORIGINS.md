@@ -292,7 +292,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **collide94** (14 bytes): setpde
 - **new in 95** (50 bytes): SeasonPlayerOut
 - **checks94** (44 bytes): WeightedRandomSelect
-- **cards94** (208 bytes): AppendTeamName, StartText, AppendUserName, TrimSpaces
+- **cards94** (208 bytes): AppendTeamName, CopyString, AppendUserName, TrimSpaces
 - **setup94** (410 bytes): setupice
 - **title94** (146 bytes): LoadHomeTeamGfx
 - **penalty94** (56 bytes): EASNLogo
