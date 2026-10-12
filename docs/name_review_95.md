@@ -1498,3 +1498,4 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | new-in-95 locals: season | routine names verified; 83 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: stats | routine names verified; 57 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: create | routine names verified; 61 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
+| new-in-95 locals: trade | routine names verified; 54 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
