@@ -3,8 +3,7 @@
 ;	between periods, shows the EA Sports screen and draws the team screens.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2, linebar, getlinee and AvgCline.
-;	95 changes: the team struct offsets, the zero long at $69A (94 $30A).
+;	The line change menu: choosing a line with the pad and drawing the line bar.
 
 
 
@@ -298,8 +297,7 @@ AvgCline	;Return d0 = average energy of the current line on team a2
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	CompLine and AutoLineChange, SetupTeamForIntermission, chkatop, ChkShotStat, EASportsScreen, updatePPTeamTime,
-;	the saved line set routines (DefaultLineData, LoadTeamLines, CheckTeamLines ...) and six DrawTeamScreen variants.
+;	Computer line changes, the intermission team setup, the EA Sports screen and the saved line sets.
 
 
 

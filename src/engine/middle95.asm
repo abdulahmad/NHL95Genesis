@@ -3,14 +3,8 @@
 ;	EASN logo.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	Shared helpers: sroot, vtoa, find3d, randomd0s / randomd0, GetHot, vcountwait, printz2, printsmall
-;	(ControlCodeJumpTable and the control codes), printz, print, eraser, showclock (95: big digits when paused,
-;	PutClockDigit), PerLabels / PerLabels2, makepde / getpde, ReadGoaliePulled, GetGoalieCount /
-;	GetDefenseStart / GetForwardCount (95: season data versions), player name formatting (95: by team struct a2 or team
-;	number d7), CalcAttrib and its weight lists, PushTime, PushNumber, PushNumberWidth, appendz, appstring,
-;	setupTeamBlocksMap / CopyTeamBlockMapData, DoDMA_nd2, TeamLogoBitmaps, ResetClock / GetPeriodTime, ClrHor,
-;	AssignPads, waitx, printscores1 / PrintTeamNameAndScore, chkpk / chkpk2, printbigz ... PutBigTile, bfasciicon,
-;	UnpackPicture, RestoreTeamEnergy, WeightedRandomSelect, AppendTeamName ... TrimSpaces, then setupice.
+;	Shared helpers: math, random numbers, text printing, the game clock, player names and attributes,
+; number formatting, team maps and the rink setup.
 
 
 sroot	;d0 = square root of d0 (long). Small values by odd subtraction, else Newton steps, else a binary search
@@ -2262,7 +2256,7 @@ setupice	;Set all variables, send non purgeable graphics, build sprite frame lis
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	LoadHomeTeamGfx and TeamGfxList, EASNLogo and setupEASNmap, FormatAndPrintTime and PeriodLabelTable.
+;	The home team arena graphics, the EASN logo and the period time display.
 
 
 LoadHomeTeamGfx	;Load the HomeTeam graphics of TeamGfxList to VRAM d4 - $18 (DecompressGraphicsPlain). Called from setupice

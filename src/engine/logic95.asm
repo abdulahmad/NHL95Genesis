@@ -4,10 +4,7 @@
 ;	computer's choices of when to shoot, pass and pull its goalie.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	The assignment jump table (asstab) and doassignment, then ClampYPosition, AdjustFacingDirection,
-;	goaliesave and its animation list, and assgoalietopuck.
-;	New in 95: asstab is in a new order (34 entries). Most goalie y limits are 3 further out
-;	($E4 to $E7, $104 to $107, $108 to $10B ...); the comments give the 94 values.
+;	The assignment table and dispatcher, and the goalie's save and positioning logic.
 
 asstab	;Jump table of the player logic assignments, in a new order: the
 	;assignment numbers in asslist and in assinsert d0 are 95 numbers. The comment gives the 95 number, then the 94 one
@@ -823,11 +820,7 @@ assgoalietopuck	;asstab entry $14. Goalie skates to the loose puck
 	bra.w	skatetopuck
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	The defense assignments of the defensemen and wingers: assdefd, assdefdchase, rtss21 and asswingd.
-;	95 changes: assdefd also checks for a puck carrier of the other team before the timer, halves aidef for
-;	the timer, and with the team defense mode (HmDefMode / AwDefMode) at 1 leaves for assdefdchase when the
-;	other team has the puck; asswingd then covers the carrier (.cover). Some y limits move by 2 or 3
-;	($58 to $56, $9E to $9C, $108 to $10B ...); the comments give the 94 values.
+;	Defense assignments for the defensemen and wingers.
 
 ; player a3 is defensive player on defense
 assdefd	;asstab entry 7
@@ -1145,14 +1138,7 @@ asswingd	;asstab entry 8
 	bra.s	.go
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	asscenterd, asscentero, assdefo, donothing, pucknorm, puckunflip, puckflip, puckshadow, findpc,
-;	a2touchpuck, Setplass, assexit / assinsert / assreplace, EvadePC, skateto, check4check,
-;	asspassrec / SkateToTempTarget, assbreakaway, assnearest, skatetopuckinit, skatetopuck, avdgoal,
-;	breakaway / BreakawayOffsidesFlagSet, chkpuckc, asspuckc, chk4shot, chk4pass and check4bench.
-;	95 changes: the asstab numbers (assreplace / assinsert d0, .alist, the asslist compares; the comments
-;	give the 94 number), the y limits moved 2 or 3 out (blue line $58 to $56, goal line $108 to $10B),
-;	the team defense mode (asscenterd .cover), Practice Mode (sflags9 bit 7) shortcuts, and the checking
-;	start for joystick players (check4check).
+;	Center and offense assignments, puck handling, skating to targets, breakaways and the shoot / pass checks.
 
 asswingo	;asstab entry 9. Winger on offense: a random spot in the puck zone (.dedata). 95: a new spot each time with sflags2 bit 7, and then y at most $4C, else $1E further up
 	btst	#pfalock,pflags(a3)	;check if locked in animation
@@ -3319,10 +3305,7 @@ check4bench	;Go to the bench for a line change, or take the new position
 	jmp	(Setplass).l
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	assbench and rtss4, asspenalty, assdopen, assepen.
-;	95 changes: the asstab numbers (assdopen $17; 94 $D), the SPA values (the comments give the 94 ones),
-;	the bench and box x $98 / $96 (94 $88 / $86), the goalie bench ready animation from GoalieReadySPA,
-;	asspenalty .clrplayer for pads 3 and 4, and the attribute byte kept over the penalty box.
+;	Going to the bench and serving penalties.
 
 assbench	;asstab entry $12. Player a3 goes to the bench: skate to the bench door, hop over (SPA), then setplayer the new player
 	btst	#pfalock,pflags(a3)
@@ -3570,11 +3553,7 @@ assepen	;asstab entry $16. Player a3 leaves the penalty box
 	bra.w	assexit
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	assonetimer, setonetimeranim, PuckOnAttackHalf, onetimershot, EndOneTimer and CheckOneTimerFacing.
-;	95 changes: each pad takes the one-timer shooter itself (setc1player ... setc4player by inputjoy;
-;	94 swapped pads 3 / 4 into 1 / 2), the SPA values and goal line $10B (the comments give the 94 values),
-;	the PAL speed $18 (94 $16), the one-timer count at $35E of the team struct (94 $35C), and
-;	CheckOneTimerFacing calls Findhittype.
+;	One-timer shots.
 
 
 assonetimer	;asstab entry $18 (94 $23). Player a3 shooting a one-timer: the passer's pad (inputjoy) takes
@@ -3881,10 +3860,7 @@ CheckOneTimerFacing	;Findhittype on direction d0 (the angle to the goal), d0 kep
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	assshoot, assgoaliectrl, a2offsides, asseben, assdefdchase, setSlotBit, assscore, assgoaliebreakwait,
-;	then ChkGoalies, ReturnGoalies and CPgoalie.
-;	95 changes: the asstab numbers, SPA values and limits (the comments give the 94 values), the team
-;	defense mode (assdefdchase), and the scorer's celebration in assscore.
+;	Shooting, goalie control, offsides, scoring celebrations and pulling the goalie.
 
 
 ; assignment for computer shooting
