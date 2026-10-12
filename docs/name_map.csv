@@ -532,7 +532,7 @@ $07E082,ReadJoySwapPad4,,Read4WayPad4,engine/fourway95
 $07E09E,Read4WayPort1,,,engine/fourway95
 $07E0BC,Read4WayPort2,,,engine/fourway95
 $07E0DA,ReadJoyJmp,,,engine/fourway95
-$07E0E0,Z80_Program_Code,,,sound95
+$07E0E0,Z80_Program_Code,,,sound/z80old95
 $07E36C,Pausemode,sub_7E36C,,engine/pause95
 $07E4C8,SetupPauseScreen,unk_7E4C8,,engine/pause95
 $07E4D6,seta2,sub_7E4D6,,engine/pause95

@@ -32,7 +32,7 @@ Sizes run from a label to the next one, so the vectors ($0-$FF) and the header b
 | `engine/collide95` | $07A7B4-$07C511 | 7518 | collide94 96%, crowd94 3%, cards94 1%, new in 95 1%, input94 <1% |
 | `engine/middle95` | $07C512-$07DFAB | 6810 | new in 95 25%, video94 24%, setup94 9%, data94 7%, penalty94 6%, title94 6%, display94 6%, cards94 5%, checks94 4%, optsetup94 2%, hockey94 2%, stats94 2%, collide94 2%, menu94 <1%, scout94 <1% |
 | `engine/fourway95` | $07DFAC-$07E0DF | 308 | fourway94 70%, new in 95 30% |
-| `sound95` Z80OldProgram | $07E0E0-$07E36B | 652 | sound94 100% |
+| `sound/z80old95` | $07E0E0-$07E36B | 652 | sound94 100% |
 | `engine/pause95` | $07E36C-$07FCFB | 6544 | new in 95 67%, menu94 16%, hockey94 7%, stats94 6%, goalie94 4% |
 | `engine/logic95` | $07FCFC-$0836CB | 14800 | checks94 65%, assign94 20%, onetimer94 6%, new in 95 6%, input94 1%, data94 1%, cards94 1%, title94 1%, collide94 <1% |
 | `engine/players95` | $0836CC-$083EB1 | 2022 | collide94 72%, new in 95 9%, crowd94 7%, data94 6%, setup94 4%, hockey94 2%, stats94 1% |
@@ -87,7 +87,7 @@ Where the routines and tables of each 94 file ended up in 95: bytes, then the la
 | attract94 | `engine/setup95` 238 (3), `engine/lines95` 182 (1), `engine/video95` 48 (1) |
 | data94 | `engine/setup95` 2750 (29), `front/stats95` 1000 (5), `engine/penalty95` 904 (3), `engine/middle95` 502 (16), `engine/goal95` 488 (4), `engine/playoff95` 362 (1), `front/shootout95` 242 (2), `engine/logic95` 136 (1), `engine/players95` 114 (2), `engine/video95` 16 (1), `main95` 8 (4) |
 | sram94 | `sram95` 592 (8) |
-| sound94 | `sound95` 73266 (33), `sound95` Z80OldProgram 652 (1), `engine/video95` 352 (13) |
+| sound94 | `sound95` 73266 (33), `sound/z80old95` 652 (1), `engine/video95` 352 (13) |
 | graphics94 | `graphics95` 1067982 (282), `frames95` 2114 (1), `front/scout95` 692 (1) |
 | onetimer94 | `engine/logic95` 928 (5), `engine/input95` 592 (6) |
 | fourway94 | `engine/fourway95` 216 (5) |
@@ -305,7 +305,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **fourway94** (216 bytes): Detect4WayPlay, ReadJoySwapPad1, ReadJoySwapPad2, ReadJoySwapPad3, ReadJoySwapPad4
 - **new in 95** (66 bytes): Read4WayPort1, Read4WayPort2, ReadJoyJmp
 
-### sound95 Z80OldProgram
+### sound/z80old95
 
 - **sound94** (652 bytes): (tables only)
 

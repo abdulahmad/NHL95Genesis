@@ -525,7 +525,7 @@ engine/fourway95.asm,$07E082,28,ReadJoySwapPad4,code,fourway94,name
 engine/fourway95.asm,$07E09E,30,Read4WayPort1,code,new in 95,header
 engine/fourway95.asm,$07E0BC,30,Read4WayPort2,code,new in 95,header
 engine/fourway95.asm,$07E0DA,6,ReadJoyJmp,code,new in 95,header
-sound95.asm,$07E0E0,652,Z80_Program_Code,data,sound94,name
+sound/z80old95.asm,$07E0E0,652,Z80_Program_Code,data,sound94,name
 engine/pause95.asm,$07E36C,348,Pausemode,code,hockey94,name
 engine/pause95.asm,$07E4C8,14,SetupPauseScreen,code,hockey94,name
 engine/pause95.asm,$07E4D6,80,seta2,code,hockey94,name

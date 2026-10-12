@@ -78,3 +78,4 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
   FILE_ORIGINS.md ranges updated; its origin percentages were not regenerated.
 - Header rewrite 2 (story-style file headers, model 93G hockey93/main93/menu93): all 95G modules done. MATCH.
 - Segment stubs moved to src/stubinc/ (buildseg.bat <name> assembles stubinc\<name>_stub.asm; seg:* scripts take the bare name). MATCH.
+- Undone: the z80old95 inlining. src/sound/z80old95.asm restored (engine95.asm includes sound\z80old95.asm at $07E0E0); Z80OldProgram macro and Z80OLD_SEG removed from sound95.asm; stubinc/z80old95_stub.asm back to its normal form. sound95 stays in src/. MATCH (ROM + all segments).
