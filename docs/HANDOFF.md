@@ -57,5 +57,6 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
   - Phase C (95): DONE (all modules, ram95, graphics95, frames95, sound95; docs/name_review_95.md).
 - Local label pass (95): 94 local names propagated (prop.py, align.py, consist.py hand-align). Open items of the
   94->95 consistency check are listed in docs/name_review_95.md (last "Local labels" row). New-in-95 done:
-  video, summary, replay, display, control, main, crowd, hockey, playoff (injury etc. pending in git stash).
+  video, summary, replay, display, control, main, crowd, hockey, playoff, shootout, players, logic, injury,
+  input, skate.
   Next: close the open consistency items, then remaining new-in-95 routines, data labels / equates, NHLPA93SNES.

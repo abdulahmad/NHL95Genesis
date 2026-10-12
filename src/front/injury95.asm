@@ -91,7 +91,7 @@ SetSeasonInjuries	;The players of team a2 with injury games left (save RAM SRInj
 	adda.l	d0,a0
 	adda.w	#$68,a2
 	move.w	#$19,d3
-.0
+.loop
 	move.w	(a0),d1
 	andi.w	#$F0,d1
 	beq.w	.1
@@ -107,7 +107,7 @@ SetSeasonInjuries	;The players of team a2 with injury games left (save RAM SRInj
 .2
 	addq.w	#2,a2
 	addq.w	#2,a0
-	dbf	d3,.0
+	dbf	d3,.loop
 .3
 	movem.l	(sp)+,d0-d3/a0/a2
 	rts
@@ -126,7 +126,7 @@ TickInjuries	;One game off every injury of team d0 (save RAM SRInjuries, a nibbl
 	mulu.w	#$1C,d0
 	adda.l	d0,a0
 	move.w	#$C,d2
-.0
+.loop
 	move.w	(a0),d3
 	andi.w	#$F,d3
 	beq.w	.1
@@ -136,13 +136,13 @@ TickInjuries	;One game off every injury of team d0 (save RAM SRInjuries, a nibbl
 .1
 	move.w	(a0),d3
 	andi.w	#$F0,d3
-	beq.w	.2
+	beq.w	.next
 	subi.w	#$10,d3
 	andi.w	#$F,(a0)
 	or.w	d3,(a0)
-.2
+.next
 	addq.w	#2,a0
-	dbf	d2,.0
+	dbf	d2,.loop
 	rts
 
 SetInjuryGames	;Injury games d0 for player d1 of team d7 (save RAM SRInjuries); sflags12 bit 1 and injurygames
@@ -247,10 +247,10 @@ CheckInjury	;The injury message when its timer runs out: "Injury to:" the player
 	jsr	(GetPlayerNumInitial).l
 	jsr	(print).l
 	btst	#0,(puck_pflags2).w
-	beq.w	.7
+	beq.w	.done
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$14,$6,'the game',$0
-.7
+.done
 	movem.l	(sp)+,d0-d2/a0-a4
 	rts
 
@@ -261,7 +261,7 @@ InsertInjurySlot	;Open an injury slot at player d1 of team d7 (the later nibbles
 	adda.l	d7,a0
 	adda.l	#$18,a0
 	move.w	#$19,d3
-.0
+.loop
 	move.w	(a0),d0
 	subq.w	#2,a0
 	cmp.w	d1,d3
@@ -281,7 +281,7 @@ InsertInjurySlot	;Open an injury slot at player d1 of team d7 (the later nibbles
 .2
 	andi.w	#$FF,d0
 	move.w	d0,2(a0)
-	dbf	d3,.0
+	dbf	d3,.loop
 .3
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -293,7 +293,7 @@ DeleteInjurySlot	;Remove the injury slot of player d1 of team d7 (the later nibb
 	adda.l	d7,a0
 	move.w	#$D,d2
 	clr.w	d3
-.0
+.loop
 	move.w	(a0)+,d0
 	cmp.w	d1,d3
 	blt.w	.1
@@ -313,7 +313,7 @@ DeleteInjurySlot	;Remove the injury slot of player d1 of team d7 (the later nibb
 	andi.w	#$FF,d0
 	move.w	d0,-2(a0)
 	addq.w	#1,d3
-	dbf	d2,.0
+	dbf	d2,.loop
 .3
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
