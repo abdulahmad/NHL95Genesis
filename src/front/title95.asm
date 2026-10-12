@@ -400,11 +400,11 @@ StanleyCupScreen	;The Stanley Cup screen: the vblank CupVBlank, the cup (Stanley
 	jsr	(SoundCmd).l
 	move.w	#3,-(sp)
 	jsr	(song).l
-.0
+.loop
 	jsr	(CupWaitFrame).l
 	jsr	(CupBuildSprites).l
 	jsr	(CupReadPads).l
-	bra.s	.0
+	bra.s	.loop
 
 CupReadPads	;StanleyCupScreen: the buttons of all pads; start leaves StanleyCupScreen (drops the return address)
 	jsr	(ReadJoy1).l
@@ -425,9 +425,9 @@ CupReadPads	;StanleyCupScreen: the buttons of all pads; start leaves StanleyCupS
 
 CupWaitFrame	;StanleyCupScreen: wait for the next vblank
 	move.w	(vcount).w,d0
-.0
+.loop
 	cmp.w	(vcount).w,d0
-	beq.s	.0
+	beq.s	.loop
 	rts
 
 CupExit	;Leave StanleyCupScreen (CupReadPads on start: drop its return address)
@@ -504,7 +504,7 @@ CupBuildSprites	;StanleyCupScreen: the sprite list at Satt from the animated Cup
 
 AddSpriteFrame	;Add the sprites of frame d2 of a0, offset by d0 / d1, to the sprite list at a6 (d6 sprites, at most $40)
 	cmp.w	#$40,d6
-	bge.w	.2
+	bge.w	.exit
 	movem.l	d0-d5/a0,-(sp)
 	adda.l	4(a0),a0
 	add.w	d2,d2
@@ -513,7 +513,7 @@ AddSpriteFrame	;Add the sprites of frame d2 of a0, offset by d0 / d1, to the spr
 	lsr.w	#3,d4
 	subq.w	#1,d4
 	adda.w	(a0,d2.w),a0
-.0
+.loop
 	move.w	2(a0),d2
 	andi.w	#$F000,d2
 	lsr.w	#1,d2
@@ -533,8 +533,8 @@ AddSpriteFrame	;Add the sprites of frame d2 of a0, offset by d0 / d1, to the spr
 	cmp.w	#$40,d6
 	beq.w	.1
 	addq.w	#8,a0
-	dbf	d4,.0
+	dbf	d4,.loop
 .1
 	movem.l	(sp)+,d0-d5/a0
-.2
+.exit
 	rts
