@@ -89,7 +89,7 @@ SeasonMain	;Season mode flow, called from the main flow when GameFlags bit 3 (se
 	;games today screen and the playoffs until a human game is picked (GameSetUp) or the season ends (StanleyCupScreen,
 	;SeasonAwards, Opening2)
 	btst	#3,(GameFlags).w
-	beq.w	.13
+	beq.w	.exit
 	move.w	(SaveRAM+2*SRSeasonMark).l,d0
 	tst.b	d0
 	beq.w	.0
@@ -98,15 +98,15 @@ SeasonMain	;Season mode flow, called from the main flow when GameFlags bit 3 (se
 	bra.w	.8
 .0
 	btst	#3,(GameFlags).w
-	beq.w	.13
+	beq.w	.exit
 	btst	#4,(GameFlags).w
-	beq.w	.1
+	beq.w	.loop
 	jsr	(SeasonSetup).l
 	jsr	(ClearSeasonData).l
 	clr.w	(SaveRAM+2*SRSeasonMark).l
 	jsr	(MakeSRAMChecksum).l
 	bsr.w	PickSeasonStartDay
-.1
+.loop
 	tst.b	(AutoplayDay).w
 	beq.w	.2
 	move.b	(SeasonDay).w,d0
@@ -152,7 +152,7 @@ SeasonMain	;Season mode flow, called from the main flow when GameFlags bit 3 (se
 .5
 	btst	#3,(SeasonFlags).w
 	bne.w	.7
-	bra.w	.1
+	bra.w	.loop
 .6
 	bset	#5,(GameFlags).w
 	jmp	GameSetUp
@@ -171,7 +171,7 @@ SeasonMain	;Season mode flow, called from the main flow when GameFlags bit 3 (se
 	jsr	(WriteSeasonHeader).l
 	jsr	(SetupPlayoffs).l
 .9
-	bra.w	.1
+	bra.w	.loop
 .10
 	bset	#1,(sflags11).w
 	btst	#1,(SimFlags).w
@@ -187,7 +187,7 @@ SeasonMain	;Season mode flow, called from the main flow when GameFlags bit 3 (se
 .12
 	jsr	(SeasonAwards).l
 	jmp	Opening2
-.13
+.exit
 	rts
 
 ReadSeasonHeader	;Read the 8 byte season header (SeasonStartDay ...) from save RAM SRSeasonHeader
@@ -213,10 +213,10 @@ PickSeasonStartDay	;SeasonDay = 0; with a random schedule (GameFlags bit 6) Seas
 	;games, else 0. Then WriteSeasonHeader
 	move.b	#0,(SeasonDay).w
 	btst	#6,(GameFlags).w
-	bne.w	.0
+	bne.w	.loop
 	move.b	#0,(SeasonStartDay).w
 	bra.w	.1
-.0
+.loop
 	clr.w	d0
 	move.b	(SeasonSchedule).l,d0
 	subq.w	#1,d0
@@ -226,7 +226,7 @@ PickSeasonStartDay	;SeasonDay = 0; with a random schedule (GameFlags bit 6) Seas
 	bsr.w	FindDayGames
 	tst.b	(a0)
 	movem.l	(sp)+,a0
-	beq.s	.0
+	beq.s	.loop
 .1
 	bsr.s	WriteSeasonHeader
 	rts
@@ -263,7 +263,7 @@ ReadDayGames	;d1 = day, d2 = start day, a2 = buffer: read the day's games and th
 .2
 	move.l	#SRGameResults,d0
 	bra.w	.4
-.3
+.loop
 	clr.l	d3
 	move.b	(a0)+,d3
 	move.w	d3,d4
@@ -274,12 +274,12 @@ ReadDayGames	;d1 = day, d2 = start day, a2 = buffer: read the day's games and th
 	add.b	(sp)+,d3
 	add.l	d3,d0
 .4
-	dbf	d1,.3
+	dbf	d1,.loop
 	clr.w	d1
 	move.b	(a0)+,d1
 	move.b	d1,(a2)+
 	bra.w	.6
-.5
+.loop2
 	move.b	(a0)+,(a2)
 	move.b	(a0)+,1(a2)
 	movem.l	d0-d7/a0-a7,-(sp)
@@ -291,7 +291,7 @@ ReadDayGames	;d1 = day, d2 = start day, a2 = buffer: read the day's games and th
 	addq.l	#3,d0
 	addq.w	#5,a2
 .6
-	dbf	d1,.5
+	dbf	d1,.loop2
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -318,7 +318,7 @@ WriteDayGames	;Write the results of the games in SeasonTeams back to save RAM
 .1
 	move.l	#SRGameResults,d0
 	bra.w	.3
-.2
+.loop
 	clr.l	d3
 	move.b	(a0)+,d3
 	move.w	d3,d4
@@ -329,11 +329,11 @@ WriteDayGames	;Write the results of the games in SeasonTeams back to save RAM
 	add.b	(sp)+,d3
 	add.l	d3,d0
 .3
-	dbf	d1,.2
+	dbf	d1,.loop
 	clr.w	d1
 	move.b	(a2)+,d1
 	bra.w	.5
-.4
+.loop2
 	movem.l	d0-d7/a0-a6,-(sp)
 	moveq	#3,d1
 	lea	2(a2),a0
@@ -344,19 +344,19 @@ WriteDayGames	;Write the results of the games in SeasonTeams back to save RAM
 	addq.l	#3,d0
 	addq.w	#5,a2
 .5
-	dbf	d1,.4
+	dbf	d1,.loop2
 	jsr	(MakeSRAMChecksum).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
 SkipToGameDay	;Step SeasonDay forward until a day with games
 	movem.l	d0-d7/a0-a6,-(sp)
-.0
+.loop
 	bsr.w	FindDayGames
 	tst.b	(a0)
 	bne.w	.1
 	bsr.w	NextSeasonDay
-	bra.s	.0
+	bra.s	.loop
 .1
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -377,13 +377,13 @@ FindDayGames	;a0 = the schedule entry of SeasonDay (count byte, then 2 bytes a g
 	clr.w	d5
 	move.b	(SeasonDay).w,d5
 	bra.w	.1
-.0
+.loop
 	clr.w	d4
 	move.b	(a0)+,d4
 	add.w	d4,d4
 	adda.w	d4,a0
 .1
-	dbf	d5,.0
+	dbf	d5,.loop
 	bra.w	.6
 .2
 	clr.w	d4
@@ -397,14 +397,14 @@ FindDayGames	;a0 = the schedule entry of SeasonDay (count byte, then 2 bytes a g
 .3
 	movea.l	#SeasonSchedule+1,a0
 	bra.w	.5
-.4
+.loop2
 	clr.w	d0
 	move.b	(a0),d0
 	add.w	d0,d0
 	addq.w	#1,d0
 	adda.w	d0,a0
 .5
-	dbf	d5,.4
+	dbf	d5,.loop2
 .6
 	movem.l	(sp)+,d0-d7/a1-a6
 	rts
@@ -475,7 +475,7 @@ NextSeasonTeam	;seasonteamsel = offset of the first unplayed human game in Seaso
 	move.b	(a0)+,d0
 	move.w	#2,d1
 	bra.w	.2
-.0
+.loop
 	btst	#0,4(a0)
 	bne.w	.1
 	btst	#1,4(a0)
@@ -488,7 +488,7 @@ NextSeasonTeam	;seasonteamsel = offset of the first unplayed human game in Seaso
 	addq.w	#5,d1
 	addq.w	#5,a0
 .2
-	dbf	d0,.0
+	dbf	d0,.loop
 	st	(seasonteamsel).w
 .3
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -506,7 +506,7 @@ PrevSeasonTeam	;seasonteamsel = offset of the last unplayed human game in Season
 	move.w	d6,d1
 	lea	-2(a0,d1.w),a0
 	bra.w	.3
-.0
+.loop
 	btst	#0,4(a0)
 	bne.w	.2
 	btst	#1,4(a0)
@@ -522,7 +522,7 @@ PrevSeasonTeam	;seasonteamsel = offset of the last unplayed human game in Season
 	subq.w	#5,d1
 	subq.w	#5,a0
 .3
-	dbf	d0,.0
+	dbf	d0,.loop
 	st	(seasonteamsel).w
 .4
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -540,7 +540,7 @@ SimDayGames	;Simulate every computer game of the day (flags bit 0 set, bit 1 cle
 	move.b	1(a0),d0
 	addq.w	#2,a0
 	bra.w	.2
-.0
+.loop
 	btst	#0,4(a0)
 	beq.w	.1
 	btst	#1,4(a0)
@@ -556,7 +556,7 @@ SimDayGames	;Simulate every computer game of the day (flags bit 0 set, bit 1 cle
 .1
 	addq.w	#5,a0
 .2
-	dbf	d0,.0
+	dbf	d0,.loop
 	bclr	#7,(GameFlags).w
 	bsr.w	WriteDayGames
 	move	(sp)+,sr
@@ -569,9 +569,9 @@ SimGameStats	;Fill the team structs for a simulated game a0 (teams, scores, shot
 	jsr	(randomd0).l
 	movea.l	#tmstruct,a1
 	move.w	#$365,d0
-.0
+.loop
 	clr.w	(a1)+
-	dbf	d0,.0
+	dbf	d0,.loop
 	clr.w	d0
 	move.b	(a0),d0
 	move.w	d0,(HomeTeam).w
@@ -707,7 +707,7 @@ SimScorers	;Give each goal of team d1 to a skater picked from TeamScoringTbls, w
 	move.w	d2,d5
 	add.w	d5,d5
 	bra.w	.1
-.0
+.loop
 	clr.w	d6
 	move.b	(a2,d5.w),d6
 	add.w	d6,d7
@@ -715,11 +715,11 @@ SimScorers	;Give each goal of team d1 to a skater picked from TeamScoringTbls, w
 	add.w	d6,d4
 	addq.w	#2,d5
 .1
-	dbf	d0,.0
+	dbf	d0,.loop
 	move.w	d4,(rosterteam).w
 	move.w	(rosterscroll).w,d1
 	bra.w	.5
-.2
+.loop2
 	move.w	d7,d0
 	subq.w	#1,d0
 	jsr	(randomd0).l
@@ -727,7 +727,7 @@ SimScorers	;Give each goal of team d1 to a skater picked from TeamScoringTbls, w
 	move.w	d2,d5
 	add.w	d5,d5
 	move.w	d2,d3
-.3
+.loop3
 	clr.w	d4
 	move.b	(a2,d5.w),d4
 	add.w	d4,d6
@@ -735,7 +735,7 @@ SimScorers	;Give each goal of team d1 to a skater picked from TeamScoringTbls, w
 	bge.w	.4
 	addq.w	#2,d5
 	addq.w	#1,d3
-	bra.s	.3
+	bra.s	.loop3
 .4
 	move.l	a1,-(sp)
 	adda.w	#$B6,a1
@@ -743,7 +743,7 @@ SimScorers	;Give each goal of team d1 to a skater picked from TeamScoringTbls, w
 	movea.l	(sp)+,a1
 	bsr.w	SimAssists
 .5
-	dbf	d1,.2
+	dbf	d1,.loop2
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -782,7 +782,7 @@ PickAssist	;d0 = a skater picked from the assist weights, not the scorer or the 
 	move.w	(TempRawSpd).w,d5
 	add.w	d5,d5
 	move.w	(TempRawSpd).w,d3
-.0
+.loop
 	clr.w	d4
 	move.b	1(a2,d5.w),d4
 	add.w	d4,d6
@@ -790,7 +790,7 @@ PickAssist	;d0 = a skater picked from the assist weights, not the scorer or the 
 	bge.w	.1
 	addq.w	#2,d5
 	addq.w	#1,d3
-	bra.s	.0
+	bra.s	.loop
 .1
 	cmp.w	(TempLegSpd).w,d0
 	beq.s	PickAssist
@@ -944,25 +944,25 @@ SimShots	;d0 = d0 + 7 + a random pick from SimShotsTbl (46 weights)
 	move.w	#$2D,d0
 	movea.l	#SimShotsTbl,a1
 	clr.w	d7
-.0
+.loop
 	clr.w	d6
 	move.b	(a1)+,d6
 	add.w	d6,d7
-	dbf	d0,.0
+	dbf	d0,.loop
 	move.w	d7,d0
 	jsr	(randomd0).l
 	move.w	#$2D,d1
 	movea.l	#SimShotsTbl,a3
 	clr.w	d2
 	move.w	#7,d3
-.1
+.loop2
 	clr.w	d4
 	move.b	(a3)+,d4
 	add.w	d4,d2
 	cmp.w	d0,d2
 	bgt.w	.2
 	addq.w	#1,d3
-	dbf	d1,.1
+	dbf	d1,.loop2
 .2
 	add.w	(sp)+,d3
 	move.w	d3,d0
@@ -978,7 +978,7 @@ SeasonGameOver	;After a human season game: copy the scores into its SeasonTeams 
 	;results (AddSeasonGoals, WriteDayGames, RecordGameResult, SaveSimGame)
 	clr.w	(seasonsetupreq).w
 	btst	#3,(GameFlags).w
-	beq.w	.4
+	beq.w	.exit
 	st	(seasonsetupreq).w
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	ReadSeasonHeader
@@ -989,12 +989,12 @@ SeasonGameOver	;After a human season game: copy the scores into its SeasonTeams 
 	move.b	(a0)+,d0
 	beq.w	.3
 	bra.w	.1
-.0
+.loop
 	cmp.b	(a0),d1
 	beq.w	.2
 	addq.w	#5,a0
 .1
-	dbf	d0,.0
+	dbf	d0,.loop
 	bra.w	.3
 .2
 	movea.l	#tmstruct,a1
@@ -1013,7 +1013,7 @@ SeasonGameOver	;After a human season game: copy the scores into its SeasonTeams 
 	jsr	(MakeSRAMChecksum).l
 .3
 	movem.l	(sp)+,d0-d7/a0-a6
-.4
+.exit
 	rts
 
 AddSeasonGoals	;Add the game's goals to the season goal total (save RAM SRGoalTotal) and count the game
@@ -1042,9 +1042,9 @@ ClearSeasonData	;Clear the season results and standings in save RAM for a new se
 	lea	(M68K_RAM).l,a0
 	move.w	#$CCB,d0
 	clr.l	d1
-.0
+.loop
 	move.b	d1,(a0)+
-	dbf	d0,.0
+	dbf	d0,.loop
 	move.l	#SRGameResults,d0
 	move.l	#$CCC,d1
 	lea	(M68K_RAM).l,a0
@@ -1052,9 +1052,9 @@ ClearSeasonData	;Clear the season results and standings in save RAM for a new se
 	lea	(M68K_RAM).l,a0
 	move.w	#$4D,d0
 	clr.l	d1
-.1
+.loop2
 	move.b	d1,(a0)+
-	dbf	d0,.1
+	dbf	d0,.loop2
 	move.l	#SRStandings,d0
 	moveq	#$4E,d1
 	lea	(M68K_RAM).l,a0
@@ -1069,9 +1069,9 @@ ClearSeasonData	;Clear the season results and standings in save RAM for a new se
 	lsr.w	#2,d1
 	clr.l	d0
 	lea	(M68K_RAM).l,a0
-.2
+.loop3
 	move.l	d0,(a0)+
-	dbf	d1,.2
+	dbf	d1,.loop3
 	move.l	#SRSeasonHeaderSave,d0
 	move.l	#$1110,d1
 	lea	(M68K_RAM).l,a0
@@ -1144,28 +1144,28 @@ MakeDateString	;a1 = "Month day" string for SeasonDay (MonthNames, MonthDays)
 	clr.w	d1
 	movea.l	#MonthDays,a0
 	clr.w	d2
-.0
+.loop
 	move.b	(a0,d1.w),d2
 	cmp.w	d2,d0
 	ble.w	.1
 	addq.w	#1,d1
 	sub.w	d2,d0
 	subq.w	#1,d0
-	bra.s	.0
+	bra.s	.loop
 .1
 	movea.l	#MonthNames,a1
 	bra.w	.3
-.2
+.loop2
 	adda.w	(a1),a1
 .3
-	dbf	d1,.2
+	dbf	d1,.loop2
 	move.w	d0,-(sp)
 	movea.l	#SeasonGoalSum,a3
 	move.w	(a1),d0
 	subq.w	#1,d0
-.4
+.loop3
 	move.b	(a1)+,(a3)+
-	dbf	d0,.4
+	dbf	d0,.loop3
 	move.w	(sp)+,d0
 	addq.w	#1,d0
 	cmp.w	#9,d0
@@ -1230,7 +1230,7 @@ DateToDay	;d2 = schedule day of month d1, day d0 (clamped to the season)
 	ext.w	d0
 	clr.w	d3
 	clr.w	d2
-.2
+.loop
 	cmp.w	d1,d2
 	bge.w	.3
 	move.b	(a0,d2.w),d4
@@ -1238,7 +1238,7 @@ DateToDay	;d2 = schedule day of month d1, day d0 (clamped to the season)
 	add.w	d4,d3
 	addq.w	#1,d3
 	addq.w	#1,d2
-	bra.s	.2
+	bra.s	.loop
 .3
 	add.b	d3,d0
 	subq.b	#4,d0
@@ -1268,11 +1268,11 @@ CountTeamGames	;d1 = number of season games of team d0
 	move.b	(SeasonLength).w,d2
 	clr.w	d1
 	bra.w	.6
-.0
+.loop
 	clr.w	d3
 	move.b	(a0)+,d3
 	bra.w	.4
-.1
+.loop2
 	cmp.b	(a0),d0
 	beq.w	.2
 	cmp.b	1(a0),d0
@@ -1286,9 +1286,9 @@ CountTeamGames	;d1 = number of season games of team d0
 	blt.w	.5
 	movea.l	#SeasonSchedule+1,a0
 .5
-	dbf	d3,.1
+	dbf	d3,.loop2
 .6
-	dbf	d2,.0
+	dbf	d2,.loop
 .7
 	movem.l	(sp)+,d2-d7/a0-a6
 	rts
@@ -1352,27 +1352,27 @@ SimTieBreak	;Overtime: maybe add a goal to the home team (SimTieTbl weights)
 	move.l	a1,-(sp)
 	move.w	#2,d0
 	clr.w	d7
-.0
+.loop
 	add.b	(a1)+,d7
-	dbf	d0,.0
+	dbf	d0,.loop
 	move.w	d7,d0
 	jsr	(randomd0).l
 	move.w	#2,d1
 	movea.l	(sp)+,a3
 	move.w	#$FFFF,d3
 	clr.w	d2
-.1
+.loop2
 	add.b	(a3)+,d2
 	cmp.w	d0,d2
 	bgt.w	.2
 	addq.w	#1,d3
-	dbf	d1,.1
+	dbf	d1,.loop2
 .2
 	move.b	2(a0),d0
 	add.b	d3,d0
-	bmi.w	.3
+	bmi.w	.exit
 	move.b	d0,2(a0)
-.3
+.exit
 	rts
 
 SimTeamGoals	;d3 = goals picked from the sum of the team's offense and the other team's defense weights (10 each)
@@ -1387,26 +1387,26 @@ SimTeamGoals	;d3 = goals picked from the sum of the team's offense and the other
 	movea.l	#SimWeights,a3
 	move.w	#9,d0
 	clr.w	d7
-.0
+.loop
 	move.b	(a1)+,(a3)
 	move.b	(a3),d6
 	add.b	(a2)+,d6
 	move.b	d6,(a3)
 	add.b	(a3)+,d7
-	dbf	d0,.0
+	dbf	d0,.loop
 	move.w	d7,d0
 	jsr	(randomd0).l
 	move.w	#9,d1
 	movea.l	#SimWeights,a3
 	clr.w	d2
 	clr.w	d3
-.1
+.loop2
 	add.b	(a3)+,d2
 	cmp.w	d0,d2
-	bgt.w	.2
+	bgt.w	.exit
 	addq.w	#1,d3
-	dbf	d1,.1
-.2
+	dbf	d1,.loop2
+.exit
 	rts
 
 ScaleSimScore	;Scale the score to the average goals of the human games so far (SeasonGoalSum / SeasonGameCount), keep
@@ -1454,7 +1454,7 @@ ScaleSimScore	;Scale the score to the average goals of the human games so far (S
 	addq.w	#5,d1
 	divu.w	#$A,d1
 	move.b	d1,3(a0)
-.3
+.loop
 	move.b	2(a0),d0
 	move.b	3(a0),d1
 	tst.w	(TempWord2).w
@@ -1464,20 +1464,20 @@ ScaleSimScore	;Scale the score to the average goals of the human games so far (S
 	beq.w	.7
 	bmi.w	.4
 	addq.b	#1,2(a0)
-	bra.s	.3
+	bra.s	.loop
 .4
 	addq.b	#1,3(a0)
-	bra.s	.3
+	bra.s	.loop
 .5
 	cmp.b	d0,d1
 	bgt.w	.7
 	addq.b	#1,3(a0)
-	bra.s	.3
+	bra.s	.loop
 .6
 	cmp.b	d1,d0
 	bgt.w	.7
 	addq.b	#1,2(a0)
-	bra.s	.3
+	bra.s	.loop
 .7
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -1502,7 +1502,7 @@ SeasonSetup	;SEASON SETUP screen: period length, penalties, line changes, playof
 	move.w	#$FFFF,(setupdir).w
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
-.0
+.loop
 	bsr.w	SeasonSetupLines
 	bsr.w	DrawSeasonSetup
 	bsr.w	ReadAnyPad
@@ -1527,33 +1527,33 @@ SeasonSetup	;SEASON SETUP screen: period length, penalties, line changes, playof
 	bra.w	.5
 .4
 	btst	#3,d1
-	beq.s	.0
+	beq.s	.loop
 	move.w	#3,(setupdir).w
 	move.w	(SelectedPlayerIdx).w,d0
 	movea.l	#setupvalues,a0
 	addq.b	#1,(a0,d0.w)
 	bsr.w	WrapSetupUp
-	bra.s	.0
+	bra.s	.loop
 .5
 	move.w	#2,(setupdir).w
 	move.w	(SelectedPlayerIdx).w,d0
 	movea.l	#setupvalues,a0
 	subq.b	#1,(a0,d0.w)
 	bsr.w	WrapSetupDown
-	bra.w	.0
+	bra.w	.loop
 .6
 	move.w	#0,(setupdir).w
 	tst.w	(SelectedPlayerIdx).w
-	beq.w	.0
+	beq.w	.loop
 	subq.w	#1,(SelectedPlayerIdx).w
-	bra.w	.0
+	bra.w	.loop
 .7
 	move.w	#$FFFF,(setupdir).w
 	cmpi.w	#4,(SelectedPlayerIdx).w
-	beq.w	.0
+	beq.w	.loop
 	move.w	#1,(setupdir).w
 	addq.w	#1,(SelectedPlayerIdx).w
-	bra.w	.0
+	bra.w	.loop
 .8
 	jsr	(forceblack).l
 	bsr.w	StoreSeasonSetup
@@ -1564,23 +1564,23 @@ SeasonSetup	;SEASON SETUP screen: period length, penalties, line changes, playof
 
 ReadAnyPad	;Wait up to $5460 frames for a pad 1-4 press (ProcessInputWithRepeat), d1 = buttons
 	move.l	#$5460,d6
-.0
+.loop
 	move.w	#$64,d6
 	move.w	(vcount).w,d1
 	sub.w	(oldvcount).w,d1
-	beq.s	.0
+	beq.s	.loop
 	move.w	(vcount).w,(oldvcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.1
-	bra.w	.5
+	bra.w	.exit
 .1
 	jsr	(ReadJoy2).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.2
-	bra.w	.5
+	bra.w	.exit
 .2
 	tst.w	(FourWayPlay).w
 	beq.w	.4
@@ -1588,16 +1588,16 @@ ReadAnyPad	;Wait up to $5460 frames for a pad 1-4 press (ProcessInputWithRepeat)
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.3
-	bra.w	.5
+	bra.w	.exit
 .3
 	jsr	(ReadJoy4).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.4
-	bra.w	.5
+	bra.w	.exit
 .4
-	dbf	d6,.0
-.5
+	dbf	d6,.loop
+.exit
 	rts
 
 StoreSeasonSetup	;Copy the setup values into the season header and flags (SeasonFlags bits 1, 2; GameFlags bit 6)
@@ -1634,19 +1634,19 @@ WrapSetupUp	;Wrap setup value d0 to 0 past its last value
 	clr.w	d2
 	move.b	(a1,d0.w),d2
 	cmp.b	(a0,d0.w),d2
-	bgt.w	.0
+	bgt.w	.exit
 	clr.b	(a0,d0.w)
-.0
+.exit
 	rts
 
 WrapSetupDown	;Wrap setup value d0 to its last value below 0
 	tst.b	(a0,d0.w)
-	bpl.w	.0
+	bpl.w	.exit
 	movea.l	#SeasonSetupCounts,a1
 	move.b	(a1,d0.w),d2
 	subq.b	#1,d2
 	move.b	d2,(a0,d0.w)
-.0
+.exit
 	rts
 
 SeasonSetupLines	;a0 = setupvalues; 5 setup lines
@@ -1702,7 +1702,7 @@ SeasonSetupGfx	;Season setup screen video set up and graphics
 DrawSeasonSetup	;Print the setup lines (names and values)
 	move.w	(DispAttribCtr).w,d0
 	move.w	#9,(printy).w
-.0
+.loop
 	move.w	#3,(printx).w
 	bsr.w	PrintSetupName
 	move.w	#$18,(printx).w
@@ -1710,7 +1710,7 @@ DrawSeasonSetup	;Print the setup lines (names and values)
 	addq.w	#2,(printy).w
 	addq.w	#1,d0
 	cmp.w	(VertLineScrolling).w,d0
-	ble.s	.0
+	ble.s	.loop
 	rts
 
 PrintSetupValue	;Print the value of setup line d0, highlighted on the cursor line
@@ -1723,10 +1723,10 @@ PrintSetupValue	;Print the value of setup line d0, highlighted on the cursor lin
 	movea.l	#SetupValueText,a1
 	adda.w	(a1,d2.w),a1
 	bra.w	.1
-.0
+.loop
 	adda.w	(a1),a1
 .1
-	dbf	d1,.0
+	dbf	d1,.loop
 	cmp.w	(SelectedPlayerIdx).w,d0
 	bne.w	.2
 	bsr.w	PrintOptionHi
@@ -1742,10 +1742,10 @@ PrintSetupName	;Print the name of setup line d0, highlighted on the cursor line
 	move.w	d0,-(sp)
 	movea.l	#SetupNameText,a1
 	bra.w	.1
-.0
+.loop
 	adda.w	(a1),a1
 .1
-	dbf	d0,.0
+	dbf	d0,.loop
 	move.w	(sp)+,d0
 	cmp.w	(SelectedPlayerIdx).w,d0
 	bne.w	.2
@@ -1900,10 +1900,10 @@ GamesTodayLines	;GamesToday: cursor and scroll lines for the day's game count
 	move.b	1(a0),d0
 	move.w	d0,(setuplines).w
 	cmp.b	#3,d0
-	bge.w	.0
+	bge.w	.exit
 	subq.w	#1,d0
 	move.w	d0,(VertLineScrolling).w
-.0
+.exit
 	rts
 
 GamesTodayNext	;GamesToday: right, the next day with games (up to today)
@@ -2028,22 +2028,22 @@ GamesTodayDone	;GamesToday: return
 
 ReadGamesTodayPad	;As ReadAnyPad
 	move.l	#$5460,d6
-.0
+.loop
 	move.w	(vcount).w,d1
 	sub.w	(oldvcount).w,d1
-	beq.s	.0
+	beq.s	.loop
 	move.w	(vcount).w,(oldvcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.1
-	bra.w	.5
+	bra.w	.exit
 .1
 	jsr	(ReadJoy2).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.2
-	bra.w	.5
+	bra.w	.exit
 .2
 	tst.w	(FourWayPlay).w
 	beq.w	.4
@@ -2051,16 +2051,16 @@ ReadGamesTodayPad	;As ReadAnyPad
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.3
-	bra.w	.5
+	bra.w	.exit
 .3
 	jsr	(ReadJoy4).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.4
-	bra.w	.5
+	bra.w	.exit
 .4
-	dbf	d6,.0
-.5
+	dbf	d6,.loop
+.exit
 	rts
 
 PrintGamesToday	;GAMES TODAY title
@@ -2137,7 +2137,7 @@ DrawGamesToday	;Draw the date, the day's games and the arrows
 	mulu.w	#5,d0
 	addq.w	#2,d0
 	clr.w	d2
-.8
+.loop
 	cmp.w	d3,d0
 	bgt.w	.13
 	jsr	(printz).l
@@ -2198,14 +2198,14 @@ DrawGamesToday	;Draw the date, the day's games and the arrows
 	addq.w	#1,d2
 	cmp.w	#3,d2
 	bge.w	.13
-	bra.w	.8
+	bra.w	.loop
 .13
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
 PrintGameLine	;Print a game line
 	btst	#1,4(a0,d0.w)
-	beq.w	.0
+	beq.w	.exit
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d5
 	move.b	2(a0,d0.w),d5
@@ -2215,7 +2215,7 @@ PrintGameLine	;Print a game line
 	movea.l	#GameRowsTbl5,a1
 	bsr.w	PrintGameScore
 	movem.l	(sp)+,d0-d7/a0-a6
-.0
+.exit
 	rts
 
 PrintGameScore	;Print a game score
@@ -2455,23 +2455,23 @@ SeasonOptions	;SEASON OPTIONS menu: the regular season, end of season or playoff
 	clr.w	(SelectedPlayerIdx).w
 	clr.w	(DispAttribCtr).w
 	move.w	#9,(VertLineScrolling).w
-.0
+.loop
 	bsr.w	SeasonOptionsGfx
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),$7,$2,'SEASON OPTIONS',$0
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
-.1
+.loop2
 	bsr.w	DrawSeasonMenu
-.2
+.loop3
 	bsr.w	ReadSeasonMenuPad
 	tst.w	d1
 	bne.w	.6
 .3
 	jmp	Opening2
-.4
+.loop4
 	movem.l	(sp)+,d0-d7/a0-a6
-.5
+.exit
 	rts
 .6
 	btst	#1,d1
@@ -2481,7 +2481,7 @@ SeasonOptions	;SEASON OPTIONS menu: the regular season, end of season or playoff
 	add.w	(DispAttribCtr).w,d0
 	bsr.w	GetSeasonMenu
 	tst.w	(a1)
-	beq.s	.2
+	beq.s	.loop3
 	move.w	(SelectedPlayerIdx).w,d0
 	cmp.w	#$A,d0
 	blt.w	.7
@@ -2491,14 +2491,14 @@ SeasonOptions	;SEASON OPTIONS menu: the regular season, end of season or playoff
 .7
 	addq.w	#1,(SelectedPlayerIdx).w
 .8
-	bra.s	.1
+	bra.s	.loop2
 .9
 	btst	#0,d1
 	beq.w	.13
 	tst.w	(SelectedPlayerIdx).w
 	bne.w	.10
 	tst.w	(DispAttribCtr).w
-	beq.s	.2
+	beq.s	.loop3
 .10
 	move.w	#0,(setupdir).w
 	tst.w	(SelectedPlayerIdx).w
@@ -2509,14 +2509,14 @@ SeasonOptions	;SEASON OPTIONS menu: the regular season, end of season or playoff
 .11
 	subq.w	#1,(SelectedPlayerIdx).w
 .12
-	bra.w	.1
+	bra.w	.loop2
 .13
 	btst	#7,d1
 	beq.w	.14
 	bra.w	.15
 .14
 	btst	#5,d1
-	beq.w	.2
+	beq.w	.loop3
 .15
 	move.w	(SelectedPlayerIdx).w,d0
 	add.w	(DispAttribCtr).w,d0
@@ -2540,17 +2540,17 @@ SeasonOptions	;SEASON OPTIONS menu: the regular season, end of season or playoff
 	bra.w	.19
 .18
 	addq.w	#6,sp
-	bra.w	.4
+	bra.w	.loop4
 .19
 	move.w	(sp)+,(VertLineScrolling).w
 	move.w	(sp)+,(DispAttribCtr).w
 	move.w	(sp)+,(SelectedPlayerIdx).w
-	bra.w	.0
+	bra.w	.loop
 .20
 	move.w	(sp)+,(VertLineScrolling).w
 	move.w	(sp)+,(DispAttribCtr).w
 	move.w	(sp)+,(SelectedPlayerIdx).w
-	bra.w	.1
+	bra.w	.loop2
 
 SeasonMenuJumps	;SeasonMenuText items
 	dc.l	MenuPlayGames,MenuPlayUntil,MenuStandings,MenuCalendar,MenuGamesToday
@@ -2644,14 +2644,14 @@ MenuPlayUntil	;Play Until A Day: pick the day with A (month) / B (day), C cancel
 	dc.b	$FD,$7,$FA,$1,$F9,$2,'selecting autoplay.',$FD
 	dc.b	$7,$FA,$2,$F9,$2,'Press START to continue.',$F9,$0
 	dc.b	$0
-.0
+.loop
 	move.w	(vcount).w,d0
-.1
+.loop2
 	cmp.w	(vcount).w,d0
-	beq.s	.1
+	beq.s	.loop2
 	jsr	(orjoy4way).l
 	btst	#7,d1
-	beq.s	.0
+	beq.s	.loop
 	jmp	(AutoplayCancel).l
 .2
 	jsr	(printz).l
@@ -2677,9 +2677,9 @@ MenuPlayUntil	;Play Until A Day: pick the day with A (month) / B (day), C cancel
 	bsr.w	PrintAutoplayDay
 .3
 	move.w	(vcount).w,d0
-.4
+.loop3
 	cmp.w	(vcount).w,d0
-	beq.s	.4
+	beq.s	.loop3
 	jsr	(orjoy4way).l
 	btst	#5,d1
 	bne.w	AutoplayCancel
@@ -2689,13 +2689,13 @@ MenuPlayUntil	;Play Until A Day: pick the day with A (month) / B (day), C cancel
 	bne.w	.5
 	btst	#7,d1
 	bne.w	AutoplayMessage
-	bra.s	.4
+	bra.s	.loop3
 .5
 	move.b	(SeasonDay).w,-(sp)
 	move.b	(AutoplayDay).w,(SeasonDay).w
 	jsr	(DayToDate).l
 	move.b	(sp)+,(SeasonDay).w
-.6
+.loop4
 	movea.l	#MonthDays,a0
 	move.b	(a0,d1.w),d2
 	addq.b	#1,d0
@@ -2724,23 +2724,23 @@ MenuPlayUntil	;Play Until A Day: pick the day with A (month) / B (day), C cancel
 	move.b	(SeasonDay).w,d5
 	andi.w	#$FF,d5
 	cmp.w	d5,d2
-	ble.s	.6
+	ble.s	.loop4
 	move.b	d2,(AutoplayDay).w
 	bsr.w	PrintAutoplayDay
-	bra.w	.4
+	bra.w	.loop3
 .11
 	move.b	(SeasonDay).w,-(sp)
 	jsr	(DayToDate).l
 	cmp.w	#6,d1
 	bne.w	.12
 	move.b	(sp)+,(SeasonDay).w
-	bra.w	.4
+	bra.w	.loop3
 .12
 	move.b	(AutoplayDay).w,(SeasonDay).w
 	jsr	(DayToDate).l
 	move.b	(sp)+,(SeasonDay).w
 	addq.b	#1,d1
-.13
+.loop5
 	jsr	(DateToDay).l
 	move.b	(SeasonDay).w,d4
 	andi.w	#$FF,d4
@@ -2748,14 +2748,14 @@ MenuPlayUntil	;Play Until A Day: pick the day with A (month) / B (day), C cancel
 	ble.w	.14
 	move.b	d2,(AutoplayDay).w
 	bsr.w	PrintAutoplayDay
-	bra.w	.4
+	bra.w	.loop3
 .14
 	move.b	(SeasonDay).w,-(sp)
 	addq.b	#1,d4
 	move.b	d4,(SeasonDay).w
 	jsr	(DayToDate).l
 	move.b	(sp)+,(SeasonDay).w
-	bra.s	.13
+	bra.s	.loop5
 
 AutoplayCancel	;Cancel: AutoplayDay = SeasonDay, erase the window, d0 = -1
 	move.b	(SeasonDay).w,(AutoplayDay).w
@@ -2802,23 +2802,23 @@ PrintAutoplayDay	;Print the AutoplayDay date
 
 ReadSeasonMenuPad	;As ReadAnyPad
 	move.l	#$5460,d6
-.0
+.loop
 	move.w	#$64,d6
 	move.w	(vcount).w,d1
 	sub.w	(oldvcount).w,d1
-	beq.s	.0
+	beq.s	.loop
 	move.w	(vcount).w,(oldvcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.1
-	bra.w	.5
+	bra.w	.exit
 .1
 	jsr	(ReadJoy2).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.2
-	bra.w	.5
+	bra.w	.exit
 .2
 	tst.w	(FourWayPlay).w
 	beq.w	.4
@@ -2826,16 +2826,16 @@ ReadSeasonMenuPad	;As ReadAnyPad
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.3
-	bra.w	.5
+	bra.w	.exit
 .3
 	jsr	(ReadJoy4).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.4
-	bra.w	.5
+	bra.w	.exit
 .4
-	dbf	d6,.0
-.5
+	dbf	d6,.loop
+.exit
 	rts
 
 DrawSeasonMenu	;Draw the season menu items
@@ -2843,7 +2843,7 @@ DrawSeasonMenu	;Draw the season menu items
 	clr.w	d1
 	jsr	(printz).l
 	String	-TXMAP1,$0,$7,$0
-.0
+.loop
 	move.w	d1,d0
 	add.w	(DispAttribCtr).w,d0
 	bsr.w	GetSeasonMenu
@@ -2868,7 +2868,7 @@ DrawSeasonMenu	;Draw the season menu items
 	addq.w	#1,d1
 	addq.w	#2,(printy).w
 	cmp.w	#$A,d1
-	blt.s	.0
+	blt.s	.loop
 .3
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -2884,12 +2884,12 @@ GetSeasonMenu	;a1 = item d0 of the season menu for the season state
 	beq.w	.2
 	movea.l	#SeasonEndMenuText,a1
 	bra.w	.2
-.1
+.loop
 	adda.w	(a1),a1
 	tst.w	(a1)
 	beq.w	.3
 .2
-	dbf	d0,.1
+	dbf	d0,.loop
 	bra.w	.3
 .3
 	movem.w	(sp)+,d0
@@ -3027,10 +3027,10 @@ CalendarScreen	;CALENDAR (team schedule): {} change team, [] change month, start
 	String	CC_SetX,$1,CC_SetY,$15,'START',CC_SetX,$1,CC_AddY,$1,'= Exit',CC_SetFont,$0,$0
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
-.0
+.loop
 	bsr.w	CalendarBg
 	bsr.w	DrawCalendar
-.1
+.loop2
 	bsr.w	ReadCalendarPad
 	tst.w	d1
 	beq.w	.6
@@ -3039,17 +3039,17 @@ CalendarScreen	;CALENDAR (team schedule): {} change team, [] change month, start
 	btst	#2,d1
 	beq.w	.2
 	tst.w	(CalMonth).w
-	beq.s	.1
+	beq.s	.loop2
 	subq.w	#1,(CalMonth).w
-	bra.s	.0
+	bra.s	.loop
 .2
 	btst	#3,d1
 	beq.w	.3
 	move.w	(CalMonths).w,d0
 	cmp.w	(CalMonth).w,d0
-	ble.s	.1
+	ble.s	.loop2
 	addq.w	#1,(CalMonth).w
-	bra.s	.0
+	bra.s	.loop
 .3
 	btst	#1,d1
 	beq.w	.4
@@ -3060,7 +3060,7 @@ CalendarScreen	;CALENDAR (team schedule): {} change team, [] change month, start
 	bra.w	.5
 .4
 	btst	#0,d1
-	beq.s	.1
+	beq.s	.loop2
 	move.w	(CalTeam).w,d0
 	addq.w	#1,d0
 	cmp.w	#$1A,d0
@@ -3068,7 +3068,7 @@ CalendarScreen	;CALENDAR (team schedule): {} change team, [] change month, start
 	clr.w	d0
 .5
 	move.w	d0,(CalTeam).w
-	bra.s	.0
+	bra.s	.loop
 .6
 	jmp	(Opening2).l
 .7
@@ -3077,23 +3077,23 @@ CalendarScreen	;CALENDAR (team schedule): {} change team, [] change month, start
 
 ReadCalendarPad	;As ReadAnyPad
 	move.l	#$5460,d6
-.0
+.loop
 	move.w	#$64,d6
 	move.w	(vcount).w,d1
 	sub.w	(oldvcount).w,d1
-	beq.s	.0
+	beq.s	.loop
 	move.w	(vcount).w,(oldvcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.1
-	bra.w	.5
+	bra.w	.exit
 .1
 	jsr	(ReadJoy2).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.2
-	bra.w	.5
+	bra.w	.exit
 .2
 	tst.w	(FourWayPlay).w
 	beq.w	.4
@@ -3101,16 +3101,16 @@ ReadCalendarPad	;As ReadAnyPad
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.3
-	bra.w	.5
+	bra.w	.exit
 .3
 	jsr	(ReadJoy4).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.4
-	bra.w	.5
+	bra.w	.exit
 .4
-	dbf	d6,.0
-.5
+	dbf	d6,.loop
+.exit
 	rts
 
 CalendarGfx	;Calendar screen video set up and graphics
@@ -3185,7 +3185,7 @@ CountSeasonMonths	;CalMonths = last month of the season
 	clr.w	d1
 	move.b	(SeasonLength).w,d1
 	addq.w	#4,d1
-.0
+.loop
 	clr.w	d2
 	move.b	(a0,d0.w),d2
 	addq.w	#1,d2
@@ -3193,7 +3193,7 @@ CountSeasonMonths	;CalMonths = last month of the season
 	bmi.w	.1
 	beq.w	.1
 	addq.w	#1,d0
-	bra.s	.0
+	bra.s	.loop
 .1
 	move.w	d0,(CalMonths).w
 	rts
@@ -3225,13 +3225,13 @@ DrawCalendar	;Draw the month of CalTeam: day numbers, opponents, results
 	bra.w	.4
 .1
 	clr.w	d1
-.2
+.loop
 	sub.b	(a0,d1.w),d0
 	subq.w	#1,d0
 	cmp.w	#$1C,d0
 	blt.w	.3
 	addq.w	#1,d1
-	bra.s	.2
+	bra.s	.loop
 .3
 	subq.w	#1,d0
 	addq.w	#4,d0
@@ -3242,7 +3242,7 @@ DrawCalendar	;Draw the month of CalTeam: day numbers, opponents, results
 	clr.w	d7
 	move.b	(a0,d1.w),d7
 	clr.w	d6
-.5
+.loop2
 	cmp.w	(CalFirst).w,d6
 	blt.w	.19
 	cmp.w	(CalLast).w,d6
@@ -3259,18 +3259,18 @@ DrawCalendar	;Draw the month of CalTeam: day numbers, opponents, results
 	addq.w	#2,a0
 	move.w	#$FFFF,(TempWord1).w
 	bra.w	.9
-.6
+.loop3
 	cmp.b	(a0),d1
 	bne.w	.8
-.7
+.loop4
 	clr.w	(TempWord1).w
 	bra.w	.10
 .8
 	cmp.b	1(a0),d1
-	beq.s	.7
+	beq.s	.loop4
 	addq.w	#5,a0
 .9
-	dbf	d0,.6
+	dbf	d0,.loop3
 .10
 	tst.w	(TempWord1).w
 	bmi.w	.19
@@ -3348,7 +3348,7 @@ DrawCalendar	;Draw the month of CalTeam: day numbers, opponents, results
 .22
 	addq.w	#1,(CalDay).w
 	addq.w	#1,d6
-	dbf	d7,.5
+	dbf	d7,.loop2
 	rts
 
 CalendarFirstX	;CalX / CalY of the first day of CalMonth
@@ -3502,14 +3502,14 @@ StandingsScreen	;NHL STANDINGS: {} conference / division, [] the other group; st
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$10,$9,'W  L  T  Pts  GP  GR',$0
 	clr.w	(StandingsMode).w
-.0
+.loop
 	bsr.w	StandingsGroups
 	movea.l	#StandingsBuf,a0
 	bsr.w	ReadStandings
 	bsr.w	StandingsPoints
 	bsr.w	SortStandings
 	bsr.w	DrawStandings
-.1
+.loop2
 	bsr.w	ReadStandingsPad
 	tst.w	d1
 	beq.w	.6
@@ -3521,22 +3521,22 @@ StandingsScreen	;NHL STANDINGS: {} conference / division, [] the other group; st
 	btst	#2,d1
 	beq.w	.3
 	eori.w	#1,(StandingsMode).w
-	bra.s	.0
+	bra.s	.loop
 .3
 	btst	#3,d1
 	beq.w	.4
 	eori.w	#1,(StandingsMode).w
-	bra.s	.0
+	bra.s	.loop
 .4
 	btst	#0,d1
 	beq.w	.5
 	eori.w	#2,(StandingsMode).w
-	bra.s	.0
+	bra.s	.loop
 .5
 	btst	#1,d1
-	beq.s	.1
+	beq.s	.loop2
 	eori.w	#2,(StandingsMode).w
-	bra.s	.0
+	bra.s	.loop
 .6
 	jmp	Opening2
 .7
@@ -3545,23 +3545,23 @@ StandingsScreen	;NHL STANDINGS: {} conference / division, [] the other group; st
 
 ReadStandingsPad	;As ReadAnyPad
 	move.l	#$5460,d6
-.0
+.loop
 	move.w	#$64,d6
 	move.w	(vcount).w,d1
 	sub.w	(oldvcount).w,d1
-	beq.s	.0
+	beq.s	.loop
 	move.w	(vcount).w,(oldvcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.1
-	bra.w	.5
+	bra.w	.exit
 .1
 	jsr	(ReadJoy2).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.2
-	bra.w	.5
+	bra.w	.exit
 .2
 	tst.w	(FourWayPlay).w
 	beq.w	.4
@@ -3569,26 +3569,26 @@ ReadStandingsPad	;As ReadAnyPad
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.3
-	bra.w	.5
+	bra.w	.exit
 .3
 	jsr	(ReadJoy4).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
 	beq.w	.4
-	bra.w	.5
+	bra.w	.exit
 .4
-	dbf	d6,.0
-.5
+	dbf	d6,.loop
+.exit
 	rts
 
 SortStandings	;Sort StandingsList by points, then games
 	movea.l	#StandingsList,a0
 	movea.l	#CalMonth,a1
 	movea.l	#StandingsOrder,a2
-.0
+.loop
 	bclr	#6,(sflags6).w
 	clr.w	d7
-.1
+.loop2
 	clr.w	d6
 	move.b	(a0,d7.w),d6
 	move.b	(a1,d6.w),d0
@@ -3612,10 +3612,10 @@ SortStandings	;Sort StandingsList by points, then games
 	cmp.w	(CalTeam).w,d7
 	bge.w	.4
 	subq.w	#1,d7
-	bra.s	.1
+	bra.s	.loop2
 .4
 	btst	#6,(sflags6).w
-	bne.s	.0
+	bne.s	.loop
 	rts
 
 StandingsPoints	;Points and games of the 26 teams from StandingsBuf
@@ -3625,7 +3625,7 @@ StandingsPoints	;Points and games of the 26 teams from StandingsBuf
 	movea.l	#StandingsOrder,a3
 	clr.w	d2
 	bra.w	.1
-.0
+.loop
 	move.w	d2,d5
 	mulu.w	#3,d2
 	clr.w	d3
@@ -3640,7 +3640,7 @@ StandingsPoints	;Points and games of the 26 teams from StandingsBuf
 	move.w	d5,d2
 	addq.w	#1,d2
 .1
-	dbf	d0,.0
+	dbf	d0,.loop
 	rts
 
 StandingsGroups	;StandingsList = the teams of group StandingsMode
@@ -3653,10 +3653,10 @@ StandingsGroups	;StandingsList = the teams of group StandingsMode
 	move.w	(CalTeam).w,d0
 	movea.l	#StandingsList,a4
 	bra.w	.1
-.0
+.loop
 	move.b	(a5)+,(a4)+
 .1
-	dbf	d0,.0
+	dbf	d0,.loop
 	rts
 
 StandingsGroupTbl	;Team lists of the 4 divisions (count, teams)
@@ -3738,7 +3738,7 @@ DrawStandings	;Draw the group title and the standings lines
 	jsr	(printz).l
 	String	-TXMAP1,$2,$A,$0
 	bra.w	.1
-.0
+.loop
 	clr.w	d1
 	move.b	(a4,d6.w),d1
 	bsr.w	DrawStandingsLogo
@@ -3747,7 +3747,7 @@ DrawStandings	;Draw the group title and the standings lines
 	move.w	#2,(printx).w
 	addq.w	#1,d6
 .1
-	dbf	d7,.0
+	dbf	d7,.loop
 	rts
 
 PrintStandingsLine	;Print a standings line

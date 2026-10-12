@@ -60,5 +60,6 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
   video, summary, replay, display, control, main, crowd, hockey, playoff, shootout, players, logic, injury,
   input, skate.
   94->95 consistency items and the 10 differently named routines: DONE (docs/name_review_95.md).
+  New-in-95 loops/exits pushed: season
   Next: remaining new-in-95 routines (season, stats, create, trade, setup, sound, awards, pause, middle, lines,
   records, goal, collide, penalty, scout, faceoff, title), data labels / equates, NHLPA93SNES.
