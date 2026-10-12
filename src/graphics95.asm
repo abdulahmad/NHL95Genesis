@@ -2,10 +2,8 @@
 ;	screen maps and pictures, team logo colors and the arena graphics.
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	The player pictures (FeaturedPicIdx / FeaturedPictures), the rink, the sprites, the fonts and the screen maps and bitmaps, up to
-;	the team logos. One slice per asset referenced by the code (the names the code uses), one per FeaturedPictures picture
-;	(Card<player>, the line 1 starter of the first team that lists it). A map starts with its 8-byte header (palette and map offsets):
-;	a reference to its tiles is Label+8.
+;	Player pictures, the rink, sprites, fonts, screen maps and bitmaps, and the team logos.
+; A map starts with its 8-byte header (palette and map offsets), so its tiles are at Label+8.
 
 PicturePalette	;The player picture palette, then the picture of a player with none (DrawMatchupPicture, PlayerCardScreen)
 	incbin	..\Extracted\NHL95\Graphics\NoPlayerPicture.map.jim
@@ -649,8 +647,7 @@ logoASW	;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoASW.map.jim
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	TeamLogoPalettes, one 32 byte palette per team in TeamList order. 25 are unchanged from 94; DAL, ASE and ASW
-;	are new.
+;	Team logo palettes, one per team in TeamList order.
 
 TeamLogoPalettes	;Team logo palettes, 16 colors per team (DrawMatchupLogo, NameEntryScreen, DrawTeamBitmap)
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalANHA.pal	;ANH, 94 file, same bytes
@@ -683,8 +680,7 @@ TeamLogoPalettes	;Team logo palettes, 16 colors per team (DrawMatchupLogo, NameE
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalASWA95.pal	;ASW, new palette
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	ArenaGfxBank: the home team graphics LoadHomeTeamGfx loads, $30A bytes per team, read through
-;	TeamGfxList (TeamList order; ASE and ASW share one). One incbin per team in bank order.
+;	The home team arena graphics, one block per team.
 
 ArenaGfxBank	;LoadHomeTeamGfx: one block of $30A bytes per team (TeamGfxList)
 	incbin	..\Extracted\NHL95\Graphics\ArenaGfx\ArenaGfxANH.bin

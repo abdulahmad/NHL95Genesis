@@ -3,10 +3,7 @@
 ;	the default sprites.
 
 ;------------------------------------------------------------------------------------------------------------------------
-; then updateanim
-;	checksso, setsortcords, setffo, uppads, QueuePadLabel, RenderSmallFontChar and ButtonLabelCharTable
-;	then updateanim ($A536).
-;	95 has 6 pad objects and no glove object (94: 7 with glovestruct), and keeps the pad nibbles in one long (PadControlBits).
+;	Sprite sorting and the pad objects, before the animation update.
 
 
 setvideo	;This is not vblank code but sets up ram for vblank transfers. Called once per game frame (DoGameFrame, Pausemode, ...).
@@ -354,7 +351,7 @@ updateanim	;Frame switch control on struct a3. Called from updateplayers. 95: no
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	defaultsprites, defaultsprites2 and SprSort.
+;	The default sprites and the sprite sort.
 
 
 defaultsprites	;Allocate vram and assign char area for graphic structures. d4 = char area for data. Sets up the sso (4) and

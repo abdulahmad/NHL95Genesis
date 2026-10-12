@@ -1454,9 +1454,7 @@ SoundBanks	;Bank 0 (SndSetBank, Begin and Opening2): the item count, then 4 byte
 	incbin	..\Extracted\NHL95\Sound\Bank\snd95_list_01.bin
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	The sound calls (SoundCmd ... ChooseSong), then what is left of the old sound driver: z80_bus_release_delay ...
-;	p_initialZ80, unused, with its RAM moved by -$3FC, each Z80 bus request but p_initialZ80's replaced by a SoundCmd $D
-;	(pause the new driver) and ClearAllTrackAndSFXSlots cut down; newcheck; then the old PCM samples and FM patches.
+;	The sound calls, then the unused remains of the old sound driver with its PCM samples and FM patches.
 
 SoundCmd	;Send command d0 to the 95 sound driver (SndDriver, above). Called from Begin, Opening2, StartGame ...
 	jsr	(SndDriver).l
