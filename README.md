@@ -12,7 +12,7 @@ The source follows [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis): i
 | --- | --- |
 | `src/nhl95.asm` | Top level of the full build: the equates, `org 0`, then in ROM order the trunk files and the two include lists, each with its start address. |
 | `src/engine95.asm`, `front95.asm` | Include lists: the files of `engine\` and `front\` in ROM order, each with its start address. No code and no `org`. `engine95.asm` is one assembly (PC-relative branches cross every file in it). The old Z80 program sits between `fourway95` and `pause95` in the ROM, so `engine95.asm` expands the `Z80OldProgram` macro of `sound95.asm` there. |
-| `src/<file>95.asm` | The trunk, in `src/` itself: `main95` (vectors, header, region lock), `teamdata95` (team data), `frames95` (sprite frame tables), `schedule95` (the season schedule), `sram95`, `sound95` (the 95 sound driver, its Z80 program and banks, the sound calls; also the `Z80OldProgram` macro, the unused 94 Z80 program, built as segment `z80old95` from `z80old95_stub.asm`), `hockey95` (game flow), `display95`, `control95`, `graphics95` (the player pictures, rink, sprites, fonts, screen maps, team logo palettes and arena graphics, $0A1A5A-$1A6C27), `credits95` and `checksum95`. |
+| `src/<file>95.asm` | The trunk, in `src/` itself: `main95` (vectors, header, region lock), `teamdata95` (team data), `frames95` (sprite frame tables), `schedule95` (the season schedule), `sram95`, `sound95` (the 95 sound driver, its Z80 program and banks, the sound calls; also the `Z80OldProgram` macro, the unused 94 Z80 program, built as segment `z80old95` from `stubinc/z80old95_stub.asm`), `hockey95` (game flow), `display95`, `control95`, `graphics95` (the player pictures, rink, sprites, fonts, screen maps, team logo palettes and arena graphics, $0A1A5A-$1A6C27), `credits95` and `checksum95`. |
 | `src/engine/` | The game engine, $079902-$08DF59, one file per subsystem: `video95`, `collide95`, `middle95`, `fourway95`, `pause95`, `logic95` (the player AI), `players95`, `input95`, `setup95`, `playoff95`, `faceoff95`, `penalty95`, `lines95`, `skate95`, `goal95`, `replay95`. |
 | `src/front/` | The menus and screens around the game: `season95`, `stats95`, `trade95`, `create95`, `records95`, `awards95`, `shootout95`, `injury95`, `scout95`, `crowd95`, `summary95`, `title95`. |
 | (each code file) | One file per 95 subsystem, named for what it does. Each file is one contiguous range of the ROM. The header says which 94 files it was adapted from; where it takes code from more than one 94 file, a banner before each run names the 94 file. `docs/FILE_ORIGINS.md` gives the 94 file of every routine. |
@@ -20,7 +20,7 @@ The source follows [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis): i
 | `src/ram95.asm` | The RAM map, Z80 RAM and the save RAM offsets (`SR...`). Equates only. |
 | `src/stubinc/` | `ports.inc` (IO and VDP ports) and `equals.inc` (VDP status bits). Equates only. |
 | `src/macros/genesis.mac` | The `VmInc`, `String`, `HEX2`, `Player` and `PIX` macros. |
-| `<file>_stub.asm` | One per code file, next to it (`src/engine/logic95_stub.asm`): the segment org, the equates, equates for the outside addresses the segment uses, then `include <path>.asm`. A stub builds and verifies one segment by itself. |
+| `<file>_stub.asm` | One per code file, all in `src/stubinc/` (`src/stubinc/logic95_stub.asm`): the segment org, the equates, equates for the outside addresses the segment uses, then `include <path>.asm`. A stub builds and verifies one segment by itself. |
 | `docs/name_map.csv` | Every label: address, current name, the IDA name, the old name if it was renamed, and the file. |
 | `docs/WHY_95_MOVED.md` | Why 95 reordered 94's routines (SNES banking, locality and re-filing weighed against the code), and the subsystem files the 95 source probably had. |
 
@@ -43,7 +43,7 @@ Full ROM builds assemble `src/nhl95.asm` with `build95.bat`. The listing is `out
 
 `build:dev` (`checksum=0`): `RegionOK` skips `jsr ValidationRoutine` (3 `nop`s instead) and the header checksum is 0, so changed code still boots. With `checksum=1` the validation routine sums the ROM, and any change turns the screen red.
 
-Segment builds: `npm run seg:<file>` (`seg:logic95`) runs `buildseg.bat <path>` (`buildseg.bat engine\logic95` assembles `src/engine/logic95_stub.asm` to `output/logic95.bin`), `tools/fixopcodes.js`, then `tools/verifySegment.js <file> <org> lst/nhl95.bin`, which overlays the segment on the reference ROM and compares. A MATCH of 0 bytes is a failure.
+Segment builds: `npm run seg:<file>` (`seg:logic95`) runs `buildseg.bat <name>` (`buildseg.bat logic95` assembles `src/stubinc/logic95_stub.asm` to `output/logic95.bin`), `tools/fixopcodes.js`, then `tools/verifySegment.js <file> <org> lst/nhl95.bin`, which overlays the segment on the reference ROM and compares. A MATCH of 0 bytes is a failure.
 
 `tools/fixopcodes.js` is needed after every build: EA's compiler emitted `cmp #imm` as `CMP` where SNASM emits `CMPI`, and the script patches those opcodes from the listing.
 

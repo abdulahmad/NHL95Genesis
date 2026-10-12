@@ -2,7 +2,7 @@
 
 Paste this into a new Copilot Agent session. Opus 5.5, High. One segment only. Run it again for the next file. Do not edit this prompt.
 
-The prompt was written for the flat layout, with every file in `src/` and its include in `nhl95.asm`. In the subsystem layout `<file>` is a path under `src/` (`engine\logic95`): the stub is `src/<path>_stub.asm` next to the file, the include goes in `nhl95.asm` or the include list of its folder (`engine95.asm` ...), and `seg:<name>` uses the file name without the folder. See `SEGMENT_AGENT.md` "Layout".
+The prompt was written for the flat layout, with every file in `src/` and its include in `nhl95.asm`. In the subsystem layout `<file>` is a path under `src/` (`engine\logic95`): the stub is `src/stubinc/<name>_stub.asm`, the include goes in `nhl95.asm` or the include list of its folder (`engine95.asm` ...), and `seg:<name>` uses the file name without the folder. See `SEGMENT_AGENT.md` "Layout".
 
 ```text
 Read SEGMENT_AGENT.md before you write any asm. It is the queue. Take the first file in the ROM map that is not marked matched. That file is the only segment this session. Do not start the file after it.
@@ -20,7 +20,7 @@ Follow the rules already in SEGMENT_AGENT.md. The reference ROM is lst/nhl95.bin
 The placeholder files are not a confirmed split. Before writing asm, open the matching 94 file and find the routine this 95 range corresponds to. The 95 start and end come from lst/nhl95.bin.lst, not from the 94 org. If this placeholder covers more than one 94 file, split it and add the new include to nhl95.asm in ROM order. If 95 has a system 94 does not have, add a file and an include. If 95 has no matching code, drop the placeholder and its include. Do not leave an empty file in the include list.
 
 1. ram95 is not a queue segment. It has no ROM bytes to verify. If SEGMENT_AGENT.md names it as the current segment, move past it and take the next row. RAM is not off limits: add each new RAM name to src/ram95.asm, the RAM map the full build and every stub include, as you transcribe code segments that use it. Define each name once.
-2. For ROM segments: write or reuse src/<file>_stub.asm at the confirmed org. Include stubinc\ports.inc, stubinc\equals.inc, ram95.asm, and the segment file. Do not put an org in the file nhl95.asm includes.
+2. For ROM segments: write or reuse src/stubinc/<file>_stub.asm at the confirmed org. Include stubinc\ports.inc, stubinc\equals.inc, ram95.asm, and the segment file. Do not put an org in the file nhl95.asm includes.
 3. Point package.json build:seg and verify:seg at that file and org. Add seg:<file>: buildseg.bat, then tools/fixopcodes.js on "output\<file> .lst" and output\<file>.bin, then tools/verifySegment.js <file> <org> lst/nhl95.bin. The assembler listing name has a space before .lst.
 4. Transcribe the listing for the confirmed range. Write real cmp / cmpi / exg. fixopcodes.js rewrites an EA cmp.l only. A real cmpi.l stays 0C80. Take every outside stub address from the branch displacement in lst/nhl95.bin.
 5. Run npm.cmd run seg:<file>. MATCH must cover the confirmed range and must not be 0 bytes. Then add comments and run it again.

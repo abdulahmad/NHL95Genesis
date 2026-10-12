@@ -13,9 +13,9 @@ The first split came from the fingerprint map `tools/segmap95.json` (every 94 ro
 ## Layout
 
 - One file per 95 subsystem, named for what it does, each one contiguous range of the ROM. The trunk (`main95`, `teamdata95`, `frames95`, `schedule95`, `sram95`, `sound95`, `hockey95`, `display95`, `control95`, `graphics95`, `credits95`, `checksum95`) is in `src/`; the rest is in `engine\` and `front\`.
-- `src/nhl95.asm` includes the trunk files and two include lists in ROM order: `engine95.asm`, `front95.asm`. A list names the files of its folder in ROM order. The old Z80 program is between `fourway95` and `pause95`, so `engine95.asm` expands the `Z80OldProgram` macro (defined at the end of `sound95.asm`) there; segment `z80old95` builds it from `z80old95_stub.asm` with `Z80OLD_SEG` set. `engine95.asm` is one assembly (PC-relative branches cross every file in it); do not cut it into separate builds.
+- `src/nhl95.asm` includes the trunk files and two include lists in ROM order: `engine95.asm`, `front95.asm`. A list names the files of its folder in ROM order. The old Z80 program is between `fourway95` and `pause95`, so `engine95.asm` expands the `Z80OldProgram` macro (defined at the end of `sound95.asm`) there; segment `z80old95` builds it from `stubinc/z80old95_stub.asm` with `Z80OLD_SEG` set. `engine95.asm` is one assembly (PC-relative branches cross every file in it); do not cut it into separate builds.
 - The header names the 94 files the file was adapted from. Where a file takes code from more than one 94 file, a `;----` banner before each run gives its address and 94 file (replay94 updateanim in display95, title94 TeamLogoPalettes in graphics95, hockey94 Pausemode in pause95, assign94 in logic95, input94 doinput_cbut in skate95, the title94 shootout paths in shootout95). `docs/FILE_ORIGINS.md` gives the 94 file of every routine.
-- Each file's stub is next to it (`src/engine/logic95_stub.asm`). Paths in a stub or a file are relative to `src/` (`include engine\logic95.asm`).
+- Every segment stub is in `src/stubinc/` (`src/stubinc/logic95_stub.asm`). Paths in a stub or a file are relative to `src/` (`include engine\logic95.asm`).
 - Sega's cartridge header and power-on code are `src/sega/SegaIDTable95.asm` and `src/sega/SegaInit.asm`, included by `main95.asm`.
 - Every label's IDA name, and its old name when it was renamed, is in `docs/name_map.csv`.
 
@@ -34,7 +34,7 @@ Provisional until the listing confirms it. NHL 95 is the 1994-95 season, still 2
 
 ## Build
 
-`buildseg.bat <path>` assembles `src/<path>_stub.asm` (`buildseg.bat engine\logic95`) to `output/<name>.bin`, where `<name>` is the file name without its folder. The stub carries the org. A file included by `nhl95.asm` or an include list has no org; `nhl95.asm` itself sets `org 0` (without it SNASM writes a short, misaligned bin).
+`buildseg.bat <name>` assembles `src/stubinc/<name>_stub.asm` (`buildseg.bat logic95`) to `output/<name>.bin`. The stub carries the org. A file included by `nhl95.asm` or an include list has no org; `nhl95.asm` itself sets `org 0` (without it SNASM writes a short, misaligned bin).
 
 `npm run seg:<name>` (`seg:logic95`) runs buildseg with the path, then `tools/fixopcodes.js` on `output/<name> .lst` and `output/<name>.bin`, then `tools/verifySegment.js`. The assembler listing name has a space before `.lst`.
 

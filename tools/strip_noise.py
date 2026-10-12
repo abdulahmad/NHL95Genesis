@@ -158,11 +158,13 @@ def src_files(subs=SUBSYSTEMS):
 def module_ranges():
     """(org, module) from each stub, so a build address maps to its file (engine/logic95 ...)."""
     ranges = []
-    for fn in src_files():
+    mods = {os.path.basename(f)[:-4]: f[:-4] for f in src_files() if f.endswith('.asm')}
+    for fn in src_files(('stubinc',)):
         if fn.endswith('_stub.asm'):
             text = open(os.path.join(SRC, fn), encoding='latin-1').read()
             m = re.search(r'^\s+org\s+\$?([0-9A-Fa-f]+)', text, re.M)
-            ranges.append((int(m.group(1), 16), fn[:-len('_stub.asm')]))
+            name = os.path.basename(fn)[:-len('_stub.asm')]
+            ranges.append((int(m.group(1), 16), mods.get(name, name)))
     return sorted(ranges)
 
 
