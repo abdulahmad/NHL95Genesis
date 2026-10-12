@@ -240,7 +240,7 @@ sound/sound95.asm,$067890,50,SfxTable,data,new in 95,header
 sound/sound95.asm,$0678C2,70,song,code,video94,name
 sound/sound95.asm,$067908,48,StartSong,code,new in 95,header
 sound/sound95.asm,$067938,38,stop_current_song,code,sound94,name
-sound/sound95.asm,$06795E,42,play_new_song2,code,new in 95,header
+sound/sound95.asm,$06795E,42,stop_current_song2,code,new in 95,header
 sound/sound95.asm,$067988,42,KillCrowd,code,display94,name
 sound/sound95.asm,$0679B2,18,SoundOff,code,new in 95,header
 sound/sound95.asm,$0679C4,92,ChooseSong,code,title94,name

@@ -1660,7 +1660,7 @@ stop_current_song	;Stop the song in progress (PlayingSong, sound driver command 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-play_new_song2	;Unreferenced. A copy of stop_current_song that skips the saving when no song plays
+stop_current_song2	;Unreferenced. A copy of stop_current_song that skips the saving when no song plays
 	tst.w	(PlayingSong).w
 	bmi.w	.0	;no song playing
 	movem.l	d0-d7/a0-a6,-(sp)

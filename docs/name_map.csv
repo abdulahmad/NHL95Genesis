@@ -247,7 +247,7 @@ $067890,SfxTable,unk_67890,,sound/sound95
 $0678C2,song,sub_678C2,,sound/sound95
 $067908,StartSong,sub_67908,,sound/sound95
 $067938,stop_current_song,sub_67938,play_new_song,sound/sound95
-$06795E,play_new_song2,,,sound/sound95
+$06795E,stop_current_song2,,play_new_song2,sound/sound95
 $067988,KillCrowd,sub_67988,,sound/sound95
 $0679B2,SoundOff,sub_679B2,,sound/sound95
 $0679C4,ChooseSong,sub_679C4,,sound/sound95
@@ -2241,3 +2241,5 @@ $004B6C,SRSavedLines2,,SRLines3,ram95
 $005136,SRSavedLines3,,SRLines4,ram95
 $FFD1AE,gamestoday3chars,,seasonchars1,ram95
 $FFD1B2,gamestoday1chars,,seasonchars2,ram95
+$FFFFD180,homeshootgoals,,sohomegoals,ram95
+$FFFFD182,awayshootgoals,,soawaygoals,ram95

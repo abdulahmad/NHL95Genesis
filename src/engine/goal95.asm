@@ -4,7 +4,7 @@
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
 ;	the cmp and exg encodings after assembly.
 
-Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, sohomegoals / soawaygoals), EndPenaltyShotPlay, the
+Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals / awayshootgoals), EndPenaltyShotPlay, the
 	;score summary (ScoreSum), the assignments of both teams (AssignTeam), PenGoalStuff
 	btst	#2,(BA_PS_flags).w
 	beq.w	.6
@@ -33,10 +33,10 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, sohomegoals / s
 	bset	#5,(sflags4).w
 	tst.w	(shootoutteam).w
 	beq.w	.4
-	addq.w	#1,(soawaygoals).w
+	addq.w	#1,(awayshootgoals).w
 	bra.w	.5
 .4
-	addq.w	#1,(sohomegoals).w
+	addq.w	#1,(homeshootgoals).w
 .5
 	bset	#0,(sflags8).w
 	jsr	(EndPenaltyShotPlay).l

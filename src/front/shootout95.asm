@@ -20,8 +20,8 @@ ClearShootout	;Clear the player structs (SortCords) and the shootout state, then
 	clr.w	(shootoutdelay).w
 	move.w	#1,(shootoutround).w
 	bclr	#3,(gmode2).w
-	clr.w	(sohomegoals).w
-	clr.w	(soawaygoals).w
+	clr.w	(homeshootgoals).w
+	clr.w	(awayshootgoals).w
 	clr.w	(homeshootnum).w
 	clr.w	(shootoutteam).w
 	bsr.w	InitShooters
@@ -259,8 +259,8 @@ CountShootoutGoals	;Shootout: count the goals and end it when one team cannot ca
 	beq.w	.0
 	cmpi.w	#5,(shootoutround).w
 	blt.w	.0
-	move.w	(sohomegoals).w,d0
-	cmp.w	(soawaygoals).w,d0
+	move.w	(homeshootgoals).w,d0
+	cmp.w	(awayshootgoals).w,d0
 	beq.w	.0
 	bset	#3,(gmode2).w
 	jsr	(EndShootout).l
@@ -277,16 +277,16 @@ CountShootoutGoals	;Shootout: count the goals and end it when one team cannot ca
 .x
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-EndShootout	;Shootout over: LockScroll, then the 5 skaters of player slots 1-5 (sohomegoals >
-	;soawaygoals) or 7-$B are set up (setplayer) above or below the view and get assscore (assinsert 7)
+EndShootout	;Shootout over: LockScroll, then the 5 skaters of player slots 1-5 (homeshootgoals >
+	;awayshootgoals) or 7-$B are set up (setplayer) above or below the view and get assscore (assinsert 7)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#2,(sflags2).w
 	jsr	(LockScroll).l
 	move.w	#$60,(shootoutdelay).w
 	movea.l	#SortCords,a3
 	move.w	#0,d0
-	move.w	(sohomegoals).w,d2
-	cmp.w	(soawaygoals).w,d2
+	move.w	(homeshootgoals).w,d2
+	cmp.w	(awayshootgoals).w,d2
 	bgt.w	.0
 	move.w	#6,d0
 .0
@@ -364,7 +364,7 @@ ShootoutModeBox	;Shootout round box: "SHOOTOUT MODE" (ShootoutModeBigTxt), the s
 	adda.w	4(a1),a1
 	jsr	(print).l
 	move.w	#$15,(printx).w
-	move.w	(sohomegoals).w,d0
+	move.w	(homeshootgoals).w,d0
 	move.w	#3,d1
 	jsr	(PushNumberWidth).l
 	jsr	(print).l
@@ -375,7 +375,7 @@ ShootoutModeBox	;Shootout round box: "SHOOTOUT MODE" (ShootoutModeBigTxt), the s
 	adda.w	4(a1),a1
 	jsr	(print).l
 	move.w	#$15,(printx).w
-	move.w	(soawaygoals).w,d0
+	move.w	(awayshootgoals).w,d0
 	move.w	#3,d1
 	jsr	(PushNumberWidth).l
 	jsr	(print).l
@@ -400,8 +400,8 @@ ShootoutWonBy	;Shootout: "SHOOTOUT WON BY" and the winning team (printbig1)
 	String	-(TXPRI+TXMAP1),$2,$E,'SHOOTOUT WON BY'
 	addq.w	#2,(printy).w
 	move.w	(HomeTeam).w,d1
-	move.w	(sohomegoals).w,d0
-	cmp.w	(soawaygoals).w,d0
+	move.w	(homeshootgoals).w,d0
+	cmp.w	(awayshootgoals).w,d0
 	bgt.w	.0
 	move.w	(VisTeam).w,d1
 .0

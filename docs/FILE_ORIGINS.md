@@ -179,7 +179,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **video94** (70 bytes): song
 - **new in 95** (48 bytes): StartSong
 - **sound94** (38 bytes): stop_current_song
-- **new in 95** (42 bytes): play_new_song2
+- **new in 95** (42 bytes): stop_current_song2
 - **display94** (42 bytes): KillCrowd
 - **new in 95** (18 bytes): SoundOff
 - **title94** (268 bytes): ChooseSong
