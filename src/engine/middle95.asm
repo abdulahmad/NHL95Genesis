@@ -470,11 +470,11 @@ PutClockDigit	;Draw big clock digit d0 (0-9, $A the colon) at printx / printy fr
 showclockdma	;When dfclock is set queue the clock chars in the dma list (a5); with gmode2 bit 1 shootoutclock is shown. Not in a
 	;stoppage (sflags2 bit 3) or game over (gsp 4)
 	bclr	#3,(disflags).w
-	beq.w	.2
+	beq.w	.exit
 	btst	#3,(sflags2).w
-	bne.w	.2
+	bne.w	.exit
 	cmpi.w	#4,(gsp).w
-	beq.w	.2
+	beq.w	.exit
 	movea.w	#(clockram+6-M68K_RAM),a0
 	movea.l	(smallfontptr).w,a1
 	adda.l	4(a1),a1
@@ -513,7 +513,7 @@ showclockdma	;When dfclock is set queue the clock chars in the dma list (a5); wi
 	asl.w	#1,d0
 	add.w	(a1),d0
 	move.w	d0,(a5)+
-.2
+.exit
 	rts
 
 ClockDigitChar	;showclockdma helper: next digit of d0 (divu remainder) as a clock char word to -(a0)
@@ -765,13 +765,13 @@ FormatPlayerInitialD7	;a1 = mesarea "F. Last" for player d0 of team d7
 	move.b	(a0)+,(a1)+
 	move.b	#$2E,(a1)+
 	move.b	#$20,(a1)+
-.0
+.loop
 	cmpi.b	#$20,(a0)+
-	bne.s	.0
-.1
+	bne.s	.loop
+.loop2
 	move.b	(a0)+,(a1)+
 	cmpa.l	a0,a2
-	bne.s	.1
+	bne.s	.loop2
 	bsr.w	FinalizeTextBuffer
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
@@ -799,13 +799,13 @@ NumInitialBody	;Shared body of FormatPlayerNumInitial
 	lea	-2(a0,d0.w),a2
 	move.b	(a0)+,(a1)+
 	move.w	#$2E20,(a1)+
-.0
+.loop
 	cmpi.b	#$20,(a0)+
-	bne.s	.0
-.1
+	bne.s	.loop
+.loop2
 	move.b	(a0)+,(a1)+
 	cmpa.l	a0,a2
-	bne.s	.1
+	bne.s	.loop2
 	bsr.w	FinalizeTextBuffer
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
@@ -823,13 +823,13 @@ FormatPlayerNameD7	;FormatPlayerName for team d7
 	movea.l	(sp)+,a0
 	move.w	(a0)+,d0
 	lea	-2(a0,d0.w),a2
-.0
+.loop
 	cmpi.b	#$20,(a0)+
-	bne.s	.0
-.1
+	bne.s	.loop
+.loop2
 	move.b	(a0)+,(a1)+
 	cmpa.l	a0,a2
-	bne.s	.1
+	bne.s	.loop2
 	bsr.w	FinalizeTextBuffer
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
@@ -896,10 +896,10 @@ FormatFirstNameD7	;a1 = mesarea "First" for player d0 of team d7
 	bsr.w	getplayernameD7
 	movea.w	#(TextBuffer-M68K_RAM),a1
 	addq.w	#2,a0
-.0
+.loop
 	move.b	(a0)+,(a1)+
 	cmpi.b	#$20,(a0)
-	bne.s	.0
+	bne.s	.loop
 	bsr.w	FinalizeTextBuffer
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
@@ -923,13 +923,13 @@ formatlastbody	;FormatLastNameAlt joins here
 	movea.l	(sp)+,a0
 	move.w	(a0)+,d0
 	lea	-2(a0,d0.w),a2
-.0
+.loop
 	cmpi.b	#$20,(a0)+
-	bne.s	.0
-.1
+	bne.s	.loop
+.loop2
 	move.b	(a0)+,(a1)+
 	cmpa.l	a0,a2
-	bne.s	.1
+	bne.s	.loop2
 	bsr.w	FinalizeTextBuffer
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
@@ -1104,10 +1104,10 @@ CalcAttribRating	;The rating sum of CalcAttrib: d0 / d1 = weighted sum of the at
 	movem.l	(sp)+,d6-d7
 .11
 	cmp.w	d1,d0
-	blt.w	.12
+	blt.w	.exit
 	move.w	d0,d1
 	subq.w	#1,d0
-.12
+.exit
 	rts
 
 OvrPlayerWgtList	;Skater attribute weights for the overall rating (CalcAttrib)
@@ -1230,12 +1230,12 @@ PushNumberWidthZero	;PushNumberWidth with leading zeros: d0 as d1 digits to Push
 	moveq	#1,d2
 	sub.w	d2,d1
 	bra.w	.1
-.0
+.loop
 	mulu.w	#$A,d2
 .1
-	dbf	d1,.0
+	dbf	d1,.loop
 	moveq	#$30,d3
-.2
+.loop2
 	ext.l	d0
 	divu.w	d2,d0
 	bne.w	.3
@@ -1250,7 +1250,7 @@ PushNumberWidthZero	;PushNumberWidth with leading zeros: d0 as d1 digits to Push
 	move.b	d0,(a1)+
 	swap	d0
 	divu.w	#$A,d2
-	bne.s	.2
+	bne.s	.loop2
 	move.l	a1,d0
 	subi.w	#(PushWidthBuf-M68K_RAM),d0
 	btst	#0,d0
@@ -1841,7 +1841,7 @@ printbigtext	;Print with the font map at bigfontptr. Lower case is printed as up
 	move.w	(a1)+,d3
 	subq.w	#2,d3
 	bra.w	.1
-.0
+.loop
 	move.b	(a1)+,d0
 	beq.w	.1
 	ext.w	d0
@@ -1876,7 +1876,7 @@ printbigtext	;Print with the font map at bigfontptr. Lower case is printed as up
 	bsr.w	PrintBigChar
 	move.w	(sp)+,d3
 .1
-	dbf	d3,.0
+	dbf	d3,.loop
 	move.w	d4,(printx).w
 	move.w	d5,(printy).w
 	movem.l	(sp)+,d0-d7/a0/a2
@@ -2057,7 +2057,7 @@ setpde	;d1 = rostnum of player * 2, a2 = team struct, d0 = new energy level (0 i
 
 SeasonPlayerOut	;Unless sflags11 bit 6: Z set when player d0 of team d7 is out in the season data (save RAM SRRosters, low 5 bits $1E)
 	btst	#6,(sflags11).w
-	bne.w	.0
+	bne.w	.exit
 	movem.l	d0/d7-a0,-(sp)
 	asl.w	#2,d0
 	ext.l	d0
@@ -2069,7 +2069,7 @@ SeasonPlayerOut	;Unless sflags11 bit 6: Z set when player d0 of team d7 is out i
 	andi.w	#$1F,d0
 	cmp.w	#$1E,d0
 	movem.l	(sp)+,d0/d7-a0
-.0
+.exit
 	rts
 
 WeightedRandomSelect	;d0 = number of word weights at nibblebuffer: return a weighted random index
