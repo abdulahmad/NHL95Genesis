@@ -5,7 +5,7 @@
 ;------------------------------------------------------------------------------------------------------------------------
 ;	Shared helpers: sroot, vtoa, find3d, randomd0s / randomd0, GetHot, vcountwait, printz2, printsmall
 ;	(ControlCodeJumpTable and the control codes), printz, print, eraser, showclock (95: big digits when paused,
-;	PutClockDigit), PerLabels / PenShotPenalties2, makepde / getpde, ReadGoaliePulled, GetGoalieCount /
+;	PutClockDigit), PerLabels / PerLabels2, makepde / getpde, ReadGoaliePulled, GetGoalieCount /
 ;	GetDefenseStart / GetForwardCount (95: season data versions), player name formatting (95: by team struct a2 or team
 ;	number d7), CalcAttrib and its weight lists, PushTime, PushNumber, PushNumberWidth, appendz, appstring,
 ;	setupTeamBlocksMap / CopyTeamBlockMapData, DoDMA_nd2, TeamLogoBitmaps, ResetClock / GetPeriodTime, ClrHor,
@@ -534,7 +534,7 @@ PerLabels	;Text list for periods; 94 ' F' (93 'Final'). Used by printscores1
 	String	'OT'
 	String	' F'
 
-PenShotPenalties2	;The same with a blank last entry. Used by printscores1
+PerLabels2	;The same with a blank last entry. Used by printscores1
 	String	'1',$12
 	String	'2',$13
 	String	'3',$14
@@ -1694,7 +1694,7 @@ GetPeriodTimeRemaining	;Return d0 = (gsp << 14 | PerTimeTotal) - gameclock
 	rts
 
 printscores1	;Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; period name gsp of PerLabels, or name 4
-	;of PenShotPenalties2 with gmode2 bit 1) and EASNLogo, then unless sflags3 bit 0 the score box (Framer 8 x 5 at $17, $17) with both team
+	;of PerLabels2 with gmode2 bit 1) and EASNLogo, then unless sflags3 bit 0 the score box (Framer 8 x 5 at $17, $17) with both team
 	;names and scores (PrintTeamNameAndScore). sflags5 bit 7 sets crowdnoisedelay = $78. 95 has no horizontal rink scoreboard
 	movem.l	d0-d2/a0-a3,-(sp)
 	bclr	#7,(sflags5).w
@@ -1716,7 +1716,7 @@ printscores1	;Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; period na
 	btst	#1,(gmode2).w
 	beq.w	.1
 	move.w	#4,d0
-	movea.l	#PenShotPenalties2,a1
+	movea.l	#PerLabels2,a1
 .1
 	bsr.w	PrintSmallListItem
 	bsr.w	EASNLogo

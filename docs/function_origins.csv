@@ -414,7 +414,7 @@ engine/middle95.asm,$07C994,60,PutClockDigit,code,new in 95,header
 engine/middle95.asm,$07C9D0,150,showclockdma,code,display94,header names 94 showclock
 engine/middle95.asm,$07CA66,24,ClockDigitChar,code,display94,fingerprint showclock+$C0
 engine/middle95.asm,$07CA7E,20,PerLabels,data,data94,name
-engine/middle95.asm,$07CA92,20,PenShotPenalties2,data,data94,name
+engine/middle95.asm,$07CA92,20,PerLabels2,data,data94,name
 engine/middle95.asm,$07CAA6,42,makepde,code,collide94,name
 engine/middle95.asm,$07CAD0,32,getpde,code,collide94,name
 engine/middle95.asm,$07CAF0,26,loadTeamStruct,code,penalty94,name
@@ -766,7 +766,7 @@ engine/setup95.asm,$08738C,10,GetBlankChar,code,new in 95,header
 engine/setup95.asm,$087396,76,EraseCard,code,optsetup94,name
 engine/setup95.asm,$0873E2,32,ClearLogoPalettes,code,new in 95,header
 engine/setup95.asm,$087402,58,StepSeasonTeam,code,new in 95,header
-engine/setup95.asm,$08743C,44,SetPojoyMode,code,attract94,name
+engine/setup95.asm,$08743C,44,UpdatePlayoffLevel,code,attract94,name
 engine/setup95.asm,$087468,48,InitializeGameStructures,code,data94,name
 engine/setup95.asm,$087498,14,OptionRNG,code,data94,name
 engine/setup95.asm,$0874A6,200,ReadPassBits,code,data94,name

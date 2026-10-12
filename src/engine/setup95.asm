@@ -1,6 +1,6 @@
 ;	NHL 95 roster and game setup screens.
 ;	TeamRosterScreen, DisplayPlayerList, getNameandAttrib and its column handlers, DrawTeamScreen; PAttribColumns /
-;	GAttribColumns, PlayerPositionText; the game setup screen (GameSetUp ... setoptions, DrawTeamBitmap, SetPojoyMode,
+;	GAttribColumns, PlayerPositionText; the game setup screen (GameSetUp ... setoptions, DrawTeamBitmap, UpdatePlayoffLevel,
 ;	for the 13 play modes, the season and the player cards); DefaultMenus, FigureJoy and the playoff routines
 ;	InitializeGameStructures ... MakeTree, ReadLineData / WriteLineData.
 ;	New in 95: the game setup screen was rewritten for the new play modes.
@@ -645,7 +645,7 @@ GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the 
 	;TempOptPlayMode. In a season (GameFlags bit 5) take the season options (ReadSeasonHeader) and the matchup.
 	;Then setoptions, and the line cursor loop: FixModeOptions, PrintOptions, the logos or matchup bitmaps, ReadSetupPads for a key;
 	;up / down move SelectedPlayerIdx, left / right step setupvalues (WrapOptionUp / Down), start stores them (SetupStart) and sets the
-	;pads (SetPojoyMode, FigureJoy).
+	;pads (UpdatePlayoffLevel, FigureJoy).
 	jsr	(ReadLineData).l
 	movea.l	#pwddatabuffer,a3	;saved playoff state
 	jsr	(ReadPassBits).l
@@ -826,7 +826,7 @@ GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the 
 	jsr	(ClearShootout).l
 .25
 	move.w	#7,(pojoy).w
-	jsr	(SetPojoyMode).l
+	jsr	(UpdatePlayoffLevel).l
 	jmp	FigureJoy
 
 ReadSetupPads	;Wait up to $E10 frames (94 $5460) for a key on pad 1 / 2 (pads 3 / 4 with FourWayPlay)
@@ -2232,7 +2232,7 @@ StepSeasonTeam	;Step the season matchup (setupdir 2: PrevSeasonTeam, else NextSe
 	movea.l	(sp)+,a1
 	rts
 
-SetPojoyMode	;Set pojoy from the number of players for play modes 2 and 3 (7, or $B with FourWayPlay, - OptNOP)
+UpdatePlayoffLevel	;Set pojoy from the number of players for play modes 2 and 3 (7, or $B with FourWayPlay, - OptNOP)
 	cmpi.w	#2,(OptPlayMode).w
 	blt.w	.1
 	cmpi.w	#4,(OptPlayMode).w

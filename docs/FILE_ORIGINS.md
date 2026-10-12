@@ -398,7 +398,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **new in 95** (10 bytes): GetBlankChar
 - **optsetup94** (76 bytes): EraseCard
 - **new in 95** (90 bytes): ClearLogoPalettes, StepSeasonTeam
-- **attract94** (44 bytes): SetPojoyMode
+- **attract94** (44 bytes): UpdatePlayoffLevel
 - **data94** (1658 bytes): InitializeGameStructures, OptionRNG, ReadPassBits, EncodePW, WritePassBits, PushBits, ClrPassBits, SuperAdd, SuperMult, SuperDiv, GetShifter, AddPOStats, ReadTeamStats, ResolveGames, ContinuePlayoffs, NewPO, MakeTree
 - **new in 95** (78 bytes): SetTreeGameTeams, CheckPlayoffsStarted
 - **title94** (114 bytes): ReadLineData, WriteLineData

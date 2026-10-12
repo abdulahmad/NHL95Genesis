@@ -421,7 +421,7 @@ $07C994,PutClockDigit,sub_7C994,,engine/middle95
 $07C9D0,showclockdma,loc_7C9D0,,engine/middle95
 $07CA66,ClockDigitChar,sub_7CA66,,engine/middle95
 $07CA7E,PerLabels,unk_7CA7E,,engine/middle95
-$07CA92,PenShotPenalties2,unk_7CA92,,engine/middle95
+$07CA92,PerLabels2,unk_7CA92,PenShotPenalties2,engine/middle95
 $07CAA6,makepde,sub_7CAA6,,engine/middle95
 $07CAD0,getpde,sub_7CAD0,,engine/middle95
 $07CAF0,loadTeamStruct,sub_7CAF0,,engine/middle95
@@ -774,7 +774,7 @@ $08738C,GetBlankChar,sub_8738C,,engine/setup95
 $087396,EraseCard,sub_87396,,engine/setup95
 $0873E2,ClearLogoPalettes,sub_873E2,,engine/setup95
 $087402,StepSeasonTeam,sub_87402,,engine/setup95
-$08743C,SetPojoyMode,sub_8743C,,engine/setup95
+$08743C,UpdatePlayoffLevel,sub_8743C,SetPojoyMode,engine/setup95
 $087468,InitializeGameStructures,sub_87468,,engine/setup95
 $087498,OptionRNG,sub_87498,,engine/setup95
 $0874A6,ReadPassBits,sub_874A6,,engine/setup95
