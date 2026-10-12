@@ -1508,7 +1508,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | new-in-95 locals: records | NOT a name review: routine names, headers and forward locals not checked by full body read; 1 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: goal | NOT a name review: routine names, headers and forward locals not checked by full body read; 11 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: scout | NOT a name review: routine names, headers and forward locals not checked by full body read; 1 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
-| new-in-95 locals: faceoff | NOT a name review: routine names, headers and forward locals not checked by full body read; 1 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
+| new-in-95 locals: faceoff | full body read of every new-in-95 routine (rtsfaceoff, DrawFaceoffWindow): names and headers ok; DrawFaceoffWindow .setx, .names |
 | new-in-95 locals: title | NOT a name review: routine names, headers and forward locals not checked by full body read; 4 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: collide | full body read of every new-in-95 routine (checkinglist2, rtspuck, DropPuck): names and headers ok; DropPuck .0 a trivial skip |
 | new-in-95 locals: penalty | full body read of every new-in-95 routine (rtspen): name and header ok; no locals |

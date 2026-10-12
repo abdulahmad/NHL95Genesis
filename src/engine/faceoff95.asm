@@ -842,9 +842,9 @@ DrawFaceoffWindow	;Draw the faceoff window (FaceOffMap) at x $36 or $BE
 	String	-TXMAP1,0,0,0
 	moveq	#$36,d0
 	tst.w	(fox).w
-	bpl.w	.0
+	bpl.w	.setx
 	move.w	#$BE,d0
-.0
+.setx
 	move.w	d0,(fodropx).w
 	subi.w	#$2E,d0
 	asr.w	#3,d0
@@ -878,9 +878,9 @@ DrawFaceoffWindow	;Draw the faceoff window (FaceOffMap) at x $36 or $BE
 	move.w	(tmstruct+tmline).w,d0
 	move.w	(AwShots+tmline).w,d1
 	btst	#1,(gmode).w
-	bne.w	.1
+	bne.w	.names
 	exg	d0,d1
-.1
+.names
 	jsr	(printsmallz).l
 	String	CC_AddX,1,CC_AddY,$FE
 	movea.l	#linelist,a1
