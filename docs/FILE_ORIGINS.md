@@ -477,12 +477,12 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **title94** (112 bytes): PrintPlayerAssists, PrintPlayerGoals, PrintParenNumber
 - **new in 95** (20 bytes): LockScroll
 - **replay94** (312 bytes): checkwindow
-- **new in 95** (290 bytes): SetGoaliesCtl, GetGoalieCtl, PracticeGoalies
+- **new in 95** (290 bytes): PullPracticePlayers, GetPracticePlayers, PracticeGoalies
 - **setup94** (104 bytes): PeriodOver
 - **hockey94** (292 bytes): clockcont_0
 - **setup94** (34 bytes): GameOver, ExitToOpening
 - **hockey94** (52 bytes): clockcont
-- **new in 95** (1630 bytes): SetContTeams, PrintPracticeGoalies, PrintGoalieCount, DrawPadSetup, DrawPadIcon, DrawPadCursor, PrintPracticeTitle, ControllerSetupScreen, DrawSetupTeamBlock, PrintSetupStr, PrintSetupStrHi, ReadAllPads
+- **new in 95** (1630 bytes): SetContTeams, PrintPracticePlayers, PrintPlayerCount, DrawPadSetup, DrawPadIcon, DrawPadCursor, PrintPracticeTitle, ControllerSetupScreen, DrawSetupTeamBlock, PrintSetupStr, PrintSetupStrHi, ReadAllPads
 
 ### engine/replay95
 

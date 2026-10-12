@@ -1,5 +1,5 @@
 ;	Goal, AssignTeam / rtsgoal, PenGoalStuff, box ... PPGoalBigTxt, PrintPlayerAssists ... PrintParenNumber, LockScroll,
-;	checkwindow, SetGoaliesCtl ... PracticeGoalies, PeriodOver, clockcont_0, GameOver / ExitToOpening, clockcont, then the
+;	checkwindow, PullPracticePlayers ... PracticeGoalies, PeriodOver, clockcont_0, GameOver / ExitToOpening, clockcont, then the
 ;	controller setup screen (SetContTeams ... ReadAllPads). New in 95: the controller setup screen.
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
 ;	the cmp and exg encodings after assembly.
@@ -216,16 +216,16 @@ AssignTeam	;Give assignment d0 to every player of team a2 on the ice (assinsert)
 	moveq	#5,d3
 .loop
 	tst.w	position(a3)
-	ble.w	.2
+	ble.w	.next
 	btst	#0,pflags2(a3)
-	bne.w	.2
+	bne.w	.next
 	bclr	#2,pflags(a3)
 	bclr	#pf3onetimer,pflags3(a3)
-	beq.w	.1
+	beq.w	.assign
 	jsr	(EndOneTimer).l
-.1
+.assign
 	jsr	(assinsert).l
-.2
+.next
 	adda.w	#SCstruct,a3
 	dbf	d3,.loop
 	movea.l	(sp)+,a3
@@ -519,33 +519,33 @@ checkwindow	;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the p
 	movem.l	(sp)+,d0-d3/a3
 	rts
 
-SetGoaliesCtl	;Practice Mode: pull the goalies the home / away goalie control (homegoaliectl / awaygoaliectl)
-	;does not allow (GoalieCtlLimits by position): position -1, assignment $19
+PullPracticePlayers	;Practice Mode: take off the ice (position -1, assignment $19) the players whose position needs
+	;more players (PracticePlayerLimits) than homegoaliectl / awaygoaliectl allow
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SortCords,a0
 	move.w	(homegoaliectl).w,d0
-	bsr.w	.0
+	bsr.w	.team
 	movea.l	#SortCords+(6*SCstruct),a0
 	move.w	(awaygoaliectl).w,d0
-	bsr.w	.0
+	bsr.w	.team
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-.0
+.team
 	move.w	#5,d1
-	movea.l	#GoalieCtlLimits,a1
+	movea.l	#PracticePlayerLimits,a1
 .loop
 	move.w	d1,d2
 	asl.w	#7,d2
 	move.w	position(a0,d2.w),d3
-	bmi.w	.3
+	bmi.w	.pull
 	move.b	(a1,d3.w),d3
 	andi.w	#$FF,d3
 	cmp.w	d0,d3
-	bgt.w	.3
-.loop2
+	bgt.w	.pull
+.next
 	dbf	d1,.loop
 	rts
-.3
+.pull
 	move.w	#$FFFF,position(a0,d2.w)
 	bset	#2,pflags2(a0,d2.w)
 	bset	#2,pflags(a0,d2.w)
@@ -555,12 +555,12 @@ SetGoaliesCtl	;Practice Mode: pull the goalies the home / away goalie control (h
 	lea	(a0,d2.w),a3
 	jsr	(assreplace).l
 	movem.l	(sp)+,d0/a3
-	bra.s	.loop2
+	bra.s	.next
 
-GoalieCtlLimits	;Goalie control value needed per position
+PracticePlayerLimits	;Number of practice players needed for each position
 	dc.b	0,4,5,2,1,3
 
-GetGoalieCtl	;Test the goalie control of team d0 (1 home, else away)
+GetPracticePlayers	;Test the practice player count of team d0 (1 home, else away)
 	movem.l	a0,-(sp)
 	movea.l	#homegoaliectl,a0
 	cmp.w	#1,d0
@@ -571,36 +571,36 @@ GetGoalieCtl	;Test the goalie control of team d0 (1 home, else away)
 	movem.l	(sp)+,a0
 	rts
 
-PracticeGoalies	;Practice Mode goalie setup (GetGoalieCtl)
+PracticeGoalies	;Practice Mode: goaliemode1 / goaliemode2 = 0 for a team with a pad and no practice players
 	movem.l	d0-d1,-(sp)
 	cmpi.w	#1,(cont1team).w
-	beq.w	.0
+	beq.w	.home
 	cmpi.w	#1,(cont2team).w
-	beq.w	.0
+	beq.w	.home
 	cmpi.w	#1,(cont3team).w
-	beq.w	.0
+	beq.w	.home
 	cmpi.w	#1,(cont4team).w
-	bne.w	.1
-.0
+	bne.w	.chkaway
+.home
 	move.w	#1,d0
-	bsr.s	GetGoalieCtl
-	bne.w	.1
+	bsr.s	GetPracticePlayers
+	bne.w	.chkaway
 	move.w	#0,(goaliemode1).w
-.1
+.chkaway
 	cmpi.w	#2,(cont1team).w
-	beq.w	.2
+	beq.w	.away
 	cmpi.w	#2,(cont2team).w
-	beq.w	.2
+	beq.w	.away
 	cmpi.w	#2,(cont3team).w
-	beq.w	.2
+	beq.w	.away
 	cmpi.w	#2,(cont4team).w
-	bne.w	.3
-.2
+	bne.w	.done
+.away
 	move.w	#2,d0
-	bsr.w	GetGoalieCtl
-	bne.w	.3
+	bsr.w	GetPracticePlayers
+	bne.w	.done
 	move.w	#0,(goaliemode2).w
-.3
+.done
 	movem.l	(sp)+,d0-d1
 	rts
 
@@ -739,16 +739,16 @@ clockcont	;Clock continue: when the clock is at 0 stop the play (sfx 4) and go t
 	rts
 
 SetContTeams	;The controller setup screen: pick the team of each pad (cont1team ... cont4team) and the Practice Mode
-	;players and goalies
+	;player counts; a demo or a timeout clears all pads
 	tst.w	(demoflag).w
-	bmi.w	.1
-.loop
+	bmi.w	.setup
+.clear
 	clr.w	(cont1team).w
 	clr.w	(cont2team).w
 	clr.w	(cont3team).w
 	clr.w	(cont4team).w
 	rts
-.1
+.setup
 	clr.w	(setupvalues).w
 	clr.w	(setupvalues+2).w
 	move.w	#1,(cont1team).w
@@ -760,42 +760,42 @@ SetContTeams	;The controller setup screen: pick the team of each pad (cont1team 
 	bsr.w	DrawPadSetup
 	btst	#7,(sflags9).w
 	beq.w	.2
-	bsr.w	PrintPracticeGoalies
+	bsr.w	PrintPracticePlayers
 .2
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
 	clr.w	(carddelay).w
-.loop2
+.frame
 	move.w	(vcount).w,d0
-.loop3
+.wait
 	cmp.w	(vcount).w,d0
-	beq.s	.loop3
+	beq.s	.wait
 	addq.w	#1,(carddelay).w
 	cmpi.w	#$5460,(carddelay).w
-	bge.s	.loop
+	bge.s	.clear
 	bsr.w	ReadAllPads
 	tst.w	(TempLegSpd).w
-	beq.w	.5
+	beq.w	.keys
 	clr.w	(carddelay).w
-.5
+.keys
 	btst	#7,(TempLegSpd+1).w
 	bne.w	.exit
 	btst	#1,(TempLegSpd+1).w
-	beq.w	.6
+	beq.w	.up
 	tst.w	(setupvalues).w
-	bne.w	.6
+	bne.w	.up
 	btst	#7,(sflags9).w
-	beq.w	.6
+	beq.w	.up
 	eori.w	#1,(setupvalues).w
 	bsr.w	PrintPracticeTitle
-.6
+.up
 	btst	#0,(TempLegSpd+1).w
-	beq.w	.7
+	beq.w	.pads
 	tst.w	(setupvalues).w
-	beq.w	.7
+	beq.w	.pads
 	eori.w	#1,(setupvalues).w
 	bsr.w	PrintPracticeTitle
-.7
+.pads
 	move.w	#1,d4
 	tst.w	(FourWayPlay).w
 	beq.w	.8
@@ -805,53 +805,53 @@ SetContTeams	;The controller setup screen: pick the team of each pad (cont1team 
 .8
 	movea.l	#cont1team,a0
 	movea.l	#TempWord1+1,a3
-.loop4
+.pad
 	move.b	(a3),d1
 	btst	#2,d1
-	beq.w	.12
+	beq.w	.right
 	tst.w	(setupvalues).w
-	bne.w	.10
+	bne.w	.fewer
 	move.w	(a0),d0
 	cmp.w	#2,d0
-	beq.w	.12
+	beq.w	.right
 	movea.l	#ContTeamOrder1,a4
 	move.b	(a4,d0.w),d0
 	move.w	d0,(a0)
 	bsr.w	DrawPadSetup
-	bra.w	.15
-.10
+	bra.w	.nextpad
+.fewer
 	subq.w	#1,(setupvalues+2).w
 	bpl.w	.11
 	move.w	#7,(setupvalues+2).l
 .11
-	bsr.w	PrintPracticeGoalies
-	bra.w	.15
-.12
+	bsr.w	PrintPracticePlayers
+	bra.w	.nextpad
+.right
 	btst	#3,d1
-	beq.w	.15
+	beq.w	.nextpad
 	tst.w	(setupvalues).w
-	bne.w	.13
+	bne.w	.more
 	move.w	(a0),d0
 	cmp.w	#1,d0
-	beq.w	.15
+	beq.w	.nextpad
 	movea.l	#ContTeamOrder2,a4
 	move.b	(a4,d0.w),d0
 	move.w	d0,(a0)
 	bsr.w	DrawPadSetup
-	bra.w	.15
-.13
+	bra.w	.nextpad
+.more
 	addq.w	#1,(setupvalues+2).w
 	cmpi.w	#7,(setupvalues+2).l
 	ble.w	.14
 	move.w	#0,(setupvalues+2).w
 .14
-	bsr.w	PrintPracticeGoalies
+	bsr.w	PrintPracticePlayers
 	bra.w	*+4
-.15
+.nextpad
 	addq.w	#2,a0
 	addq.w	#2,a3
-	dbf	d4,.loop4
-	bra.w	.loop2
+	dbf	d4,.pad
+	bra.w	.frame
 .exit
 	rts
 
@@ -861,9 +861,9 @@ ContTeamOrder1	;Pad team order tables for SetContTeams
 ContTeamOrder2
 	dc.b	1,1,0,$FF
 
-PrintPracticeGoalies	;Set homegoaliectl / awaygoaliectl from PracticeGoalieTbl and print them
+PrintPracticePlayers	;Set homegoaliectl / awaygoaliectl (player counts) from PracticePlayersTbl and print them
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#PracticeGoalieTbl,a0
+	movea.l	#PracticePlayersTbl,a0
 	move.w	(setupvalues+2).w,d0
 	add.w	d0,d0
 	clr.w	(homegoaliectl).w
@@ -873,15 +873,15 @@ PrintPracticeGoalies	;Set homegoaliectl / awaygoaliectl from PracticeGoalieTbl a
 	move.w	#$19,(printy).w
 	move.w	(homegoaliectl).w,d0
 	move.w	#$1F,(printx).w
-	bsr.w	PrintGoalieCount
+	bsr.w	PrintPlayerCount
 	move.w	(awaygoaliectl).w,d0
 	move.w	#8,(printx).w
-	bsr.w	PrintGoalieCount
+	bsr.w	PrintPlayerCount
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintGoalieCount	;Print GoalieCountTxt string d0 (PrintSetupStr)
-	movea.l	#GoalieCountTxt,a1
+PrintPlayerCount	;Print PlayerCountTxt string d0 (PrintSetupStr)
+	movea.l	#PlayerCountTxt,a1
 	bra.w	.1
 .loop
 	adda.w	(a1),a1
@@ -889,12 +889,12 @@ PrintGoalieCount	;Print GoalieCountTxt string d0 (PrintSetupStr)
 	dbf	d0,.loop
 	bra.w	PrintSetupStr
 
-GoalieCountTxt	;"0", "1", "2"
+PlayerCountTxt	;"0", "1", "2"
 	String	'0'
 	String	'1'
 	String	'2'
 
-PracticeGoalieTbl	;Home / away goalie control by Practice Mode setting
+PracticePlayersTbl	;Home / away practice player count by Practice Mode setting
 	dc.b	1,0,0,1,2,0,0,2,1,2,2,1,1,1,2,2
 
 DrawPadSetup	;Draw the pads, their icons (DrawPadIcon) and the cursor (DrawPadCursor)
@@ -923,12 +923,12 @@ DrawPadSetup	;Draw the pads, their icons (DrawPadIcon) and the cursor (DrawPadCu
 	move.w	(sp)+,(printy).w
 	move.w	#$F,(printx).w
 	tst.w	(a0)
-	beq.w	.2
+	beq.w	.draw
 	move.w	#$1B,(printx).w
 	cmpi.w	#1,(a0)
-	beq.w	.2
+	beq.w	.draw
 	move.w	#3,(printx).w
-.2
+.draw
 	bsr.w	DrawPadIcon
 	bsr.w	DrawPadCursor
 	addq.w	#2,a0
@@ -991,15 +991,15 @@ DrawPadCursor	;Draw the pad cursor (PadCursorMap, padcursorchars) beside printx 
 BlankLineTxt	;A blank line
 	String	$FD,$0,'                                        '
 
-PrintPracticeTitle	;Practice Mode: print PracticePlayersTxt, highlighted (PrintSetupStrHi) when setupvalues is 0
+PrintPracticeTitle	;Practice Mode: print PracticePlayersTxt, highlighted (PrintSetupStrHi) when setupvalues is not 0
 	btst	#7,(sflags9).w
 	beq.w	.exit
 	movea.l	#PracticePlayersTxt,a1
 	tst.w	(setupvalues).w
-	beq.w	.0
+	beq.w	.normal
 	bsr.w	PrintSetupStrHi
 	bra.w	.exit
-.0
+.normal
 	bsr.w	PrintSetupStr
 .exit
 	rts

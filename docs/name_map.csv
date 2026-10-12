@@ -932,9 +932,9 @@ $08C892,PrintPlayerGoals,sub_8C892,,engine/goal95
 $08C8A4,PrintParenNumber,loc_8C8A4,,engine/goal95
 $08C8EC,LockScroll,sub_8C8EC,,engine/goal95
 $08C900,checkwindow,sub_8C900,,engine/goal95
-$08CA38,SetGoaliesCtl,,,engine/goal95
-$08CAB8,GoalieCtlLimits,unk_8CAB8,,engine/goal95
-$08CABE,GetGoalieCtl,sub_8CABE,,engine/goal95
+$08CA38,PullPracticePlayers,,SetGoaliesCtl,engine/goal95
+$08CAB8,PracticePlayerLimits,unk_8CAB8,GoalieCtlLimits,engine/goal95
+$08CABE,GetPracticePlayers,sub_8CABE,GetGoalieCtl,engine/goal95
 $08CADE,PracticeGoalies,sub_8CADE,,engine/goal95
 $08CB5A,PeriodOver,,,engine/goal95
 $08CBC2,clockcont_0,loc_8CBC2,,engine/goal95
@@ -944,10 +944,10 @@ $08CD08,clockcont,sub_8CD08,,engine/goal95
 $08CD3C,SetContTeams,sub_8CD3C,,engine/goal95
 $08CED4,ContTeamOrder1,unk_8CED4,,engine/goal95
 $08CED8,ContTeamOrder2,unk_8CED8,,engine/goal95
-$08CEDC,PrintPracticeGoalies,sub_8CEDC,,engine/goal95
-$08CF28,PrintGoalieCount,sub_8CF28,,engine/goal95
-$08CF3C,GoalieCountTxt,unk_8CF3C,,engine/goal95
-$08CF48,PracticeGoalieTbl,unk_8CF48,,engine/goal95
+$08CEDC,PrintPracticePlayers,sub_8CEDC,PrintPracticeGoalies,engine/goal95
+$08CF28,PrintPlayerCount,sub_8CF28,PrintGoalieCount,engine/goal95
+$08CF3C,PlayerCountTxt,unk_8CF3C,GoalieCountTxt,engine/goal95
+$08CF48,PracticePlayersTbl,unk_8CF48,PracticeGoalieTbl,engine/goal95
 $08CF58,DrawPadSetup,sub_8CF58,,engine/goal95
 $08CFF2,DrawPadIcon,sub_8CFF2,,engine/goal95
 $08D02C,PadIconMaps,unk_8D02C,,engine/goal95

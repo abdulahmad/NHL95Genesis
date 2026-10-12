@@ -290,23 +290,23 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | DrawPadIcon | ok |
 | DrawPadSetup | ok |
 | DrawSetupTeamBlock | ok |
-| GetGoalieCtl | ok |
-| GoalieCountTxt | ok |
-| GoalieCtlLimits | ok |
+| GetPracticePlayers | renamed (was GetGoalieCtl; body checked) |
+| PlayerCountTxt | renamed (was GoalieCountTxt; body checked) |
+| PracticePlayerLimits | renamed (was GoalieCtlLimits; body checked) |
 | LockScroll | ok |
 | PadIconChars | ok |
 | PadIconMaps | ok |
-| PracticeGoalieTbl | ok |
+| PracticePlayersTbl | renamed (was PracticeGoalieTbl; body checked) |
 | PracticeGoalies | ok |
 | PracticePlayersTxt | ok |
-| PrintGoalieCount | ok |
-| PrintPracticeGoalies | ok |
+| PrintPlayerCount | renamed (was PrintGoalieCount; body checked) |
+| PrintPracticePlayers | renamed (was PrintPracticeGoalies; body checked) |
 | PrintPracticeTitle | ok |
 | PrintSetupStr | ok |
 | PrintSetupStrHi | ok |
 | ReadAllPads | ok |
 | SetContTeams | ok |
-| SetGoaliesCtl | ok |
+| PullPracticePlayers | renamed (was SetGoaliesCtl; body checked) |
 | rtsgoal | ok |
 
 ## engine/middle95
@@ -1506,7 +1506,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | new-in-95 locals: middle | NOT a name review: routine names, headers and forward locals not checked by full body read; 15 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: lines | NOT a name review: routine names, headers and forward locals not checked by full body read; 34 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: records | full body read of every new-in-95 routine (CountTeamPads, NameInUse, SkipPadName, ClearNameHelp, GetPadUser, UpdateUserRecord): names and headers ok; UpdateUserRecord .hasteam, .chkaway, .order, .awayfirst, .user (was an auto .loop, not a loop) |
-| new-in-95 locals: goal | NOT a name review: routine names, headers and forward locals not checked by full body read; 11 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
+| new-in-95 locals: goal | full body read of every new-in-95 routine (27): the practice 'goalie control' is the practice player count (strings 'No. of Players', limits by position), renamed SetGoaliesCtl->PullPracticePlayers, GoalieCtlLimits->PracticePlayerLimits, GetGoalieCtl->GetPracticePlayers, PrintPracticeGoalies->PrintPracticePlayers, PrintGoalieCount->PrintPlayerCount, GoalieCountTxt->PlayerCountTxt, PracticeGoalieTbl->PracticePlayersTbl (RAM homegoaliectl / awaygoaliectl kept, open item); headers fixed (those, PracticeGoalies, SetContTeams, PrintPracticeTitle had highlight inverted); locals: AssignTeam .assign/.next, PullPracticePlayers .team/.pull/.next, PracticeGoalies .home/.chkaway/.away/.done, SetContTeams .clear (auto .loop, not a loop)/.setup/.frame/.wait/.keys/.up/.pads/.pad/.right/.fewer/.more/.nextpad, DrawPadSetup .draw, PrintPracticeTitle .normal |
 | new-in-95 locals: scout | full body read of every new-in-95 routine (10): names ok; GetPlayerPicture header fixed (featured picture for the first six, else generic) and locals .sram, .gotslot, .find, .featured, .generic, .alt, .done |
 | new-in-95 locals: faceoff | full body read of every new-in-95 routine (rtsfaceoff, DrawFaceoffWindow): names and headers ok; DrawFaceoffWindow .setx, .names |
 | new-in-95 locals: title | full body read of every new-in-95 routine (8): names and headers ok; CupVBlank .skip/.nodma, CupBuildSprites .add, AddSpriteFrame .full; StanleyCupScreen / CupWaitFrame / AddSpriteFrame .loop are real loops |

@@ -922,9 +922,9 @@ engine/goal95.asm,$08C892,18,PrintPlayerGoals,code,title94,name
 engine/goal95.asm,$08C8A4,72,PrintParenNumber,code,title94,name
 engine/goal95.asm,$08C8EC,20,LockScroll,code,new in 95,header
 engine/goal95.asm,$08C900,312,checkwindow,code,replay94,name
-engine/goal95.asm,$08CA38,128,SetGoaliesCtl,code,new in 95,header
-engine/goal95.asm,$08CAB8,6,GoalieCtlLimits,data,new in 95,header
-engine/goal95.asm,$08CABE,32,GetGoalieCtl,code,new in 95,header
+engine/goal95.asm,$08CA38,128,PullPracticePlayers,code,new in 95,header
+engine/goal95.asm,$08CAB8,6,PracticePlayerLimits,data,new in 95,header
+engine/goal95.asm,$08CABE,32,GetPracticePlayers,code,new in 95,header
 engine/goal95.asm,$08CADE,124,PracticeGoalies,code,new in 95,header
 engine/goal95.asm,$08CB5A,104,PeriodOver,code,setup94,name
 engine/goal95.asm,$08CBC2,292,clockcont_0,code,hockey94,name
@@ -934,10 +934,10 @@ engine/goal95.asm,$08CD08,52,clockcont,code,hockey94,name
 engine/goal95.asm,$08CD3C,408,SetContTeams,code,new in 95,header
 engine/goal95.asm,$08CED4,4,ContTeamOrder1,data,new in 95,header
 engine/goal95.asm,$08CED8,4,ContTeamOrder2,data,new in 95,follows ContTeamOrder1
-engine/goal95.asm,$08CEDC,76,PrintPracticeGoalies,code,new in 95,header
-engine/goal95.asm,$08CF28,20,PrintGoalieCount,code,new in 95,header
-engine/goal95.asm,$08CF3C,12,GoalieCountTxt,data,new in 95,header
-engine/goal95.asm,$08CF48,16,PracticeGoalieTbl,data,new in 95,header
+engine/goal95.asm,$08CEDC,76,PrintPracticePlayers,code,new in 95,header
+engine/goal95.asm,$08CF28,20,PrintPlayerCount,code,new in 95,header
+engine/goal95.asm,$08CF3C,12,PlayerCountTxt,data,new in 95,header
+engine/goal95.asm,$08CF48,16,PracticePlayersTbl,data,new in 95,header
 engine/goal95.asm,$08CF58,154,DrawPadSetup,code,new in 95,header
 engine/goal95.asm,$08CFF2,58,DrawPadIcon,code,new in 95,header
 engine/goal95.asm,$08D02C,32,PadIconMaps,data,new in 95,header

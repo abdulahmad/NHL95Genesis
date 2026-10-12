@@ -417,7 +417,7 @@ puckfaceoff2	;Puck assignment 4. First call: set up the faceoff: clear the penal
 	jsr	(resetplstuff).l
 	btst	#7,(sflags9).w
 	beq.w	.10
-	jsr	(SetGoaliesCtl).l
+	jsr	(PullPracticePlayers).l
 .10
 	move.l	a3,-(sp)
 	movea.w	#(SortCords-M68K_RAM),a3
