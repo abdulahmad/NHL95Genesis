@@ -869,7 +869,7 @@ DrawFaceoffWindow	;Draw the faceoff window (FaceOffMap) at x $36 or $BE
 	jsr	(dobitmap).l
 	bclr	#0,(sflags6).w
 	tst.w	(OptLine).w
-	bne.w	.2
+	bne.w	.exit
 	jsr	(printsmallz).l
 	String	CC_AddY,$A,CC_SetAttribute,4
 	moveq	#$C,d0
@@ -889,5 +889,5 @@ DrawFaceoffWindow	;Draw the faceoff window (FaceOffMap) at x $36 or $BE
 	move.w	d1,d0
 	movea.l	#linelist,a1
 	jsr	(PrintSmallListItem).l
-.2
+.exit
 	rts
