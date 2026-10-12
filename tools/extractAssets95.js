@@ -604,9 +604,19 @@ const outRoot = path.join(ROOT, 'Extracted');
 const rom = fs.readFileSync(romPath);
 const version = detectVersion(rom);
 console.log('ROM: ' + version.label);
+// The completion marker is written last; remove it first so a broken run leaves none.
+const markerPath = path.join(outRoot, '.extract-complete.json');
+fs.rmSync(markerPath, { force: true });
+const written = [];
 for (const asset of assets) {
   const dir = path.join(outRoot, asset.folder);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, asset.name), rom.subarray(version.map(asset.start), version.map(asset.end - 1) + 1));
+  const data = rom.subarray(version.map(asset.start), version.map(asset.end - 1) + 1);
+  fs.writeFileSync(path.join(dir, asset.name), data);
+  written.push({ path: path.posix.join(asset.folder.replace(/\\/g, '/'), asset.name), size: data.length });
 }
+// Completion marker for tools/prebuild.js: ROM, extractor version and every file written.
+const sha1 = (b) => require('crypto').createHash('sha1').update(b).digest('hex');
+fs.writeFileSync(markerPath, JSON.stringify({ rom: version.id, romSha1: sha1(rom), extractor: path.basename(__filename),
+  extractorSha1: sha1(fs.readFileSync(__filename)), files: written }, null, 1) + '\n');
 console.log('Extracted ' + assets.length + ' slices to ' + outRoot + '.');

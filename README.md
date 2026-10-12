@@ -53,6 +53,21 @@ Full ROM builds assemble `src/nhl95.asm` with `build95.bat`. The listing is `out
 
 Segment builds: `npm run seg:<file>` (`seg:logic95`) runs `buildseg.bat <name>` (`buildseg.bat logic95` assembles `src/stubinc/logic95_stub.asm` to `output/logic95.bin`), `tools/fixopcodes.js`, then `tools/verifySegment.js <file> <org> lst/nhl95.bin`, which overlays the segment on the reference ROM and compares. A MATCH of 0 bytes is a failure.
 
+## Build pre-step: ROM check and automatic asset extraction
+Every build entry point (`npm run build:*`, `npm run seg:*`, and the batch files run directly) first runs `node tools/prebuild.js`. It:
+
+1. checks that the ROM the build needs is in place and is exactly the right version (SHA-1 and size);
+2. checks that `Extracted/` is complete: the extractor writes `Extracted/.extract-complete.json` last, listing every file it wrote (with its size), the ROM it read and the extractor's own SHA-1;
+3. runs the extractor if `Extracted/` is missing, incomplete (no marker, a missing or resized file) or was written by an older extractor.
+
+If the ROM is missing (or is a different dump), the build stops with the full path and file name to put it at, its SHA-1 and size, and a reminder that ROMs are not included in the repo:
+
+| Build | ROM needed | SHA-1 | Size |
+| --- | --- | --- | --- |
+| every build and segment | `lst/nhl95.bin` | `09e87b076aa4cd6f057a1d65bb50fd889b509b44` | 2097152 bytes |
+
+`npm run assets` runs only this step. `npm run extractassets` still forces a fresh extraction. The npm scripts set `NHL_PREBUILD_DONE=1` after the step so the batch file does not repeat it; `tools/verify_all.sh` runs the step with Linux node and sets the same variable for wine (there is no node under wine).
+
 `tools/fixopcodes.js` is needed after every build: EA's compiler emitted `cmp #imm` as `CMP` where SNASM emits `CMPI`, and the script patches those opcodes from the listing.
 
 The batch files run `assembler\Assembler.exe` (SNASM68K) on Windows. Under Linux the same command line runs with Wine from `src/` (see `tools/build_ref.sh` for the command).
