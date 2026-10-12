@@ -951,7 +951,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | InitCreateRecord | ok |
 | InitCreateRecord2 | ok |
 | InvalidName | ok |
-| InvalidNameWait | ok |
+| SaveNameError | renamed (was InvalidNameWait; body checked) |
 | LastFieldRow | ok |
 | ListMarkers | ok |
 | ListMarkersOff | ok |
@@ -991,10 +991,10 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | ReleaseTeamBlock | ok |
 | ReleaseViolation | ok |
 | SaveCreateName | ok |
-| SaveNameEnd | ok |
-| SaveNameFail | ok |
-| SaveNameLoop2 | ok |
-| SaveNameNext | ok |
+| SaveNameNoSlot | renamed (was SaveNameEnd; body checked) |
+| SaveNameDone | renamed (was SaveNameFail; body checked) |
+| SaveNameListFull | renamed (was SaveNameLoop2; body checked) |
+| SaveNewName | renamed (was SaveNameNext; body checked) |
 | SaveNameOk | ok |
 | SaveNameRet | ok |
 | SetPointsPool | ok |
@@ -1497,7 +1497,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | routines named differently in 95 | IntermissionMenu -> Intermission (94 routine, same body start; .1/.clr aligned). PlayerCardScreen merged into 95 PlayerCardTimer (.loop aligned). AddArenaAnimSprite .spr part = 95 ShowCrowdFrame (crowd frames; name kept, .loop2/.x aligned). No 95 counterpart: ChangeOption (WrapOptionUp/Down), PrintOptionNames (PrintOptions rewritten), RunArenaAnim, GetLeagueCrowdRecord, PlayerCards, doinput_ispc (inlined as doinput .ispc), waitxsr (no zamboni) |
 | new-in-95 locals: season | NOT a name review: routine names, headers and forward locals not checked by full body read; 83 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: stats | full body read of every new-in-95 routine (117): highlight suffix labels were swapped against their strings, renamed so each matches its text (GoalsText/GoalText/AssistsText/AssistText/SaveText); PrintStatHighlight->PrintRecordHighlight (type 4 prints a team W-L-T record), LeadersField4->LeadersPenMinAvg; headers fixed (AddPlayerSeasonStats goalie PIM, SeasonStatColumnOffsets, PrintRecordHighlight, PrintHighlight, DrawHighlightPage, DrawHighlightEntry, LeadersHelp, DrawLineEditorScreen); locals named in SaveGameHighlights, AddPlayerSeasonStats, SeasonStatsListDraw, DrawSeasonStatsList, DrawSeasonStatsRow, SeasonTeamStatsRun, LeagueLeadersScreen, ReadLeadersPad, ReadHighlightsPad, SortLeadersDown/Up, DrawLeaderRows, DrawPlayerLeaderRows, HighlightsScreen; RAM homegoaliectl/awaygoaliectl -> homepracplayers/awaypracplayers |
-| new-in-95 locals: create | NOT a name review: routine names, headers and forward locals not checked by full body read; 61 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
+| new-in-95 locals: create | full body read of every new-in-95 routine (185): SaveCreateName tail labels renamed to what they do (SaveNameNext->SaveNewName, SaveNameLoop2->SaveNameListFull, SaveNameEnd->SaveNameNoSlot, InvalidNameWait->SaveNameError, SaveNameFail->SaveNameDone: it returns d0 = 0); headers fixed (those, SaveNameOk, CopyNameWords and BuildEnteredName use StatWork, NameEntryBgTail unreferenced, FieldHighlight, FieldDone, EditPlayerType wraps, CommitAttribJumps, ClearCreateArea); locals: CreatePlayer .edit/.invalid, AdjustAttrib .undo, ModifyRatings .draw/.frame/.vwait/.column/.clamp/.done, FreeAgentLoop and ReleaseLoop .check/.input, ReleaseLoop .find/.block/.shift, ReadFreeAgentPads / ReadReleasePads .wait |
 | new-in-95 locals: trade | full body read of every new-in-95 routine (50): renamed MoveTradedPlayer->ExtractTradedPlayer (takes the player out) and RemoveTradedPlayer->InsertTradedPlayer (puts him in; names were reversed), FixSavedLine->FixLinesRemoved, FixSavedLine2->FixLinesInserted, MoveSavedLines->FixJerseyNumber (makes the jersey number unique), SortTradePlayers->TagTradePositions (no sort), TradeStatOffsets(2)->TradeCountOffsets(2), DrawTradeTeam->BuildTradeRoster (draws nothing), GMDecision->GMDecisionGfx (graphics only), GMDecisionRetry->GMDecisionScreen (the GM DECISION screen); headers fixed for these and DefaultRosters (count order), GetRosterName (no SRAM address), ShiftTradeUp/Down, TradePlayers (buttons), CheckTrade (Z flag result), EvaluateTrade, ReadEvalTradePads / ReadGMDecisionPads (no timeout); locals named in all routines with branches (CheckTrade error setters were auto .loop names, not loops) |
 | new-in-95 locals: setup | full body read of every new-in-95 routine (23): names ok; headers fixed: GetSetupValues, UpdateSetupLogos, DrawSetupLogo (broken text); locals: FindPlayerLine .next/.found, PrintOptionName .hi (was auto .loop2, not a loop)/.nothi/.normal/.done/.chksel, UpdateSetupLogos .changed/.delay/.swaph/.homeblk/.vis/.swapv/.visblk, DrawSetupLogo .gotchars/.vispal/.pal/.draw, StepSeasonTeam .prev/.chk, SetTreeGameTeams .noflip |
 | new-in-95 locals: sound | full body read of every new-in-95 routine (33; SoundBanks item list only scanned, it is data): routine names and headers ok; ROM address removed from the Z80Program pad comment; locals named in SndLoadZ80, SndUpdate (event decoder: .events/.event/.running/.ctrl/.chkloop/.prog/.bend/.chkend/.delay/.nextslot ...), SndStartSeq, SndStopSeq, SndPutZ80Cmd, SndUploadBlock, SndReadBlock, SndWriteBlock, SndPauseZ80, SndResumeZ80, SndStopAll, SndClearNotes, SndReleaseNotes, SndUpdateNotes, SndStreamZ80, SndFindBankItem, SndSetBank, SndLoadList, SndFreeBlocks, SndResetBlocks, Z80BusRequest, sfxplay; SndDriver dispatch keeps .0-.15 |
