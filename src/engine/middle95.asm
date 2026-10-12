@@ -1,6 +1,6 @@
-;	2 parts in ROM order, each under its banner below.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	Shared helpers: math (sroot, vtoa, find3d, random numbers), text printing and control
+;	codes, the clock display, player name and number formatting, team blocks, team graphics,
+;	the EASN logo and time printing.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	Shared helpers: sroot, vtoa, find3d, randomd0s / randomd0, GetHot, vcountwait, printz2, printsmall

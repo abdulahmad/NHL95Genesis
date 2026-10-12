@@ -1,7 +1,4 @@
-;	AnyPadAssigned, then Detect4WayPlay and the unused ReadJoySwapPad1-4 (the pads are read through Read4WayPort1 /
-;	Read4WayPort2).
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	EA 4 Way Play adaptor: AnyPadAssigned, adaptor detection and its unused pad helpers.
 
 AnyPadAssigned	;Z clear when any pad is on a team (cont1team ... cont4team).
 	movem.w	d0,-(sp)

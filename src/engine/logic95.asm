@@ -1,6 +1,6 @@
-;	6 parts in ROM order, each under its banner below.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	Player assignments: the assignment jump table, goalie positioning and saves, the
+;	defense, wing and center positions, puck logic, skating, checking and breakaways, the
+;	computer's shot and pass decisions, bench and penalty box trips, and the one-timer.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	The assignment jump table (asstab) and doassignment, then ClampYPosition, AdjustFacingDirection,

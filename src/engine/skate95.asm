@@ -1,7 +1,5 @@
-;	goalieacc, the goalie dive, doinput_cbut ... getGoalieSCnum, GoalieReadySPA, dirtab,
-;	MaxSpeed ... stopna, updatevel, SetSPA, stopna2, doplayeracc ... playeracc.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	Skating: goalie movement and dives, the C button, goalie animations, direction and
+;	speed tables, stopping, velocity update, SetSPA and player acceleration.
 
 goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets the ready SPA
 	;turning (AdjustFacingDirection); stopna2 deep in the crease; then playeracc. A computer goalie keeps or turns its facing

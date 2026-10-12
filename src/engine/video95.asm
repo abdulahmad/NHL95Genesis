@@ -1,6 +1,5 @@
-;	4 parts in ROM order, each under its banner below.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
-;	the cmp and exg encodings after assembly.
+;	Video: VDP helpers, DMA, palette fades, decompression and remap, sprite frames and rink
+;	scroll, the frame drawing helpers, vblank handlers, and the pad reading with key repeat.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	Three runs in ROM order: the VDP helpers with the vblank transfers, the sprite frames and rink

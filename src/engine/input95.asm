@@ -1,11 +1,5 @@
-;	NHL 95 controller input. doinput, doinput_islocked, rtss7, faceoffinput, setpassmode, passmode, dopass, passtoa0,
-;	OneTimerTarget and its tables, OneTimerPass, Findhittype, SetShotMode, ShotMode, prepshot, doshot, shotsets,
-;	shotdiradj, shotdirmath, puckvzadj, CompShoot.
-;	95 changes: four pads (doinput_islocked marks the player of pad c1 ... c4playernum), the asstab numbers and SPA
-;	values, the y limits moved 3 out ($108 to $10B ...), the PAL speed $18 (94 $16), the one-timer table offsets,
-;	Findhittype's two masks swapped, shotsets $E / $FFF2 (94 $10 / $FFF0).
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	Controller input for skaters: moving, faceoff input, passing, the one-timer pass
+;	target, shooting and the computer's shot.
 
 
 doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2 = changed buttons, d3 = held buttons,

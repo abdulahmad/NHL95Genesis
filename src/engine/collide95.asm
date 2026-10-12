@@ -1,10 +1,8 @@
-;	The collision code: checkcoll, checkwallcoll, wallcollb, wallcoll, checkplcoll, checkcx, checkcheck, CCStart
-;	(checkinglist, checkinglist2, Bcheck, holdcheck, Sweepcheck), FallDown, checkpuckcoll, puckstick, puckglue,
-;	puckbody, rtspuck, deflect, checkpuckcoll_sfx, checkgoal (the goal itself is handled in Goal), checkgoalp,
-;	CheckBump, wallcollduringcheck, puckgoalie, checkint and DropPuck.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
-;	Sort struct (SortCords, $80 each): $40 temp1, $64 bit 3 one-timer, bit 4 wall collision, bit 5 fell, $68 Agl, $73 aggres, $74 Fgt, $75 Chk.
+;	Collisions: wall and player collisions, checking (body check, hold, hook, sweep check),
+;	falls, puck collisions with sticks, bodies, goalies and the net, deflections and goal
+;	detection.
+;	Sort struct (SortCords, $80 each): $40 temp1, $64 bit 3 one-timer, bit 4 wall
+;	collision, bit 5 fell, $68 Agl, $73 aggres, $74 Fgt, $75 Chk.
 
 checkcoll	;d2 = new x coord, d3 = new y coord, a3 = struct of object. Check wall collision (around the hot spot and the end of the
 	;stick) and player collisions, then move a3 in the OOlist sort order by its y. If a player collision set collflag, restore the old x/y instead.

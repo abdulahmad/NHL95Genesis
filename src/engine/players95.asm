@@ -1,12 +1,5 @@
-;	NHL 95 player setup.
-;	PuckcIsGoalie, SetPersonel, SetPlList, TryAddPlayerToList, forcepldata, GetPlayerCount / GetPlayerCountD7,
-;	setplayer, ClampNibble, StickHandTable and BoostAttribute, AttributeCalc, restoreteams, ResetBench,
-;	resetplstuff, priolist and sublist, Create_HotCold_Table / HotColdLoop.
-;	95 changes: SetPersonel marks the season injuries first (GameFlags bit 3, SetSeasonInjuries); setplayer reads the roster by team
-;	number (rosterteam, GetRosterName / GetJerseyNumber), maps the stick handling nibble through StickHandTable and pulls some ratings
-;	toward 30 (BoostAttribute); forcepldata lost the Set4WayPlayerStub call; the asstab numbers and SPA values.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	Player setup: the dressed players and lines, roster reading and ratings, attributes,
+;	the bench, sort priority lists and the hot / cold table.
 
 
 PuckcIsGoalie	;Z set (eq) when the puck carrier is a goalie (a minus puckc returns ne). Called from assdefo

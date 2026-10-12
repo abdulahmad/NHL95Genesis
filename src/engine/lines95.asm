@@ -1,6 +1,6 @@
-;	2 parts in ROM order, each under its banner below.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
-;	the cmp and exg encodings after assembly.
+;	Line changes: the line change box and input, the computer's line choice and automatic
+;	line changes, intermission team setup, shot stats, the EA Sports screen, power play time,
+;	the saved line sets and the team screens.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2, linebar, getlinee and AvgCline.

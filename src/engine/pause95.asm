@@ -1,6 +1,6 @@
-;	3 parts in ROM order, each under its banner below.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	Pause: Pausemode and the pause screen, the three tab pause menu (INFO / STATS / PAUSE)
+;	with its item lists, manual goalie, goalie select and timeout items, pause scores and
+;	pad sides.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; Pausemode

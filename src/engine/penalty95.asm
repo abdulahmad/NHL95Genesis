@@ -1,6 +1,6 @@
-;	2 parts in ROM order, each under its banner below.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
-;	the cmp and exg encodings after assembly.
+;	Penalty logic: penalties and stoppages, referee messages and the lead song, then
+;	checking penalties, the referee sprite, penalty clear, icing, offsides and the blue line
+;	warning.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, ClearPenaltyMessage,

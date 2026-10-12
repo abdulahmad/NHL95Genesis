@@ -1,11 +1,7 @@
-;	NHL 95 roster and game setup screens.
-;	TeamRosterScreen, DisplayPlayerList, getNameandAttrib and its column handlers, DrawTeamScreen; PAttribColumns /
-;	GAttribColumns, PlayerPositionText; the game setup screen (GameSetUp ... setoptions, DrawTeamBitmap, UpdatePlayoffLevel,
-;	for the 13 play modes, the season and the player cards); DefaultMenus, FigureJoy and the playoff routines
-;	InitializeGameStructures ... MakeTree, ReadLineData / WriteLineData.
+;	Roster and game setup screens: Team Roster with its attribute columns, the game setup
+;	screen for all play modes, the season and player cards, default menus, pad assignment,
+;	the playoff tree and the saved line data.
 ;	New in 95: the game setup screen was rewritten for the new play modes.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
 
 	rts	;unused (the byte after CompShoot)
 

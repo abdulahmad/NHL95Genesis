@@ -1,10 +1,6 @@
-;	NHL 95 instant replay: updatereplay, ReplayMode, ShowReplayIcon / EraseReplayIcon / ShowReplayBanner /
-;	EraseReplayBanner, suba4, adda4, UpdateCameraPos, RevReplayAdj, RestoreReplayFrame and ClampReplayView.
-;	95 adds chkblock and CanBlock (the shot block tests) ahead of updatereplay, and a sound driver restart at the top
-;	of ReplayMode. A replay frame object packs a 9-bit x and an 11-bit frame (94: 10-bit x, 12-bit frame), and both
-;	PadControlBits words are saved.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	Instant replay: shot block tests, then the replay recorder and player (ReplayMode),
+;	the replay icon and banner, and the camera and frame restore.
+;	A replay frame object packs a 9-bit x and an 11-bit frame.
 
 	include	macros\genesis.mac	;String
 chkblock	;Called with d1 = SPAhook for a player a3 about to check: d1 becomes the shot block

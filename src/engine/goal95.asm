@@ -1,8 +1,6 @@
-;	Goal, AssignTeam / rtsgoal, PenGoalStuff, box ... PPGoalBigTxt, PrintPlayerAssists ... PrintParenNumber, LockScroll,
-;	checkwindow, PullPracticePlayers ... PracticeGoalies, PeriodOver, clockcont_0, GameOver / ExitToOpening, clockcont, then the
-;	controller setup screen (SetContTeams ... ReadAllPads). New in 95: the controller setup screen.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
-;	the cmp and exg encodings after assembly.
+;	Goals (scoring, assists, power play goal boxes), the scroll lock and window check,
+;	practice mode, period and game end, the game clock, and the controller setup screen.
+;	New in 95: the controller setup screen.
 
 Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals / awayshootgoals), EndPenaltyShotPlay, the
 	;score summary (ScoreSum), the assignments of both teams (AssignTeam), PenGoalStuff
