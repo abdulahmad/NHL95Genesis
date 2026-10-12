@@ -1,4 +1,4 @@
-;	updatecrowdf, the crowd frame table (CrowdFrameTbl), showcrowd ... rtsShowCrowd.
+;	Crowd animation: the crowd frame update and frame table, and the crowd sprites.
 
 
 	include	macros\genesis.mac	;String

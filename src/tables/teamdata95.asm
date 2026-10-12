@@ -1,5 +1,5 @@
-;	NHL 95 team data: the team address table, one block per team, then playoffseats. 26 teams plus the two all star
-;	teams, in the same order as 94.
+;	Team data: TeamList, one record per team plus the two All-Star teams, then the playoff
+;	seeds.
 
 TeamList	;Team number = index (ANH 0 ... WPG 25, ASE 26, ASW 27)
 	dc.l	Anaheim	;0 ANH

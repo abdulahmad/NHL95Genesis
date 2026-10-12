@@ -1,8 +1,6 @@
-;	The 95 sound driver is new in 95; 94 has the driver, most of which is still here, unused.
-;	The 68000 side of a song player: SndDriver takes a command in d0 (95 calls it through SoundCmd), runs up to 8 songs of MIDI style
-;	events, and keeps the Z80 program fed. Then the Z80 program (Z80Program) and the sound bank (SoundBanks, $D8EC to).
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	New in 95: the sound driver. SndDriver (called through SoundCmd) takes a command in d0,
+;	plays up to 8 songs of MIDI style events and keeps the Z80 program fed. Followed by the
+;	Z80 program, the sound bank and the old, unused driver.
 
 	opt	oaq-,osq-,oz-	;the driver writes addi / subi #1-8 and 0(An) (SNASM would make them addq / subq and (An))
 

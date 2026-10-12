@@ -1,19 +1,11 @@
-;	NHL 95 season schedule. New in 95 (94 has no season mode).
-;
-;	Layout: a day count (192), then one record per day: the number of games (0-12), then two team numbers per game
-;	(TeamList order, ANH 0 ... WPG 25). Which team is home is not confirmed. 1092 games, 84 per team.
-;	Ends with a $FF pad before InitSaveRAM.
-;
-;	Each day is written with the Day macro (macros/genesis.mac): list the matchups as team abbreviations in pairs, and the macro
-;	emits the game count and the team numbers. A day with no games is just "Day".
-;
-;	Read: PickSeasonStartDay picks a random day with games; BuildSeasonTeamList, WriteDayGames
-;	FindDayGames skip to a day (1 count byte + 2 bytes per game) and copy its games.
-;
-;	Dates: the schedule stores no dates. DayToDate walks SeasonDay+4 through MonthDays (Oct-Apr: 31,30,31,31,28,31,30),
-;	so SeasonDay 0 is October 5 and 191 is April 14: the 1993-94 NHL season. FindDayGames reads record
-;	(SeasonStartDay + SeasonDay) mod 192. With the random schedule option off, SeasonStartDay is 0, so "day n" below
-;	is SeasonDay n-1. With it on, the records rotate under the same dates.
+;	New in 95: the season schedule.
+;	Layout: a day count, then one record per day: the number of games, then two team
+;	numbers per game (TeamList order). Each day is written with the Day macro: list the
+;	matchups as team abbreviations in pairs; a day with no games is just "Day".
+;	The schedule stores no dates. DayToDate walks SeasonDay+4 through MonthDays, so SeasonDay
+;	0 is October 5 and the last day is April 14 (the 1993-94 NHL season). FindDayGames reads
+;	record (SeasonStartDay + SeasonDay) mod the day count; with the random schedule option
+;	off SeasonStartDay is 0, so "day n" below is SeasonDay n-1.
 
 ;	Team numbers ANH ... WPG: stubinc/equals.inc
 

@@ -1,6 +1,6 @@
-;	2 parts in ROM order, each under its banner below.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	Stats screens: Game Statistics, the pause menu Player Stats, the season stats save code,
+;	the season Player Stats, Team Stats and League Leaders screens, the line editor and the
+;	three stars.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	GameStatisticsScreen, its scroll step, SetStatScroll, StatScrollRow / StatScrollRowEnd, PrintStatScrollArrows,

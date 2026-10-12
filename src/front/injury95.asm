@@ -1,8 +1,5 @@
-;	setInjuryType, the season injuries (SetSeasonInjuries ... GetInjuryGames), getFgtbyte / chkFgtBit1, CheckInjury,
-;	InsertInjurySlot / DeleteInjurySlot, then the power play box: updatepwrplay, ClearPowerPlay / rtsPowerPlay,
-;	GetLowestPen. New in 95: season injuries.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	Injuries and the power play box: injury type, the season injuries and their slots, and
+;	the power play timer. New in 95: season injuries.
 
 setInjuryType	;a2 injured: out for the period ($FFFD) or the game ($FFFC); in a season a random games count (SetInjuryGames)
 	bclr	#1,(sflags12).w

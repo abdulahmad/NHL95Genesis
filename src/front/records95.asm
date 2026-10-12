@@ -1,6 +1,5 @@
-;	3 parts in ROM order, each under its banner below.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	User records: the name entry screen and name log, Record Holders and Playoff Stats, and
+;	the record updates after a game with the save RAM record blocks.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	NameEntryScreen, NameLetterGrid, NameEntryHelp, PrintNamePrompt, SyncLetterCursor, FindLetter, PrintNameCursor,

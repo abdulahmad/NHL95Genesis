@@ -1,6 +1,5 @@
-;	NHL 95 awards and playoffs.
-;	New in 95: GetTeamUser, the end of season awards (SeasonAwards: the award scans, the finalists and winner screens)
-;	and the playoffs (InitPlayoffs ... CollectSeriesWinners, PlayoffTreeScreen).
+;	New in 95: the end of season awards (award scans, finalists and winner screens) and the
+;	season playoffs (setup, series winners and the playoff tree screen).
 ;	$20xxxx addresses are save RAM (odd bytes).
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the

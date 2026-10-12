@@ -1,4 +1,4 @@
-;	ScoringSummaryScreen ... DisplayPenaltyEntry (the goal and penalty summaries).
+;	The Scoring Summary and Penalty Summary screens.
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.

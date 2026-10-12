@@ -1,5 +1,4 @@
-;	The old Z80 sound program, still loaded by p_initialZ80 (which nothing calls). The same bytes as 94 except the
-;	bank window address of the FM patches, which moved to the end of the ROM.
+;	The old Z80 sound program, still loaded by p_initialZ80 (which nothing calls).
 
 Z80_Program_Code	;First byte of the Z80 program (movea.l in p_initialZ80). p_initialZ80 copies $295
 	;bytes from here

@@ -1,6 +1,6 @@
-;	2 parts in ROM order, each under its banner below.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	Scouting report: the MATCHUPS pages, the hot / cold player lists, the scouting text
+;	player and its script, team ratings, pictures and user names.
+;	$20xxxx addresses are save RAM (odd bytes).
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	ScoutingReport, PageMatchup ... MatchupLineSlots, BuildHotColdLists and SortHotColdStarters.

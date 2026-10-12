@@ -1,6 +1,5 @@
-;	3 parts in ROM order, each under its banner below.
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	Shootout and penalty shots: shooter setup and skate paths, the next shooter and goal
+;	count, the shooters screen, the penalty shot play, and injuries and the power play box.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	The shootout setup and skating paths: ClearShootout and InitShooters, then PSandSOpassdir, passdirlist,
