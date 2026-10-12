@@ -1688,8 +1688,8 @@ front/shootout95.asm,$09DCA0,158,ShootoutShootCheck,code,title94,name
 front/shootout95.asm,$09DD3E,86,NextShooter,code,shootout94,name
 front/shootout95.asm,$09DD94,90,CountShootoutGoals,code,shootout94,name
 front/shootout95.asm,$09DDEE,156,EndShootout,code,period94,name
-front/shootout95.asm,$09DE8A,326,PlayoffRoundScreen,code,records94,name
-front/shootout95.asm,$09DFD0,22,RoundBigTxt,data,records94,name
+front/shootout95.asm,$09DE8A,326,ShootoutModeBox,code,records94,name
+front/shootout95.asm,$09DFD0,22,ShootoutModeBigTxt,data,records94,name
 front/shootout95.asm,$09DFE6,196,ShootoutWonBy,code,shootout94,name
 front/shootout95.asm,$09E0AA,12,ShootersRedraw,code,shootout94,name
 front/shootout95.asm,$09E0B6,84,ShootersLoop,code,shootout94,name

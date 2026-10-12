@@ -558,7 +558,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **title94** (622 bytes): PSandSOpassdir, StartShootoutPath, NextPathPoint, SkatePath, ShootoutShootCheck
 - **shootout94** (176 bytes): NextShooter, CountShootoutGoals
 - **period94** (156 bytes): EndShootout
-- **records94** (348 bytes): PlayoffRoundScreen
+- **records94** (348 bytes): ShootoutModeBox
 - **shootout94** (1546 bytes): ShootoutWonBy, ShootersRedraw, ShootersLoop, ShootersExit, ShooterSelectList, PrintShooterList, ShootersPick, ShootersMove, ShootersSelect, ShootersBackground, ClearShooterScreen, ResetShooterScroll, PrintShooterSlots, PrintShooterBox, PrintShooterNames
 - **checks94** (1886 bytes): puckshootout, SelectPenaltyShotSkater, puckpenshot, UpdatePenaltyShotEnd, EndPenaltyShotPlay, PenaltyShotEndReturn
 - **collide94** (132 bytes): SetupPenaltyShot

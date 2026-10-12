@@ -226,7 +226,7 @@ ShootoutShootCheck	;Shootout, skater a3 has the puck (gmode2 bit 1): Z set (d0 i
 	rts
 
 ;------------------------------------------------------------------------------------------------------------------------
-;	NextShooter, CountShootoutGoals, EndShootout, PlayoffRoundScreen and RoundBigTxt, ShootoutWonBy,
+;	NextShooter, CountShootoutGoals, EndShootout, ShootoutModeBox and ShootoutModeBigTxt, ShootoutWonBy,
 ;	ShootoutShooters ... PrintShooterNames (the shootout shooters screen).
 
 
@@ -318,7 +318,7 @@ EndShootout	;Shootout over: LockScroll, then the 5 skaters of player slots 1-5 (
 	dbf	d2,.loop
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-PlayoffRoundScreen	;Shootout round box: "SHOOTOUT MODE" (RoundBigTxt), the shooter " vs." the
+ShootoutModeBox	;Shootout round box: "SHOOTOUT MODE" (ShootoutModeBigTxt), the shooter " vs." the
 	;goalie, the goals of both teams and the round
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$FFFF,d0
@@ -328,7 +328,7 @@ PlayoffRoundScreen	;Shootout round box: "SHOOTOUT MODE" (RoundBigTxt), the shoot
 	moveq	#$1B,d0
 	moveq	#$C,d1
 	jsr	(Framer).l
-	lea	RoundBigTxt(pc),a1
+	lea	ShootoutModeBigTxt(pc),a1
 	jsr	(printbig1).l
 	move.w	(BA_Skater_Offset).w,d0
 	movea.l	#tmstruct,a2
@@ -387,7 +387,7 @@ PlayoffRoundScreen	;Shootout round box: "SHOOTOUT MODE" (RoundBigTxt), the shoot
 	jsr	(print).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-RoundBigTxt	;PlayoffRoundScreen big text
+ShootoutModeBigTxt	;ShootoutModeBox big text
 	String	$BF,$4,$3,'SHOOTOUT MODE',$BF,$4,$5,$0
 ShootoutWonBy	;Shootout: "SHOOTOUT WON BY" and the winning team (printbig1)
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1301,11 +1301,11 @@ SetupPenaltyShot	;Penalty shot for team a2: the shooter plays center (BA_Skater_
 	movem.l	(sp)+,d0-d5/a0-a3
 	rts
 
-PenaltyShotBox	;In a shootout PlayoffRoundScreen; else the "PENALTY SHOT!" box: the shooter, the penalty (Penaltylist) and " by" the checker
+PenaltyShotBox	;In a shootout ShootoutModeBox; else the "PENALTY SHOT!" box: the shooter, the penalty (Penaltylist) and " by" the checker
 	bset	#7,(gmode2).w
 	btst	#0,(gmode2).w
 	beq.w	.0
-	jmp	(PlayoffRoundScreen).l
+	jmp	(ShootoutModeBox).l
 .0
 	movem.l	d0-d2/a0-a4,-(sp)
 	move.w	#$FFFF,d0

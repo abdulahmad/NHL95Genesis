@@ -1758,8 +1758,8 @@ $09DCA0,ShootoutShootCheck,,,front/shootout95
 $09DD3E,NextShooter,,,front/shootout95
 $09DD94,CountShootoutGoals,sub_9DD94,,front/shootout95
 $09DDEE,EndShootout,sub_9DDEE,,front/shootout95
-$09DE8A,PlayoffRoundScreen,loc_9DE8A,,front/shootout95
-$09DFD0,RoundBigTxt,unk_9DFD0,,front/shootout95
+$09DE8A,ShootoutModeBox,loc_9DE8A,PlayoffRoundScreen,front/shootout95
+$09DFD0,ShootoutModeBigTxt,unk_9DFD0,RoundBigTxt,front/shootout95
 $09DFE6,ShootoutWonBy,sub_9DFE6,,front/shootout95
 $09E058,ShootoutSetup,,,front/shootout95
 $09E058,ShootoutShooters,,ShootoutSetup,front/shootout95
