@@ -32,7 +32,7 @@ The graphics and sound are not in the repo. Extract them from the reference ROM 
 
     npm run extractassets
 
-That writes `Extracted/` from `lst/nhl95.bin` with `extractAssets95.js`.
+That writes `Extracted/` from `lst/nhl95.bin` with `tools/extractAssets95.js`.
 
 Full ROM builds assemble `src/nhl95.asm` with `build95.bat`. The listing is `output/nhl95 .lst`. The opcode-corrected output is `output/modified_nhl95.bin`.
 
@@ -43,9 +43,9 @@ Full ROM builds assemble `src/nhl95.asm` with `build95.bat`. The listing is `out
 
 `build:dev` (`checksum=0`): `RegionOK` skips `jsr ValidationRoutine` (3 `nop`s instead) and the header checksum is 0, so changed code still boots. With `checksum=1` the validation routine sums the ROM, and any change turns the screen red.
 
-Segment builds: `npm run seg:<file>` (`seg:logic95`) runs `buildseg.bat <path>` (`buildseg.bat engine\logic95` assembles `src/engine/logic95_stub.asm` to `output/logic95.bin`), `fixopcodes.js`, then `verifySegment.js <file> <org> lst/nhl95.bin`, which overlays the segment on the reference ROM and compares. A MATCH of 0 bytes is a failure.
+Segment builds: `npm run seg:<file>` (`seg:logic95`) runs `buildseg.bat <path>` (`buildseg.bat engine\logic95` assembles `src/engine/logic95_stub.asm` to `output/logic95.bin`), `tools/fixopcodes.js`, then `tools/verifySegment.js <file> <org> lst/nhl95.bin`, which overlays the segment on the reference ROM and compares. A MATCH of 0 bytes is a failure.
 
-`fixopcodes.js` is needed after every build: EA's compiler emitted `cmp #imm` as `CMP` where SNASM emits `CMPI`, and the script patches those opcodes from the listing.
+`tools/fixopcodes.js` is needed after every build: EA's compiler emitted `cmp #imm` as `CMP` where SNASM emits `CMPI`, and the script patches those opcodes from the listing.
 
 The batch files run `assembler\Assembler.exe` (SNASM68K) on Windows. Under Linux the same command line runs with Wine from `src/` (see `tools/build_ref.sh` for the command).
 

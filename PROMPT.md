@@ -21,7 +21,7 @@ The placeholder files are not a confirmed split. Before writing asm, open the ma
 
 1. ram95 is not a queue segment. It has no ROM bytes to verify. If SEGMENT_AGENT.md names it as the current segment, move past it and take the next row. RAM is not off limits: add each new RAM name to src/ram95.asm, the RAM map the full build and every stub include, as you transcribe code segments that use it. Define each name once.
 2. For ROM segments: write or reuse src/<file>_stub.asm at the confirmed org. Include stubinc\ports.inc, stubinc\equals.inc, ram95.asm, and the segment file. Do not put an org in the file nhl95.asm includes.
-3. Point package.json build:seg and verify:seg at that file and org. Add seg:<file>: buildseg.bat, then fixopcodes.js on "output\<file> .lst" and output\<file>.bin, then verifySegment.js <file> <org> lst/nhl95.bin. The assembler listing name has a space before .lst.
+3. Point package.json build:seg and verify:seg at that file and org. Add seg:<file>: buildseg.bat, then tools/fixopcodes.js on "output\<file> .lst" and output\<file>.bin, then tools/verifySegment.js <file> <org> lst/nhl95.bin. The assembler listing name has a space before .lst.
 4. Transcribe the listing for the confirmed range. Write real cmp / cmpi / exg. fixopcodes.js rewrites an EA cmp.l only. A real cmpi.l stays 0C80. Take every outside stub address from the branch displacement in lst/nhl95.bin.
 5. Run npm.cmd run seg:<file>. MATCH must cover the confirmed range and must not be 0 bytes. Then add comments and run it again.
 6. In SEGMENT_AGENT.md, mark that file matched with the byte count and range. Set Current segment to the next unmatched file. Do not mark the next file matched.

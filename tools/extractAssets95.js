@@ -1,9 +1,10 @@
 // NHL 95 asset extractor.
-// Usage: node extractAssets95.js lst/nhl95.bin
+// Usage: node tools/extractAssets95.js lst/nhl95.bin
 // Add a slice only after the listing label and the retail range are confirmed.
 const fs = require('fs');
 const path = require('path');
-const romPath = process.argv[2] || 'lst/nhl95.bin';
+const ROOT = path.join(__dirname, '..');
+const romPath = process.argv[2] || path.join(ROOT, 'lst', 'nhl95.bin');
 if (!fs.existsSync(romPath)) {
   console.error('Missing ' + romPath + '. Put the IDA ROM at lst/nhl95.bin first.');
   process.exit(1);
@@ -576,7 +577,7 @@ const assets = [
     { name: 'ArenaGfxBOS.bin', folder: 'NHL95/Graphics/ArenaGfx', start: 0x001A6614, end: 0x001A691E }, // ArenaGfxBank+$4BFA, BOS
     { name: 'ArenaGfxASEASW.bin', folder: 'NHL95/Graphics/ArenaGfx', start: 0x001A691E, end: 0x001A6C28 }, // ArenaGfxBank+$4F04, ASE / ASW
 ];
-const outRoot = path.join('Extracted');
+const outRoot = path.join(ROOT, 'Extracted');
 const rom = fs.readFileSync(romPath);
 for (const asset of assets) {
   const dir = path.join(outRoot, asset.folder);

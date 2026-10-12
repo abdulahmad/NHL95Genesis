@@ -10,11 +10,11 @@ ROMs (gitignored, never commit): lst/nhl95.bin.
 Windows: `npm run build:retail` (extractassets, build95.bat, fixopcodes, verify);
 segments: `npm run seg:<name>` (all keys in package.json `seg:*`).
 Linux (wine): `apt install wine wine32` (dpkg --add-architecture i386), `export WINEDEBUG=-all`, then
-1. `node extractAssets95.js lst/nhl95.bin` (once, fills Extracted/)
+1. `node tools/extractAssets95.js lst/nhl95.bin` (once, fills Extracted/)
 2. `wine cmd /c "set rev=0&& set checksum=1&& build95.bat"`
-3. `node fixopcodes.js "output/nhl95 .lst" output/nhl95.bin`
-4. `node verifyRom.js output/modified_nhl95.bin <reference ROM>` must print MATCH
-5. Segments: run each package.json `seg:*` chain the same way (`wine cmd /c "buildseg.bat <seg>"`, then its node steps); verifySegment.js must MATCH.
+3. `node tools/fixopcodes.js "output/nhl95 .lst" output/nhl95.bin`
+4. `node tools/verifyRom.js output/modified_nhl95.bin <reference ROM>` must print MATCH
+5. Segments: run each package.json `seg:*` chain the same way (`wine cmd /c "buildseg.bat <seg>"`, then its node steps); tools/verifySegment.js must MATCH.
 Failed-assembly detection: delete output/*.bin first, then check the bin exists and is fresh and that output/Build*.log has no
 `^[1-9][0-9]* error` line. tools/verify_all.sh does all of this (top ROM + every segment).
 
@@ -70,3 +70,4 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
 - Header rewrite (file header comments, 92 style): 93G and 94G done; 95G top level, lists, main, ram, macros, sega, stubinc, hockey, checksum, sram, credits, control, display, graphics, engine\, front\, tables\, sound\ and all stubs done. Header rewrite complete in 93G, 94G and 95G.
 - Restructure: tables95.asm inlined into nhl95.asm; teamdata95, frames95, schedule95 (and stubs) moved from src/tables/ to src/. MATCH (ROM + all segments).
 - Restructure: sound95 (and stub) moved from src/sound/ to src/; z80old95.asm inlined into sound95.asm as the Z80OldProgram macro (engine95.asm expands it at $07E0E0; segment z80old95 = src/z80old95_stub.asm with Z80OLD_SEG). src/sound/ removed. MATCH.
+- Restructure: root .js tools (extractAssets95, fixopcodes, verifyRom, verifySegment) moved to tools/; run them from the repo root as node tools/<name>.js (default ROM / Extracted / output paths are resolved from the repo root). Fresh extract + ROM + all segments MATCH.

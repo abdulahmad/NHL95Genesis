@@ -36,7 +36,7 @@ Provisional until the listing confirms it. NHL 95 is the 1994-95 season, still 2
 
 `buildseg.bat <path>` assembles `src/<path>_stub.asm` (`buildseg.bat engine\logic95`) to `output/<name>.bin`, where `<name>` is the file name without its folder. The stub carries the org. A file included by `nhl95.asm` or an include list has no org; `nhl95.asm` itself sets `org 0` (without it SNASM writes a short, misaligned bin).
 
-`npm run seg:<name>` (`seg:logic95`) runs buildseg with the path, then `fixopcodes.js` on `output/<name> .lst` and `output/<name>.bin`, then `verifySegment.js`. The assembler listing name has a space before `.lst`.
+`npm run seg:<name>` (`seg:logic95`) runs buildseg with the path, then `tools/fixopcodes.js` on `output/<name> .lst` and `output/<name>.bin`, then `tools/verifySegment.js`. The assembler listing name has a space before `.lst`.
 
 A MATCH of 0 bytes is a failure. The byte count must be the confirmed range.
 
@@ -44,7 +44,7 @@ After every matched segment, delete `output/nhl95.bin` and `output/modified_nhl9
 
 ## Rules
 
-- Write real `cmp`, `cmpi`, and `exg`. `fixopcodes.js` rewrites an EA `cmp.l` only. A real `cmpi.l #imm,d0` stays `0C80`. Do not write a compare as `dc.w`.
+- Write real `cmp`, `cmpi`, and `exg`. `tools/fixopcodes.js` rewrites an EA `cmp.l` only. A real `cmpi.l #imm,d0` stays `0C80`. Do not write a compare as `dc.w`.
 - Retail pad bytes win over the listing.
 - A `printz` string can hide the next instruction. Write the instruction. Do not label a byte inside a string.
 - If IDA splits one instruction into `dc.b` and `ori.b`, write the instruction.
@@ -55,7 +55,7 @@ After every matched segment, delete `output/nhl95.bin` and `output/modified_nhl9
 - SNASM symbols are case-insensitive. `setVram` and `setvram` are the same symbol.
 - Keep each comment line under 200 characters. A longer line makes SNASM write an empty bin, and verify can then print MATCH for 0 bytes.
 - Do not delete an asm file. Edit it in place. The exceptions were merging two contiguous pieces of the same 94 file, and the move to one file per subsystem, which replaced the flat files.
-- Data goes in the segment of the code that owns it. Sound data follows the sound driver. Graphics are incbins from `extractAssets95.js`, named for the asset, never for an IDA address. A map reference is `Label+8`. Team palettes are `.pal` incbins.
+- Data goes in the segment of the code that owns it. Sound data follows the sound driver. Graphics are incbins from `tools/extractAssets95.js`, named for the asset, never for an IDA address. A map reference is `Label+8`. Team palettes are `.pal` incbins.
 - A new ROM map row gets its include in `src/nhl95.asm` or the include list of its folder, in ROM order, and its stub next to it, in the same session.
 - Do not copy a 94 name onto a 95 address because the low 16 bits match. Do not copy a 94 org.
 - RAM names go in `src/ram95.asm` when you first encounter them. Write a RAM immediate as `#(Name-M68K_RAM)` and an in-place save RAM access as `SaveRAM+2*SRname`.

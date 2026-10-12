@@ -152,8 +152,8 @@ def main():
     scripts = {k: v for k, v in pkg["scripts"].items() if not k.startswith("seg:")}
     for s in segs:
         n = s["name"]
-        scripts["seg:" + n] = ("buildseg.bat %s && node fixopcodes.js \"output\\\\%s .lst\" output\\\\%s.bin && "
-                               "node verifySegment.js %s 0x%X lst/%s.bin" % (n, n, n, n, hexa(s["start"]), args.game))
+        scripts["seg:" + n] = ("buildseg.bat %s && node tools/fixopcodes.js \"output\\\\%s .lst\" output\\\\%s.bin && "
+                               "node tools/verifySegment.js %s 0x%X lst/%s.bin" % (n, n, n, n, hexa(s["start"]), args.game))
     pkg["scripts"] = scripts
     with open(pkg_path, "w") as fh:
         fh.write(json.dumps(pkg, indent=2) + "\n")
