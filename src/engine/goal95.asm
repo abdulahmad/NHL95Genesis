@@ -520,13 +520,13 @@ checkwindow	;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the p
 	rts
 
 PullPracticePlayers	;Practice Mode: take off the ice (position -1, assignment $19) the players whose position needs
-	;more players (PracticePlayerLimits) than homegoaliectl / awaygoaliectl allow
+	;more players (PracticePlayerLimits) than homepracplayers / awaypracplayers allow
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SortCords,a0
-	move.w	(homegoaliectl).w,d0
+	move.w	(homepracplayers).w,d0
 	bsr.w	.team
 	movea.l	#SortCords+(6*SCstruct),a0
-	move.w	(awaygoaliectl).w,d0
+	move.w	(awaypracplayers).w,d0
 	bsr.w	.team
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -562,10 +562,10 @@ PracticePlayerLimits	;Number of practice players needed for each position
 
 GetPracticePlayers	;Test the practice player count of team d0 (1 home, else away)
 	movem.l	a0,-(sp)
-	movea.l	#homegoaliectl,a0
+	movea.l	#homepracplayers,a0
 	cmp.w	#1,d0
 	beq.w	.0
-	movea.l	#awaygoaliectl,a0
+	movea.l	#awaypracplayers,a0
 .0
 	tst.w	(a0)
 	movem.l	(sp)+,a0
@@ -861,20 +861,20 @@ ContTeamOrder1	;Pad team order tables for SetContTeams
 ContTeamOrder2
 	dc.b	1,1,0,$FF
 
-PrintPracticePlayers	;Set homegoaliectl / awaygoaliectl (player counts) from PracticePlayersTbl and print them
+PrintPracticePlayers	;Set homepracplayers / awaypracplayers (player counts) from PracticePlayersTbl and print them
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#PracticePlayersTbl,a0
 	move.w	(setupvalues+2).w,d0
 	add.w	d0,d0
-	clr.w	(homegoaliectl).w
-	move.b	(a0,d0.w),(homegoaliectl+1).w
-	clr.w	(awaygoaliectl).w
-	move.b	1(a0,d0.w),(awaygoaliectl+1).w
+	clr.w	(homepracplayers).w
+	move.b	(a0,d0.w),(homepracplayers+1).w
+	clr.w	(awaypracplayers).w
+	move.b	1(a0,d0.w),(awaypracplayers+1).w
 	move.w	#$19,(printy).w
-	move.w	(homegoaliectl).w,d0
+	move.w	(homepracplayers).w,d0
 	move.w	#$1F,(printx).w
 	bsr.w	PrintPlayerCount
-	move.w	(awaygoaliectl).w,d0
+	move.w	(awaypracplayers).w,d0
 	move.w	#8,(printx).w
 	bsr.w	PrintPlayerCount
 	movem.l	(sp)+,d0-d7/a0-a6

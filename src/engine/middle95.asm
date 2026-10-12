@@ -1521,7 +1521,7 @@ ClrHor	;Unreferenced. Revert the graphics back to vertical ice rink mode: the ri
 	rts
 
 AssignPads	;Unreferenced. Clear c1playernum-c4playernum, then give each pad on a team a player: in Practice Mode
-	;(sflags9 bit 7) with no practice players on its team (homegoaliectl / awaygoaliectl 0), the team's goalie
+	;(sflags9 bit 7) with no practice players on its team (homepracplayers / awaypracplayers 0), the team's goalie
 	;(getGoalieSCnum, setc1player ...), else chgplayer
 	move.w	#$FFFF,(c1playernum).w
 	move.w	#$FFFF,(c2playernum).w
@@ -1533,11 +1533,11 @@ AssignPads	;Unreferenced. Clear c1playernum-c4playernum, then give each pad on a
 	beq.w	.c1
 	cmpi.w	#1,(cont1team).w
 	beq.w	.h1
-	tst.w	(awaygoaliectl).w
+	tst.w	(awaypracplayers).w
 	bne.w	.c1
 	beq.w	.g1
 .h1
-	tst.w	(homegoaliectl).w
+	tst.w	(homepracplayers).w
 	bne.w	.c1
 .g1
 	movem.l	d0/a0/a3,-(sp)
@@ -1561,11 +1561,11 @@ AssignPads	;Unreferenced. Clear c1playernum-c4playernum, then give each pad on a
 	beq.w	.c2
 	cmpi.w	#2,(cont2team).w
 	beq.w	.h2
-	tst.w	(homegoaliectl).w
+	tst.w	(homepracplayers).w
 	bne.w	.c2
 	bra.w	.g2
 .h2
-	tst.w	(awaygoaliectl).w
+	tst.w	(awaypracplayers).w
 	bne.w	.c2
 .g2
 	movem.l	d0/a0/a3,-(sp)
@@ -1589,11 +1589,11 @@ AssignPads	;Unreferenced. Clear c1playernum-c4playernum, then give each pad on a
 	beq.w	.c3
 	cmpi.w	#2,(cont3team).w
 	beq.w	.h3
-	tst.w	(homegoaliectl).w
+	tst.w	(homepracplayers).w
 	bne.w	.c3
 	bra.w	.g3
 .h3
-	tst.w	(awaygoaliectl).w
+	tst.w	(awaypracplayers).w
 	bne.w	.c3
 .g3
 	movem.l	d0/a0/a3,-(sp)
@@ -1617,11 +1617,11 @@ AssignPads	;Unreferenced. Clear c1playernum-c4playernum, then give each pad on a
 	beq.w	.c4
 	cmpi.w	#2,(cont4team).w
 	beq.w	.h4
-	tst.w	(homegoaliectl).w
+	tst.w	(homepracplayers).w
 	bne.w	.c4
 	bra.w	.g4
 .h4
-	tst.w	(awaygoaliectl).w
+	tst.w	(awaypracplayers).w
 	bne.w	.c4
 .g4
 	movem.l	d0/a0/a3,-(sp)

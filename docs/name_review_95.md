@@ -526,8 +526,8 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | AddHighlight | ok |
 | AddPlayerSeasonStats | ok |
 | AddTeamSeasonStats | ok |
-| AssistText | ok |
-| AssistsText | ok |
+| GoalsText | renamed (was AssistText; body checked) |
+| AssistText | renamed (was AssistsText; body checked) |
 | BestGoalieSaves | ok |
 | BlankLine40 | ok |
 | BuildLeaders | ok |
@@ -550,8 +550,8 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | DrawTeamStatsLogo | ok |
 | GatherAndSort | ok |
 | GetPlayoffStat | ok |
-| GoalText | ok |
-| GoalsText | ok |
+| SaveText | renamed (was GoalText; body checked) |
+| AssistsText | renamed (was GoalsText; body checked) |
 | HighlightPlurals | ok |
 | HighlightSingulars | ok |
 | HighlightsScreen | ok |
@@ -559,7 +559,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | LeaderModeText | ok |
 | LeaderPrintJumps | ok |
 | LeaderTables | ok |
-| LeadersField4 | ok |
+| LeadersPenMinAvg | renamed (was LeadersField4; body checked) |
 | LeadersGoalsAllowed | ok |
 | LeadersGoalsAvg | ok |
 | LeadersHelp | ok |
@@ -596,7 +596,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | PrintPlayerCategory | ok |
 | PrintScore2 | ok |
 | PrintSeasonTeamStats | ok |
-| PrintStatHighlight | ok |
+| PrintRecordHighlight | renamed (was PrintStatHighlight; body checked) |
 | PrintTeamCategory | ok |
 | ReadHighlightsPad | ok |
 | ReadLeadersPad | ok |
@@ -606,7 +606,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | SaveGameHighlights | ok |
 | SaveSimGame | ok |
 | SaveTeamLines | ok |
-| SaveText | ok |
+| GoalText | renamed (was SaveText; body checked) |
 | SavesText | ok |
 | SeasonGetStatColumn | ok |
 | SeasonPlayerStats | ok |
@@ -1407,7 +1407,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | attribsum | ok |
 | awardpanelchars | ok |
 | awardpicchars | ok |
-| awaygoaliectl | ok |
+| awaypracplayers | renamed (was awaygoaliectl; body checked) |
 | awayusers | ok |
 | bigfontptr | ok |
 | calbgchars | ok |
@@ -1423,7 +1423,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | gamestoday1chars | ok |
 | gamestoday3chars | ok |
 | gamevarend | ok |
-| homegoaliectl | ok |
+| homepracplayers | renamed (was homegoaliectl; body checked) |
 | homeusers | ok |
 | injurygames | ok |
 | jerseynum | ok |
@@ -1496,7 +1496,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | 94->95 consistency gaps (hand read) | aligned: FormatLastName .pad, HotColdIcon .loop/.loop2/.draw, GetGoalieCountD7 .count, ResolveGames (all 94 locals), ShowGoalBox .frame/.print (+numbers), printbigtext .nocom, DisplayPlayerList .row, DrawGoalieSelectList .row, UpdateScoutingDisplay .roster/.loop4, assscore .chkx, PeriodStatsScreen .3 (was a wrong .title; 94 .title/.lines/.team/.num are now PeriodStatsCaption/PeriodStatsColumns), checkanim .save, Goal (94 checkgoal goal part) .loop/.addg/.loop2 (+numbers), doinput .nostart. No counterpart (95 rewritten): DrawStatsList .skip, DrawTeamLogo .draw, GameStatisticsScreen .scroll (now StatScrollStep), RecordHoldersScreen .show, p_music_vblank .next, checkgoal .sum (already .sum in Goal), doinput .chkfight (95 has no fight check there; .islocked kept) |
 | routines named differently in 95 | IntermissionMenu -> Intermission (94 routine, same body start; .1/.clr aligned). PlayerCardScreen merged into 95 PlayerCardTimer (.loop aligned). AddArenaAnimSprite .spr part = 95 ShowCrowdFrame (crowd frames; name kept, .loop2/.x aligned). No 95 counterpart: ChangeOption (WrapOptionUp/Down), PrintOptionNames (PrintOptions rewritten), RunArenaAnim, GetLeagueCrowdRecord, PlayerCards, doinput_ispc (inlined as doinput .ispc), waitxsr (no zamboni) |
 | new-in-95 locals: season | NOT a name review: routine names, headers and forward locals not checked by full body read; 83 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
-| new-in-95 locals: stats | NOT a name review: routine names, headers and forward locals not checked by full body read; 57 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
+| new-in-95 locals: stats | full body read of every new-in-95 routine (117): highlight suffix labels were swapped against their strings, renamed so each matches its text (GoalsText/GoalText/AssistsText/AssistText/SaveText); PrintStatHighlight->PrintRecordHighlight (type 4 prints a team W-L-T record), LeadersField4->LeadersPenMinAvg; headers fixed (AddPlayerSeasonStats goalie PIM, SeasonStatColumnOffsets, PrintRecordHighlight, PrintHighlight, DrawHighlightPage, DrawHighlightEntry, LeadersHelp, DrawLineEditorScreen); locals named in SaveGameHighlights, AddPlayerSeasonStats, SeasonStatsListDraw, DrawSeasonStatsList, DrawSeasonStatsRow, SeasonTeamStatsRun, LeagueLeadersScreen, ReadLeadersPad, ReadHighlightsPad, SortLeadersDown/Up, DrawLeaderRows, DrawPlayerLeaderRows, HighlightsScreen; RAM homegoaliectl/awaygoaliectl -> homepracplayers/awaypracplayers |
 | new-in-95 locals: create | NOT a name review: routine names, headers and forward locals not checked by full body read; 61 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: trade | full body read of every new-in-95 routine (50): renamed MoveTradedPlayer->ExtractTradedPlayer (takes the player out) and RemoveTradedPlayer->InsertTradedPlayer (puts him in; names were reversed), FixSavedLine->FixLinesRemoved, FixSavedLine2->FixLinesInserted, MoveSavedLines->FixJerseyNumber (makes the jersey number unique), SortTradePlayers->TagTradePositions (no sort), TradeStatOffsets(2)->TradeCountOffsets(2), DrawTradeTeam->BuildTradeRoster (draws nothing), GMDecision->GMDecisionGfx (graphics only), GMDecisionRetry->GMDecisionScreen (the GM DECISION screen); headers fixed for these and DefaultRosters (count order), GetRosterName (no SRAM address), ShiftTradeUp/Down, TradePlayers (buttons), CheckTrade (Z flag result), EvaluateTrade, ReadEvalTradePads / ReadGMDecisionPads (no timeout); locals named in all routines with branches (CheckTrade error setters were auto .loop names, not loops) |
 | new-in-95 locals: setup | full body read of every new-in-95 routine (23): names ok; headers fixed: GetSetupValues, UpdateSetupLogos, DrawSetupLogo (broken text); locals: FindPlayerLine .next/.found, PrintOptionName .hi (was auto .loop2, not a loop)/.nothi/.normal/.done/.chksel, UpdateSetupLogos .changed/.delay/.swaph/.homeblk/.vis/.swapv/.visblk, DrawSetupLogo .gotchars/.vispal/.pal/.draw, StepSeasonTeam .prev/.chk, SetTreeGameTeams .noflip |
@@ -1506,7 +1506,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | new-in-95 locals: middle | full body read of every new-in-95 routine (36): names ok; AssignPads header fixed (practice player counts, not goalie control); locals: showclockdma .gotclock, GetGoalieCountD7 .teamdata, name formatters .skipfirst/.copy (were auto .loop/.loop2), CalcAttribRating .create/.chkmax/.add, PushNumberWidthZero .pow/.digit/.num/.put; printbigtext keeps print's .0/.1 pattern (auto .loop -> .0) |
 | new-in-95 locals: lines | full body read of every new-in-95 routine (16): names ok; headers fixed: LoadTeamLines (sets per line change option, SRAM rule), DrawTeamScreen4 (no dma); locals: DrawTeamScreen2-6 vblank wait .0 as in DrawTeamScreen, DefaultLineData .team/.set, LoadTeamLines .nolc/.teamdata/.copy/.teamdata2/.copy2, FixSavedLines .rec/.line/.nextrec and clamp subroutines .goalie/.defense/.dlow/.forward/.flow/.extra/.nextslot (were auto .loop3-.loop9), CheckTeamLines .rec/.slot/.nextslot/.nextrec/.invalid, LineSlotFixTbl handlers .goalie/.defense/.forward/.extra/.none with .d*/.f*/.x* steps and .inlines/.search/.found |
 | new-in-95 locals: records | full body read of every new-in-95 routine (CountTeamPads, NameInUse, SkipPadName, ClearNameHelp, GetPadUser, UpdateUserRecord): names and headers ok; UpdateUserRecord .hasteam, .chkaway, .order, .awayfirst, .user (was an auto .loop, not a loop) |
-| new-in-95 locals: goal | full body read of every new-in-95 routine (27): the practice 'goalie control' is the practice player count (strings 'No. of Players', limits by position), renamed SetGoaliesCtl->PullPracticePlayers, GoalieCtlLimits->PracticePlayerLimits, GetGoalieCtl->GetPracticePlayers, PrintPracticeGoalies->PrintPracticePlayers, PrintGoalieCount->PrintPlayerCount, GoalieCountTxt->PlayerCountTxt, PracticeGoalieTbl->PracticePlayersTbl (RAM homegoaliectl / awaygoaliectl kept, open item); headers fixed (those, PracticeGoalies, SetContTeams, PrintPracticeTitle had highlight inverted); locals: AssignTeam .assign/.next, PullPracticePlayers .team/.pull/.next, PracticeGoalies .home/.chkaway/.away/.done, SetContTeams .clear (auto .loop, not a loop)/.setup/.frame/.wait/.keys/.up/.pads/.pad/.right/.fewer/.more/.nextpad, DrawPadSetup .draw, PrintPracticeTitle .normal |
+| new-in-95 locals: goal | full body read of every new-in-95 routine (27): the practice 'goalie control' is the practice player count (strings 'No. of Players', limits by position), renamed SetGoaliesCtl->PullPracticePlayers, GoalieCtlLimits->PracticePlayerLimits, GetGoalieCtl->GetPracticePlayers, PrintPracticeGoalies->PrintPracticePlayers, PrintGoalieCount->PrintPlayerCount, GoalieCountTxt->PlayerCountTxt, PracticeGoalieTbl->PracticePlayersTbl (RAM renamed homepracplayers / awaypracplayers); headers fixed (those, PracticeGoalies, SetContTeams, PrintPracticeTitle had highlight inverted); locals: AssignTeam .assign/.next, PullPracticePlayers .team/.pull/.next, PracticeGoalies .home/.chkaway/.away/.done, SetContTeams .clear (auto .loop, not a loop)/.setup/.frame/.wait/.keys/.up/.pads/.pad/.right/.fewer/.more/.nextpad, DrawPadSetup .draw, PrintPracticeTitle .normal |
 | new-in-95 locals: scout | full body read of every new-in-95 routine (10): names ok; GetPlayerPicture header fixed (featured picture for the first six, else generic) and locals .sram, .gotslot, .find, .featured, .generic, .alt, .done |
 | new-in-95 locals: faceoff | full body read of every new-in-95 routine (rtsfaceoff, DrawFaceoffWindow): names and headers ok; DrawFaceoffWindow .setx, .names |
 | new-in-95 locals: title | full body read of every new-in-95 routine (8): names and headers ok; CupVBlank .skip/.nodma, CupBuildSprites .add, AddSpriteFrame .full; StanleyCupScreen / CupWaitFrame / AddSpriteFrame .loop are real loops |

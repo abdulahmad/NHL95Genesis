@@ -157,7 +157,7 @@ TempLegSpd	equ	$FFFFBB1C	;94 $FFFFBF1E. A scratch word: leg speed (doplayeracc);
 linemarkbuf	equ	$FFFFBB1E	;PrintPlayerLines String: the lines a player is on
 recuser1	equ	$FFFFBB1E	;UpdateRecords: a user (name log entry) word (GetTeamUser, GetPadUser). Shares linemarkbuf
 SeasonGoalSum	equ	$FFFFBB1E	;Season goal total of the human games (a long; save RAM SRGoalTotal with SeasonGameCount). Shares linemarkbuf
-StatWork	equ	$FFFFBB1E	;Scratch of the season stat screens (League Leaders: +0 mode, +2 category, +4 top row, +6 bottom row, +8 rows, +$A last row, +$C count; SaveGameHighlights, PrintStatHighlight). Shares linemarkbuf
+StatWork	equ	$FFFFBB1E	;Scratch of the season stat screens (League Leaders: +0 mode, +2 category, +4 top row, +6 bottom row, +8 rows, +$A last row, +$C count; SaveGameHighlights, PrintRecordHighlight). Shares linemarkbuf
 TempBuffer	equ	$FFFFBB1E	;94 $FFFFBF20. 40 byte scratch buffer (hot / cold sum byte pairs, Strings). Shares linemarkbuf
 recuser2	equ	$FFFFBB20	;UpdatePlayerRecords: the other team's user word (GetPadUser)
 SeasonGameCount	equ	$FFFFBB22	;Human season games counted in SeasonGoalSum
@@ -228,8 +228,8 @@ sflags13	equ	$FFFFBF10	;Bit 2: the Stanley Cup was won (clockcont_0; GameOver sh
 cupwinner	equ	$FFFFBF12	;Team number of the Stanley Cup winner
 LineHoldFlag	equ	$FFFFBF14	;Per pad (a word each): set when LineHoldTimer runs out (SetLCmode); lineinput clears it
 lastpuckc	equ	$FFFFBF1C	;The puck carrier CheckNewCarrier saw last
-homegoaliectl	equ	$FFFFBF1E	;Home goalie control (AssignPads: nonzero = pad does not take the goalie)
-awaygoaliectl	equ	$FFFFBF20	;Away goalie control
+homepracplayers	equ	$FFFFBF1E	;Home practice player count (Practice Mode; AssignPads: nonzero = pad does not take the goalie)
+awaypracplayers	equ	$FFFFBF20	;Away practice player count
 menupadnum	equ	$FFFFBF26	;Pad (0-3) ReadMenuJoy reads
 crowdnoisedelay	equ	$FFFFBF2A	;94 $FFFFC304
 CurCrowdMeter	equ	$FFFFBF34	;94 $FFFFC30E. StartPer clears it as 94 does

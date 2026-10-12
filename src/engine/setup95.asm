@@ -1579,8 +1579,8 @@ SetupStart	;Store setupvalues in the options: OptPlayMode, the mode flags
 	cmpi.b	#2,(a1)
 	bne.w	.7
 	bset	#7,(sflags9).w
-	move.w	#2,(homegoaliectl).w
-	move.w	#2,(awaygoaliectl).w
+	move.w	#2,(homepracplayers).w
+	move.w	#2,(awaypracplayers).w
 .7
 	cmp.b	#6,d0
 	bne.w	.8
