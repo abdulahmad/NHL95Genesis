@@ -1145,7 +1145,7 @@ RestoreSeasonHeader	;Put back the season header saved by SetupPlayoffs. Nothing 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-NextPlayoffRound	;Next playoff round: the winners of the last round (CollectSeriesWinners), the series (InitPlayoffSeries) and the games (PlayoffRoundDone)
+NextPlayoffRound	;Next playoff round: the winners of the last round (CollectSeriesWinners), the series (InitPlayoffSeries) and the games (BuildPlayoffDayGames)
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.l	(SaveRAM+2*SRPODay).l
 	move.l	(SaveRAM+2*SRPORound).l,d0
@@ -1154,7 +1154,7 @@ NextPlayoffRound	;Next playoff round: the winners of the last round (CollectSeri
 	bsr.w	CollectSeriesWinners
 .0
 	bsr.w	InitPlayoffSeries
-	bsr.w	PlayoffRoundDone
+	bsr.w	BuildPlayoffDayGames
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -1183,7 +1183,7 @@ InitPlayoffSeries	;The series of the round at save RAM SRPOSeries ($20 bytes eac
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PlayoffRoundDone	;The games of day SeasonDay: the series of the round not yet won (4 wins, 1 without SeasonFlags bit 1); d0 = the count (0 = round over)
+BuildPlayoffDayGames	;The games of day SeasonDay: the series of the round not yet won (4 wins, 1 without SeasonFlags bit 1); d0 = the count (0 = round over)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SaveRAM+2*(SRPOSchedule+1),a0
 	clr.w	d0

@@ -1660,7 +1660,7 @@ front/awards95.asm,$09D662,184,SetupPlayoffs,code,new in 95,header
 front/awards95.asm,$09D71A,46,RestoreSeasonHeader,code,new in 95,header
 front/awards95.asm,$09D748,40,NextPlayoffRound,code,new in 95,header
 front/awards95.asm,$09D770,80,InitPlayoffSeries,code,new in 95,header
-front/awards95.asm,$09D7C0,150,PlayoffRoundDone,code,new in 95,header
+front/awards95.asm,$09D7C0,150,BuildPlayoffDayGames,code,new in 95,header
 front/awards95.asm,$09D856,32,SeriesInRound,code,new in 95,header
 front/awards95.asm,$09D876,8,SeriesCountTbl,data,new in 95,header
 front/awards95.asm,$09D87E,42,GetRoundPairings,code,new in 95,header

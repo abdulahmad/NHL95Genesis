@@ -450,7 +450,7 @@ NextSeasonDay	;SeasonDay + 1; at SeasonLength set SeasonFlags bit 3 (regular sea
 	addq.b	#1,d0
 	move.l	d0,(SaveRAM+2*SRPODay).l
 	jsr	(WriteSeasonHeader).l
-	jsr	(PlayoffRoundDone).l
+	jsr	(BuildPlayoffDayGames).l
 	bne.w	.4
 	move.l	(SaveRAM+2*SRPORound).l,d0
 	cmp.b	#3,d0

@@ -1727,7 +1727,7 @@ $09D662,SetupPlayoffs,sub_9D662,,front/awards95
 $09D71A,RestoreSeasonHeader,,,front/awards95
 $09D748,NextPlayoffRound,sub_9D748,,front/awards95
 $09D770,InitPlayoffSeries,sub_9D770,,front/awards95
-$09D7C0,PlayoffRoundDone,sub_9D7C0,,front/awards95
+$09D7C0,BuildPlayoffDayGames,sub_9D7C0,PlayoffRoundDone,front/awards95
 $09D856,SeriesInRound,sub_9D856,,front/awards95
 $09D876,SeriesCountTbl,unk_9D876,,front/awards95
 $09D87E,GetRoundPairings,sub_9D87E,,front/awards95
