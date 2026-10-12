@@ -484,9 +484,9 @@ showclockdma	;When dfclock is set queue the clock chars in the dma list (a5); wi
 	move.w	d0,(clockram).w
 	move.w	(gameclock).w,d0
 	btst	#1,(gmode2).w
-	beq.w	.0
+	beq.w	.gotclock
 	move.w	(shootoutclock).w,d0
-.0
+.gotclock
 	ext.l	d0
 	divu.w	#$A,d0
 	bsr.w	ClockDigitChar
@@ -617,7 +617,7 @@ GetGoalieCount	;d0 = goalies on team a2 (GetGoalieCountD7 with d7 = the team num
 
 GetGoalieCountD7	;d0 = goalies on team d7: from the season data in save RAM (SRRosters+$34 + team * $38), or with sflags11 bit 6 from the team data nibbles
 	btst	#6,(sflags11).w
-	bne.w	.0
+	bne.w	.teamdata
 	movem.l	d1-d7/a0,-(sp)
 	move.w	d7,d0
 	mulu.w	#$38,d0
@@ -629,7 +629,7 @@ GetGoalieCountD7	;d0 = goalies on team d7: from the season data in save RAM (SRR
 	move.b	(a0),d0
 	movem.l	(sp)+,d1-d7/a0
 	rts
-.0
+.teamdata
 	movem.l	d1/d7-a0,-(sp)
 	movea.l	#TeamList,a0
 	asl.w	#2,d7
@@ -765,13 +765,13 @@ FormatPlayerInitialD7	;a1 = mesarea "F. Last" for player d0 of team d7
 	move.b	(a0)+,(a1)+
 	move.b	#$2E,(a1)+
 	move.b	#$20,(a1)+
-.loop
+.skipfirst
 	cmpi.b	#$20,(a0)+
-	bne.s	.loop
-.loop2
+	bne.s	.skipfirst
+.copy
 	move.b	(a0)+,(a1)+
 	cmpa.l	a0,a2
-	bne.s	.loop2
+	bne.s	.copy
 	bsr.w	FinalizeTextBuffer
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
@@ -799,13 +799,13 @@ NumInitialBody	;Shared body of FormatPlayerNumInitial
 	lea	-2(a0,d0.w),a2
 	move.b	(a0)+,(a1)+
 	move.w	#$2E20,(a1)+
-.loop
+.skipfirst
 	cmpi.b	#$20,(a0)+
-	bne.s	.loop
-.loop2
+	bne.s	.skipfirst
+.copy
 	move.b	(a0)+,(a1)+
 	cmpa.l	a0,a2
-	bne.s	.loop2
+	bne.s	.copy
 	bsr.w	FinalizeTextBuffer
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
@@ -823,13 +823,13 @@ FormatPlayerNameD7	;FormatPlayerName for team d7
 	movea.l	(sp)+,a0
 	move.w	(a0)+,d0
 	lea	-2(a0,d0.w),a2
-.loop
+.skipfirst
 	cmpi.b	#$20,(a0)+
-	bne.s	.loop
-.loop2
+	bne.s	.skipfirst
+.copy
 	move.b	(a0)+,(a1)+
 	cmpa.l	a0,a2
-	bne.s	.loop2
+	bne.s	.copy
 	bsr.w	FinalizeTextBuffer
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
@@ -896,10 +896,10 @@ FormatFirstNameD7	;a1 = mesarea "First" for player d0 of team d7
 	bsr.w	getplayernameD7
 	movea.w	#(TextBuffer-M68K_RAM),a1
 	addq.w	#2,a0
-.loop
+.copy
 	move.b	(a0)+,(a1)+
 	cmpi.b	#$20,(a0)
-	bne.s	.loop
+	bne.s	.copy
 	bsr.w	FinalizeTextBuffer
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
@@ -923,13 +923,13 @@ formatlastbody	;FormatLastNameAlt joins here
 	movea.l	(sp)+,a0
 	move.w	(a0)+,d0
 	lea	-2(a0,d0.w),a2
-.loop
+.skipfirst
 	cmpi.b	#$20,(a0)+
-	bne.s	.loop
-.loop2
+	bne.s	.skipfirst
+.copy
 	move.b	(a0)+,(a1)+
 	cmpa.l	a0,a2
-	bne.s	.loop2
+	bne.s	.copy
 	bsr.w	FinalizeTextBuffer
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
@@ -1028,7 +1028,7 @@ CalcAttribRating	;The rating sum of CalcAttrib: d0 / d1 = weighted sum of the at
 	andi.w	#$F,d3
 	cmp.w	#$D,d2
 	bne.w	.2
-	bra.w	.9
+	bra.w	.add
 .2
 	cmp.w	#5,d2
 	bne.w	.3
@@ -1038,7 +1038,7 @@ CalcAttribRating	;The rating sum of CalcAttrib: d0 / d1 = weighted sum of the at
 	movea.l	(sp)+,a0
 .3
 	cmp.w	#6,d2
-	beq.w	.9
+	beq.w	.add
 	movem.l	d5-d7,-(sp)
 	move.b	(a6,d2.w),d5
 	ext.w	d5
@@ -1054,7 +1054,7 @@ CalcAttribRating	;The rating sum of CalcAttrib: d0 / d1 = weighted sum of the at
 .5
 	movem.l	(sp)+,d5-d7
 	cmpa.l	#AttribWgtList,a6
-	beq.w	.6
+	beq.w	.create
 	neg.w	d2
 	move.w	d7,-(sp)
 	move.b	-1(a4,d2.w),d7
@@ -1063,21 +1063,21 @@ CalcAttribRating	;The rating sum of CalcAttrib: d0 / d1 = weighted sum of the at
 	addq.w	#1,(attribcount).w
 	move.w	(sp)+,d7
 	neg.w	d2
-	bra.w	.9
-.6
+	bra.w	.add
+.create
 	move.w	d3,-(sp)
 	asl.w	#4,d3
 	add.w	(sp),d3
 	add.w	(sp)+,d3
 	neg.w	d2
 	add.b	-1(a4,d2.w),d3
-	bpl.w	.7
+	bpl.w	.chkmax
 	clr.b	d3
 	addq.b	#1,-1(a4,d2.w)
 	opt	osq-	;keep the retail subi / addi (SNASM would make subq / addq)
 	subi.w	#1,(CreatePoints).l
 	opt	osq+
-.7
+.chkmax
 	cmp.b	#$63,d3
 	ble.w	.pos
 	move.b	#$63,d3
@@ -1087,7 +1087,7 @@ CalcAttribRating	;The rating sum of CalcAttrib: d0 / d1 = weighted sum of the at
 	opt	oaq+
 .pos
 	neg.w	d2
-.9
+.add
 	add.w	d3,d0
 	addi.w	#$64,d1
 .next
@@ -1230,27 +1230,27 @@ PushNumberWidthZero	;PushNumberWidth with leading zeros: d0 as d1 digits to Push
 	moveq	#1,d2
 	sub.w	d2,d1
 	bra.w	.1
-.loop
+.pow
 	mulu.w	#$A,d2
 .1
-	dbf	d1,.loop
+	dbf	d1,.pow
 	moveq	#$30,d3
-.loop2
+.digit
 	ext.l	d0
 	divu.w	d2,d0
-	bne.w	.3
+	bne.w	.num
 	cmp.w	#1,d2
-	beq.w	.3
+	beq.w	.num
 	move.w	d3,d0
-	bra.w	.4
-.3
+	bra.w	.put
+.num
 	moveq	#$30,d3
 	add.w	d3,d0
-.4
+.put
 	move.b	d0,(a1)+
 	swap	d0
 	divu.w	#$A,d2
-	bne.s	.loop2
+	bne.s	.digit
 	move.l	a1,d0
 	subi.w	#(PushWidthBuf-M68K_RAM),d0
 	btst	#0,d0
@@ -1521,8 +1521,8 @@ ClrHor	;Unreferenced. Revert the graphics back to vertical ice rink mode: the ri
 	rts
 
 AssignPads	;Unreferenced. Clear c1playernum-c4playernum, then give each pad on a team a player: in Practice Mode
-	;(sflags9 bit 7) with its team's goalie control (homegoaliectl / awaygoaliectl) clear, the team's goalie (getGoalieSCnum, setc1player ...),
-	;else chgplayer
+	;(sflags9 bit 7) with no practice players on its team (homegoaliectl / awaygoaliectl 0), the team's goalie
+	;(getGoalieSCnum, setc1player ...), else chgplayer
 	move.w	#$FFFF,(c1playernum).w
 	move.w	#$FFFF,(c2playernum).w
 	move.w	#$FFFF,(c3playernum).w
@@ -1841,7 +1841,7 @@ printbigtext	;Print with the font map at bigfontptr. Lower case is printed as up
 	move.w	(a1)+,d3
 	subq.w	#2,d3
 	bra.w	.1
-.loop
+.0
 	move.b	(a1)+,d0
 	beq.w	.1
 	ext.w	d0
@@ -1876,7 +1876,7 @@ printbigtext	;Print with the font map at bigfontptr. Lower case is printed as up
 	bsr.w	PrintBigChar
 	move.w	(sp)+,d3
 .1
-	dbf	d3,.loop
+	dbf	d3,.0
 	move.w	d4,(printx).w
 	move.w	d5,(printy).w
 	movem.l	(sp)+,d0-d7/a0/a2
