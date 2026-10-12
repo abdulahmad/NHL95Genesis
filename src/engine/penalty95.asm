@@ -1,6 +1,5 @@
-;	Penalty logic: penalties and stoppages, referee messages and the lead song, then
-;	checking penalties, the referee sprite, penalty clear, icing, offsides and the blue line
-;	warning.
+;	Penalty logic. This file calls penalties and the other stoppages of play, shows the referee
+;	and his messages, plays the song for the leading team and watches for icing and offsides.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	Stop4Pen, AddPenalty ... checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, ClearPenaltyMessage,

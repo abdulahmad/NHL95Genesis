@@ -1,5 +1,6 @@
-;	Display setup: sort coordinates, pad objects and button labels, the animation frame
-;	update, and the default sprites and sprite sort.
+;	Display setup for game play. This file places the players' sprites on the screen, draws the
+;	pad markers and button labels, steps each animation to its next frame and sets up and sorts
+;	the default sprites.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; then updateanim

@@ -1,6 +1,7 @@
-;	Player assignments: the assignment jump table, goalie positioning and saves, the
-;	defense, wing and center positions, puck logic, skating, checking and breakaways, the
-;	computer's shot and pass decisions, bench and penalty box trips, and the one-timer.
+;	Player logic. Every player on the ice has an assignment, and this file runs them: the goalie's
+;	positioning and saves, the defense, wing and center positions, the puck carrier, skating,
+;	checking and breakaways, trips to the bench and the penalty box, the one-timer, and the
+;	computer's choices of when to shoot, pass and pull its goalie.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	The assignment jump table (asstab) and doassignment, then ClampYPosition, AdjustFacingDirection,

@@ -1,5 +1,5 @@
-;	Shootout and penalty shots: shooter setup and skate paths, the next shooter and goal
-;	count, the shooters screen, the penalty shot play, and injuries and the power play box.
+;	Shootouts and penalty shots. This file sets up the shooters and their skating paths, moves on
+;	to the next shooter, counts the goals, runs the shooters screen and plays penalty shots.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	The shootout setup and skating paths: ClearShootout and InitShooters, then PSandSOpassdir, passdirlist,

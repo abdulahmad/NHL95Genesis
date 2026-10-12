@@ -1,4 +1,5 @@
-;	EA 4 Way Play adaptor: AnyPadAssigned, adaptor detection and its unused pad helpers.
+;	Support for the EA 4 Way Play adaptor. It finds out whether the adaptor is plugged in, tells
+;	whether any pad is on a team and reads the pads through it.
 
 AnyPadAssigned	;Z clear when any pad is on a team (cont1team ... cont4team).
 	movem.w	d0,-(sp)

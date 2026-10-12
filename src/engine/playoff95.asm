@@ -1,5 +1,5 @@
-;	Playoff screen: input, scroll, series scores, the tree, team blocks and its vblank,
-;	then the tree setup and the playoff sprite.
+;	The playoff screen. It shows the playoff tree with the series scores and team blocks, scrolls
+;	it with the pad and draws the playoff sprite.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, PrintSeriesScore, DrawTreeArrow,

@@ -1,6 +1,5 @@
-;	Graphics data, incbins from Extracted\Graphics: player pictures, rink, sprites, fonts,
-;	screen maps and bitmaps, team logo palettes and the arena graphics. A map starts with
-;	its 8-byte header (palette and map offsets), so a reference to its tiles is Label+8.
+;	Graphics data, all loaded from the extracted files: player pictures, the rink, sprites, fonts,
+;	screen maps and pictures, team logo colors and the arena graphics.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	The player pictures (FeaturedPicIdx / FeaturedPictures), the rink, the sprites, the fonts and the screen maps and bitmaps, up to

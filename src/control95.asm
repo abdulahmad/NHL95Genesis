@@ -1,5 +1,6 @@
-;	Pad control: which pad controls which player (pad input, hold, check, speed burst,
-;	player switching), and team setup (team stats clear, teams, team structures and colors).
+;	Pad control and team setup. This file connects each pad to the player it controls, with
+;	holding, checking, speed bursts and switching players, and then sets up both teams with their
+;	structures and colors before a game.
 
 updatepadinput	;Pad input for a player. Called from updateplayers with a3 = the
 	;object, d6 = SCnum. The pad (1-4) controlling a3 reads its buttons and runs doinput, with d4 = 0 / 2 / 4 / 6 (94 swaps the pad 3 /

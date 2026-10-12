@@ -1,5 +1,5 @@
-;	Skating: goalie movement and dives, the C button, goalie animations, direction and
-;	speed tables, stopping, velocity update, SetSPA and player acceleration.
+;	Skating. This file moves the goalies, with their dives and animations, and the skaters, who
+;	turn, stop and speed up through the direction and speed tables.
 
 goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets the ready SPA
 	;turning (AdjustFacingDirection); stopna2 deep in the crease; then playeracc. A computer goalie keeps or turns its facing

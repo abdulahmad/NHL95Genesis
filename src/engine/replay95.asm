@@ -1,5 +1,7 @@
-;	Instant replay: shot block tests, then the replay recorder and player (ReplayMode),
-;	the replay icon and banner, and the camera and frame restore.
+;	Instant replay. This file records each frame of play and plays it back with the replay icon
+;	and banner, moving the camera and restoring the frames. It starts with the checks for blocking
+;	a shot.
+
 ;	A replay frame object packs a 9-bit x and an 11-bit frame.
 
 	include	macros\genesis.mac	;String

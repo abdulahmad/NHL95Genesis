@@ -1,6 +1,6 @@
-;	New in 95: Create Player (the created player list, name entry with the letter grid,
-;	Modify Ratings with the attribute points pool, the save RAM create records), Sign Free
-;	Agents and Release Players.
+;	New in 95: Create Player. This file lists the created players, enters their names, sets
+;	their ratings from a pool of points and saves them. Signing free agents and releasing players
+;	are here too.
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.

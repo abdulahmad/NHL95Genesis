@@ -1,6 +1,6 @@
-;	Game flow from the title screen to the game loop: Opening, the main menu exits (season,
-;	trades, create player), StartGame and StartPer, intermission, the game loop, DoGameFrame
-;	and updateplayers.
+;	Game flow. This file runs the game from the title screen to the game loop: the main menu and
+;	its exits to the season, trades and Create Player, the start of each game and period, the
+;	intermission and every frame of play.
 
 Opening	;Title screen (newTitleScreen), then into Opening2. Jumped to from Begin
 	jsr	(KillCrowd).l

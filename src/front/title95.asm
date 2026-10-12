@@ -1,5 +1,5 @@
-;	Title screens: the title with the scrolling credits and the high score screen.
-;	New in 95: the Stanley Cup screen.
+;	Title screens. This file shows the title with the scrolling credits and the high score
+;	screen. New in 95: the Stanley Cup screen.
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
 ;	cmp encoding after assembly.

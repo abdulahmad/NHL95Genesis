@@ -1,5 +1,6 @@
-;	Player setup: the dressed players and lines, roster reading and ratings, attributes,
-;	the bench, sort priority lists and the hot / cold table.
+;	Player setup. This file picks the players and lines on the ice, reads the rosters and
+;	ratings, works out each player's attributes, runs the bench and keeps the table of hot and
+;	cold players.
 
 
 setpersonel	;Set personnel on team a2 by PlList: players already on the ice stay

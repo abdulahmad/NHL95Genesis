@@ -1,4 +1,5 @@
-;	Scores and shot data, the faceoff (puck drop, faceoff assignments and input window).
+;	Scores and faceoffs. This file keeps the scores of the other games and the shot data, and
+;	runs the faceoff from placing the players to dropping the puck.
 
 UpdateScores	;Update the ticker score values of the other games (SetScore). Called from PeriodOver
 	bsr.w	GetShifter

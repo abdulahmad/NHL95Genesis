@@ -1,6 +1,6 @@
-;	Shared helpers: math (sroot, vtoa, find3d, random numbers), text printing and control
-;	codes, the clock display, player name and number formatting, team blocks, team graphics,
-;	the EASN logo and time printing.
+;	Shared helpers used all over the game. They do the math, print text with its control codes,
+;	show the clock, format player names and numbers, and draw team blocks, team graphics and the
+;	EASN logo.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	Shared helpers: sroot, vtoa, find3d, randomd0s / randomd0, GetHot, vcountwait, printz2, printsmall

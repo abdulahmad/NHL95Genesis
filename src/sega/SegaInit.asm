@@ -1,5 +1,5 @@
-;	Sega's Genesis power on program, with the ports named. Runs from reset before anything
-;	else and falls through hot_start into CHECK_VDP.
+;	Sega's standard startup code. It runs from reset before anything else, checks the hardware
+;	and sets it up, and then starts the game.
 
 ;****************************************************************
 ;																* GENESIS / MEGA DRIVE HARD INITIAL PROGRAM * * 1989 11/30 * *

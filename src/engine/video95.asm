@@ -1,5 +1,6 @@
-;	Video: VDP helpers, DMA, palette fades, decompression and remap, sprite frames and rink
-;	scroll, the frame drawing helpers, vblank handlers, and the pad reading with key repeat.
+;	Video helpers. This file talks to the video chip, moves graphics into video memory, fades
+;	palettes, unpacks graphics, draws sprite frames and scrolls the rink. It also runs the
+;	vertical blank and reads the pads with key repeat.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	Three runs in ROM order: the VDP helpers with the vblank transfers, the sprite frames and rink

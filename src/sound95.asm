@@ -1,7 +1,6 @@
-;	New in 95: the sound driver. SndDriver (called through SoundCmd) takes a command in d0,
-;	plays up to 8 songs of MIDI style events and keeps the Z80 program fed. Followed by the
-;	Z80 program, the sound bank and the old, unused driver; last, the old Z80 program (macro
-;	Z80OldProgram) that engine95.asm places at $07E0E0.
+;	New in 95: the sound driver. It takes commands from the game, plays up to eight songs and
+;	keeps the Z80 fed with notes and samples. The Z80 program, the sound bank and the old unused
+;	driver follow it, and the old Z80 program is kept at the end as a macro for the engine.
 
 	if	~def(Z80OLD_SEG)	;the z80old95 segment build wants only Z80OldProgram
 

@@ -1,5 +1,5 @@
-;	Controller input for skaters: moving, faceoff input, passing, the one-timer pass
-;	target, shooting and the computer's shot.
+;	Controller input for skaters. This file moves the player under control, reads the pad at
+;	faceoffs and lets him pass, set up a one-timer and shoot; the computer's shots are here too.
 
 
 doinput	;Process controller input for player a3: d0 = dpad, d1 = new buttons, d2 = changed buttons, d3 = held buttons,

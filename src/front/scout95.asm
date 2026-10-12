@@ -1,5 +1,6 @@
-;	Scouting report: the MATCHUPS pages, the hot / cold player lists, the scouting text
-;	player and its script, team ratings, pictures and user names.
+;	Scouting report. This file shows the pages of the pregame matchups screen, the hot and cold
+;	players, the scouting text with its script, the team ratings, pictures and user names.
+
 ;	$20xxxx addresses are save RAM (odd bytes).
 
 ;------------------------------------------------------------------------------------------------------------------------

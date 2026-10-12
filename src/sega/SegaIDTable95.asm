@@ -1,6 +1,5 @@
-;	Cartridge header: console name, copyright and date, game titles, serial number,
-;	checksum, I/O support, ROM and RAM ranges and region codes. The checksum word is the
-;	retail value with CHECKSUM=1.
+;	Cartridge header. It tells the console what the cartridge is: its name, copyright, titles,
+;	serial number, checksum, supported controllers, memory ranges and regions.
 
 ;					Data No. Address	Description
 	dc.b	'SEGA GENESIS    '	; 01	$100	Sega Genesis ID (16 bytes)

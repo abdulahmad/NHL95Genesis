@@ -1,5 +1,6 @@
-;	New in 95: season rosters and trades: roster helpers and save RAM rosters, the Trade
-;	Player screen, trade rules and evaluation, the GM decision screen and the trade itself.
+;	New in 95: rosters and trades. This file keeps the season rosters in save RAM, runs the Trade
+;	Player screen, checks each trade against the rules, lets the general manager decide and then
+;	makes the trade.
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi / exg; fixopcodes.js patches
 ;	the cmp and exg encodings after assembly.

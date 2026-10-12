@@ -1,4 +1,4 @@
-;	The menus and screens around the game: includes the files of front\ in ROM order.
+;	The menus and screens around the game. This list includes those files in ROM order.
 
 	include	front\season95.asm		; $08DF5A  season mode
 	include	front\stats95.asm		; $0920DE  game, player and season stats, League Leaders, line editor, highlights

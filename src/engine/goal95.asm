@@ -1,6 +1,6 @@
-;	Goals (scoring, assists, power play goal boxes), the scroll lock and window check,
-;	practice mode, period and game end, the game clock, and the controller setup screen.
-;	New in 95: the controller setup screen.
+;	Goals and the end of play. This file scores goals and assists, keeps the screen on the play,
+;	runs practice mode, ends periods and games and keeps the clock. New in 95: the controller
+;	setup screen.
 
 Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals / awayshootgoals), EndPenaltyShotPlay, the
 	;score summary (ScoreSum), the assignments of both teams (AssignTeam), PenGoalStuff

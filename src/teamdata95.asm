@@ -1,5 +1,5 @@
-;	Team data: TeamList, one record per team plus the two All-Star teams, then the playoff
-;	seeds.
+;	Team data. TeamList points to one record per team, the two All-Star teams included, and the
+;	playoff seeds follow the teams.
 
 TeamList	;Team number = index (ANH 0 ... WPG 25, ASE 26, ASW 27)
 	dc.l	Anaheim	;0 ANH

@@ -1,4 +1,6 @@
-;	New in 95: the season schedule.
+;	New in 95: the season schedule, one record for each day of the season with the games played
+;	on it.
+
 ;	Layout: a day count, then one record per day: the number of games, then two team
 ;	numbers per game (TeamList order). Each day is written with the Day macro: list the
 ;	matchups as team abbreviations in pairs; a day with no games is just "Day".

@@ -1,5 +1,5 @@
-;	User records: the name entry screen and name log, Record Holders and Playoff Stats, and
-;	the record updates after a game with the save RAM record blocks.
+;	User records. This file runs the name entry screen and the name log, shows Record Holders and
+;	the playoff stats, and updates the saved records after each game.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	NameEntryScreen, NameLetterGrid, NameEntryHelp, PrintNamePrompt, SyncLetterCursor, FindLetter, PrintNameCursor,

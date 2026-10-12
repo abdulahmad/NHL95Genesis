@@ -1,8 +1,6 @@
-;	Sprite animation tables, then revframetbl. SPAlist is a word, then one table per
-;	animation. A table is 8 direction offsets (from .t), a flag word, then frame,time word
-;	pairs per direction; a negative time ends the direction. SPA<name> is the table offset
-;	from SPAlist, which the code uses. Most player animations have a second table for the
-;	puck carrier, with a wp (with puck) suffix. The frames are written as SPF base + n.
+;	Sprite animation tables. For every animation there is a table that gives the frames to show
+;	in each direction and how long to show each one, and most player animations have a second
+;	table for the puck carrier. The table for reverse angle replays comes last.
 
 ; Sprite Frame (SPF) base indices, in frame sheet order, with the and value where 95 has the group. 95 moves the plain
 ; skating frames first and gives the skating groups 8 frames per direction (94: 5); a "New in 95" group is new frames.

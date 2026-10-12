@@ -1,4 +1,4 @@
-;	Crowd animation: the crowd frame update and frame table, and the crowd sprites.
+;	Crowd animation. This file steps the crowd through its frames and draws the crowd sprites.
 
 
 	include	macros\genesis.mac	;String

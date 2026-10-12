@@ -1,7 +1,7 @@
-;	Roster and game setup screens: Team Roster with its attribute columns, the game setup
-;	screen for all play modes, the season and player cards, default menus, pad assignment,
-;	the playoff tree and the saved line data.
-;	New in 95: the game setup screen was rewritten for the new play modes.
+;	Roster and game setup. This file shows the team roster, runs the game setup screen for every
+;	play mode with the season and player cards, sets the default menus and pads, builds the
+;	playoff tree and keeps the saved line data. New in 95: the game setup screen was rebuilt for
+;	the new play modes.
 
 	rts	;unused (the byte after CompShoot)
 

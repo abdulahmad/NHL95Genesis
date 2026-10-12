@@ -1,5 +1,5 @@
-;	Injuries and the power play box: injury type, the season injuries and their slots, and
-;	the power play timer. New in 95: season injuries.
+;	Injuries and the power play box. This file decides how long an injured player is out and
+;	shows the power play timer. New in 95: injuries that last through the season.
 
 setInjuryType	;a2 injured: out for the period ($FFFD) or the game ($FFFC); in a season a random games count (SetInjuryGames)
 	bclr	#1,(sflags12).w

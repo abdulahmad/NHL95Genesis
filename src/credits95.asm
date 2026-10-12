@@ -1,5 +1,4 @@
-;	Title screen credits text: length-prefixed Strings, String -1 ends a screen.
-;	newTitleScreen prints Credits first, then CreditsList.
+;	The credits text that scrolls on the title screen, screen by screen.
 
 	include	macros\genesis.mac	;String
 

@@ -1,6 +1,5 @@
-;	Pause: Pausemode and the pause screen, the three tab pause menu (INFO / STATS / PAUSE)
-;	with its item lists, manual goalie, goalie select and timeout items, pause scores and
-;	pad sides.
+;	Pause. This file runs the pause mode and its screen with the three tab pause menu, including
+;	manual goalie, goalie selection and timeouts, and shows the scores on the pause screen.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ; Pausemode

@@ -1,6 +1,6 @@
-;	Line changes: the line change box and input, the computer's line choice and automatic
-;	line changes, intermission team setup, shot stats, the EA Sports screen, power play time,
-;	the saved line sets and the team screens.
+;	Line changes. This file runs the line change box and its input, lets the computer pick its
+;	lines and change them on its own, and keeps the saved line sets. It also sets up the teams
+;	between periods, shows the EA Sports screen and draws the team screens.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2, linebar, getlinee and AvgCline.

@@ -1,6 +1,7 @@
-;	Collisions: wall and player collisions, checking (body check, hold, hook, sweep check),
-;	falls, puck collisions with sticks, bodies, goalies and the net, deflections and goal
-;	detection.
+;	Collisions. This file bounces players and the puck off the walls and each other, runs body
+;	checks, holds, hooks and sweep checks, decides when a player falls, handles the puck hitting
+;	sticks, bodies, goalies and the net, and spots deflections and goals.
+
 ;	Sort struct (SortCords, $80 each): $40 temp1, $64 bit 3 one-timer, bit 4 wall
 ;	collision, bit 5 fell, $68 Agl, $73 aggres, $74 Fgt, $75 Chk.
 

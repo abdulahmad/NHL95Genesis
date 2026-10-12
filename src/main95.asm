@@ -1,5 +1,5 @@
-;	Startup: the 68000 vectors, the cartridge header, Sega's init program, a region lock,
-;	the checksum call and Begin.
+;	Startup. This file holds the vector table and the cartridge header, runs Sega's startup code,
+;	checks the region and the checksum, and then starts the game.
 
 	include	macros\genesis.mac
 

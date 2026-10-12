@@ -1,5 +1,6 @@
-;	New in 95: the end of season awards (award scans, finalists and winner screens) and the
-;	season playoffs (setup, series winners and the playoff tree screen).
+;	New in 95: the end of season awards, with the finalists and the winner of each award, and
+;	the season playoffs, from the first series to the playoff tree screen.
+
 ;	$20xxxx addresses are save RAM (odd bytes).
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the

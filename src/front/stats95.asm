@@ -1,6 +1,6 @@
-;	Stats screens: Game Statistics, the pause menu Player Stats, the season stats save code,
-;	the season Player Stats, Team Stats and League Leaders screens, the line editor and the
-;	three stars.
+;	Stats screens. This file shows the game statistics, the player stats of the pause menu and
+;	the season's player stats, team stats and league leaders, and runs the line editor, the
+;	three stars and the highlights of the day's games.
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	GameStatisticsScreen, its scroll step, SetStatScroll, StatScrollRow / StatScrollRowEnd, PrintStatScrollArrows,

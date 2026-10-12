@@ -1,6 +1,5 @@
-;	The game engine: includes the files of engine\ in ROM order (one assembly, since
-;	PC-relative branches cross every file in it), plus the old Z80 program (the Z80OldProgram
-;	macro of sound95.asm) that sits among them.
+;	The game engine. This list includes the engine files in ROM order. They assemble as one piece
+;	because branches cross from file to file, and the old Z80 program sits among them.
 
 	include	engine\video95.asm		; $079902  VDP helpers, DMA, palettes, sprite frames, rink scroll, the decompressor, vblank, pads
 	include	engine\collide95.asm		; $07A7B4  checks, falls, wall, puck and goal collisions

@@ -76,3 +76,4 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
   GetHighlightSlot + HighlightsHelp trade95 -> stats95 (highlights screen); GetTeamUser awards95 -> records95
   (user names). Stub orgs/equates, package.json, list comments, ROM map, csv records updated. MATCH.
   FILE_ORIGINS.md ranges updated; its origin percentages were not regenerated.
+- Header rewrite 2 (story-style file headers, model 93G hockey93/main93/menu93): all 95G modules done. MATCH.
