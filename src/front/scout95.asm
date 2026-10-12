@@ -1329,10 +1329,11 @@ UserNameString	;a1 = NameEntryBuf: the name of name log entry d1 (GetLogName) as
 NullSaveClear	;Does nothing
 	rts
 
-GetPlayerPicture	;Only the picture: a0 = the picture of player d0 of team d1 (the team picture by jersey number, else a generic one)
+GetPlayerPicture	;a0 = the picture of line slot d0 of team d1: its featured picture when the player is in the
+	;team's first six, else a generic skater or goalie one
 	movem.l	d0-d7/a1-a6,-(sp)
 	btst	#6,(sflags11).w
-	beq.w	.0
+	beq.w	.sram
 	movea.l	#TeamList,a0
 	move.w	d1,d7
 	asl.w	#2,d1
@@ -1341,8 +1342,8 @@ GetPlayerPicture	;Only the picture: a0 = the picture of player d0 of team d1 (th
 	move.b	(a0,d0.w),d0
 	ext.w	d0
 	subq.w	#1,d0
-	bra.w	.1
-.0
+	bra.w	.gotslot
+.sram
 	movea.l	#SaveRAM+2*SRLines,a0
 	move.w	d1,d7
 	mulu.w	#$82,d1
@@ -1351,7 +1352,7 @@ GetPlayerPicture	;Only the picture: a0 = the picture of player d0 of team d1 (th
 	move.w	(a0,d0.w),d0
 	ext.w	d0
 	subq.w	#1,d0
-.1
+.gotslot
 	move.w	d0,-(sp)
 	jsr	(GetGoalieCountD7).l
 	clr.w	(rosterteam).w
@@ -1365,7 +1366,7 @@ GetPlayerPicture	;Only the picture: a0 = the picture of player d0 of team d1 (th
 	lsr.w	#8,d1
 	andi.w	#$1F,d1
 	cmp.w	#$1E,d1
-	beq.w	.5
+	beq.w	.generic
 	move.w	d0,d5
 	andi.w	#$FF,d0
 	addq.w	#1,d0
@@ -1375,15 +1376,15 @@ GetPlayerPicture	;Only the picture: a0 = the picture of player d0 of team d1 (th
 	movea.l	(a0,d2.w),a0
 	adda.w	6(a0),a0
 	clr.w	d4
-.loop
+.find
 	cmp.b	(a0)+,d0
-	beq.w	.4
+	beq.w	.featured
 	addq.w	#1,d4
 	cmp.w	#6,d4
-	blt.s	.loop
+	blt.s	.find
 	move.w	d5,d0
-	bra.w	.5
-.4
+	bra.w	.generic
+.featured
 	movea.l	#FeaturedPicIdx,a0
 	mulu.w	#6,d1
 	adda.l	d1,a0
@@ -1392,23 +1393,23 @@ GetPlayerPicture	;Only the picture: a0 = the picture of player d0 of team d1 (th
 	asl.w	#2,d4
 	movea.l	#FeaturedPictures,a0
 	movea.l	(a0,d4.w),a0
-	bra.w	.7
-.5
+	bra.w	.done
+.generic
 	jsr	(GetCreatedName).l
 	adda.w	(a1),a1
 	move.b	4(a1),d3
 	btst	#0,d3
-	bne.w	.6
+	bne.w	.alt
 	movea.l	#NoPicSkater1,a0
 	tst.w	(rosterteam).w
-	bne.w	.7
+	bne.w	.done
 	movea.l	#NoPicGoalie2,a0
-	bra.w	.7
-.6
+	bra.w	.done
+.alt
 	movea.l	#NoPicSkater2,a0
 	tst.w	(rosterteam).w
-	bne.w	.7
+	bne.w	.done
 	movea.l	#NoPicGoalie1,a0
-.7
+.done
 	movem.l	(sp)+,d0-d7/a1-a6
 	rts
