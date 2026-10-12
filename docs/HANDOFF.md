@@ -28,7 +28,7 @@ Failed-assembly detection: delete output/*.bin first, then check the bin exists 
 
 ## Comment rules
 No other games' names or "X name" notes, no source-file/segment names, no IDA references (IDA, loc_, sub_, unk_),
-no "(was: X)" history, no hardcoded ROM addresses (keep VRAM/RAM values, include address maps, RAM equate address
+no "(was: X)" history, no hardcoded ROM addresses (keep VRAM/RAM values, RAM equate address
 comments), no "only in 9x" tags ("New in 94/95:" allowed in file/section headers). Keep real explanations and
 value-difference notes like "(94 $58)" / "92 used bit 6". Every routine has a header comment. Concise.
 
@@ -84,5 +84,5 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
 - Cleanup run (Oct 2026), three tasks in order:
   1. Section banners inside src .asm: DONE. Routine-name lists, ROM addresses and per-version weeds replaced by short
      plain English dividers (15 files). Kept as-is: teamdata95 data layout banners, SegaInit (Sega's own banners), stubs.
-  2. Include/incbin line address maps (nhl95.asm and others): TODO.
+  2. Include line address maps: DONE (nhl95, main95, engine95, front95; plain descriptions kept). Rule above updated: no ROM addresses on include lines.
   3. NHLPA93SNES src/routines/** file header comments: TODO (per module folder).
