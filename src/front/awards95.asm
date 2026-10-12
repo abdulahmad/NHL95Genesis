@@ -8,38 +8,38 @@
 
 	include	macros\genesis.mac	;String
 
-GetTeamUser	;(recuser1) = the name log entry of the pad on team a1 (HmShots 1, else 2), 0 without sflags11 bit 7
+GetTeamUser	;(recuser1) = the name log entry of the pad on team a1 (tmstruct 1, else 2), 0 without sflags11 bit 7
 	movem.l	d0-d2,-(sp)
 	btst	#7,(sflags11).w
-	bne.w	.0
+	bne.w	.on
 	clr.w	(recuser1).w
-	bra.w	.5
-.0
+	bra.w	.done
+.on
 	move.w	#1,d0
 	cmpa.l	#tmstruct,a1
-	beq.w	.1
+	beq.w	.chk
 	move.w	#2,d0
-.1
+.chk
 	clr.w	(recuser1).w
 	cmp.w	(cont1team).w,d0
 	bne.w	.2
 	move.w	(pad1user).w,(recuser1).w
-	bra.w	.5
+	bra.w	.done
 .2
 	cmp.w	(cont2team).w,d0
 	bne.w	.3
 	move.w	(pad2user).w,(recuser1).w
-	bra.w	.5
+	bra.w	.done
 .3
 	cmp.w	(cont3team).w,d0
 	bne.w	.4
 	move.w	(pad3user).w,(recuser1).w
-	bra.w	.5
+	bra.w	.done
 .4
 	cmp.w	(cont4team).w,d0
-	bne.w	.5
+	bne.w	.done
 	move.w	(pad4user).w,(recuser1).w
-.5
+.done
 	movem.l	(sp)+,d0-d2
 	rts
 
@@ -60,11 +60,11 @@ SeasonAwards	;End of season awards: for each of the 9 awards the finalists, then
 .loop
 	bsr.w	AwardsLoop
 	tst.w	d1
-	beq.w	.1
+	beq.w	.done
 	btst	#7,d1
-	bne.w	.1
+	bne.w	.done
 	bra.s	.loop
-.1
+.done
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -201,7 +201,7 @@ AwardWinnerNop	;Does nothing (AwardsLoop calls it after DrawWinnerPanel)
 
 PrintFinalists	;"FINALISTS:" and the 3 finalists (player names, or teams for a team award), the highlight (AwardHilite) moving every AwardCycle frames; in winner mode (BA_PS_flags bit 1) only the winner (AwardWinner) stays
 	btst	#1,(BA_PS_flags).w
-	bne.w	.1
+	bne.w	.print
 	jsr	(printsmallz).l
 	String	CC_SetFont,$0,CC_SetAttribute,$1,CC_SetMap,$1,CC_SetX,$11,CC_SetY,$6,'FINALISTS:'
 	move.w	(AwardFlashTimer).w,d0
@@ -209,32 +209,32 @@ PrintFinalists	;"FINALISTS:" and the 3 finalists (player names, or teams for a t
 	divu.w	(AwardCycle).w,d0
 	swap	d0
 	tst.w	d0
-	bne.w	.1
+	bne.w	.print
 	cmpi.l	#$F0,(AwardTimer).w
-	blt.w	.0
+	blt.w	.step
 	movea.l	#AwardIds,a0
 	move.w	(AwardHilite).w,d0
 	move.w	(a0,d0.w),d0
 	cmp.w	(AwardWinner).w,d0
-	beq.w	.1
-.0
+	beq.w	.print
+.step
 	addq.w	#2,(AwardHilite).w
 	cmpi.w	#4,(AwardHilite).w
-	ble.w	.1
+	ble.w	.print
 	clr.w	(AwardHilite).w
-.1
+.print
 	jsr	(printz).l
 	String	-(TXPAL1+TXMAP1),$11,$8,$0
 	clr.w	d1
 	movea.l	#AwardIds,a0
-.loop
+.item
 	clr.w	(printfontset).w
 	cmp.w	(AwardHilite).w,d1
-	bne.w	.3
+	bne.w	.font
 	move.w	#2,(printfontset).w
-.3
+.font
 	btst	#4,(sflags11).w
-	beq.w	.7
+	beq.w	.player
 	move.w	(a0,d1.w),d0
 	asl.w	#2,d0
 	movea.l	#TeamList,a1
@@ -247,7 +247,7 @@ PrintFinalists	;"FINALISTS:" and the 3 finalists (player names, or teams for a t
 	beq.w	.4
 	tst.w	(printfontset).w
 	bne.w	.4
-	movea.l	#.6,a1
+	movea.l	#.blank,a1
 .4
 	jsr	(printsmall).l
 	move.w	#$11,(printx).w
@@ -259,18 +259,18 @@ PrintFinalists	;"FINALISTS:" and the 3 finalists (player names, or teams for a t
 	beq.w	.5
 	tst.w	(printfontset).w
 	bne.w	.5
-	movea.l	#.6,a1
+	movea.l	#.blank,a1
 .5
 	jsr	(printsmall).l
 	addq.w	#2,(printy).w
 	move.w	#$11,(printx).w
 	addq.w	#2,d1
 	cmp.w	#4,d1
-	ble.w	.loop
+	ble.w	.item
 	rts
-.6	;Blank String (12 spaces)
+.blank	;Blank String (12 spaces)
 	String	'            '
-.7
+.player
 	move.w	(a0,d1.w),d0
 	ext.l	d0
 	divu.w	#$1A,d0
@@ -282,7 +282,7 @@ PrintFinalists	;"FINALISTS:" and the 3 finalists (player names, or teams for a t
 	beq.w	.8
 	tst.w	(printfontset).w
 	bne.w	.8
-	movea.l	#.6,a1
+	movea.l	#.blank,a1
 .8
 	jsr	(printsmall).l
 	move.w	#$11,(printx).w
@@ -293,14 +293,14 @@ PrintFinalists	;"FINALISTS:" and the 3 finalists (player names, or teams for a t
 	beq.w	.9
 	tst.w	(printfontset).w
 	bne.w	.9
-	movea.l	#.6,a1
+	movea.l	#.blank,a1
 .9
 	jsr	(printsmall).l
 	addq.w	#2,(printy).w
 	move.w	#$11,(printx).w
 	addq.w	#2,d1
 	cmp.w	#4,d1
-	ble.w	.loop
+	ble.w	.item
 	rts
 
 FlashWinnerCaption	;Flash "The Winner !" (AwardFlashTimer: on $1E frames, off to $3C)
@@ -309,22 +309,22 @@ FlashWinnerCaption	;Flash "The Winner !" (AwardFlashTimer: on $1E frames, off to
 	move.w	#2,(printfontset).w
 	move.w	(AwardFlashTimer).w,d0
 	cmp.w	#$1E,d0
-	blt.w	.0
+	blt.w	.print
 	move.w	#0,(printfontset).w
 	cmp.w	#$3C,d0
-	blt.w	.0
+	blt.w	.print
 	clr.w	(AwardFlashTimer).w
-.0
+.print
 	jsr	(printsmallz).l
 	String	CC_SetAttribute,$1,CC_SetMap,$1,CC_SetX,$12,CC_SetY,$6,'The Winner !'
 	rts
 
 AwardsLoop	;Awards frames: finalists for $12C frames, then the winner to $258, then the next award; d1 = a pad button (exit), 0 after the last award or AwardWait frames
 	move.w	#$5460,(AwardWait).w
-.loop
+.wait
 	move.w	(vcount).w,d1
 	sub.w	(oldvcount).w,d1
-	beq.s	.loop
+	beq.s	.wait
 	move.w	(vcount).w,(oldvcount).w
 	tst.l	(AwardTimer).w
 	bne.w	.1
@@ -333,29 +333,29 @@ AwardsLoop	;Awards frames: finalists for $12C frames, then the winner to $258, t
 	addq.w	#1,(AwardFlashTimer).w
 	addq.l	#1,(AwardTimer).w
 	cmpi.l	#$12C,(AwardTimer).w
-	bge.w	.2
+	bge.w	.winner
 	bclr	#1,(BA_PS_flags).w
 	bsr.w	PrintFinalists
-	bra.w	.4
-.2
+	bra.w	.chkend
+.winner
 	cmpi.l	#$12C,(AwardTimer).w
-	bne.w	.3
+	bne.w	.flash
 	bsr.w	DrawWinnerPanel
 	bsr.w	AwardWinnerNop
-.3
+.flash
 	bsr.w	FlashWinnerCaption
 	bset	#1,(BA_PS_flags).w
 	bsr.w	PrintFinalists
-.4
+.chkend
 	cmpi.l	#$258,(AwardTimer).w
 .5
-	blt.w	.7
+	blt.w	.pads
 	addq.w	#1,(AwardIndex).w
 	cmpi.w	#9,(AwardIndex).w
-	blt.w	.6
+	blt.w	.nextaward
 	clr.w	d1
 	rts
-.6
+.nextaward
 	jsr	(printz).l
 	String	-TXMAP1,$0,$0,$0
 	move.w	#$7FF,d2
@@ -370,7 +370,7 @@ AwardsLoop	;Awards frames: finalists for $12C frames, then the winner to $258, t
 	bsr.w	FindAwardFinalists
 	bsr.w	PrintAwardTitle
 	bsr.w	DrawAwardPicture
-.7
+.pads
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
@@ -384,7 +384,7 @@ AwardsLoop	;Awards frames: finalists for $12C frames, then the winner to $258, t
 	bra.w	.exit
 .9
 	tst.w	(FourWayPlay).w
-	beq.w	.11
+	beq.w	.count
 	jsr	(ReadJoy3).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
@@ -394,11 +394,11 @@ AwardsLoop	;Awards frames: finalists for $12C frames, then the winner to $258, t
 	jsr	(ReadJoy4).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
-	beq.w	.11
+	beq.w	.count
 	bra.w	.exit
-.11
+.count
 	subq.w	#1,(AwardWait).w
-	bpl.w	.loop
+	bpl.w	.wait
 .exit
 	rts
 
@@ -485,7 +485,7 @@ FindAwardFinalists	;Score the candidates of award AwardIndex, sort them (SortAwa
 
 SortAwardScores	;Bubble sort AwardScores (with AwardIds), highest first, lowest first with sflags12 bit 6
 	btst	#6,(sflags12).w
-	bne.w	.loop2
+	bne.w	.low
 	move.w	(AwardCount).w,d1
 	subq.w	#2,d1
 	bmi.w	.exit
@@ -493,11 +493,11 @@ SortAwardScores	;Bubble sort AwardScores (with AwardIds), highest first, lowest 
 	movea.l	#AwardScores,a0
 	clr.w	d0
 	clr.w	(TempWord1).w
-.loop
+.cmp
 	move.w	(a0,d0.w),d2
 	move.w	2(a0,d0.w),d3
 	cmp.w	d2,d3
-	ble.w	.1
+	ble.w	.noswap
 	st	(TempWord1).w
 	move.w	d2,2(a0,d0.w)
 	move.w	d3,(a0,d0.w)
@@ -505,13 +505,13 @@ SortAwardScores	;Bubble sort AwardScores (with AwardIds), highest first, lowest 
 	move.w	2(a1,d0.w),d3
 	move.w	d2,2(a1,d0.w)
 	move.w	d3,(a1,d0.w)
-.1
+.noswap
 	addq.w	#2,d0
-	dbf	d1,.loop
+	dbf	d1,.cmp
 	tst.w	(TempWord1).w
 	beq.w	.exit
 	bra.s	SortAwardScores
-.loop2
+.low
 	move.w	(AwardCount).w,d1
 	subq.w	#2,d1
 	bmi.w	.exit
@@ -519,11 +519,11 @@ SortAwardScores	;Bubble sort AwardScores (with AwardIds), highest first, lowest 
 	movea.l	#AwardScores,a0
 	clr.w	d0
 	clr.w	(TempWord1).w
-.loop3
+.lowcmp
 	move.w	(a0,d0.w),d2
 	move.w	2(a0,d0.w),d3
 	cmp.w	d2,d3
-	bge.w	.4
+	bge.w	.lownoswap
 	st	(TempWord1).w
 	move.w	d2,2(a0,d0.w)
 	move.w	d3,(a0,d0.w)
@@ -531,12 +531,12 @@ SortAwardScores	;Bubble sort AwardScores (with AwardIds), highest first, lowest 
 	move.w	2(a1,d0.w),d3
 	move.w	d2,2(a1,d0.w)
 	move.w	d3,(a1,d0.w)
-.4
+.lownoswap
 	addq.w	#2,d0
-	dbf	d1,.loop3
+	dbf	d1,.lowcmp
 	tst.w	(TempWord1).w
 	beq.w	.exit
-	bra.s	.loop2
+	bra.s	.low
 .exit
 	rts
 
@@ -559,7 +559,8 @@ ScanConnSmythe	;Conn Smythe: skaters by playoff points (ConnSmytheScore)
 rtsAwardScan	;Not used
 	rts
 
-ScanPresidents	;Presidents Trophy: the 26 teams by regular season points (ReadStandings with SeasonFlags bit 5 clear, PresidentsScore)
+ScanPresidents	;Presidents Trophy: the 26 teams by regular season points (ReadStandings with SeasonFlags bit 5 clear,
+	;PresidentsScore)
 	movea.l	#PresidentsScore,a6
 	move.l	a0,-(sp)
 	movea.l	#StandingsBuf,a0
@@ -572,14 +573,14 @@ ScanPresidents	;Presidents Trophy: the 26 teams by regular season points (ReadSt
 	movea.l	#AwardIds,a1
 	movea.l	#AwardScores,a2
 	clr.w	(AwardCount).w
-.loop
+.team
 	movem.l	d1-d3/a1-a2,-(sp)
 	jsr	(a6)
 	movem.l	(sp)+,d1-d3/a1-a2
 	addq.w	#1,(AwardCount).w
 	move.w	d7,(a1)+
 	move.w	d5,(a2)+
-	dbf	d7,.loop
+	dbf	d7,.team
 	rts
 
 ScanSelke	;Selke: forwards (SelkeScore)
@@ -624,7 +625,7 @@ ScanAllPlayers	;Every player d1 of the 26 teams (d7): when the score routine a6 
 	movea.l	#AwardIds,a1
 	movea.l	#AwardScores,a2
 	clr.w	(AwardCount).w
-.loop
+.team
 	move.w	d1,d0
 	ext.l	d0
 	divu.w	#$1A,d0
@@ -635,29 +636,29 @@ ScanAllPlayers	;Every player d1 of the 26 teams (d7): when the score routine a6 
 	move.w	(sp),d0
 	jsr	(GetPlayerCountD7).l
 	move.w	d0,d3
-.loop2
+.player
 	movem.l	d1-d3/a1-a2,-(sp)
 	jsr	(a6)
 	movem.l	(sp)+,d1-d3/a1-a2
-	bmi.w	.2
+	bmi.w	.next
 	addq.w	#1,(AwardCount).w
 	move.w	d1,(a1)+
 	move.w	d5,(a2)+
-.2
+.next
 	addq.w	#1,(sp)
 	move.w	(sp),d0
 	addq.w	#1,d1
 	cmp.w	d3,d0
-	bge.w	.3
-	bra.s	.loop2
-.3
+	bge.w	.nextteam
+	bra.s	.player
+.nextteam
 	tst.w	(sp)+
 	addq.w	#1,d7
 	cmp.w	#$1A,d7
 	bge.w	.exit
 	move.w	d7,d1
 	mulu.w	#$1A,d1
-	bra.s	.loop
+	bra.s	.team
 .exit
 	rts
 
@@ -691,7 +692,8 @@ PresidentsScore	;Score: team d7, 2 * wins + ties (StandingsBuf)
 	bra.w	AwardQualifies
 	rts
 
-SelkeScore	;Score: forwards (d2 up to GetDefenseStartD7) with 10 goals per 100 games or more; the score adds two rating nibbles (GetRosterName)
+SelkeScore	;Score: forwards (d2 up to GetDefenseStartD7) with 10 goals per 100 games or more; the score is the
+	;goal rate high nibble plus rating byte 3 (GetRosterName)
 	move.w	d1,d0
 	ext.l	d0
 	divu.w	#$1A,d0
@@ -1010,37 +1012,37 @@ SeedPairings	;Write the pairings 1 v 8, 2 v 7, 3 v 6, 4 v 5 of the sorted teams 
 SortSeeds	;Bubble sort the SeedCount team bytes at a0 by SeedPoints, then SeedGames, highest first
 	movea.l	#SeedPoints,a1
 	movea.l	#SeedGames,a2
-.loop
+.pass
 	bclr	#6,(sflags6).w
 	clr.w	d7
-.loop2
+.cmp
 	clr.w	d6
 	move.b	(a0,d7.w),d6
 	move.b	(a1,d6.w),d0
 	move.b	1(a0,d7.w),d6
 	cmp.b	(a1,d6.w),d0
-	bgt.w	.3
-	blt.w	.2
+	bgt.w	.next
+	blt.w	.swap
 	move.b	(a0,d7.w),d6
 	move.b	(a2,d6.w),d0
 	move.b	1(a0,d7.w),d6
 	cmp.b	(a2,d6.w),d0
-	ble.w	.3
-.2
+	ble.w	.next
+.swap
 	bset	#6,(sflags6).w
 	move.b	(a0,d7.w),d5
 	move.b	1(a0,d7.w),d4
 	move.b	d5,1(a0,d7.w)
 	move.b	d4,(a0,d7.w)
-.3
+.next
 	addq.w	#2,d7
 	cmp.w	(SeedCount).w,d7
-	bge.w	.4
+	bge.w	.chk
 	subq.w	#1,d7
-	bra.s	.loop2
-.4
+	bra.s	.cmp
+.chk
 	btst	#6,(sflags6).w
-	bne.s	.loop
+	bne.s	.pass
 	rts
 
 CalcSeedPoints	;SeedPoints = 2 * wins + ties and SeedGames = wins + losses + ties of the 26 teams (StandingsBuf)
@@ -1049,8 +1051,8 @@ CalcSeedPoints	;SeedPoints = 2 * wins + ties and SeedGames = wins + losses + tie
 	movea.l	#SeedPoints,a2
 	movea.l	#SeedGames,a3
 	clr.w	d2
-	bra.w	.1
-.loop
+	bra.w	.next
+.team
 	move.w	d2,d5
 	mulu.w	#3,d2
 	clr.w	d3
@@ -1064,8 +1066,8 @@ CalcSeedPoints	;SeedPoints = 2 * wins + ties and SeedGames = wins + losses + tie
 	move.b	d3,(a3,d5.w)
 	move.w	d5,d2
 	addq.w	#1,d2
-.1
-	dbf	d0,.loop
+.next
+	dbf	d0,.team
 	rts
 
 CopyBytes	;Copy d0 + 1 bytes from a1 to a0
@@ -1085,16 +1087,16 @@ SetupPlayoffs	;Start the playoffs: save the season header (SRSeasonHeaderSave), 
 	movea.l	#SaveRAM+2*SRSeasonHeaderSave,a1
 	move.w	#8,d0
 	subq.w	#1,d0
-.loop
+.save
 	move.w	(a0)+,(a1)+
-	dbf	d0,.loop
+	dbf	d0,.save
 	movea.l	#SaveRAM+2*SRSeasonHeader,a0
 	clr.w	(a0)
 	move.w	#1,d0
 	btst	#1,(SeasonDay+1).w
-	beq.w	.1
+	beq.w	.games
 	move.w	#7,d0
-.1
+.games
 	move.w	d0,2(a0)
 	clr.w	4(a0)
 	jsr	(ReadSeasonHeader).l
@@ -1103,27 +1105,27 @@ SetupPlayoffs	;Start the playoffs: save the season header (SRSeasonHeaderSave), 
 	movea.l	#SaveRAM+2*SRGameResults,a0
 	move.w	#$CCC,d0
 	subq.w	#1,d0
-.loop2
+.clrres
 	clr.w	(a0)+
-	dbf	d0,.loop2
+	dbf	d0,.clrres
 	movea.l	#SaveRAM+2*SRPOStandings,a0
 	move.w	#$4E,d0
 	subq.w	#1,d0
-.loop3
+.clrpost
 	clr.w	(a0)+
-	dbf	d0,.loop3
+	dbf	d0,.clrpost
 	movea.l	#SaveRAM+2*SRPOGoals,a0
 	move.w	#$1B6C,d0
 	subq.w	#1,d0
-.loop4
+.clrgoals
 	clr.w	(a0)+
-	dbf	d0,.loop4
+	dbf	d0,.clrgoals
 	movea.l	#SaveRAM+2*SRPOTeamStats,a0
 	move.w	#$104,d0
 	subq.w	#1,d0
-.loop5
+.clrteam
 	clr.w	(a0)+
-	dbf	d0,.loop5
+	dbf	d0,.clrteam
 	clr.l	(SaveRAM+2*(SRSeasonHeaderSave+8)).l
 	move.l	#0,(SaveRAM+2*SRPORound).l
 	bsr.w	NextPlayoffRound
@@ -1137,9 +1139,9 @@ RestoreSeasonHeader	;Put back the season header saved by SetupPlayoffs. Nothing 
 	movea.l	#SaveRAM+2*SRSeasonHeaderSave,a1
 	move.w	#8,d0
 	subq.w	#1,d0
-.loop
+.copy
 	move.w	(a1)+,(a0)+
-	dbf	d0,.loop
+	dbf	d0,.copy
 	jsr	(ReadSeasonHeader).l
 	jsr	(MakeSRAMChecksum).l
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1150,9 +1152,9 @@ NextPlayoffRound	;Next playoff round: the winners of the last round (CollectSeri
 	clr.l	(SaveRAM+2*SRPODay).l
 	move.l	(SaveRAM+2*SRPORound).l,d0
 	tst.b	d0
-	beq.w	.0
+	beq.w	.first
 	bsr.w	CollectSeriesWinners
-.0
+.first
 	bsr.w	InitPlayoffSeries
 	bsr.w	BuildPlayoffDayGames
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1165,7 +1167,7 @@ InitPlayoffSeries	;The series of the round at save RAM SRPOSeries ($20 bytes eac
 	bsr.w	SeriesInRound
 	move.w	d0,d5
 	subq.w	#1,d5
-.loop
+.series
 	move.w	(a1)+,d0
 	andi.w	#$FF,d0
 	ext.l	d0
@@ -1178,7 +1180,7 @@ InitPlayoffSeries	;The series of the round at save RAM SRPOSeries ($20 bytes eac
 	clr.l	8(a0)
 	clr.l	$C(a0)
 	adda.w	#$20,a0
-	dbf	d5,.loop
+	dbf	d5,.series
 	jsr	(MakeSRAMChecksum).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -1188,14 +1190,14 @@ BuildPlayoffDayGames	;The games of day SeasonDay: the series of the round not ye
 	movea.l	#SaveRAM+2*(SRPOSchedule+1),a0
 	clr.w	d0
 	move.b	(SeasonDay).w,d0
-	bra.w	.1
-.loop
+	bra.w	.day
+.skipday
 	move.w	(a0)+,d1
 	andi.w	#$FF,d1
 	asl.w	#2,d1
 	adda.w	d1,a0
-.1
-	dbf	d0,.loop
+.day
+	dbf	d0,.skipday
 	bsr.w	GetRoundPairings
 	movea.l	a0,a2
 	clr.w	(a0)
@@ -1203,7 +1205,7 @@ BuildPlayoffDayGames	;The games of day SeasonDay: the series of the round not ye
 	bsr.w	SeriesInRound
 	subq.w	#1,d0
 	movea.l	#SaveRAM+2*(SRPOSeries+4),a4
-.loop2
+.series
 	move.w	2(a4),d1
 	move.b	#4,d6
 	btst	#1,(SeasonDay+1).w
@@ -1211,7 +1213,7 @@ BuildPlayoffDayGames	;The games of day SeasonDay: the series of the round not ye
 	move.b	#1,d6
 .3
 	cmp.b	d6,d1
-	bge.w	.5
+	bge.w	.next
 	move.w	6(a4),d1
 	move.b	#4,d6
 	btst	#1,(SeasonDay+1).w
@@ -1219,14 +1221,14 @@ BuildPlayoffDayGames	;The games of day SeasonDay: the series of the round not ye
 	move.b	#1,d6
 .4
 	cmp.b	d6,d1
-	bge.w	.5
+	bge.w	.next
 	move.w	(a1),(a2)+
 	move.w	2(a1),(a2)+
 	addq.w	#1,(a0)
-.5
+.next
 	addq.w	#4,a1
 	adda.w	#$20,a4
-	dbf	d0,.loop2
+	dbf	d0,.series
 	move.l	a0,-(sp)
 	jsr	(MakeSRAMChecksum).l
 	movea.l	(sp)+,a0
@@ -1269,10 +1271,10 @@ ReadPlayoffSchedule	;PlayoffSchedule = the low bytes of the $EF words at save RA
 	move.w	#$EF,d4
 	subq.w	#1,d4
 	movea.l	#picturebuf,a6
-.loop
+.copy
 	move.w	(a5)+,d5
 	move.b	d5,(a6)+
-	dbf	d4,.loop
+	dbf	d4,.copy
 	movem.l	(sp)+,d4-d5/a5-a6
 	rts
 
@@ -1283,33 +1285,33 @@ RecordPlayoffGame	;In the playoffs (SeasonFlags bit 5): add the game a0 (teams, 
 	clr.w	d0
 	move.b	(a0),d0
 	movea.l	#SaveRAM+2*SRPOSeries,a1
-.loop
+.find
 	move.l	(a1),d1
 	cmp.b	d0,d1
-	beq.w	.1
+	beq.w	.found
 	move.l	4(a1),d1
 	cmp.b	d0,d1
-	beq.w	.1
+	beq.w	.found
 	adda.w	#$20,a1
-	bra.s	.loop
-.1
+	bra.s	.find
+.found
 	move.b	3(a0),d1
 	cmp.b	2(a0),d1
-	blt.w	.2
+	blt.w	.winner
 	move.b	1(a0),d0
-.2
+.winner
 	move.l	(a1),d1
 	cmp.b	d0,d1
-	beq.w	.3
+	beq.w	.team1
 	move.l	$C(a1),d1
 	addq.b	#1,d1
 	move.l	d1,$C(a1)
-	bra.w	.4
-.3
+	bra.w	.done
+.team1
 	move.l	8(a1),d1
 	addq.b	#1,d1
 	move.l	d1,8(a1)
-.4
+.done
 	jsr	(MakeSRAMChecksum).l
 	movem.l	(sp)+,d0-d7/a0-a6
 .exit
@@ -1332,7 +1334,7 @@ CollectSeriesWinners	;The winners of the round series to the next round pairings
 	asr.w	#1,d1
 	subq.w	#1,d1
 	movea.l	#SaveRAM+2*SRPOSeries,a1
-.loop
+.pair
 	move.l	(a1),d2
 	move.l	8(a1),d3
 	move.l	$C(a1),d4
@@ -1352,7 +1354,7 @@ CollectSeriesWinners	;The winners of the round series to the next round pairings
 	adda.w	#$20,a1
 	move.w	(sp)+,(a0)+
 	move.w	d2,(a0)+
-	dbf	d1,.loop
+	dbf	d1,.pair
 	jsr	(MakeSRAMChecksum).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -1369,11 +1371,11 @@ PlayoffTreeScreen	;Playoff tree: the series (gsstruct), bosgames, gamelevel and 
 	movea.l	#gsstruct,a0
 	movea.l	#SaveRAM+2*SRPOSeries,a1
 	move.w	#$40,d1
-.loop
+.series
 	move.l	(a1)+,d2
 	andi.w	#$FF,d2
 	move.w	d2,(a0)+
-	dbf	d1,.loop
+	dbf	d1,.series
 	move.l	(SaveRAM+2*SRPODay).l,d0
 	andi.w	#$FF,d0
 	move.w	d0,(bosgames).w
@@ -1389,10 +1391,10 @@ PlayoffTreeScreen	;Playoff tree: the series (gsstruct), bosgames, gamelevel and 
 	subq.w	#1,d0
 	movea.l	#SaveRAM+2*SRPOPairings,a0
 	movea.l	#potree,a1
-.loop2
+.pairs
 	move.w	(a0)+,d1
 	move.b	d1,(a1)+
-	dbf	d0,.loop2
+	dbf	d0,.pairs
 	jsr	(PlayoffScreen).l
 	bclr	#2,(sflags11).w
 	movem.l	(sp)+,d0-d7/a0-a6
