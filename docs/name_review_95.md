@@ -1506,3 +1506,4 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | new-in-95 locals: middle | routine names verified; 15 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: lines | routine names verified; 34 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
 | new-in-95 locals: records | routine names verified; 1 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |
+| new-in-95 locals: goal | routine names verified; 11 backward-branch targets named .loop/.loopN and single rts exits .exit; other numbers are short skips |

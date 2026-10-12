@@ -214,7 +214,7 @@ AssignTeam	;Give assignment d0 to every player of team a2 on the ice (assinsert)
 	move.l	a3,-(sp)
 	movea.w	tmsort(a2),a3
 	moveq	#5,d3
-.0
+.loop
 	tst.w	position(a3)
 	ble.w	.2
 	btst	#0,pflags2(a3)
@@ -227,7 +227,7 @@ AssignTeam	;Give assignment d0 to every player of team a2 on the ice (assinsert)
 	jsr	(assinsert).l
 .2
 	adda.w	#SCstruct,a3
-	dbf	d3,.0
+	dbf	d3,.loop
 	movea.l	(sp)+,a3
 
 rtsgoal	;The shared rts of Goal and AssignTeam
@@ -533,7 +533,7 @@ SetGoaliesCtl	;Practice Mode: pull the goalies the home / away goalie control (h
 .0
 	move.w	#5,d1
 	movea.l	#GoalieCtlLimits,a1
-.1
+.loop
 	move.w	d1,d2
 	asl.w	#7,d2
 	move.w	position(a0,d2.w),d3
@@ -542,8 +542,8 @@ SetGoaliesCtl	;Practice Mode: pull the goalies the home / away goalie control (h
 	andi.w	#$FF,d3
 	cmp.w	d0,d3
 	bgt.w	.3
-.2
-	dbf	d1,.1
+.loop2
+	dbf	d1,.loop
 	rts
 .3
 	move.w	#$FFFF,position(a0,d2.w)
@@ -555,7 +555,7 @@ SetGoaliesCtl	;Practice Mode: pull the goalies the home / away goalie control (h
 	lea	(a0,d2.w),a3
 	jsr	(assreplace).l
 	movem.l	(sp)+,d0/a3
-	bra.s	.2
+	bra.s	.loop2
 
 GoalieCtlLimits	;Goalie control value needed per position
 	dc.b	0,4,5,2,1,3
@@ -742,7 +742,7 @@ SetContTeams	;The controller setup screen: pick the team of each pad (cont1team 
 	;players and goalies
 	tst.w	(demoflag).w
 	bmi.w	.1
-.0
+.loop
 	clr.w	(cont1team).w
 	clr.w	(cont2team).w
 	clr.w	(cont3team).w
@@ -765,21 +765,21 @@ SetContTeams	;The controller setup screen: pick the team of each pad (cont1team 
 	move.w	#$18,(palcount).w
 	bclr	#2,(disflags).w
 	clr.w	(carddelay).w
-.3
+.loop2
 	move.w	(vcount).w,d0
-.4
+.loop3
 	cmp.w	(vcount).w,d0
-	beq.s	.4
+	beq.s	.loop3
 	addq.w	#1,(carddelay).w
 	cmpi.w	#$5460,(carddelay).w
-	bge.s	.0
+	bge.s	.loop
 	bsr.w	ReadAllPads
 	tst.w	(TempLegSpd).w
 	beq.w	.5
 	clr.w	(carddelay).w
 .5
 	btst	#7,(TempLegSpd+1).w
-	bne.w	.16
+	bne.w	.exit
 	btst	#1,(TempLegSpd+1).w
 	beq.w	.6
 	tst.w	(setupvalues).w
@@ -805,7 +805,7 @@ SetContTeams	;The controller setup screen: pick the team of each pad (cont1team 
 .8
 	movea.l	#cont1team,a0
 	movea.l	#TempWord1+1,a3
-.9
+.loop4
 	move.b	(a3),d1
 	btst	#2,d1
 	beq.w	.12
@@ -850,9 +850,9 @@ SetContTeams	;The controller setup screen: pick the team of each pad (cont1team 
 .15
 	addq.w	#2,a0
 	addq.w	#2,a3
-	dbf	d4,.9
-	bra.w	.3
-.16
+	dbf	d4,.loop4
+	bra.w	.loop2
+.exit
 	rts
 
 ContTeamOrder1	;Pad team order tables for SetContTeams
@@ -883,10 +883,10 @@ PrintPracticeGoalies	;Set homegoaliectl / awaygoaliectl from PracticeGoalieTbl a
 PrintGoalieCount	;Print GoalieCountTxt string d0 (PrintSetupStr)
 	movea.l	#GoalieCountTxt,a1
 	bra.w	.1
-.0
+.loop
 	adda.w	(a1),a1
 .1
-	dbf	d0,.0
+	dbf	d0,.loop
 	bra.w	PrintSetupStr
 
 GoalieCountTxt	;"0", "1", "2"
@@ -909,7 +909,7 @@ DrawPadSetup	;Draw the pads, their icons (DrawPadIcon) and the cursor (DrawPadCu
 .0
 	movea.l	#cont1team,a0
 	move.w	#0,d7
-.1
+.loop
 	move.w	(printy).w,-(sp)
 	subq.w	#1,(printy).w
 	movea.l	#BlankLineTxt,a1
@@ -934,7 +934,7 @@ DrawPadSetup	;Draw the pads, their icons (DrawPadIcon) and the cursor (DrawPadCu
 	addq.w	#2,a0
 	addq.w	#3,(printy).w
 	addq.w	#1,d7
-	dbf	d4,.1
+	dbf	d4,.loop
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -993,15 +993,15 @@ BlankLineTxt	;A blank line
 
 PrintPracticeTitle	;Practice Mode: print PracticePlayersTxt, highlighted (PrintSetupStrHi) when setupvalues is 0
 	btst	#7,(sflags9).w
-	beq.w	.1
+	beq.w	.exit
 	movea.l	#PracticePlayersTxt,a1
 	tst.w	(setupvalues).w
 	beq.w	.0
 	bsr.w	PrintSetupStrHi
-	bra.w	.1
+	bra.w	.exit
 .0
 	bsr.w	PrintSetupStr
-.1
+.exit
 	rts
 
 PracticePlayersTxt
