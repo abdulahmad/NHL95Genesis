@@ -1600,18 +1600,18 @@ GetPadUser	;(a4) = the name log entry (pad1user ... pad4user) of the first pad o
 UpdateUserRecord	;Team record block d1 (a pad's name log entry) for the pad's team d0 (UpdateTeamRecord); for a pad
 	;with no team, the team no pad plays (none when both have pads)
 	tst.w	d0
-	bne.w	.2
+	bne.w	.hasteam
 	movea.l	#tmstruct,a1
 	cmpi.w	#1,(cont1team).w
-	beq.w	.0
+	beq.w	.chkaway
 	cmpi.w	#1,(cont2team).w
-	beq.w	.0
+	beq.w	.chkaway
 	cmpi.w	#1,(cont3team).w
-	beq.w	.0
+	beq.w	.chkaway
 	cmpi.w	#1,(cont4team).w
-	beq.w	.0
+	beq.w	.chkaway
 	bra.w	.1
-.0
+.chkaway
 	movea.l	#AwShots,a1
 	cmpi.w	#2,(cont1team).w
 	beq.w	.x
@@ -1622,29 +1622,29 @@ UpdateUserRecord	;Team record block d1 (a pad's name log entry) for the pad's te
 	cmpi.w	#2,(cont4team).w
 	beq.w	.x
 .1
-	bra.w	.3
-.2
+	bra.w	.order
+.hasteam
 	movea.l	#tmstruct,a1
 	cmp.w	#2,d0
-	bne.w	.3
+	bne.w	.order
 	movea.l	#AwShots,a1
-.3
+.order
 	cmpa.l	#tmstruct,a1
-	bne.w	.5
+	bne.w	.awayfirst
 	movea.l	#AwShots,a2
 	move.w	(HomeTeam).w,d3
 	move.w	(VisTeam).w,d4
-.loop
+.user
 	exg	a1,a2
 	bsr.w	GetTeamUser
 	move.w	(recuser1).w,d2
 	exg	a1,a2
 	bra.w	.6
-.5
+.awayfirst
 	movea.l	#tmstruct,a2
 	move.w	(VisTeam).w,d3
 	move.w	(HomeTeam).w,d4
-	bra.s	.loop
+	bra.s	.user
 .6
 	bra.w	UpdateTeamRecord
 .x
