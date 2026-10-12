@@ -48,7 +48,7 @@ InitialSP = $FFFFF6	;reset vector 0. 24-bit form of $FFFFFFF6. Begin moves the s
 ;	Cartridge header ($100-$1FF)
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-	include	sega\SegaIDTable95.asm	;$100-$1FF cartridge header
+	include	sega\SegaIDTable95.asm	;cartridge header
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
@@ -56,7 +56,7 @@ InitialSP = $FFFFF6	;reset vector 0. 24-bit form of $FFFFFFF6. Begin moves the s
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 Start	;Power on: the Sega hardware init, then the region lock, the checksum and Begin
-	include	sega\SegaInit.asm	;$200-$2F9 SegaInit, falls into CHECK_VDP ($2FA)
+	include	sega\SegaInit.asm	;SegaInit, falls into CHECK_VDP
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
