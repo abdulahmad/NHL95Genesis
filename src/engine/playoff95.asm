@@ -79,11 +79,11 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	adda.l	(a1),a1
 	moveq	#7,d0
 	movea.w	#(palfadenew+$40-M68K_RAM),a0
-.1
+.pal
 	move.l	-$40(a0),$20(a0)
 	move.l	(a1)+,-$40(a0)
 	move.l	-$20(a0),(a0)+
-	dbf	d0,.1
+	dbf	d0,.pal
 	move.w	d4,(energybarchars).w
 	jsr	(DecompressGraphicsPlain).l
 	clr.w	(pausetimeout).w
@@ -127,14 +127,14 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	move.b	(a0)+,d4
 	bmi.w	.5
 	movea.w	#(gsstruct-M68K_RAM),a2
-.4
+.top3
 	move.b	(a0)+,(printx+1).w
 	move.b	(a0)+,(printy+1).w
 	jsr	(printsmallz).l
 	String	CC_SetAttribute,3
 	jsr	(PrintSeriesScore).l
 	adda.w	#$10,a2
-	dbf	d4,.4
+	dbf	d4,.top3
 .5
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,0,1,$41,1,0
@@ -175,9 +175,9 @@ HandlePlayoffInput	;Read the four pads: start leaves PlayoffScreen, right / left
 	btst	#7,d3
 	bne.w	PlayoffScreenExit
 	btst	#3,d3
-	beq.w	.0
+	beq.w	.nr
 	move.w	#$FFFE,(PlayerScrollCtr).w
-.0
+.nr
 	btst	#2,d3
 	beq.w	UpdatePlayoffScroll
 	move.w	#2,(PlayerScrollCtr).w
@@ -189,9 +189,9 @@ UpdatePlayoffScroll	;Move the tree one step (PlayerScrollCtr) and stop on a page
 	add.w	(DispAttribCtr).w,d0
 	move.w	(gamelevel).w,d1
 	cmp.w	#3,d1
-	bls.w	.0
+	bls.w	.lim
 	moveq	#3,d1
-.0
+.lim
 	mulu.w	#$70,d1
 	cmp.w	d1,d0
 	bgt.w	rtsLineData
@@ -203,11 +203,11 @@ UpdatePlayoffScroll	;Move the tree one step (PlayerScrollCtr) and stop on a page
 	move.w	d0,d1
 	addi.w	#$100,d1
 	cmp.w	#$40,d1
-	blt.w	.1
+	blt.w	.nox
 	cmp.w	#$200,d1
-	bgt.w	.1
+	bgt.w	.nox
 	move.w	d1,(playoffspritex).w
-.1
+.nox
 	ext.l	d0
 	divs.w	#$70,d0
 	swap	d0
@@ -223,13 +223,13 @@ PlayoffScreenExit	;Drop HandlePlayoffInput's return address and return from Play
 PlayoffScreen_waitvsync	;Each time palcount runs out, eor the color word at palfadenew+$42 with $EE and
 	;restart palcount at $18; then wait for the next vblank
 	tst.w	(palcount).w
-	bpl.w	.0
+	bpl.w	.wait
 	eori.w	#$EE,(palfadenew+$42).w
 	move.w	#$18,(palcount).w
-.0
+.wait
 	move.w	(vcount).w,d0
 	cmp.w	(oldvcount).w,d0
-	beq.s	.0
+	beq.s	.wait
 	move.w	d0,(oldvcount).w
 	rts
 
@@ -271,11 +271,11 @@ DrawTeamBlocks	;Draw team block d1 (team * 2) from Teamblocksmap at printx / pri
 	move.b	(a0,d0.w),d0
 	add.b	d0,d0
 	cmp.b	d0,d1
-	bne.w	.0
+	bne.w	.nohi
 	btst	#2,(sflags11).w
-	bne.w	.0
+	bne.w	.nohi
 	move.w	#$6000,(printa).w
-.0
+.nohi
 	movea.l	#Teamblocksmap,a1
 	adda.l	4(a1),a1
 	movea.w	#ZeroLong,a2	;a zero long: no palettes
@@ -292,7 +292,7 @@ VBlank_Playoff	;The PlayoffScreen vblank handler (vbint): dma the sprite table, 
 	;$FEA0+DispAttribCtr to the hscroll, cramfade. Always vcount+1, p_music_vblank, rte
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#2,(disflags).w
-	bne.w	.1
+	bne.w	.nograph
 	movea.w	#(Satt-M68K_RAM),a0
 	move.w	(Sattsize).w,d0
 	beq.w	.0
@@ -306,7 +306,7 @@ VBlank_Playoff	;The PlayoffScreen vblank handler (vbint): dma the sprite table, 
 	move.w	d0,(a0)
 .0
 	jsr	(cramfade).l
-.1
+.nograph
 	addq.w	#1,(vcount).w
 	jsr	(p_music_vblank).l
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -446,10 +446,10 @@ SetSframe	;Draw one sprite frame. a0 = framelist, d0/d1 = x/y cords, d2 = frame,
 	add.w	d0,(a6)+
 	addq.w	#1,d6
 	cmp.w	#$40,d6	;MaxSprites
-	beq.w	.1
+	beq.w	.ex
 	addq.w	#8,a0
 	dbf	d4,.0
-.1
+.ex
 	movem.l	(sp)+,d0-d5/a0
 .2
 	rts

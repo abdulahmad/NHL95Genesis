@@ -17,7 +17,7 @@ sroot	;d0 = square root of d0 (long). Small values by odd subtraction, else Newt
 	tst.l	d0
 	beq.w	rtss2	;zero^.5 = zero
 	cmp.l	#$640,d0	;#40^2
-	bhi.w	.1
+	bhi.w	.m2
 	move.l	d1,-(sp)
 	moveq	#-1,d1	;-1
 .0
@@ -28,51 +28,51 @@ sroot	;d0 = square root of d0 (long). Small values by odd subtraction, else Newt
 	move.w	d1,d0
 	move.l	(sp)+,d1
 	rts
-.1
+.m2
 	movem.l	d1-d4,-(sp)
 	moveq	#9,d3	;max number of reps
 	move.w	#$8000,d1
 	cmp.l	#$F00000,d0
-	bhi.w	.4
+	bhi.w	.big
 	move.l	d0,d1
 	lsr.l	#8,d1
 	addq.w	#2,d1
-.2
+.top
 	move.w	d1,d2
 	move.l	d0,d1
 	divu.w	d2,d1
 	add.w	d2,d1
 	lsr.w	#1,d1
 	cmp.w	d1,d2
-	dbeq	d3,.2
-.3
+	dbeq	d3,.top
+.done
 	move.w	d1,d0
 	movem.l	(sp)+,d1-d4
 	rts
-.4
+.big
 	moveq	#0,d1
 	moveq	#-1,d2
-.5
+.bs
 	move.w	d1,d3
 	add.w	d2,d3
 	roxr.w	#1,d3
 	cmp.w	d3,d1
-	beq.s	.3
+	beq.s	.done
 	move.w	d3,d4
 	mulu.w	d3,d3
 	cmp.l	d3,d0
-	bcc.w	.6
+	bcc.w	.lo
 	move.w	d4,d2
-	bra.s	.5
-.6
+	bra.s	.bs
+.lo
 	move.w	d4,d1
-	bra.s	.5
+	bra.s	.bs
 
 vtoa	;d0/d1 = vector: return d0 = direction 0-7 (8 for no vector) through .dt
 	movem.l	d2/a0,-(sp)
 	move.w	d0,d2
 	or.w	d1,d2
-	beq.w	.4
+	beq.w	.nodir
 	clr.w	d2
 	tst.w	d0
 	bpl.w	.0
@@ -99,7 +99,7 @@ vtoa	;d0/d1 = vector: return d0 = direction 0-7 (8 for no vector) through .dt
 	move.b	(a0,d2.w),d0
 	movem.l	(sp)+,d2/a0
 	rts
-.4
+.nodir
 	moveq	#8,d0
 	movem.l	(sp)+,d2/a0
 	rts
@@ -111,21 +111,21 @@ find3d	;Input: d0 = xfield, d1 = yfield, d2 = height off field. Output: d0 = xsc
 	sub.w	(Hpos).w,d0
 	sub.w	(Vpos).w,d1
 	cmp.w	#$98,d0
-	bgt.w	.0
+	bgt.w	.offscr
 	cmp.w	#$FF70,d0
-	blt.w	.0
+	blt.w	.offscr
 	addi.w	#$100,d0
 	add.w	d2,d1
 	asr.w	#1,d2
 	add.w	d2,d1
 	cmp.w	#$79,d1
-	bgt.w	.0
+	bgt.w	.offscr
 	cmp.w	#$FF30,d1
-	blt.w	.0
+	blt.w	.offscr
 	neg.w	d1
 	addi.w	#$F0,d1
 	rts
-.0
+.offscr
 	move.w	#$4E20,d1
 	rts
 
@@ -163,7 +163,7 @@ GetHot	;Push long address of structure to get hot spot from; hot spot x/y return
 	clr.w	d0	;clear d0
 	clr.w	d1	;clear d1
 	tst.w	6(a0)
-	ble.w	.1
+	ble.w	.ex
 	movea.l	#HotList,a1	;move HotList address into a1
 	move.w	6(a0),d0
 	add.w	d0,d0	;double d0
@@ -176,9 +176,9 @@ GetHot	;Push long address of structure to get hot spot from; hot spot x/y return
 	neg.w	d0	;negate d0 (flip)
 .0
 	btst	#4,4(a0)
-	bne.w	.1
+	bne.w	.ex
 	neg.w	d1	;ngate d1 (x now)
-.1
+.ex
 	movem.l	(sp)+,a0-a1
 	move.l	(sp)+,(sp)
 	rts
@@ -336,7 +336,7 @@ print	;print String a1 at printx / printy with the small font (smallfontptr): a 
 	move.b	(a1)+,d0
 	beq.w	.4
 	ext.w	d0
-	bpl.w	.1
+	bpl.w	.nocom
 	neg.w	d0
 	move.w	d0,d2
 	asl.w	#8,d2
@@ -356,20 +356,20 @@ print	;print String a1 at printx / printy with the small font (smallfontptr): a 
 	bsr.w	xyVmMap
 	subq.w	#2,d3
 	bra.w	.4
-.1
+.nocom
 	cmp.b	#$40,d0
-	bne.w	.2
+	bne.w	.noblank
 	move.w	#$7FF,d0
-	bra.w	.3
-.2
+	bra.w	.p
+.noblank
 	cmp.b	#$5E,d0
-	beq.w	.5
+	beq.w	.skip
 	asl.w	#1,d0
 	movea.l	(smallfontptr).w,a2
 	adda.l	4(a2),a2
 	move.w	4(a2,d0.w),d0
 	add.w	(smallfontchars).w,d0
-.3
+.p
 	add.w	d2,d0	;for alternate palettes
 	move.w	d0,(a0)
 	addq.w	#1,(printx).w
@@ -378,7 +378,7 @@ print	;print String a1 at printx / printy with the small font (smallfontptr): a 
 	movem.l	(sp)+,d0-d3/a0/a2
 	move.w	(sp)+,(disflags).w
 	rts
-.5
+.skip
 	addq.w	#1,(printx).w
 	bsr.w	xyVmMap
 	bra.s	.4
@@ -602,10 +602,10 @@ PrintSmallListItem	;printsmall String d0 of the list a1 (SkipStrings)
 
 AdvanceStringPtr	;a1 = String d0 of a String list
 	bra.w	.1
-.0
+.loop
 	adda.w	(a1),a1
 .1
-	dbf	d0,.0
+	dbf	d0,.loop
 	rts
 
 GetGoalieCount	;d0 = goalies on team a2 (GetGoalieCountD7 with d7 = the team number)
@@ -745,10 +745,10 @@ GetPlayerNumInitial	;GetTempPlayerName with FormatPlayerNumInitial ("NN F. Last"
 	movem.l	d0/a2,-(sp)
 	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	(TempPlOffset).w,d0
-	bpl.w	.0
+	bpl.w	.get
 	andi.w	#$FF,d0
 	adda.w	#tmsize,a2
-.0
+.get
 	bsr.w	FormatPlayerNumInitial
 	movem.l	(sp)+,d0/a2
 	rts
@@ -848,13 +848,13 @@ FormatPlayerName	;a1 = mesarea string "NN Last" for player d0 of team a2, built 
 	movea.l	(sp)+,a0
 	move.w	(a0)+,d0
 	lea	-2(a0,d0.w),a2
-.0
+.skip
 	cmpi.b	#$20,(a0)+
-	bne.s	.0
-.1
+	bne.s	.skip
+.copy
 	move.b	(a0)+,(a1)+
 	cmpa.l	a0,a2
-	bne.s	.1
+	bne.s	.copy
 	bsr.w	FinalizeTextBuffer
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
@@ -938,10 +938,10 @@ FinalizeTextBuffer	;mesarea length word = a1 - mesarea, with a 0 pad byte when o
 	move.w	a1,d0
 	subi.w	#(mesarea-M68K_RAM),d0
 	btst	#0,d0
-	beq.w	.0
+	beq.w	.even
 	clr.b	(a1)+
 	addq.w	#1,d0
-.0
+.even
 	movea.w	#(mesarea-M68K_RAM),a1
 	move.w	d0,(a1)
 	rts
@@ -964,9 +964,9 @@ getnamea0	;Shared tail of getplayername: GetRosterName, a0 = the name
 ConvertByteToDigits	;Converts decimal number in d0 to ascii: two ascii digits of bcd byte d0 to (a1)+, a leading 0 becomes a space ($F0 + '0')
 	move.w	d0,-(sp)	;push to stack
 	lsr.b	#4,d0	;divide by 16 (get upper digit in d0)
-	bne.w	.0
+	bne.w	.n0
 	move.b	#$F0,d0	;move $F0 into d0
-.0
+.n0
 	addi.b	#$30,d0	;'0'   ; add $30 (48 dec) to d0
 	move.b	d0,(a1)+	;move d0 into a1 and increment
 	move.w	(sp)+,d0	;pop d0 from stack
@@ -1144,10 +1144,10 @@ PushTime	;a1 = String "M:SS" of the time d0 (seconds), built back from mesarea+3
 	swap	d0
 	move.b	#$20,-(a1)
 	tst.w	d0
-	beq.w	.0
+	beq.w	.noz
 	addi.w	#$30,d0
 	move.b	d0,(a1)
-.0
+.noz
 	move.l	(sp)+,d0
 	sub.l	a1,d0
 	addq.w	#2,d0
@@ -1190,28 +1190,28 @@ PushNumberWidth	;Right-justified number
 	movea.w	#(PushWidthBuf+2-M68K_RAM),a1
 	moveq	#1,d2	;move 1 into d2
 	sub.w	d2,d1	;sub d2 from d1
-	bra.w	.1
-.0
+	bra.w	.loop
+.mul
 	mulu.w	#$A,d2	;mult d2 by 10 dec
-.1
-	dbf	d1,.0
+.loop
+	dbf	d1,.mul
 	moveq	#$20,d3	;' '   ; move 20 into d3
-.2
+.loop2
 	ext.l	d0	;sign extend d0
 	divu.w	d2,d0	;divide d2 into d0
 	bne.w	.3
 	cmp.w	#1,d2	;compare d2 to 1
 	beq.w	.3
 	move.w	d3,d0	;move d3 into d0
-	bra.w	.4
+	bra.w	.put
 .3
 	moveq	#$30,d3	;'0'   ; move 48 dec into d3
 	add.w	d3,d0	;add d3 to d0
-.4
+.put
 	move.b	d0,(a1)+	;move d0 into a1 and increment a1
 	swap	d0	;swap d0 words
 	divu.w	#$A,d2	;divide d2 by 10 dec
-	bne.s	.2
+	bne.s	.loop2
 	move.l	a1,d0	;move a1 into d0
 	subi.w	#(PushWidthBuf-M68K_RAM),d0
 	btst	#0,d0	;test bit 0 of d0
@@ -1281,7 +1281,7 @@ appstring	;Append String a1 to String a3 (the 0 pad byte dropped, the result pad
 .1
 	move.w	(a1)+,d0
 	subq.w	#3,d0
-	bmi.w	.5
+	bmi.w	.ex
 .2
 	move.b	(a1)+,(a0)+
 	bne.w	.3
@@ -1296,16 +1296,16 @@ appstring	;Append String a1 to String a3 (the 0 pad byte dropped, the result pad
 .4
 	sub.l	a3,d0
 	move.w	d0,(a3)
-.5
+.ex
 	movem.l	(sp)+,d0/a0
 	rts
 
 AttribAdjust	;d0 below $32: d0 / 2 + $19
 	cmp.w	#$32,d0
-	bge.w	.0
+	bge.w	.exit
 	asr.w	#1,d0
 	addi.w	#$19,d0
-.0
+.exit
 	rts
 
 PutTeamBlock	;Draw team block d0 (TeamBlockMaps, teamblockwidth wide, 2 rows) at printx / printy
@@ -1373,7 +1373,7 @@ CopyTeamBlockMapData	;Copy one team's 22 block chars (93 used 24) from the loade
 	lea	4(a0,d0.w),a0
 	lsr.w	#1,d3
 	subq.w	#1,d3
-.0
+.row
 	moveq	#$20,d0
 	move.w	d1,-(sp)
 	move.b	(a0),(a1)
@@ -1393,7 +1393,7 @@ CopyTeamBlockMapData	;Copy one team's 22 block chars (93 used 24) from the loade
 	asl.w	#5,d2
 	bsr.w	DoDMA_nd2
 	addi.w	#$20,d1
-	dbf	d3,.0
+	dbf	d3,.row
 	rts
 
 DoDMA_nd2	;Vram to vram copy by dma, protected from vblank
@@ -1509,14 +1509,14 @@ ClrHor	;Unreferenced. Revert the graphics back to vertical ice rink mode: the ri
 	jsr	(setupEASNmap).l
 	jsr	(SprSort).l
 	btst	#sfpz,(sflags).w
-	bne.w	.0
+	bne.w	.ex
 	bsr.w	printz
 	String	-TXMAP1,0,0,0
 	moveq	#$20,d0	;32
 	moveq	#$1C,d1	;28
 	move.w	#$7FF,d2	;blank tile
 	jsr	(eraser).l
-.0
+.ex
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -1646,9 +1646,9 @@ setupIceRinkPal	;Copy the rink palette (16 longs at the Rinktilelist header) to 
 	adda.l	(a0),a0
 	moveq	#$F,d0
 	movea.w	#(palfadenew-M68K_RAM),a1
-.0
+.ipal
 	move.l	(a0)+,(a1)+
-	dbf	d0,.0
+	dbf	d0,.ipal
 	rts
 
 waitx	;Wait d0 frames (negative: until a button) for a button on any pad; waitxpad = the buttons held
@@ -1896,7 +1896,7 @@ PrintBigChar	;Draw big font char d0 (bfasciicon) at d4 / d5: one or two columns 
 	asl.w	#1,d1
 	movea.l	(bigfontptr).w,a0
 	adda.l	4(a0),a0
-.1
+.loop
 	move.w	4(a0,d1.w),d3
 	bsr.w	PutBigTile
 	move.w	(a0),d7
@@ -1909,7 +1909,7 @@ PrintBigChar	;Draw big font char d0 (bfasciicon) at d4 / d5: one or two columns 
 	subq.w	#1,d5
 	addq.w	#1,d4
 	addq.w	#2,d1
-	dbf	d2,.1
+	dbf	d2,.loop
 	rts
 
 PutBigTile	;Write tile d3 + d6 at column d4, row d5 of the map at VmMap1 + printm
@@ -1943,7 +1943,7 @@ UnpackPicture	;Unpack a picture a2: count.w, then 3 bytes per row of 8 pixels to
 	move.w	d0,(a0)+
 	asl.w	#3,d0
 	subq.w	#1,d0
-.0
+.loop
 	clr.l	(a0)
 	clr.l	(a1)
 	move.b	(a2)+,(a1)
@@ -1992,29 +1992,29 @@ UnpackPicture	;Unpack a picture a2: count.w, then 3 bytes per row of 8 pixels to
 	addq.l	#5,d2
 	or.l	d2,(sp)
 	move.l	(sp)+,(a0)+
-	dbf	d0,.0
+	dbf	d0,.loop
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
 RestoreBenchEnergy	;Once a second (periodicevents): unless OptLine: bench players (tmpdst -2) of both teams get 9 energy, up to $1000 (.team)
 	tst.w	(OptLine).w
-	bne.w	.3
+	bne.w	.ex
 	movea.w	#(tmstruct-M68K_RAM),a2	;team 1
-	bsr.w	.0
+	bsr.w	.notinprog
 	lea	tmsize(a2),a2	;team 2 (tmsize)
-.0
+.notinprog
 	moveq	#$32,d0	;(maxros-1)*2
-.1
+.b0
 	cmpi.w	#$FFFE,tmpdst(a2,d0.w)
-	bne.w	.2
+	bne.w	.next
 	addi.w	#9,tmpde(a2,d0.w)	;tmpde: energy +9
 	cmpi.w	#$1000,tmpde(a2,d0.w)
-	blt.w	.2
+	blt.w	.next
 	move.w	#$1000,tmpde(a2,d0.w)	;max energy
-.2
+.next
 	subq.w	#2,d0
-	bpl.s	.1
-.3
+	bpl.s	.b0
+.ex
 	rts
 
 RestoreTeamEnergy	;Unreferenced. A2 = team: max energy (tmpde $1000) for every player. The skip needs tmpdst to be both -3 and
@@ -2037,12 +2037,12 @@ reenergizeteam	;a2 = team: full energy for every player not injured for the game
 	moveq	#$32,d0
 .0
 	cmpi.w	#$FFFC,$68(a2,d0.w)
-	beq.w	.1
+	beq.w	.nb
 	move.w	#$1000,$34(a2,d0.w)
 	cmpi.w	#$FFFD,$68(a2,d0.w)
-	bne.w	.1
+	bne.w	.nb
 	move.w	#$FFFE,$68(a2,d0.w)
-.1
+.nb
 	subq.w	#2,d0
 	bpl.s	.0
 	rts
@@ -2076,16 +2076,16 @@ WeightedRandomSelect	;d0 = number of word weights at nibblebuffer: return a weig
 	movem.l	d1/a1,-(sp)
 	movea.w	#(nibblebuffer-M68K_RAM),a1
 	clr.w	d1
-	bra.w	.1
-.0
+	bra.w	.pick
+.sumloop
 	add.w	(a1)+,d1
-.1
-	dbf	d0,.0
+.pick
+	dbf	d0,.sumloop
 	move.w	d1,d0
 	bsr.w	randomd0
-.2
+.findloop
 	sub.w	-(a1),d0
-	bpl.s	.2
+	bpl.s	.findloop
 	suba.w	#(nibblebuffer-M68K_RAM),a1
 	move.w	a1,d0
 	lsr.w	#1,d0

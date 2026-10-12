@@ -17,16 +17,16 @@ goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets
 	cmpi.w	#$FFD0,(a3)
 	blt.w	.9
 	cmpi.w	#$FF40,Ypos(a3)
-	bgt.w	.0
+	bgt.w	.checkbottom
 	cmpi.w	#$FEFA,Ypos(a3)
 	blt.w	.9
-	bra.w	.1
-.0
+	bra.w	.facepuck
+.checkbottom
 	cmpi.w	#$C0,Ypos(a3)
 	blt.w	.9
 	cmpi.w	#$106,Ypos(a3)
 	bgt.w	.9
-.1
+.facepuck
 	movem.w	d0-d1,-(sp)
 	move.w	(puckx).w,d0
 	sub.w	(a3),d0
@@ -41,16 +41,16 @@ goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets
 	cmp.w	#$FFF0,d1
 	blt.w	.2
 	move.w	facedir(a3),d0
-	bra.w	.3
+	bra.w	.checkadjust
 .2
 	jsr	(vtoa).l
-.3
+.checkadjust
 	btst	#0,(sflags4).w
-	bne.w	.4
+	bne.w	.adjustkeepdir
 	jsr	(AdjustFacingDirection).l
 	movem.w	(sp)+,d0-d1
 	bra.w	.5
-.4
+.adjustkeepdir
 	movem.w	(sp)+,d0-d1
 	cmp.w	#8,d0
 	beq.w	.5
@@ -75,16 +75,16 @@ goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets
 	neg.w	d0
 .6
 	cmp.w	#$D8,d0
-	blt.w	.7
+	blt.w	.stopandrestore
 	move.w	(a3),d0
 	cmp.w	#$20,d0
-	bgt.w	.7
+	bgt.w	.stopandrestore
 	cmp.w	#$FFE0,d0
-	blt.w	.7
+	blt.w	.stopandrestore
 	move.w	(sp)+,d0
 	jsr	(stopna2).l
 	bra.w	.8
-.7
+.stopandrestore
 	jsr	(stopna2).l
 	move.w	(sp)+,d0
 .8
@@ -93,11 +93,11 @@ goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets
 .9
 	bsr.w	GoalieReadySPA
 	btst	#3,pflags(a3)
-	beq.w	.13
+	beq.w	.goalieacc2
 	btst	#2,pflags(a3)
 	bne.w	.14
 	cmp.w	#8,d0
-	bne.w	.12
+	bne.w	.turnskater
 	tst.w	position(a3)
 	bne.w	.14
 	move.w	d0,-(sp)
@@ -107,24 +107,24 @@ goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets
 	neg.w	d0
 .10
 	cmp.w	#$D8,d0
-	blt.w	.11
+	blt.w	.restoreidle
 	move.w	(a3),d0
 	cmp.w	#$20,d0
-	bgt.w	.11
+	bgt.w	.restoreidle
 	cmp.w	#$FFE0,d0
-	blt.w	.11
+	blt.w	.restoreidle
 	move.w	(sp)+,d0
 	jsr	(stopna).l
 	bra.w	.14
-.11
+.restoreidle
 	move.w	(sp)+,d0
 	bra.w	.14
-.12
-	bra.w	.17
-.13
+.turnskater
+	bra.w	.d1
+.goalieacc2
 	andi.w	#$F,d0
 	cmp.w	#7,d0
-	ble.w	.17
+	ble.w	.d1
 	cmp.w	#9,d0
 	bne.w	.14
 	move.w	Xvel(a3),d0
@@ -138,7 +138,7 @@ goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets
 	rts
 .16
 	jmp	SetSPA
-.17
+.d1
 	sub.w	facedir(a3),d0
 	beq.w	.18
 	neg.w	d0
@@ -362,10 +362,10 @@ getGoalieSCnum	;d0 = SCnum of the goalie of the team of player d0 (the first pos
 	suba.w	#SCstruct,a0
 	dbf	d1,.0
 	move.w	#$FFFF,d0
-	bra.w	.2
+	bra.w	.end
 .1
 	move.w	SCnum(a0),d0
-.2
+.end
 	movem.l	(sp)+,d1/a0
 	rts
 
@@ -480,11 +480,11 @@ dostop	;Stop player a3: under $1000 speed in x and y the velocities are cleared,
 stopna	;Slow player a3 by $96 in x and y toward 0, no animation change
 	tst.w	Xvel(a3)
 	beq.w	.1
-	bpl.w	.0
+	bpl.w	.xp
 	addi.w	#$96,Xvel(a3)
 	bmi.w	.1
 	clr.w	Xvel(a3)
-.0
+.xp
 	subi.w	#$96,Xvel(a3)
 	bpl.w	.1
 	clr.w	Xvel(a3)
@@ -612,25 +612,25 @@ SetSPA	;Set animation d1 for player a3 unless it is already running
 
 stopna2	;Stop, keeping the animation (goalies)
 	tst.w	Xvel(a3)
-	bpl.w	.0
+	bpl.w	.xp
 	addi.w	#$7D0,Xvel(a3)
-	bmi.w	.1
+	bmi.w	.y
 	clr.w	Xvel(a3)
-.0
+.xp
 	subi.w	#$7D0,Xvel(a3)
-	bpl.w	.1
+	bpl.w	.y
 	clr.w	Xvel(a3)
-.1
+.y
 	tst.w	Yvel(a3)
-	bpl.w	.2
+	bpl.w	.yp
 	addi.w	#$7D0,Yvel(a3)
-	bmi.w	.3
+	bmi.w	.ex
 	clr.w	Yvel(a3)
-.2
+.yp
 	subi.w	#$7D0,Yvel(a3)
-	bpl.w	.3
+	bpl.w	.ex
 	clr.w	Yvel(a3)
-.3
+.ex
 	rts
 
 doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab, MaxSpeed, TempRawSpd / TempMaxSpd)
@@ -649,12 +649,12 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 	move.w	#$B8E,d1
 .2
 	btst	#4,pflags(a3)
-	beq.w	.3
+	beq.w	.d0
 	move.w	#$2564,d1
-.3
+.d0
 	andi.w	#$F,d0	;pass first 4 bits of d0
 	cmp.w	#7,d0	;compare to 7
-	ble.w	.7
+	ble.w	.d1
 	cmp.w	#9,d0	;compare to 9
 	bne.w	.4
 	move.w	Xvel(a3),d0
@@ -668,7 +668,7 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 	jmp	dostop
 .6
 	jmp	SetSPA
-.7
+.d1
 	movem.w	d0-d1,-(sp)
 	move.w	d0,d2
 	move.w	SCnum(a3),d0	;move SCnum into d0
@@ -711,7 +711,7 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 	bhi.w	.11
 .9
 	btst	#4,pflags(a3)
-	bne.w	.12
+	bne.w	.done
 	move.w	Xvel(a3),d0	;move Xvel into d0
 	or.w	Yvel(a3),d0	;or with Yvel
 	beq.w	.10
@@ -722,16 +722,16 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 	addq.w	#1,d0
 	andi.w	#7,d0
 	cmp.w	#2,d0
-	bhi.w	.12
+	bhi.w	.done
 .10
 	bset	#4,pflags(a3)
-	bra.w	.12
+	bra.w	.done
 .11
 	bclr	#4,pflags(a3)
-	beq.w	.12
+	beq.w	.done
 	clr.w	Xvel(a3)
 	clr.w	Yvel(a3)
-.12
+.done
 	movem.w	(sp)+,d0-d1
 	move.w	facedir(a3),d2	;facedir into d2
 	sub.w	d2,d0
@@ -786,9 +786,9 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 .17
 	muls.w	(turnstep).w,d4
 	btst	#4,pflags(a3)
-	beq.w	.18
+	beq.w	.i0
 	neg.l	d4
-.18
+.i0
 	add.l	d4,facedir(a3)	;add d4 to facedir
 	andi.w	#7,facedir(a3)	;pass the first 3 bits to facedir
 	move.w	facedir(a3),d2	;move facedir to d2
@@ -904,17 +904,17 @@ playeracc	;Player acceleration with facing d2 (doplayeracc entry used by the goa
 	move.w	2(a0,d2.w),d1	;Y Inc
 	move.w	(a0,d2.w),d0
 	move.w	Wallsin(a3),d2	;check acc dir and dont push wall
-	beq.w	.0
+	beq.w	.nox
 	eor.w	d0,d2
-	bpl.w	.0
+	bpl.w	.nox
 	clr.w	d0
-.0
+.nox
 	move.w	Wallcos(a3),d2
-	beq.w	.1
+	beq.w	.noy
 	eor.w	d1,d2
-	bmi.w	.1
+	bmi.w	.noy
 	clr.w	d1
-.1
+.noy
 	clr.w	d2	;clear d2
 	move.b	weight(a3),d2	;move wgt of player into d2
 	lsr.w	#2,d2	;divide d2 by 2
@@ -929,14 +929,14 @@ playeracc	;Player acceleration with facing d2 (doplayeracc entry used by the goa
 	muls.w	d7,d0	;mult d0 with frames elapsed (d7)
 	muls.w	d7,d1	;mult d1 by frames elapsed (d7)
 	tst.w	position(a3)
-	bne.w	.2
+	bne.w	.noy3
 	btst	#3,pflags(a3)
-	bne.w	.2
+	bne.w	.noy3
 	cmpi.w	#$22BA,SPA(a3)
-	beq.w	.2
+	beq.w	.noy3
 	asr.l	#1,d0
 	asr.l	#1,d1
-.2
+.noy3
 	add.w	Xvel(a3),d0
 	add.w	Yvel(a3),d1
 	move.w	d0,d2	;move d0 into d2
@@ -948,9 +948,9 @@ playeracc	;Player acceleration with facing d2 (doplayeracc entry used by the goa
 	clr.l	d0
 	jsr	(getpde).l
 	btst	#4,(sflags7).w
-	beq.w	.3
+	beq.w	.noy4
 	move.w	#$1000,d0	;d0 = energy, move 1000 hex into d0
-.3
+.noy4
 	clr.w	d2	;clear d2
 	move.b	legspd(a3),d2
 	move.w	d2,(TempRawSpd).w	;hold spd value
@@ -965,27 +965,27 @@ playeracc	;Player acceleration with facing d2 (doplayeracc entry used by the goa
 	move.l	(a2,d2.w),d2
 	move.l	d2,(TempMaxSpd).w	;hold MaxSpeed value
 	cmpi.w	#$3C,(rosterscroll).w
-	bge.w	.4
+	bge.w	.fgtinj
 	btst	#0,(TempRawSpd+1).w	;check if TempRawSpd is odd
-	beq.w	.4
+	beq.w	.fgtinj
 	move.w	(rosterscroll).w,d2
 	addq.w	#4,d2	;add 4 to d2
 	move.l	(a2,d2.w),d2
 	sub.l	(TempMaxSpd).w,d2	;sub TempMaxSpd from d2
 	asr.l	#1,d2	;divide by 2
 	add.l	(TempMaxSpd).w,d2	;add TempMaxSpd to d2 (so halves the difference between the 2 Speed steps)
-.4
+.fgtinj
 	btst	#6,pflags2(a3)	;check if injured during fight
 	beq.w	.5
 	lsr.l	#3,d2	;divide d2 by 8
 .5
 	tst.w	position(a3)
-	bne.w	.6
+	bne.w	.noy6
 	move.w	(puckc).w,d0	;puck carrier SCnum
 	cmp.w	SCnum(a3),d0
-	bne.w	.6
+	bne.w	.noy6
 	asr.l	#1,d2	;divide d2 by 2
-.6
+.noy6
 	movem.w	(sp)+,d0-d1	;pop from stack
 	cmp.l	d2,d3	;Compare d3 to d2 (max speed check)
 	bhi.w	.7
@@ -993,10 +993,10 @@ playeracc	;Player acceleration with facing d2 (doplayeracc entry used by the goa
 	move.w	d1,Yvel(a3)	;move new Yvel into Yvel
 .7
 	tst.w	(OptLine).w
-	bne.w	.9
+	bne.w	.ex
 	move.w	(VDP_CNTR).l,d0
 	andi.w	#$7F,d0
-	bne.w	.9
+	bne.w	.ex
 	jsr	(getpde).l
 	subi.w	#$21,d0
 	cmp.w	#$C00,d0
@@ -1007,13 +1007,13 @@ playeracc	;Player acceleration with facing d2 (doplayeracc entry used by the goa
 	add.w	d2,d0
 	jsr	(setpde).l
 	btst	#0,endurance(a3)
-	beq.w	.9
+	beq.w	.ex
 	btst	#0,(vcount+1).w
-	beq.w	.9
+	beq.w	.ex
 	addq.w	#1,d0
 .8
 	jmp	setpde
-.9
+.ex
 	rts
 
 PlaceBoardFall	;Board fall animations (SPA $26C8, $276A, $220E ...): place player a3 against the boards
@@ -1029,7 +1029,7 @@ PlaceBoardFall	;Board fall animations (SPA $26C8, $276A, $220E ...): place playe
 	beq.w	.0
 	cmpi.w	#$219C,SPA(a3)
 	beq.w	.3
-	bra.w	.14
+	bra.w	.x
 .0
 	move.w	#$124,d0
 	cmpi.w	#$56,(FallXPos).w
@@ -1040,10 +1040,10 @@ PlaceBoardFall	;Board fall animations (SPA $26C8, $276A, $220E ...): place playe
 	move.w	#$116,d0
 .2
 	sub.w	Ypos(a3),d0
-	bmi.w	.14
+	bmi.w	.x
 	asr.w	#1,d0
 	add.w	d0,Ypos(a3)
-	bra.w	.14
+	bra.w	.x
 .3
 	move.w	#$FEDC,d0
 	cmpi.w	#$56,(FallXPos).w
@@ -1054,10 +1054,10 @@ PlaceBoardFall	;Board fall animations (SPA $26C8, $276A, $220E ...): place playe
 	move.w	#$FEEA,d0
 .5
 	sub.w	Ypos(a3),d0
-	bpl.w	.14
+	bpl.w	.x
 	asr.w	#1,d0
 	add.w	d0,Ypos(a3)
-	bra.w	.14
+	bra.w	.x
 .6
 	move.w	#$92,d0
 	btst	#3,4(a3)
@@ -1067,7 +1067,7 @@ PlaceBoardFall	;Board fall animations (SPA $26C8, $276A, $220E ...): place playe
 	sub.w	(a3),d0
 	asr.w	#1,d0
 	add.w	d0,(a3)
-	bra.w	.14
+	bra.w	.x
 .8
 	move.w	#$98,d0
 	btst	#3,4(a3)
@@ -1077,7 +1077,7 @@ PlaceBoardFall	;Board fall animations (SPA $26C8, $276A, $220E ...): place playe
 	sub.w	(a3),d0
 	asr.w	#1,d0
 	add.w	d0,(a3)
-	bra.w	.14
+	bra.w	.x
 .10
 	move.w	#$FF6E,d0
 	btst	#3,4(a3)
@@ -1087,7 +1087,7 @@ PlaceBoardFall	;Board fall animations (SPA $26C8, $276A, $220E ...): place playe
 	sub.w	(a3),d0
 	asr.w	#1,d0
 	add.w	d0,(a3)
-	bra.w	.14
+	bra.w	.x
 .12
 	move.w	#$FF68,d0
 	btst	#3,4(a3)
@@ -1097,5 +1097,5 @@ PlaceBoardFall	;Board fall animations (SPA $26C8, $276A, $220E ...): place playe
 	sub.w	(a3),d0
 	asr.w	#1,d0
 	add.w	d0,(a3)
-.14
+.x
 	rts

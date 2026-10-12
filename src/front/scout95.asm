@@ -306,7 +306,7 @@ DrawMatchupPictures	;The matchup 6 x 6 pictures, visitors left, home right: matc
 	move.w	#2,d5
 	bsr.w	DrawMatchupLogo
 	move.w	#$64,(palcount).w	;100
-	bra.w	.1
+	bra.w	.x
 .0
 	move.w	(VisTeam).w,d1
 	movea.l	#MatchupLineSlots,a0
@@ -333,7 +333,7 @@ DrawMatchupPictures	;The matchup 6 x 6 pictures, visitors left, home right: matc
 	move.w	#0,(printa).w
 	bsr.w	DrawMatchupPicture
 	move.w	#$64,(palcount).w	;100
-.1
+.x
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -667,7 +667,7 @@ SortHotColdStarters	;Sum the hot / cold values of the 6 starters of team a0 (sav
 	adda.l	d0,a0
 	movea.l	#TempBuffer,a1
 	move.w	#5,d0
-.0
+.player
 	move.w	(a0)+,d1
 	subq.b	#1,d1
 	move.b	d1,(a1)+
@@ -680,34 +680,34 @@ SortHotColdStarters	;Sum the hot / cold values of the 6 starters of team a0 (sav
 	clr.w	d2
 	move.b	(a2,d1.w),d2
 	cmp.b	#9,d7
-	beq.w	.2
+	beq.w	.nextattr
 	cmp.b	#$D,d7
-	beq.w	.2
+	beq.w	.nextattr
 	add.b	d2,(a1)
-.2
+.nextattr
 	addq.w	#1,d1
 	addq.w	#1,d7
 	cmp.b	#$10,d7
 	bne.s	.1
 	tst.b	(a1)+
-	dbf	d0,.0
-.3
+	dbf	d0,.player
+.sort
 	movea.l	#TempBuffer,a1
 	clr.w	d1
 	move.w	#4,d0
-.4
+.cmp
 	move.b	3(a1),d6
 	cmp.b	1(a1),d6
-	ble.w	.5
+	ble.w	.next
 	st	d1
 	move.w	2(a1),d2
 	move.w	(a1),2(a1)
 	move.w	d2,(a1)
-.5
+.next
 	tst.w	(a1)+
-	dbf	d0,.4
+	dbf	d0,.cmp
 	tst.w	d1
-	bne.s	.3
+	bne.s	.sort
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -966,21 +966,21 @@ CompareHotColdTotals	;Compare the hot / cold totals of the teams (GetHotColdTota
 	sub.w	d1,d2
 	move.w	#0,(awayhotter).w
 	tst.w	d2
-	bmi.w	.0
+	bmi.w	.abs
 	move.w	#1,(awayhotter).w
-.0
+.abs
 	tst.w	d2
-	bpl.w	.1
+	bpl.w	.level
 	neg.w	d2
-.1
+.level
 	move.w	#$FFFF,d0
 	cmp.w	#$5E,d2
-	blt.w	.2
+	blt.w	.x
 	move.w	#$22,d0
 	cmp.w	#$BD,d2
-	blt.w	.2
+	blt.w	.x
 	move.w	#$23,d0
-.2
+.x
 	movem.l	(sp)+,d1-d7/a0-a6
 	rts
 
@@ -989,12 +989,12 @@ GetHotColdTotal	;d1 = the hot / cold total of the starters of team a0 (SortHotCo
 	move.w	#6,d0
 	movea.l	#linemarkbuf,a0
 	clr.w	d1
-.0
+.sum
 	move.b	1(a0),d2
 	ext.w	d2
 	add.w	d2,d1
 	tst.w	(a0)+
-	dbf	d0,.0
+	dbf	d0,.sum
 	rts
 
 PrintPlayerNameRight	;Print the name of player d0 of team a2 ending before column $29, then HotColdIcon
@@ -1038,7 +1038,7 @@ HotColdIcon	;The hot or cold icon by player iconplayer of team a2, or erase it
 .1
 	move.w	(a0)+,d1
 	cmp.w	(iconplayer).w,d1
-	beq.w	.4
+	beq.w	.hot
 	dbf	d0,.1
 	movea.l	#awaycoldplayer,a0
 	cmpa.l	#tmstruct,a2
@@ -1049,7 +1049,7 @@ HotColdIcon	;The hot or cold icon by player iconplayer of team a2, or erase it
 .3
 	move.w	(a0)+,d1
 	cmp.w	(iconplayer).w,d1
-	beq.w	.5
+	beq.w	.cold
 	dbf	d0,.3
 	move.w	(iconplayer+$2).w,(printx).w
 	move.w	#$11,(printy).w
@@ -1057,12 +1057,12 @@ HotColdIcon	;The hot or cold icon by player iconplayer of team a2, or erase it
 	move.w	#6,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
-	bra.w	.7
-.4
+	bra.w	.x
+.hot
 	move.w	(hoticonchars).w,d4
 	movea.l	#HotIconMap,a0
 	bra.w	.6
-.5
+.cold
 	move.w	(coldiconchars).w,d4
 	movea.l	#ColdIconMap,a0
 .6
@@ -1079,7 +1079,7 @@ HotColdIcon	;The hot or cold icon by player iconplayer of team a2, or erase it
 	move.w	2(a1),d3
 	moveq	#0,d5
 	jsr	(dobitmap).l
-.7
+.x
 	movem.l	(sp)+,d0/a0-a1
 	rts
 
@@ -1090,9 +1090,9 @@ NextHomeHotPlayer	;d1 = the next home hot player (homehotidx, homehotplayer)
 	add.w	d0,d0
 	move.w	(a0,d0.w),d1
 	cmpi.w	#0,(homehotidx).w
-	bge.w	.0
+	bge.w	.x
 	addq.w	#1,(homehotidx).w
-.0
+.x
 	movem.l	(sp)+,d0/a0
 	movea.l	#tmstruct,a1
 	rts
@@ -1104,9 +1104,9 @@ NextAwayHotPlayer	;The same for the away team (awayhotidx, awayhotplayer)
 	add.w	d0,d0
 	move.w	(a0,d0.w),d1
 	cmpi.w	#0,(awayhotidx).w
-	bge.w	.0
+	bge.w	.x
 	addq.w	#1,(awayhotidx).w
-.0
+.x
 	movem.l	(sp)+,d0/a0
 	movea.l	#AwShots,a1
 	rts
@@ -1118,9 +1118,9 @@ NextHomeColdPlayer	;d1 = the next home cold player (homecoldidx, homecoldplayer)
 	add.w	d0,d0
 	move.w	(a0,d0.w),d1
 	cmpi.w	#0,(homecoldidx).w
-	bge.w	.0
+	bge.w	.x
 	addq.w	#1,(homecoldidx).w
-.0
+.x
 	movem.l	(sp)+,d0/a0
 	movea.l	#tmstruct,a1
 	rts
@@ -1132,9 +1132,9 @@ NextAwayColdPlayer	;The same for the away team (awaycoldidx, awaycoldplayer)
 	add.w	d0,d0
 	move.w	(a0,d0.w),d1
 	cmpi.w	#0,(awaycoldidx).w
-	bge.w	.0
+	bge.w	.x
 	addq.w	#1,(awaycoldidx).w
-.0
+.x
 	movem.l	(sp)+,d0/a0
 	movea.l	#AwShots,a1
 	rts
@@ -1158,12 +1158,12 @@ GetTeamNickname	;a1 = the nickname String of team a2, or HomeTxt / VisitorsTxt w
 	adda.w	(a1),a1	;abbreviation
 	adda.w	(a1),a1	;nickname
 	cmpi.w	#2,(a1)	;empty String?
-	bne.w	.0
+	bne.w	.x
 	movea.l	#HomeTxt,a1
 	cmpa.l	#tmstruct,a2
-	beq.w	.0
+	beq.w	.x
 	movea.l	#VisitorsTxt,a1
-.0
+.x
 	movem.l	(sp)+,d0/a0/a2
 	rts
 
@@ -1177,12 +1177,12 @@ CopyHottestPlayer	;Copy the hottest player of TempBuffer to the list a0
 	movem.l	d0-d1/a0-a1,-(sp)
 	movea.l	#linemarkbuf,a1
 	move.w	#0,d0
-.0
+.copy
 	clr.b	(a0)+
 	move.b	(a1),d1
 	move.b	d1,(a0)+
 	tst.w	(a1)+
-	dbf	d0,.0
+	dbf	d0,.copy
 	movem.l	(sp)+,d0-d1/a0-a1
 	rts
 
@@ -1190,11 +1190,11 @@ CopyColdestPlayer	;Copy the coldest player of TempBuffer to the list a0
 	movem.l	d0/a0-a1,-(sp)
 	movea.l	#TempBuffer+$A,a1
 	move.w	#0,d0
-.0
+.copy
 	clr.b	(a0)+
 	move.b	(a1),(a0)+
 	tst.w	-(a1)
-	dbf	d0,.0
+	dbf	d0,.copy
 	movem.l	(sp)+,d0/a0-a1
 	rts
 

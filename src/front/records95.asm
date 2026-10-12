@@ -97,7 +97,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	bsr.w	NameLetterGrid
 	clr.w	d0
 	bra.w	.18
-.3
+.loop
 	bsr.w	GetNameLength
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$A,$7,$0
@@ -110,35 +110,35 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	bsr.w	PrintNamePrompt
 .4
 	bsr.w	MoveLogArrows
-.5
+.loop2
 	move.w	(vcount).w,d0
-.6
+.loop3
 	cmp.w	(vcount).w,d0
-	beq.s	.6
+	beq.s	.loop3
 	cmpa.l	#pad1user,a5
-	beq.w	.9
+	beq.w	.input
 	cmpa.l	#pad2user,a5
 	beq.w	.8
 	cmpa.l	#pad3user,a5
 	beq.w	.7
 	jsr	(ReadJoy4).l
 	tst.w	d1
-	beq.s	.5
+	beq.s	.loop2
 	bra.w	.10
 .7
 	jsr	(ReadJoy3).l
 	tst.w	d1
-	beq.s	.5
+	beq.s	.loop2
 	bra.w	.10
 .8
 	jsr	(ReadJoy2).l
 	tst.w	d1
-	beq.s	.5
+	beq.s	.loop2
 	bra.w	.10
-.9
+.input
 	jsr	(ReadJoy1).l
 	tst.w	d1
-	beq.s	.5
+	beq.s	.loop2
 .10
 	btst	#7,d1
 	bne.w	.nameEntryExit
@@ -151,7 +151,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	btst	#0,d1
 	bne.w	.13
 	btst	#4,d1
-	beq.w	.3
+	beq.w	.loop
 	bsr.w	NameLetterGrid
 	clr.w	d0
 	bra.w	.13
@@ -174,16 +174,16 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	btst	#0,d1
 	bne.w	.19
 	btst	#4,d1
-	beq.w	.3
+	beq.w	.loop
 	bsr.w	NameLetterGrid
 	tst.w	(NameEntryMode).w
 	bne.w	.12
 	bsr.w	PrintNameLog
 .12
-	bra.w	.3
+	bra.w	.loop
 .13
 	add.w	d0,(namelogsel).w
-.14
+.loop4
 	cmpi.w	#7,(namelogsel).w
 	ble.w	.15
 	move.w	#1,(namelogsel).w
@@ -193,13 +193,13 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	move.w	#7,(namelogsel).w
 .16
 	bsr.w	NameInUse
-	beq.s	.14
+	beq.s	.loop4
 	movea.l	#NameEntryBuf,a1
 	bsr.w	GetLogName
 	tst.w	(NameEntryMode).w
 	bne.w	.17
 	jsr	(NameEntryHelp).l
-	bra.w	.3
+	bra.w	.loop
 .17
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$4,$13,$0
@@ -223,7 +223,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 .18
 	add.w	d4,d0
 	cmp.w	#$B,d0
-	bhi.w	.3
+	bhi.w	.loop
 	move.w	d0,d4
 	bsr.w	PrintNameCursor
 	movea.l	#NameEntryBuf,a0
@@ -237,7 +237,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 .19
 	add.w	d5,d0
 	cmp.w	#$1D,d0
-	bhi.w	.3
+	bhi.w	.loop
 	move.w	d0,-(sp)
 	bsr.w	LetterGridPos
 	moveq	#1,d2
@@ -266,7 +266,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	movea.l	#LetterGrid,a1
 	move.b	(a1,d5.w),d0
 	move.b	d0,(a0,d4.w)
-	bra.w	.3
+	bra.w	.loop
 
 .nameEntryExit	;NameEntryScreen exit (restore and return)
 	bsr.w	StoreUserName
@@ -287,19 +287,19 @@ NameLetterGrid	;Name entry: letter grid and its key help (NameLetterGrid); on th
 	String	-(TXPRI+TXMAP1),$A,$11,$0
 	movea.l	#LetterGrid,a0
 	moveq	#4,d0
-.0
+.loop
 	moveq	#5,d1
 	movea.l	#mesarea,a1
 	move.w	#$E,(a1)+
-.1
+.loop2
 	move.b	(a0)+,(a1)+
 	move.b	#$20,(a1)+
-	dbf	d1,.1
+	dbf	d1,.loop2
 	movea.w	#(mesarea-M68K_RAM),a1
 	jsr	(printsmall).l
 	addq.w	#2,(printy).w
 	subi.w	#$C,(printx).w
-	dbf	d0,.0
+	dbf	d0,.loop
 	jsr	(ClearNameHelp).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$18,$11,$0
@@ -308,7 +308,7 @@ NameLetterGrid	;Name entry: letter grid and its key help (NameLetterGrid); on th
 	dc.b	'{}[]',$FA,$1,$FD,$18,'=Select letter',$FA,$2
 	dc.b	$FD,$18,'C=Enter letter',$FA,$2,$FD,$18,'A=Go back'
 	dc.b	$FA,$2,$FD,$18,'B=Cancel',$0
-.2
+.x
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 .3
@@ -326,7 +326,7 @@ NameLetterGrid	;Name entry: letter grid and its key help (NameLetterGrid); on th
 	moveq	#$16,d0
 	moveq	#7,d1
 	bsr.w	NameEntryHelp
-	bra.s	.2
+	bra.s	.x
 
 NameEntryHelp	;Name entry: name log key help text (NameEntryHelp)
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -365,12 +365,12 @@ SyncLetterCursor	;Name entry: grid cursor d5 = grid index of the current letter 
 	blt.w	.1
 	clr.w	d5
 .0
-	bra.w	.2
+	bra.w	.x
 .1
 	move.w	d0,d5
 	movea.l	#LetterGrid,a0
 	move.b	(a0,d5.w),(NameEntryBuf).w
-.2
+.x
 	movem.l	(sp)+,d0-d4/a0-a6
 	rts
 
@@ -382,11 +382,11 @@ FindLetter	;d0 = index of letter d0 in the letter grid, $1E when not found (Find
 	move.w	#$1E,d3
 .0
 	cmp.b	(a0,d0.w),d1
-	beq.w	.1
+	beq.w	.x
 	addq.w	#1,d0
 	dbf	d3,.0
 	move.w	#$1E,d0
-.1
+.x
 	movem.l	(sp)+,d1-d3/a0-a6
 	rts
 
@@ -441,14 +441,14 @@ PrintNameLog	;Name entry: print the 7-row name log list (PrintNameLog)
 	move.w	#6,d7
 	move.w	#1,(namelogsel).w
 	movea.l	#linemarkbuf,a1
-.0
+.loop
 	bsr.w	GetLogName
 	move.w	(printx).w,-(sp)
 	bsr.w	PrintNameField
 	move.w	(sp)+,(printx).w
 	addq.w	#1,(printy).w
 	addq.w	#1,(namelogsel).w
-	dbf	d7,.0
+	dbf	d7,.loop
 	move.w	(sp)+,(namelogsel).w
 	move.w	(sp)+,(NameEntryLen).w
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -458,12 +458,12 @@ MoveLogArrows	;Name entry: move the ] [ arrows when the name log selection chang
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(namelogsel).w,d0
 	cmp.w	(namelogarrows).w,d0
-	beq.w	.0
+	beq.w	.x
 	movea.l	#LogArrowsClrTxt,a1
 	bsr.w	PrintLogArrows
 	movea.l	#LogArrowsTxt,a1
 	bsr.w	PrintLogArrows
-.0
+.x
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -498,14 +498,14 @@ GetNameLength	;Name entry: NameEntryLen = length of the name in the entry buffer
 	move.w	#$B,d3
 	movea.l	#NameEntryBuf,a0
 	clr.w	(NameEntryLen).w
-.0
+.loop
 	cmpi.b	#$2D,(a0)
-	beq.w	.1
+	beq.w	.x
 	tst.b	(a0)+
-	beq.w	.1
+	beq.w	.x
 	addq.w	#1,(NameEntryLen).w
-	dbf	d3,.0
-.1
+	dbf	d3,.loop
+.x
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -587,7 +587,7 @@ StoreUserName	;Name entry: store the edited name in the name log slot; if change
 	adda.w	d0,a0
 	movea.l	#NameEntryBuf,a1
 	move.w	#$B,d4
-.0
+.loop
 	cmpi.b	#$2D,(a1)
 	bne.w	.1
 	move.b	#0,(a1)
@@ -595,7 +595,7 @@ StoreUserName	;Name entry: store the edited name in the name log slot; if change
 	move.b	(a1)+,d1
 	cmp.b	(a0)+,d1
 	bne.w	.2
-	dbf	d4,.0
+	dbf	d4,.loop
 	bra.w	.5
 .2
 	movea.l	#namelog,a0
@@ -604,14 +604,14 @@ StoreUserName	;Name entry: store the edited name in the name log slot; if change
 	adda.w	d0,a0
 	movea.l	#NameEntryBuf,a1
 	move.w	#$B,d4
-.3
+.loop2
 	move.b	(a1)+,d1
 	cmp.b	#$2D,d1
 	bne.w	.4
 	move.b	#0,d1
 .4
 	move.b	d1,(a0)+
-	dbf	d4,.3
+	dbf	d4,.loop2
 	bsr.w	WriteNameLog
 	jsr	(WriteNameRecord).l
 	jsr	(MakeSRAMChecksum).l
@@ -705,9 +705,9 @@ WriteNameRecord	;Clear name slot namelogsel from every saved record (read ReadSR
 	jsr	(ReadSRAM).l
 	move.l	a0,-(sp)
 	move.w	#$F,d3
-.12
+.loop3
 	clr.b	(a0)+
-	dbf	d3,.12
+	dbf	d3,.loop3
 	movea.l	(sp)+,a0
 	jsr	(WriteSRAM).l
 	jsr	(MakeSRAMChecksum).l
@@ -844,10 +844,10 @@ NameLogIO	;Read or write (sflags6 bit 6) the name log
 	move.l	#SRNameLog,d0
 	movea.l	#namelog,a0
 	btst	#6,(sflags6).w
-	beq.w	.0
+	beq.w	.read
 	jsr	(WriteSRAM).l
 	bra.w	.x
-.0
+.read
 	jsr	(ReadSRAM).l
 .x
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1440,12 +1440,12 @@ UpdateTeamRecord	;Add the game of team a1 (against a2) to team record block d1 (
 .1
 	movem.w	(sp)+,d0
 	btst	#7,(sflags11).w
-	beq.w	.3
+	beq.w	.write
 	movem.w	d0,-(sp)
 	move.w	$C(a1),d0
 	cmp.w	$C(a2),d0
 	movem.w	(sp)+,d0
-	ble.w	.3
+	ble.w	.write
 	move.w	$C(a1),d5
 	cmp.b	(a0),d5
 	ble.w	.2
@@ -1459,13 +1459,13 @@ UpdateTeamRecord	;Add the game of team a1 (against a2) to team record block d1 (
 	move.w	(a2),d6
 	sub.w	d5,d6
 	cmp.b	4(a0),d6
-	ble.w	.3
+	ble.w	.write
 	st	d7
 	move.b	d6,4(a0)
 	move.b	d3,5(a0)
 	move.b	d4,6(a0)
 	move.b	d2,7(a0)
-.3
+.write
 	bsr.w	WriteTeamRecord
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -1658,10 +1658,10 @@ TeamRecordIO	;The team record block: read or write (sflags6 bit 6)
 	addi.l	#SRTeamRecords,d0
 	moveq	#$10,d1
 	btst	#6,(sflags6).w
-	beq.w	.0
+	beq.w	.read
 	jsr	(WriteSRAM).l
 	bra.w	.x
-.0
+.read
 	jsr	(ReadSRAM).l
 .x
 	movem.l	(sp)+,d0-d1/a0-a1
@@ -1678,10 +1678,10 @@ CrowdRecordIO	;The crowd record block: read or write (sflags6 bit 6)
 	addi.l	#SRCrowdRecords,d0
 	moveq	#$10,d1
 	btst	#6,(sflags6).w
-	beq.w	.0
+	beq.w	.read
 	jsr	(WriteSRAM).l
 	bra.w	.x
-.0
+.read
 	jsr	(ReadSRAM).l
 .x
 	movem.l	(sp)+,d0-d1/a0-a1
@@ -1703,10 +1703,10 @@ PlayerRecordIO	;The player record: read or write (sflags6 bit 6)
 	add.l	d1,d0
 	moveq	#4,d1
 	btst	#6,(sflags6).w
-	beq.w	.0
+	beq.w	.read
 	jsr	(WriteSRAM).l
 	bra.w	.x
-.0
+.read
 	jsr	(ReadSRAM).l
 .x
 	movem.l	(sp)+,d0-d1/a0-a1

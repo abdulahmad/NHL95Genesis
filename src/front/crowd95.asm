@@ -6,9 +6,9 @@
 updatecrowdf	;Every game loop, d7 = elapsed frames: the crowd level falls (faster when loud); every $10 frames the next crowd frame of CrowdFrameTbl in crowdframe.
 	;a frame table instead of the 94 random frame / time pairs
 	cmpi.w	#$15E,(crowdlevel).w
-	blt.w	.0
+	blt.w	.dec
 	subq.w	#3,(crowdlevel).w	;loud crowd calms down faster
-.0
+.dec
 	sub.w	d7,(crowdlevel).w
 	bpl.w	.1
 	clr.w	(crowdlevel).w

@@ -417,12 +417,12 @@ doinput_islocked	;B with the player not the carrier: change player (chgplayer) a
 	move.w	(c1playernum).w,d0
 .4
 	tst.w	d0
-	bmi.w	.5
+	bmi.w	.x
 	asl.w	#7,d0
 	movea.l	#SortCords,a0
 	adda.w	d0,a0
 	bset	#6,pflags3(a0)
-.5
+.x
 	movem.l	(sp)+,d0/a0
 
 rtss7	;The doinput_islocked rts
@@ -740,22 +740,22 @@ OneTimerTarget	;One-timer pass target for receiver a3: an offset by facing from
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#2,(sflags6).w
 	tst.w	position(a3)
-	bne.w	.0
+	bne.w	.skater
 	movea.l	#OneTimerGoalieTbl,a0
-	bra.w	.2
-.0
+	bra.w	.facing
+.skater
 	move.w	Ypos(a3),d0
 	btst	#7,pflags(a3)
-	bne.w	.1
+	bne.w	.near
 	neg.w	d0
-.1
+.near
 	bset	#2,(sflags6).w
 	movea.l	#OneTimerNearTbl,a0
 	cmp.w	#$56,d0
-	blt.w	.2
+	blt.w	.facing
 	movea.l	#OneTimerFarTbl,a0
 	bclr	#2,(sflags6).w
-.2
+.facing
 	move.w	facedir(a3),d0
 	btst	#7,pflags(a3)
 	bne.w	.3
@@ -766,26 +766,26 @@ OneTimerTarget	;One-timer pass target for receiver a3: an offset by facing from
 	move.w	(a0,d0.w),d1
 	move.w	2(a0,d0.w),d2
 	cmpa.l	#OneTimerFarTbl,a0
-	bne.w	.6
+	bne.w	.side
 	move.w	Ypos(a3),d0
 	bpl.w	.4
 	neg.w	d0
 .4
 	cmp.w	#$88,d0
-	blt.w	.6
+	blt.w	.side
 	move.w	(a3),d0
-	bpl.w	.5
+	bpl.w	.chkx
 	neg.w	d0
-.5
+.chkx
 	cmp.w	#$37,d0
-	bgt.w	.6
+	bgt.w	.side
 	move.w	#$106,d2
-.6
+.side
 	btst	#7,pflags(a3)
-	bne.w	.7
+	bne.w	.rand
 	neg.w	d1
 	neg.w	d2
-.7
+.rand
 	move.w	#$A,d0
 	jsr	(randomd0).l
 	add.w	d0,d1
@@ -794,19 +794,19 @@ OneTimerTarget	;One-timer pass target for receiver a3: an offset by facing from
 	add.w	d0,d2
 	move.w	d1,(onetimertargetx).w
 	tst.w	position(a3)
-	beq.w	.9
+	beq.w	.sety
 	sub.w	(a3),d1
-	bmi.w	.8
+	bmi.w	.left
 	subi.w	#$3C,d1
-	bpl.w	.9
+	bpl.w	.sety
 	neg.w	d1
 	add.w	d1,(onetimertargetx).w
-	bra.w	.9
-.8
+	bra.w	.sety
+.left
 	addi.w	#$3C,d1
-	bmi.w	.9
+	bmi.w	.sety
 	sub.w	d1,(onetimertargetx).w
-.9
+.sety
 	move.w	d2,(onetimertargety).w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -841,9 +841,9 @@ OneTimerPass	;One-timer pass: puckvz = sqrt(12 * onetimerheight), then puckvx / 
 	sub.w	(puckx).w,d1
 	swap	d1
 	tst.w	d0
-	bne.w	.0
+	bne.w	.setv
 	move.w	#1,d0
-.0
+.setv
 	divs.w	d0,d1
 	move.w	d1,(puckvx).w
 	clr.l	d1
@@ -887,9 +887,9 @@ SetShotMode	;Initiate a shot by player a3
 	clr.w	d0	;find dx/dy for shot
 	move.w	#$128,d1	;#296 = top Y boards
 	btst	#7,pflags(a3)
-	bne.w	.1
+	bne.w	.ck0
 	neg.w	d1	;flip if bottom goal
-.1
+.ck0
 	sub.w	(a3),d0	;Sub Xpos of player from d0. d0 starts as 0 (middle of rink in X)
 	sub.w	Ypos(a3),d1	;Sub Ypos of player from Y boards
 	jsr	(vtoa).l
@@ -916,43 +916,43 @@ ShotMode	;The shot wind up: aim with the dpad until released
 	cmpi.w	#$1C,SPAnum(a3)
 	bge.w	prepshot	;end of animation so shoot
 	btst	#3,d0	;checks dpad for direction
-	bne.w	.0
+	bne.w	.ss0
 	andi.w	#7,d0	;pass the first 3 bits of d0
 	move.w	d0,(passdir).w	;set shot direction
-.0
+.ss0
 	cmpi.w	#$10,SPAnum(a3)
-	bge.w	.3
+	bge.w	.end
 	add.w	d7,(passspeed).w
 	cmpi.b	#$14,shotspd(a3)	;6C = shot speed
-	bge.w	.1
+	bge.w	.checkcbut
 	cmpi.w	#8,SPAnum(a3)
 	bgt.w	.2
-.1
+.checkcbut
 	btst	#5,d2	;5 = #cbut
-	beq.w	.3
+	beq.w	.end
 .2
 	neg.w	SPAnum(a3)	;end windup and swing through
 	addi.w	#$18,SPAnum(a3)
-.3
+.end
 	rts
 
 prepshot	;Prepare the shot (shot direction), then doshot
 	bclr	#4,(sflags5).w
 	move.w	#$B,d0
 	btst	#6,pflags(a3)
-	beq.w	.0
+	beq.w	.nogoalie
 	move.w	#5,d0	;opponent is home
-.0
+.nogoalie
 	cmpi.w	#1,(passdir).w
-	ble.w	.1
+	ble.w	.dir017
 	cmpi.w	#7,(passdir).w
 	bne.w	.3
-.1
+.dir017
 	move.w	(pucky).w,d0
 	btst	#7,pflags(a3)
-	bne.w	.2
+	bne.w	.cmppuck
 	neg.w	d0	;flips d0 for compare calc
-.2
+.cmppuck
 	cmp.w	#$D8,d0	;compares location of puck
 	blt.w	.3
 	bset	#4,(sflags5).w	;set flag for in-close top shelf shooting
@@ -973,9 +973,9 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	move.b	pflags(a3),(shotpflags).w
 	bclr	#4,(gmode2).w
 	btst	#pf3break,pflags3(a3)	;check if player on breakaway
-	beq.w	.1
+	beq.w	.cont
 	bset	#4,(gmode2).w	;set if breakaway
-.1
+.cont
 	bsr.w	shotdiradj
 	move.w	#5,-(sp)	;#SFXshotwiff - sound effect
 	move.w	SCnum(a3),(shotplayer).w
@@ -990,19 +990,19 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	move.w	#$18,(sp)	;#SFXshotfh
 	bset	#4,(sflags2).w
 	cmpi.w	#$176E,SPA(a3)
-	bne.w	.3
+	bne.w	.nbh
 	move.w	#$14,(sp)	;#SFXshotbh
 	move.w	(passspeed).w,d0
 	lsr.w	#2,d0	;sub 25% for backhand shots
 	sub.w	d0,(passspeed).w
-.3
+.nbh
 	btst	#pf3onetimer,pflags3(a3)	;check if shooting one timer
-	beq.w	.4
+	beq.w	.cont2
 	movem.l	d0-d1,-(sp)	;push d0-d1 on stack
 	move.w	#$1F,d0	;1F into d0 - one timer min speed
 	move.w	d0,(passspeed).w	;make passspeed start with a higher value
 	movem.l	(sp)+,d0-d1	;Pop off stack d0-d1
-.4
+.cont2
 	clr.w	d0
 	move.b	shotspd(a3),d0
 	lsr.b	#1,d0	;divide by 2
@@ -1014,16 +1014,16 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	swap	d0	;swaps the upper and lower words of d0
 	move.w	d0,(passspeed).w	;move d0 into passspeed
 	btst	#0,shotspd(a3)
-	beq.w	.5
+	beq.w	.even
 	asr.w	#4,d0	;divide by 16
 	add.w	(passspeed).w,d0	;add passspeed to d0
-.5
+.even
 	lsr.w	#4,d0	;divide by 16 (d0 is passspeed)
 	neg.w	d0	;negative
 	addq.w	#3,d0	;add 3 to d0
-	bpl.w	.6
+	bpl.w	.nbh2
 	clr.w	d0	;clear if negative
-.6
+.nbh2
 	add.w	d0,(sp)	;add to stack current value (Shot SFX)
 	st	(puckc).w	;clear puck carrier
 	move.b	#$10,nopuck(a3)	;5E = nopuck - no puck collision till 0
@@ -1051,19 +1051,19 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 .8
 	move.w	d0,d3	;straight line distance from puck to spot aiming for with passdir
 	btst	#4,(gmode).w
-	bne.w	.14
+	bne.w	.perf
 	cmp.w	#$C8,d3	;C8 = 200 decimal
-	bhi.w	.9
+	bhi.w	.notperf
 	jsr	(ReadGoaliePulled).l	;checks if shooting team's G pulled
-	bmi.w	.14
+	bmi.w	.perf
 	btst	#0,(gmode2).w	;check if shootout
-	bne.w	.14
+	bne.w	.perf
 	moveq	#$10,d0	;start value for ShA calc
 	add.b	shotacc(a3),d0	;shotacc(a3)
 	jsr	(randomd0).l
 	cmp.w	#$E,d0	;chance of perfect shot
-	bgt.w	.14
-.9
+	bgt.w	.perf
+.notperf
 	clr.w	d0
 	move.b	shotacc(a3),d0
 	lsr.w	#1,d0	;divide by 2
@@ -1087,10 +1087,10 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	add.w	d0,2(sp)	;add result to x diff
 	move.w	(sp),d0	;move adjusting value into d0
 	cmp.w	#$3C,d0	;'<'   ; compare to $3C (max adjustment in Y)
-	bls.w	.12
+	bls.w	.lessx
 	moveq	#$3C,d0
 	move.w	d0,(sp)
-.12
+.lessx
 	tst.w	4(sp)
 	bpl.w	.13
 	lsr.w	#1,d0
@@ -1101,7 +1101,7 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	lsr.w	#1,d0	;divide by 2
 	jsr	(randomd0).l
 	add.w	d0,4(sp)	;add to Z diff
-.14
+.perf
 	move.w	(passspeed).w,d2	;shot speed
 	muls.w	#$44,d2	;'D'   ; 1024/15
 	muls.w	(sp)+,d2	;mult by x dist
@@ -1172,7 +1172,7 @@ shotdiradj	;a3 = shooter. Where to shoot for a computer player or a one timer
 	btst	#pf3onetimer,pflags3(a3)	;check if shooting one timer
 	bne.w	.0	;jump if shooting one timer
 	btst	#3,pflags(a3)
-	bne.w	.6
+	bne.w	.ex
 .0
 	moveq	#8,d0
 	moveq	#5,d1
@@ -1184,7 +1184,7 @@ shotdiradj	;a3 = shooter. Where to shoot for a computer player or a one timer
 	adda.w	#SCstruct,a0
 	tst.w	position(a0)
 	dbeq	d1,.1
-	bne.w	.4
+	bne.w	.setpassdir
 	move.b	Xvel(a0),d0
 	ext.w	d0	;sign extend d0
 	asr.w	#1,d0	;divide by 2
@@ -1206,9 +1206,9 @@ shotdiradj	;a3 = shooter. Where to shoot for a computer player or a one timer
 	moveq	#$12,d3	;post?
 	move.w	#$10B,d4
 	btst	#7,pflags(a3)
-	bne.w	.2
+	bne.w	.chkposts
 	neg.w	d4	;negate if bottom goal
-.2
+.chkposts
 	movem.w	d3-d4,-(sp)	;push to stack
 	bsr.w	CalcAngleOffset
 	move.w	d4,d5
@@ -1218,26 +1218,26 @@ shotdiradj	;a3 = shooter. Where to shoot for a computer player or a one timer
 	add.w	d5,d4	;add results to d4
 	clr.w	d0	;clear d0
 	cmp.w	#$2C,d4	;','   ; 2C - right X edge of crease
-	bgt.w	.4
+	bgt.w	.setpassdir
 	cmp.w	#$FFD4,d4	;-$2C, the left X edge of the crease
-	blt.w	.4
+	blt.w	.setpassdir
 	btst	#7,pflags(a3)
-	beq.w	.3
+	beq.w	.passdir
 	neg.w	d4	;negate d4
-.3
+.passdir
 	moveq	#2,d0	;move 2 into d0
 	tst.w	d4	;check if d4 is 0
-	bpl.w	.4
+	bpl.w	.setpassdir
 	moveq	#6,d0	;move 6 into d0
-.4
+.setpassdir
 	move.w	d0,(passdir).w	;will be 0,2,6, or 8 (no goalie)
 	btst	#2,(BA_PS_flags).w
-	bne.w	.5
+	bne.w	.PSorSO
 	btst	#0,(gmode2).w	;check if shootout
-	beq.w	.6
-.5
+	beq.w	.ex
+.PSorSO
 	jsr	(PSandSOpassdir).l
-.6
+.ex
 	rts
 
 CalcAngleOffset	;shotdiradj helper

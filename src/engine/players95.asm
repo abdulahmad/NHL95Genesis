@@ -41,7 +41,7 @@ setpersonel	;Set personnel on team a2 by PlList: players already on the ice stay
 .2
 	clr.w	d5
 	move.b	(a4,d4.w),d5
-	beq.w	.4
+	beq.w	.next
 	subq.w	#1,d5
 	moveq	#5,d3
 	movea.w	$22(a2),a3
@@ -50,18 +50,18 @@ setpersonel	;Set personnel on team a2 by PlList: players already on the ice stay
 	adda.w	#SCstruct,a3	;add player struct size to a3
 	cmp.b	pnum(a3),d5	;compare pnum to d5
 	dbeq	d3,.3
-	bne.w	.4
+	bne.w	.next
 	move.b	6(a4,d4.w),newpos(a3)	;move a4+d4+6 into newpos
 	move.b	d5,newpnum(a3)	;move d5 into newpnum
 	clr.b	(a4,d4.w)
-.4
+.next
 	dbf	d4,.2
 	moveq	#5,d4
 	movea.w	#(PlList-M68K_RAM),a4
 .5
 	clr.w	d5
 	move.b	(a4,d4.w),d5
-	beq.w	.8
+	beq.w	.next2
 	subq.w	#1,d5
 	moveq	#5,d3
 	movea.w	$22(a2),a3
@@ -78,7 +78,7 @@ setpersonel	;Set personnel on team a2 by PlList: players already on the ice stay
 	move.b	6(a4,d4.w),$60(a0)
 	move.b	d5,$61(a0)
 	clr.b	(a4,d4.w)
-.8
+.next2
 	dbf	d4,.5
 	movem.l	(sp)+,d0-d5/a0-a4
 	rts
@@ -98,22 +98,22 @@ SetPlList	;Create PlList of players who we want on the ice now. a2 = team struct
 	asl.w	#3,d0	;mult by 8
 	adda.w	d0,a1	;add to a1 to set a1 to currently selected line
 	move.w	$24(a2),d4
-	bra.w	.2
+	bra.w	.next
 .1
 	clr.w	d5
 	move.b	(a0,d4.w),d5
 	move.b	(a1,d5.w),(a4,d4.w)
 	move.b	d5,6(a4,d4.w)
-	bne.w	.2
+	bne.w	.next
 	moveq	#1,d3
 	add.w	$26(a2),d3
 	move.b	d3,(a4,d4.w)
-.2
+.next
 	dbf	d4,.1
 	moveq	#5,d4	;now check to see if player is available
 .3
 	move.b	(a4,d4.w),d3
-	beq.w	.6
+	beq.w	.next1
 	ext.w	d3
 	subq.w	#1,d3
 	add.w	d3,d3
@@ -122,7 +122,7 @@ SetPlList	;Create PlList of players who we want on the ice now. a2 = team struct
 	cmpi.w	#$FFFC,$68(a2,d3.w)
 	beq.w	.4
 	tst.w	$68(a2,d3.w)
-	ble.w	.6
+	ble.w	.next1
 .4
 	lea	$16C(a2),a1
 	move.b	6(a4,d4.w),d0	;move 6+a4+d4 into d0 (previous d5)
@@ -130,26 +130,26 @@ SetPlList	;Create PlList of players who we want on the ice now. a2 = team struct
 	asl.w	#1,d0	;mult by 2
 	movea.l	#sublist,a0	;move sublist into a0
 	adda.w	(a0,d0.w),a0
-.5
+.s1
 	clr.w	d0
 	move.b	(a0)+,d0
-	bmi.w	.7
+	bmi.w	.error
 	move.b	(a1,d0.w),d0
 	bsr.w	TryAddPlayerToList
-	beq.s	.5
-.6
+	beq.s	.s1
+.next1
 	dbf	d4,.3
 	rts
-.7
+.error
 	jsr	(GetPlayerCount).l	;then try the players from d0 down
 	move.w	d0,d3
-.8
+.try
 	move.w	d3,d0
 	subq.w	#1,d3
-	bmi.s	.6
+	bmi.s	.next1
 	bsr.w	TryAddPlayerToList
-	beq.s	.8
-	bra.s	.6
+	beq.s	.try
+	bra.s	.next1
 
 TryAddPlayerToList	;d0 = player number (1 based), d4 = PlList slot. Put d0 in the slot if he is on
 	;the bench and not in PlList yet (eq when taken)
@@ -268,12 +268,12 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	bpl.w	.1
 	moveq	#$13,d0
 	cmp.w	#$FFFE,d1	;-2 in this case
-	bne.w	.2
+	bne.w	.nda
 .1
 	bsr.w	assinsert
 	bclr	#5,pflags(a3)
 	clr.w	SPA(a3)
-.2
+.nda
 	move.w	#$FFFF,tmpdst(a0,d3.w)	;clear out temp space
 	lsr.w	#1,d3	;shift d3 back to its original value
 	move.w	$28(a0),(rosterteam).w
@@ -283,26 +283,26 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	tst.w	position(a3)	;check if goalie
 	beq.w	.9
 	btst	#5,(sflags2).w	;might be checking for a PP
-	beq.w	.4
+	beq.w	.habonus
 	jsr	(chkpk2).l
-	beq.w	.3
+	beq.w	.pk
 	move.b	1(a0),(PPBonus).w	;moves PP/PK byte into PPBonus
 	andi.b	#$F,(PPBonus).w	;passes lower nibble of PP/PK byte (bug)
-	bra.w	.4
-.3
+	bra.w	.habonus
+.pk
 	move.b	1(a0),d0	;moves PP/PK byte into d0
 	lsr.b	#4,d0	;shifts d0.b 4 places, to remove the lower nibble
 	neg.b	d0	;switches value to negative (because its a PK, its negative bonus)
 	move.b	d0,(PKBonus).w	;move d0 into PKBonus
-.4
+.habonus
 	move.b	2(a0),d0	;This is location of Home/Away adv
 	andi.b	#$F,d0	;pass the lower nibble (Away) to d0
 	neg.b	d0	;make d0 negative (away disadvantage)
 	btst	#6,pflags(a3)
-	bne.w	.5
+	bne.w	.3rdperbonuscheck
 	move.b	2(a0),d0	;player is home, move Home/Away byte back in to d0
 	lsr.b	#4,d0	;Shift d0 4 places right, to move upper nibble into d0
-.5
+.3rdperbonuscheck
 	move.b	d0,(HmAwBonus).w	;move d0 into HA bonus
 	cmpi.w	#2,(gsp).w	;Check if period is 3rd or OT
 	blt.w	.9
@@ -316,9 +316,9 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	sub.w	(AwShots+tmscore).w,d0
 	beq.w	.8
 	btst	#6,pflags(a3)
-	beq.w	.7
+	beq.w	.home
 	eori	#8,ccr	;If Aw team, checks if N flag is set from HmGoals-AwGoals.
-.7
+.home
 	bpl.w	.9
 .8
 	move.b	#2,(ThirdPBonus).w	;move 2 into 3rd Per Bonus
@@ -396,9 +396,9 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	bclr	#3,4(a3)
 	move.b	4(a0),handed(a3)	;move Chk/Hnd byte to Hnd in player struct
 	andi.b	#1,handed(a3)
-	beq.w	.10
+	beq.w	.attribloadcont
 	bset	#3,4(a3)
-.10
+.attribloadcont
 	move.b	4(a0),fighting(a3)	;moves Chk/Hnd byte into Fgt byte in player struct
 	andi.b	#$E,fighting(a3)	;mask the byte with E, ignoring the Hnd bit - will always be even
 	move.b	5(a0),d3	;move Stk/ShA byte into d3
@@ -459,13 +459,13 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 
 ClampNibble	;Clamp byte d3 to 0-$1E. Called by setplayer
 	tst.b	d3	;test if d3 is zero or higher
-	bpl.w	.0
+	bpl.w	.pos
 	clr.w	d3	;if negative, clear
-.0
+.pos
 	cmp.b	#$1E,d3	;compare upper limit
-	ble.w	.1
+	ble.w	.withinlimits
 	move.w	#$1E,d3	;if higher, set to 1E
-.1
+.withinlimits
 	rts
 
 StickHandTable	;setplayer: the stick handling nibble 0-15 to 0-6, before AttributeCalc
@@ -494,9 +494,9 @@ AttributeCalc	;Attribute d3 of player a3 * 5 plus his hot / cold value / 3
 	move.w	(TempWord2).w,d1
 	movea.l	#tmstruct,a1	;Start of Home Team struct
 	btst	#6,pflags(a3)
-	beq.w	.0
+	beq.w	.attribmath
 	adda.l	#tmsize,a1
-.0
+.attribmath
 	clr.w	d1
 	move.b	pnum(a3),d1
 	asl.w	#4,d1	;shifts d1 4 bits left, moving the values over 1 nibble
@@ -509,23 +509,23 @@ AttributeCalc	;Attribute d3 of player a3 * 5 plus his hot / cold value / 3
 	asl.w	#2,d3	;shift left 2 bits (mult. by 4)
 	add.w	(sp)+,d3	;Pop off d3 value and add to d3 (attrib X 5)
 	add.w	d1,d3	;add d1 (H/C value) to d3
-	bmi.w	.1
+	bmi.w	.LowerLimit
 	cmp.w	#$1E,d3
-	blt.w	.2
+	blt.w	.MaskAttribMathResult
 	move.w	#$1E,d3
-	bra.w	.2
-.1
+	bra.w	.MaskAttribMathResult
+.LowerLimit
 	clr.w	d3	;if below lower limit (0), set to 0
-.2
+.MaskAttribMathResult
 	andi.w	#$FF,d3
 	movem.l	(sp)+,d0-d2/a1
 	rts
 
 restoreteams	;Put both teams' rosters on the bench (tmap 6, every tmpdst -2)
 	movea.w	#(tmstruct-M68K_RAM),a2	;team 1
-	bsr.w	.0
+	bsr.w	.r
 	adda.w	#tmsize,a2
-.0
+.r
 	move.w	#6,tmap(a2)	;tmap: no players in pen. box
 	moveq	#$32,d0	;(maxros-1)*2
 .1
@@ -539,32 +539,32 @@ ResetBench	;Remove all players from penalty box / put all players on their own b
 	clr.b	(PBnum).w	;PBnum = HV00
 	moveq	#$10,d1
 	movea.w	#(tmstruct-M68K_RAM),a0
-	bsr.w	.0
+	bsr.w	.rb
 	moveq	#1,d1
 	adda.w	#tmsize,a0	;change to Away Team
-.0
+.rb
 	moveq	#$32,d0	;$32 = (MaxRos-1)*2 = 50 decimal
-.1
+.rb1
 	add.b	d1,(PBnum).w
 	tst.w	tmpdst(a0,d0.w)	;check tmpdst
-	ble.w	.2
+	ble.w	.cont
 	btst	#4,tmpdst(a0,d0.w)	;test 3rd bit in tmpdst (4 decimal)
-	beq.w	.3
+	beq.w	.next
 	move.w	tmpdst(a0,d0.w),d2	;move tmpdst into d2
 	andi.w	#$7FF,d2	;mask 7FF with d2. Passes lowest 11 bits
-	bne.w	.3
+	bne.w	.next
 	sub.b	d1,(PBnum).w
-	bra.w	.3
-.2
+	bra.w	.next
+.cont
 	sub.b	d1,(PBnum).w
 	cmpi.w	#$FFFD,tmpdst(a0,d0.w)	;compare -4 with tmpdst
-	beq.w	.3
+	beq.w	.next
 	cmpi.w	#$FFFC,tmpdst(a0,d0.w)
-	beq.w	.3
+	beq.w	.next
 	move.w	#$FFFE,tmpdst(a0,d0.w)	;move -2 into tmpdst
-.3
+.next
 	subq.w	#2,d0
-	bpl.s	.1
+	bpl.s	.rb1
 	rts
 
 resetplstuff	;Reset team variables and players on both teams. SPA $B5C

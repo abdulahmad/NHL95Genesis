@@ -13,16 +13,16 @@ UpdateScores	;Update the ticker score values of the other games (SetScore). Call
 	moveq	#$10,d0	;gssize
 	mulu.w	d1,d0
 	adda.w	d0,a0
-.0
+.top
 	cmp.w	(gamenum).w,d1
-	beq.w	.1
+	beq.w	.next
 	bclr	#1,$E(a0)	;gsfhl
 	btst	#2,$E(a0)	;gsfso
-	bne.w	.1
+	bne.w	.next
 	bsr.w	SetScore
-.1
+.next
 	suba.w	#$10,a0	;gssize
-	dbf	d1,.0
+	dbf	d1,.top
 	rts
 
 SetScore	;Add to the score of the game in a0. After period 3 a game within one goal goes to OT (gsper 3)
@@ -31,18 +31,18 @@ SetScore	;Add to the score of the game in a0. After period 3 a game within one g
 	bge.w	.2
 	movem.l	d0-d1/a0-a1,-(sp)
 	cmpi.w	#3,8(a0)
-	bne.w	.0
+	bne.w	.o
 	move.w	#5,8(a0)	;final
 	move.w	$A(a0),d0	;gss1
 	sub.w	$C(a0),d0	;gss2
 	cmp.w	#1,d0
-	bgt.w	.1
+	bgt.w	.ex
 	cmp.w	#$FFFF,d0
-	blt.w	.1
+	blt.w	.ex
 	move.w	#3,8(a0)	;close game: overtime
 	bset	#1,$E(a0)	;gsfhl
-	bra.w	.1
-.0
+	bra.w	.ex
+.o
 	addq.w	#1,8(a0)
 	move.w	(a0),d0	;gst1
 	move.w	2(a0),d1	;gst2
@@ -52,7 +52,7 @@ SetScore	;Add to the score of the game in a0. After period 3 a game within one g
 	move.w	(a0),d1
 	bsr.w	.3
 	add.w	d0,$C(a0)	;gss2
-.1
+.ex
 	movem.l	(sp)+,d0-d1/a0-a1
 .2
 	rts
@@ -106,19 +106,19 @@ puckfaceoff	;Puck assignment 3: start a faceoff. Shootout: stop the puck, assign
 	;pads' line changes (StartFaceoffLineChange) and the computer line (SetFaceoffComputerLine). 95 has no faceoff animation choice here
 	bclr	#4,(sflags8).w
 	btst	#0,(gmode2).w
-	beq.w	.0
+	beq.w	.normalfaceoff
 	clr.w	(puckvx).w
 	clr.w	(puckvy).w
 	move.w	#$1F,d0
 	jmp	assreplace
-.0
+.normalfaceoff
 	bclr	#1,pflags(a3)
 	beq.w	WaitForFaceoffLineChanges
 	bclr	#0,(sflags8).w
-	beq.w	.1
+	beq.w	.resetpads
 	clr.w	(fox).w
 	clr.w	(foy).w
-.1
+.resetpads
 	bclr	#7,(sflags7).w
 	clr.l	(padcont).w
 	clr.l	(padcont+4).w
@@ -140,20 +140,20 @@ puckfaceoff	;Puck assignment 3: start a faceoff. Shootout: stop the puck, assign
 	move.w	(PerTimeTotal).w,d0
 	asr.w	#1,d0
 	cmp.w	(gameclock).w,d0
-	bls.w	.3
+	bls.w	.returngoalies
 	cmpi.w	#$3C,(gameclock).w
-	blt.w	.3
+	blt.w	.returngoalies
 	bclr	#7,(sflags3).w
-	beq.w	.3
+	beq.w	.returngoalies
 	btst	#0,(gmode).w
-	beq.w	.3
+	beq.w	.returngoalies
 	btst	#6,(sflags8).w
-	bne.w	.3
+	bne.w	.returngoalies
 	move.w	(HomeTeam).w,(HmTeam).w
 	move.w	#2,(SongIndex).w
 	jsr	(ChooseSong).l
 	bset	#4,(sflags8).w
-.3
+.returngoalies
 	bsr.w	ReturnGoalies
 	st	temp1(a3)
 	st	temp2(a3)
@@ -163,10 +163,10 @@ puckfaceoff	;Puck assignment 3: start a faceoff. Shootout: stop the puck, assign
 	bclr	#1,(AwShots+tmflags).w
 	movea.w	#(SortCords-M68K_RAM),a0
 	moveq	#$B,d0
-.4
+.clearlcmloop
 	bclr	#3,pflags2(a0)
 	adda.w	#SCstruct,a0
-	dbf	d0,.4
+	dbf	d0,.clearlcmloop
 	move.w	(cont1team).w,d0
 	or.w	(cont2team).w,d0
 	or.w	(cont3team).w,d0
@@ -201,12 +201,12 @@ puckfaceoff	;Puck assignment 3: start a faceoff. Shootout: stop the puck, assign
 	bge.w	.8
 	move.w	(c4playernum).w,d0
 	cmp.w	#6,d0
-	blt.w	.9
+	blt.w	.checkcomputerline
 .8
 	tst.w	d0
-	bmi.w	.9
+	bmi.w	.checkcomputerline
 	bsr.w	StartFaceoffLineChange
-.9
+.checkcomputerline
 	movea.w	#(tmstruct-M68K_RAM),a1
 	lea	tmsize(a1),a2
 	moveq	#2,d0
@@ -247,11 +247,11 @@ StartFaceoffLineChange	;Player d0 (sort object) opens the line change box; when 
 	btst	#3,pflags2(a3)
 	beq.w	.1
 	btst	#6,pflags(a3)
-	beq.w	.0
+	beq.w	.homeplayer
 	move.w	#$168,temp2(a2)
 	move.w	SCnum(a3),temp4(a2)
 	bra.w	.1
-.0
+.homeplayer
 	move.w	#$258,temp1(a2)
 	move.w	SCnum(a3),temp3(a2)
 .1
@@ -302,11 +302,11 @@ UpdateFaceoffLineChangeTimer	;Line change timer d0 (temp1 / temp2 of the puck): 
 	move.l	a3,-(sp)
 	lea	(a0,d1.w),a3
 	btst	#3,pflags2(a3)
-	beq.w	.2
+	beq.w	.exit
 	clr.w	d2
 	bsr.w	lcfound
 	bsr.w	SetLCmode2
-.2
+.exit
 	movea.l	(sp)+,a3
 	rts
 
@@ -332,14 +332,14 @@ puckfaceoff2	;Puck assignment 4. First call: set up the faceoff: clear the penal
 	move	sr,-(sp)
 	move.w	#$3C,(holdreset).w
 	tst.w	(fox).w
-	bne.w	.1
+	bne.w	.lockinterrupts
 	tst.w	(foy).w
-	bne.w	.1
+	bne.w	.lockinterrupts
 	move.w	#$FFFF,(faceoffanim).w
-	bra.w	.2
-.1
+	bra.w	.limitcrowd
+.lockinterrupts
 	move	#$2700,sr
-.2
+.limitcrowd
 	cmpi.w	#$258,(crowdlevel).w
 	bls.w	.3
 	move.w	#$258,(crowdlevel).w	;limit crowd level
@@ -434,9 +434,9 @@ puckfaceoff2	;Puck assignment 4. First call: set up the faceoff: clear the penal
 	bne.w	.13
 	movea.w	#(tmstruct-M68K_RAM),a2
 	btst	#6,pflags(a3)
-	beq.w	.12
+	beq.w	.clr
 	adda.w	#tmsize,a2
-.12
+.clr
 	clr.w	$18(a2)
 	move.b	pnum(a3),$19(a2)	;66(a3) = player offset on roster 19(a2) = player who touches puck
 	bclr	#7,(sflags8).w
@@ -449,9 +449,9 @@ puckfaceoff2	;Puck assignment 4. First call: set up the faceoff: clear the penal
 .14
 	move.w	(tmstruct+tmap).w,d4
 	btst	#6,pflags(a3)
-	beq.w	.15
+	beq.w	.t0
 	move.w	(AwShots+tmap).w,d4
-.15
+.t0
 	neg.w	d4
 	addq.w	#6,d4
 	asl.w	#3,d4
@@ -463,28 +463,28 @@ puckfaceoff2	;Puck assignment 4. First call: set up the faceoff: clear the penal
 	move.w	(a1,d4.w),d0
 	move.w	2(a1,d4.w),d1
 	btst	#7,pflags(a3)
-	bne.w	.16
+	bne.w	.f0
 	neg.w	d0
 	neg.w	d1
-.16
+.f0
 	tst.w	position(a3)	;check for goalie
-	beq.w	.19
+	beq.w	.goalie2
 	cmp.w	#8,d4
-	bgt.w	.18
+	bgt.w	.nodef
 	move.w	(fox).w,d3
 	eor.w	d0,d3
-	bpl.w	.17
+	bpl.w	.notmid
 	move.w	(foy).w,d3
 	asr.w	#3,d3
 	sub.w	d3,d1
-.17
+.notmid
 	move.w	(fox).w,d3
 	asr.w	#2,d3
 	sub.w	d3,d0
-.18
+.nodef
 	add.w	(fox).w,d0
 	add.w	(foy).w,d1
-.19
+.goalie2
 	move.w	d0,(a3)	;Xpos
 	move.w	d1,Ypos(a3)
 	clr.w	Xvel(a3)
@@ -538,18 +538,18 @@ puckfaceoff2	;Puck assignment 4. First call: set up the faceoff: clear the penal
 	move.w	#7,8(a0)	;frame of ref
 	move.w	#$8000,VRoffs(a0)
 	btst	#1,(gmode).w
-	bne.w	.24
+	bne.w	.nfl
 	eori.w	#$800,2(a0)
 	eori.w	#$800,frame(a0)
-.24
+.nfl
 	move.w	#$FFFF,(fodir1).w	;-1
 	move.w	#$FFFF,(fodir2).w	;-1
 	jsr	(LeadSong).l
 	bclr	#6,(sflags8).w
-	bne.w	.25
+	bne.w	.playqueuedsong
 	bclr	#4,(sflags8).w
 	beq.w	.26
-.25
+.playqueuedsong
 	bclr	#4,(sflags8).w
 	move.w	(SongNum).w,-(sp)
 	jsr	(song).l
@@ -580,22 +580,22 @@ puckfaceoff2	;Puck assignment 4. First call: set up the faceoff: clear the penal
 
 assfaceoff	;Assignment $10: wait for the faceoff to end (sflags2 bit 0), then assexit
 	btst	#5,pflags(a3)
-	bne.w	.0
+	bne.w	.exit
 	btst	#0,(sflags2).w
 	beq.w	assexit
-.0
+.exit
 	rts
 
 assfaceoffpl	;Assignment $11, the faceoff player: set his fofdata2 frame from his stick hand and goal
 	;and start the faceoff SPA ($1B36, or $1B60 at random once the puck temp1 is above $10). After the faceoff: nopuck $14 and assexit
 	btst	#5,pflags(a3)
-	bne.w	.7
+	bne.w	.exit2
 	btst	#0,(sflags2).w
-	beq.w	.6
+	beq.w	.exit
 	bclr	#1,pflags(a3)
-	beq.w	.0
+	beq.w	.nna
 	clr.w	temp1(a3)
-.0
+.nna
 	movea.l	#fofdata2,a0
 	btst	#6,pflags(a3)
 	beq.w	.1
@@ -619,9 +619,9 @@ assfaceoffpl	;Assignment $11, the faceoff player: set his fofdata2 frame from hi
 .4
 	move.w	d0,(a0)
 	btst	#3,pflags(a3)
-	bne.w	.7
+	bne.w	.exit2
 	bset	#1,pflags2(a3)
-	bne.w	.7
+	bne.w	.exit2
 	move.w	#$1B36,d1
 	cmpi.w	#$10,(SortCords+(puckscnum*SCstruct)+temp1).w
 	bls.w	.5
@@ -633,10 +633,10 @@ assfaceoffpl	;Assignment $11, the faceoff player: set his fofdata2 frame from hi
 .5
 	bset	#1,pflags2(a3)
 	jmp	SetSPA
-.6
+.exit
 	move.b	#$14,nopuck(a3)
 	bra.w	assexit
-.7
+.exit2
 	rts
 
 updatefaceoff	;Faceoff count down: fofdata frame from temp1; at 0 erase the faceoff window (fodropx / fodropy)
@@ -704,14 +704,14 @@ Endfaceoff	;Drop the puck: sfx $2C, reload the ref tiles (RefTiles), clear the f
 	moveq	#$21,d0
 	jsr	(randomd0).l
 	cmp.b	d0,d2
-	bls.w	.0
+	bls.w	.p1won
 	addq.w	#4,a1
-.0
+.p1won
 	btst	#3,2(a1)
-	beq.w	.1
+	beq.w	.pos
 	move.w	(fodir2).w,d3
 	neg.w	d4
-.1
+.pos
 	move.w	d3,d0
 	btst	#3,d0
 	bne.w	.2
@@ -729,12 +729,12 @@ Endfaceoff	;Drop the puck: sfx $2C, reload the ref tiles (RefTiles), clear the f
 	eori.w	#4,d0
 .3
 	btst	#7,(sflags9).w
-	beq.w	.4
+	beq.w	.nj2
 	clr.w	Xvel(a3)
 	clr.w	Yvel(a3)
 	clr.w	Zvel(a3)
 	bra.w	.5
-.4
+.nj2
 	asl.w	#2,d0
 	movea.l	#dirtab,a0
 	move.w	(a0,d0.w),d1

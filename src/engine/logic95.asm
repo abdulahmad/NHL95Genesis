@@ -365,7 +365,7 @@ checkanim	;Goalie animation check; assgoaliectrl branches here too
 	cmp.l	#$384,d0
 	bhi.w	.14
 	movem.w	(sp)+,d0-d1
-	bra.w	.16
+	bra.w	.near
 .14
 	jsr	(sroot).l
 	moveq	#1,d2
@@ -381,7 +381,7 @@ checkanim	;Goalie animation check; assgoaliectrl branches here too
 	muls.w	d4,d0
 	divs.w	d2,d0
 	divs.w	d2,d1
-.16
+.near
 	add.w	d3,d1
 	move.w	d1,d2
 	btst	#0,(gmode2).w
@@ -607,7 +607,7 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 	bgt.w	.6
 	cmpi.w	#$800,(puckvz).w
 	bgt.w	.6
-	bra.w	.8
+	bra.w	.low
 .6
 	movem.l	d0,-(sp)
 	move.w	(a3),d0
@@ -622,7 +622,7 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 .7
 	movem.l	(sp)+,d0
 	bra.w	.18
-.8
+.low
 	addq.w	#4,d0
 	cmpi.w	#8,2(a0)	;puckcross frames
 	bls.w	.15
@@ -2904,36 +2904,36 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	subq.b	#1,temp1(a3)
 .9
 	btst	#2,(BA_PS_flags).w
-	bne.w	.12
+	bne.w	.soshot
 	btst	#0,(gmode2).w
-	bne.w	.12
+	bne.w	.soshot
 	jsr	(checkob).l
 	jsr	(chk4lc).l
 	btst	#0,(gmode2).w
-	bne.w	.12
+	bne.w	.soshot
 	btst	#2,(BA_PS_flags).w
-	bne.w	.12
+	bne.w	.soshot
 	btst	#pf3break,pflags3(a3)
-	bne.w	.11
+	bne.w	.shot
 	move.w	#1,d0
 	btst	#6,pflags(a3)
 	beq.w	.10
 	move.w	#2,d0
 .10
 	cmp.w	(cont1team).w,d0
-	beq.w	.11
+	beq.w	.shot
 	cmp.w	(cont2team).w,d0
-	beq.w	.11
+	beq.w	.shot
 	btst	#1,(vcount+1).w
-	bne.w	.13
-.11
+	bne.w	.pass
+.shot
 	bsr.w	chk4shot
-	bra.w	.13
-.12
+	bra.w	.pass
+.soshot
 	jsr	(ShootoutShootCheck).l
 	bne.w	.nodec
 	jsr	(CompShoot).l
-.13
+.pass
 	bsr.w	chk4pass
 .nodec
 	moveq	#6,d0
@@ -2947,10 +2947,10 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	move.w	2(a0,d0.w),d1
 	move.w	0(a0,d0.w),d0
 	btst	#2,(BA_PS_flags).w
-	bne.w	.14
+	bne.w	.path
 	btst	#0,(gmode2).w
 	beq.w	.15
-.14
+.path
 	jsr	(SkatePath).l
 	cmpi.b	#$80,(sopathx).w
 	beq.w	.x

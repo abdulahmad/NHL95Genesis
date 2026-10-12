@@ -248,12 +248,12 @@ PenGoalStuff	;Do this stuff after a goal: a1 = scored on team, a2 = scoring team
 .1
 	move.w	$24(a2),d2
 	cmp.w	$24(a1),d2
-	ble.w	.3
+	ble.w	.ex
 	lea	$9C(a1),a0
 .2
 	clr.w	d2
 	move.b	(a0)+,d2
-	bmi.w	.3
+	bmi.w	.ex
 	btst	#6,$68(a1,d2.w)
 	bne.s	.2
 	clr.w	$68(a1,d2.w)
@@ -263,7 +263,7 @@ PenGoalStuff	;Do this stuff after a goal: a1 = scored on team, a2 = scoring team
 	addq.w	#1,2(a2)
 	bset	#0,(tmstruct+tmflags).w	;home tmflags: tmflcc
 	bset	#0,(AwShots+tmflags).w	;visitors tmflags: tmflcc
-.3
+.ex
 	movem.l	(sp)+,d0-d2/a0
 	rts
 
@@ -428,7 +428,7 @@ checkwindow	;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the p
 	move.w	(yc1).w,d2
 	move.w	(xc1).w,d3
 	btst	#6,(sflags).w
-	bne.w	.2
+	bne.w	.dd
 	movea.l	#puckx,a3
 	move.w	(puckc).w,d0
 	bmi.w	.1
@@ -438,13 +438,13 @@ checkwindow	;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the p
 	move.w	d7,d0
 	add.w	d0,d0
 	btst	#7,pflags(a3)
-	beq.w	.0
+	beq.w	.gd
 	add.w	d0,(yleader).w
 	cmpi.w	#$32,(yleader).w
 	blt.w	.1
 	move.w	#$32,(yleader).w
 	bra.w	.1
-.0
+.gd
 	sub.w	d0,(yleader).w
 	cmpi.w	#$FFCE,(yleader).w
 	bgt.w	.1
@@ -455,7 +455,7 @@ checkwindow	;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the p
 	add.w	Ypos(a3),d2
 	add.w	(yleader).w,d2
 	move.w	(a3),d3
-.2
+.dd
 	move.w	d2,d0
 	sub.w	(Vpos).w,d0
 	cmp.w	#$FFF6,d0
@@ -468,7 +468,7 @@ checkwindow	;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the p
 	bra.w	.4
 .3
 	cmp.w	#$A,d0
-	ble.w	.6
+	ble.w	.2x
 	move.w	d2,d1
 	subi.w	#$A,d1
 	cmp.w	#$F0,d1
@@ -476,7 +476,7 @@ checkwindow	;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the p
 	move.w	#$F0,d1
 .4
 	sub.w	(Vpos).w,d1
-	beq.w	.6
+	beq.w	.2x
 	asr.w	#4,d1
 	bne.w	.5
 	addq.w	#1,d1
@@ -485,10 +485,10 @@ checkwindow	;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the p
 	add.w	d1,(Vpos).w
 	move.w	(Vpos).w,d1
 	eor.w	d1,d0
-	bpl.w	.6
+	bpl.w	.2x
 	clr.w	(SortCords+(12*SCstruct)+oldframe).w
 	clr.w	(SortCords+(13*SCstruct)+oldframe).w
-.6
+.2x
 	move.w	d3,d0
 	sub.w	(Hpos).w,d0
 	cmp.w	#$FFD8,d0
@@ -641,7 +641,7 @@ clockcont_0	;The clock ran out in overtime / the game: game over handling, the S
 	moveq	#$1C,d0
 	movea.w	#(SortCords-M68K_RAM),a3
 	cmpi.w	#3,(gamelevel).w	;playoffs?
-	bne.w	.5
+	bne.w	.t3
 	cmpi.w	#7,(bosgames).w
 	beq.w	.2
 	moveq	#$10,d3	;gssize
@@ -650,16 +650,16 @@ clockcont_0	;The clock ran out in overtime / the game: game over handling, the S
 	adda.w	d3,a0
 	clr.w	d3
 	btst	#0,$E(a0)	;gsftf, gsflags(a0): teams are flipped
-	beq.w	.0
+	beq.w	.nf
 	eori.w	#2,d3	;gspobwins-gspotwins
-.0
+.nf
 	move.w	(HmGoals).w,d1
 	sub.w	(AwGoals).w,d1
-	bpl.w	.1
+	bpl.w	.ns1
 	eori.w	#2,d3
-.1
+.ns1
 	cmpi.w	#3,4(a0,d3.w)
-	bne.w	.5
+	bne.w	.t3
 .2
 	bset	#2,(sflags13).w
 	move.w	(tmstruct+$28).w,(cupwinner).w
@@ -674,22 +674,22 @@ clockcont_0	;The clock ran out in overtime / the game: game over handling, the S
 	adda.w	#SCstruct,a3
 	dbf	d2,.4
 	movea.w	#(SortCords-M68K_RAM),a3
-.5
+.t3
 	moveq	#5,d2
 	move.w	(HmGoals).w,d1
 	sub.w	(AwGoals).w,d1
 	beq.w	.9
-	bpl.w	.6
+	bpl.w	.t2
 	adda.w	#$300,a3
-.6
+.t2
 	tst.w	position(a3)
-	ble.w	.7
+	ble.w	.n2
 	jsr	(assinsert).l	;first skater gets d0, the rest get score
 	moveq	#$1C,d0
-.7
+.n2
 	adda.w	#SCstruct,a3
-	dbf	d2,.6
-.8
+	dbf	d2,.t2
+.eog
 	jsr	(ClearPenaltyBuffer).l
 	addi.w	#$3E8,(crowdlevel).w	;1000
 	bset	#0,(gmode).w	;gmclock: stop clock
@@ -699,17 +699,17 @@ clockcont_0	;The clock ran out in overtime / the game: game over handling, the S
 	jmp	AddPenalty2
 .9
 	btst	#7,(sflags9).w
-	bne.s	.8
+	bne.s	.eog
 	cmpi.w	#3,(gsp).w
-	bne.w	.11
+	bne.w	.eop_ex
 	btst	#3,(GameFlags).w
 	beq.w	.10
 	btst	#5,(SeasonDay+1).w
-	bne.w	.11
+	bne.w	.eop_ex
 .10
 	tst.w	(OptPlayMode).w
-	beq.s	.8
-.11
+	beq.s	.eog
+.eop_ex
 	move.w	#2,d0
 	jmp	AddPenalty2
 

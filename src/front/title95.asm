@@ -125,33 +125,33 @@ newTitleScreen	;The title screen (TitleScreenImg, TitleImg) with the vblank Titl
 	bsr.w	CreditsLineScroll
 	clr.w	(TempWord1).w
 	move	#$2500,sr
-.0
+.loop
 	jsr	(CreditsWait).l
 	tst.w	(clampcounter).w
-	bne.s	.0
+	bne.s	.loop
 	move.w	#$3C,d3
-.1
+.loop2
 	jsr	(CreditsWait).l
-	dbf	d3,.1
+	dbf	d3,.loop2
 	jsr	(printz).l
 	String	-(TXPAL1+TXMAP1),0,0,0
 	movea.l	#CreditsList,a1
-.2
+.loop3
 	jsr	(CreditsPrintRow).l
 	adda.w	(a1),a1
 	moveq	#$27,d4
-.3
+.loop4
 	jsr	(CreditsWait).l
 	jsr	(CreditsWait).l
 	addq.w	#1,(Vscroll).w
-	dbf	d4,.3
+	dbf	d4,.loop4
 	move.w	#$3C,d4
-.4
+.loop5
 	jsr	(CreditsWait).l
-	dbf	d4,.4
+	dbf	d4,.loop5
 	addq.w	#1,(TempWord1).w
 	tst.w	2(a1)
-	bpl.s	.2
+	bpl.s	.loop3
 	rts
 
 CreditsPrintRow	;Credits: clear the row below the screen (Vscroll / 8 + $1C) and print the Strings from a1 centred there
@@ -167,7 +167,7 @@ CreditsPrintRow	;Credits: clear the row below the screen (Vscroll / 8 + $1C) and
 	move.w	#$7FF,d2
 	jsr	(eraser).l
 	move.w	(sp)+,(printy).w
-.0
+.loop
 	move.w	(a1),d0
 	asr.w	#1,d0
 	neg.w	d0
@@ -177,15 +177,15 @@ CreditsPrintRow	;Credits: clear the row below the screen (Vscroll / 8 + $1C) and
 	addq.w	#1,(printy).w
 	andi.w	#$1F,(printy).w
 	tst.w	2(a1)
-	bpl.s	.0
+	bpl.s	.loop
 	rts
 
 CreditsWait	;Credits: wait one frame, run the clampcounter count down; from TempWord1 5 on, start returns from the caller
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(vcount).w,d0
-.0
+.loop
 	cmp.w	(vcount).w,d0
-	beq.s	.0
+	beq.s	.loop
 	subq.w	#2,(clampcounter).w
 	bpl.w	.1
 	clr.w	(clampcounter).w
@@ -236,19 +236,19 @@ CreditsLineScroll	;Credits: the line scroll table at SortCords
 	move.w	#$50,d0
 	movea.l	#SortCords,a0
 	move.l	#$FD80,d1
-.0
+.loop
 	move.l	d1,(a0)+
 	btst	#0,d0
 	bne.w	.1
 	subq.w	#1,d1
 .1
-	dbf	d0,.0
+	dbf	d0,.loop
 	move.w	#$60,d0
 	move.l	#$100,d1
-.2
+.loop2
 	move.l	d1,(a0)+
 	addq.l	#4,d1
-	dbf	d0,.2
+	dbf	d0,.loop2
 	movem.l	(sp)+,d0-d1
 	rts
 
@@ -261,7 +261,7 @@ CreditsScrollStep	;Credits: line scroll step, every TempWord2 frames
 	movem.l	d0-d2/a0,-(sp)
 	move.w	#$DF,d0
 	movea.w	#(SortCords-M68K_RAM),a0
-.1
+.loop
 	tst.l	(a0)+
 	cmp.w	#$28,d0
 	ble.w	.3
@@ -282,7 +282,7 @@ CreditsScrollStep	;Credits: line scroll step, every TempWord2 frames
 	bpl.w	.3
 	clr.w	-2(a0)
 .3
-	dbf	d0,.1
+	dbf	d0,.loop
 	movem.l	(sp)+,d0-d2/a0
 	rts
 
@@ -300,9 +300,9 @@ HiScoreScreen	;vb2, the HiScoreBgMap and HiScoreImg bitmaps, then wait up to $50
 	jsr	(forceblack).l
 	movea.w	#(palfadenew-M68K_RAM),a0
 	moveq	#$1F,d1
-.0
+.loop
 	clr.l	(a0)+
-	dbf	d1,.0
+	dbf	d1,.loop
 	jsr	(setVram_0).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$E,$3,$0
@@ -334,13 +334,13 @@ HiScoreScreen	;vb2, the HiScoreBgMap and HiScoreImg bitmaps, then wait up to $50
 	move.w	#$18,(palcount).w
 	move	#$2500,sr
 	move.w	#$50,(seed).w
-.1
+.loop2
 	moveq	#4,d0
 	jsr	(waitx).l
 	tst.w	d1
 	bne.w	.2
 	subq.w	#1,(seed).w
-	bpl.s	.1
+	bpl.s	.loop2
 .2
 	move	#$2700,sr
 	rts

@@ -163,11 +163,11 @@ SkatePath	;Shootout skate path: d0 / d1 = the point (mirrored for the bottom net
 	tst.w	Yvel(a3)
 	bne.w	.5
 	cmp.w	#$12,d1
-	ble.w	.6
+	ble.w	.nextpt
 .5
 	cmp.w	#$A,d1
 	bgt.w	.7
-.6
+.nextpt
 	bsr.w	NextPathPoint
 .7
 	move.w	(sopathx).w,d0
@@ -179,23 +179,23 @@ ShootoutShootCheck	;Shootout, skater a3 has the puck (gmode2 bit 1): Z set (d0 i
 	;after 3 (shootoutclock) at the path end, within sopathend of its last point, or with the puck stopped before $F
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#1,(gmode2).w
-	beq.w	.5
+	beq.w	.yes
 	move.w	SCnum(a3),d0
 	cmp.w	(puckc).w,d0
-	bne.w	.5
+	bne.w	.yes
 	cmpi.w	#3,(shootoutclock).w
-	ble.w	.4
+	ble.w	.no
 	cmpi.b	#$80,(sopathx).w
-	beq.w	.4
+	beq.w	.no
 	btst	#3,(sflags7).w
 	bne.w	.0
 	tst.w	(puckvx).w
-	bne.w	.5
+	bne.w	.yes
 	tst.w	(puckvy).w
-	bne.w	.5
+	bne.w	.yes
 	cmpi.w	#$F,(shootoutclock).w
-	blt.w	.4
-	bra.w	.5
+	blt.w	.no
+	bra.w	.yes
 .0
 	move.w	(sopathx).w,d0
 	move.w	(sopathy).w,d1
@@ -213,13 +213,13 @@ ShootoutShootCheck	;Shootout, skater a3 has the puck (gmode2 bit 1): Z set (d0 i
 	neg.w	d1
 .3
 	cmp.w	(sopathend).w,d0
-	bgt.w	.5
+	bgt.w	.yes
 	cmp.w	(sopathend).w,d1
-	bgt.w	.5
-.4
+	bgt.w	.yes
+.no
 	clr.w	d0
 	bra.w	.x
-.5
+.yes
 	move.w	#1,d0
 .x
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -768,7 +768,7 @@ PrintShooterNames	;Shootout shooters: the shooters' names (FormatPlayerNameShort
 puckshootout	;Start a penalty shot or shootout attempt: the pads cleared, the shooter (NextShooter) or the path
 	;(StartShootoutPath), the song, the goalies back, SelectPenaltyShotSkater; the puck assignment $20 (3 with no skater)
 	bclr	#1,pflags(a3)
-	beq.w	.7
+	beq.w	.selectskater
 	bclr	#7,(sflags).w
 	bset	#7,(sflags7).w
 	clr.l	(padcont).w
@@ -776,10 +776,10 @@ puckshootout	;Start a penalty shot or shootout attempt: the pads cleared, the sh
 	clr.l	(padcont+8).w
 	bclr	#7,(gmode2).w
 	btst	#0,(gmode2).w
-	beq.w	.0
+	beq.w	.startattempt
 	jsr	(NextShooter).l
-	bra.w	.2
-.0
+	bra.w	.initflags
+.startattempt
 	jsr	(StartShootoutPath).l
 	move.l	a2,-(sp)
 	movea.l	#tmstruct,a2
@@ -789,7 +789,7 @@ puckshootout	;Start a penalty shot or shootout attempt: the pads cleared, the sh
 .1
 	addq.w	#1,$362(a2)
 	movea.l	(sp)+,a2
-.2
+.initflags
 	bclr	#2,(BA_PS_flags).w
 	bclr	#4,(BA_PS_flags).w
 	bclr	#5,(BA_PS_flags).w
@@ -801,24 +801,24 @@ puckshootout	;Start a penalty shot or shootout attempt: the pads cleared, the sh
 .3
 	bclr	#1,pflags(a3)
 	btst	#0,(gmode2).w
-	beq.w	.4
+	beq.w	.selectsong
 	tst.w	(shootoutteam).w
-	bne.w	.6
+	bne.w	.setstopped
 	tst.w	(homeshootnum).w
-	bne.w	.6
+	bne.w	.setstopped
 	move.w	(HomeTeam).w,(HmTeam).w
 	move.w	#2,(SongIndex).w
 	jsr	(ChooseSong).l
 	move.w	(SongNum).w,-(sp)
 	bra.w	.5
-.4
+.selectsong
 	move.w	(HomeTeam).w,(HmTeam).w
 	move.w	#2,(SongIndex).w
 	jsr	(ChooseSong).l
 	move.w	(SongNum).w,-(sp)
 .5
 	jsr	(song).l
-.6
+.setstopped
 	bset	#0,(gmode).w
 	bset	#1,(gmode2).w
 	clr.w	(puckvx).w
@@ -827,54 +827,54 @@ puckshootout	;Start a penalty shot or shootout attempt: the pads cleared, the sh
 	jsr	(ReturnGoalies).l
 	st	temp1(a3)
 	st	temp2(a3)
-.7
+.selectskater
 	bset	#2,(BA_PS_flags).w
 	movem.w	d1-d2,-(sp)
 	jsr	(SelectPenaltyShotSkater).l
-	bmi.w	.8
+	bmi.w	.noeligible
 	movem.w	(sp)+,d1-d2
-	bra.w	.9
-.8
+	bra.w	.checkgoalie
+.noeligible
 	movem.w	(sp)+,d1-d2
 	bclr	#2,(BA_PS_flags).w
 	move.w	#3,d0
 	jsr	(assreplace).l
 	rts
-.9
+.checkgoalie
 	movem.w	d1-d2,-(sp)
 	move.w	(BA_Goalie_SCnum).w,d0
 	movea.l	#SortCords,a2
 	asl.w	#7,d0
 	adda.w	d0,a2
 	tst.w	$34(a2)
-	bne.w	.10
+	bne.w	.findgoalie
 	btst	#2,pflags2(a2)
-	beq.w	.14
-.10
+	beq.w	.startpenshot
+.findgoalie
 	move.w	(BA_Goalie_SCnum).w,d0
 	move.w	#6,d2
-.11
+.goalieloop
 	subq.w	#1,d2
-	bmi.s	.8
+	bmi.s	.noeligible
 	subq.w	#1,d0
-	bpl.w	.12
+	bpl.w	.wraphome
 	move.w	#5,d0
-	bra.w	.13
-.12
+	bra.w	.checkcandidate
+.wraphome
 	cmp.w	#5,d0
-	bne.w	.13
+	bne.w	.checkcandidate
 	move.w	#$B,d0
-.13
+.checkcandidate
 	movea.l	#SortCords,a2
 	move.w	d0,d1
 	asl.w	#7,d1
 	adda.w	d1,a2
 	tst.w	$34(a2)
-	bne.s	.11
+	bne.s	.goalieloop
 	btst	#2,pflags2(a2)
-	bne.s	.11
+	bne.s	.goalieloop
 	move.w	d0,(BA_Goalie_SCnum).w
-.14
+.startpenshot
 	movem.w	(sp)+,d1-d2
 	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	#$20,d0
@@ -884,31 +884,31 @@ SelectPenaltyShotSkater	;The best rated free skater of the shooting team (9 rati
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#tmstruct,a0
 	tst.w	(BA_Team).w
-	beq.w	.0
+	beq.w	.hometeam
 	movea.l	#AwShots,a0
-.0
+.hometeam
 	move.w	#0,d1
 	move.w	#$FFFF,d6
 	move.w	#$FFFF,d5
 	movea.l	tmdata(a0),a2
 	adda.w	(a2),a2
-.1
+.playerloop
 	cmpi.w	#2,(a2)
-	beq.w	.5
+	beq.w	.doneplayers
 	adda.w	(a2),a2
 	move.w	d1,d7
 	asl.w	#1,d7
 	move.b	5(a2),d0
 	andi.w	#$F,d0
 	cmp.b	#1,d0
-	ble.w	.4
+	ble.w	.nextplayer
 	btst	#0,(gmode2).w
-	bne.w	.6
+	bne.w	.setskaterscnum
 	cmpi.w	#$FFFE,tmpdst(a0,d7.w)
-	beq.w	.2
+	beq.w	.scorecandidate
 	cmpi.w	#$FFFF,tmpdst(a0,d7.w)
-	bne.w	.4
-.2
+	bne.w	.nextplayer
+.scorecandidate
 	clr.w	d3
 	clr.w	d0
 	move.b	1(a2),d0
@@ -944,41 +944,41 @@ SelectPenaltyShotSkater	;The best rated free skater of the shooting team (9 rati
 	lsr.w	#4,d0
 	add.w	d0,d3
 	cmp.w	(BA_Skater_Offset).w,d1
-	bne.w	.3
+	bne.w	.comparebest
 	move.w	#$7FFF,d3
-.3
+.comparebest
 	cmp.w	d6,d3
-	blt.w	.4
+	blt.w	.nextplayer
 	move.w	d3,d6
 	move.w	d1,d5
-	bra.w	.4
-.4
+	bra.w	.nextplayer
+.nextplayer
 	addq.l	#8,a2
 	addq.w	#1,d1
 	cmp.w	#$1A,d1
-	blt.w	.1
-.5
+	blt.w	.playerloop
+.doneplayers
 	tst.w	d5
-	bmi.w	.8
+	bmi.w	.noeligible
 	move.w	d5,(BA_Skater_Offset).w
-.6
+.setskaterscnum
 	move.w	#0,(BA_Sktr_SCnum).w
 	tst.w	(BA_Team).w
-	beq.w	.7
+	beq.w	.loadskater
 	move.w	#6,(BA_Sktr_SCnum).w
-.7
+.loadskater
 	move.w	(BA_Sktr_SCnum).w,d0
 	asl.w	#7,d0
 	movea.l	#SortCords,a3
 	adda.w	d0,a3
 	move.w	(BA_Skater_Offset).w,d3
-	bra.w	.9
-.8
+	bra.w	.eligible
+.noeligible
 	move.w	#$FFFF,d0
-	bra.w	.10
-.9
+	bra.w	.exit
+.eligible
 	move.w	#1,d0
-.10
+.exit
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -987,9 +987,9 @@ puckpenshot	;Penalty shot / shootout face-off: rink, puck and nets reset, the sh
 	beq.w	.21
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(forceblack).l
-.0
+.waitvblank
 	btst	#0,(disflags).w
-	bne.s	.0
+	bne.s	.waitvblank
 	cmpi.w	#$258,(crowdlevel).w
 	bls.w	.1
 	move.w	#$258,(crowdlevel).w
@@ -1048,11 +1048,11 @@ puckpenshot	;Penalty shot / shootout face-off: rink, puck and nets reset, the sh
 	move.l	a3,-(sp)
 	movea.l	#SortCords+(11*SCstruct),a3	;away goalie SCstruct
 	move.w	#$B,d2	;11 = # of player SCstructs
-.3
+.playerloop
 	cmp.w	(BA_Sktr_SCnum).w,d2
 	beq.w	.4
 	cmp.w	(BA_Goalie_SCnum).w,d2
-	beq.w	.9
+	beq.w	.setupgoalie
 	move.w	#$FF10,(a3)
 	clr.w	Ypos(a3)
 	clr.w	6(a3)
@@ -1061,33 +1061,33 @@ puckpenshot	;Penalty shot / shootout face-off: rink, puck and nets reset, the sh
 	bra.w	.15
 .4
 	tst.w	position(a3)
-	bpl.w	.6
+	bpl.w	.placeskater
 	bclr	#2,pflags2(a3)
-	beq.w	.6
+	beq.w	.placeskater
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d3
 	move.b	pnum(a3),d3
 	jsr	(setplayer).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	tst.w	position(a3)
-	beq.w	.5
-	bpl.w	.6
-.5
+	beq.w	.skaterready
+	bpl.w	.placeskater
+.skaterready
 	nop
-.6
+.placeskater
 	move.w	(puckx).w,d0
 	subi.w	#0,d0
 	move.w	d0,(a3)
 	move.w	(pucky).w,d0
 	btst	#7,pflags(a3)
-	bne.w	.7
+	bne.w	.skaterattop
 	addi.w	#$10,d0
 	move.w	#4,facedir(a3)
-	bra.w	.8
-.7
+	bra.w	.setskaterpos
+.skaterattop
 	addi.w	#-$10,d0
 	move.w	#0,facedir(a3)
-.8
+.setskaterpos
 	move.w	d0,Ypos(a3)
 	clr.w	Xvel(a3)
 	clr.w	Yvel(a3)
@@ -1095,38 +1095,38 @@ puckpenshot	;Penalty shot / shootout face-off: rink, puck and nets reset, the sh
 	move.w	#$E,d0
 	jsr	(assinsert).l
 	bra.w	.15
-.9
+.setupgoalie
 	btst	#0,(gmode2).w
 	beq.w	.10
 	move.b	(shootoutteam-1).w,pnum(a3)
 	tst.w	(shootoutteam).w
-	beq.w	.11
+	beq.w	.loadgoalieplayer
 	move.b	(homeshootnum-1).w,pnum(a3)
-	bra.w	.11
+	bra.w	.loadgoalieplayer
 .10
 	tst.w	position(a3)
-	bpl.w	.13
+	bpl.w	.placegoalie
 	bclr	#2,pflags2(a3)
-	beq.w	.13
-.11
+	beq.w	.placegoalie
+.loadgoalieplayer
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d3
 	move.b	pnum(a3),d3
 	jsr	(setplayer).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	tst.w	position(a3)
-	bne.w	.12
-	bpl.w	.13
-.12
+	bne.w	.goalieok
+	bpl.w	.placegoalie
+.goalieok
 	nop
-.13
+.placegoalie
 	bclr	#2,pflags2(a3)
 	move.w	#0,d0
 	move.w	#$E5,d1
 	btst	#7,pflags(a3)
-	bne.w	.14
+	bne.w	.goalieattop
 	move.w	#$FF1B,d1
-.14
+.goalieattop
 	move.w	d0,(a3)
 	move.w	d1,Ypos(a3)
 	clr.w	Xvel(a3)
@@ -1144,7 +1144,7 @@ puckpenshot	;Penalty shot / shootout face-off: rink, puck and nets reset, the sh
 	jsr	(SetSPA).l
 .15
 	suba.l	#SCstruct,a3
-	dbf	d2,.3
+	dbf	d2,.playerloop
 	jsr	(SprSort).l
 	movea.l	(sp)+,a3
 	jsr	(AssignPads).l
@@ -1155,20 +1155,20 @@ puckpenshot	;Penalty shot / shootout face-off: rink, puck and nets reset, the sh
 	move.w	#0,(a3)
 	move.w	#$FF06,Ypos(a3)
 	btst	#7,pflags(a3)
-	bne.w	.16
+	bne.w	.goalieatbottom
 	move.w	#$FA,Ypos(a3)
-.16
+.goalieatbottom
 	move.w	(BA_Goalie_SCnum).w,d0
 	move.w	#1,d1
 	btst	#6,pflags(a3)
-	beq.w	.17
+	beq.w	.checkcont1
 	move.w	#2,d1
-.17
+.checkcont1
 	cmp.w	(cont1team).w,d1
-	bne.w	.18
+	bne.w	.checkcont2
 	jsr	(setc1player).l
 	bra.w	.19
-.18
+.checkcont2
 	cmp.w	(cont2team).w,d1
 	bne.w	.19
 	jsr	(setc2player).l
@@ -1179,11 +1179,11 @@ puckpenshot	;Penalty shot / shootout face-off: rink, puck and nets reset, the sh
 	bset	#2,(sflags2).w
 	move.w	#$190,(msgtimer).w
 	tst.w	(cont1team).w
-	bne.w	.20
+	bne.w	.finishsetup
 	tst.w	(cont2team).w
-	bne.w	.20
+	bne.w	.finishsetup
 	move.w	#$64,(msgtimer).w
-.20
+.finishsetup
 	move.w	#$18,(palcount).w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -1205,33 +1205,33 @@ UpdatePenaltyShotEnd	;The shot ends (BA_PS_flags bit 4) when the goalie has the 
 	move.w	(puckc).w,d0
 	cmp.w	(BA_Goalie_SCnum).w,d0
 	movem.w	(sp)+,d0
-	beq.w	.2
+	beq.w	.setended
 	btst	#5,(BA_PS_flags).w
-	beq.w	.3
+	beq.w	.checktimer
 	btst	#5,(gmode2).w
-	bne.w	.0
+	bne.w	.puckloose
 	tst.w	(puckc).w
-	bpl.w	.1
+	bpl.w	.countdown
 	bset	#5,(gmode2).w
-.0
+.puckloose
 	tst.w	(puckc).w
-	bpl.w	.2
-.1
+	bpl.w	.setended
+.countdown
 	tst.w	(passmodetimer).w
-	bmi.w	.2
+	bmi.w	.setended
 	subq.w	#1,(passmodetimer).w
-	bra.w	.3
-.2
+	bra.w	.checktimer
+.setended
 	bset	#4,(BA_PS_flags).w
-.3
+.checktimer
 	tst.w	(shootoutclock).w
-	bne.w	.4
+	bne.w	.checkended
 	bset	#4,(BA_PS_flags).w
-.4
+.checkended
 	btst	#4,(BA_PS_flags).w
-	bne.w	.5
+	bne.w	.finishshot
 	rts
-.5
+.finishshot
 	btst	#6,(BA_PS_flags).w
 	bne.w	PenaltyShotEndReturn
 	bset	#6,(BA_PS_flags).w
@@ -1241,10 +1241,10 @@ UpdatePenaltyShotEnd	;The shot ends (BA_PS_flags bit 4) when the goalie has the 
 EndPenaltyShotPlay	;LockScroll, end the penalty shot play (the BA flags), the shooter newpnum back, then CountShootoutGoals
 	jsr	(LockScroll).l
 	btst	#0,(gmode2).w
-	bne.w	.0
+	bne.w	.stopplay
 	move.w	#$A,(replaydelay).w
 	bset	#2,(sflags2).w
-.0
+.stopplay
 	bset	#0,(gmode).w
 	bclr	#2,(gmode2).w
 	bclr	#2,(BA_PS_flags).w
@@ -1267,7 +1267,7 @@ SetupPenaltyShot	;Penalty shot for team a2: the shooter plays center (BA_Skater_
 	movem.l	d0-d5/a0-a3,-(sp)
 	movea.w	$22(a2),a3
 	moveq	#5,d4
-.0
+.loop
 	move.w	SCnum(a3),d0
 	cmp.w	(BA_Sktr_SCnum).w,d0
 	beq.w	.1
@@ -1297,16 +1297,16 @@ SetupPenaltyShot	;Penalty shot for team a2: the shooter plays center (BA_Skater_
 	st	newpnum(a3)
 	st	newpos(a3)
 	adda.w	#SCstruct,a3
-	dbf	d4,.0
+	dbf	d4,.loop
 	movem.l	(sp)+,d0-d5/a0-a3
 	rts
 
 PenaltyShotBox	;In a shootout ShootoutModeBox; else the "PENALTY SHOT!" box: the shooter, the penalty (Penaltylist) and " by" the checker
 	bset	#7,(gmode2).w
 	btst	#0,(gmode2).w
-	beq.w	.0
+	beq.w	.box
 	jmp	(ShootoutModeBox).l
-.0
+.box
 	movem.l	d0-d2/a0-a4,-(sp)
 	move.w	#$FFFF,d0
 	jsr	(prefmes).l	;d0 = -1
@@ -1393,24 +1393,24 @@ PenShotChk	;A breakaway shooter hit: a penalty shot when penalty d0 allows one (
 getBAplayerInfo	;Keep the breakaway shooter, team, goalie and checker for the penalty shot; N clear when set
 	movem.l	d1-d3/a1,-(sp)
 	tst.w	(OptPen).w
-	beq.w	.4
+	beq.w	.noPen
 	bset	#3,(BA_PS_flags).w
 	movem.w	d0,-(sp)
 	move.w	#5,d1
 	move.w	#0,d2
 	cmp.w	#5,d0
-	bgt.w	.0
+	bgt.w	.findgoalie
 	move.w	#$B,d1
 	move.w	#1,d2
-.0
+.findgoalie
 	move.w	d1,d0
 	jsr	(getGoalieSCnum).l
 	tst.w	d0
-	bpl.w	.1
+	bpl.w	.goaliein
 	movem.w	(sp)+,d0	;no goalie
 	bclr	#3,(BA_PS_flags).w
-	bra.w	.3
-.1
+	bra.w	.end
+.goaliein
 	move.w	d0,d1	;d1 = goalie's SCnum
 	move.w	(sp)+,d0	;d0 now back to player checked on breakaway SCnum
 	move.w	d0,(BA_Sktr_SCnum).w
@@ -1430,12 +1430,12 @@ getBAplayerInfo	;Keep the breakaway shooter, team, goalie and checker for the pe
 	move.b	pnum(a1,d1.w),(BA_Goalie_Offset+1).w
 	move.w	#0,(BA_Checker_Offset).w
 	move.b	pnum(a3),(BA_Checker_Offset+1).w
-.3
+.end
 	movem.l	(sp)+,d1-d3/a1
 	rts
-.4
+.noPen
 	move.w	#$FFFF,d1	;N set: no penalty shot
-	bra.s	.3
+	bra.s	.end
 
 ShortenMsgTimer	;Cap the message timer at 2, unless a second pad is on and a3 is not the puck carrier
 	movem.l	d0,-(sp)
@@ -1443,11 +1443,11 @@ ShortenMsgTimer	;Cap the message timer at 2, unless a second pad is on and a3 is
 	beq.w	.0
 	move.w	SCnum(a3),d0
 	cmp.w	(puckc).w,d0
-	bne.w	.1
+	bne.w	.x
 .0
 	cmpi.w	#2,(msgtimer).w
-	ble.w	.1
+	ble.w	.x
 	move.w	#2,(msgtimer).w
-.1
+.x
 	movem.l	(sp)+,d0
 	rts

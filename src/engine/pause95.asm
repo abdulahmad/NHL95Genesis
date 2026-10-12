@@ -107,25 +107,25 @@ seta2	;Set a2 to the team struct of the pause pad (menupadnum: cont1team ... con
 	;HandleMenuInput
 	movea.l	#tmstruct,a2
 	tst.w	(menupadnum).w
-	beq.w	.2
+	beq.w	.seta20
 	cmpi.w	#1,(menupadnum).w
 	beq.w	.1
 	cmpi.w	#2,(menupadnum).w
 	beq.w	.0
 	cmpi.w	#1,(cont4team).w
-	bra.w	.3
+	bra.w	.seta21
 .0
 	cmpi.w	#1,(cont3team).w
-	bra.w	.3
+	bra.w	.seta21
 .1
 	cmpi.w	#1,(cont2team).w
-	bra.w	.3
-.2
+	bra.w	.seta21
+.seta20
 	cmpi.w	#1,(cont1team).w
-.3
-	beq.w	.4
+.seta21
+	beq.w	.x
 	adda.w	#tmsize,a2
-.4
+.x
 	rts
 
 InitMenuState	;Start a menu: a0 = item list, a1 = screen draw routine; selection and first shown item 0. Falls into
@@ -814,14 +814,14 @@ PrintMenuItem	;printsmall item String a1 (advanced past it). y: START GAME, RESU
 	cmpi.b	#$79,2(a1)
 	beq.w	.0
 	cmpi.b	#$78,2(a1)	;first char 'x'
-	bne.w	.9
+	bne.w	.plain
 	move.l	a1,-(sp)
 	movea.l	#.11,a1
 	bsr.w	SetMenuPadSide
 	btst	#1,(sflags).w	;sfpj: the pause pad
-	beq.w	.6
+	beq.w	.homegoalie
 	tst.w	(goaliemode2).w
-	bra.w	.7
+	bra.w	.chkgoalie
 .0
 	move.l	a1,-(sp)
 	cmpi.w	#4,(gsp).w
@@ -836,24 +836,24 @@ PrintMenuItem	;printsmall item String a1 (advanced past it). y: START GAME, RESU
 .1
 	movea.l	#.5,a1
 .2
-	bra.w	.8
+	bra.w	.print
 .3
 	String	'   START GAME   '
 .4
 	String	'  RESUME GAME   '
 .5
 	String	'   EXIT GAME    '
-.6
+.homegoalie
 	tst.w	(goaliemode1).w
-.7
-	beq.w	.8
+.chkgoalie
+	beq.w	.print
 	movea.l	#.12,a1
-.8
+.print
 	jsr	(printsmall).l
 	movea.l	(sp)+,a1
 	adda.w	(a1),a1	;skip the 'x' item text
 	bra.w	.10
-.9
+.plain
 	jsr	(printsmall).l
 .10
 	rts

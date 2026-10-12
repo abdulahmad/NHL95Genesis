@@ -3373,26 +3373,26 @@ SelectLinePlayer	;Build the list of players for the slot and let the user pick o
 	move.w	(setupvalues).w,d2
 	andi.w	#7,d2
 	cmp.w	#2,d2
-	bgt.w	.0
+	bgt.w	.n
 	add.w	d0,d1
 	jsr	(GetPlayerCount).l
 	sub.w	d1,d0
-.0
+.n
 	subq.w	#1,d0
 	move.w	d0,(screentimer).w
 	clr.w	(PlayerScrollCtr).w
 	clr.w	(VertLineScrolling).w
 	movea.w	#(Satt-M68K_RAM),a0
 	clr.w	d2
-.1
+.fill
 	move.b	d1,0(a0,d2.w)
 	cmp.w	d1,d6
-	bne.w	.2
+	bne.w	.nc
 	move.w	d2,(VertLineScrolling).w
-.2
+.nc
 	addq.w	#1,d1
 	addq.w	#1,d2
-	dbf	d0,.1
+	dbf	d0,.fill
 	jsr	(PlayerSelectBg).l
 	jsr	(ClearLineEditorTop).l
 	jsr	(printsmallz).l
@@ -3406,7 +3406,7 @@ SelectLinePlayer	;Build the list of players for the slot and let the user pick o
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$4,$2,$2,$1,'{Select  Player}',$0
 	clr.w	d0
-	bra.w	.6
+	bra.w	.vert
 .3
 	jsr	(vcountwait).l
 	jsr	(ReadMenuJoy).l
@@ -3417,34 +3417,34 @@ SelectLinePlayer	;Build the list of players for the slot and let the user pick o
 	bra.w	LineEditorMenu
 .4
 	btst	#5,d1
-	bne.w	.9
+	bne.w	.pick
 	moveq	#1,d0
 	btst	#1,d1
-	bne.w	.6
+	bne.w	.vert
 	btst	#3,d1
-	bne.w	.5
+	bne.w	.horz
 	moveq	#-1,d0
 	btst	#0,d1
-	bne.w	.6
+	bne.w	.vert
 	btst	#2,d1
-	bne.w	.5
+	bne.w	.horz
 	bra.s	.3
-.5
+.horz
 	add.w	(DispAttribCtr).w,d0
 	bmi.s	.3
 	move.w	d0,(DispAttribCtr).w
 	jsr	(PrintAttribHeader).l
 	bra.s	.3
-.6
+.vert
 	add.w	(VertLineScrolling).w,d0
 	bmi.s	.3
 	cmp.w	(screentimer).w,d0
 	bgt.s	.3
 	move.w	d0,(VertLineScrolling).w
 	cmp.w	(PlayerScrollCtr).w,d0
-	bgt.w	.7
+	bgt.w	.top
 	move.w	d0,(PlayerScrollCtr).w
-.7
+.top
 	subq.w	#5,d0
 	cmp.w	(PlayerScrollCtr).w,d0
 	ble.w	.8
@@ -3452,7 +3452,7 @@ SelectLinePlayer	;Build the list of players for the slot and let the user pick o
 .8
 	jsr	(PrintAttribHeader).l
 	bra.w	.3
-.9
+.pick
 	movea.w	#(Satt-M68K_RAM),a3
 	adda.w	(VertLineScrolling).w,a3
 	move.b	(a3),d0
@@ -3878,9 +3878,9 @@ ShowThreeStars	;End of game Stars of the Game box. Called from UpdatePA while Re
 	movem.l	d0/a1,-(sp)
 	bset	#3,(disflags).w
 	move.w	(vcount).w,d0
-.0
+.loop2
 	cmp.w	(vcount).w,d0
-	beq.s	.0
+	beq.s	.loop2
 	movem.l	(sp)+,d0/a1
 	movem.l	d0-d5/a0-a4,-(sp)
 	jsr	(printz).l
@@ -3893,7 +3893,7 @@ ShowThreeStars	;End of game Stars of the Game box. Called from UpdatePA while Re
 	bsr.w	CalcStarScores
 	move.w	#$12,(printy).w
 	moveq	#2,d2	;3 stars
-.1
+.loop
 	bsr.w	TakeTopStarScore	;a2 = team, d0 = player
 	move.w	#$1A,(printx).w
 .2
@@ -3905,13 +3905,13 @@ ShowThreeStars	;End of game Stars of the Game box. Called from UpdatePA while Re
 	jsr	(getname).l
 	move.w	#3,(printx).w
 	jsr	(print).l
-	dbf	d2,.1
+	dbf	d2,.loop
 	move.w	(HmGoals).w,d0
 	sub.w	(AwGoals).w,d0
-	ble.w	.3
+	ble.w	.nosong
 	move.w	#SFXhomewin,-(sp)	;home team won
 	jsr	(song).l
-.3
+.nosong
 	movem.l	(sp)+,d0-d5/a0-a4
 .4
 	rts
@@ -3923,23 +3923,23 @@ TakeTopStarScore	;Take the highest of the 52 star scores at ThreeStars (26 per t
 	movea.w	#(ThreeStars-M68K_RAM),a4
 	clr.l	d0
 	moveq	#$33,d2
-.1
+.find
 	cmp.l	(a4)+,d0
-	bge.w	.2
+	bge.w	.next
 	lea	-4(a4),a1
 	move.l	(a1),d0
-.2
-	dbf	d2,.1
+.next
+	dbf	d2,.find
 	clr.l	(a1)
 	move.w	a1,d0
 	subi.w	#(ThreeStars-M68K_RAM),d0
 	lsr.w	#2,d0	;entry number
 	movea.w	#(tmstruct-M68K_RAM),a2
 	cmp.w	#$1A,d0
-	blt.w	.3
+	blt.w	.home
 	subi.w	#$1A,d0
 	adda.w	#tmsize,a2	;26-51: away team (tmsize)
-.3
+.home
 	movem.l	(sp)+,d1-d2/a1/a4
 	rts
 
@@ -3956,21 +3956,21 @@ CalcStarScores	;Star score for every roster slot of both teams to ThreeStars (26
 	lea	-tmsize(a2),a3
 	bsr.w	CalcTeamStarScores	;away (d3 = away - home score)
 	cmpi.w	#3,(gsp).w
-	bne.w	.1
+	bne.w	.x
 	tst.w	d3
-	beq.w	.1
+	beq.w	.x
 	movea.w	#(ChkCnt-M68K_RAM),a0	;+ ScoreSumbytes = last goal entry
 	adda.w	(ScoreSumbytes).w,a0
 	clr.w	d0
 	btst	#7,2(a0)
-	beq.w	.0
+	beq.w	.slot
 	addi.w	#$1A,d0	;away goal: second 26 entries
-.0
+.slot
 	add.b	3(a0),d0
 	asl.w	#2,d0
 	movea.w	#(ThreeStars-M68K_RAM),a0
 	move.l	#$7FFFFFFF,(a0,d0.w)
-.1
+.x
 	rts
 
 CalcTeamStarScores	;Star scores of team a2 (a3 = other team) to (a4)+, one long per roster slot. Each starts at the goal difference.
@@ -3984,7 +3984,7 @@ CalcTeamStarScores	;Star scores of team a2 (a3 = other team) to (a4)+, one long 
 	jsr	(GetGoalieCount).l
 	neg.w	d0
 	add.w	d4,d0
-.0
+.loop
 	move.l	d3,(a4)
 	cmp.w	d0,d4
 	bhi.w	.2
@@ -4000,35 +4000,35 @@ CalcTeamStarScores	;Star scores of team a2 (a3 = other team) to (a4)+, one long 
 	move.b	$EA(a2),d1
 	mulu.w	#$A,d1
 	tst.w	d3
-	bne.w	.1
+	bne.w	.add
 	mulu.w	#$64,d1	;tied: shots * 1000
 	add.l	d1,(a4)
 	clr.l	d1
 	add.w	$138(a1),d1
-.1
+.add
 	add.l	d1,(a4)
-	bra.w	.3
+	bra.w	.next
 .2
 	cmp.w	$138(a1),d5
-	bhi.w	.3
+	bhi.w	.next
 	clr.w	d1
 	move.b	$B6(a2),d1
 	mulu.w	#$64,d1
 	clr.w	d2
 	move.b	$EA(a2),d2
-	beq.w	.3
+	beq.w	.next
 	divu.w	d2,d1
 	cmp.w	#4,d1
-	bhi.w	.3
+	bhi.w	.next
 	addi.l	#$7D00,(a4)	;32000
 	tst.w	d1
-	bne.w	.3
+	bne.w	.next
 	addi.l	#$124F8,(a4)	;75000 for a shutout
-.3
+.next
 	addq.w	#2,a1
 	addq.w	#1,a2
 	addq.w	#4,a4
-	dbf	d4,.0
+	dbf	d4,.loop
 	rts
 
 HighlightsScreen	;Season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left/right change day, up/down change game (rosterscroll), Start exits

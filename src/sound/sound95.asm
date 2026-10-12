@@ -1471,16 +1471,16 @@ SoundCmd	;Send command d0 to the 95 sound driver (SndDriver, above). Called from
 UpdateCwdExcite	;Called once per second. Track peak and running total of crowd excitement, then decay the level by 1
 	move.w	(CwdExciteLvl).w,d0
 	cmp.w	(MaxCwdExciteLvl).w,d0
-	bls.w	.0
+	bls.w	.less
 	move.w	d0,(MaxCwdExciteLvl).w	;new peak
-.0
+.less
 	ext.l	d0
 	add.l	d0,(SumCwdExciteLvl).w	;running total
 	addq.w	#1,(NumCwdExciteLvl).w	;sample count
 	subq.w	#1,(CwdExciteLvl).w	;decay
-	bpl.w	.1
+	bpl.w	.ex
 	clr.w	(CwdExciteLvl).w
-.1
+.ex
 	rts
 
 updatesound	;Move the crowd noise volume (psg noise channel, asv) toward crowdlevel. Called from DoGameFrame
@@ -1488,21 +1488,21 @@ updatesound	;Move the crowd noise volume (psg noise channel, asv) toward crowdle
 	asl.w	#3,d0
 	addi.w	#$400,d0
 	cmp.w	#$EFF,d0
-	bls.w	.0
+	bls.w	.ip
 	move.w	#$EFF,d0
-.0
+.ip
 	moveq	#$28,d2
 	sub.w	(asv).w,d0
 	cmp.w	d2,d0
-	bgt.w	.1
+	bgt.w	.iasv
 	neg.w	d2
 	cmp.w	d2,d0
-	bge.w	.2
-.1
+	bge.w	.non
+.iasv
 	add.w	d2,(asv).w
-	bpl.w	.2
+	bpl.w	.non
 	clr.w	(asv).w
-.2
+.non
 	move.b	#$C8,(VDP_PSG).l
 	move.b	#1,(VDP_PSG).l
 	move.b	(asv).w,d0
@@ -1513,19 +1513,19 @@ updatesound	;Move the crowd noise volume (psg noise channel, asv) toward crowdle
 
 CheckLateGameSong	;Called once per second. 3rd period: choose and play a song once at the random trigger time set by ResetClock
 	cmpi.w	#2,(gsp).w
-	bne.w	.0
+	bne.w	.x
 	btst	#4,(gmode).w
-	bne.w	.0
+	bne.w	.x
 	move.w	(gameclock).w,d0
 	cmp.w	(periodendtime).w,d0
-	bgt.w	.0
+	bgt.w	.x
 	st	(periodendtime).w	;high byte $FF: trigger goes negative, fires once
 	move.w	(HomeTeam).w,(HmTeam).w
 	move.w	#5,(SongIndex).w
 	jsr	(ChooseSong).l
 	move.w	(SongNum).w,-(sp)
 	jsr	(song).l
-.0
+.x
 	rts
 
 sfx	;Play sound effect number, one word passed on stack. 95: through SfxTable to a sound driver song (command 4)
@@ -1614,7 +1614,7 @@ song	;Play song number, one word passed on stack. 95: songs 0-3 through StartSon
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.l	d0
 	move.w	$40(sp),d0	;$40 = 16*4
-	bmi.w	.2
+	bmi.w	.none
 	cmp.w	#$32,d0
 	blt.w	.0
 	cmp.w	#$55,d0
@@ -1627,7 +1627,7 @@ song	;Play song number, one word passed on stack. 95: songs 0-3 through StartSon
 	bra.w	sfxplay
 .1
 	jsr	(StartSong).l
-.2
+.none
 	movem.l	(sp)+,d0-d7/a0-a6
 	move.l	(sp),2(sp)
 	addq.w	#2,sp
@@ -2140,9 +2140,9 @@ handle_command_30	;Event $3x, controller +2 = +3 on channel +1 bits 3-0 of track
 	moveq	#5,d0
 .loop
 	cmp.b	(a2),d4
-	bne.w	.1
+	bne.w	.next
 	bsr.w	SetChannelVolume
-.1
+.next
 	addq.w	#8,a2
 	dbf	d0,.loop
 	rts

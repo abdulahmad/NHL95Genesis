@@ -29,33 +29,33 @@ setInjuryType	;a2 injured: out for the period ($FFFD) or the game ($FFFC); in a 
 	ext.w	d1	;sign extend - in this case just makes upper bye of word 00
 	add.w	d1,d1	;add d1 to itself
 	btst	#1,(sflags13).w
-	bne.w	.1
+	bne.w	.not0
 	exg	a2,a3	;swap a2 and a3
 	jsr	(getFgtbyte).l	;get the Fgt byte (divided by 4)
 	exg	a2,a3	;swap back
 	tst.w	d0	;check if d0 is zero
-	bne.w	.1
+	bne.w	.not0
 	bclr	#5,(sflags7).w	;clear injury game bit
 	move.w	#$FFFD,tmpdst(a0,d1.w)
-	bra.w	.4
-.1
+	bra.w	.exit
+.not0
 	cmp.w	#3,d0	;compare d0 to 3 (if H/F was 12, d0 = 3)
 	beq.w	.2
 	bclr	#5,(sflags7).w
 	move.w	#$FFFD,tmpdst(a0,d1.w)
 	jsr	(chkFgtBit1).l	;check Fgt bit 1 of player.
-	beq.w	.4
+	beq.w	.exit
 .2
 	bset	#5,(sflags7).w	;set injury game bit
 	move.w	#$FFFC,tmpdst(a0,d1.w)
 	btst	#3,(GameFlags).w
-	beq.w	.4
+	beq.w	.exit
 	btst	#2,(SeasonDay+1).w
-	beq.w	.4
+	beq.w	.exit
 	move.w	#$64,d0
 	jsr	(randomd0).l
 	cmp.w	#$32,d0
-	blt.w	.4
+	blt.w	.exit
 	movem.w	d1,-(sp)
 	clr.w	d0
 	move.b	(SeasonLength).w,d0
@@ -64,7 +64,7 @@ setInjuryType	;a2 injured: out for the period ($FFFD) or the game ($FFFC); in a 
 	sub.w	d1,d0
 	movem.w	(sp)+,d1
 	cmp.w	#2,d0
-	blt.w	.4
+	blt.w	.exit
 	subq.w	#1,d0
 	cmp.w	#5,d0
 	ble.w	.3
@@ -79,7 +79,7 @@ setInjuryType	;a2 injured: out for the period ($FFFD) or the game ($FFFC); in a 
 	bset	#1,(sflags13).w
 	jsr	(SetInjuryGames).l
 	movem.l	(sp)+,d1/d7
-.4
+.exit
 	move.w	(sp)+,d0
 	rts
 
@@ -344,10 +344,10 @@ updatepwrplay	;The power play box: the team and the time left (GetLowestPen)
 	addq.w	#1,4(a3)
 	cmpa.w	#(tmstruct-M68K_RAM),a3
 	bne.w	.3
-.2
+.home
 	bra.w	.4
 .3
-	bra.s	.2
+	bra.s	.home
 .4
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$1,$19,'   ',$16,$17,$18,$19,-(TXPRI+TXMAP1),$1,$1A,'  ',$0
@@ -380,17 +380,17 @@ GetLowestPen	;a2 = shorthanded team, a3 = team on the power play. d0 = power pla
 	clr.w	d0
 	clr.w	d3
 	lea	$9C(a2),a0
-.0
+.getstatus
 	clr.w	d2
 	move.b	(a0)+,d2
 	bmi.w	.1
 	move.w	$68(a2,d2.w),d2
 	btst	#$E,d2	;bit 14: coincidental
-	bne.s	.0
+	bne.s	.getstatus
 	sub.w	d3,d2
 	add.w	d2,d0
 	move.w	d2,d3
-	bra.s	.0
+	bra.s	.getstatus
 .1
 	cmpi.w	#6,OldZpos(a3)	;tmap: 6 on ice, done
 	beq.w	.3

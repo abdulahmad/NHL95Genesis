@@ -29,10 +29,10 @@ SetLCmode2	;a2 = team struct. Draw the line change box (box, Framer) with the li
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	setlccords
 	cmpi.w	#$F,(printy).w
-	blt.w	.0
+	blt.w	.box
 	bset	#0,(sflags3).w
 	bra.w	.1
-.0
+.box
 	jsr	(box).l
 	bsr.w	setlccords
 .1
@@ -40,17 +40,17 @@ SetLCmode2	;a2 = team struct. Draw the line change box (box, Framer) with the li
 	subq.w	#2,(printy).w
 	addq.w	#1,(printx).w
 	moveq	#2,d4
-.2
+.loop
 	move.w	d4,d0
 	bsr.w	getlchoice
 	tst.w	d0
-	bmi.w	.5
+	bmi.w	.next
 	btst	#1,tmflags(a2)
-	bne.w	.3
+	bne.w	.pr
 	cmp.w	$2E(a2),d4
-	bne.w	.4
+	bne.w	.up
 	move.w	tmline(a2),d0
-.3
+.pr
 	movea.w	#(mesarea-M68K_RAM),a1
 	move.l	#$44120,(a1)	;String length 4, 'A '
 	add.b	d4,2(a1)
@@ -61,10 +61,10 @@ SetLCmode2	;a2 = team struct. Draw the line change box (box, Framer) with the li
 	move.w	(sp)+,d0
 	bsr.w	linebar
 	subq.w	#5,(printx).w
-.4
+.up
 	subq.w	#1,(printy).w
-.5
-	dbf	d4,.2
+.next
+	dbf	d4,.loop
 	movea.l	tmdata(a2),a1
 	adda.w	4(a1),a1
 	adda.w	(a1),a1
@@ -90,10 +90,10 @@ setlccords	;Set printx / printy for the line change box of team a2
 	bsr.w	getlchoice
 	moveq	#6,d1
 	tst.w	d0
-	bpl.w	.2
+	bpl.w	.ex
 	subq.w	#1,d1
 	addq.w	#1,(printy).w
-.2
+.ex
 	moveq	#9,d0
 	rts
 
@@ -175,12 +175,12 @@ lineinput	;Process input for line changes: d1 = new button presses (passmode fir
 	bra.w	lcfound
 .5
 	btst	#3,pflags(a3)
-	beq.w	.6
+	beq.w	.x
 	btst	#5,pflags(a3)
-	bne.w	.6
+	bne.w	.x
 	btst	#0,pflags2(a3)
 	beq.w	doplayeracc
-.6
+.x
 	rts
 
 lcfound	;Line d2 was picked: store it ($2E), set tmline and the players (SetPersonel); falls into lcfound2
@@ -202,9 +202,9 @@ lcfound2	;Erase the line change box and redraw the scores (printscores1)
 	bsr.w	setlccords
 	bsr.w	setlccords
 	cmpi.w	#$F,(printy).w
-	blt.w	.0
+	blt.w	.nollcm
 	bclr	#0,(sflags3).w
-.0
+.nollcm
 	addq.w	#1,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
@@ -221,9 +221,9 @@ linebar	;Draw the energy bar of line d0 for team a2 at printx / printy (EnergyBa
 	ext.l	d0
 	divu.w	#$100,d0	;4096/16
 	cmp.w	#$F,d0
-	bls.w	.0
+	bls.w	.ok
 	moveq	#$F,d0
-.0
+.ok
 	moveq	#$F,d1	;d1 = bar frame (15 = empty)
 	sub.w	d0,d1
 	clr.w	d0
@@ -248,17 +248,17 @@ getlinee	;d0 = line number, a2 = team struct. Return d0 = energy level of this l
 	clr.w	d1
 	movea.l	#priolist,a0
 	move.w	tmap(a2),d4
-	bra.w	.1
+	bra.w	.next
 .0
 	clr.w	d5
 	move.b	(a0,d4.w),d5
-	beq.w	.1
+	beq.w	.next
 	clr.w	d3
 	move.b	(a1,d5.w),d3
 	asl.w	#1,d3
 	addq.w	#1,d1
 	add.w	$32(a2,d3.w),d0
-.1
+.next
 	dbf	d4,.0
 	divu.w	d1,d0
 	movem.l	(sp)+,d1-d5/a0-a3
@@ -270,21 +270,21 @@ AvgCline	;Return d0 = average energy of the current line on team a2
 	clr.w	d1
 	moveq	#5,d2
 	movea.w	tmsort(a2),a0
-.0
+.loop
 	tst.w	position(a0)
-	ble.w	.1
+	ble.w	.next
 	clr.w	d3
 	move.b	pnum(a0),d3
 	add.w	d3,d3
 	add.w	tmpde(a2,d3.w),d0
 	addq.w	#1,d1
-.1
+.next
 	adda.w	#SCstruct,a0
-	dbf	d2,.0
+	dbf	d2,.loop
 	tst.w	d1
-	beq.w	.2
+	beq.w	.ex
 	divu.w	d1,d0
-.2
+.ex
 	movem.l	(sp)+,d1-d3/a0
 	rts
 
@@ -316,53 +316,53 @@ CompLine	;The computer picks a line for team a2 (a1 = other team): on a power pl
 	addq.w	#1,(sp)
 .1
 	move.w	(sp)+,tmline(a2)
-.2
+.ex
 	movem.l	(sp)+,d0-d2/a0
 	rts
 .3
 	cmpa.w	#(tmstruct-M68K_RAM),a2
-	bne.w	.6
+	bne.w	.away
 	moveq	#2,d1
 	lea	.5(pc),a0
 	cmpi.w	#2,(gsp).w
-	bne.w	.4
+	bne.w	.h0
 	move.w	tmscore(a2),d2
 	cmp.w	tmscore(a1),d2
-	beq.w	.4
+	beq.w	.h0
 	adda.w	#$E,a0
-	bgt.w	.4
+	bgt.w	.h0
 	adda.w	#$E,a0
-.4
+.h0
 	move.w	tmline(a1),d1
 	asl.w	#1,d1
 	move.w	(a0,d1.w),d0
 	bsr.w	getlinee
 	cmp.w	#$C00,d0
-	bls.w	.6
+	bls.w	.away
 	move.w	(a0,d1.w),tmline(a2)
-	bra.s	.2
+	bra.s	.ex
 .5
 	dc.w	0,1,2,0,1,0,1
 	dc.w	2,0,1,2,0,2,0
 	dc.w	0,1,0,0,1,0,1
-.6
+.away
 	moveq	#2,d1
 	lea	.8(pc),a0
 	cmpi.w	#2,(gsp).w
-	bne.w	.7
+	bne.w	.a0
 	move.w	tmscore(a2),d2
 	cmp.w	tmscore(a1),d2
-	beq.w	.7
+	beq.w	.a0
 	addq.w	#6,a0
-	bgt.w	.7
+	bgt.w	.a0
 	addq.w	#6,a0
-.7
+.a0
 	move.w	(a0)+,d0
 	bsr.w	getlinee
 	cmp.w	#$C00,d0
-	dbhi	d1,.7
+	dbhi	d1,.a0
 	move.w	-(a0),tmline(a2)
-	bra.w	.2
+	bra.w	.ex
 .8
 	dc.w	0,1,2
 	dc.w	0,2,1
@@ -886,9 +886,9 @@ EASportsScreen	;Called from Begin. Show the EA Sports screen (EASportsMap) until
 	move.w	#$FC00,(VSCRLPM).w
 	movea.w	#(palfadenew-M68K_RAM),a0
 	moveq	#$1F,d1	;32 longs: all 64 colours black
-.0
+.clr
 	clr.l	(a0)+
-	dbf	d1,.0
+	dbf	d1,.clr
 	jsr	(CopyPaletteToCRAM).l
 	jsr	(setVram_0).l
 	jsr	(printz).l
@@ -941,14 +941,14 @@ chkatop	;Attack time of possession stat update. Called once a second from update
 
 updatePPTeamTime	;Power play time of the teams, once a second. Called from updatepentime
 	btst	#5,(sflags2).w	;check if PP
-	beq.w	.1
+	beq.w	.x
 	movea.l	#tmstruct,a2	;move home team struct into a2
 	btst	#6,(sflags2).w	;check who's on PP
 	beq.w	.0	;branch if home (team 1)
 	movea.l	#AwShots,a2	;move away team struct into a2
 .0
 	addq.w	#1,$354(a2)
-.1
+.x
 	rts
 
 ChkShotStat	;Determine if a shot was taken and add it to the stats (crowd, team, shooter and goalie)
@@ -957,7 +957,7 @@ ChkShotStat	;Determine if a shot was taken and add it to the stats (crowd, team,
 	btst	#4,(gmode).w	;gmhl: highlight
 	bne.w	.10
 	bclr	#4,(sflags2).w	;sf2shot: shot taken
-	bne.w	.4
+	bne.w	.Cwdupdate
 	btst	#0,(sflags4).w
 	beq.w	.10
 	bclr	#3,(sflags8).w
@@ -971,29 +971,29 @@ ChkShotStat	;Determine if a shot was taken and add it to the stats (crowd, team,
 	adda.w	(ScoreSumbytes).w,a4
 	movea.l	#tmstruct,a2	;home team
 	btst	#7,2(a4)	;entry flag: visitors
-	beq.w	.1
+	beq.w	.pllookup
 	adda.w	#tmsize,a2
-.1
+.pllookup
 	clr.w	d0
 	move.b	3(a4),d0	;pnum (roster offset)
 	movea.l	(sp)+,a4
 	movea.w	tmsort(a2),a2
 	move.w	#5,d1
-.2
+.findplayer
 	cmp.b	$66(a2),d0	;pnum
-	beq.w	.3
+	beq.w	.foundplayer
 	adda.w	#SCstruct,a2
-	dbf	d1,.2
-	bra.w	.9
-.3
+	dbf	d1,.findplayer
+	bra.w	.ex
+.foundplayer
 	move.w	SCnum(a2),d0	;SCnum
-	bra.w	.5
-.4
+	bra.w	.addShot
+.Cwdupdate
 	movem.l	d0-d1/a1-a3,-(sp)
 	addi.w	#$64,(crowdlevel).w	;100
 	addi.w	#$A,(CwdExciteLvl).w
 	move.w	(shotplayer).w,d0
-.5
+.addShot
 	asl.w	#7,d0	;scsize
 	movea.w	#(SortCords-M68K_RAM),a3
 	adda.w	d0,a3
@@ -1023,10 +1023,10 @@ ChkShotStat	;Determine if a shot was taken and add it to the stats (crowd, team,
 	addi.w	#$EA,d0
 	addq.b	#1,(a2,d0.w)
 	move.w	$26(a1),d0
-	bmi.w	.9
+	bmi.w	.ex
 	addi.w	#$EA,d0
 	addq.b	#1,(a1,d0.w)
-.9
+.ex
 	movem.l	(sp)+,d0-d1/a1-a3
 .10
 	rts
