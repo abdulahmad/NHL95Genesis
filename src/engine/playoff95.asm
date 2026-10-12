@@ -155,12 +155,12 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	move.w	#$FFFF,(PlayerScrollCtr).w
 	move.w	#1,(DispAttribCtr).w
 	jsr	(UpdatePlayoffScroll).l
-.7
+.wait
 	jsr	(PlayoffScreen_waitvsync).l
 	movea.l	#rtss2,a0
 	jsr	(DrawPlayoffSprite).l
 	jsr	(HandlePlayoffInput).l
-	bra.s	.7
+	bra.s	.wait
 
 HandlePlayoffInput	;Read the four pads: start leaves PlayoffScreen, right / left set the
 	;scroll step, then falls into UpdatePlayoffScroll

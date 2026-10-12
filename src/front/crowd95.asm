@@ -101,15 +101,15 @@ ShowCrowdFrame	;Crowd frame d0 (0 = none): its sprites in view as sprite table e
 	subi.w	#$80,d2
 	addi.w	#$70,d3
 	move.w	(sp)+,d4
-.0
+.find
 	cmp.w	(a0),d2
-	bgt.w	.2
+	bgt.w	.next
 	cmp.w	(a0),d3
-	blt.w	.2
+	blt.w	.next
 	cmp.w	6(a0),d0
-	bgt.w	.2
+	bgt.w	.next
 	cmp.w	6(a0),d1
-	blt.w	.2
+	blt.w	.next
 	move.w	(a0),d5
 	addi.w	#$80,d5
 	sub.w	d2,d5
@@ -137,9 +137,9 @@ ShowCrowdFrame	;Crowd frame d0 (0 = none): its sprites in view as sprite table e
 	addq.w	#1,d6
 	cmp.w	#$40,d6
 	beq.w	.3
-.2
+.next
 	addq.w	#8,a0
-	dbf	d4,.0
+	dbf	d4,.find
 .3
 	movem.l	(sp)+,d0-d5
 
