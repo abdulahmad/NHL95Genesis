@@ -86,3 +86,6 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
      plain English dividers (15 files). Kept as-is: teamdata95 data layout banners, SegaInit (Sega's own banners), stubs.
   2. Include line address maps: DONE (nhl95, main95, engine95, front95; plain descriptions kept). Rule above updated: no ROM addresses on include lines.
   3. NHLPA93SNES src/routines/** routine headers: DONE (all 448 files, one commit per folder; see its docs/HANDOFF.md).
+- frames95 symbols: raw animation offsets and sprite-frame immediates take the frames95 names. Counts are immediates replaced. A new equate is recorded below and in name_map.csv. Unsure stays numeric.
+  - replay95: 6 (SPAblock x2, SPFpuck, SPFfaceoff+6 one past the last frame, SPFbglass, SPFPen). The compare against frame 1 stays 1.
+  - Unsure: none yet.

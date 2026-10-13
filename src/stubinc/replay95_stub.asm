@@ -10,6 +10,11 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside, read from lst/nhl95.bin.
+SPAblock = $1E6C
+SPFpuck = $1B3
+SPFfaceoff = $41A
+SPFbglass = $3E8
+SPFPen = $3ED
 ZeroLong = $69A
 revframetbl = $8596
 setvideo = $A204

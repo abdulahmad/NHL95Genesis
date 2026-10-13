@@ -6,7 +6,7 @@
 
 	include	macros\genesis.mac	;String
 chkblock	;Called with d1 = SPAhook for a player a3 about to check: d1 becomes the shot block
-	;SPAblock ($1E6C) when the puck carrier (shot dir mode set) or the last shooter (ShotTimer running)
+	;SPAblock when the puck carrier (shot dir mode set) or the last shooter (ShotTimer running)
 	;is on the other team
 	btst	#sfssdir,(sflags).w
 	bne.w	.carrier
@@ -35,7 +35,7 @@ chkblock	;Called with d1 = SPAhook for a player a3 about to check: d1 becomes th
 	btst	#pfteam,d0
 	beq.w	.done
 .start
-	move.w	#$1E6C,d1	;SPAblock
+	move.w	#SPAblock,d1
 	bra.w	.done
 	movem.w	d1,-(sp)	;not reached: the same facing test as CanBlock
 	move.w	(puckx).w,d0
@@ -56,7 +56,7 @@ chkblock	;Called with d1 = SPAhook for a player a3 about to check: d1 becomes th
 	cmp.w	(sp)+,d0
 	movem.w	(sp)+,d1
 	bne.w	.done
-	move.w	#$1E6C,d1
+	move.w	#SPAblock,d1
 .done
 	movem.l	(sp)+,d0/d2/a0
 .rts
@@ -732,13 +732,13 @@ RestoreReplayFrame	;a4 = current replay frame address to convert into normal cor
 	move.w	(a6,d2.w),d2
 	cmpi.w	#$F,SCnum(a3)
 	bne.w	.0	;branch if not
-	cmp.w	#$1B3,d2
+	cmp.w	#SPFpuck,d2
 	beq.w	.0
 	move.w	#$FC00,Ypos(a3)
 .0
 	cmp.w	#1,d2	;check if frame is before frame 1 (out of range)
 	blt.w	.1	;branch if so
-	cmp.w	#$420,d2
+	cmp.w	#SPFfaceoff+6,d2	;one past the last frame
 	bge.w	.1	;branch if so
 	bra.w	.2	;branch if valid object frame
 .1
@@ -747,9 +747,9 @@ RestoreReplayFrame	;a4 = current replay frame address to convert into normal cor
 	andi.w	#$7FF,d2
 .2
 	move.w	d2,frame(a3)
-	cmp.w	#$3E8,d2
+	cmp.w	#SPFbglass,d2	;glass shatter frames
 	blt.w	.3	;branch if so
-	cmp.w	#$3ED,d2
+	cmp.w	#SPFPen,d2	;the penalty frame, past the glass
 	bge.w	.3	;branch if so
 	btst	#4,(sflags4).w
 	beq.w	.3
