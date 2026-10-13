@@ -442,11 +442,11 @@ faceoffinput	;The faceoff player (assignment $11, 94 $17): store the dpad pull (
 	bne.s	.0
 	btst	#4,d1	;test for b button press
 	beq.w	.3
-	move.w	#$1B36,d1
+	move.w	#SPAfaceoff,d1
 	bset	#1,pflags2(a3)	;set anim in progress
 	jmp	SetSPA
 .3
-	move.w	#$1B60,d1
+	move.w	#SPAfaceoffr,d1
 	jmp	SetSPA
 
 setpassmode	;Pass direction mode: passdir = facedir, sflags bit 2 (95 drops the 94 penalty shot part)
@@ -592,20 +592,20 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	move.w	(puckvx).w,d0
 	move.w	(puckvy).w,d1
 	jsr	(vtoa).l
-	move.w	#$1F9A,d1
+	move.w	#SPAgswing,d1
 	tst.w	position(a3)	;$34 = position
 	beq.w	.13
-	move.w	#$1362,d1
+	move.w	#SPApassf,d1
 	btst	#1,(GameFlags).w
 	beq.w	.12
-	move.w	#$13D4,d1
+	move.w	#SPApassf2,d1
 .12
 	bsr.w	Findhittype
 	beq.w	.13
-	move.w	#$1426,d1
+	move.w	#SPApassb,d1
 	btst	#1,(GameFlags).w
 	beq.w	.13
-	move.w	#$1498,d1
+	move.w	#SPApassb2,d1
 .13
 	jsr	(SetSPA).l
 	bset	#5,pflags(a3)
@@ -888,17 +888,17 @@ SetShotMode	;Initiate a shot by player a3
 	sub.w	Ypos(a3),d1	;Sub Ypos of player from Y boards
 	jsr	(vtoa).l
 	move.w	#$F,(passspeed).w
-	move.w	#$150A,d1
+	move.w	#SPAshotf,d1
 	btst	#0,(GameFlags).w
 	beq.w	.2
-	move.w	#$163C,d1
+	move.w	#SPAfakeshotf,d1
 .2
 	bsr.w	Findhittype
 	beq.w	.4
-	move.w	#$176E,d1
+	move.w	#SPAshotb,d1
 	btst	#0,(GameFlags).w
 	beq.w	.3
-	move.w	#$18A0,d1
+	move.w	#SPAfakeshotb,d1
 .3
 	move.w	#$13,(passspeed).w
 .4
@@ -959,7 +959,7 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 	bclr	#0,(GameFlags).w	;a fake shot ends in SPAglidewp without the shot
 	beq.w	.0
 	bclr	#3,(sflags).w
-	move.w	#$B8E,d1
+	move.w	#SPAglidewp,d1
 	jsr	(SetSPA).l
 	jmp	.21
 .0
@@ -983,7 +983,7 @@ doshot	;Shoot the puck: speed and direction from the shooter's ratings, shotsets
 .2
 	move.w	#$18,(sp)	;#SFXshotfh
 	bset	#4,(sflags2).w
-	cmpi.w	#$176E,SPA(a3)
+	cmpi.w	#SPAshotb,SPA(a3)
 	bne.w	.nbh
 	move.w	#$14,(sp)	;#SFXshotbh
 	move.w	(passspeed).w,d0

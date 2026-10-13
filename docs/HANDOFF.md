@@ -92,4 +92,5 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
   - players95: 1 (resetplstuff SetSPA SPAglide).
   - shootout95: 1 (SetSPA SPAglide). Path and coordinate words stay numeric.
   - faceoff95: 4 (SPFpuck on the shadow, SPAglide, SPAfaceoff, SPAfaceoffr). The faceoff-window $A800 word stays.
+  - input95: 13 (SPAfaceoff, SPAfaceoffr, SPAgswing, SPApassf, SPApassf2, SPApassb, SPApassb2, SPAshotf, SPAfakeshotf, SPAshotb, SPAfakeshotb, SPAglidewp, SPAshotb compare). OneTimerGoalieTbl $FFCE stays.
   - Unsure: none yet.
