@@ -90,7 +90,7 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
   - replay95: 6 (SPAblock x2, SPFpuck, SPFfaceoff+6 one past the last frame, SPFbglass, SPFPen). The compare against frame 1 stays 1.
   - goal95: 1 (SPAsiren on the struct after the goal). Scroll clamp #$FFCE on yleader stays.
   - players95: 1 (resetplstuff SetSPA SPAglide).
-  - shootout95: 1 (SetSPA SPAglide). Path and coordinate words stay numeric.
+  - shootout95: 2 (SetSPA SPAglide, SPFpuck on the shadow). Path and coordinate words stay numeric.
   - faceoff95: 4 (SPFpuck on the shadow, SPAglide, SPAfaceoff, SPAfaceoffr). The faceoff-window $A800 word stays.
   - input95: 13 (SPAfaceoff, SPAfaceoffr, SPAgswing, SPApassf, SPApassf2, SPApassb, SPApassb2, SPAshotf, SPAfakeshotf, SPAshotb, SPAfakeshotb, SPAglidewp, SPAshotb compare). OneTimerGoalieTbl $FFCE stays.
   - skate95: 46. The turn is eori #SPAturnl-SPAturnr, addi #SPAturnr, addi #SPAturnrwp-SPAturnr. noturn0 move.w #2,d1 is #SPAskate. Goalie ready, dive, glide, stop, skate, board and the 10-word save list. moveq #2,d4 stays.

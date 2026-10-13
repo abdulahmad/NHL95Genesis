@@ -63,6 +63,7 @@ DrawTeamScreen6 = $8B32A
 getGoalieSCnum = $8B974		;d0 = SCnum of the goalie of the team of player d0
 SetSPA = $8BC9A
 SPAglide = $B5C
+SPFpuck = $1B3
 LockScroll = $8C8EC
 checkwindow = $8C900
 ExitToOpening = $8CD02

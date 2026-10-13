@@ -1021,7 +1021,7 @@ puckpenshot	;Penalty shot / shootout face-off: rink, puck and nets reset, the sh
 	clr.w	(a0)
 	move.w	#$FEEE,Ypos(a0)
 	movea.w	#(SortCords+((puckscnum+1)*SCstruct)-M68K_RAM),a0	;puck shadow SCstruct
-	move.w	#$1B3,6(a0)
+	move.w	#SPFpuck,frame(a0)
 	clr.w	SPA(a0)
 	clr.w	4(a0)
 	clr.w	(SortCords+(puckscnum*SCstruct)+attribute).w
