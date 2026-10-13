@@ -392,7 +392,7 @@ puckfaceoff2	;Puck assignment 4. First call: set up the faceoff: clear the penal
 	clr.w	(a0)
 	move.w	#$FEEE,Ypos(a0)
 	movea.w	#(SortCords+((puckscnum+1)*SCstruct)-M68K_RAM),a0	;move to puck shadow SCnum
-	move.w	#$1B3,frame(a0)
+	move.w	#SPFpuck,frame(a0)
 	clr.w	SPA(a0)
 	clr.w	attribute(a0)
 	clr.w	(SortCords+(puckscnum*SCstruct)+attribute).w	;clear puck SCnum attribute
@@ -492,7 +492,7 @@ puckfaceoff2	;Puck assignment 4. First call: set up the faceoff: clear the penal
 	move.w	d0,facedir(a3)
 	bclr	#2,pflags2(a3)	;#pf2unav
 	bclr	#5,pflags(a3)
-	move.w	#$B5C,d1
+	move.w	#SPAglide,d1
 	jsr	(SetSPA).l
 .20
 	adda.w	#SCstruct,a3
@@ -617,14 +617,14 @@ assfaceoffpl	;Assignment $11, the faceoff player: set his fofdata2 frame from hi
 	bne.w	.exit2
 	bset	#1,pflags2(a3)
 	bne.w	.exit2
-	move.w	#$1B36,d1
+	move.w	#SPAfaceoff,d1
 	cmpi.w	#$10,(SortCords+(puckscnum*SCstruct)+temp1).w
 	bls.w	.5
 	moveq	#8,d0
 	jsr	(randomd0).l
 	tst.w	d0
 	beq.w	.5
-	move.w	#$1B60,d1
+	move.w	#SPAfaceoffr,d1
 .5
 	bset	#1,pflags2(a3)
 	jmp	SetSPA
