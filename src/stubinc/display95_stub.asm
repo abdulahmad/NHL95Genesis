@@ -14,6 +14,15 @@
 SPAfallback = $109C
 SPAinjuryfall = $2454
 SPAlist = $5A34
+SPFarrow = $69
+SPFarrow34 = $73
+SPFpad = $6F
+SPFpad34 = $79
+SPFreplay = $72
+SPFglide = $41
+SPFGoalie = $25E
+SPFgoal = $1BE
+SPFpuck = $1B3
 addframe = $79D80
 addframe2 = $79DA8
 updatescroll = $79F64

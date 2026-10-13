@@ -6,7 +6,7 @@
 ; skating frames first and gives the skating groups 8 frames per direction (94: 5); a "New in 95" group is new frames.
 ; Names for the new groups follow the tables that use them, or the PC animation names (SPFblock). Sets the
 ; arrow, star, replay cursor, net and puck frames, which no table uses. SPFglovel2 is inferred from 94 (the 4 frames
-; after gdive). Frames 115-120, 670-673, 886-889 and 970-999 are not used by a 95 table or the code.
+; after gdive). Frames 670-673, 886-889 and 970-999 are not used by a 95 table or the code.
 SPFskate	=	1	; 1 (94: 41)
 SPFglide	=	SPFskate+64	; 65 glide, and the first frame of the falls
 SPFstop	=	SPFglide+8	; 73 (94: 145)
@@ -15,6 +15,7 @@ SPFturnl	=	SPFturnr+8	; 97 (94: 81)
 SPFarrow	=	SPFturnl+8	; 105 not used by a 95 table (94: 384)
 SPFpad	=	SPFarrow+6	; 111 not used by a 95 table (94: 390): joypad 1 and 2 stars, puck star
 SPFreplay	=	SPFpad+3	; 114 not used by a 95 table (94: 393)
+SPFarrow34	=	SPFreplay+1	; 115 not used by a 95 table: joypad 3 and 4 arrows (pad 4 is +3)
 SPFpad34	=	SPFreplay+7	; 121 not used by a 95 table: joypad 3 and 4 stars
 SPFshoulderl	=	SPFpad34+2	; 123 (94: 241)
 SPFshoulderr	=	SPFshoulderl+8	; 131 (94: 249)

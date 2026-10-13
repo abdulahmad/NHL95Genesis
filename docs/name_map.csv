@@ -2245,3 +2245,4 @@ $FFFFD180,homeshootgoals,,sohomegoals,ram95
 $FFFFD182,awayshootgoals,,soawaygoals,ram95
 $FFFFBF1E,homepracplayers,,homegoaliectl,ram95
 $FFFFBF20,awaypracplayers,,awaygoaliectl,ram95
+frame $73,SPFarrow34,,$73,frames95

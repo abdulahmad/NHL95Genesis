@@ -62,23 +62,23 @@ checksso	;Do graphics for sso structure: arrows for the players when they are of
 	bne.w	.x
 	movea.w	#(Joy1Struct-M68K_RAM),a0
 	movea.w	#(sso-M68K_RAM),a3
-	move.w	#$69,d3	;SPFarrow, the first arrow frame (94: $180)
+	move.w	#SPFarrow,d3	;the first arrow frame (94: $180)
 	bsr.w	.ca
 	adda.w	#$1C,a0	;ffosize
 	adda.w	#$14,a3	;ssosize
-	move.w	#$6C,d3
+	move.w	#SPFarrow+3,d3
 	bsr.w	.ca
 	tst.w	(cont3team).w
 	beq.w	.x	;on screen: no arrow
 	movea.w	#(Joy3Struct-M68K_RAM),a0
 	adda.w	#$14,a3
-	move.w	#$73,d3
+	move.w	#SPFarrow34,d3
 	bsr.w	.ca
 	tst.w	(cont4team).w
 	beq.w	.x
 	movea.w	#(Joy4Struct-M68K_RAM),a0
 	adda.w	#$14,a3
-	move.w	#$76,d3
+	move.w	#SPFarrow34+3,d3
 .ca	;(93 .ca). a0 = object, a3 = sso, d3 = first arrow frame. In a shootout, with sflags2 bit 3 or in a penalty shot, no arrow
 	;for a player beyond x $B6 (94: $A6). 95 has no horizontal rink case here
 	tst.w	Zpos(a0)
@@ -390,12 +390,12 @@ defaultsprites	;Allocate vram and assign char area for graphic structures. d4 = 
 	dc.w	0,0,0,0,9
 	dc.w	0,0,0,0,9
 .listffo	;Xcord,ycord,zpos,frame,attribute,vram char size
-	dc.w	0,0,$FFFF,$71,0,7	;SPFpad+2 frame (puck poss. star)
-	dc.w	0,0,$FFFF,$6F,0,7	;SPFpad+0 frame (joypad 1 star)
-	dc.w	0,0,$FFFF,$70,0,7	;SPFpad+1 frame (joypad 2 star)
-	dc.w	0,0,$FFFF,$79,0,7	;SPFpad34+0 frame (joypad 3 star)
-	dc.w	0,0,$FFFF,$7A,0,7	;SPFpad34+1 frame (joypad 4 star)
-	dc.w	0,0,$FFFF,$72,$8000,7	;SPFreplay frame (replay cursor)
+	dc.w	0,0,$FFFF,SPFpad+2,0,7	;puck poss. star
+	dc.w	0,0,$FFFF,SPFpad,0,7	;joypad 1 star
+	dc.w	0,0,$FFFF,SPFpad+1,0,7	;joypad 2 star
+	dc.w	0,0,$FFFF,SPFpad34,0,7	;joypad 3 star
+	dc.w	0,0,$FFFF,SPFpad34+1,0,7	;joypad 4 star
+	dc.w	0,0,$FFFF,SPFreplay,$8000,7	;replay cursor
 
 defaultsprites2	;Objects which are tied to screen scrolling and have velocity: the 16 SortCords objects from .list (players,
 	;puck, puck shadow, goal nets ...), the OOlist and OOlistpos; then SprSort. 95 clears $78 bytes of each (94: $80) and faces the
@@ -441,22 +441,22 @@ defaultsprites2	;Objects which are tied to screen scrolling and have velocity: t
 	bne.s	.0
 	bra.w	SprSort
 .list	;Xcord,ycord,zcord,frame,att,crsize,radx,rady,asslist,pflags
-	dc.w	0,$FFC4,0,$41,0,$14,8,4,0,$80	;SCnum 0 (home skaters)
-	dc.w	$32,$FFF6,0,$41,0,$14,8,4,0,$80	;SCnum 1
-	dc.w	0,$FFF1,0,$41,0,$14,8,4,0,$80	;SCnum 2
-	dc.w	$FFCE,$FFF6,0,$41,0,$14,8,4,0,$80	;SCnum 3
-	dc.w	$23,$FFCE,0,$41,0,$14,8,4,0,$80	;SCnum 4
-	dc.w	0,$FEF5,0,$25E,0,$14,8,4,0,$80	;SCnum 5 (home goalie)
-	dc.w	0,$3C,0,$45,1,$14,8,4,0,$40	;SCnum 6 (away skaters)
-	dc.w	$FFCE,$A,0,$45,1,$14,8,4,0,$40	;SCnum 7
-	dc.w	0,$F,0,$45,1,$14,8,4,0,$40	;SCnum 8
-	dc.w	$32,$A,0,$45,1,$14,8,4,0,$40	;SCnum 9
-	dc.w	$FFDD,$32,0,$45,1,$14,8,4,0,$40	;SCnum 10
-	dc.w	0,$10B,0,$262,1,$14,8,4,0,$40	;SCnum 11 (away goalie)
-	dc.w	0,$112,0,$1BE,0,$11,$14,6,0,0	;SCnum 12 (goal nets), SPFgoal frame
-	dc.w	0,$FEEE,0,$1BF,0,$1C,$14,6,0,0	;SCnum 13, SPFgoal+1 frame
-	dc.w	0,0,0,$1B4,0,1,5,5,1,1	;SCnum 14 (puck), SPFpuck+1 frame
-	dc.w	0,0,0,$1B3,0,$18,3,3,2,4	;SCnum 15 (puck shadow), SPFpuck frame
+	dc.w	0,$FFC4,0,SPFglide,0,$14,8,4,0,$80	;SCnum 0 (home skaters)
+	dc.w	$32,$FFF6,0,SPFglide,0,$14,8,4,0,$80	;SCnum 1
+	dc.w	0,$FFF1,0,SPFglide,0,$14,8,4,0,$80	;SCnum 2
+	dc.w	$FFCE,$FFF6,0,SPFglide,0,$14,8,4,0,$80	;SCnum 3
+	dc.w	$23,$FFCE,0,SPFglide,0,$14,8,4,0,$80	;SCnum 4
+	dc.w	0,$FEF5,0,SPFGoalie,0,$14,8,4,0,$80	;SCnum 5 (home goalie)
+	dc.w	0,$3C,0,SPFglide+4,1,$14,8,4,0,$40	;SCnum 6 (away skaters)
+	dc.w	$FFCE,$A,0,SPFglide+4,1,$14,8,4,0,$40	;SCnum 7
+	dc.w	0,$F,0,SPFglide+4,1,$14,8,4,0,$40	;SCnum 8
+	dc.w	$32,$A,0,SPFglide+4,1,$14,8,4,0,$40	;SCnum 9
+	dc.w	$FFDD,$32,0,SPFglide+4,1,$14,8,4,0,$40	;SCnum 10
+	dc.w	0,$10B,0,SPFGoalie+4,1,$14,8,4,0,$40	;SCnum 11 (away goalie)
+	dc.w	0,$112,0,SPFgoal,0,$11,$14,6,0,0	;SCnum 12 (goal nets)
+	dc.w	0,$FEEE,0,SPFgoal+1,0,$1C,$14,6,0,0	;SCnum 13
+	dc.w	0,0,0,SPFpuck+1,0,1,5,5,1,1	;SCnum 14 (puck)
+	dc.w	0,0,0,SPFpuck,0,$18,3,3,2,4	;SCnum 15 (puck shadow)
 
 SprSort	;Sort objects in struct SortObj and set corresponding tables for keeping them sorted later (Ylist, OOlist,
 	;OOlistpos). 95 has no horizontal rink case
