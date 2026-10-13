@@ -11,6 +11,7 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside, read from lst/nhl95.bin.
+SPAsiren = $1F1E
 ZeroLong = $69A
 Opening2 = $9ADA
 IntermissionStart = $9D18

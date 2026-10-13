@@ -200,7 +200,7 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals 
 	jsr	(assreplace).l
 	move.l	a3,-(sp)
 	adda.w	#SCstruct,a3
-	move.w	#$1F1E,d1
+	move.w	#SPAsiren,d1
 	bsr.w	SetSPA
 	movea.w	$22(a1),a3
 	moveq	#$E,d0
