@@ -95,4 +95,5 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
   - input95: 13 (SPAfaceoff, SPAfaceoffr, SPAgswing, SPApassf, SPApassf2, SPApassb, SPApassb2, SPAshotf, SPAfakeshotf, SPAshotb, SPAfakeshotb, SPAglidewp, SPAshotb compare). OneTimerGoalieTbl $FFCE stays.
   - skate95: 46. The turn is eori #SPAturnl-SPAturnr, addi #SPAturnr, addi #SPAturnrwp-SPAturnr. noturn0 move.w #2,d1 is #SPAskate. Goalie ready, dive, glide, stop, skate, board and the 10-word save list. moveq #2,d4 stays.
   - logic95: 42 (slam, dive, glove and stack compares, the four extra loads, saveanim's 10 words, SPApflip, SPFpuck, SPAblock x2, SPAglide x4, wall left x3 and right, SPAshotf, SPAshotb, SPAstanley, SPAcelebrate, the 4 pump words). The Y compare is #-50. The team-struct #$E10 and the pump random #2 stay.
+  - collide95: 77 (SPAbglass, hold/hook/sweep/burst, both checking lists, flail and the hold pair, fall and injury compares and loads, the board check and board list, flip, goalie ready and the pad stacks, SPAglidewp, SPAgdive, SPAcatch, the bounce anims). Reach tables, SPAnum #$18, and the save-attribute words stay.
   - Unsure: none yet.

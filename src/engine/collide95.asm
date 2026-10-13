@@ -159,7 +159,7 @@ checkwallcoll	;d2/d3 = x/y to test, a3 = object, wcradiusx/wcradiusy = radius. C
 	rts	;a second rts, unreferenced
 
 wallcollb	;Check for puck over wall. a3 = object, d0/d1 = cos/sin of the wall. Not the puck: wallcoll. Zpos above $15
-	;locks the scroll (LockScroll) and goes out of play; above $12 only at x $28-$2A behind the goal line ($110) with Yvel >= $FA0 (SPA $250A on the
+	;locks the scroll (LockScroll) and goes out of play; above $12 only at x $28-$2A behind the goal line ($110) with Yvel >= $FA0 (SPAbglass on the
 	;next struct, sfx $E, crowd). Out of play: sfslock, pfnc, and while the clock runs penalty 6 (PenOOP) for ltplayer
 	cmpi.w	#$E,SCnum(a3)
 	bne.w	wallcoll	;not puck so wall coll
@@ -181,7 +181,7 @@ wallcollb	;Check for puck over wall. a3 = object, d0/d1 = cos/sin of the wall. N
 	move.l	a3,-(sp)
 	asr	Yvel(a3)
 	adda.w	#SCstruct,a3
-	move.w	#$250A,d1
+	move.w	#SPAbglass,d1
 	jsr	(SetSPA).l
 	movea.l	(sp)+,a3
 	move.w	#SFX0E,-(sp)
@@ -481,16 +481,16 @@ checkcheck	;Player is in contact: look for various contact events. Runs CCStart 
 	movem.l	(sp)+,d0-d4/a0-a3
 	rts
 
-CCStart	;Player a3 is checking player a2. Holds go to holdcheck, SPA $F38 to Bcheck
-	;otherwise only a3 in SPA $11AE checks. Sets a3's check anim from checkinglist (95: 1 in 5 from checkinglist2 when the two
+CCStart	;Player a3 is checking player a2. Holds go to holdcheck, SPAsweepchk to Bcheck
+	;otherwise only a3 in SPAburst checks. Sets a3's check anim from checkinglist (95: 1 in 5 from checkinglist2 when the two
 	;face each other); a big enough hit on a skater makes a2 fall, with a charging ($16 / $18) or roughing ($1A / $1C) roll from checkagr
-	cmpi.w	#$E10,SPA(a2)
+	cmpi.w	#SPAHold,SPA(a2)
 	beq.w	holdcheck
-	cmpi.w	#$E74,SPA(a2)
+	cmpi.w	#SPAhook,SPA(a2)
 	beq.w	holdcheck
-	cmpi.w	#$F38,SPA(a2)
+	cmpi.w	#SPAsweepchk,SPA(a2)
 	beq.w	Bcheck
-	cmpi.w	#$11AE,SPA(a3)
+	cmpi.w	#SPAburst,SPA(a3)
 	beq.w	.nofight
 	rts
 .nofight
@@ -597,12 +597,12 @@ CCStart	;Player a3 is checking player a2. Holds go to holdcheck, SPA $F38 to Bch
 	rts
 
 checkinglist	;Check anim by direction from a3 to a2, SPA offsets
-	dc.w	$DAC,$DDE,$DDE,$DDE,$DDE,$DAC,$DAC,$DAC
+	dc.w	SPAshoulderchkl,SPAshoulderchkr,SPAshoulderchkr,SPAshoulderchkr,SPAshoulderchkr,SPAshoulderchkl,SPAshoulderchkl,SPAshoulderchkl
 
 checkinglist2	;Check anims for two players facing each other
-	dc.w	$2530,$254A,$254A,$254A,$254A,$2530,$2530,$2530
+	dc.w	SPAshoulderchkl2,SPAshoulderchkr2,SPAshoulderchkr2,SPAshoulderchkr2,SPAshoulderchkr2,SPAshoulderchkl2,SPAshoulderchkl2,SPAshoulderchkl2
 
-Bcheck	;a2 = player that is B checking (SPA $F38), a3 = player being checked. Entered from CCStart. If OptPen is 0 and a2 is
+Bcheck	;a2 = player that is B checking (SPAsweepchk), a3 = player being checked. Entered from CCStart. If OptPen is 0 and a2 is
 	;joystick controlled, a2 needs randomd0($20 + a2 Chk - a3 Agl) >= $18 (95: no roll against a3 the puck carrier). If a3 is within 1 direction
 	;of where a2 faces, a3 falls and checkagr may call penalty $20 (tripping) on a2. Sets collflag
 	btst	#pfalock,pflags(a3)	;check if locked in animation
@@ -648,7 +648,7 @@ Bcheck	;a2 = player that is B checking (SPA $F38), a3 = player being checked. En
 	rts
 
 holdcheck	;Player a2 is in a hold animation looking to hold opponent a3. Entered from CCStart. a3 must be within 1 direction of
-	;where a2 faces. Both get the average velocity, a3 goes to SPA $1F68, a2 to $E42 or $EA6, and checkagr rolls penalty $24 or $1E
+	;where a2 faces. Both get the average velocity, a3 goes to SPAflail, a2 to SPAHold2 or SPAhook2, and checkagr rolls penalty $24 or $1E
 	btst	#pfalock,pflags(a3)	;#pfalock - locked animation
 	bne.w	.4
 	tst.w	position(a3)	;position - no hold on goalies
@@ -679,21 +679,21 @@ holdcheck	;Player a2 is in a hold animation looking to hold opponent a3. Entered
 	move.w	d0,Yvel(a3)
 	move.w	d0,Yvel(a2)
 	bset	#pfalock,pflags(a3)
-	move.w	#$1F68,d1
+	move.w	#SPAflail,d1
 	jsr	(SetSPA).l
 	exg	a2,a3
 	bset	#pfalock,pflags(a3)
-	move.w	#$E42,d1
-	cmpi.w	#$E10,SPA(a3)
+	move.w	#SPAHold2,d1
+	cmpi.w	#SPAHold,SPA(a3)
 	beq.w	.1
-	move.w	#$EA6,d1
+	move.w	#SPAhook2,d1
 .1
 	jsr	(SetSPA).l
 	jsr	(checkagr).l
 	cmp.w	#6,d0
 	bhi.w	.ex
 	move.w	#$24,d0
-	cmpi.w	#$E42,SPA(a3)
+	cmpi.w	#SPAHold2,SPA(a3)
 	beq.w	.2
 	move.w	#$1E,d0
 .2
@@ -705,9 +705,9 @@ holdcheck	;Player a2 is in a hold animation looking to hold opponent a3. Entered
 .4
 	rts
 
-Sweepcheck	;Lock a3 in SPA $F38 (the sweep check). Jumped to from chgplayer
+Sweepcheck	;Lock a3 in SPAsweepchk (the sweep check). Jumped to from chgplayer
 	bset	#pfalock,pflags(a3)
-	move.w	#$F38,d1
+	move.w	#SPAsweepchk,d1
 	jmp	(SetSPA).l
 
 FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in some anims, or the same pair as the last call. A skater
@@ -716,17 +716,17 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	;a check sound (newcheck). Called from checkint, CCStart, Bcheck and puckbody
 	cmpi.w	#$B,SCnum(a2)
 	bgt.w	.33
-	cmpi.w	#$2454,SPA(a2)
+	cmpi.w	#SPAinjuryfall,SPA(a2)
 	beq.w	.33
-	cmpi.w	#$2496,SPA(a2)
+	cmpi.w	#SPAinjury1,SPA(a2)
 	beq.w	.33
-	cmpi.w	#$24D8,SPA(a2)
+	cmpi.w	#SPAinjury2,SPA(a2)
 	beq.w	.33
-	cmpi.w	#$1AA4,SPA(a2)
+	cmpi.w	#SPAstumble,SPA(a2)
 	beq.w	.33
-	cmpi.w	#$FAA,SPA(a2)
+	cmpi.w	#SPAfallfwd,SPA(a2)
 	beq.w	.33
-	cmpi.w	#$109C,SPA(a2)
+	cmpi.w	#SPAfallback,SPA(a2)
 	beq.w	.33
 	move.l	a2,(PlayerChked).w	;player checked
 	move.l	a3,(PlayerChking).w	;player checking
@@ -734,7 +734,7 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	bne.w	rtss2	;exit if yes
 	btst	#pf3onetimer,pflags3(a3)	;Is player a3 doing a one-timer
 	bne.w	rtss2	;exit if yes
-	move.w	#$1AA4,d1
+	move.w	#SPAstumble,d1
 	btst	#pf3wall,pflags3(a3)	;wall collision bit
 	bne.w	.cont2
 	cmpi.b	#$10,stickhand(a2)
@@ -842,7 +842,7 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	move.w	d1,-(sp)	;push to stack
 	move.b	#0,temp1(a3)
 	move.b	#0,glitch(a3)
-	move.w	#$2288,d1
+	move.w	#SPAboardchk,d1
 	jsr	(SetSPA).l	;set animation
 	clr.w	Xvel(a3)
 	clr.w	Yvel(a3)
@@ -873,40 +873,40 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	move.w	(a0,d0.w),d1
 	move.w	Ypos(a2),(FallYPos).w
 	move.w	(a2),(FallXPos).w
-	cmp.w	#$220E,d1
+	cmp.w	#SPAboardleft,d1
 	bne.w	.17
 	cmpi.w	#$59,Ypos(a2)
 	bgt.w	.17
 	cmpi.w	#$FFA7,Ypos(a2)
 	blt.w	.17
-	move.w	#$26C8,d1
+	move.w	#SPAboardmidl,d1
 	btst	#3,attribute(a2)
 	beq.w	.20
-	move.w	#$276A,d1
+	move.w	#SPAboardmidr,d1
 	bra.w	.20
 .17
-	cmp.w	#$2122,d1
+	cmp.w	#SPAboardright,d1
 	bne.w	.18
 	cmpi.w	#$38,Ypos(a2)
 	bgt.w	.18
 	cmpi.w	#$FFC8,Ypos(a2)
 	blt.w	.18
-	move.w	#$276A,d1
+	move.w	#SPAboardmidr,d1
 	btst	#3,attribute(a2)
 	beq.w	.20
-	move.w	#$26C8,d1
+	move.w	#SPAboardmidl,d1
 	bra.w	.20
 .18
 	btst	#3,attribute(a2)
 	beq.w	.20
-	cmp.w	#$2122,d1
+	cmp.w	#SPAboardright,d1
 	beq.w	.19
-	cmp.w	#$220E,d1
+	cmp.w	#SPAboardleft,d1
 	bne.w	.20
-	move.w	#$2122,d1
+	move.w	#SPAboardright,d1
 	bra.w	.20
 .19
-	move.w	#$220E,d1
+	move.w	#SPAboardleft,d1
 .20
 	clr.w	Xvel(a2)
 	clr.w	Yvel(a2)
@@ -924,22 +924,22 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	movem.l	(sp)+,d0/a0	;pop from stack
 	bra.w	.25
 .23
-	dc.w	$20B0,$20B0,$2122,$2122,$219C,$219C,$220E,$220E
+	dc.w	SPAboardtop,SPAboardtop,SPAboardright,SPAboardright,SPAboardbot,SPAboardbot,SPAboardleft,SPAboardleft
 .24
-	move.w	#$109C,d1
+	move.w	#SPAfallback,d1
 	sub.w	facedir(a2),d0
 	addq.w	#1,d0
 	andi.w	#7,d0
 	cmp.w	#2,d0
 	bls.w	.hitter
-	move.w	#$FAA,d1
+	move.w	#SPAfallfwd,d1
 .25
 	move.w	facedir(a2),d0
 	andi.w	#3,d0
 	bne.w	.hitter
-	cmpi.w	#$2530,SPA(a3)
+	cmpi.w	#SPAshoulderchkl2,SPA(a3)
 	beq.w	.hitter
-	cmpi.w	#$254A,SPA(a3)
+	cmpi.w	#SPAshoulderchkr2,SPA(a3)
 	beq.w	.hitter
 	cmpi.b	#$14,checking(a3)	;compare $14 to checker Chk attribute
 	blt.w	.hitter
@@ -947,7 +947,7 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	bgt.w	.hitter
 	btst	#pf3fall,pflags3(a2)	;check if falldown bit is set for player
 	bne.w	.hitter
-	move.w	#$2596,d1
+	move.w	#SPAflip,d1
 .hitter
 	exg	a2,a3	;swap a2 and a3
 	bset	#pfalock,pflags(a3)	;set animation lock
@@ -960,7 +960,7 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	st	(puckc).w	;clear out puck carrier
 	btst	#gmhl,(gmode).w	;check if highlight
 	bne.w	.snd
-	cmpi.w	#$109C,SPA(a2)
+	cmpi.w	#SPAfallback,SPA(a2)
 	bne.w	.snd
 	move.w	facedir(a2),d0	;facedir into d0
 	andi.w	#3,d0	;pass first 2 bits of d0
@@ -974,17 +974,17 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	btst	#gmclock,(gmode).w	;check if clock running
 	bne.w	.snd
 	exg	a2,a3
-	move.w	#$2454,d1
+	move.w	#SPAinjuryfall,d1
 	jsr	(SetSPA).l
 	exg	a2,a3
 	jsr	(setInjuryType).l
 	btst	#5,(sflags7).w	;check if game injury
 	beq.w	.28
 	exg	a2,a3
-	move.w	#$2496,d1
+	move.w	#SPAinjury1,d1
 	btst	#1,(sflags12).w
 	beq.w	.27
-	move.w	#$24D8,d1
+	move.w	#SPAinjury2,d1
 .27
 	jsr	(SetSPA).l
 	exg	a2,a3
@@ -1184,9 +1184,9 @@ checkpuckcoll	;Look for puck coll with players. a3 = puck. Clears Yvel past the 
 	move.w	#$F,d0	;move F into d0 (remove Agl)
 	bra.w	.calcagl
 .anim
-	cmpi.w	#$1C54,SPA(a2)	;two goalie anims use the smallest reach
+	cmpi.w	#SPAgready2,SPA(a2)	;two goalie anims use the smallest reach
 	beq.w	.min
-	cmpi.w	#$1B7A,SPA(a2)
+	cmpi.w	#SPAgready,SPA(a2)
 	bne.w	.calcagl
 .min
 	move.w	#0,d0
@@ -1214,13 +1214,13 @@ checkpuckcoll	;Look for puck coll with players. a3 = puck. Clears Yvel past the 
 	move.l	#$90,(ChkBodySqG).w
 	move.w	#$FFF4,(NegChkBodyG).w
 .2
-	cmpi.w	#$23E8,SPA(a2)	;check animation (pad stack; 95 has four)
+	cmpi.w	#SPAgstackalt2,SPA(a2)	;check animation (pad stack; 95 has four)
 	beq.w	.3	;branch if equal
-	cmpi.w	#$205E,SPA(a2)
+	cmpi.w	#SPAgstackr,SPA(a2)
 	beq.w	.3
-	cmpi.w	#$200C,SPA(a2)
+	cmpi.w	#SPAgstackl,SPA(a2)
 	beq.w	.3
-	cmpi.w	#$23BE,SPA(a2)
+	cmpi.w	#SPAgstackalt1,SPA(a2)
 	bne.w	.4	;branch if not equal
 .3
 	move.w	#$13,(ChkBodyG).w
@@ -1231,9 +1231,9 @@ checkpuckcoll	;Look for puck coll with players. a3 = puck. Clears Yvel past the 
 	cmpi.w	#$F,(puckz).w	;compare F to puckz
 	bgt.w	.exit2	;exit if higher
 	move.w	(a2),d0	;Xpos into d0
-	cmpi.w	#$205E,SPA(a2)	;compare animation (pad stack)
+	cmpi.w	#SPAgstackr,SPA(a2)	;compare animation (pad stack)
 	beq.w	.neg	;branch if equal
-	cmpi.w	#$200C,SPA(a2)	;compare animation (pad stack)
+	cmpi.w	#SPAgstackl,SPA(a2)	;compare animation (pad stack)
 	bne.w	.8	;branch if not equal
 	move.w	#6,d1	;move 6 into d1
 	bra.w	.5
@@ -1310,7 +1310,7 @@ puckstick	;Puck collides with stick. a2 = player who collided, a3 = puck, d0 = d
 	beq.w	.steal	;branch if goalie
 	tst.w	position(a0)	;check if goalie
 	beq.w	rtspuck	;no stealing from goalie
-	cmpi.w	#$B8E,SPA(a0)	;the carrier in SPA $B8E always loses the puck
+	cmpi.w	#SPAglidewp,SPA(a0)	;the carrier always loses the puck
 	beq.w	.steal
 	move.b	stickhand(a0),d0	;Stk for puckc
 	lsr.b	#1,d0	;divide by 2
@@ -1440,7 +1440,7 @@ puckglue	;Player a2 takes the puck (92 puckstick.glue): faceoff and pass stats, 
 	bne.w	.setd0player	;branch if not
 	jsr	(ChkShotStat).l
 	move.w	#$8C,temp5(a2)	;move 8C to temp5 - countdown for faceoff?
-	cmpi.w	#$1D4E,SPA(a2)	;goalie dive animation
+	cmpi.w	#SPAgdive,SPA(a2)	;goalie dive animation
 	bne.w	.setd0player	;branch if not equal
 	move.w	#5,temp5(a2)	;set temp5 to 5
 .setd0player	;Give control of player d0 to a controller if his team is controlled. 95 tries the pad that had lastplayer first
@@ -1579,7 +1579,7 @@ puckbody	;Puck hits player a2. a3 = puck, d0 = distance^2 (from checkpuckcoll .c
 .1
 	bset	#pfalock,pflags(a2)
 	bne.w	rtspuck
-	move.w	#$2402,d1
+	move.w	#SPAcatch,d1
 	exg	a2,a3
 	jsr	(SetSPA).l
 	exg	a2,a3
@@ -1999,11 +1999,11 @@ puckgoalie	;Puck hits goalie a2. a3 = puck, d0/d1 = goalie - puck x/y. A save bo
 	bset	#2,(sflags4).w	;not reached (after jmp puckflip)
 	rts
 .chkanim
-	cmpi.w	#$1D4E,SPA(a2)	;goalie dive animation
+	cmpi.w	#SPAgdive,SPA(a2)	;goalie dive animation
 	beq.s	.bounceoff	;branch if equal
-	cmpi.w	#$1C86,SPA(a2)	;two more goalie anims bounce the puck
+	cmpi.w	#SPAgglover,SPA(a2)	;two more goalie anims bounce the puck
 	beq.s	.bounceoff
-	cmpi.w	#$2AE4,SPA(a2)
+	cmpi.w	#SPAgextra1,SPA(a2)
 	beq.s	.bounceoff	;branch if equal
 	moveq	#2,d0	;move 2 into d0
 	add.b	shotspd(a2),d0	;add puck control to d0
@@ -2011,7 +2011,7 @@ puckgoalie	;Puck hits goalie a2. a3 = puck, d0/d1 = goalie - puck x/y. A save bo
 	asl.w	#1,d0	;mult by 2
 	bsr.w	randomd0	;random
 	addi.w	#$C00,d0	;add C00 to d0
-	cmpi.w	#$23E8,SPA(a2)	;more in SPA $23E8
+	cmpi.w	#SPAgstackalt2,SPA(a2)	;more in this SPA
 	bne.w	.dbl
 	addi.w	#$300,d0
 .dbl
