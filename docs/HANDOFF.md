@@ -89,4 +89,5 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
 - frames95 symbols: raw animation offsets and sprite-frame immediates take the frames95 names. Counts are immediates replaced. A new equate is recorded below and in name_map.csv. Unsure stays numeric.
   - replay95: 6 (SPAblock x2, SPFpuck, SPFfaceoff+6 one past the last frame, SPFbglass, SPFPen). The compare against frame 1 stays 1.
   - goal95: 1 (SPAsiren on the struct after the goal). Scroll clamp #$FFCE on yleader stays.
+  - players95: 1 (resetplstuff SetSPA SPAglide).
   - Unsure: none yet.
