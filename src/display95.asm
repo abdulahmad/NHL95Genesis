@@ -270,7 +270,7 @@ ButtonLabelCharTable	;Third label character by bits 10-8 of the label code
 ;------------------------------------------------------------------------------------------------------------------------
 
 updateanim	;Frame switch control on struct a3. Called from updateplayers. 95: no horizontal rink case, and an
-	;animation whose flag has bits 0 and 1 set loops back to the pair in the flag's high byte (SPAskate $1003)
+	;animation whose flag has bits 0 and 1 set loops back to the pair in the flag's high byte (SPAskateburst $1003)
 	tst.w	SPA(a3)	;test SPA
 	bne.w	.ia	;branch if not 0
 	bclr	#pfalock,pflags(a3)	;clear anim lock

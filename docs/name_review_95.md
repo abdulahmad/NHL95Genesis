@@ -1065,32 +1065,32 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | SPAfakeshotb_table | ok |
 | SPAfakeshotf | ok |
 | SPAfakeshotf_table | ok |
-| SPAgextra1 | ok |
-| SPAgextra1_table | ok |
-| SPAgextra2 | ok |
-| SPAgextra2_table | ok |
+| SPAghighr | ok |
+| SPAghighr_table | ok |
+| SPAgglovel2 | ok |
+| SPAgglovel2_table | ok |
 | SPAglidewp | ok |
 | SPAglidewp_table | ok |
-| SPAgstackalt1 | ok |
-| SPAgstackalt1_table | ok |
-| SPAgstackalt2 | ok |
-| SPAgstackalt2_table | ok |
+| SPAgofallback | ok |
+| SPAgofallback_table | ok |
+| SPAgofallglove | ok |
+| SPAgofallglove_table | ok |
 | SPAinjury2 | ok |
 | SPAinjury2_table | ok |
 | SPApassb2 | ok |
 | SPApassb2_table | ok |
-| SPApassf2 | ok |
-| SPApassf2_table | ok |
-| SPApump2 | ok |
-| SPApump2_table | ok |
-| SPAshoulderchkl2 | ok |
-| SPAshoulderchkl2_table | ok |
-| SPAshoulderchkr2 | ok |
-| SPAshoulderchkr2_table | ok |
-| SPAskate2 | ok |
-| SPAskate2_table | ok |
-| SPAskateturn | ok |
-| SPAskateturn_table | ok |
+| SPAdroppass | ok |
+| SPAdroppass_table | ok |
+| SPApump3 | ok |
+| SPApump3_table | ok |
+| SPAhipchkl | ok |
+| SPAhipchkl_table | ok |
+| SPAhipchkr | ok |
+| SPAhipchkr_table | ok |
+| SPAskate | ok |
+| SPAskate_table | ok |
+| SPAburst | ok |
+| SPAburst_table | ok |
 | SPAskatewp2 | ok |
 | SPAskatewp2_table | ok |
 | SPAstopwp | ok |
@@ -1512,4 +1512,4 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | new-in-95 locals: title | full body read of every new-in-95 routine (8): names and headers ok; CupVBlank .skip/.nodma, CupBuildSprites .add, AddSpriteFrame .full; StanleyCupScreen / CupWaitFrame / AddSpriteFrame .loop are real loops |
 | new-in-95 locals: collide | full body read of every new-in-95 routine (checkinglist2, rtspuck, DropPuck): names and headers ok; DropPuck .0 a trivial skip |
 | new-in-95 locals: penalty | full body read of every new-in-95 routine (rtspen): name and header ok; no locals |
-| data labels / equates (usage check) | every equate and global label checked for references: all unreferenced ones are marked as such in their comment; TmpJoyPuckCarrier removed (not used in 95, it shared PlayerChked's address); duplicate-address equates are RAM overlays used by different screens; SPAcelebrate / SPAstanley comments fixed |
+| data labels / equates (usage check) | every equate and global label checked for references: all unreferenced ones are marked as such in their comment; TmpJoyPuckCarrier removed (not used in 95, it shared PlayerChked's address); duplicate-address equates are RAM overlays used by different screens; SPAcelebrate / SPApump2 comments fixed |

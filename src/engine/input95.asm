@@ -598,7 +598,7 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	move.w	#SPApassf,d1
 	btst	#1,(GameFlags).w
 	beq.w	.12
-	move.w	#SPApassf2,d1
+	move.w	#SPAdroppass,d1
 .12
 	bsr.w	Findhittype
 	beq.w	.13

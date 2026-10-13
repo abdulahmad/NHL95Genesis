@@ -95,7 +95,7 @@ burstchk	;No burst while the animation is locked. Jumped to from doinput
 	btst	#pfalock,pflags(a3)
 	beq.w	burst
 	rts
-burst	;C button speed burst: take $CC energy unless OptLine is set, add a facedir push to Xvel / Yvel and set SPAburst.
+burst	;C button speed burst: take $CC energy unless OptLine is set, add a facedir push to Xvel / Yvel and set SPAburst2.
 	jsr	(getpde).l	;get players energy
 	tst.w	(OptLine).w
 	bne.w	.0
@@ -124,7 +124,7 @@ burst	;C button speed burst: take $CC energy unless OptLine is set, add a facedi
 	cmpi.w	#SPAskatewp,SPA(a3)	;the puck carrier keeps skating
 	beq.w	.x
 	bset	#pfalock,pflags(a3)	;lock in this animation
-	cmpi.w	#SPAskate,SPA(a3)
+	cmpi.w	#SPAskateburst,SPA(a3)
 	beq.w	.skate
 	bra.w	.set
 .skate
@@ -132,14 +132,14 @@ burst	;C button speed burst: take $CC energy unless OptLine is set, add a facedi
 	move.w	SPAnum(a3),d0
 	andi.w	#7,d0
 	clr.w	d0
-	move.w	#SPAburst,d1
+	move.w	#SPAburst2,d1
 	jsr	(SetSPA).l
 	move.w	d0,SPAnum(a3)
 	movem.l	(sp)+,d0
 .x
 	rts
 .set
-	move.w	#SPAburst,d1
+	move.w	#SPAburst2,d1
 	jmp	(SetSPA).l
 
 setpads	;Put SCnum of a3 in the d4 nibble of PadControlBits ; d4 = -2 puck carrier, 0 / 2 / 4 / 6 pads.

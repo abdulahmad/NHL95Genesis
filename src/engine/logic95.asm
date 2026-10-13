@@ -101,7 +101,7 @@ checkanim	;Goalie animation check; assgoaliectrl branches here too
 .slam
 	bset	#1,(sflags4).w	;set bit 1
 	bclr	#3,(sflags4).w	;clear bit 3
-	move.w	#SPAgslamtop,d1	;goalie celebration; SPAgslambot one time in 10
+	move.w	#SPAgsweep,d1	;goalie celebration; SPAgslambot one time in 10
 	move.w	d0,-(sp)
 	move.w	#$64,d0
 	jsr	(randomd0).l
@@ -688,9 +688,9 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 	cmpi.b	#$B,aggress(a3)	;73 = Glove Left
 	blt.w	.19	;95 dropped the reach out glove save line; the branch stays
 .19
-	cmp.w	#SPAgstackr,d1	;a pad stack facing up or down, with sflags bit 3: SPAgstackalt2, or SPAgstackalt1 40 times in 100
+	cmp.w	#SPAgstackl,d1	;a pad stack facing up or down, with sflags bit 3: SPAgofallglove, or SPAgofallback 40 times in 100
 	beq.w	.20
-	cmp.w	#SPAgstackl,d1
+	cmp.w	#SPAgstackr,d1
 	bne.w	.24
 .20
 	tst.w	facedir(a3)
@@ -701,14 +701,14 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 	btst	#3,(sflags).w
 	beq.w	.24
 	movem.w	d0,-(sp)
-	move.w	#SPAgstackalt2,d1
+	move.w	#SPAgofallglove,d1
 	move.w	#$64,d0
 	jsr	(randomd0).l
 	cmp.w	#$3C,d0
 	bgt.w	.22
 	bra.w	.23
 .22
-	move.w	#SPAgstackalt1,d1
+	move.w	#SPAgofallback,d1
 	bra.w	.23
 	move.w	#2,d0	;dead: never reached
 	bsr.w	.9
@@ -719,7 +719,7 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 .23
 	movem.w	(sp)+,d0
 .24
-	cmpi.w	#3,(puckz).w	;a raised puck facing up or down: SPAgextra1 / SPAgextra2 by side and hand
+	cmpi.w	#3,(puckz).w	;a raised puck facing up or down: SPAghighr / SPAgglovel2 by side and hand
 	blt.w	.31
 	cmpi.w	#0,facedir(a3)
 	beq.w	.25
@@ -737,17 +737,17 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 	bgt.w	.30
 	bra.w	.28
 .26
-	move.w	#SPAgextra2,d1
+	move.w	#SPAgglovel2,d1
 	btst	#0,handed(a3)
 	beq.w	.27
-	move.w	#SPAgextra1,d1
+	move.w	#SPAghighr,d1
 .27
 	bra.w	.30
 .28
-	move.w	#SPAgextra1,d1
+	move.w	#SPAghighr,d1
 	btst	#0,handed(a3)
 	beq.w	.30
-	move.w	#SPAgextra2,d1
+	move.w	#SPAgglovel2,d1
 	bra.w	.30
 .29
 	movem.w	d0,-(sp)
@@ -775,7 +775,7 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 
 saveanim	;SPA per save type (10 words: blocker, glove, pad stack right /
 	;left, kick, butterfly, high shoulder right / left, stick right / left)
-	dc.w	SPAgglover,SPAgglovel,SPAgstackr,SPAgstackl,SPAgstickr,SPAgstickl,SPAgglover,SPAgglovel,SPAgstickr,SPAgstickl
+	dc.w	SPAgglover,SPAgglovel,SPAgstackl,SPAgstackr,SPAgstickr,SPAgstickl,SPAgglover,SPAgglovel,SPAgstickr,SPAgstickl
 
 ; assignment to have goalie skate to the puck when it is loose
 assgoalietopuck	;asstab entry $14. Goalie skates to the loose puck
@@ -4241,7 +4241,7 @@ assscore	;asstab entry $1C (94 7). Players after a goal: skate to the scoring en
 	blt.w	.nna
 	move.w	#$78,temp1(a3)
 	bset	#5,pflags(a3)
-	move.w	#SPAstanley,d1
+	move.w	#SPApump2,d1
 	jsr	(SetSPA).l
 .nna
 	movea.l	#.x,a0
@@ -4289,7 +4289,7 @@ assscore	;asstab entry $1C (94 7). Players after a goal: skate to the scoring en
 .x
 	rts
 .pumps	;Scorer pump SPAs
-	dc.w	SPApump2,SPApump,SPApump2,SPApump
+	dc.w	SPApump3,SPApump,SPApump3,SPApump
 
 assgoaliebreakwait	;asstab entry $1D (94 $20). Goalie waits for the breakaway skater
 	btst	#5,pflags(a3)	;check if animation locked

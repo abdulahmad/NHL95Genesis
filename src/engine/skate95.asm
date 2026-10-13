@@ -295,9 +295,9 @@ ClampTargetY	;Clamp target y d1 to $106 / $FEFA (94 $103 / $FEFD), then d1 - d3;
 .2
 	sub.w	d3,d1
 	rts
-	;10 SPA offsets, unreferenced: SPAgglover, SPAgglovel, SPAgstackr, SPAgstackl, SPAgstickr,
+	;10 SPA offsets, unreferenced: SPAgglover, SPAgglovel, SPAgstackl, SPAgstackr, SPAgstickr,
 	;SPAgstickl, then SPAgglover, SPAgglovel, SPAgstickr, SPAgstickl where 94 has SPAghighr, SPAghighl, SPAgstick2r, SPAgstick2l
-	dc.w	SPAgglover,SPAgglovel,SPAgstackr,SPAgstackl,SPAgstickr,SPAgstickl,SPAgglover,SPAgglovel,SPAgstickr,SPAgstickl
+	dc.w	SPAgglover,SPAgglovel,SPAgstackl,SPAgstackr,SPAgstickr,SPAgstickl,SPAgglover,SPAgglovel,SPAgstickr,SPAgstickl
 
 doinput_chkanim	;Animation in progress (pflags2 bit 1): rts. A
 	;goalie (position 0) is held inside x $24 / y $E7 of his net (BA_PS_flags bit 1), then playeracc with TempWord1
@@ -860,10 +860,10 @@ noturn0	;doplayeracc: no turn
 	move.w	#SPAskateback,d1
 	btst	#4,pflags(a3)
 	bne.w	.9
-	move.w	#SPAskate,d1
+	move.w	#SPAskateburst,d1
 	btst	#7,(sflags).w
 	beq.w	.6
-	move.w	#SPAskate2,d1
+	move.w	#SPAskate,d1
 .6
 	movem.w	d1,-(sp)
 	move.w	SCnum(a3),d1
@@ -881,7 +881,7 @@ noturn0	;doplayeracc: no turn
 	cmpi.w	#SPAturnrwp,SPA(a3)
 	bne.w	.9
 .8
-	move.w	#SPAskateturn,d1
+	move.w	#SPAburst,d1
 .9
 	btst	#1,pflags2(a3)
 	bne.w	noturn
@@ -1011,17 +1011,17 @@ playeracc	;Player acceleration with facing d2 (doplayeracc entry used by the goa
 	rts
 
 PlaceBoardFall	;Board fall animations: place player a3 against the boards
-	cmpi.w	#SPAboardmidl,SPA(a3)
+	cmpi.w	#SPAbenchcheckl,SPA(a3)
 	beq.w	.12
-	cmpi.w	#SPAboardmidr,SPA(a3)
+	cmpi.w	#SPAbenchcheckr,SPA(a3)
 	beq.w	.8
 	cmpi.w	#SPAboardleft,SPA(a3)
 	beq.w	.10
 	cmpi.w	#SPAboardright,SPA(a3)
 	beq.w	.6
-	cmpi.w	#SPAboardtop,SPA(a3)
+	cmpi.w	#SPAboardfront,SPA(a3)
 	beq.w	.0
-	cmpi.w	#SPAboardbot,SPA(a3)
+	cmpi.w	#SPAboardback,SPA(a3)
 	beq.w	.3
 	bra.w	.x
 .0

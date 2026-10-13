@@ -73,15 +73,15 @@ updatevel = $8BB6C		;the velocity update 94 does in line.
 setpads = $AB2A
 updatepadinput = $A95C		;the pad input 94 does in line (.tp2).
 ; SPA tables
-SPAboardtop = $20B0
+SPAboardfront = $20B0
 SPAboardright = $2122
-SPAboardbot = $219C
+SPAboardback = $219C
 SPAboardleft = $220E
 SPAinjuryfall = $2454
 SPAinjury1 = $2496
 SPAinjury2 = $24D8
-SPAboardmidl = $26C8
-SPAboardmidr = $276A
+SPAbenchcheckl = $26C8
+SPAbenchcheckr = $276A
 
 ; Main segment code
 	include	hockey95.asm

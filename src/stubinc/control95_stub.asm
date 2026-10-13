@@ -11,12 +11,12 @@
 	include	ram95.asm		;RAM map
 
 ; External addresses outside, read from lst/nhl95.bin.
-SPAskate = $2
+SPAskateburst = $2
 SPAskatewp = $738
 TeamList = $772
 SPAHold = $E10
 SPAhook = $E74
-SPAburst = $11AE
+SPAburst2 = $11AE
 ReadJoy1 = $7A4B0
 ReadJoy2 = $7A4C8
 ReadJoy3 = $7A4E0

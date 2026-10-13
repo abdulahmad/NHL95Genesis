@@ -482,7 +482,7 @@ checkcheck	;Player is in contact: look for various contact events. Runs CCStart 
 	rts
 
 CCStart	;Player a3 is checking player a2. Holds go to holdcheck, SPAsweepchk to Bcheck
-	;otherwise only a3 in SPAburst checks. Sets a3's check anim from checkinglist (95: 1 in 5 from checkinglist2 when the two
+	;otherwise only a3 in SPAburst2 checks. Sets a3's check anim from checkinglist (95: 1 in 5 from checkinglist2 when the two
 	;face each other); a big enough hit on a skater makes a2 fall, with a charging ($16 / $18) or roughing ($1A / $1C) roll from checkagr
 	cmpi.w	#SPAHold,SPA(a2)
 	beq.w	holdcheck
@@ -490,7 +490,7 @@ CCStart	;Player a3 is checking player a2. Holds go to holdcheck, SPAsweepchk to 
 	beq.w	holdcheck
 	cmpi.w	#SPAsweepchk,SPA(a2)
 	beq.w	Bcheck
-	cmpi.w	#SPAburst,SPA(a3)
+	cmpi.w	#SPAburst2,SPA(a3)
 	beq.w	.nofight
 	rts
 .nofight
@@ -600,7 +600,7 @@ checkinglist	;Check anim by direction from a3 to a2, SPA offsets
 	dc.w	SPAshoulderchkl,SPAshoulderchkr,SPAshoulderchkr,SPAshoulderchkr,SPAshoulderchkr,SPAshoulderchkl,SPAshoulderchkl,SPAshoulderchkl
 
 checkinglist2	;Check anims for two players facing each other
-	dc.w	SPAshoulderchkl2,SPAshoulderchkr2,SPAshoulderchkr2,SPAshoulderchkr2,SPAshoulderchkr2,SPAshoulderchkl2,SPAshoulderchkl2,SPAshoulderchkl2
+	dc.w	SPAhipchkl,SPAhipchkr,SPAhipchkr,SPAhipchkr,SPAhipchkr,SPAhipchkl,SPAhipchkl,SPAhipchkl
 
 Bcheck	;a2 = player that is B checking (SPAsweepchk), a3 = player being checked. Entered from CCStart. If OptPen is 0 and a2 is
 	;joystick controlled, a2 needs randomd0($20 + a2 Chk - a3 Agl) >= $18 (95: no roll against a3 the puck carrier). If a3 is within 1 direction
@@ -842,7 +842,7 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	move.w	d1,-(sp)	;push to stack
 	move.b	#0,temp1(a3)
 	move.b	#0,glitch(a3)
-	move.w	#SPAboardchk,d1
+	move.w	#SPAcrosscheck,d1
 	jsr	(SetSPA).l	;set animation
 	clr.w	Xvel(a3)
 	clr.w	Yvel(a3)
@@ -879,10 +879,10 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	bgt.w	.17
 	cmpi.w	#$FFA7,Ypos(a2)
 	blt.w	.17
-	move.w	#SPAboardmidl,d1
+	move.w	#SPAbenchcheckl,d1
 	btst	#3,attribute(a2)
 	beq.w	.20
-	move.w	#SPAboardmidr,d1
+	move.w	#SPAbenchcheckr,d1
 	bra.w	.20
 .17
 	cmp.w	#SPAboardright,d1
@@ -891,10 +891,10 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	bgt.w	.18
 	cmpi.w	#$FFC8,Ypos(a2)
 	blt.w	.18
-	move.w	#SPAboardmidr,d1
+	move.w	#SPAbenchcheckr,d1
 	btst	#3,attribute(a2)
 	beq.w	.20
-	move.w	#SPAboardmidl,d1
+	move.w	#SPAbenchcheckl,d1
 	bra.w	.20
 .18
 	btst	#3,attribute(a2)
@@ -924,7 +924,7 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	movem.l	(sp)+,d0/a0	;pop from stack
 	bra.w	.25
 .23
-	dc.w	SPAboardtop,SPAboardtop,SPAboardright,SPAboardright,SPAboardbot,SPAboardbot,SPAboardleft,SPAboardleft
+	dc.w	SPAboardfront,SPAboardfront,SPAboardright,SPAboardright,SPAboardback,SPAboardback,SPAboardleft,SPAboardleft
 .24
 	move.w	#SPAfallback,d1
 	sub.w	facedir(a2),d0
@@ -937,9 +937,9 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	move.w	facedir(a2),d0
 	andi.w	#3,d0
 	bne.w	.hitter
-	cmpi.w	#SPAshoulderchkl2,SPA(a3)
+	cmpi.w	#SPAhipchkl,SPA(a3)
 	beq.w	.hitter
-	cmpi.w	#SPAshoulderchkr2,SPA(a3)
+	cmpi.w	#SPAhipchkr,SPA(a3)
 	beq.w	.hitter
 	cmpi.b	#$14,checking(a3)	;compare $14 to checker Chk attribute
 	blt.w	.hitter
@@ -1214,13 +1214,13 @@ checkpuckcoll	;Look for puck coll with players. a3 = puck. Clears Yvel past the 
 	move.l	#$90,(ChkBodySqG).w
 	move.w	#$FFF4,(NegChkBodyG).w
 .2
-	cmpi.w	#SPAgstackalt2,SPA(a2)	;check animation (pad stack; 95 has four)
+	cmpi.w	#SPAgofallglove,SPA(a2)	;check animation (pad stack; 95 has four)
 	beq.w	.3	;branch if equal
-	cmpi.w	#SPAgstackr,SPA(a2)
-	beq.w	.3
 	cmpi.w	#SPAgstackl,SPA(a2)
 	beq.w	.3
-	cmpi.w	#SPAgstackalt1,SPA(a2)
+	cmpi.w	#SPAgstackr,SPA(a2)
+	beq.w	.3
+	cmpi.w	#SPAgofallback,SPA(a2)
 	bne.w	.4	;branch if not equal
 .3
 	move.w	#$13,(ChkBodyG).w
@@ -1231,9 +1231,9 @@ checkpuckcoll	;Look for puck coll with players. a3 = puck. Clears Yvel past the 
 	cmpi.w	#$F,(puckz).w	;compare F to puckz
 	bgt.w	.exit2	;exit if higher
 	move.w	(a2),d0	;Xpos into d0
-	cmpi.w	#SPAgstackr,SPA(a2)	;compare animation (pad stack)
-	beq.w	.neg	;branch if equal
 	cmpi.w	#SPAgstackl,SPA(a2)	;compare animation (pad stack)
+	beq.w	.neg	;branch if equal
+	cmpi.w	#SPAgstackr,SPA(a2)	;compare animation (pad stack)
 	bne.w	.8	;branch if not equal
 	move.w	#6,d1	;move 6 into d1
 	bra.w	.5
@@ -2003,7 +2003,7 @@ puckgoalie	;Puck hits goalie a2. a3 = puck, d0/d1 = goalie - puck x/y. A save bo
 	beq.s	.bounceoff	;branch if equal
 	cmpi.w	#SPAgglover,SPA(a2)	;two more goalie anims bounce the puck
 	beq.s	.bounceoff
-	cmpi.w	#SPAgextra1,SPA(a2)
+	cmpi.w	#SPAghighr,SPA(a2)
 	beq.s	.bounceoff	;branch if equal
 	moveq	#2,d0	;move 2 into d0
 	add.b	shotspd(a2),d0	;add puck control to d0
@@ -2011,7 +2011,7 @@ puckgoalie	;Puck hits goalie a2. a3 = puck, d0/d1 = goalie - puck x/y. A save bo
 	asl.w	#1,d0	;mult by 2
 	bsr.w	randomd0	;random
 	addi.w	#$C00,d0	;add C00 to d0
-	cmpi.w	#SPAgstackalt2,SPA(a2)	;more in this SPA
+	cmpi.w	#SPAgofallglove,SPA(a2)	;more in this SPA
 	bne.w	.dbl
 	addi.w	#$300,d0
 .dbl

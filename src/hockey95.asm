@@ -343,17 +343,17 @@ updateplayers	;This routine calls all collision/animation/assignment code for al
 	jsr	(PlaceBoardFall).l
 	bra.w	.top2
 .0
-	cmpi.w	#SPAboardmidl,SPA(a3)
+	cmpi.w	#SPAbenchcheckl,SPA(a3)
 	beq.w	.10
-	cmpi.w	#SPAboardmidr,SPA(a3)
+	cmpi.w	#SPAbenchcheckr,SPA(a3)
 	beq.w	.8
 	cmpi.w	#SPAboardleft,SPA(a3)
 	beq.w	.9
 	cmpi.w	#SPAboardright,SPA(a3)
 	beq.w	.7
-	cmpi.w	#SPAboardtop,SPA(a3)
+	cmpi.w	#SPAboardfront,SPA(a3)
 	beq.w	.1
-	cmpi.w	#SPAboardbot,SPA(a3)
+	cmpi.w	#SPAboardback,SPA(a3)
 	beq.w	.4
 	bra.w	.top2
 .1
