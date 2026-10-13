@@ -566,7 +566,7 @@ resetplstuff	;Reset team variables and players on both teams. SPA $B5C
 	clr.b	pflags2(a3)	;pflags2
 	tst.w	position(a3)	;check for goalie
 	bmi.w	.next
-	move.w	#$B5C,d1
+	move.w	#SPAglide,d1
 	jsr	(SetSPA).l
 	clr.w	impact(a3)	;impact
 	clr.b	nopuck(a3)	;nopuck
