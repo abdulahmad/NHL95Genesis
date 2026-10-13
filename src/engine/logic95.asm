@@ -101,14 +101,14 @@ checkanim	;Goalie animation check; assgoaliectrl branches here too
 .slam
 	bset	#1,(sflags4).w	;set bit 1
 	bclr	#3,(sflags4).w	;clear bit 3
-	move.w	#$2A82,d1	;95 goalie celebration SPA; $2B38 one time in 10
+	move.w	#SPAgslamtop,d1	;goalie celebration; SPAgslambot one time in 10
 	move.w	d0,-(sp)
 	move.w	#$64,d0
 	jsr	(randomd0).l
 	cmp.w	#$A,d0
 	move.w	(sp)+,d0
 	blt.w	.1
-	move.w	#$2B38,d1
+	move.w	#SPAgslambot,d1
 .1
 	jsr	(SetSPA).l
 	bset	#1,pflags2(a3)	;set anim in progress
@@ -285,7 +285,7 @@ checkanim	;Goalie animation check; assgoaliectrl branches here too
 	jsr	(vtoa).l
 	move.w	d0,facedir(a3)	;d0 into facedir. Goalie will face puck
 	move.b	#8,nopuck(a3)	;move 8 to nopuck collision
-	move.w	#$1D4E,d1	;goalie dive anim (94 $2F4)
+	move.w	#SPAgdive,d1	;goalie dive anim (94 $2F4)
 	jsr	(SetSPA).l	;set animation
 	bset	#1,pflags2(a3)	;set anim in progress
 	addi.w	#$96,(crowdlevel).w
@@ -681,16 +681,16 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 	add.w	d0,d0
 	lea	saveanim(pc),a1
 	move.w	(a1,d0.w),d1	;SPA of the save
-	cmp.w	#$1CB8,d1
+	cmp.w	#SPAgglovel,d1
 	bne.w	.19
 	andi.w	#3,d3
 	beq.w	.19
 	cmpi.b	#$B,aggress(a3)	;73 = Glove Left
 	blt.w	.19	;95 dropped the reach out glove save line; the branch stays
 .19
-	cmp.w	#$205E,d1	;a pad stack facing up or down, with sflags bit 3: dive ($23E8, or $23BE 40 times in 100)
+	cmp.w	#SPAgstackr,d1	;a pad stack facing up or down, with sflags bit 3: SPAgstackalt2, or SPAgstackalt1 40 times in 100
 	beq.w	.20
-	cmp.w	#$200C,d1
+	cmp.w	#SPAgstackl,d1
 	bne.w	.24
 .20
 	tst.w	facedir(a3)
@@ -701,14 +701,14 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 	btst	#3,(sflags).w
 	beq.w	.24
 	movem.w	d0,-(sp)
-	move.w	#$23E8,d1
+	move.w	#SPAgstackalt2,d1
 	move.w	#$64,d0
 	jsr	(randomd0).l
 	cmp.w	#$3C,d0
 	bgt.w	.22
 	bra.w	.23
 .22
-	move.w	#$23BE,d1
+	move.w	#SPAgstackalt1,d1
 	bra.w	.23
 	move.w	#2,d0	;dead: never reached
 	bsr.w	.9
@@ -719,7 +719,7 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 .23
 	movem.w	(sp)+,d0
 .24
-	cmpi.w	#3,(puckz).w	;a raised puck facing up or down: stack save $2AE4 / $2B0E by side and hand
+	cmpi.w	#3,(puckz).w	;a raised puck facing up or down: SPAgextra1 / SPAgextra2 by side and hand
 	blt.w	.31
 	cmpi.w	#0,facedir(a3)
 	beq.w	.25
@@ -737,17 +737,17 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 	bgt.w	.30
 	bra.w	.28
 .26
-	move.w	#$2B0E,d1
+	move.w	#SPAgextra2,d1
 	btst	#0,handed(a3)
 	beq.w	.27
-	move.w	#$2AE4,d1
+	move.w	#SPAgextra1,d1
 .27
 	bra.w	.30
 .28
-	move.w	#$2AE4,d1
+	move.w	#SPAgextra1,d1
 	btst	#0,handed(a3)
 	beq.w	.30
-	move.w	#$2B0E,d1
+	move.w	#SPAgextra2,d1
 	bra.w	.30
 .29
 	movem.w	d0,-(sp)
@@ -775,7 +775,7 @@ goaliesave	;95 first aims the goalie: Xvel from where the puck crosses his y (pu
 
 saveanim	;SPA per save type (10 words: blocker, glove, pad stack right /
 	;left, kick, butterfly, high shoulder right / left, stick right / left)
-	dc.w	$1C86,$1CB8,$205E,$200C,$1CEA,$1D1C,$1C86,$1CB8,$1CEA,$1D1C
+	dc.w	SPAgglover,SPAgglovel,SPAgstackr,SPAgstackl,SPAgstickr,SPAgstickl,SPAgglover,SPAgglovel,SPAgstickr,SPAgstickl
 
 ; assignment to have goalie skate to the puck when it is loose
 assgoalietopuck	;asstab entry $14. Goalie skates to the loose puck
@@ -1715,13 +1715,13 @@ puckflip	;Flip the puck
 	eor.w	d0,facedir(a3)	;facedir
 	andi.w	#3,facedir(a3)
 	st	SPAcnt(a3)	;SPAcnt
-	move.w	#$12C0,d1	;#SPApflip
+	move.w	#SPApflip,d1
 	jmp	(SetSPA).l
 
 ; assignment for puck shadow
 ; a3 = puck shadow
 puckshadow	;asstab entry 2. The puck shadow, a siren on goals (95: no horizontal mode)
-	cmpi.w	#$1B3,frame(a3)	;#SPFpuck, frame (94 $18A)
+	cmpi.w	#SPFpuck,frame(a3)	;frame (94 $18A)
 	bne.w	.siren	;shadow turns into siren on goals
 	move.w	Xpos-SCstruct(a3),(a3)	;Xpos-SCstruct, Xpos
 	move.w	Ypos-SCstruct(a3),Ypos(a3)	;Ypos-SCstruct, Ypos
@@ -1946,7 +1946,7 @@ EvadePC	;skateto extra routine: steer around the puck carrier
 	subi.w	#$56,d1	;sub the top blue line from Ypos (94 $58)
 	cmp.w	#$A,d1	;compare to 10 decimal
 	bgt.w	.ex	;exit if greater
-	cmp.w	#$FFCE,d1	;compare to -50
+	cmp.w	#-50,d1	;compare to -50
 	blt.w	.ex	;branch if less than
 	moveq	#2,d0
 	move.w	(a3),d1	;Xpos
@@ -2029,7 +2029,7 @@ check4check	;Check an opponent in front of a3. 95: a joystick player blocks the 
 	bne.w	.cpu
 	jsr	(CanBlock).l
 	beq.w	.cpu
-	move.w	#$1E6C,d1	;SPAblock
+	move.w	#SPAblock,d1
 	bset	#2,(GameFlags).w
 	jsr	(SetSPA).l
 	bset	#5,pflags(a3)	;lock the animation
@@ -2112,7 +2112,7 @@ check4check2	;check4check with a puck y test before the check (burstchk) or Ache
 	bne.w	.cpu
 	jsr	(CanBlock).l
 	beq.w	.cpu
-	move.w	#$1E6C,d1	;SPAblock
+	move.w	#SPAblock,d1
 	bset	#2,(GameFlags).w
 	jsr	(SetSPA).l
 	bset	#5,pflags(a3)
@@ -2826,7 +2826,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	beq.w	.1
 	cmpi.w	#1,(msgtimer).w
 	ble.w	.1
-	move.w	#$B5C,d1	;in a penalty shot with a message up, this SPA
+	move.w	#SPAglide,d1	;in a penalty shot with a message up, this SPA
 	jsr	(SetSPA).l
 	bra.w	.x
 .1
@@ -3345,7 +3345,7 @@ assbench	;asstab entry $12. Player a3 goes to the bench: skate to the bench door
 	sub.w	temp3(a3),d0
 	cmp.w	#$20,d0
 	bgt.w	.nodec
-	move.w	#$B5C,d1	;SPA (94 $50C)
+	move.w	#SPAglide,d1	;94 $50C
 	tst.w	position(a3)
 	bne.w	.gli
 	jsr	(GoalieReadySPA).l	;95 (94: 2, SPAgready)
@@ -3366,7 +3366,7 @@ assbench	;asstab entry $12. Player a3 goes to the bench: skate to the bench door
 	bne.w	.x
 	move.w	#$F800,Xvel(a3)
 	move.w	#2,facedir(a3)
-	move.w	#$1E2A,d1	;SPA (94 $FAC)
+	move.w	#SPAwallleft,d1	;94 $FAC
 	jsr	(SetSPA).l
 	bset	#pfalock,pflags(a3)
 	move.w	#$64,temp1(a3)
@@ -3451,7 +3451,7 @@ asspenalty	;asstab entry $15. Player a3 goes to the penalty box and hops in, the
 	bpl.w	rtsskate
 	addq.w	#8,temp1(a3)
 	bset	#pfnc,pflags(a3)
-	move.w	#$B5C,d1	;SPA (94 $50C)
+	move.w	#SPAglide,d1	;94 $50C
 	jsr	(SetSPA).l
 	moveq	#6,d2
 	tst.b	handed(a3)
@@ -3474,7 +3474,7 @@ asspenalty	;asstab entry $15. Player a3 goes to the penalty box and hops in, the
 	move.w	#2,facedir(a3)
 	move.b	attribute(a3),(penboxattr).w	;keep the attribute, without bit 3, for assdopen
 	bclr	#3,attribute(a3)
-	move.w	#$1DE0,d1	;SPA (94 $F6E)
+	move.w	#SPAwallright,d1	;94 $F6E
 	jsr	(SetSPA).l
 	bclr	#4,pflags2(a3)
 	moveq	#$17,d0	;assdopen (94 $D)
@@ -3538,7 +3538,7 @@ assepen	;asstab entry $16. Player a3 leaves the penalty box
 	move.w	#$96,(a3)	;94 $86
 	move.w	#2,facedir(a3)
 	bset	#5,pflags(a3)
-	move.w	#$1E2A,d1	;SPA (94 $FAC)
+	move.w	#SPAwallleft,d1	;94 $FAC
 	jsr	(SetSPA).l
 	jmp	(SprSort).l
 .nna
@@ -3742,9 +3742,9 @@ assonetimer	;asstab entry $18 (94 $23). Player a3 shooting a one-timer: the pass
 .ex
 	rts
 
-setonetimeranim	;The one-timer animation: d1 = $150A or $176E (94 $7FC / $92E) from the angle to the goal
+setonetimeranim	;The one-timer animation: d1 = SPAshotf or SPAshotb (94 $7FC / $92E) from the angle to the goal
 	;(vtoa, CheckOneTimerFacing)
-	move.w	#$150A,d1	;SPA (94 $7FC)
+	move.w	#SPAshotf,d1	;94 $7FC
 	movem.w	d0-d1,-(sp)	;push to stack d0 and d1
 	move.w	(a3),d0	;move XPos of a3 into d0
 	neg.w	d0	;negate d0
@@ -3758,7 +3758,7 @@ setonetimeranim	;The one-timer animation: d1 = $150A or $176E (94 $7FC / $92E) f
 	jsr	(CheckOneTimerFacing).l	;Z from Findhittype
 	movem.w	(sp)+,d0-d1	;pop from stack d0 and d1
 	beq.w	.ex
-	move.w	#$176E,d1	;SPA (94 $92E)
+	move.w	#SPAshotb,d1	;94 $92E
 .ex
 	rts
 
@@ -3828,7 +3828,7 @@ onetimershot	;Do the one-timer shot (doshot), credit the last two passers as the
 	bset	#1,pflags2(a3)	;set animation in progress (95: no sflags6 bit 1)
 	rts
 
-EndOneTimer	;End a one-timer for a3: bits cleared, onetimerplayer = -1, SetSPA $B5C (94 $50C)
+EndOneTimer	;End a one-timer for a3: bits cleared, onetimerplayer = -1, SetSPA SPAglide (94 $50C)
 	;then assexit (goalie) or Setplass. Called from assonetimer and
 	movem.l	d0/a0,-(sp)
 	bclr	#pf3onetimer,pflags3(a3)
@@ -3837,7 +3837,7 @@ EndOneTimer	;End a one-timer for a3: bits cleared, onetimerplayer = -1, SetSPA $
 	clr.w	(onetimerflags).w
 	st	(onetimerplayer).w
 	move.w	d1,-(sp)
-	move.w	#$B5C,d1	;SPA (94 $50C)
+	move.w	#SPAglide,d1	;94 $50C
 	jsr	(SetSPA).l
 	tst.w	position(a3)
 	bpl.w	.0
@@ -4004,7 +4004,7 @@ a2offsides	;Offsides on a2 (AddPenalty $10) when his team is offside and the puc
 	rts
 
 asseben	;asstab entry $13 (94 9). Player a3 should exit the bench area.
-	;x $98 (94 $88), facedir 7 (94 2), SPA $1E2A (94 $F6E)
+	;x $98 (94 $88), facedir 7 (94 2), SPAwallleft (94 $F6E)
 	btst	#5,pflags(a3)
 	bne.w	.x
 	bclr	#1,pflags(a3)
@@ -4022,7 +4022,7 @@ asseben	;asstab entry $13 (94 9). Player a3 should exit the bench area.
 	neg.w	(a3)
 	move.w	#7,facedir(a3)	;94 2
 	bset	#5,pflags(a3)
-	move.w	#$1E2A,d1	;SPA (94 $F6E)
+	move.w	#SPAwallleft,d1	;94 $F6E
 	jmp	(SetSPA).l
 .nna
 	move.w	#4,facedir(a3)
@@ -4241,7 +4241,7 @@ assscore	;asstab entry $1C (94 7). Players after a goal: skate to the scoring en
 	blt.w	.nna
 	move.w	#$78,temp1(a3)
 	bset	#5,pflags(a3)
-	move.w	#$28DE,d1
+	move.w	#SPAstanley,d1
 	jsr	(SetSPA).l
 .nna
 	movea.l	#.x,a0
@@ -4265,7 +4265,7 @@ assscore	;asstab entry $1C (94 7). Players after a goal: skate to the scoring en
 	sub.w	d7,temp1(a3)
 	bpl.w	.ckcon
 	bset	#5,pflags(a3)
-	move.w	#$234C,d1	;SPA (94 $E8A)
+	move.w	#SPAcelebrate,d1	;94 $E8A
 	move.w	(shotplayer).w,d0
 	cmp.w	SCnum(a3),d0
 	bne.w	.nopump
@@ -4289,7 +4289,7 @@ assscore	;asstab entry $1C (94 7). Players after a goal: skate to the scoring en
 .x
 	rts
 .pumps	;Scorer pump SPAs
-	dc.w	$29B0,$280C,$29B0,$280C
+	dc.w	SPApump2,SPApump,SPApump2,SPApump
 
 assgoaliebreakwait	;asstab entry $1D (94 $20). Goalie waits for the breakaway skater
 	btst	#5,pflags(a3)	;check if animation locked
