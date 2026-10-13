@@ -12,6 +12,36 @@
 
 ; External addresses outside, read from lst/nhl95.bin.
 SPAlist = $5A34
+SPAgskate = $22BA
+SPAgdive = $1D4E
+SPAgglover = $1C86
+SPAgglovel = $1CB8
+SPAgstackr = $205E
+SPAgstackl = $200C
+SPAgstickr = $1CEA
+SPAgstickl = $1D1C
+SPAgready = $1B7A
+SPAgready2 = $1C54
+SPAglide = $B5C
+SPAglidewp = $B8E
+SPAglideback = $2564
+SPAstop = $D08
+SPAstopwp = $D5A
+SPAturnl = $BC0
+SPAturnr = $C12
+SPAturnlwp = $C64
+SPAturnrwp = $CB6
+SPAskate = $2
+SPAskate2 = $426
+SPAskatewp = $738
+SPAskateback = $19D2
+SPAskateturn = $314
+SPAboardtop = $20B0
+SPAboardright = $2122
+SPAboardbot = $219C
+SPAboardleft = $220E
+SPAboardmidl = $26C8
+SPAboardmidr = $276A
 sfx = $677AC
 sroot = $7C512
 vtoa = $7C586

@@ -147,13 +147,13 @@ goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets
 	andi.w	#7,d0
 	move.w	d0,facedir(a3)
 .18
-	move.w	#$22BA,d1
+	move.w	#SPAgskate,d1
 	jsr	(SetSPA).l
 	move.w	facedir(a3),d2
 	jmp	playeracc
 	rts	;unused
 
-doinput_goaliedive	;The goalie dive on button A (bit 6): face TempWord1, nopuck 8, the dive SPA $1D4E, crowd
+doinput_goaliedive	;The goalie dive on button A (bit 6): face TempWord1, nopuck 8, SPAgdive, crowd
 	;+$96. Jumped to from doinput
 	btst	#6,d1
 	beq.w	doinput_cbut
@@ -162,7 +162,7 @@ doinput_goaliedive	;The goalie dive on button A (bit 6): face TempWord1, nopuck 
 	beq.w	doinput_cbut
 	move.w	d0,facedir(a3)
 	move.b	#8,nopuck(a3)
-	move.w	#$1D4E,d1
+	move.w	#SPAgdive,d1
 	jsr	(SetSPA).l
 	bset	#1,pflags2(a3)
 	bset	#5,pflags(a3)
@@ -297,7 +297,7 @@ ClampTargetY	;Clamp target y d1 to $106 / $FEFA (94 $103 / $FEFD), then d1 - d3;
 	rts
 	;10 SPA offsets, unreferenced: SPAgglover, SPAgglovel, SPAgstackr, SPAgstackl, SPAgstickr,
 	;SPAgstickl, then SPAgglover, SPAgglovel, SPAgstickr, SPAgstickl where 94 has SPAghighr, SPAghighl, SPAgstick2r, SPAgstick2l
-	dc.w	$1C86,$1CB8,$205E,$200C,$1CEA,$1D1C,$1C86,$1CB8,$1CEA,$1D1C
+	dc.w	SPAgglover,SPAgglovel,SPAgstackr,SPAgstackl,SPAgstickr,SPAgstickl,SPAgglover,SPAgglovel,SPAgstickr,SPAgstickl
 
 doinput_chkanim	;Animation in progress (pflags2 bit 1): rts. A
 	;goalie (position 0) is held inside x $24 / y $E7 of his net (BA_PS_flags bit 1), then playeracc with TempWord1
@@ -370,9 +370,9 @@ getGoalieSCnum	;d0 = SCnum of the goalie of the team of player d0 (the first pos
 ; and the controller setup screen.
 
 
-GoalieReadySPA	;d1 = the goalie ready SPA: $1B7A near the puck (within $56 in y) or in a shootout, else $1C54
+GoalieReadySPA	;d1 = the goalie ready SPA: SPAgready near the puck (within $56 in y) or in a shootout, else SPAgready2
 	move.w	d0,-(sp)
-	move.w	#$1C54,d1
+	move.w	#SPAgready2,d1
 	btst	#0,(gmode).w
 	bne.w	.1
 	move.w	(pucky).w,d0
@@ -383,7 +383,7 @@ GoalieReadySPA	;d1 = the goalie ready SPA: $1B7A near the puck (within $56 in y)
 	cmp.w	#$56,d0
 	bgt.w	.2
 .1
-	move.w	#$1B7A,d1
+	move.w	#SPAgready,d1
 .2
 	move.w	(sp)+,d0
 	rts
@@ -430,20 +430,20 @@ dostop	;Stop player a3: under $1000 speed in x and y the velocities are cleared,
 	move.w	SCnum(a3),d1
 	cmp.w	(puckc).w,d1
 	beq.w	.1
-	move.w	#$B5C,d1
+	move.w	#SPAglide,d1
 	bra.w	.2
 .1
-	move.w	#$B8E,d1
+	move.w	#SPAglidewp,d1
 .2
 	btst	#4,pflags(a3)
 	bne.w	.6
-	move.w	#$D08,d1
+	move.w	#SPAstop,d1
 	movem.w	d1,-(sp)
 	move.w	SCnum(a3),d1
 	cmp.w	(puckc).w,d1
 	movem.w	(sp)+,d1
 	bne.w	.3
-	move.w	#$D5A,d1
+	move.w	#SPAstopwp,d1
 .3
 	bsr.w	SetSPA
 	movem.w	d0,-(sp)
@@ -461,13 +461,13 @@ dostop	;Stop player a3: under $1000 speed in x and y the velocities are cleared,
 	movem.w	(sp)+,d0
 	ble.w	.6
 	bset	#1,pflags2(a3)
-	move.w	#$D08,d1
+	move.w	#SPAstop,d1
 	movem.w	d1,-(sp)
 	move.w	SCnum(a3),d1
 	cmp.w	(puckc).w,d1
 	movem.w	(sp)+,d1
 	bne.w	.6
-	move.w	#$D5A,d1
+	move.w	#SPAstopwp,d1
 .6
 	bsr.w	SetSPA
 
@@ -530,7 +530,7 @@ updatevel	;The velocity update 94 does in line
 	beq.w	.3
 	tst.w	d2
 	beq.w	.3
-	cmpi.w	#$22BA,SPA(a3)
+	cmpi.w	#SPAgskate,SPA(a3)
 	beq.w	.3
 	subq.w	#1,d2
 .3
@@ -637,14 +637,14 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 	move.w	SCnum(a3),d1
 	cmp.w	(puckc).w,d1
 	beq.w	.1
-	move.w	#$B5C,d1
+	move.w	#SPAglide,d1
 	bra.w	.2
 .1
-	move.w	#$B8E,d1
+	move.w	#SPAglidewp,d1
 .2
 	btst	#4,pflags(a3)
 	beq.w	.d0
-	move.w	#$2564,d1
+	move.w	#SPAglideback,d1
 .d0
 	andi.w	#$F,d0	;pass first 4 bits of d0
 	cmp.w	#7,d0	;compare to 7
@@ -796,19 +796,19 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 	clr.w	d1
 	tst.w	(turnstep).w
 	bpl.w	.19
-	eori.w	#$FFAE,d1
+	eori.w	#SPAturnl-SPAturnr,d1
 .19
 	btst	#3,4(a3)
 	beq.w	.20
-	eori.w	#$FFAE,d1
+	eori.w	#SPAturnl-SPAturnr,d1
 .20
-	addi.w	#$C12,d1
+	addi.w	#SPAturnr,d1
 	movem.w	d1,-(sp)
 	move.w	SCnum(a3),d1
 	cmp.w	(puckc).w,d1
 	movem.w	(sp)+,d1
 	bne.w	.21
-	addi.w	#$A4,d1
+	addi.w	#SPAturnrwp-SPAturnr,d1
 .21
 	bset	#1,pflags2(a3)
 .22
@@ -850,38 +850,38 @@ noturn0	;doplayeracc: no turn
 	move.w	SCnum(a3),d1
 	cmp.w	(puckc).w,d1
 	beq.w	.3
-	move.w	#$B5C,d1
+	move.w	#SPAglide,d1
 	bra.w	.4
 .3
-	move.w	#$B8E,d1
+	move.w	#SPAglidewp,d1
 .4
 	bra.w	SetSPA
 .5
-	move.w	#$19D2,d1
+	move.w	#SPAskateback,d1
 	btst	#4,pflags(a3)
 	bne.w	.9
-	move.w	#2,d1
+	move.w	#SPAskate,d1
 	btst	#7,(sflags).w
 	beq.w	.6
-	move.w	#$426,d1
+	move.w	#SPAskate2,d1
 .6
 	movem.w	d1,-(sp)
 	move.w	SCnum(a3),d1
 	cmp.w	(puckc).w,d1
 	movem.w	(sp)+,d1
 	bne.w	.7
-	move.w	#$738,d1
+	move.w	#SPAskatewp,d1
 .7
-	cmpi.w	#$BC0,SPA(a3)
+	cmpi.w	#SPAturnl,SPA(a3)
 	beq.w	.8
-	cmpi.w	#$C12,SPA(a3)
+	cmpi.w	#SPAturnr,SPA(a3)
 	beq.w	.8
-	cmpi.w	#$C64,SPA(a3)
+	cmpi.w	#SPAturnlwp,SPA(a3)
 	beq.w	.8
-	cmpi.w	#$CB6,SPA(a3)
+	cmpi.w	#SPAturnrwp,SPA(a3)
 	bne.w	.9
 .8
-	move.w	#$314,d1
+	move.w	#SPAskateturn,d1
 .9
 	btst	#1,pflags2(a3)
 	bne.w	noturn
@@ -926,7 +926,7 @@ playeracc	;Player acceleration with facing d2 (doplayeracc entry used by the goa
 	bne.w	.noy3
 	btst	#3,pflags(a3)
 	bne.w	.noy3
-	cmpi.w	#$22BA,SPA(a3)
+	cmpi.w	#SPAgskate,SPA(a3)
 	beq.w	.noy3
 	asr.l	#1,d0
 	asr.l	#1,d1
@@ -1010,18 +1010,18 @@ playeracc	;Player acceleration with facing d2 (doplayeracc entry used by the goa
 .ex
 	rts
 
-PlaceBoardFall	;Board fall animations (SPA $26C8, $276A, $220E ...): place player a3 against the boards
-	cmpi.w	#$26C8,SPA(a3)
+PlaceBoardFall	;Board fall animations: place player a3 against the boards
+	cmpi.w	#SPAboardmidl,SPA(a3)
 	beq.w	.12
-	cmpi.w	#$276A,SPA(a3)
+	cmpi.w	#SPAboardmidr,SPA(a3)
 	beq.w	.8
-	cmpi.w	#$220E,SPA(a3)
+	cmpi.w	#SPAboardleft,SPA(a3)
 	beq.w	.10
-	cmpi.w	#$2122,SPA(a3)
+	cmpi.w	#SPAboardright,SPA(a3)
 	beq.w	.6
-	cmpi.w	#$20B0,SPA(a3)
+	cmpi.w	#SPAboardtop,SPA(a3)
 	beq.w	.0
-	cmpi.w	#$219C,SPA(a3)
+	cmpi.w	#SPAboardbot,SPA(a3)
 	beq.w	.3
 	bra.w	.x
 .0
