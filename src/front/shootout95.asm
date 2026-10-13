@@ -1134,7 +1134,7 @@ puckpenshot	;Penalty shot / shootout face-off: rink, puck and nets reset, the sh
 	move.w	d0,facedir(a3)
 	bclr	#2,pflags2(a3)
 	bclr	#5,pflags(a3)
-	move.w	#$B5C,d1
+	move.w	#SPAglide,d1
 	jsr	(SetSPA).l
 .15
 	suba.l	#SCstruct,a3
