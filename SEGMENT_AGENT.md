@@ -26,6 +26,11 @@ routine's origin: 94G for 94 code, else 93G, else 92G; SNES-only code goes in a 
 Work in small steps: every change is built and checked byte for byte against the reference ROM, then committed and pushed to main
 (no force push, no PRs). Keep `docs/HANDOFF.md` current after each push.
 
+What main is:
+- main is a faithful disassembly of the retail game. It keeps only good-practice changes that emit identical bytes: equates and labels instead of hardcoded values, assemble-time checks, and build tooling (the computed checksum and ROM size in `tools/fixrom.js`, `src/shortcalls.inc`, the CHECKSUM/REV flags).
+- Mod-specific fixes (long branches instead of the retail short ones, mapper code for save RAM past 2 MB) do not go on main. They are documented in `docs/EXPANDING_THE_ROM.md` or live on mod branches.
+- `NumTeams` / `NumPlayoffTeams` and the per-team length checks stay.
+
 ## Current segment
 
 None. Every ROM map row is matched, and the full build (`npm run build:retail`) matches `lst/nhl95.bin` byte for byte (SHA-1 09e87b076aa4cd6f057a1d65bb50fd889b509b44). A name another file uses for an address inside a segment must be a label in that segment (IntermissionStart $9D18 in hockey95, SeasonScheduleEnd $9721 in schedule95, StickHandTable $83C9E in players95, DrawFaceoffWindow $88E42 in faceoff95); the stub equates only cover the segment build.
