@@ -7,13 +7,13 @@ bytes never change: every build must still MATCH the retail ROM.
 
 ## Setup
 ROMs (gitignored, never commit): lst/nhl95.bin.
-Windows: `npm run build:retail` (tools/prebuild.js, build95.bat, fixopcodes, patchchecksum, verify);
+Windows: `npm run build:retail` (tools/prebuild.js, build95.bat, fixopcodes, fixrom, verify);
 segments: `npm run seg:<name>` (all keys in package.json `seg:*`).
 Linux (wine): `apt install wine wine32` (dpkg --add-architecture i386), `export WINEDEBUG=-all`, then
 1. `node tools/prebuild.js retail` (checks the ROM, extracts into Extracted/ if missing or incomplete; same as `node tools/extractAssets95.js lst/nhl95.bin`), then `export NHL_PREBUILD_DONE=1` so the .bat files skip their own pre-step (no node under wine). Accepts the one retail ROM (SHA-1 09e87b07...); other ROMs are refused.
 2. `wine cmd /c "set rev=0&& set checksum=1&& build95.bat"`
 3. `node tools/fixopcodes.js "output/nhl95 .lst" output/nhl95.bin`
-4. `node tools/patchchecksum.js output/modified_nhl95.bin` (retail line: `checksum 366a73f5 -> 366a73f5`, header end `$001FFFFF`)
+4. `node tools/fixrom.js output/modified_nhl95.bin` (retail line: `size 00200000 (header end 001fffff), checksum 366a73f5 -> 366a73f5`)
 5. `node tools/verifyRom.js output/modified_nhl95.bin <reference ROM>` must print MATCH
 6. Segments: run each package.json `seg:*` chain the same way (`wine cmd /c "buildseg.bat <seg>"`, then its node steps); tools/verifySegment.js must MATCH. Do not patch the checksum on a segment.
 Failed-assembly detection: delete output/*.bin first, then check the bin exists and is fresh and that output/Build*.log has no
@@ -101,4 +101,4 @@ Follow 92G (EA source): ~31% of its locals are number-only (.0, .1 ...), the res
   - setup95: 0. The $E10 wait stays.
   - New equate: SPFarrow34 = SPFreplay+1 (frame $73), joypad 3 and 4 arrows; pad 4 is +3. Frames 115-120 are those arrows.
   - Unsure: none yet.
-- ROM size, checksum, startup branch, team counts, save RAM: the stock image still matches. Pad is 2 MB, or 4 MB when the image no longer fits; the header end is RomEnd. tools/patchchecksum.js rewrites the cmpi.l immediate after fixopcodes. bra.w Begin while LONGBRA=0; build95.bat retries once with a long jump if the log says the branch is out of range. NumTeams is ASW+1 and NumPlayoffTeams is ASE. Save blocks keep their retail address while the previous block still ends there. See docs/ADDING_A_TEAM.md. verify_all.sh prints ALL MATCH.
+- ROM size, checksum, startup branch, team counts, save RAM: the stock image still matches. Oct 14 cleanup: nhl95.asm ends with the plain 2 MB fill; tools/fixrom.js pads a larger image, sets the header ROM end and the checksum (via patchchecksum.js); bra.w Begin is plain again (LONGBRA removed) and src/shortcalls.inc checks its reach. docs/EXPANDING_THE_ROM.md (was ADDING_A_TEAM.md) has the mod fixes and the team checklist. NumTeams is ASW+1 and NumPlayoffTeams is ASE. Save blocks keep their retail address while the previous block still ends there. See docs/ADDING_A_TEAM.md. verify_all.sh prints ALL MATCH.

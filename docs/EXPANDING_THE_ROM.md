@@ -1,6 +1,29 @@
-# Adding a team
+# Expanding the ROM
 
-The retail image is 28 teams: ANH 0 through WPG 25, then ASE 26 and ASW 27. `NumTeams` is `ASW+1`. `NumPlayoffTeams` is `ASE` (26). One extra team that leaves `NumPlayoffTeams` at 26 still fits in save RAM. Raising `NumPlayoffTeams` to 27 moves the save checksum and the assemble stops. More than 32 playoff teams stops the assemble. There is no 1.5 MB or 3 MB ROM.
+`main` is a faithful disassembly of the retail cartridge: a stock build matches the retail 2 MB image. It keeps only changes that emit the same bytes (equates, labels, assemble-time checks, build tools). Fixes that a bigger ROM or a bigger league needs are described here and belong on a mod branch, not on `main`.
+
+## What main already does for you
+
+- `tools/fixrom.js` runs after `fixopcodes`. It pads the image with $FF to the next size of 1, 1.5, 2 or 4 MB, writes the header ROM end ($1A4), then writes the boot checksum through `tools/patchchecksum.js` (the `cmpi.l` immediate in `ValidationRoutine`). The stock image stays 2 MB and byte-identical.
+- `src/nhl95.asm` fills to 2 MB. Includes placed after that fill start at $200000.
+- `src/shortcalls.inc` (included last, emits nothing) stops the build if `Begin` moves out of reach of the startup `bra.w`; `build95.bat` then prints the fix.
+- `NumTeams` / `NumPlayoffTeams` drive the team tables, the save RAM blocks and their length checks (below).
+- `CHECKSUM=0` skips the boot check (`build:dev`); `REV` picks the revision.
+
+## Short jumps
+
+95 has no absolute short `jsr`/`jmp (x).w` calls into ROM. The one short-range reference is `bra.w Begin` at the end of the startup code in `main95.asm`. `Begin` sits before the team data, so growing `TeamList` does not move it. If something before `Begin` grows past its reach, put the new data elsewhere or change that branch to `jmp (Begin).l` on your mod branch.
+
+The engine (`engine95.asm`) is one assembly whose PC-relative branches cross files; data inserted inside it can push a `bra.w`/`bsr.w` out of range. Put new data after the 2 MB fill.
+
+## Past 2 MB: backup RAM and bank switching
+
+The retail image is already 2 MB, so any growth means a 4 MB image whose second half overlaps the backup RAM window ($200001-$20FFFF). With ROM there, the console reads ROM instead of the save chip. A cartridge (or emulator) with the Sega mapper exposes the chip only while bit 0 of $A130F1 is set, so every save access in the save routines needs `move.b #1,($A130F1).l` before it and `clr.b ($A130F1).l` after it. That is a mod-branch change. Past 4 MB you need SSF2-style bank switching ($A130F3-$A130FF). `tools/fixrom.js` warns past 2 MB and refuses images over 4 MB.
+
+## Team checklist
+
+
+The retail image is 28 teams: ANH 0 through WPG 25, then ASE 26 and ASW 27. `NumTeams` is `ASW+1`. `NumPlayoffTeams` is `ASE` (26). One extra team that leaves `NumPlayoffTeams` at 26 still fits in save RAM. Raising `NumPlayoffTeams` to 27 moves the save checksum and the assemble stops. More than 32 playoff teams stops the assemble. 
 
 Give the new team a number in `src/stubinc/equals.inc`, in `TeamList` order. `NumTeams` and `NumPlayoffTeams` follow from `ASW` and `ASE`. Put the team record in `src/teamdata95.asm`, which is included before the engine, so the engine's PC-relative branches move together.
 
@@ -40,16 +63,6 @@ One extra team that leaves `NumPlayoffTeams` at 26 still fits, and `SRChecksum` 
 
 Work RAM that mirrors a save block (`RosterTable`, `CreatedList`, `RosterRatings`) stays at the retail address. `LeaderTeamTbls` offsets follow `NumPlayoffTeams`, but that work RAM does not grow.
 
-## Pad and checksum
-
-`src/nhl95.asm` pads with $FF to 2 MB, or to 4 MB when the image no longer fits. The header ROM end in `src/sega/SegaIDTable95.asm` is `RomEnd`, the last byte of that pad. The stock image keeps end $001FFFFF. Past 4 MB the assemble stops. The header backup-RAM window stays $200001-$20FFFF. Content past $200000 overlaps it: the assemble warns and still builds.
-
-`tools/patchchecksum.js` runs after `fixopcodes` on `output/modified_nhl95.bin`. It sums every long below `ValidationRoutine`, skips the header long at $18C, and writes that sum over the `cmpi.l` immediate. The source keeps $366A73F5, so the checksum segment is not patched. On the stock ROM the line is `checksum 366a73f5 -> 366a73f5`. The compare is a real CMPI (0C80). `fixopcodes` does not rewrite it. The header word stays $3C61.
-
-## Startup branch
-
-`src/main95.asm` keeps `bra.w Begin` while `LONGBRA=0`, which `build95.bat` and `buildseg.bat` pass. If the assemble log says the branch is out of range, `build95.bat` runs once more with `LONGBRA=1` and a long jump. The segment stub passes the same symbol. `Begin` sits before the team data, so growing `TeamList` does not push that branch out of range.
-
 ## Build
 
 ```
@@ -58,7 +71,7 @@ node tools/prebuild.js retail
 export NHL_PREBUILD_DONE=1
 wine cmd /c "set rev=0&& set checksum=1&& build95.bat"
 node tools/fixopcodes.js "output/nhl95 .lst" output/nhl95.bin
-node tools/patchchecksum.js output/modified_nhl95.bin
+node tools/fixrom.js output/modified_nhl95.bin
 ```
 
-`tools/verify_all.sh` does the retail image and every segment, and prints `ALL MATCH` when they all match. Wine `cmd` treats `||` as a failed command, so the batch files check `errorlevel` instead.
+`tools/verify_all.sh` does the retail image and every segment, and prints `ALL MATCH` when they all match. A modded ROM will not match and must not be committed to `main`. Wine `cmd` treats `||` as a failed command, so the batch files check `errorlevel` instead.
