@@ -271,11 +271,7 @@ RegionOK	;The region is listed: checksum, then the game
 		nop
 		nop
 	ENDIF
-	IF LONGBRA=0
-	bra.w	Begin		;short enough while the cold start stays in range
-	ELSE
-	jmp	(Begin).l	;the short branch no longer reaches
-	ENDIF
+	bra.w	Begin
 
 ZeroLong	;A zero long: the empty palette list / menu list pointer.
 	dc.l	0

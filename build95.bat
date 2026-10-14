@@ -41,28 +41,14 @@ if "%checksum%"=="0" (
     set checksumFlag="/e CHECKSUM=1"
 )
 
-REM LONGBRA=0 keeps bra.w Begin. If that branch is out of range, assemble once more
-REM with a long jump.
+REM Run the assembler with all flags
 "%workspaceFolder%assembler\Assembler.exe" ^
   /p /m /g ^
   /o d- /o s- /o r+ /o l+ /o l. /o ow+ /o op- /o os+ /o oz+ /o omq- /o oaq+ /o osq+ ^
-  %revFlag% %checksumFlag% /e LONGBRA=0 ^
+  %revFlag% %checksumFlag% ^
   "%workspaceFolder%src\nhl95.asm,%workspaceFolder%output\nhl95.bin,%workspaceFolder%output\nhl95,%workspaceFolder%output\nhl95" ^
   > "%workspaceFolder%output\Build95.log"
-
-if errorlevel 1 (set asmok=0) else (set asmok=1)
-findstr /C:"out of range" "%workspaceFolder%output\Build95.log" >nul
-if not errorlevel 1 (
-    echo Branch out of range. Assembling again with a long jump.
-    "%workspaceFolder%assembler\Assembler.exe" ^
-      /p /m /g ^
-      /o d- /o s- /o r+ /o l+ /o l. /o ow+ /o op- /o os+ /o oz+ /o omq- /o oaq+ /o osq+ ^
-      %revFlag% %checksumFlag% /e LONGBRA=1 ^
-      "%workspaceFolder%src\nhl95.asm,%workspaceFolder%output\nhl95.bin,%workspaceFolder%output\nhl95,%workspaceFolder%output\nhl95" ^
-      > "%workspaceFolder%output\Build95.log"
-    if not errorlevel 1 (set asmok=1) else (set asmok=0)
-)
-if "%asmok%"=="0" (
+if errorlevel 1 (
     echo ASSEMBLY FAILED. See output\Build95.log
     exit /b 1
 )
