@@ -48,7 +48,15 @@ REM Run the assembler with all flags
   %revFlag% %checksumFlag% ^
   "%workspaceFolder%src\nhl95.asm,%workspaceFolder%output\nhl95.bin,%workspaceFolder%output\nhl95,%workspaceFolder%output\nhl95" ^
   > "%workspaceFolder%output\Build95.log"
-if errorlevel 1 (
+set asmerr=%errorlevel%
+findstr /C:"SHORTCALL" "%workspaceFolder%output\Build95.log" >nul
+if errorlevel 1 goto noshort
+echo.
+echo A short-range target moved past $7FFF:
+findstr /C:"SHORTCALL" "%workspaceFolder%output\Build95.log"
+echo Put the added data after the 2MB fill, or use the long form. See docs\EXPANDING_THE_ROM.md.
+:noshort
+if not "%asmerr%"=="0" (
     echo ASSEMBLY FAILED. See output\Build95.log
     exit /b 1
 )

@@ -24,3 +24,4 @@
 	include	checksum95.asm		; ValidationRoutine
 	dcb.b	$200000-*,$FF		;fill to the 2 MB ROM end. Includes for a larger ROM go after this line;
 					;tools/fixrom.js pads the image and sets the header ROM end (docs/EXPANDING_THE_ROM.md)
+	include	shortcalls.inc		; checks only: Begin stays in reach of the startup bra.w
