@@ -13,7 +13,7 @@ grep -qP '^[1-9]\d* error' "$log" && echo "TOP ERRORS in $log"
 [ -s output/$top.bin ] || echo "TOP NO BIN"
 fail=0
 node tools/fixopcodes.js "output/$top .lst" output/$top.bin >/dev/null 2>&1
-node tools/patchchecksum.js output/modified_$top.bin || fail=1
+node tools/fixrom.js output/modified_$top.bin || fail=1
 topmatch=$(node tools/verifyRom.js output/modified_$top.bin $ref 2>&1 | grep -iE 'match|differ' | head -2)
 printf '%s\n' "$topmatch"
 printf '%s\n' "$topmatch" | grep -q '^MATCH:' || fail=1

@@ -29,9 +29,5 @@ Opening = $9AC8
 Z80Program = $BD86		;The 95 Z80 sound program
 SoundBanks = $D8EC		;The sound data after the Z80 program
 
-; The full image sets RomEnd after the pad. This segment stops at the header, so the
-; retail cartridge end keeps the header identical.
-RomEnd	equ	$001FFFFF
-
 ; Main segment code
 	include	main95.asm

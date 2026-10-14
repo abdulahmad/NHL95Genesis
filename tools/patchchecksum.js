@@ -5,13 +5,7 @@
 
 const fs = require('fs');
 
-const file = process.argv[2];
-if (!file) {
-    console.error('usage: node tools/patchchecksum.js <bin>');
-    process.exit(1);
-}
-
-const bin = fs.readFileSync(file);
+function patchChecksum(bin) {
 let routine = -1;
 for (let i = 0; i + 10 <= bin.length; i++) {
     if (bin[i] !== 0x70 || bin[i + 1] !== 0x00 || bin[i + 2] !== 0x91 || bin[i + 3] !== 0xC8) continue;
@@ -23,8 +17,7 @@ for (let i = 0; i + 10 <= bin.length; i++) {
     }
 }
 if (routine < 0) {
-    console.error('patchchecksum: ValidationRoutine not found');
-    process.exit(1);
+    throw new Error('patchchecksum: ValidationRoutine not found');
 }
 
 let sum = 0;
@@ -42,15 +35,30 @@ for (let i = routine; i <= limit; i++) {
     }
 }
 if (cmp < 0) {
-    console.error('patchchecksum: cmpi.l not found');
-    process.exit(1);
+    throw new Error('patchchecksum: cmpi.l not found');
 }
 
 const oldSum = bin.readUInt32BE(cmp + 2);
 bin.writeUInt32BE(sum, cmp + 2);
+return { oldSum, sum };
+}
+
+function main() {
+const file = process.argv[2];
+if (!file) {
+    console.error('usage: node tools/patchchecksum.js <bin>');
+    process.exit(1);
+}
+const bin = fs.readFileSync(file);
+const { oldSum, sum } = patchChecksum(bin);
 fs.writeFileSync(file, bin);
 
 const hex = (n) => n.toString(16).padStart(8, '0');
 console.log(`checksum ${hex(oldSum)} -> ${hex(sum)}`);
 const headerEnd = bin.readUInt32BE(0x1A4);
 console.log(`header end $${headerEnd.toString(16).padStart(8, '0').toUpperCase()}`);
+}
+
+module.exports = { patchChecksum };
+
+if (require.main === module) main();
