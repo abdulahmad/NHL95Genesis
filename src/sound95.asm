@@ -1741,6 +1741,9 @@ TeamSongs	;6 song bytes per team (TeamList order), by SongIndex. 0 = a RandomSon
 	dc.b	$51,$42,$32,$00,$46,$00	;26 ASE
 	dc.b	$51,$42,$32,$00,$46,$00	;27 ASW
 RandomSongs	;8 songs ChooseSong picks from at random
+	IF (RandomSongs-TeamSongs)/6<>NumTeams
+	inform 3,"TeamSongs does not match the team count"
+	ENDIF
 	dc.b	$33,$3D,$3E,$41,$33,$47,$4E,$4F
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

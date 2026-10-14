@@ -766,7 +766,7 @@ InitSeasonStats	;New season: clear the player stat blocks (SRGoals on, $1B6C byt
 	move.l	d1,(a0)+
 	dbf	d0,.loop
 	move.l	#SRGoals,d0
-	move.l	#$1B6C,d1
+	move.l	#5*NumPlayoffTeams*27*2,d1
 	movea.l	#M68K_RAM,a0
 	jsr	(WriteSRAM).l
 	lea	(LeaderValues).w,a0
@@ -776,7 +776,7 @@ InitSeasonStats	;New season: clear the player stat blocks (SRGoals on, $1B6C byt
 	move.l	d1,(a0)+
 	dbf	d0,.loop2
 	move.l	#SRTeamBlock2,d0
-	move.l	#$104,d1
+	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#LeaderValues,a0
 	jsr	(WriteSRAM).l
 	lea	(M68K_RAM).l,a0
@@ -786,18 +786,18 @@ InitSeasonStats	;New season: clear the player stat blocks (SRGoals on, $1B6C byt
 	move.b	d1,(a0)+
 	dbf	d0,.loop3
 	move.l	#SRTeamStats,d0
-	move.l	#$104,d1
+	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#M68K_RAM,a0
 	jsr	(WriteSRAM).l
 	jsr	(MakeSRAMChecksum).l
 	lea	(M68K_RAM).l,a0
-	move.w	#$179,d0
+	move.w	#NumTeams*27/2-1,d0
 	clr.l	d1
 .loop4
 	move.b	d1,(a0)+
 	dbf	d0,.loop4
 	move.l	#SRInjuries,d0
-	move.l	#$17A,d1
+	move.l	#NumTeams*27/2,d1
 	movea.l	#M68K_RAM,a0
 	jsr	(WriteSRAM).l
 	jsr	(MakeSRAMChecksum).l
@@ -1414,7 +1414,7 @@ MarkSeasonRosters	;Set bit 15 of every player's goals and shots words in save RA
 	addq.w	#1,d7
 	adda.l	#$68,a0
 	adda.l	#$68,a1
-	cmp.w	#$1A,d7
+	cmp.w	#NumPlayoffTeams,d7
 	blt.s	.loop
 	jsr	(MakeSRAMChecksum).l
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1565,11 +1565,11 @@ SeasonStatsListDraw	;Draw the season player stats screen for team d7 (SeasonStat
 .prev
 	subq.w	#1,d7
 	bpl.w	.team
-	move.w	#$19,d7
+	move.w	#NumPlayoffTeams-1,d7
 	bra.w	.team
 .next
 	addq.w	#1,d7
-	cmp.w	#$1A,d7
+	cmp.w	#NumPlayoffTeams,d7
 	bne.w	.team
 	clr.w	d7
 	bra.w	.team
@@ -1971,14 +1971,14 @@ SeasonTeamStatsRun	;Season (or playoff, sflags11 bit 3) team stats screen: team 
 	bra.s	.wait
 .next
 	addq.w	#1,d7
-	cmp.w	#$1A,d7
+	cmp.w	#NumPlayoffTeams,d7
 	bne.s	.team
 	clr.w	d7
 	bra.s	.team
 .prev
 	subq.w	#1,d7
 	bpl.w	.team
-	move.w	#$19,d7
+	move.w	#NumPlayoffTeams-1,d7
 	bra.w	.team
 
 PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): W,L,T,Pts, then per-game / percentage stats
@@ -2444,7 +2444,7 @@ TeamLeaderJumps
 LeadersPoints	;Points: 2*wins+ties per team, sort descending
 	movea.l	#StatBuf,a0
 	jsr	(ReadStandings).l
-	move.w	#$19,d3
+	move.w	#NumPlayoffTeams-1,d3
 	clr.w	d4
 	movea.l	#picturebuf,a0
 	movea.l	#TeamLeaderValues,a1
@@ -2465,14 +2465,14 @@ LeadersPoints	;Points: 2*wins+ties per team, sort descending
 
 LeadersGoalsAvg	;Goals Avg: goals*100/games per team, sort descending
 	move.l	#SRTeamStats,d0
-	move.l	#$104,d1
+	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
 	movea.l	#StandingsRecs,a0
 	jsr	(ReadStandings).l
-	move.w	#$19,d3
+	move.w	#NumPlayoffTeams-1,d3
 	clr.w	d4
-	movea.l	#LeaderTeamTbls+$1A,a0
+	movea.l	#LeaderTeamTbls+NumPlayoffTeams,a0
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
 	movea.l	#StandingsRecs,a3
@@ -2492,20 +2492,20 @@ LeadersGoalsAvg	;Goals Avg: goals*100/games per team, sort descending
 	adda.w	#$A,a2
 	addq.w	#1,d4
 	dbf	d3,.loop
-	movea.l	#LeaderTeamTbls+$1A,a0
+	movea.l	#LeaderTeamTbls+NumPlayoffTeams,a0
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
 LeadersGoalsAllowed	;Goals Allowed Avg: goals against*100/games per team, sort ascending
 	move.l	#SRTeamStats,d0
-	move.l	#$104,d1
+	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
 	movea.l	#StandingsRecs,a0
 	jsr	(ReadStandings).l
-	move.w	#$19,d3
+	move.w	#NumPlayoffTeams-1,d3
 	clr.w	d4
-	movea.l	#LeaderTeamTbls+$34,a0
+	movea.l	#LeaderTeamTbls+(NumPlayoffTeams*2),a0
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
 	movea.l	#StandingsRecs,a3
@@ -2525,20 +2525,20 @@ LeadersGoalsAllowed	;Goals Allowed Avg: goals against*100/games per team, sort a
 	adda.w	#$A,a2
 	addq.w	#1,d4
 	dbf	d3,.loop
-	movea.l	#LeaderTeamTbls+$34,a0
+	movea.l	#LeaderTeamTbls+(NumPlayoffTeams*2),a0
 	bsr.w	SortLeadersUp
 	bra.w	BuildLeadersDone
 
 LeadersPenMinAvg	;Unreferenced: penalty minutes*100/games per team, sort descending
 	move.l	#SRTeamStats,d0
-	move.l	#$104,d1
+	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
 	movea.l	#StandingsRecs,a0
 	jsr	(ReadStandings).l
-	move.w	#$19,d3
+	move.w	#NumPlayoffTeams-1,d3
 	clr.w	d4
-	movea.l	#LeaderTeamTbls+$4E,a0
+	movea.l	#LeaderTeamTbls+(NumPlayoffTeams*3),a0
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
 	movea.l	#StandingsRecs,a3
@@ -2558,18 +2558,18 @@ LeadersPenMinAvg	;Unreferenced: penalty minutes*100/games per team, sort descend
 	adda.w	#$A,a2
 	addq.w	#1,d4
 	dbf	d3,.loop
-	movea.l	#LeaderTeamTbls+$4E,a0
+	movea.l	#LeaderTeamTbls+(NumPlayoffTeams*3),a0
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
 LeadersSavePct	;Save Percentage: (shots against - goals against)*100/shots against per team, sort descending
 	move.l	#SRTeamStats,d0
-	move.l	#$104,d1
+	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
-	move.w	#$19,d3
+	move.w	#NumPlayoffTeams-1,d3
 	clr.w	d4
-	movea.l	#LeaderTeamTbls+$68,a0
+	movea.l	#LeaderTeamTbls+(NumPlayoffTeams*4),a0
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
 .loop
@@ -2588,18 +2588,18 @@ LeadersSavePct	;Save Percentage: (shots against - goals against)*100/shots again
 	adda.w	#$A,a2
 	addq.w	#1,d4
 	dbf	d3,.loop
-	movea.l	#LeaderTeamTbls+$68,a0
+	movea.l	#LeaderTeamTbls+(NumPlayoffTeams*4),a0
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
 LeadersShootPct	;Shooting Percentage: goals*100/shots per team, sort descending
 	move.l	#SRTeamStats,d0
-	move.l	#$104,d1
+	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
-	move.w	#$19,d3
+	move.w	#NumPlayoffTeams-1,d3
 	clr.w	d4
-	movea.l	#LeaderTeamTbls+$82,a0
+	movea.l	#LeaderTeamTbls+(NumPlayoffTeams*5),a0
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
 .loop
@@ -2619,20 +2619,20 @@ LeadersShootPct	;Shooting Percentage: goals*100/shots per team, sort descending
 	adda.w	#$A,a2
 	addq.w	#1,d4
 	dbf	d3,.loop
-	movea.l	#LeaderTeamTbls+$82,a0
+	movea.l	#LeaderTeamTbls+(NumPlayoffTeams*5),a0
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
 LeadersShotsAvg	;Shots Avg: shots*100/games per team, sort descending
 	move.l	#SRTeamStats,d0
-	move.l	#$104,d1
+	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
 	movea.l	#StandingsRecs,a0
 	jsr	(ReadStandings).l
-	move.w	#$19,d3
+	move.w	#NumPlayoffTeams-1,d3
 	clr.w	d4
-	movea.l	#LeaderTeamTbls+$9C,a0
+	movea.l	#LeaderTeamTbls+(NumPlayoffTeams*6),a0
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
 	movea.l	#StandingsRecs,a3
@@ -2652,20 +2652,20 @@ LeadersShotsAvg	;Shots Avg: shots*100/games per team, sort descending
 	adda.w	#$A,a2
 	addq.w	#1,d4
 	dbf	d3,.loop
-	movea.l	#LeaderTeamTbls+$9C,a0
+	movea.l	#LeaderTeamTbls+(NumPlayoffTeams*6),a0
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
 LeadersShotsAllowed	;Shots Allowed Avg: shots against*100/games per team, sort ascending
 	move.l	#SRTeamStats,d0
-	move.l	#$104,d1
+	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
 	movea.l	#StandingsRecs,a0
 	jsr	(ReadStandings).l
-	move.w	#$19,d3
+	move.w	#NumPlayoffTeams-1,d3
 	clr.w	d4
-	movea.l	#LeaderTeamTbls+$B6,a0
+	movea.l	#LeaderTeamTbls+(NumPlayoffTeams*7),a0
 	movea.l	#TeamLeaderValues,a1
 	movea.l	#StatBuf,a2
 	movea.l	#StandingsRecs,a3
@@ -2685,7 +2685,7 @@ LeadersShotsAllowed	;Shots Allowed Avg: shots against*100/games per team, sort a
 	adda.w	#$A,a2
 	addq.w	#1,d4
 	dbf	d3,.loop
-	movea.l	#LeaderTeamTbls+$B6,a0
+	movea.l	#LeaderTeamTbls+(NumPlayoffTeams*7),a0
 	bsr.w	SortLeadersUp
 	bra.w	BuildLeadersDone
 
@@ -3054,12 +3054,12 @@ rtsLeaderRows	;rts (DrawLeaderRows)
 
 LeaderTables	;RAM tables (team order) per category for DrawLeaderRows
 	dc.l	LeaderTeamTbls
-	dc.l	LeaderTeamTbls+$1A
-	dc.l	LeaderTeamTbls+$34
-	dc.l	LeaderTeamTbls+$68
-	dc.l	LeaderTeamTbls+$82
-	dc.l	LeaderTeamTbls+$9C
-	dc.l	LeaderTeamTbls+$B6
+	dc.l	LeaderTeamTbls+NumPlayoffTeams
+	dc.l	LeaderTeamTbls+(NumPlayoffTeams*2)
+	dc.l	LeaderTeamTbls+(NumPlayoffTeams*4)
+	dc.l	LeaderTeamTbls+(NumPlayoffTeams*5)
+	dc.l	LeaderTeamTbls+(NumPlayoffTeams*6)
+	dc.l	LeaderTeamTbls+(NumPlayoffTeams*7)
 
 DrawLeaderLogo	;Draw small team logo d1 from Teamblocksmap at printx / printy. Saves all
 	movem.l	d0-d7/a0-a6,-(sp)

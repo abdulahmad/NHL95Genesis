@@ -1145,7 +1145,7 @@ ClearCreatedPlayers	;Clear the created players list at CreatedList (26 x $8000 +
 
 DeleteCreatedPlayer	;Delete created player #TempWord1: remove it from the save RAM records, roster list and team lines
 	movem.l	d0-d7/a0-a6,-(sp)
-	move.w	#$1C,d7
+	move.w	#NumTeams,d7
 	bset	#7,(GameFlags).w
 	move.w	(TempWord1).w,d0
 	andi.w	#$FF,d0
@@ -2521,7 +2521,7 @@ FreeAgentLoop	;SignFreeAgents: input loop
 	add.w	d0,d0
 	move.w	(a0,d0.w),d0
 	move.w	d0,(TempWord1).w
-	move.w	#$1C,d7
+	move.w	#NumTeams,d7
 	move.w	(TempWord1).w,d0
 	jsr	(GetJerseyNumber).l
 	move.b	(jerseynum).w,(TempWord1).w
@@ -2668,7 +2668,7 @@ DrawFreeAgents	;Draw visible free agent rows (pos, name, rating)
 	movea.l	#TradeRoster1,a4
 	movea.l	#TradeRoster2,a3
 	move.w	#9,(printy).w
-	move.w	#$1C,d7
+	move.w	#NumTeams,d7
 	move.w	(printy).w,-(sp)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$0,$0,$0
@@ -2691,7 +2691,7 @@ DrawFreeAgents	;Draw visible free agent rows (pos, name, rating)
 	String	CC_SetFont,$1
 .1
 	move.w	(a3)+,d0
-	move.w	#$1C,d7
+	move.w	#NumTeams,d7
 	jsr	(FormatPlayerNameD7).l
 	jsr	(printsmall).l
 	move.w	#$1C,(printx).w

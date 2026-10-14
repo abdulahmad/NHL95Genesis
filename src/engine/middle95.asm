@@ -1445,6 +1445,9 @@ TeamLogoBitmaps	;Team logo bitmaps by team number (TeamList order)
 	dc.l	logoFLA,logoHFD,logoLA,logoMTL,logoNJ,logoNYI,logoNYR,logoOTW
 	dc.l	logoPHI,logoPIT,logoQUE,logoSJ,logoSTL,logoTB,logoTOR,logoVAN
 	dc.l	logoWSH,logoWPG,logoASE,logoASW
+	IF (*-TeamLogoBitmaps)/4<>NumTeams
+	inform 3,"TeamLogoBitmaps does not match the team count"
+	ENDIF
 DrawTeamLogo	;Draw logo a0 (GetTeamLogo, d3 = team * 4) at printx / printy, 6 x 6, palette
 	;TeamLogoPalettes + team * 8 - $20 (d5 = 4) or - $40 (d5 = 2), through dobitmap
 	movea.l	a0,a1
@@ -2279,6 +2282,9 @@ TeamGfxList	;LoadHomeTeamGfx: one address per team (TeamList order) in the Arena
 	dc.l	ArenaGfxBank+$2D96,ArenaGfxBank+$30A0,ArenaGfxBank+$33AA,ArenaGfxBank+$36B4
 	dc.l	ArenaGfxBank+$39BE,ArenaGfxBank+$3CC8,ArenaGfxBank+$3FD2,ArenaGfxBank+$42DC
 	dc.l	ArenaGfxBank+$45E6,ArenaGfxBank+$48F0,ArenaGfxBank+$4F04,ArenaGfxBank+$4F04
+	IF (*-TeamGfxList)/4<>NumTeams
+	inform 3,"TeamGfxList does not match the team count"
+	ENDIF
 
 EASNLogo	;Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertical ice rink if no power play.
 	;from printscores1

@@ -241,7 +241,7 @@ BuildLeaderListSum	;Two stats added: the stat at d0 (a negative one counts 0) pl
 	movem.l	d0-d5/a0-a3,-(sp)
 	movea.l	#SaveRAM,a1
 	move.l	d0,d4
-	addi.l	#$57C,d4	;the second stat
+	addi.l	#NumPlayoffTeams*27*2,d4	;the second stat
 	add.l	d4,d4
 	add.l	d0,d0
 	asr.w	#1,d1
@@ -278,7 +278,7 @@ BuildLeaderListPct	;A ratio: 100 * the stat $2BE0 save RAM bytes after d0 (low 1
 	movem.l	d0-d7/a0-a3,-(sp)
 	movea.l	#SaveRAM,a1
 	move.l	d0,d4
-	addi.l	#$1074,d4	;the divisor stat
+	addi.l	#3*NumPlayoffTeams*27*2,d4	;the divisor stat
 	add.l	d4,d4
 	add.l	d0,d0
 	asr.w	#1,d1
@@ -302,7 +302,7 @@ BuildLeaderListPct	;A ratio: 100 * the stat $2BE0 save RAM bytes after d0 (low 1
 	move.l	d0,-(sp)
 	movem.l	d0-d1,-(sp)
 	move.l	d0,d1
-	addi.l	#$15F0,d1
+	addi.l	#4*NumPlayoffTeams*27*2,d1
 	clr.w	d0
 	move.b	1(a1,d1.l),d0
 	asl.w	#8,d0
@@ -313,7 +313,7 @@ BuildLeaderListPct	;A ratio: 100 * the stat $2BE0 save RAM bytes after d0 (low 1
 	move.l	(sp)+,d0
 	bra.w	.next
 .get
-	addi.l	#$2BE0,d0	;the dividend stat
+	addi.l	#8*NumPlayoffTeams*27*2,d0	;the dividend stat
 	move.b	1(a1,d0.l),d2
 	lsl.w	#8,d2
 	move.b	3(a1,d0.l),d2

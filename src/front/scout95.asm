@@ -125,9 +125,9 @@ ScoutingReport	;Pregame scouting report: the Ron Barr picture, the text box and 
 	move.l	#vb2,(vbint).w
 	move	#$2500,sr
 	jsr	(InitScoutingDisplay).l
-	cmpi.w	#$1A,(HomeTeam).w
+	cmpi.w	#ASE,(HomeTeam).w
 	beq.w	.1	;same team: one hot / cold paragraph
-	cmpi.w	#$1B,(HomeTeam).w
+	cmpi.w	#ASW,(HomeTeam).w
 	bne.w	.2
 .1
 	move.w	#$A,(a0)+
@@ -1212,10 +1212,16 @@ GetTeamRating	;d0 = the rating byte of team $28(a2): TeamRatingsLine with OptLin
 TeamRatingsLine	;GetTeamRating values with OptLine 1, one byte per team
 	dc.b	$3A,$4D,$4E,$4D,$53,$47,$4F,$45,$41,$40,$49,$4C,$49,$42,$4F
 	dc.b	$3A,$47,$4E,$45,$46,$4F,$40,$4B,$4B,$46,$46,$58,$58,$63,$63
+	IF (*-TeamRatingsLine)<>NumTeams+2
+	inform 3,"TeamRatingsLine does not match the team count"
+	ENDIF
 
 TeamRatings	;GetTeamRating values, one byte per team (TeamList order)
 	dc.b	$32,$45,$4C,$46,$48,$42,$45,$3C,$3B,$3E,$3D,$40,$45,$3B,$4D
 	dc.b	$30,$3F,$48,$43,$3F,$41,$37,$45,$45,$42,$40,$4E,$50,$63,$63
+	IF (*-TeamRatings)<>NumTeams+2
+	inform 3,"TeamRatings does not match the team count"
+	ENDIF
 
 ScoutTextScript	;The scouting text lines, each ended by $D, $FF after the last; ScoutTextPlayer skips n $D for line n
 	;substitution chars: ^ arena  = home team  * away team  } away (alt intro)  < > | \ hot/cold players  # home user name (NextHomeUser)  % away user name (NextAwayUser)

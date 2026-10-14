@@ -77,6 +77,32 @@ function extractedState() {
     return null;
 }
 
+// Width and height of a banner map. The long at +4 is the offset of the map header
+// (word width, word height). Two rows of tiles are one team.
+function mapGeometry(relPath) {
+    const buf = fs.readFileSync(path.join(EXTRACTED, relPath));
+    const hdr = buf.readUInt32BE(4);
+    return { width: buf.readUInt16BE(hdr), height: buf.readUInt16BE(hdr + 2) };
+}
+
+function writeTeamCounts() {
+    const maps = [
+        ['Teamblocks', 'NHL95/Graphics/Teamblocksmap.map.jim'],
+        ['PauseTeamBlocks', 'NHL95/Graphics/PauseTeamBlocksMap.map.jim'],
+        ['TeamBitmaps', 'NHL95/Graphics/TeamBitmaps.map.jim'],
+    ];
+    const lines = ['; Two rows per team, measured from the banner maps.', ''];
+    for (const [name, rel] of maps) {
+        const { width, height } = mapGeometry(rel);
+        lines.push(`${name}Wide equ ${width}`);
+        lines.push(`${name}Rows equ ${height}`);
+    }
+    lines.push('');
+    const outDir = path.join(ROOT, 'output');
+    fs.mkdirSync(outDir, { recursive: true });
+    fs.writeFileSync(path.join(outDir, 'teamcounts.inc'), lines.join('\n'));
+}
+
 const target = process.argv[2] || 'retail';
 if (!TARGETS[target]) {
     console.error(`prebuild: unknown target '${target}'. Use one of: ${Object.keys(TARGETS).join(', ')}`);
@@ -110,6 +136,7 @@ if (!romPath) {
 // 2. Extracted/ assets: extract again if missing or incomplete.
 const why = extractedState();
 if (!why) {
+    writeTeamCounts();
     console.log('prebuild: ROM OK, Extracted/ assets complete.');
     process.exit(0);
 }
@@ -124,4 +151,5 @@ if (after) {
 }
 const summary = out.split(/\r?\n/).filter((l) => /^ROM:|^Extracted \d+ (assets|slices)/.test(l));
 for (const l of summary) console.log('prebuild: ' + l);
+writeTeamCounts();
 console.log('prebuild: Extracted/ assets complete.');

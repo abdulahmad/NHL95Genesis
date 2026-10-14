@@ -228,3 +228,8 @@ WSH equ 24
 WPG equ 25
 ASE equ 26
 ASW equ 27
+NumTeams equ ASW+1		;TeamList length, All-Star teams included
+NumPlayoffTeams equ ASE		;teams in the standings, schedule and sim tables
+	IF 32<NumPlayoffTeams
+	inform 3,"More than 32 playoff teams"
+	ENDIF

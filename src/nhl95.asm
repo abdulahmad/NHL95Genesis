@@ -22,4 +22,20 @@
 	include	graphics95.asm		; player pictures, rink, sprites, fonts, screen maps, logo palettes, arena graphics
 	include	credits95.asm		; title screen credits text
 	include	checksum95.asm		; ValidationRoutine
-	dcb.b	$200000-*,$FF		;fill to the 2 MB ROM end
+;	Pad with $FF to 2 MB, or to 4 MB once the image no longer fits in 2 MB. The header
+;	ROM end is the last byte of that pad. Past 4 MB the assemble stops. Content that
+;	runs into the backup RAM window warns, and the image still builds.
+ContentEnd = *
+	IF $200000<ContentEnd
+	inform 1,"ROM content overlaps the backup RAM window"
+	ENDIF
+	IF ContentEnd<$200001
+	dcb.b	$200000-ContentEnd,$FF
+	ELSE
+	IF ContentEnd<$400001
+	dcb.b	$400000-ContentEnd,$FF
+	ELSE
+	inform 3,"ROM is bigger than 4MB"
+	ENDIF
+	ENDIF
+RomEnd	equ	*-1

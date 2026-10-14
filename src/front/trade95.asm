@@ -72,7 +72,7 @@ DefaultRosters	;Build the default roster tables for the 28 teams in RAM (RosterT
 	adda.l	#$38,a6
 	adda.l	#$20,a4
 	addq.w	#1,d1
-	cmp.w	#$1C,d1
+	cmp.w	#NumTeams,d1
 	blt.w	.team
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -123,7 +123,7 @@ GetRosterName	;a1 = player record of player d0 of team d7: TeamList outside a se
 	movem.l	(sp)+,d0-d1/d5-d7/a0
 	rts
 .season
-	cmp.w	#$1C,d7
+	cmp.w	#NumTeams,d7
 	bne.w	.team
 	add.w	d0,d0
 	ext.l	d0

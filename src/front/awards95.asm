@@ -534,7 +534,7 @@ ScanPresidents	;Presidents Trophy: the 26 teams by regular season points (ReadSt
 	jsr	(ReadStandings).l
 	move.b	(sp)+,(SeasonDay+1).w
 	movea.l	(sp)+,a0
-	move.w	#$19,d7
+	move.w	#NumPlayoffTeams-1,d7
 	movea.l	#AwardIds,a1
 	movea.l	#AwardScores,a2
 	clr.w	(AwardCount).w
@@ -619,7 +619,7 @@ ScanAllPlayers	;Every player d1 of the 26 teams (d7): when the score routine a6 
 .nextteam
 	tst.w	(sp)+
 	addq.w	#1,d7
-	cmp.w	#$1A,d7
+	cmp.w	#NumPlayoffTeams,d7
 	bge.w	.exit
 	move.w	d7,d1
 	mulu.w	#$1A,d1
@@ -1011,7 +1011,7 @@ SortSeeds	;Bubble sort the SeedCount team bytes at a0 by SeedPoints, then SeedGa
 	rts
 
 CalcSeedPoints	;SeedPoints = 2 * wins + ties and SeedGames = wins + losses + ties of the 26 teams (StandingsBuf)
-	move.w	#$1A,d0
+	move.w	#NumPlayoffTeams,d0
 	movea.l	#StandingsBuf,a1
 	movea.l	#SeedPoints,a2
 	movea.l	#SeedGames,a3
@@ -1074,19 +1074,19 @@ SetupPlayoffs	;Start the playoffs: save the season header (SRSeasonHeaderSave), 
 	clr.w	(a0)+
 	dbf	d0,.clrres
 	movea.l	#SaveRAM+2*SRPOStandings,a0
-	move.w	#$4E,d0
+	move.w	#NumPlayoffTeams*3,d0
 	subq.w	#1,d0
 .clrpost
 	clr.w	(a0)+
 	dbf	d0,.clrpost
 	movea.l	#SaveRAM+2*SRPOGoals,a0
-	move.w	#$1B6C,d0
+	move.w	#5*NumPlayoffTeams*27*2,d0
 	subq.w	#1,d0
 .clrgoals
 	clr.w	(a0)+
 	dbf	d0,.clrgoals
 	movea.l	#SaveRAM+2*SRPOTeamStats,a0
-	move.w	#$104,d0
+	move.w	#NumPlayoffTeams*10,d0
 	subq.w	#1,d0
 .clrteam
 	clr.w	(a0)+

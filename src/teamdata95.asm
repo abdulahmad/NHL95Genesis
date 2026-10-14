@@ -32,6 +32,9 @@ TeamList	;Team number = index (ANH 0 ... WPG 25, ASE 26, ASW 27)
 	dc.l	AllStarsWest	;27 ASW
 
 NumofTeams	=	(*-TeamList)/4
+	IF NumofTeams<>NumTeams
+	inform 3,"TeamList does not match the team count"
+	ENDIF
 Playerdata	=	0
 Palettedata	=	2
 Teamname	=	4
@@ -1742,3 +1745,6 @@ playoffseats	;Playoff seeding: 32 rows of 16 team numbers (NewPO, MakeTree)
 	dc.b	CGY,VAN,DAL,CHI, ANH,LA,SJ,DET, NYI,PIT,QUE,NYR, PHI,HFD,BOS,BUF
 	dc.b	CGY,DET,VAN,SJ, DAL,ANH,CHI,LA, NYI,BUF,PIT,BOS, QUE,PHI,NYR,HFD
 	dc.b	CGY,LA,DET,CHI, VAN,DAL,SJ,ANH, NYI,HFD,BUF,NYR, PIT,QUE,BOS,PHI
+	IF (*-playoffseats)/16<>32
+	inform 3,"playoffseats is not 32 rows of 16"
+	ENDIF

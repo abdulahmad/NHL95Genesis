@@ -903,7 +903,7 @@ ReadSetupPads	;Wait up to $E10 frames (94 $5460) for a key on pad 1 / 2 (pads 3 
 
 OptionLimits	;Number of values of each setup line (mode, team 1, team 2, length, goalies, user records, penalties
 	;line changes)
-	dc.w	$D1C,$1C03,$202,$303
+	dc.b	$D,NumTeams,NumTeams,$03,$02,$02,$03,$03
 
 WrapOptionUp	;Wrap up: setupvalues(d0) past OptionLimits(d0) goes to 0
 	movea.l	#OptionLimits,a1
@@ -976,17 +976,17 @@ FixModeOptions	;Set setuplines / setupshown for the mode in setupvalues (Trade, 
 	beq.w	.2
 	bra.w	.7
 .1
-	cmpi.b	#$1A,1(a0)
+	cmpi.b	#NumPlayoffTeams,1(a0)
 	bge.w	.5
 	bra.w	.7
 .2
-	cmpi.b	#$1A,2(a0)
+	cmpi.b	#NumPlayoffTeams,2(a0)
 	bge.w	.3
 	bra.w	.7
 .3
 	cmpi.w	#3,(setupdir).w
 	beq.w	.4
-	move.b	#$19,2(a0)
+	move.b	#NumPlayoffTeams-1,2(a0)
 	bra.w	.7
 .4
 	clr.b	2(a0)
@@ -994,16 +994,16 @@ FixModeOptions	;Set setuplines / setupshown for the mode in setupvalues (Trade, 
 .5
 	cmpi.w	#3,(setupdir).w
 	beq.w	.6
-	move.b	#$19,1(a0)
+	move.b	#NumPlayoffTeams-1,1(a0)
 	bra.w	.7
 .6
 	clr.b	1(a0)
 .7
-	cmpi.b	#$1A,1(a0)
+	cmpi.b	#NumPlayoffTeams,1(a0)
 	blt.w	.8
 	clr.b	1(a0)
 .8
-	cmpi.b	#$1A,2(a0)
+	cmpi.b	#NumPlayoffTeams,2(a0)
 	blt.w	.9
 	clr.b	2(a0)
 .9
@@ -1024,14 +1024,14 @@ FixModeOptions	;Set setuplines / setupshown for the mode in setupvalues (Trade, 
 	cmpi.w	#2,(setupdir).w
 	beq.w	.11
 	addq.b	#1,d0
-	cmp.b	#$1A,d0
+	cmp.b	#NumPlayoffTeams,d0
 	bne.w	.12
 	clr.w	d0
 	bra.w	.12
 .11
 	subq.b	#1,d0
 	bpl.w	.12
-	move.w	#$19,d0
+	move.w	#NumPlayoffTeams-1,d0
 .12
 	cmpi.w	#2,(SelectedPlayerIdx).w
 	bne.w	.13
@@ -2262,8 +2262,8 @@ InitializeGameStructures	;Random team pairs for all 8 gsstruct games, none of th
 	dbf	d2,.loop
 	rts
 
-GetRandomUnusedTeam	;d0 = a random team 0-25 not yet set in d3, and set its bit
-	moveq	#$1A,d0
+GetRandomUnusedTeam	;d0 = a random team 0 through NumPlayoffTeams-1 not yet set in d3, and set its bit
+	moveq	#NumPlayoffTeams,d0
 	jsr	(randomd0).l
 	bset	d0,d3
 	bne.s	GetRandomUnusedTeam
@@ -2740,9 +2740,9 @@ NewPO	;New playoff tree with Opt1team in a random
 	lsr.w	#4,d0	;divide d0 by 16
 	moveq	#$F,d1	;move 15 into d1
 	move.w	(Opt1team).w,d2	;Team 1 on menu
-	cmp.w	#$19,d2	;compares #NumOfTeams-3 to d2 (25 decimal)
+	cmp.w	#NumPlayoffTeams-1,d2	;an All-Star team uses the last playoff team
 	bls.w	.loop
-	moveq	#$19,d2
+	moveq	#NumPlayoffTeams-1,d2
 .loop
 	cmp.b	(a0)+,d2	;compare team at a0+ to d2 (looks at second byte of a0)
 	dbeq	d1,.loop

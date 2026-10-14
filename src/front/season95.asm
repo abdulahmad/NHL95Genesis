@@ -56,20 +56,20 @@ rtsdemo	;Shared rts of demoread / EndDemoOnPress
 
 RandomSetupTeams	;Random teams for the demo (SetupDemo): step the two setup team values by a random 0-27 and copy them
 	;to Opt1team / Opt2team, set OptUserRec, clear OptPlayMode and GameFlags bits 3, 4 (season), OptPen = random 0 / 1
-	move.w	#$1C,d0
+	move.w	#NumTeams,d0
 	jsr	(randomd0).l
 	add.b	d0,(setupvalues+1).w
-	cmpi.b	#$1C,(setupvalues+1).w
+	cmpi.b	#NumTeams,(setupvalues+1).w
 	blt.w	.0
-	subi.b	#$1C,(setupvalues+1).w
+	subi.b	#NumTeams,(setupvalues+1).w
 .0
 	move.b	(setupvalues+1).w,(Opt1team+1).w
-	move.w	#$1C,d0
+	move.w	#NumTeams,d0
 	jsr	(randomd0).l
 	add.b	d0,(setupvalues+2).w
-	cmpi.b	#$1C,(setupvalues+2).w
+	cmpi.b	#NumTeams,(setupvalues+2).w
 	blt.w	.1
-	subi.b	#$1C,(setupvalues+2).w
+	subi.b	#NumTeams,(setupvalues+2).w
 .1
 	move.b	(setupvalues+2).w,(Opt2team+1).w
 	move.w	#1,(OptUserRec).w
@@ -1056,7 +1056,7 @@ ClearSeasonData	;New season: clear the game results, standings and SRSeasonHeade
 	move.b	d1,(a0)+
 	dbf	d0,.loop2
 	move.l	#SRStandings,d0
-	moveq	#$4E,d1
+	moveq	#NumPlayoffTeams*3,d1
 	lea	(M68K_RAM).l,a0
 	jsr	(WriteSRAM).l
 	move.l	#$24,(M68K_RAM).l
@@ -1301,7 +1301,7 @@ ReadStandings	;Read the 26 teams' standings records (3 bytes: wins, ties, losses
 	move.l	#SRPOStandings,d0
 .0
 	moveq	#3,d1
-	mulu.w	#$1A,d1
+	mulu.w	#NumPlayoffTeams,d1
 	jsr	(ReadSRAM).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -3058,14 +3058,14 @@ CalendarScreen	;CALENDAR (team schedule): {} change team, [] change month, start
 	move.w	(CalTeam).w,d0
 	subq.w	#1,d0
 	bpl.w	.team
-	move.w	#$19,d0
+	move.w	#NumPlayoffTeams-1,d0
 	bra.w	.team
 .4
 	btst	#0,d1
 	beq.s	.input
 	move.w	(CalTeam).w,d0
 	addq.w	#1,d0
-	cmp.w	#$1A,d0
+	cmp.w	#NumPlayoffTeams,d0
 	blt.w	.team
 	clr.w	d0
 .team
@@ -3621,7 +3621,7 @@ SortStandings	;Sort StandingsList by points, then by fewer games played
 	rts
 
 StandingsPoints	;Points and games of the 26 teams from StandingsBuf
-	move.w	#$1A,d0
+	move.w	#NumPlayoffTeams,d0
 	movea.l	#StandingsBuf,a1
 	movea.l	#CalMonth,a2
 	movea.l	#StandingsOrder,a3
@@ -3868,6 +3868,9 @@ SimGoalsHome	;26 x 10 goal weights (0-9 goals): home offense
 	dc.b	4,4,6,$B,8,3,3,1,1,1	;WPG
 
 SimGoalsAwayDef	;26 x 10: away defense
+	IF (SimGoalsAwayDef-SimGoalsHome)/10<>NumPlayoffTeams
+	inform 3,"SimGoalsHome does not match the playoff teams"
+	ENDIF
 	dc.b	6,5,9,$A,5,2,4,1,0,0	;ANH
 	dc.b	2,6,6,$A,8,5,3,1,1,0	;BOS
 	dc.b	3,4,4,$F,4,6,3,3,0,0	;BUF
@@ -3896,6 +3899,9 @@ SimGoalsAwayDef	;26 x 10: away defense
 	dc.b	1,5,8,7,$D,5,3,0,0,0	;WPG
 
 SimGoalsAway	;26 x 10: away offense
+	IF (SimGoalsAway-SimGoalsAwayDef)/10<>NumPlayoffTeams
+	inform 3,"SimGoalsAwayDef does not match the playoff teams"
+	ENDIF
 	dc.b	1,7,7,$C,7,5,2,1,0,0	;ANH
 	dc.b	1,6,8,$10,6,3,0,0,2,0	;BOS
 	dc.b	5,$A,6,$A,3,5,3,0,0,0	;BUF
@@ -3924,6 +3930,9 @@ SimGoalsAway	;26 x 10: away offense
 	dc.b	1,6,$A,$B,7,2,4,1,0,0	;WPG
 
 SimGoalsHomeDef	;26 x 10: home defense
+	IF (SimGoalsHomeDef-SimGoalsAway)/10<>NumPlayoffTeams
+	inform 3,"SimGoalsAway does not match the playoff teams"
+	ENDIF
 	dc.b	2,6,9,9,$A,5,1,0,0,0	;ANH
 	dc.b	4,7,6,$B,3,5,4,2,0,0	;BOS
 	dc.b	4,1,$10,$C,6,1,1,1,0,0	;BUF
@@ -3952,6 +3961,9 @@ SimGoalsHomeDef	;26 x 10: home defense
 	dc.b	3,7,9,7,4,3,6,2,1,0	;WPG
 
 SimTieTbl	;Tie break weights, 3 a team (26 teams)
+	IF (SimTieTbl-SimGoalsHomeDef)/10<>NumPlayoffTeams
+	inform 3,"SimGoalsHomeDef does not match the playoff teams"
+	ENDIF
 	dc.b	6,4,0	;ANH
 	dc.b	3,7,5	;BOS
 	dc.b	4,$A,4	;BUF
@@ -3978,3 +3990,6 @@ SimTieTbl	;Tie break weights, 3 a team (26 teams)
 	dc.b	0,9,1	;VAN
 	dc.b	2,7,2	;WSH
 	dc.b	2,7,2	;WPG
+	IF (*-SimTieTbl)/3<>NumPlayoffTeams
+	inform 3,"SimTieTbl does not match the playoff teams"
+	ENDIF

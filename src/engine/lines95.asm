@@ -432,7 +432,7 @@ SetupTeamLine	;Team a3 (a2 = other team): ResetTeamEnergy, line 0, and with line
 
 ReadTeamSRAM	;Unreferenced. Read $39 bytes of team d7 (0-$1B) from save RAM offset d0 to a0
 	movem.l	d0/d7/a0,-(sp)
-	cmp.w	#$1B,d7
+	cmp.w	#NumTeams-1,d7
 	bgt.w	.0
 	ext.l	d0
 	mulu.w	#$39,d7
@@ -447,7 +447,7 @@ DefaultLineData	;Copy the default line sets of the 28 teams (TeamList + 6, 8 x 8
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#M68K_RAM+SRLines,a0
 	movea.l	#TeamList,a3
-	move.w	#$1B,d1
+	move.w	#NumTeams-1,d1
 	clr.w	d7
 .team
 	move.w	d7,d0

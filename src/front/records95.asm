@@ -648,7 +648,7 @@ WriteNameRecord	;Clear name slot namelogsel from every saved record (read ReadSR
 .3
 	addq.l	#4,d0
 	dbf	d7,.0
-	move.w	#$1B,d7
+	move.w	#NumTeams-1,d7
 	move.l	#SRCrowdRecords,d0
 	moveq	#$10,d1
 	movea.l	#ThreeStars,a0

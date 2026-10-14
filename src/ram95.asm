@@ -482,7 +482,7 @@ sopathx	equ	$FFFFD6E0	;94 $FFFFDA16
 sopathy	equ	$FFFFD6E2	;94 $FFFFDA18
 sopathdir	equ	$FFFFD6E4	;94 $FFFFDA1A. passdir at the end of the path (PSandSOpassdir)
 sopathend	equ	$FFFFD6E6	;94 $FFFFDA1C. Shoot distance at the end of the path (ShootoutShootCheck)
-LeaderTeamTbls	equ	$FFFFD6E8	;League Leaders: 7 team value tables of $1A bytes (shares PlayoffSchedule)
+LeaderTeamTbls	equ	$FFFFD6E8	;League Leaders: 7 team value tables, one byte a playoff team (shares PlayoffSchedule)
 picturebuf	equ	$FFFFD6E8	;94 $FFFFDA1E. UnpackPicture output
 PlayoffSchedule	equ	$FFFFD6E8	;Playoff schedule (ReadPlayoffSchedule); a day list starts at +1
 StandingsRecs	equ	$FFFFDAA0	;ReadStandings buffer (3 bytes a team) used by League Leaders
@@ -555,51 +555,66 @@ SndBanks	equ	$FFFFFF36	;4 sound banks (SndSetBank), -1 = none
 
 ;	Save RAM map. The battery save RAM is $8000 bytes on the odd bytes at SaveRAM: byte n is the low byte of the word at
 ;	SaveRAM+2*n. InitSaveRAM copies it to M68K_RAM, so byte n is also at M68K_RAM+n. These SR names are byte offsets
-;	(d0 for ReadSRAM / WriteSRAM); code that reads save RAM in place uses SaveRAM+2*name. All
+;	(d0 for ReadSRAM / WriteSRAM); code that reads save RAM in place uses SaveRAM+2*name.
+;	A block keeps its retail address while the one before it still ends on that address. A larger league
+;	starts that block at the previous end, in address order. Crowd records are 16 bytes a team and end on
+;	the team records. The checksum stays on its retail byte; if it moves, the assemble stops.
 
 SaveRAM	equ	$200000	;the cartridge save RAM (header SRAM range)
 SRAMSize	equ	$8000	;save RAM bytes
-SRCrowdRecords	equ	$B62	;CrowdRecordIO block
-SRTeamRecords	equ	$D22	;the team records, $80 bytes (TeamRecordIO, ReadTeamRecords)
-SRNameLog	equ	$DA2	;the name log (NameLogIO)
-SRSeasonHeader	equ	$E22	;the 8 byte season header, SeasonStartDay ... (ReadSeasonHeader, WriteSeasonHeader)
-SRGameResults	equ	$E2A	;the saved game results, 3 bytes a game ($CCC bytes; ReadDayGames)
-SRStandings	equ	$1AF6	;the regular season standings: wins, losses, ties, 3 bytes a team (RecordTeamResult)
-SRGoalTotal	equ	$1B44	;season goal total of the human games, a long, then SeasonGameCount
-SRRosters	equ	$1B4C	;the season rosters, $38 bytes a team: 26 roster id words, then the goalie, forward and defense counts at +$34
-SRGoals	equ	$21A4	;regular season player stats, a word per player, $57C bytes each (26 teams of 27): goals (bit 15 set for goalies)
-SRAssists	equ	$2720	;assists
-SRShots	equ	$2C9C	;shots (team struct +$EA)
-SRGamesPlayed	equ	$3218	;games played
-SRPenMin	equ	$3794	;penalty minutes (team struct +$104); goalies: goals against scaled to a full game
-SRTeamStats	equ	$3D10	;regular season team stats, 10 bytes a team (AddTeamSeasonStats, ReadSeasonTeamRecord)
-SRLines	equ	$3E14	;the line sets, $41 bytes a team (LoadTeamLines; DefaultLineData fills the RAM copy)
-SRSavedLines1	equ	$4530	;the other saved line blocks, $39 bytes a team (TeamRecordSRAM)
-SRSavedLines2	equ	$4B6C
-SRSavedLines3	equ	$5136
-SRJerseyNums	equ	$5700	;jersey numbers of the season rosters, $20 bytes a team (GetJerseyNumber)
-SRFreeAgentJerseys	equ	$5A80	;jersey numbers of the free agent slots, the SRJerseyNums row after the 28 teams (ReleasePlayers)
-SRCreatedPlayers	equ	$5AA0	;the created player records (InitCreateRecord, LoadCreateTemplate, CommitCreatedPlayer)
-SRCreateCount	equ	$5D21	;number of created players (a byte, read as a word), after the 20 $20 byte records
-SRFreeAgentList	equ	$5D22	;the free agent list, 2 bytes a slot (bit 7 of the first = empty); ReadCreateList / WriteCreateList move it with SRFreeAgentCount
-SRFreeAgentCount	equ	$5D57	;number of free agents (a byte, read as a word)
-SRTeamBlock2	equ	$5D58	;26 x 10 bytes InitSeasonStats clears (from LeaderValues); no other user found
-SRInjuries	equ	$5E5C	;injury games left, a nibble per player, $17A bytes (SetSeasonInjuries, TickInjuries)
-SRSeasonHeaderSave	equ	$5FD6	;SetupPlayoffs keeps SRSeasonHeader here (RestoreSeasonHeader); +8 is a word it clears
-SRHighlights	equ	$5FD6	;in the season: today's game highlights, 4 bytes a game (GetHighlightSlot, SaveGameHighlights)
-SRPOPairings	equ	$5FE0	;playoff pairings of the rounds (GetRoundPairings, CollectSeriesWinners)
-SRPORound	equ	$6000	;playoff round, low byte (a word)
-SRPODay	equ	$6002	;playoff day, low byte (NextSeasonDay)
-SRPOSeries	equ	$6004	;the series of the round, $10 bytes each: the two teams, the wins (InitPlayoffSeries)
-SRPOSchedule	equ	$6084	;the playoff schedule (ReadPlayoffSchedule)
-SRPOStandings	equ	$6173	;playoff standings, 3 bytes a team (as SRStandings)
-SRPOGoals	equ	$61C1	;playoff player stats, as the regular season ones: goals
-SRPOAssists	equ	$673D	;playoff assists
-SRPOShots	equ	$6CB9	;playoff shots
-SRPOGamesPlayed	equ	$7235	;playoff games played
-SRPOPenMin	equ	$77B1	;playoff penalty minutes
-SRPOTeamStats	equ	$7D2D	;playoff team stats, 10 bytes a team (as SRTeamStats)
-SRSeasonMark	equ	$7EE6	;SeasonMain: nonzero ($64) while a season game is under way
-SRCupWinner	equ	$7EEE	;team number of the Stanley Cup winner (SaveSimGame, SeasonMain)
-SRLineData	equ	$7EF6	;the saved lines (ReadLineData, WriteLineData)
-SRChecksum	equ	$7FFE	;the checksum complement and sum bytes (MakeSRAMChecksum, ValidateSRAM)
+SRNext = 0
+SRAMBlock	macro
+	IF SRNext<\2+1
+\1	equ	\2
+	ELSE
+\1	equ	SRNext
+	ENDIF
+SRNext = \1+\3
+	endm
+	SRAMBlock SRCrowdRecords,$B62,NumTeams*16	;CrowdRecordIO, 16 bytes a team, ends on the team records
+	SRAMBlock SRTeamRecords,$D22,$80	;the team records (TeamRecordIO, ReadTeamRecords)
+	SRAMBlock SRNameLog,$DA2,$80	;the name log (NameLogIO)
+	SRAMBlock SRSeasonHeader,$E22,8	;the season header, SeasonStartDay ... (ReadSeasonHeader, WriteSeasonHeader)
+	SRAMBlock SRGameResults,$E2A,$CCC	;saved game results, 3 bytes a game (ReadDayGames)
+	SRAMBlock SRStandings,$1AF6,NumPlayoffTeams*3	;wins, losses, ties, 3 bytes a playoff team (RecordTeamResult)
+	SRAMBlock SRGoalTotal,$1B44,8	;season goal total of the human games, a long, then SeasonGameCount
+	SRAMBlock SRRosters,$1B4C,NumTeams*$38	;season rosters, $38 bytes a team: 26 roster id words, then the counts at +$34
+	SRAMBlock SRGoals,$21A4,NumPlayoffTeams*27*2	;player goals, a word a player (bit 15 set for goalies)
+	SRAMBlock SRAssists,$2720,NumPlayoffTeams*27*2	;assists
+	SRAMBlock SRShots,$2C9C,NumPlayoffTeams*27*2	;shots (team struct +$EA)
+	SRAMBlock SRGamesPlayed,$3218,NumPlayoffTeams*27*2	;games played
+	SRAMBlock SRPenMin,$3794,NumPlayoffTeams*27*2	;penalty minutes; goalies: goals against scaled to a full game
+	SRAMBlock SRTeamStats,$3D10,NumPlayoffTeams*10	;team stats, 10 bytes a playoff team (AddTeamSeasonStats)
+	SRAMBlock SRLines,$3E14,NumTeams*$41	;line sets (LoadTeamLines; DefaultLineData fills the RAM copy)
+	SRAMBlock SRSavedLines1,$4530,NumTeams*$39	;first saved line block, one record a team (TeamRecordSRAM)
+	SRAMBlock SRSavedLines2,$4B6C,NumPlayoffTeams*$39	;second saved line block
+	SRAMBlock SRSavedLines3,$5136,NumPlayoffTeams*$39	;third saved line block
+	SRAMBlock SRJerseyNums,$5700,NumTeams*$20	;jersey numbers of the season rosters (GetJerseyNumber)
+	SRAMBlock SRFreeAgentJerseys,$5A80,$20	;jersey numbers of the 26 free agent slots (ReleasePlayers)
+	SRAMBlock SRCreatedPlayers,$5AA0,$280	;created player records (InitCreateRecord, CommitCreatedPlayer)
+	SRAMBlock SRCreateCount,$5D21,1	;number of created players (a byte, read as a word)
+	SRAMBlock SRFreeAgentList,$5D22,$35	;free agent list, 26 slots; ReadCreateList moves it with the count
+	SRAMBlock SRFreeAgentCount,$5D57,1	;number of free agents (a byte, read as a word)
+	SRAMBlock SRTeamBlock2,$5D58,NumPlayoffTeams*10	;second team-stat block (InitSeasonStats clears it)
+	SRAMBlock SRInjuries,$5E5C,NumTeams*27/2	;injury games left, a nibble a player (SetSeasonInjuries, TickInjuries)
+	SRAMBlock SRHighlights,$5FD6,$A	;today's highlights, 4 bytes a game (GetHighlightSlot, SaveGameHighlights)
+SRSeasonHeaderSave equ SRHighlights	;SetupPlayoffs keeps the season header here (RestoreSeasonHeader)
+	SRAMBlock SRPOPairings,$5FE0,$20	;playoff pairings of the rounds (GetRoundPairings, CollectSeriesWinners)
+	SRAMBlock SRPORound,$6000,2	;playoff round, low byte (a word)
+	SRAMBlock SRPODay,$6002,2	;playoff day, low byte (NextSeasonDay)
+	SRAMBlock SRPOSeries,$6004,$80	;the series of the round: the two teams, the wins (InitPlayoffSeries)
+	SRAMBlock SRPOSchedule,$6084,$EF	;the playoff schedule (ReadPlayoffSchedule)
+	SRAMBlock SRPOStandings,$6173,NumPlayoffTeams*3	;playoff standings, 3 bytes a playoff team
+	SRAMBlock SRPOGoals,$61C1,NumPlayoffTeams*27*2	;playoff player goals
+	SRAMBlock SRPOAssists,$673D,NumPlayoffTeams*27*2	;playoff assists
+	SRAMBlock SRPOShots,$6CB9,NumPlayoffTeams*27*2	;playoff shots
+	SRAMBlock SRPOGamesPlayed,$7235,NumPlayoffTeams*27*2	;playoff games played
+	SRAMBlock SRPOPenMin,$77B1,NumPlayoffTeams*27*2	;playoff penalty minutes
+	SRAMBlock SRPOTeamStats,$7D2D,NumPlayoffTeams*10	;playoff team stats, 10 bytes a playoff team
+	SRAMBlock SRSeasonMark,$7EE6,8	;SeasonMain: nonzero while a season game is under way
+	SRAMBlock SRCupWinner,$7EEE,8	;team number of the Stanley Cup winner (SaveSimGame, SeasonMain)
+	SRAMBlock SRLineData,$7EF6,$100	;the saved lines (ReadLineData, WriteLineData)
+	SRAMBlock SRChecksum,$7FFE,2	;the checksum complement and sum bytes (MakeSRAMChecksum, ValidateSRAM)
+	IF SRChecksum<>$7FFE
+	inform 3,"Save RAM checksum moved"
+	ENDIF

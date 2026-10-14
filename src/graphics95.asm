@@ -357,6 +357,9 @@ FeaturedPicIdx	;The FeaturedPictures index of the line 1 starters (G, LD, RD, LW
 	dc.b	66,10,88,109,7,15	;ASE
 	dc.b	120,40,28,38,133,141	;ASW
 FeaturedPictures	;The 160 player pictures (GetPlayerPicture)
+	IF (FeaturedPictures-FeaturedPicIdx)/6<>NumTeams
+	inform 3,"FeaturedPicIdx does not match the team count"
+	ENDIF
 	dc.l	CardGuyHebert,CardBobCorkum,CardTerryYake,CardGarryValk
 	dc.l	CardSeanHill,CardBillHoulder,CardJonCasey,CardAdamOates
 	dc.l	CardBryanSmolinski,CardCamNeely,CardRayBourque,CardAlIafrate
@@ -425,6 +428,25 @@ ClockDigitsBitmap	;The ClockDigitsBitmap map
 	incbin	..\Extracted\NHL95\Graphics\ClockDigitsBitmap.map.jim
 RosterBitmap	;The RosterBitmap map
 	incbin	..\Extracted\NHL95\Graphics\RosterBitmap.map.jim
+	include	..\output\teamcounts.inc
+	IF TeamblocksWide<>11
+	inform 3,"Teamblocksmap is not 11 tiles wide"
+	ENDIF
+	IF TeamblocksRows/2<>NumTeams
+	inform 3,"Teamblocksmap does not match the team count"
+	ENDIF
+	IF PauseTeamBlocksWide<>12
+	inform 3,"PauseTeamBlocksMap is not 12 tiles wide"
+	ENDIF
+	IF PauseTeamBlocksRows/2<>NumTeams
+	inform 3,"PauseTeamBlocksMap does not match the team count"
+	ENDIF
+	IF TeamBitmapsWide<>11
+	inform 3,"TeamBitmaps is not 11 tiles wide"
+	ENDIF
+	IF TeamBitmapsRows/2<>NumTeams
+	inform 3,"TeamBitmaps does not match the team count"
+	ENDIF
 Teamblocksmap	;The Teamblocksmap map
 	incbin	..\Extracted\NHL95\Graphics\Teamblocksmap.map.jim
 PauseTeamBlocksMap	;The PauseTeamBlocksMap map
@@ -678,6 +700,9 @@ TeamLogoPalettes	;Team logo palettes, 16 colors per team (DrawMatchupLogo, NameE
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalWPGA.pal	;WPG, 94 file, same bytes
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalASEA95.pal	;ASE, new palette
 	incbin	..\Extracted\NHL95\Graphics\Pals\MatchupPalASWA95.pal	;ASW, new palette
+	IF (*-TeamLogoPalettes)/32<>NumTeams
+	inform 3,"TeamLogoPalettes does not match the team count"
+	ENDIF
 
 ;------------------------------------------------------------------------------------------------------------------------
 ;	The home team arena graphics, one block per team.
