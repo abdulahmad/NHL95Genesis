@@ -2,7 +2,7 @@
 
 > **Work in progress:** this disassembly is unfinished and unpolished, and is being actively worked on. Expect labels, file layout and docs to change.
 
-Current status:
+## 🚧 Current Status
 
 - The file split is more mature, and very different from 93 and 94.
 - Remaining: label cleanup, a pass over the team data and frame lists, and another check of the split.
