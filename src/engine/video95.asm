@@ -983,7 +983,7 @@ VBlank	;Main vblank code for game play (vbint target). DumpSprites when dfok is 
 	bne.w	.c
 	btst	#2,(gmode2).w
 	bne.w	.0
-	btst	#0,(gmode).w	;gmclock: game clock stopped
+	btst	#gmclock,(gmode).w	;gmclock: game clock stopped
 	bne.w	.c
 .0
 	btst	#1,(gmode2).w	;penalty shot / shootout clock

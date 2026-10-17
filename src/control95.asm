@@ -185,7 +185,7 @@ chgplayer	;The pad d4 takes the nearest free skater to where the puck is going (
 .top
 	tst.w	position(a0)	;position
 	ble.w	.next	;cant switch to goalie
-	btst	#2,pflags2(a0)	;#pf2unav
+	btst	#pf2unav,pflags2(a0)	;#pf2unav
 	bne.w	.next	;this player is unavailable for some reason
 	movem.w	d1,-(sp)
 	move.w	SCnum(a0),d1	;SCnum
@@ -360,15 +360,15 @@ restorepl	;d1 = old player (back to the computer), d0 = new player (joystick con
 	blt.w	.spd
 	cmp.w	#$B,d1
 	bgt.w	.spd
-	asl.w	#7,d1	;multiply d0 by 80 hex (SCsize)
-	btst	#3,pflags2(a0,d1.w)	;#pfnp - no joystick pad
+	asl.w	#scsize,d1	;multiply d0 by 80 hex (SCsize)
+	btst	#pf2lcm,pflags2(a0,d1.w)	;#pfnp - no joystick pad
 	beq.w	.cont
 	lsr.w	#7,d1	;divide by 80 hex
 	move.w	d1,d0
 	bra.w	.ex
 .cont
 	bclr	#pfjoycon,pflags(a0,d1.w)	;#pfjoycon
-	btst	#3,$64(a0,d1.w)	;bit 3, pflags3
+	btst	#3,pflags3(a0,d1.w)	;bit 3, pflags3
 	bne.w	.spd
 	bset	#pfna,pflags(a0,d1.w)	;#pfna - new assignment
 .spd

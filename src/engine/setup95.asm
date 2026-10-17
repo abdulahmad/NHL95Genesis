@@ -456,13 +456,13 @@ DrawTeamScreen	;Roster screen background: wait for the dma (disflags bit 0), cle
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
 .0
-	btst	#0,(disflags).w
+	btst	#dfok,(disflags).w
 	bne.s	.0
 	clr.w	(Hscroll).w
 	clr.w	(Vscroll).w
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movea.l	#VDP_DATA,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
@@ -476,7 +476,7 @@ DrawTeamScreen	;Roster screen background: wait for the dma (disflags bit 0), cle
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	(sp)+,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),0,0,0
 	movea.l	#RosterBitmap,a1
@@ -706,7 +706,7 @@ GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the 
 	subq.w	#1,(VertLineScrolling).w
 	move.w	#$FFFF,(setupdir).w
 	move.w	#$18,(palcount).w	;24
-	bclr	#2,(disflags).w	;dfng: fade in graphics now
+	bclr	#dfng,(disflags).w	;dfng: fade in graphics now
 .fix
 	bsr.w	FixModeOptions
 	bsr.w	PrintOptions
@@ -738,7 +738,7 @@ GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the 
 	beq.w	.14
 	bra.w	.20
 .14
-	btst	#0,d1	;ubut: previous line, the same skips
+	btst	#ubut,d1	;ubut: previous line, the same skips
 	beq.w	.15
 	bra.w	.18
 .15
@@ -1642,9 +1642,9 @@ setoptions	;Build the game setup screen: vbint VBlank_SetOptions, the vram map, 
 	;bitmaps on maps 1 and 2
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
-	bclr	#0,(disflags).w
-	bset	#2,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#dfok,(disflags).w
+	bset	#dfng,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
 	move.w	#$B800,(VmMap3).w
@@ -2349,7 +2349,7 @@ EncodePW	;After a playoff game compute winners and save the bits if needed
 	movea.w	#(pwddatabuffer-M68K_RAM),a3
 	bsr.w	WritePassBits
 	jsr	(WriteLineData).l
-	btst	#2,(sflags3).w
+	btst	#sf3alttree,(sflags3).w
 	beq.w	.1
 	movea.w	#(tpassbits-M68K_RAM),a3
 	bsr.w	ReadPassBits
@@ -2641,7 +2641,7 @@ ResolveGames	;Compute winners and losers for playoff matchups
 	dbf	d1,.cr0
 	movea.w	#(tpassbits-M68K_RAM),a3
 	bsr.w	WritePassBits
-	bset	#2,(sflags3).w
+	bset	#sf3alttree,(sflags3).w
 .nextround
 	clr.w	(bosgames).w	;advance to next round
 	bsr.w	GetShifter
@@ -2835,7 +2835,7 @@ ReadLineData	;Read the $100 bytes at save RAM SRLineData (94 $1EF6) to databuffe
 	move.l	#SRLineData,d0
 	movea.l	#databuffer,a0
 	jsr	(ReadSRAM).l
-	bclr	#4,(sflags).w
+	bclr	#sfwrap,(sflags).w
 	move.w	#$FFFF,(lastsfx).w
 	move.l	#M68K_RAM,(recbpr).w
 	movem.l	(sp)+,d0-d1/a0
@@ -2848,7 +2848,7 @@ WriteLineData	;Write databuffer back to save RAM SRLineData (WriteSRAM, MakeSRAM
 	movea.l	#databuffer,a0
 	jsr	(WriteSRAM).l
 	jsr	(MakeSRAMChecksum).l
-	bclr	#4,(sflags).w
+	bclr	#sfwrap,(sflags).w
 	move.w	#$FFFF,(lastsfx).w
 	move.l	#M68K_RAM,(recbpr).w
 	movem.l	(sp)+,d0-d1/a0

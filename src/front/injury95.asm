@@ -4,7 +4,7 @@
 setInjuryType	;a2 injured: out for the period ($FFFD) or the game ($FFFC); in a season a random games count (SetInjuryGames)
 	bclr	#1,(sflags12).w
 	move.w	d0,-(sp)
-	bset	#2,pflags2(a2)
+	bset	#pf2unav,pflags2(a2)
 	addi.w	#$12C,(crowdlevel).w
 	addi.w	#$1E,(CwdExciteLvl).w
 	move.w	#SFX0D,-(sp)	;sound effect
@@ -13,10 +13,10 @@ setInjuryType	;a2 injured: out for the period ($FFFD) or the game ($FFFC); in a 
 	clr.w	Yvel(a2)
 	move.w	(a2),(xc1).w	;move Xpos to scroll center
 	move.w	Ypos(a2),(yc1).w
-	bset	#6,(sflags).w
+	bset	#sfslock,(sflags).w
 	clr.w	d1	;clear d1
 	movea.w	#(tmstruct-M68K_RAM),a0	;move Home team Struct to a0
-	btst	#6,pflags(a2)
+	btst	#pfteam,pflags(a2)
 	beq.w	.0	;branch if home
 	move.w	#$8000,d1
 	adda.w	#tmsize,a0	;add $364 to a0 (Away Team Struct start)
@@ -324,19 +324,19 @@ updatepwrplay	;The power play box: the team and the time left (GetLowestPen)
 	sub.w	tmap(a3),d0
 	beq.w	ClearPowerPlay
 	bpl.w	.0
-	btst	#6,(sflags2).w
+	btst	#sf2pwrtm,(sflags2).w
 	bne.w	.1
 	bsr.w	ClearPowerPlay
-	bset	#6,(sflags2).w
+	bset	#sf2pwrtm,(sflags2).w
 	bra.w	.1
 .0
 	exg	a2,a3
-	btst	#6,(sflags2).w
+	btst	#sf2pwrtm,(sflags2).w
 	beq.w	.1
 	bsr.w	ClearPowerPlay
-	bclr	#6,(sflags2).w
+	bclr	#sf2pwrtm,(sflags2).w
 .1
-	bset	#5,(sflags2).w
+	bset	#sf2pwrplay,(sflags2).w
 	bne.w	.4
 	addq.w	#1,4(a3)
 	cmpa.w	#(tmstruct-M68K_RAM),a3
@@ -364,7 +364,7 @@ updatepwrplay	;The power play box: the team and the time left (GetLowestPen)
 	jmp	(print).l
 
 ClearPowerPlay	;Clear the power play box (sflags2 bit 5)
-	bclr	#5,(sflags2).w
+	bclr	#sf2pwrplay,(sflags2).w
 	beq.w	rtsPowerPlay
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$1,$19,' '

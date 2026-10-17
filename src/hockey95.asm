@@ -247,7 +247,7 @@ StartPer	;Start a period: reset stack, rink and clock, face off, run the game lo
 .reg
 	cmpi.w	#2,(gsp).w
 	bge.w	.loop
-	bset	#7,(sflags3).w	;set for periods 1 and 2 only
+	bset	#sf3fosong,(sflags3).w	;set for periods 1 and 2 only
 .loop
 	bra.w	Gameloop
 
@@ -411,7 +411,7 @@ updateplayers	;This routine calls all collision/animation/assignment code for al
 	bpl.w	.np2
 	clr.b	nopuck+1(a3)	;clear lower byte of nopuck
 .np2
-	btst	#6,(sflags3).w	;check if penalty timer is up
+	btst	#sf3icetime,(sflags3).w	;check if penalty timer is up
 	beq.w	.11
 	clr.w	d0
 	move.b	pnum(a3),d0	;player offset on roster

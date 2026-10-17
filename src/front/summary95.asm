@@ -88,7 +88,7 @@ UpdateScoringScroll	;Scroll to d0: on an entry boundary the arrows (DrawScrollAr
 	bsr.w	DrawScoringRowDown
 .2
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movea.l	#VDP_DATA,a0
 	move.l	#VSRAM_W+(2<<16),Vctrl-Vdata(a0)
 	moveq	#-$50,d0
@@ -300,7 +300,7 @@ UpdatePenaltyScroll	; Penalty summary: set VertLineScrolling = d0, stop on an en
 	bsr.w	DisplayPenaltyLineDown
 .2
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movea.l	#VDP_DATA,a0
 	move.l	#VSRAM_W+(2<<16),Vctrl-Vdata(a0)
 	move.w	#$FFB0,d0

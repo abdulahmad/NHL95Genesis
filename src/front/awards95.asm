@@ -17,7 +17,7 @@ SeasonAwards	;End of season awards: for each of the 9 awards the finalists, then
 	clr.l	(AwardTimer).w
 	move.w	#$F,(AwardCycle).w
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 	bsr.w	DrawFinalistsPanel
 	bsr.w	FindAwardFinalists
 	bsr.w	PrintAwardTitle
@@ -370,9 +370,9 @@ AwardsLoop	;Awards frames: finalists for $12C frames, then the winner to $258, t
 AwardsScreenSetup	;Awards screen setup: vram layout, the small font (two remaps) and the background bitmap (AwardsBgMap)
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
-	bclr	#0,(disflags).w
-	bset	#2,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#dfok,(disflags).w
+	bset	#dfng,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
 	move.w	#$B800,(VmMap3).w

@@ -41,7 +41,7 @@ ScoutingReport	;Pregame scouting report: the Ron Barr picture, the text box and 
 	jsr	(Create_HotCold_Table).l
 	movea.l	(sp)+,a0
 	jsr	(BuildHotColdLists).l	;again with the new tables
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#6,(Map1col1).w
 	move.w	#6,(Map2col1).w
 	move.w	#0,d0	;fade to color
@@ -1139,7 +1139,7 @@ NextAwayColdPlayer	;The same for the away team (awaycoldidx, awaycoldplayer)
 GetTeamArena	;a1 = the arena String of team a2
 	movem.l	d0/a0/a2,-(sp)
 	movea.l	a2,a1
-	movea.l	$1E(a1),a1	;tmdata
+	movea.l	tmdata(a1),a1	;tmdata
 	adda.w	4(a1),a1	;city
 	adda.w	(a1),a1
 	adda.w	(a1),a1
@@ -1150,7 +1150,7 @@ GetTeamArena	;a1 = the arena String of team a2
 GetTeamNickname	;a1 = the nickname String of team a2, or HomeTxt / VisitorsTxt when it is empty
 	movem.l	d0/a0/a2,-(sp)
 	movea.l	a2,a1
-	movea.l	$1E(a1),a1	;tmdata
+	movea.l	tmdata(a1),a1	;tmdata
 	adda.w	4(a1),a1	;city
 	adda.w	(a1),a1	;abbreviation
 	adda.w	(a1),a1	;nickname

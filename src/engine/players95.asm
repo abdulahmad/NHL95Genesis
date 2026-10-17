@@ -236,9 +236,9 @@ GetPlayerCountD7	;d0 = players on team d7: in a season (sflags11 bit 6 clear) th
 setplayer	;Bring player onto the ice and set his attributes. d3 = offset of player on roster, a3 = sortcord of player.
 	;Reads the roster bytes through AttributeCalc (attribute number in TempWord2), adds the PP / PK, home / away and third period bonuses
 	;and clamps them (ClampNibble). 95: the name / jersey number by team number (rosterteam), StickHandTable, BoostAttribute
-	bclr	#6,pflags2(a3)	;clear line change mode? (I believe pflags2 are 1 off because of fighting missing)
+	bclr	#pf2inj,pflags2(a3)	;clear line change mode? (I believe pflags2 are 1 off because of fighting missing)
 	movea.w	#(tmstruct-M68K_RAM),a0	;Start of Team Struct
-	btst	#6,pflags(a3)
+	btst	#pfteam,pflags(a3)
 	beq.w	.0
 	adda.w	#tmsize,a0
 .0
@@ -253,7 +253,7 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	bne.w	.nda
 .1
 	bsr.w	assinsert
-	bclr	#5,pflags(a3)
+	bclr	#pfalock,pflags(a3)
 	clr.w	SPA(a3)
 .nda
 	move.w	#$FFFF,tmpdst(a0,d3.w)	;clear out temp space
@@ -264,7 +264,7 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	clr.l	(PPBonus).w	;Clears all bonuses
 	tst.w	position(a3)	;check if goalie
 	beq.w	.9
-	btst	#5,(sflags2).w	;might be checking for a PP
+	btst	#sf2pwrplay,(sflags2).w	;might be checking for a PP
 	beq.w	.habonus
 	jsr	(chkpk2).l
 	beq.w	.pk
@@ -280,7 +280,7 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	move.b	2(a0),d0	;This is location of Home/Away adv
 	andi.b	#$F,d0	;pass the lower nibble (Away) to d0
 	neg.b	d0	;make d0 negative (away disadvantage)
-	btst	#6,pflags(a3)
+	btst	#pfteam,pflags(a3)
 	bne.w	.3rdperbonuscheck
 	move.b	2(a0),d0	;player is home, move Home/Away byte back in to d0
 	lsr.b	#4,d0	;Shift d0 4 places right, to move upper nibble into d0
@@ -297,7 +297,7 @@ setplayer	;Bring player onto the ice and set his attributes. d3 = offset of play
 	move.w	(tmstruct+tmscore).w,d0
 	sub.w	(AwShots+tmscore).w,d0
 	beq.w	.8
-	btst	#6,pflags(a3)
+	btst	#pfteam,pflags(a3)
 	beq.w	.home
 	eori	#8,ccr	;If Aw team, checks if N flag is set from HmGoals-AwGoals.
 .home
@@ -475,7 +475,7 @@ AttributeCalc	;Attribute d3 of player a3 * 5 plus his hot / cold value / 3
 	movem.l	d0-d2/a1,-(sp)
 	move.w	(TempWord2).w,d1
 	movea.l	#tmstruct,a1	;Start of Home Team struct
-	btst	#6,pflags(a3)
+	btst	#pfteam,pflags(a3)
 	beq.w	.attribmath
 	adda.l	#tmsize,a1
 .attribmath
@@ -559,7 +559,7 @@ resetplstuff	;Reset team variables and players on both teams. SPA $B5C
 	movem.l	(sp)+,d0-d2/a0-a3
 	rts
 .top
-	bclr	#4,tmflags(a2)	;clear team offside bit
+	bclr	#tmfoside,tmflags(a2)	;clear team offside bit
 	moveq	#5,d2
 	movea.w	tmsort(a2),a3	;tmsort
 .loop

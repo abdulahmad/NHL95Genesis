@@ -1510,7 +1510,7 @@ updatesound	;Move the crowd noise volume (psg noise channel, asv) toward crowdle
 CheckLateGameSong	;Called once per second. 3rd period: choose and play a song once at the random trigger time set by ResetClock
 	cmpi.w	#2,(gsp).w
 	bne.w	.x
-	btst	#4,(gmode).w
+	btst	#gmhl,(gmode).w
 	bne.w	.x
 	move.w	(gameclock).w,d0
 	cmp.w	(periodendtime).w,d0
@@ -1687,7 +1687,7 @@ SoundOff	;Sound driver command $F, every song off
 ChooseSong	;SongNum = byte SongIndex of the 6 song bytes of team HmTeam, or one of the 8 of RandomSongs
 	;at random when 0; $FFFF with gmode bit 4
 	movem.l	d0-d1/a0-a1,-(sp)
-	btst	#4,(gmode).w
+	btst	#gmhl,(gmode).w
 	beq.w	.0
 	move.w	#$FFFF,d1
 	bra.w	.1

@@ -17,7 +17,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	beq.s	rtsLineData
 .0
 	move.l	#VBlank_Playoff,(vbint).l
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$BC00,(VSPRITES).w
 	move.w	#$B000,(VmMap3).w
@@ -286,7 +286,7 @@ DrawTeamBlocks	;Draw team block d1 (team * 2) from Teamblocksmap at printx / pri
 VBlank_Playoff	;The PlayoffScreen vblank handler (vbint): dma the sprite table, write
 	;$FEA0+DispAttribCtr to the hscroll, cramfade. Always vcount+1, p_music_vblank, rte
 	movem.l	d0-d7/a0-a6,-(sp)
-	btst	#2,(disflags).w
+	btst	#dfng,(disflags).w
 	bne.w	.nograph
 	movea.w	#(Satt-M68K_RAM),a0
 	move.w	(Sattsize).w,d0

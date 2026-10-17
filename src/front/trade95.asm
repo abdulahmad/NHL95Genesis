@@ -737,7 +737,7 @@ TradePlayers	;Trade Player screen: the two rosters with position / rating; A tea
 	bsr.w	rtsTrade
 .drawn
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$0,$0,$0
 	bsr.w	DrawHomeTradeRoster
@@ -1176,9 +1176,9 @@ BuildTradeList	;Trade list of team d7: the chosen players ($FFFF = none)
 TradeGfx	;Trade screen video set up and graphics
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
-	bclr	#0,(disflags).w
-	bset	#2,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#dfok,(disflags).w
+	bset	#dfng,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
 	move.w	#$B800,(VmMap3).w
@@ -1325,7 +1325,7 @@ EvaluateTrade	;Evaluate Trade screen (GMDecisionGfx): the chosen players of both
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),$6,$2,'Evaluate Trade',$0
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$0,$0,$0
 	jsr	(printsmallz).l
@@ -1593,7 +1593,7 @@ GMDecisionScreen	;GM DECISION: rate both sides (TradeValue); a difference of 2 o
 	movea.l	#tradeteam2,a0
 	bsr.w	PrintTradedPlayers
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$0,$0,$0
 .input
