@@ -5453,7 +5453,7 @@
     ],
     [
      "setup94",
-     "PlayoffScreen_waitvsync",
+     "waitxc1",
      "$0175D8",
      "$087EDE",
      "$087F02",
@@ -6971,7 +6971,7 @@
    "ref_mix": {},
    "out_of_order": 0,
    "moved_in": [],
-   "note": "New in 95: season mode. sub_8E06E is called from the main flow ($9B7C) and calls the season routines up to sub_91B6A; month names ($8F1E8), SEASON SETUP, period lengths; tables loc_91D84-loc_92090 are read by sub_8F35E / sub_8F3E0. Starts after ClampReplayView (replay94) and ends at loc_920BE, 94 GameStatisticsScreen (period94)",
+   "note": "New in 95: season mode. sub_8E06E is called from the main flow ($9B7C) and calls the season routines up to sub_91B6A; month names ($8F1E8), SEASON SETUP, period lengths; tables loc_91D84-loc_92090 are read by sub_8F35E / sub_8F3E0. Starts after ClampReplayView (replay94) and ends at loc_920BE, 94 StatsReport (period94)",
    "desc": "season mode",
    "units": [],
    "confidence": "medium",
@@ -7013,7 +7013,7 @@
    "units": [
     [
      "period94",
-     "GameStatisticsScreen+$3E",
+     "StatsReport+$3E",
      "$0FDC98",
      "$0920E2",
      "$0921CE",
@@ -7103,7 +7103,7 @@
     ],
     [
      "period94",
-     "DisplayTeamStatsScreen",
+     "DisplayStats",
      "$0FDE24",
      "$092288",
      "$09228E",
@@ -7112,7 +7112,7 @@
     ],
     [
      "period94",
-     "DisplayTeamStatsScreen+$22",
+     "DisplayStats+$22",
      "$0FDE46",
      "$0922AC",
      "$0922BC",
@@ -7121,7 +7121,7 @@
     ],
     [
      "period94",
-     "DisplayTeamStatsScreen+$3A",
+     "DisplayStats+$3A",
      "$0FDE5E",
      "$0922C0",
      "$092318",
@@ -12969,11 +12969,11 @@
    "PeriodStatsScreen+$210 $0FDB1C 24 data",
    "PeriodStatsScreen+$230 $0FDB3C 24 data",
    "PeriodStatsScreen+$32E $0FDC3A 32 code",
-   "GameStatisticsScreen $0FDC5A 16 code",
-   "GameStatisticsScreen+$16 $0FDC70 16 code",
-   "GameStatisticsScreen+$26 $0FDC80 24 data",
+   "StatsReport $0FDC5A 16 code",
+   "StatsReport+$16 $0FDC70 16 code",
+   "StatsReport+$26 $0FDC80 24 data",
    "PrintStatScrollArrows+$3A $0FDDE4 18 code",
-   "DisplayTeamStatsScreen+$C $0FDE30 16 code"
+   "DisplayStats+$C $0FDE30 16 code"
   ],
   "goalie94": [
    "RunArenaAnim $0FE2C8 94 code",

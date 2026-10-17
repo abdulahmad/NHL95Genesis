@@ -9,7 +9,7 @@
   {"start": "$00AF44", "end": "$0676E8", "base": "sound95", "ref": "sound94",
    "note": "95 sound driver: sub_AF44 is the command dispatcher sub_676D8 calls; sub_BD7C releases the Z80 bus and the Z80 program starts at $BD86 (C3 00 06, JP $0600); the sound banks follow"},
   {"start": "$08DF5A", "end": "$0920BE", "name": "season95", "desc": "season mode", "confidence": "medium", "kind": "new code",
-   "note": "New in 95: season mode. sub_8E06E is called from the main flow ($9B7C) and calls the season routines up to sub_91B6A; month names ($8F1E8), SEASON SETUP, period lengths; tables loc_91D84-loc_92090 are read by sub_8F35E / sub_8F3E0. Starts after ClampReplayView (replay94) and ends at loc_920BE, 94 GameStatisticsScreen (period94)"},
+   "note": "New in 95: season mode. sub_8E06E is called from the main flow ($9B7C) and calls the season routines up to sub_91B6A; month names ($8F1E8), SEASON SETUP, period lengths; tables loc_91D84-loc_92090 are read by sub_8F35E / sub_8F3E0. Starts after ClampReplayView (replay94) and ends at loc_920BE, 94 StatsReport (period94)"},
   {"start": "$0962EE", "end": "$097C54", "name": "trade95", "desc": "schedule and trades", "confidence": "medium", "kind": "new code",
    "note": "New in 95: schedule day ('More games', 'Change day', $9636B) then trades ('Trade Player', 'INVALID TRADE', $96C29-$97325). sub_962EE is called from sub_92FBA (stats95_01)"},
   {"start": "$097C54", "end": "$09ACE6", "name": "create95", "desc": "create player", "confidence": "medium", "kind": "new code",

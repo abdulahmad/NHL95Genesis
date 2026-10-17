@@ -1138,7 +1138,7 @@ StatsMenus	;The pause STATS tab lists (SetStatsMenuItems: menuitemoffset 0, $66,
 	String	'y  PLAY GAME    '
 	dc.l	PlayGame
 	String	'   GAME STATS   '
-	dc.l	GameStatisticsScreen
+	dc.l	StatsReport
 	String	'  PERIOD STATS  '
 	dc.l	PeriodStatsScreen
 	String	'  PLAYER STATS  '
@@ -1154,7 +1154,7 @@ StatsMenus	;The pause STATS tab lists (SetStatsMenuItems: menuitemoffset 0, $66,
 	String	'y  PLAY GAME    '
 	dc.l	PlayGame
 	String	'   GAME STATS   '
-	dc.l	GameStatisticsScreen
+	dc.l	StatsReport
 	String	'  PERIOD STATS  '
 	dc.l	PeriodStatsScreen
 	String	'  PLAYER STATS  '
@@ -1168,7 +1168,7 @@ StatsMenus	;The pause STATS tab lists (SetStatsMenuItems: menuitemoffset 0, $66,
 	String	'y  PLAY GAME    '
 	dc.l	PlayGame
 	String	'   GAME STATS   '
-	dc.l	GameStatisticsScreen
+	dc.l	StatsReport
 	String	'  PERIOD STATS  '
 	dc.l	PeriodStatsScreen
 	String	'  PLAYER STATS  '
