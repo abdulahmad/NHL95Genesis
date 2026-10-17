@@ -3866,7 +3866,7 @@ ShowThreeStars	;End of game Stars of the Game box. Called from UpdatePA while Re
 	;scores (TakeTopStarScore). 95: not with sflags9 bit 7
 	cmpi.w	#$40,(RefCnt).w
 	bgt.w	.4
-	bset	#7,(gmode).w
+	bset	#gmstars,(gmode).w
 	bne.w	.4
 	btst	#7,(sflags9).w
 	bne.w	.4

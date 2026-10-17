@@ -874,7 +874,7 @@ assdefd	;asstab entry 7
 	add.w	d1,d3	;add d1 to d3
 	cmp.w	#$56,d3	;compare top blueline to d3 (94 $58)
 	blt.w	.de0
-	btst	#tmfoffside,tmflags(a2)	;check if team is offsides
+	btst	#tmfoside,tmflags(a2)	;check if team is offsides
 	bne.w	.de0	;branch if offsides
 	move.w	(puckc).w,d1	;move puckc into d1
 	bmi.w	.de0	;branch if no puckc
@@ -1038,7 +1038,7 @@ asswingd	;asstab entry 8
 	neg.w	d0	;negate d0
 	neg.w	d1	;negate d1
 	moveq	#-$4C,d2	;slightly above bottom blue line (94 -$4E)
-	btst	#tmfoffside,tmflags(a2)	;check bit 4 of offset 30 (currently offside)
+	btst	#tmfoside,tmflags(a2)	;check bit 4 of offset 30 (currently offside)
 	bne.w	.dg11	;branch if set
 	cmp.w	(pucky).w,d2	;compare pucky to d2
 	bgt.w	.ug1	;branch if puck in defensive zone
@@ -1052,7 +1052,7 @@ asswingd	;asstab entry 8
 	bra.w	.z1
 .0
 	moveq	#$4C,d2	;slightly below top blue line (94 $4E)
-	btst	#tmfoffside,tmflags(a2)	;check bit 4 of offset 30
+	btst	#tmfoside,tmflags(a2)	;check bit 4 of offset 30
 	bne.w	.dg11	;branch if set
 	cmp.w	(pucky).w,d2	;compare pucky to d2
 	blt.w	.dg1	;branch if puck in defensive zone
@@ -1187,7 +1187,7 @@ asswingo	;asstab entry 9. Winger on offense: a random spot in the puck zone (.de
 	addq.w	#8,d2	;add 8 to d2 (d2 = 8)
 	cmp.w	#$56,d0	;compare top blue line with d0 (94 $58)
 	blt.w	.de2	;branch if in neutral zone
-	btst	#tmfoffside,tmflags(a2)	;check bit 4 of offset 30 (currently offside)
+	btst	#tmfoside,tmflags(a2)	;check bit 4 of offset 30 (currently offside)
 	;(C6FE Home, CA62 Away)
 	bne.w	.de2	;branch if set
 	addq.w	#8,d2	;add 8 to d2 (d2 = $10)
@@ -1425,7 +1425,7 @@ asscentero	;asstab entry $B. Center on offense: a random spot in the puck zone
 	addq.w	#8,d2	;set zone to 8
 	cmp.w	#$56,d0	;check opponents blue line (94 $58)
 	blt.w	.de2	;branch if in neutral zone
-	btst	#tmfoffside,tmflags(a2)	;Checks if currently offside
+	btst	#tmfoside,tmflags(a2)	;Checks if currently offside
 	;C6FE - Home
 	;CA62 - Away
 	bne.w	.de2	;branch if offside
@@ -1518,7 +1518,7 @@ assdefo	;asstab entry $C. Defenseman on offense. 95: back to assdefd at once whe
 	subq.b	#1,temp1(a3)	;sub 1 from temp1
 .noboost
 	moveq	#7,d0	;assdefd (94 2)
-	btst	#tmfoffside,tmflags(a2)	;check if team is offsides
+	btst	#tmfoside,tmflags(a2)	;check if team is offsides
 	bne.w	assreplace	;if so, assreplace
 	move.w	(pucky).w,d1	;move pucky into d1
 	btst	#pfgoal,pflags(a3)	;#pfgoal - check which net to score on
@@ -2483,7 +2483,7 @@ assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates 
 .nodec2
 	btst	#pfjoycon,pflags(a3)	;pfjoycon - check if controlled
 	bne.w	rtsskate	;jump if controlled
-	btst	#2,tmflags(a2)	;check bit 2 of $30(a2)
+	btst	#tmfmid,tmflags(a2)	;check bit 2 of $30(a2)
 	bne.w	.nodec22
 	tst.w	(puckc).w	;check if theres a puck carrier
 	bmi.w	.topuck	;jump if no puck carrier
@@ -2492,7 +2492,7 @@ assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates 
 	clr.w	temp3(a3)	;clear temp3
 .nodec22
 	bsr.w	skatetopuckinit	;the future puck spot itself (94 took the middle of it and the goal)
-	btst	#2,tmflags(a2)	;?? - doesn't seem to be set anywhere
+	btst	#tmfmid,tmflags(a2)	;?? - doesn't seem to be set anywhere
 	beq.w	.spdboost
 	btst	#pfgoal,pflags(a3)	;pfgoal
 	beq.w	.botshoot	;branch if bottom
@@ -3992,7 +3992,7 @@ a2offsides	;Offsides on a2 (AddPenalty $10) when his team is offside and the puc
 	beq.w	.1
 	adda.w	#tmsize,a0
 .1
-	btst	#tmfoffside,tmflags(a0)
+	btst	#tmfoside,tmflags(a0)
 	beq.w	.x
 	btst	#gmhl,(gmode).w
 	bne.w	.x

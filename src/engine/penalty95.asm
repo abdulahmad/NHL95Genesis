@@ -955,7 +955,7 @@ ChkOffsides	;Offsides: clear the flag of a team that is all back onside (.8), th
 	bmi.w	.2
 	cmp.w	Ypos(a0),d0
 	bge.w	.2
-	bset	#tmfoffside,tmflags(a2)
+	bset	#tmfoside,tmflags(a2)
 	rts
 .2
 	adda.w	#SCstruct,a0
@@ -980,7 +980,7 @@ ChkOffsides	;Offsides: clear the flag of a team that is all back onside (.8), th
 	bmi.w	.7
 	cmp.w	Ypos(a0),d0
 	ble.w	.7
-	bset	#tmfoffside,tmflags(a2)
+	bset	#tmfoside,tmflags(a2)
 	rts
 .7
 	adda.w	#SCstruct,a0

@@ -1450,7 +1450,7 @@ TimeoutMenu	;Pause menu TIMEOUT for team a2: drop the item (menuitemoffset $23A:
 	subq.w	#1,(menuitem+2).w
 	bsr.w	ClearMenuBox
 	move.l	#$23A,(menuitemoffset).w
-	bset	#2,tmflags(a2)
+	bset	#tmftimeout,tmflags(a2)
 	move.w	#0,(printfontset).w
 	bsr.w	printsmallz
 	String	CC_SetX,$10,CC_SetY,$E,'Timeout',CC_SetX,$14,CC_SetY,$10	;$FD x, $FC y

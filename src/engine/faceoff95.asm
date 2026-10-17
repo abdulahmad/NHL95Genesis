@@ -122,7 +122,7 @@ puckfaceoff	;Puck assignment 3: start a faceoff. Shootout: stop the puck, assign
 	bclr	#1,(gmode2).w
 	tst.w	(gameclock).w
 	beq.w	PeriodOver
-	btst	#gmend,(gmode).w
+	btst	#gmeog,(gmode).w
 	bne.w	PeriodOver
 	cmpi.w	#3,(gsp).w
 	bne.w	.2
@@ -138,7 +138,7 @@ puckfaceoff	;Puck assignment 3: start a faceoff. Shootout: stop the puck, assign
 	bls.w	.returngoalies
 	cmpi.w	#$3C,(gameclock).w
 	blt.w	.returngoalies
-	bclr	#7,(sflags3).w
+	bclr	#sf3fosong,(sflags3).w
 	beq.w	.returngoalies
 	btst	#gmclock,(gmode).w
 	beq.w	.returngoalies
@@ -154,8 +154,8 @@ puckfaceoff	;Puck assignment 3: start a faceoff. Shootout: stop the puck, assign
 	st	temp2(a3)
 	tst.w	(OptLine).w
 	bne.w	WaitForFaceoffLineChanges
-	bclr	#tmflc,(tmstruct+tmflags).w
-	bclr	#tmflc,(AwShots+tmflags).w
+	bclr	#tmflcm,(tmstruct+tmflags).w
+	bclr	#tmflcm,(AwShots+tmflags).w
 	movea.w	#(SortCords-M68K_RAM),a0
 	moveq	#$B,d0
 .clearlcmloop

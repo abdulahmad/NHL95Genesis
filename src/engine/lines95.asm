@@ -23,7 +23,7 @@ SetLCmode	;Open the line change box for team of player a3 (loadTeamStruct): not 
 	btst	#4,(sflags7).w
 	bne.w	rtslc
 	jsr	(loadTeamStruct).l
-	bset	#tmflc,tmflags(a2)
+	bset	#tmflcm,tmflags(a2)
 	bne.w	rtslc
 	btst	#3,(sflags5).w
 	bne.w	.0
@@ -53,7 +53,7 @@ SetLCmode2	;a2 = team struct. Draw the line change box (box, Framer) with the li
 	bsr.w	getlchoice
 	tst.w	d0
 	bmi.w	.next
-	btst	#tmflc,tmflags(a2)
+	btst	#tmflcm,tmflags(a2)
 	bne.w	.pr
 	cmp.w	$2E(a2),d4
 	bne.w	.up
@@ -200,7 +200,7 @@ lcfound	;Line d2 was picked: store it ($2E), set tmline and the players (SetPers
 	bclr	#pf2lcm,pflags2(a3)
 	bset	#pfjoycon,pflags(a3)
 	jsr	(loadTeamStruct).l
-	bclr	#tmflc,tmflags(a2)
+	bclr	#tmflcm,tmflags(a2)
 	move.w	d0,tmline(a2)
 	jsr	(setpersonel).l
 

@@ -247,7 +247,7 @@ StartPer	;Start a period: reset stack, rink and clock, face off, run the game lo
 .reg
 	cmpi.w	#2,(gsp).w
 	bge.w	.loop
-	bset	#7,(sflags3).w	;set for periods 1 and 2 only
+	bset	#sf3fosong,(sflags3).w	;set for periods 1 and 2 only
 .loop
 	bra.w	Gameloop
 
