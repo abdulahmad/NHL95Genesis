@@ -388,14 +388,17 @@ GoalieReadySPA	;d1 = the goalie ready SPA: SPAgready near the puck (within $56 i
 	move.w	(sp)+,d0
 	rts
 
-dirtab	;X / Y acc speed for each direction 0-7. runspeed $F0 ($A9 = runspeed / sqrt(2); 94 $C8 / $8D)
-	dc.w	0,$F0,$A9,$A9,$F0,0,$A9,$FF57
-	dc.w	0,$FF10,$FF57,$FF57,$FF10,0,$FF57,$A9
+runspeed	equ	240	;acc speed equate for dirtab (94 200)
+runspeed2	equ	228	;acc speed equate for dirtab2
+
+dirtab	;X / Y acc speed for each direction 0-7 (runspeed / sqrt(2) = runspeed*1000/1414; 94 $C8 / $8D)
+	dc.w	0,runspeed,runspeed*1000/1414,runspeed*1000/1414,runspeed,0,runspeed*1000/1414,-runspeed*1000/1414
+	dc.w	0,-runspeed,-runspeed*1000/1414,-runspeed*1000/1414,-runspeed,0,-runspeed*1000/1414,runspeed*1000/1414
 	dc.w	0,0
 
-dirtab2	;The same with runspeed $E4 / $A1
-	dc.w	0,$E4,$A1,$A1,$E4,0,$A1,$FF5F
-	dc.w	0,$FF1C,$FF5F,$FF5F,$FF1C,0,$FF5F,$A1
+dirtab2	;The same with runspeed2
+	dc.w	0,runspeed2,runspeed2*1000/1414,runspeed2*1000/1414,runspeed2,0,runspeed2*1000/1414,-runspeed2*1000/1414
+	dc.w	0,-runspeed2,-runspeed2*1000/1414,-runspeed2*1000/1414,-runspeed2,0,-runspeed2*1000/1414,runspeed2*1000/1414
 	dc.w	0,0
 
 MaxSpeed	;Max speed values for each rating level 0-$F: ((n+20)*325)^2 (94 275)

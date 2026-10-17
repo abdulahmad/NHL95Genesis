@@ -555,13 +555,13 @@ dopass	;Pass the puck from a3 in passdir: pick the receiver (passtoa0), set the 
 	muls.w	(passspeed).w,d1
 	moveq	#$A,d2
 	asl.l	d2,d1
-	divs.w	#$B40,d1
+	divs.w	#runspeed*12,d1
 	add.w	Yvel(a3),d1
 	move.w	d1,(puckvy).w
 	move.w	(a0,d0.w),d1
 	muls.w	(passspeed).w,d1
 	asl.l	d2,d1
-	divs.w	#$B40,d1
+	divs.w	#runspeed*12,d1
 	add.w	Xvel(a3),d1
 	move.w	d1,(puckvx).w
 	move.w	#$1000,d0
