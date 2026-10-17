@@ -693,7 +693,7 @@ clockcont_0	;The clock ran out in overtime / the game: game over handling, the S
 	bset	#gmclock,(gmode).w	;gmclock: stop clock
 	bset	#gmeog,(gmode).w	;set at end of game
 	jsr	(ClearPenalties).l
-	move.w	#4,d0	;PenEOG
+	move.w	#PenEOG,d0
 	jmp	AddPenalty2
 .9
 	btst	#7,(sflags9).w
