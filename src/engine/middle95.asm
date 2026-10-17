@@ -2000,7 +2000,7 @@ RestoreBenchEnergy	;Once a second (periodicevents): unless OptLine: bench player
 	bsr.w	.notinprog
 	lea	tmsize(a2),a2	;team 2 (tmsize)
 .notinprog
-	moveq	#$32,d0	;(maxros-1)*2
+	moveq	#(maxros-1)*2,d0	;(maxros-1)*2
 .b0
 	cmpi.w	#$FFFE,tmpdst(a2,d0.w)
 	bne.w	.next
@@ -2016,7 +2016,7 @@ RestoreBenchEnergy	;Once a second (periodicevents): unless OptLine: bench player
 
 RestoreTeamEnergy	;Unreferenced. A2 = team: max energy (tmpde $1000) for every player. The skip needs tmpdst to be both -3 and
 	;-4, so it never happens
-	moveq	#$32,d0	;(MaxRos-1)*2
+	moveq	#(maxros-1)*2,d0	;(MaxRos-1)*2
 .loop
 	cmpi.w	#$FFFD,tmpdst(a2,d0.w)
 	bne.w	.0

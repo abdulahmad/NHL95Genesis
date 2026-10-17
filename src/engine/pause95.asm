@@ -144,7 +144,7 @@ RedrawMenu	;Print the menu items and fade in. Called from the menu items below (
 HandleMenuInput	;Pause menu pad d1: right / left move between the three tabs (menucursor: INFO, STATS, PAUSE; SetInfoMenuItems ...)
 	;down / up the item, C (bit 5) runs the item routine (seta2 first); ne = stay in the menu (PlayGame sets sflags9 bit 3 to leave). With
 	;sflags9 bit 5 only ShowPenaltyMessages runs
-	btst	#7,d1	;sbut
+	btst	#sbut,d1	;sbut
 	bne.w	.flip
 	btst	#5,(sflags9).w
 	beq.w	.0
@@ -168,17 +168,17 @@ HandleMenuInput	;Pause menu pad d1: right / left move between the three tabs (me
 .3
 	bra.w	.12
 .4
-	btst	#1,d1	;dbut
+	btst	#dbut,d1	;dbut
 	beq.w	.up
 	addq.w	#1,(menuitem).w	;next lower item
 	bra.w	UpdateMenuSelection
 .up
-	btst	#0,d1	;ubut
+	btst	#ubut,d1	;ubut
 	beq.w	.sel
 	subq.w	#1,(menuitem).w	;next higher item
 	bra.w	UpdateMenuSelection
 .sel
-	btst	#5,d1	;cbut
+	btst	#cbut,d1	;cbut
 	bne.w	.7
 	beq.w	.flip
 .7

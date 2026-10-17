@@ -1410,7 +1410,7 @@ getBAplayerInfo	;Keep the breakaway shooter, team, goalie and checker for the pe
 	move.w	d0,(BA_Sktr_SCnum).w
 	movea.l	#SortCords,a1
 	move.w	d0,d3
-	asl.w	#7,d3	;scsize
+	asl.w	#scsize,d3	;scsize
 	move.w	#0,(BA_Team).w
 	btst	#6,pflags(a1,d3.w)
 	beq.w	.2
@@ -1419,7 +1419,7 @@ getBAplayerInfo	;Keep the breakaway shooter, team, goalie and checker for the pe
 	move.w	#0,(BA_Skater_Offset).w
 	move.b	pnum(a1,d3.w),(BA_Skater_Offset+1).w
 	move.w	d1,(BA_Goalie_SCnum).w
-	asl.w	#7,d1	;scsize
+	asl.w	#scsize,d1	;scsize
 	move.w	#0,(BA_Goalie_Offset).w
 	move.b	pnum(a1,d1.w),(BA_Goalie_Offset+1).w
 	move.w	#0,(BA_Checker_Offset).w

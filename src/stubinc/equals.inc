@@ -12,10 +12,37 @@ VBLANK_PENDING equ 7
 FIFO_FULL equ 8
 FIFO_EMPTY equ 9
 ; ----------------------------------
+; ------------- game equates named like NHLPA93Genesis ram93.asm -------------
+MaxSprites equ 64		;max sprites during game (64 because 32 col mode)
+
+;joystick button equates (bit numbers)
+ubut equ 0		;up
+dbut equ 1		;down
+lbut equ 2		;left
+rbut equ 3		;right
+bbut equ 4		;b button
+cbut equ 5		;c button
+abut equ 6		;a button
+sbut equ 7		;start button
+osflag equ 20000		;flag for off screen graphic ($4E20)
+
+goalline equ 176		;distance from blue line to goalline
+Blueline equ $58		;distance from center line to blueline
+Sideline equ $88		;distance from center to side boards
+replaystart equ $FFFF0000		;start of ram area for replay frames, also the start of RAM
+scsize equ 7		;2 to this power indicates ram needed for each sortobj
+jps equ 24		;jiffys per second
+jiffy equ $10000/jps
+maxros equ 26		;roster slots per team in the team structure
+ifcgl equ 0		;iflags: crossed goalline
+ifdir equ 1		;iflags: 1=must cross top line
+ifok equ 2		;iflags: icing
+tmflcc equ 0		;tmflags: line change on
+; ----------------------------------
 ; Structure and flag equates. Empty until the first segment confirms the 95 values.
 
 ;the sort object structure (SCstruct = $80 bytes each, from SortCords). updateplayers confirms these 95 values
-SCstruct equ $80
+SCstruct equ 1<<scsize
 puckscnum equ $E	;the puck sort object (SortCords + puckscnum * SCstruct = puckx); the shadow is puckscnum+1
 Xpos equ $0
 attribute equ $4		;frame attribute switch bits

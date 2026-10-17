@@ -75,7 +75,7 @@ Stop4Pen	;a0 = Penaltylist penalty + 2. Stop the clock, set the faceoff spot fro
 	movea.w	#(SortCords-M68K_RAM),a3
 	move.b	-1(a0),d1
 	ext.w	d1
-	asl.w	#7,d1	;scsize
+	asl.w	#scsize,d1	;scsize
 	adda.w	d1,a3
 	move.w	#$258,d1	;600
 	btst	#7,pflags(a3)
@@ -297,7 +297,7 @@ InProgress	;Ref in progress: update the graphics, stats and penalty information
 	movem.l	a3,-(sp)
 	clr.w	d1
 	move.b	1(a0),d1
-	asl.w	#7,d1	;scsize
+	asl.w	#scsize,d1	;scsize
 	movea.w	#(SortCords-M68K_RAM),a3
 	adda.w	d1,a3
 	tst.w	position(a3)
@@ -331,7 +331,7 @@ InProgress	;Ref in progress: update the graphics, stats and penalty information
 	move.b	(a0),(a4)+	;penalty
 	clr.w	d1
 	move.b	1(a0),d1
-	asl.w	#7,d1	;scsize
+	asl.w	#scsize,d1	;scsize
 	movea.w	#(SortCords-M68K_RAM),a3
 	adda.w	d1,a3
 	clr.w	d0
@@ -364,7 +364,7 @@ InProgress	;Ref in progress: update the graphics, stats and penalty information
 .st
 	move.w	d2,tmpdst(a2,d0.w)
 	andi.w	#$EFFF,d2
-	moveq	#$34,d1	;(MaxRos-1)*2+2
+	moveq	#(maxros-1)*2+2,d1	;(MaxRos-1)*2+2
 .ctop
 	subq.w	#2,d1	;same time on the other team
 	bmi.w	.8
@@ -423,7 +423,7 @@ InProgress	;Ref in progress: update the graphics, stats and penalty information
 
 coinsearch	;93 a2 = team. Count the players kept off the ice by penalties (coincidental penalties)
 	moveq	#6,d1
-	moveq	#$32,d0	;(MaxRos-1)*2
+	moveq	#(maxros-1)*2,d0	;(MaxRos-1)*2
 .loop
 	tst.w	tmpdst(a2,d0.w)
 	ble.w	.nap
@@ -448,7 +448,7 @@ updatepentime	;Update the time remaining on all penalized players, once a second
 	bne.w	rtspen
 	sub.w	d7,(Penaltytimer).w
 	bpl.w	rtspen
-	addi.w	#$18,(Penaltytimer).w	;jps
+	addi.w	#jps,(Penaltytimer).w	;jps
 	bset	#6,(sflags3).w	;one second tick
 	jsr	(chkatop).l
 	jsr	(updatePPTeamTime).l
@@ -533,8 +533,8 @@ releasepl	;The player's penalty time is up, so let him out (if appropriate). a2 
 	lsr.w	#1,d3
 	move.w	tmap(a2),d1
 	addq.w	#1,tmap(a2)
-	bset	#0,(tmstruct+tmflags).w	;home tmflags: tmflcc
-	bset	#0,(AwShots+tmflags).w	;visitors tmflags: tmflcc
+	bset	#tmflcc,(tmstruct+tmflags).w	;home tmflags: tmflcc
+	bset	#tmflcc,(AwShots+tmflags).w	;visitors tmflags: tmflcc
 	movea.l	#priolist,a0
 	tst.w	tmgoalie(a2)
 	bpl.w	.gin
@@ -899,9 +899,9 @@ clrTmPdst	;Set the 26 tmpdst words of team a0 to -2 (bench), then -1
 
 puckIChk	;Icing check: once the puck is loose (puckc negative) past the goal line ($10B, 94 $108) set iflags bit 0
 	;(ifcgl), unless it went in the crease ($2C either side), which clears bit 2 (ifok)
-	btst	#2,(iflags).w	;#ifok
+	btst	#ifok,(iflags).w	;#ifok
 	beq.w	.0
-	btst	#0,(iflags).w	;#ifcgl - if crossed goal line
+	btst	#ifcgl,(iflags).w	;#ifcgl - if crossed goal line
 	bne.w	.0
 	tst.w	(puckc).w
 	bpl.w	.0
@@ -921,10 +921,10 @@ puckIChk	;Icing check: once the puck is loose (puckc negative) past the goal lin
 	bgt.w	.set
 	cmpi.w	#$FFD4,(puckx).w	;-$2C, the edge of the crease
 	blt.w	.set
-	bclr	#2,(iflags).w	;#ifok cleared
+	bclr	#ifok,(iflags).w	;#ifok cleared
 	rts
 .set
-	bset	#0,(iflags).w	;#ifcgl
+	bset	#ifcgl,(iflags).w	;#ifcgl
 	rts
 
 ChkOffsides	;Offsides: clear the flag of a team that is all back onside (.8), then when

@@ -413,7 +413,7 @@ DrawPlayoffSprite	;The PlayoffSprite sprite at playoffspritex / playoffspritey i
 
 SetSframe	;Draw one sprite frame. a0 = framelist, d0/d1 = x/y cords, d2 = frame, d3 = start char
 	;a6 = Satt pointer, d6 = link counter. 95 builds the attribute word from the frame entry's flags and char
-	cmp.w	#$40,d6	;MaxSprites
+	cmp.w	#MaxSprites,d6	;MaxSprites
 	bge.w	.2
 	movem.l	d0-d5/a0,-(sp)
 	adda.l	4(a0),a0
@@ -440,7 +440,7 @@ SetSframe	;Draw one sprite frame. a0 = framelist, d0/d1 = x/y cords, d2 = frame,
 	move.w	6(a0),(a6)
 	add.w	d0,(a6)+
 	addq.w	#1,d6
-	cmp.w	#$40,d6	;MaxSprites
+	cmp.w	#MaxSprites,d6	;MaxSprites
 	beq.w	.ex
 	addq.w	#8,a0
 	dbf	d4,.0

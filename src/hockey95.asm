@@ -214,7 +214,7 @@ StartPer	;Start a period: reset stack, rink and clock, face off, run the game lo
 	bset	#sf2drec,(sflags2).w	;sf2drec: don't record
 	bclr	#sfwrap,(sflags).w	;sfwrap: reset replay stuff
 	move.w	#$FFFF,(lastsfx).w
-	move.l	#M68K_RAM,(recbpr).w	;replaystart
+	move.l	#replaystart,(recbpr).w	;replaystart
 	move.w	(vcount).w,(oldvcount).w
 	bsr.w	DoGameFrame	;run two frames before the loop
 	move.w	#$FFFF,(palcount).w
@@ -278,7 +278,7 @@ DoGameFrame	;Wait for at least one vblank, then run one frame of game logic. in 
 	jsr	(clockcont).l
 	sub.w	d7,(lldisp).w	;count down for screen updates
 	bpl.w	.frame
-	addi.w	#$18,(lldisp).w	;jps: only update once per second
+	addi.w	#jps,(lldisp).w	;jps: only update once per second
 	jsr	(ChkGoalies).l
 	jsr	(UpdateCwdExcite).l
 	jsr	(CheckLateGameSong).l
