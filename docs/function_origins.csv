@@ -272,7 +272,7 @@ sound95.asm,$069270,12868,sfx_oooh_pcm,data,sound94,name
 sound95.asm,$06C4B4,9550,sfx_crowdboo_pcm,data,sound94,name
 sound95.asm,$06EA02,8018,sfx_check_pcm,data,sound94,name
 sound95.asm,$070954,12000,sfx_crowdcheer_pcm,data,sound94,name
-sound95.asm,$073834,14976,sfx_id_0E_pcm,data,sound94,name
+sound95.asm,$073834,14976,sfx_bglass_pcm,data,sound94,name
 sound95.asm,$0772B4,1200,sfx_playerwall_pcm,data,sound94,name
 sound95.asm,$077764,2608,sfx_check2_pcm,data,sound94,name
 sound95.asm,$078194,1366,sfx_hithigh_pcm,data,sound94,name

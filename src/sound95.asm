@@ -2222,7 +2222,7 @@ pcm_sample_table	;(sample address, 0) for PCM patches $60-$6E (lea in handle_com
 	dc.l	sfx_crowdboo_pcm,0		;patch $6B
 	dc.l	sfx_oooh_pcm,0		;patch $6C
 	dc.l	sfx_crowdcheer_pcm,0		;patch $6D
-	dc.l	sfx_id_0E_pcm,0		;patch $6E
+	dc.l	sfx_bglass_pcm,0		;patch $6E
 sfx_shotbh_pcm
 	incbin	..\Extracted\NHL95\Sound\sfx_shotbh_pcm.bin	;sample 2: shotbh
 	even
@@ -2230,7 +2230,7 @@ sfx_pass_pcm
 	incbin	..\Extracted\NHL95\Sound\sfx_pass_pcm.bin	;sample 1: pass
 	dc.b	$FF			;pad: retail leftover byte
 sfx_oooh_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_oooh_pcm.bin	;sample 12: oooh, sfx_id_0D, sfx_id_0E
+	incbin	..\Extracted\NHL95\Sound\sfx_oooh_pcm.bin	;sample 12: oooh, sfx_oooh2, sfx_bglass
 	even
 sfx_crowdboo_pcm
 	incbin	..\Extracted\NHL95\Sound\sfx_crowdboo_pcm.bin	;sample 11: crowdboo
@@ -2241,11 +2241,11 @@ sfx_check_pcm
 sfx_crowdcheer_pcm
 	incbin	..\Extracted\NHL95\Sound\sfx_crowdcheer_pcm.bin	;sample 13: crowdcheer, homewin
 	even
-sfx_id_0E_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_id_0E_pcm.bin	;sample 14: sfx_id_0E
+sfx_bglass_pcm
+	incbin	..\Extracted\NHL95\Sound\sfx_bglass_pcm.bin	;sample 14: sfx_bglass
 	dc.b	$FF			;pad: retail leftover byte
 sfx_playerwall_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_playerwall_pcm.bin	;sample 6: playerwall, sfx_id_21-23
+	incbin	..\Extracted\NHL95\Sound\sfx_playerwall_pcm.bin	;sample 6: playerwall, sfx_playerwall2-23
 	even
 sfx_check2_pcm
 	incbin	..\Extracted\NHL95\Sound\sfx_check2_pcm.bin	;sample 4: check2, check4
