@@ -8,7 +8,7 @@
 - `src/nhl95.asm` fills to 2 MB. Includes placed after that fill start at $200000.
 - `src/shortcalls.inc` (included last, emits nothing) stops the build if `Begin` moves out of reach of the startup `bra.w`; `build95.bat` then prints the fix.
 - `NumTeams` / `NumPlayoffTeams` drive the team tables, the save RAM blocks and their length checks (below).
-- `CHECKSUM=0` skips the boot check (`build:dev`); `REV` picks the revision.
+- `CHECKSUM=0` skips the boot check (`build:dev`). There is a single revision.
 
 ## Short jumps
 
@@ -69,7 +69,7 @@ Work RAM that mirrors a save block (`RosterTable`, `CreatedList`, `RosterRatings
 export WINEDEBUG=-all
 node tools/prebuild.js retail
 export NHL_PREBUILD_DONE=1
-wine cmd /c "set rev=0&& set checksum=1&& build95.bat"
+wine cmd /c "set checksum=1&& build95.bat"
 node tools/fixopcodes.js "output/nhl95 .lst" output/nhl95.bin
 node tools/fixrom.js output/modified_nhl95.bin
 ```

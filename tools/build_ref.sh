@@ -13,6 +13,6 @@ node tools/extractAssets94.js lst/nhl94.bin
 mkdir -p output
 (cd src && WINEDEBUG=-all wine ../assembler/Assembler.exe /p /m /g \
   /o d- /o s- /o r+ /o l+ /o l. /o ow+ /o op- /o os+ /o oz+ /o omq- /o oaq+ /o osq+ \
-  /e REV=0 /e CHECKSUM=1 'nhl94.asm,..\output\nhl94.bin,..\output\nhl94,..\output\nhl94')
+  /e CHECKSUM=1 'nhl94.asm,..\output\nhl94.bin,..\output\nhl94,..\output\nhl94')
 node tools/fixopcodes.js "output/nhl94 .lst" output/nhl94.bin
 node tools/verifyRom.js output/modified_nhl94.bin lst/nhl94.bin

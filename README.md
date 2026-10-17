@@ -53,8 +53,8 @@ Full ROM builds assemble `src/nhl95.asm` with `build95.bat`. The listing is `out
 
 | Script | Flags | Result |
 | --- | --- | --- |
-| `npm run build:retail` | `rev=0`, `checksum=1` | Retail, then a byte compare to `lst/nhl95.bin`. |
-| `npm run build:dev` | `rev=0`, `checksum=0` | No validation and no retail verify. Use this while editing. |
+| `npm run build:retail` | `checksum=1` | Retail, then a byte compare to `lst/nhl95.bin`. |
+| `npm run build:dev` | `checksum=0` | No validation and no retail verify. Use this while editing. |
 
 `build:dev` (`checksum=0`): `RegionOK` skips `jsr ValidationRoutine` (3 `nop`s instead) and the header checksum is 0, so changed code still boots. With `checksum=1` the validation routine sums the ROM, and any change turns the screen red.
 
