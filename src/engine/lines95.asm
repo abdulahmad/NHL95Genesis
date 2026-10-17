@@ -1002,7 +1002,7 @@ ChkShotStat	;Determine if a shot was taken and add it to the stats (crowd, team,
 	addi.w	#$A,(CwdExciteLvl).w
 	move.w	(shotplayer).w,d0
 .addShot
-	asl.w	#7,d0	;scsize
+	asl.w	#scsize,d0	;scsize
 	movea.w	#(SortCords-M68K_RAM),a3
 	adda.w	d0,a3
 	jsr	(loadTeamStruct).l

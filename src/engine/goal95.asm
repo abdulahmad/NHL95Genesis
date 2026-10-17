@@ -259,8 +259,8 @@ PenGoalStuff	;Do this stuff after a goal: a1 = scored on team, a2 = scoring team
 	bset	#0,(sflags9).w
 	addq.w	#1,$24(a1)
 	addq.w	#1,2(a2)
-	bset	#0,(tmstruct+tmflags).w	;home tmflags: tmflcc
-	bset	#0,(AwShots+tmflags).w	;visitors tmflags: tmflcc
+	bset	#tmflcc,(tmstruct+tmflags).w	;home tmflags: tmflcc
+	bset	#tmflcc,(AwShots+tmflags).w	;visitors tmflags: tmflcc
 .ex
 	movem.l	(sp)+,d0-d2/a0
 	rts

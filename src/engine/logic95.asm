@@ -2375,7 +2375,7 @@ assnearest	;asstab entry $E. The player nearest the puck without it. 95: skates 
 	clr.l	Yvel(a2)	;Calculated future Ypos of the player closest to the puck
 	move.w	(puckc).w,d1	;move puck carrier SCnum into d1
 	bmi.w	.np	;branch if no puck carrier
-	asl.w	#7,d1	;scsize
+	asl.w	#scsize,d1	;scsize
 	movea.w	#(SortCords-M68K_RAM),a1	;Move SortCords into a1
 	adda.w	d1,a1	;use d1 as offset
 	move.b	pflags(a1),d0	;pflags of puck carrier

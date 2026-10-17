@@ -509,7 +509,7 @@ restoreteams	;Put both teams' rosters on the bench (tmap 6, every tmpdst -2)
 	adda.w	#tmsize,a2
 .r
 	move.w	#6,tmap(a2)	;tmap: no players in pen. box
-	moveq	#$32,d0	;(maxros-1)*2
+	moveq	#(maxros-1)*2,d0	;(maxros-1)*2
 .1
 	move.w	#$FFFE,tmpdst(a2,d0.w)
 	subq.w	#2,d0

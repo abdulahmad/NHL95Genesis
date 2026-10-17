@@ -742,7 +742,7 @@ GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the 
 	beq.w	.15
 	bra.w	.18
 .15
-	btst	#2,d1	;lbut
+	btst	#lbut,d1	;lbut
 	beq.w	.16
 	bra.w	.17
 .16

@@ -435,7 +435,7 @@ addframe	;a3 = sort cord object. Project it with find3d, then addframe2. a5 = dm
 	move.w	Zpos(a3),d2	;Zpos into d2
 	bmi.w	.exit	;exit if Zpos minus
 	bsr.w	find3d	;get position on screen
-	cmp.w	#$4E20,d1	;#osflag into d1
+	cmp.w	#osflag,d1	;#osflag into d1
 	beq.w	.exit	;exit if Sort Cord is off screen
 	bsr.w	addframe2
 .exit
@@ -990,7 +990,7 @@ VBlank	;Main vblank code for game play (vbint target). DumpSprites when dfok is 
 	bne.w	.soclock
 	tst.w	(gameclock).w
 	beq.w	.c
-	subi.w	#$AAA,(gameclock+2).w	;jiffy
+	subi.w	#jiffy,(gameclock+2).w	;jiffy
 	bcc.w	.c
 	bset	#dfclock,(disflags).w
 	subq.w	#1,(gameclock).w

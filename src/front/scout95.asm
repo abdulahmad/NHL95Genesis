@@ -184,11 +184,11 @@ ScoutingReport	;Pregame scouting report: the Ron Barr picture, the text box and 
 	move.w	#$10E,(matchuptimer).l
 .8
 	bsr.w	PrintAdvantageMarks	;advantage marks
-	btst	#7,d1	;sbut
+	btst	#sbut,d1	;sbut
 	bne.w	.exit
 	cmpi.w	#$10E,(matchuptimer).w
 	beq.w	.9
-	btst	#5,d1	;cbut
+	btst	#cbut,d1	;cbut
 	beq.w	.10
 	move.w	#$7F00,(screentimer).w
 	move.l	#$E10,(scoutwait).w
@@ -198,7 +198,7 @@ ScoutingReport	;Pregame scouting report: the Ron Barr picture, the text box and 
 	bsr.w	PageMatchup
 	bra.w	.12
 .10
-	btst	#6,d1	;abut
+	btst	#abut,d1	;abut
 	beq.w	.11
 	move.w	#$7F00,(screentimer).w
 	move.l	#$E10,(scoutwait).w
@@ -208,7 +208,7 @@ ScoutingReport	;Pregame scouting report: the Ron Barr picture, the text box and 
 	bra.w	.12
 .11
 	clr.w	(asv).w
-	btst	#1,d1	;dbut
+	btst	#dbut,d1	;dbut
 	beq.w	.12
 	st	(asv).w	;down: type the rest without delays
 .12

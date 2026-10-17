@@ -577,7 +577,7 @@ CCStart	;Player a3 is checking player a2. Holds go to holdcheck, SPAsweepchk to 
 	jsr	(checkagr).l
 	cmp.w	#4,d0
 	bhi.w	rtspuck
-	move.b	(VDP_CNTR).l,d0	;HVcount
+	move.b	(HVcount).l,d0	;HVcount
 	andi.w	#2,d0
 	addi.w	#$16,d0	;#PenCharging
 	jsr	(PenShotChk).l	;penalty shot on a breakaway
@@ -586,7 +586,7 @@ CCStart	;Player a3 is checking player a2. Holds go to holdcheck, SPAsweepchk to 
 	jsr	(checkagr).l
 	cmp.w	#3,d0
 	bhi.w	.6
-	move.b	(VDP_CNTR).l,d0	;HVcount
+	move.b	(HVcount).l,d0	;HVcount
 	andi.w	#2,d0
 	addi.w	#$1A,d0	;#PenRoughing2
 	jsr	(PenShotChk).l	;penalty shot on a breakaway
