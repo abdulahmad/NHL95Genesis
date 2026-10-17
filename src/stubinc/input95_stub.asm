@@ -41,6 +41,7 @@ lineinput = $8A202
 doinput_goaliedive = $8B6F8	;the goalie dive on A
 getGoalieSCnum = $8B974
 dirtab = $8B9D6
+runspeed = 240
 SetSPA = $8BC9A
 SPAfaceoff = $1B36
 SPAfaceoffr = $1B60
