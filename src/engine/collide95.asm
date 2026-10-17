@@ -203,7 +203,7 @@ wallcollb	;Check for puck over wall. a3 = object, d0/d1 = cos/sin of the wall. N
 	asl.w	#scsize,d0	;#scsize
 	movea.w	#(SortCords-M68K_RAM),a3
 	adda.w	d0,a3
-	move.l	#6,d0	;#PenOOP
+	move.l	#PenOOP,d0
 	jsr	(AddPenalty2).l
 	movea.l	(sp)+,a3
 .3
@@ -579,7 +579,7 @@ CCStart	;Player a3 is checking player a2. Holds go to holdcheck, SPAsweepchk to 
 	bhi.w	rtspuck
 	move.b	(HVcount).l,d0	;HVcount
 	andi.w	#2,d0
-	addi.w	#$16,d0	;#PenCharging
+	addi.w	#PenCharging,d0
 	jsr	(PenShotChk).l	;penalty shot on a breakaway
 	jmp	(AddPenalty).l
 .5
@@ -588,7 +588,7 @@ CCStart	;Player a3 is checking player a2. Holds go to holdcheck, SPAsweepchk to 
 	bhi.w	.6
 	move.b	(HVcount).l,d0	;HVcount
 	andi.w	#2,d0
-	addi.w	#$1A,d0	;#PenRoughing2
+	addi.w	#PenRoughing,d0
 	jsr	(PenShotChk).l	;penalty shot on a breakaway
 	jsr	(AddPenalty).l
 .6

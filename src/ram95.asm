@@ -250,6 +250,37 @@ TeamBlockMaps	equ	$FFFFBF58	;Map words of the home and visitor team blocks (setu
 teamblocksmapptr	equ	$FFFFBFC8	;Address of the team blocks map
 teamblockwidth	equ	$FFFFBFCC	;Team block width in chars
 PenBuf	equ	$FFFFBFCE	;94 $FFFFC3A4. New penalties: player byte pairs, 0 ends
+; Penalty numbers (word offsets into Penaltylist) for AddPenalty
+PenEOP	equ	$2
+PenEOG	equ	$4
+PenOOP	equ	$6
+PenGhold	equ	$8
+PenWhistle	equ	$A
+PenIcing	equ	$C
+PenGoal	equ	$E
+PenOffsides	equ	$10
+PenRoughing2	equ	$12
+PenNoText	equ	$14
+PenCharging	equ	$16
+PenSlashing	equ	$18
+PenRoughing	equ	$1A
+PenCrossChk	equ	$1C
+PenHooking	equ	$1E
+PenTripping	equ	$20
+PenInterference	equ	$22
+PenHolding	equ	$24
+PenFighting	equ	$26
+PenFighting2	equ	$28
+PenInst	equ	$2A
+PenDelay	equ	$2C
+PenHookingPS	equ	$2E
+PenTrippingPS	equ	$30
+PenGhold2	equ	$32
+PenInterferencePS	equ	$34
+PenRoughingPS	equ	$36
+PenChargingPS	equ	$38
+PenCrossChkPS	equ	$3A
+PenSlashingPS	equ	$3C
 Pencntdwn	equ	$FFFFC010	;94 $FFFFC3E6
 Penaltytimer	equ	$FFFFC012	;94 $FFFFC3E8
 PBnum	equ	$FFFFC014	;94 $FFFFC3EA. Players in the penalty boxes: home in the high nibble, away in the low
