@@ -478,7 +478,7 @@ SeasonTeams	equ	$FFFFD1DC	;Season team list (BuildSeasonTeamList)
 matchup	equ	$FFFFD262	;94 $FFFFD598. PeriodStatsScreen: 0 goals, else shots
 scoutunused	equ	$FFFFD264	;94 $FFFFD59A. Cleared by ScoutingReport, never read
 matchuphome	equ	$FFFFD266	;94 $FFFFD59C. The home player of the matchup
-matchupvis	equ	$FFFFD268	;94 $FFFFD59E. The visitors player of the matchup; also the scroll limit of GameStatisticsScreen
+matchupvis	equ	$FFFFD268	;94 $FFFFD59E. The visitors player of the matchup; also the scroll limit of StatsReport
 homerating	equ	$FFFFD26A	;94 $FFFFD5A0. The home rating of the matchup
 visrating	equ	$FFFFD26C	;94 $FFFFD5A2. The visitors rating of the matchup
 advframe	equ	$FFFFD26E	;94 $FFFFD5A4. Advantage marks step (PrintAdvantageMarks)
