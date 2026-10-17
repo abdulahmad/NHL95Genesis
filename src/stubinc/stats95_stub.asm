@@ -1,15 +1,15 @@
 ;	Segment build for stats95.asm: sets its origin and the outside routines and data it uses,
 ;	then includes stats95.asm on its own for checking against the ROM.
 
-	include	macros\genesis.mac	;String
+	include	macros\genesis.mac		;String
 ; region code
 SeasonSchedule = $8DD8
 	org	$920DE
 
 ; includes for stubs to replace removed code
-	include	stubinc\ports.inc	;IO_* / VDP_* ports
-	include	stubinc\equals.inc	;VDP status bits
-	include	ram95.asm		;RAM map
+	include	stubinc\ports.inc		;IO_* / VDP_* ports
+	include	stubinc\equals.inc		;VDP status bits
+	include	ram95.asm				;RAM map
 
 ; External addresses outside, read from lst/nhl95.bin.
 ZeroLong = $69A
@@ -65,7 +65,7 @@ TeamLogoBitmaps = $7D3F8
 GetPeriodTime = $7D4CA
 printbigz = $7D8D2
 printbig = $7D916
-seta2 = $7E4D6		;z80old95
+seta2 = $7E4D6						;z80old95
 GetPlayerCount = $838F2
 GetPlayerCountD7 = $83904
 ExitStatsScreen = $8546E
@@ -89,7 +89,7 @@ ReadStandings = $8F332
 GamesTodayGfx = $90360
 StandingsGfx = $91936
 GetRosterId = $96454
-GetRosterName = $9649E		;a1 = name String of player d0 of team d7 (season roster aware)
+GetRosterName = $9649E				;a1 = name String of player d0 of team d7 (season roster aware)
 TickTeamInjuries = $9F192
 Teamblocksmap = $142906
 ControllerBgMap = $164AC8

@@ -6,9 +6,11 @@
 
 
 
-PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; OptPlayMode nonzero or sflags11 bit 2).
-	;Called from Opening2 and PlayoffTreeScreen. Runs its own vblank and scrolls the tree a page ($70
-	;pixels) at a time. Returns when start is pressed (PlayoffScreenExit)
+PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout; OptPlayMode
+									;nonzero or sflags11 bit 2).
+									;Called from Opening2 and PlayoffTreeScreen. Runs its own vblank and
+									;scrolls the tree a page ($70 pixels) at a time. Returns when start is
+									;pressed (PlayoffScreenExit)
 	btst	#0,(gmode2).w
 	bne.s	rtsLineData
 	btst	#2,(sflags11).w
@@ -40,7 +42,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	moveq	#2,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
-	move.w	#1,d4	;the team block tiles from char 1
+	move.w	#1,d4					;the team block tiles from char 1
 	move.w	d4,(teamblocksmapptr).w
 	movea.l	#Teamblocksmap+8,a2
 	jsr	(DecompressGraphicsPlain).l
@@ -116,7 +118,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	dbf	d4,.3
 	jsr	(printz).l
 	String	-(TXPAL1+TXMAP1),0,0,0
-	cmpi.w	#7,(bosgames).w	;best of 7
+	cmpi.w	#7,(bosgames).w			;best of 7
 	beq.w	.5
 	clr.w	d4
 	move.b	(a0)+,d4
@@ -157,8 +159,8 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	jsr	(HandlePlayoffInput).l
 	bra.s	.wait
 
-HandlePlayoffInput	;Read the four pads: start leaves PlayoffScreen, right / left set the
-	;scroll step, then falls into UpdatePlayoffScroll
+HandlePlayoffInput					;Read the four pads: start leaves PlayoffScreen, right / left set the
+									;scroll step, then falls into UpdatePlayoffScroll
 	jsr	(ReadJoy1).l
 	move.w	d3,-(sp)
 	jsr	(ReadJoy2).l
@@ -177,8 +179,9 @@ HandlePlayoffInput	;Read the four pads: start leaves PlayoffScreen, right / left
 	beq.w	UpdatePlayoffScroll
 	move.w	#2,(PlayerScrollCtr).w
 
-UpdatePlayoffScroll	;Move the tree one step (PlayerScrollCtr) and stop on a page boundary ($70). The
-	;position is DispAttribCtr; playoffspritex is the sprite x offset while it is on screen
+UpdatePlayoffScroll					;Move the tree one step (PlayerScrollCtr) and stop on a page boundary
+									;($70). The position is DispAttribCtr; playoffspritex is the sprite x
+									;offset while it is on screen
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsLineData
 	add.w	(DispAttribCtr).w,d0
@@ -211,12 +214,13 @@ UpdatePlayoffScroll	;Move the tree one step (PlayerScrollCtr) and stop on a page
 	clr.w	(PlayerScrollCtr).w
 	rts
 
-PlayoffScreenExit	;Drop HandlePlayoffInput's return address and return from PlayoffScreen
+PlayoffScreenExit					;Drop HandlePlayoffInput's return address and return from PlayoffScreen
 	addq.w	#4,sp
 	rts
 
-waitxc1	;(was PlayoffScreen_waitvsync) Each time palcount runs out, eor the color word at palfadenew+$42 with $EE and
-	;restart palcount at $18; then wait for the next vblank
+waitxc1								;(was PlayoffScreen_waitvsync) Each time palcount runs out, eor the color
+									;word at palfadenew+$42 with $EE and
+									;restart palcount at $18; then wait for the next vblank
 	tst.w	(palcount).w
 	bpl.w	.wait
 	eori.w	#$EE,(palfadenew+$42).w
@@ -228,7 +232,7 @@ waitxc1	;(was PlayoffScreen_waitvsync) Each time palcount runs out, eor the colo
 	move.w	d0,(oldvcount).w
 	rts
 
-PrintSeriesScore	;Print best of 7 wins "t-b" for game struct a2 at printx / printy
+PrintSeriesScore					;Print best of 7 wins "t-b" for game struct a2 at printx / printy
 	movea.w	#(mesarea-M68K_RAM),a1
 	move.w	#6,(a1)+
 	move.w	4(a2),d0
@@ -242,13 +246,13 @@ PrintSeriesScore	;Print best of 7 wins "t-b" for game struct a2 at printx / prin
 	movea.w	#(mesarea-M68K_RAM),a1
 	jmp	print
 
-DrawTreeArrow	;Draw tree arrow d0 from the arrows map (Arrowsmap) at printx / printy
+DrawTreeArrow						;Draw tree arrow d0 from the arrows map (Arrowsmap) at printx / printy
 	movem.l	d0-d7/a0-a3,-(sp)
 	movea.l	#Arrowsmap,a0
 	movea.l	a0,a1
 	adda.l	(a0),a0
 	adda.l	4(a1),a1
-	movea.w	#ZeroLong,a2	;a zero long: no palettes
+	movea.w	#ZeroLong,a2			;a zero long: no palettes
 	clr.w	d1
 	moveq	#2,d2
 	moveq	#$17,d3
@@ -258,8 +262,9 @@ DrawTreeArrow	;Draw tree arrow d0 from the arrows map (Arrowsmap) at printx / pr
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-DrawTeamBlocks	;Draw team block d1 (team * 2) from Teamblocksmap at printx / printy; the user's team
-	;(potreeteam entry of potree) is highlighted (printa $6000) unless sflags11 bit 2 is set
+DrawTeamBlocks						;Draw team block d1 (team * 2) from Teamblocksmap at printx / printy; the
+									;user's team (potreeteam entry of potree) is highlighted (printa $6000)
+									;unless sflags11 bit 2 is set
 	movem.l	d0-d7/a0-a3,-(sp)
 	movea.w	#(potree-M68K_RAM),a0
 	move.w	(potreeteam).w,d0
@@ -273,7 +278,7 @@ DrawTeamBlocks	;Draw team block d1 (team * 2) from Teamblocksmap at printx / pri
 .nohi
 	movea.l	#Teamblocksmap,a1
 	adda.l	4(a1),a1
-	movea.w	#ZeroLong,a2	;a zero long: no palettes
+	movea.w	#ZeroLong,a2			;a zero long: no palettes
 	clr.w	d0
 	move.w	(a1),d2
 	moveq	#2,d3
@@ -283,8 +288,9 @@ DrawTeamBlocks	;Draw team block d1 (team * 2) from Teamblocksmap at printx / pri
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-VBlank_Playoff	;The PlayoffScreen vblank handler (vbint): dma the sprite table, write
-	;$FEA0+DispAttribCtr to the hscroll, cramfade. Always vcount+1, p_music_vblank, rte
+VBlank_Playoff						;The PlayoffScreen vblank handler (vbint): dma the sprite table, write
+									;$FEA0+DispAttribCtr to the hscroll, cramfade. Always vcount+1,
+									;p_music_vblank, rte
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w
 	bne.w	.nograph
@@ -307,7 +313,7 @@ VBlank_Playoff	;The PlayoffScreen vblank handler (vbint): dma the sprite table, 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rte
 
-PlayoffScreenText	;Round titles by gamelevel, printbig Strings with their position
+PlayoffScreenText					;Round titles by gamelevel, printbig Strings with their position
 	String	$CF,$39,$19,'Playoffs'
 	String	$CF,$33,$19,'Quarterfinals'
 	String	$CF,$37,$19,'Semifinals'
@@ -319,9 +325,11 @@ PlayoffScreenText	;Round titles by gamelevel, printbig Strings with their positi
 
 
 
-PlayoffTreeSetup	;Playoff tree layout by gamelevel, the same bytes as 94. Used by PlayoffScreen
-	;Per level: teams-1 then x,y per team (DrawTeamBlocks), arrows-1 then x,d0 per arrow (DrawTreeArrow), scores-1
-	;then x,y per score (PrintSeriesScore, negative: none)
+PlayoffTreeSetup					;Playoff tree layout by gamelevel, the same bytes as 94. Used by
+									;PlayoffScreen
+									;Per level: teams-1 then x,y per team (DrawTeamBlocks), arrows-1 then x,d0
+									;per arrow (DrawTreeArrow), scores-1 then x,y per score (PrintSeriesScore,
+									;negative: none)
 	dc.w	.l0-PlayoffTreeSetup
 	dc.w	.l1-PlayoffTreeSetup
 	dc.w	.l2-PlayoffTreeSetup
@@ -376,11 +384,13 @@ PlayoffTreeSetup	;Playoff tree layout by gamelevel, the same bytes as 94. Used b
 	dc.b	71,12
 	dc.b	58,23
 	dc.b	5,15,0,29,2,43,4,83,6,97,8,111,10
-	dc.b	-1	;no scores
-	dc.b	$FF	;pad (93 $47)
+	dc.b	-1						;no scores
+	dc.b	$FF						;pad (93 $47)
 
-DrawPlayoffSprite	;The PlayoffSprite sprite at playoffspritex / playoffspritey in Satt, then end the
-	;list and set Sattsize. 95 animates it: frame picturebits 0-4, the next one every $A calls (pausetimeout). Called from PlayoffScreen
+DrawPlayoffSprite					;The PlayoffSprite sprite at playoffspritex / playoffspritey in Satt, then
+									;end the list and set Sattsize. 95 animates it: frame picturebits 0-4, the
+									;next one every $A calls (pausetimeout).
+									;Called from PlayoffScreen
 	movea.w	#(Satt-M68K_RAM),a6
 	moveq	#1,d6
 	movea.l	#PlayoffSprite,a0
@@ -411,9 +421,10 @@ DrawPlayoffSprite	;The PlayoffSprite sprite at playoffspritex / playoffspritey i
 	move.w	d0,(Sattsize).w
 	rts
 
-SetSframe	;Draw one sprite frame. a0 = framelist, d0/d1 = x/y cords, d2 = frame, d3 = start char
-	;a6 = Satt pointer, d6 = link counter. 95 builds the attribute word from the frame entry's flags and char
-	cmp.w	#MaxSprites,d6	;MaxSprites
+SetSframe							;Draw one sprite frame. a0 = framelist, d0/d1 = x/y cords, d2 = frame, d3
+									;= start char a6 = Satt pointer, d6 = link counter. 95 builds the
+									;attribute word from the frame entry's flags and char
+	cmp.w	#MaxSprites,d6			;MaxSprites
 	bge.w	.2
 	movem.l	d0-d5/a0,-(sp)
 	adda.l	4(a0),a0
@@ -421,7 +432,7 @@ SetSframe	;Draw one sprite frame. a0 = framelist, d0/d1 = x/y cords, d2 = frame,
 	move.w	2(a0,d2.w),d4
 	sub.w	(a0,d2.w),d4
 	lsr.w	#3,d4
-	subq.w	#1,d4	;number of sprites in frame
+	subq.w	#1,d4					;number of sprites in frame
 	adda.w	(a0,d2.w),a0
 .0
 	move.w	2(a0),d2
@@ -440,7 +451,7 @@ SetSframe	;Draw one sprite frame. a0 = framelist, d0/d1 = x/y cords, d2 = frame,
 	move.w	6(a0),(a6)
 	add.w	d0,(a6)+
 	addq.w	#1,d6
-	cmp.w	#MaxSprites,d6	;MaxSprites
+	cmp.w	#MaxSprites,d6			;MaxSprites
 	beq.w	.ex
 	addq.w	#8,a0
 	dbf	d4,.0

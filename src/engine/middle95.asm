@@ -7,13 +7,14 @@
 ; number formatting, team maps and the rink setup.
 
 
-sroot	;d0 = square root of d0 (long). Small values by odd subtraction, else Newton steps, else a binary search
+sroot								;d0 = square root of d0 (long). Small values by odd subtraction, else
+									;Newton steps, else a binary search
 	tst.l	d0
-	beq.w	rtss2	;zero^.5 = zero
-	cmp.l	#$640,d0	;#40^2
+	beq.w	rtss2					;zero^.5 = zero
+	cmp.l	#$640,d0				;#40^2
 	bhi.w	.m2
 	move.l	d1,-(sp)
-	moveq	#-1,d1	;-1
+	moveq	#-1,d1					;-1
 .0
 	addq.w	#2,d1
 	sub.w	d1,d0
@@ -24,7 +25,7 @@ sroot	;d0 = square root of d0 (long). Small values by odd subtraction, else Newt
 	rts
 .m2
 	movem.l	d1-d4,-(sp)
-	moveq	#9,d3	;max number of reps
+	moveq	#9,d3					;max number of reps
 	move.w	#$8000,d1
 	cmp.l	#$F00000,d0
 	bhi.w	.big
@@ -62,7 +63,7 @@ sroot	;d0 = square root of d0 (long). Small values by odd subtraction, else Newt
 	move.w	d4,d1
 	bra.s	.bs
 
-vtoa	;d0/d1 = vector: return d0 = direction 0-7 (8 for no vector) through .dt
+vtoa								;d0/d1 = vector: return d0 = direction 0-7 (8 for no vector) through .dt
 	movem.l	d2/a0,-(sp)
 	move.w	d0,d2
 	or.w	d1,d2
@@ -100,8 +101,10 @@ vtoa	;d0/d1 = vector: return d0 = direction 0-7 (8 for no vector) through .dt
 .dt
 	dc.b	1,7,3,5,0,0,4,4,2,6,2,6,1,7,3,5
 
-find3d	;Input: d0 = xfield, d1 = yfield, d2 = height off field. Output: d0 = xscreen, d1 = yscreen, or d1 = $4E20 when off screen. 95: no horizontal rink
-	;case, range x +-$98, y -$D0..$79
+find3d								;Input: d0 = xfield, d1 = yfield, d2 = height off field. Output: d0 =
+									;xscreen, d1 = yscreen, or d1 = $4E20 when off screen. 95: no horizontal
+									;rink
+									;case, range x +-$98, y -$D0..$79
 	sub.w	(Hpos).w,d0
 	sub.w	(Vpos).w,d1
 	cmp.w	#$98,d0
@@ -123,14 +126,14 @@ find3d	;Input: d0 = xfield, d1 = yfield, d2 = height off field. Output: d0 = xsc
 	move.w	#$4E20,d1
 	rts
 
-randomd0s	;d0 = random number from -d0 to d0-1 (randomd0(d0*2) - d0)
+randomd0s							;d0 = random number from -d0 to d0-1 (randomd0(d0*2) - d0)
 	move.w	d0,-(sp)
 	asl.w	#1,d0
 	bsr.w	randomd0
 	sub.w	(sp)+,d0
 	rts
 
-randomd0	;d0 = random number 0 to d0-1 (RNGseed * $BB40E62D + 1)
+randomd0							;d0 = random number 0 to d0-1 (RNGseed * $BB40E62D + 1)
 	movem.l	d0-d2,-(sp)
 	move.w	(seed+2).w,d0
 	move.w	d0,d1
@@ -151,34 +154,36 @@ randomd0	;d0 = random number 0 to d0-1 (RNGseed * $BB40E62D + 1)
 	movem.l	(sp)+,d1-d2
 	rts
 
-GetHot	;Push long address of structure to get hot spot from; hot spot x/y returned in d0/d1 (HotList by frame, flipped with the attribute)
+GetHot								;Push long address of structure to get hot spot from; hot spot x/y
+									;returned in d0/d1 (HotList by frame, flipped with the attribute)
 	movem.l	a0-a1,-(sp)
-	movea.l	$C(sp),a0	;move stored address before sub routine call into a0
-	clr.w	d0	;clear d0
-	clr.w	d1	;clear d1
+	movea.l	$C(sp),a0				;move stored address before sub routine call into a0
+	clr.w	d0						;clear d0
+	clr.w	d1						;clear d1
 	tst.w	6(a0)
 	ble.w	.ex
-	movea.l	#HotList,a1	;move HotList address into a1
+	movea.l	#HotList,a1				;move HotList address into a1
 	move.w	6(a0),d0
-	add.w	d0,d0	;double d0
-	move.b	1(a1,d0.w),d1	;SprStrHot Y byte
-	ext.w	d1	;extend d1
+	add.w	d0,d0					;double d0
+	move.b	1(a1,d0.w),d1			;SprStrHot Y byte
+	ext.w	d1						;extend d1
 	move.b	(a1,d0.w),d0
-	ext.w	d0	;extend d0
+	ext.w	d0						;extend d0
 	btst	#3,4(a0)
 	beq.w	.0
-	neg.w	d0	;negate d0 (flip)
+	neg.w	d0						;negate d0 (flip)
 .0
 	btst	#4,4(a0)
 	bne.w	.ex
-	neg.w	d1	;ngate d1 (x now)
+	neg.w	d1						;ngate d1 (x now)
 .ex
 	movem.l	(sp)+,a0-a1
 	move.l	(sp)+,(sp)
 	rts
 
-vcountwait	;Waits till vcount changes, then resyncs vcount. Saves d0. 94 reads oldvcount twice. Called from PauseMode
-	;and the stats code
+vcountwait							;Waits till vcount changes, then resyncs vcount. Saves d0. 94 reads
+									;oldvcount twice. Called from PauseMode
+									;and the stats code
 	move.w	d0,-(sp)
 	move.w	(oldvcount).w,d0
 .wait
@@ -188,7 +193,7 @@ vcountwait	;Waits till vcount changes, then resyncs vcount. Saves d0. 94 reads o
 	move.w	(sp)+,d0
 	rts
 
-printsmallz	;printsmall with the String after the call
+printsmallz							;printsmall with the String after the call
 	move.l	a1,-(sp)
 	movea.l	4(sp),a1
 	bsr.w	printsmall
@@ -196,8 +201,9 @@ printsmallz	;printsmall with the String after the call
 	movea.l	(sp)+,a1
 	rts
 
-printsmall	;print String a1 with the small font at printx / printy (control codes < 0 through ControlCodeJumpTable, $40 a blank, $5E a new line). 95 takes the map from
-	;smallfontptr
+printsmall							;print String a1 with the small font at printx / printy (control codes < 0
+									;through ControlCodeJumpTable, $40 a blank, $5E a new line). 95 takes the
+									;map from smallfontptr
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
 	movem.l	d0-d3/a0/a2-a3,-(sp)
@@ -245,22 +251,22 @@ printsmall	;print String a1 with the small font at printx / printy (control code
 	bsr.w	xyVmMap
 	bra.s	.4
 
-ControlCodeJumpTable	;Printsmall control codes, indexed by -byte
-	dc.l	ControlCode_None	;0: padding, no-op (the rts of ControlCode_SetFont)
-	dc.l	ControlCode_SetMap	;-1: map
+ControlCodeJumpTable				;Printsmall control codes, indexed by -byte
+	dc.l	ControlCode_None		;0: padding, no-op (the rts of ControlCode_SetFont)
+	dc.l	ControlCode_SetMap		;-1: map
 	dc.l	ControlCode_SetAttribute	;-2: palette/priority
-	dc.l	ControlCode_SetX	;-3: x
-	dc.l	ControlCode_SetY	;-4: y
-	dc.l	ControlCode_AddX	;-5: x offset
-	dc.l	ControlCode_AddY	;-6: y offset
-	dc.l	ControlCode_SetFont	;-7: char set
+	dc.l	ControlCode_SetX		;-3: x
+	dc.l	ControlCode_SetY		;-4: y
+	dc.l	ControlCode_AddX		;-5: x offset
+	dc.l	ControlCode_AddY		;-6: y offset
+	dc.l	ControlCode_SetFont		;-7: char set
 	dc.l	ControlCode_SetMapAndPosition	;-8: attribute, map, x, y
-ControlCode_SetMapAndPosition	;Control code -8, next 4 bytes = attribute, map, x, y
+ControlCode_SetMapAndPosition		;Control code -8, next 4 bytes = attribute, map, x, y
 	bsr.w	ControlCode_SetAttribute
 	bsr.w	ControlCode_SetMap
 	bsr.w	ControlCode_SetX
 	bra.w	ControlCode_SetY
-ControlCode_SetMap	;Control code -1, next byte = map number -> printm
+ControlCode_SetMap					;Control code -1, next byte = map number -> printm
 	move.b	(a1)+,d0
 	subq.w	#1,d3
 	andi.w	#3,d0
@@ -268,47 +274,47 @@ ControlCode_SetMap	;Control code -1, next byte = map number -> printm
 	subq.w	#4,d0
 	move.w	d0,(printm).w
 	bra.w	xyVmMap
-ControlCode_SetAttribute	;Control code -2, next byte = palette/priority -> printa
+ControlCode_SetAttribute			;Control code -2, next byte = palette/priority -> printa
 	move.b	(a1)+,d2
 	andi.w	#7,d2
 	subq.w	#1,d3
 	ror.w	#3,d2
 	move.w	d2,(printa).w
 	rts
-ControlCode_SetX	;Control code -3, next byte = printx
+ControlCode_SetX					;Control code -3, next byte = printx
 	clr.w	d0
 	move.b	(a1)+,d0
 	subq.w	#1,d3
 	move.w	d0,(printx).w
 	bra.w	xyVmMap
-ControlCode_SetY	;Control code -4, next byte = printy
+ControlCode_SetY					;Control code -4, next byte = printy
 	clr.w	d0
 	move.b	(a1)+,d0
 	subq.w	#1,d3
 	move.w	d0,(printy).w
 	bra.w	xyVmMap
-ControlCode_AddX	;Control code -5, add the next (signed) byte to printx
+ControlCode_AddX					;Control code -5, add the next (signed) byte to printx
 	move.b	(a1)+,d0
 	ext.w	d0
 	subq.w	#1,d3
 	add.w	d0,(printx).w
 	bra.w	xyVmMap
-ControlCode_AddY	;Control code -6, add the next (signed) byte to printy
+ControlCode_AddY					;Control code -6, add the next (signed) byte to printy
 	move.b	(a1)+,d0
 	ext.w	d0
 	subq.w	#1,d3
 	add.w	d0,(printy).w
 	bra.w	xyVmMap
-ControlCode_SetFont	;Control code -7, next byte = char set index
+ControlCode_SetFont					;Control code -7, next byte = char set index
 	clr.w	d0
 	move.b	(a1)+,d0
 	subq.w	#1,d3
 	asl.w	#1,d0
 	move.w	d0,(printfontset).w
-ControlCode_None	;Control code 0: no-op
+ControlCode_None					;Control code 0: no-op
 	rts
 
-printz	;See print. String macro should follow jsr to this routine
+printz								;See print. String macro should follow jsr to this routine
 	move.l	a1,-(sp)
 	movea.l	4(sp),a1
 	bsr.w	print
@@ -316,8 +322,9 @@ printz	;See print. String macro should follow jsr to this routine
 	movea.l	(sp)+,a1
 	rts
 
-print	;print String a1 at printx / printy with the small font (smallfontptr): a negative byte sets printa / printm / printx / printy from the next bytes, $40 a blank,
-	;$5E a new line
+print								;print String a1 at printx / printy with the small font (smallfontptr): a
+									;negative byte sets printa / printm / printx / printy from the next bytes,
+									;$40 a blank, $5E a new line
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
 	movem.l	d0-d3/a0/a2,-(sp)
@@ -364,7 +371,7 @@ print	;print String a1 at printx / printy with the small font (smallfontptr): a 
 	move.w	4(a2,d0.w),d0
 	add.w	(smallfontchars).w,d0
 .p
-	add.w	d2,d0	;for alternate palettes
+	add.w	d2,d0					;for alternate palettes
 	move.w	d0,(a0)
 	addq.w	#1,(printx).w
 .4
@@ -377,7 +384,7 @@ print	;print String a1 at printx / printy with the small font (smallfontptr): a 
 	bsr.w	xyVmMap
 	bra.s	.4
 
-eraser	;Fill a d0 x d1 rectangle with char d2 at printx / printy / printm
+eraser								;Fill a d0 x d1 rectangle with char d2 at printx / printy / printm
 	movem.l	d0-d2/a0,-(sp)
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -398,8 +405,10 @@ eraser	;Fill a d0 x d1 rectangle with char d2 at printx / printy / printm
 	movem.l	(sp)+,d0-d2/a0
 	rts
 
-showclock	;Put the game clock on screen. Called from setvideo and PauseMode. 95: paused (sfpz), the clock is drawn
-	;as big digits with PutClockDigit at printz position $10, 4 (no colon when under 10 minutes); else showclockdma
+showclock							;Put the game clock on screen. Called from setvideo and PauseMode. 95:
+									;paused (sfpz), the clock is drawn
+									;as big digits with PutClockDigit at printz position $10, 4 (no colon when
+									;under 10 minutes); else showclockdma
 	btst	#sfpz,(sflags).w
 	beq.w	showclockdma
 	move.l	a1,-(sp)
@@ -407,7 +416,7 @@ showclock	;Put the game clock on screen. Called from setvideo and PauseMode. 95:
 	String	-(TXPRI+TXMAP2),$10,4,0
 	move.w	(gameclock).w,d0
 	ext.l	d0
-	divu.w	#$258,d0	;tens of minutes
+	divu.w	#$258,d0				;tens of minutes
 	move.l	d0,-(sp)
 	tst.w	d0
 	bne.w	.0
@@ -419,30 +428,31 @@ showclock	;Put the game clock on screen. Called from setvideo and PauseMode. 95:
 	move.l	(sp)+,d0
 	swap	d0
 	ext.l	d0
-	divu.w	#$3C,d0	;minutes
+	divu.w	#$3C,d0					;minutes
 	move.l	d0,-(sp)
 	jsr	(PutClockDigit).l
 	move.l	(sp)+,d0
 	swap	d0
 	ext.l	d0
 	move.l	d0,-(sp)
-	move.w	#$A,d0	;the colon
+	move.w	#$A,d0					;the colon
 	jsr	(PutClockDigit).l
 	subq.w	#1,(printx).w
 	move.l	(sp)+,d0
-	divu.w	#$A,d0	;tens of seconds
+	divu.w	#$A,d0					;tens of seconds
 	move.l	d0,-(sp)
 	jsr	(PutClockDigit).l
 	move.l	(sp)+,d0
 	swap	d0
 	ext.l	d0
-	jsr	(PutClockDigit).l	;seconds
+	jsr	(PutClockDigit).l			;seconds
 	movea.l	(sp)+,a1
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),$D,5,0
 	rts
 
-PutClockDigit	;Draw big clock digit d0 (0-9, $A the colon) at printx / printy from ClockDigitsBitmap (dobitmap, chars clockdigitchars), then printx + 2
+PutClockDigit						;Draw big clock digit d0 (0-9, $A the colon) at printx / printy from
+									;ClockDigitsBitmap (dobitmap, chars clockdigitchars), then printx + 2
 	movem.w	d0-d7,-(sp)
 	movea.l	#ClockDigitsBitmap,a0
 	movea.l	a0,a1
@@ -461,8 +471,9 @@ PutClockDigit	;Draw big clock digit d0 (0-9, $A the colon) at printx / printy fr
 	movem.w	(sp)+,d0-d7
 	rts
 
-showclockdma	;When dfclock is set queue the clock chars in the dma list (a5); with gmode2 bit 1 shootoutclock is shown. Not in a
-	;stoppage (sflags2 bit 3) or game over (gsp 4)
+showclockdma						;When dfclock is set queue the clock chars in the dma list (a5); with
+									;gmode2 bit 1 shootoutclock is shown. Not in a
+									;stoppage (sflags2 bit 3) or game over (gsp 4)
 	bclr	#dfclock,(disflags).w
 	beq.w	.exit
 	btst	#sf2replay,(sflags2).w
@@ -510,7 +521,8 @@ showclockdma	;When dfclock is set queue the clock chars in the dma list (a5); wi
 .exit
 	rts
 
-ClockDigitChar	;showclockdma helper: next digit of d0 (divu remainder) as a clock char word to -(a0)
+ClockDigitChar						;showclockdma helper: next digit of d0 (divu remainder) as a clock char
+									;word to -(a0)
 	swap	d0
 	asl.w	#1,d0
 	move.w	$64(a1,d0.w),d0
@@ -521,21 +533,22 @@ ClockDigitChar	;showclockdma helper: next digit of d0 (divu remainder) as a cloc
 	ext.l	d0
 	rts
 
-PerLabels	;Text list for periods; 94 ' F' (93 'Final'). Used by printscores1
+PerLabels							;Text list for periods; 94 ' F' (93 'Final'). Used by printscores1
 	String	'1',$12
 	String	'2',$13
 	String	'3',$14
 	String	'OT'
 	String	' F'
 
-PerLabels2	;The same with a blank last entry. Used by printscores1
+PerLabels2							;The same with a blank last entry. Used by printscores1
 	String	'1',$12
 	String	'2',$13
 	String	'3',$14
 	String	'OT'
 	String	'  '
 
-makepde	;Pass d0 as value to be scaled by player a0's energy level (full energy while sflags7 bit 4 is set). Return d0 as result
+makepde								;Pass d0 as value to be scaled by player a0's energy level (full energy
+									;while sflags7 bit 4 is set). Return d0 as result
 	ext.w	d0
 	move.w	d0,-(sp)
 	movem.l	d1/a2-a3,-(sp)
@@ -552,11 +565,12 @@ makepde	;Pass d0 as value to be scaled by player a0's energy level (full energy 
 	ext.l	d0
 	rts
 
-getpde	;Get player a3's energy level into d0. Return a2 = his team struct, d1 = pnum*2
+getpde								;Get player a3's energy level into d0. Return a2 = his team struct, d1 =
+									;pnum*2
 	movea.w	#(tmstruct-M68K_RAM),a2
 	btst	#pfteam,pflags(a3)
 	beq.w	.0
-	adda.w	#tmsize,a2	;team is away
+	adda.w	#tmsize,a2				;team is away
 .0
 	move.b	pnum(a3),d1
 	ext.w	d1
@@ -564,7 +578,7 @@ getpde	;Get player a3's energy level into d0. Return a2 = his team struct, d1 = 
 	move.w	tmpde(a2,d1.w),d0
 	rts
 
-loadTeamStruct	;a2 = team struct of player a3, a1 = the other team
+loadTeamStruct						;a2 = team struct of player a3, a1 = the other team
 	movea.w	#(tmstruct-M68K_RAM),a2
 	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a1
@@ -574,8 +588,8 @@ loadTeamStruct	;a2 = team struct of player a3, a1 = the other team
 .0
 	rts
 
-ReadGoaliePulled	;Z clear when the team of a3 pulled its goalie ($26 of the team struct). Called from doshot, assdefo
-	;asspuckc and assnearest
+ReadGoaliePulled					;Z clear when the team of a3 pulled its goalie ($26 of the team struct).
+									;Called from doshot, assdefo asspuckc and assnearest
 	movem.l	a1,-(sp)
 	movea.l	#tmstruct,a1
 	btst	#pfteam,pflags(a3)
@@ -586,15 +600,15 @@ ReadGoaliePulled	;Z clear when the team of a3 pulled its goalie ($26 of the team
 	movem.l	(sp)+,a1
 	rts
 
-PrintListItem	;printz String d0 of the list a1 (SkipStrings)
+PrintListItem						;printz String d0 of the list a1 (SkipStrings)
 	bsr.w	AdvanceStringPtr
 	jmp	print
 
-PrintSmallListItem	;printsmall String d0 of the list a1 (SkipStrings)
+PrintSmallListItem					;printsmall String d0 of the list a1 (SkipStrings)
 	bsr.w	AdvanceStringPtr
 	jmp	printsmall
 
-AdvanceStringPtr	;a1 = String d0 of a String list
+AdvanceStringPtr					;a1 = String d0 of a String list
 	bra.w	.1
 .loop
 	adda.w	(a1),a1
@@ -602,14 +616,15 @@ AdvanceStringPtr	;a1 = String d0 of a String list
 	dbf	d0,.loop
 	rts
 
-GetGoalieCount	;d0 = goalies on team a2 (GetGoalieCountD7 with d7 = the team number)
+GetGoalieCount						;d0 = goalies on team a2 (GetGoalieCountD7 with d7 = the team number)
 	movem.l	d7-a0,-(sp)
 	move.w	Xvel(a2),d7
 	bsr.w	GetGoalieCountD7
 	movem.l	(sp)+,d7-a0
 	rts
 
-GetGoalieCountD7	;d0 = goalies on team d7: from the season data in save RAM (SRRosters+$34 + team * $38), or with sflags11 bit 6 from the team data nibbles
+GetGoalieCountD7					;d0 = goalies on team d7: from the season data in save RAM (SRRosters+$34
+									;+ team * $38), or with sflags11 bit 6 from the team data nibbles
 	btst	#6,(sflags11).w
 	bne.w	.teamdata
 	movem.l	d1-d7/a0,-(sp)
@@ -638,15 +653,15 @@ GetGoalieCountD7	;d0 = goalies on team d7: from the season data in save RAM (SRR
 	movem.l	(sp)+,d1/d7-a0
 	rts
 
-GetDefenseStartD7	;GetDefenseStart for team d7
+GetDefenseStartD7					;GetDefenseStart for team d7
 	jsr	(GetGoalieCountD7).l
 	move.w	d0,-(sp)
 	jsr	(GetForwardCountD7).l
 	add.w	(sp)+,d0
 	rts
 
-GetDefenseStart	;d0 = goalies + forwards of team a2, the roster index of the first defenseman. 95: from the
-	;season data unless sflags11 bit 6 (Regular Game)
+GetDefenseStart						;d0 = goalies + forwards of team a2, the roster index of the first
+									;defenseman. 95: from the season data unless sflags11 bit 6 (Regular Game)
 	btst	#6,(sflags11).w
 	bne.w	.team
 	jsr	(GetGoalieCount).l
@@ -654,7 +669,7 @@ GetDefenseStart	;d0 = goalies + forwards of team a2, the roster index of the fir
 	jsr	(GetForwards).l
 	add.w	(sp)+,d0
 	rts
-.team	;Team data
+.team								;Team data
 	movem.l	a0,-(sp)
 	bsr.w	GetGoalieCount
 	move.w	d0,-(sp)
@@ -667,18 +682,21 @@ GetDefenseStart	;d0 = goalies + forwards of team a2, the roster index of the fir
 	movem.l	(sp)+,a0
 	rts
 
-GetForwardCountD7	;d0 = forwards on team d7 from the season data (save RAM SRRosters+$36 + team * $38)
+GetForwardCountD7					;d0 = forwards on team d7 from the season data (save RAM SRRosters+$36 +
+									;team * $38)
 	movem.l	d1-d7/a0,-(sp)
 	move.w	d7,d0
 	bra.w	GetForwardCountSeason
 
-GetForwards	;d0 = forwards on team a2: GetForwardCount (team data) with sflags11 bit 6, else from the season data
+GetForwards							;d0 = forwards on team a2: GetForwardCount (team data) with sflags11 bit
+									;6, else from the season data
 	btst	#6,(sflags11).w
 	bne.w	GetForwardCount
 	movem.l	d1-d7/a0,-(sp)
 	move.w	Xvel(a2),d0
 
-GetForwardCountSeason	;Shared tail of GetForwards / GetForwardCountD7: read the save RAM byte for team d0
+GetForwardCountSeason				;Shared tail of GetForwards / GetForwardCountD7: read the save RAM byte
+									;for team d0
 	mulu.w	#$38,d0
 	addi.l	#SRRosters+$36,d0
 	moveq	#1,d1
@@ -689,7 +707,7 @@ GetForwardCountSeason	;Shared tail of GetForwards / GetForwardCountD7: read the 
 	movem.l	(sp)+,d1-d7/a0
 	rts
 
-GetForwardCount	;d0 = forwards on team a2 (high nibble of team data byte 3 at +8)
+GetForwardCount						;d0 = forwards on team a2 (high nibble of team data byte 3 at +8)
 	movem.l	a0,-(sp)
 	movea.l	tmdata(a2),a0
 	adda.w	8(a0),a0
@@ -698,27 +716,29 @@ GetForwardCount	;d0 = forwards on team a2 (high nibble of team data byte 3 at +8
 	andi.w	#$F,d0
 	movem.l	(sp)+,a0
 	rts
-GetPlayerName	;a1 = mesarea "NN First Last" (getname) for player TempPlOffset (bit 15 set: away team)
+GetPlayerName						;a1 = mesarea "NN First Last" (getname) for player TempPlOffset (bit 15
+									;set: away team)
 	movem.l	d0/a2,-(sp)
 	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	(TempPlOffset).w,d0
 	bpl.w	.get
 	andi.w	#$FF,d0
-	adda.w	#tmsize,a2	;away team
+	adda.w	#tmsize,a2				;away team
 .get
 	bsr.w	getname
 	movem.l	(sp)+,d0/a2
 	rts
-getnameD7	;getname for player d0 of team number d7
+getnameD7							;getname for player d0 of team number d7
 	movem.l	d0-d3/d7-a0/a2-a3,-(sp)
 	bsr.w	getplayernameD7
 	bra.w	getnamebody
 
-getname	;a1 = mesarea "NN First Last" for player d0 of team struct a2. 95 reads the number with GetJerseyNumber
+getname								;a1 = mesarea "NN First Last" for player d0 of team struct a2. 95 reads
+									;the number with GetJerseyNumber
 	movem.l	d0-d3/d7-a0/a2-a3,-(sp)
 	move.w	Xvel(a2),d7
 	bsr.w	GetPlayerNamePointer	;get to start of player name
-getnamebody	;getnameD7 joins here
+getnamebody							;getnameD7 joins here
 	move.l	a0,-(sp)
 	movea.w	#(mesarea-M68K_RAM),a3
 	move.w	#4,(a3)
@@ -727,7 +747,7 @@ getnamebody	;getnameD7 joins here
 	jsr	(GetJerseyNumber).l
 	move.b	(jerseynum).w,d0
 	bsr.w	ConvertByteToDigits
-	bsr.w	appendz	;add space after JNo
+	bsr.w	appendz					;add space after JNo
 	String	' '
 	movea.l	(sp)+,a1
 	bsr.w	appstring
@@ -735,7 +755,7 @@ getnamebody	;getnameD7 joins here
 	movem.l	(sp)+,d0-d3/d7-a0/a2-a3
 	rts
 
-GetPlayerNumInitial	;GetTempPlayerName with FormatPlayerNumInitial ("NN F. Last")
+GetPlayerNumInitial					;GetTempPlayerName with FormatPlayerNumInitial ("NN F. Last")
 	movem.l	d0/a2,-(sp)
 	movea.w	#(tmstruct-M68K_RAM),a2
 	move.w	(TempPlOffset).w,d0
@@ -747,7 +767,7 @@ GetPlayerNumInitial	;GetTempPlayerName with FormatPlayerNumInitial ("NN F. Last"
 	movem.l	(sp)+,d0/a2
 	rts
 
-FormatPlayerInitialD7	;a1 = mesarea "F. Last" for player d0 of team d7
+FormatPlayerInitialD7				;a1 = mesarea "F. Last" for player d0 of team d7
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	bsr.w	getplayernameD7
 	move.l	a0,-(sp)
@@ -770,17 +790,18 @@ FormatPlayerInitialD7	;a1 = mesarea "F. Last" for player d0 of team d7
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
 
-FormatPlayerNumInitialD7	;FormatPlayerNumInitial for team d7
+FormatPlayerNumInitialD7			;FormatPlayerNumInitial for team d7
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	bsr.w	getplayernameD7
 	bra.w	NumInitialBody
 
-FormatPlayerNumInitial	;a1 = mesarea string "NN F. Last" for player d0 of team a2, built in TextBuffer. Called from PenaltyShotBox and others
+FormatPlayerNumInitial				;a1 = mesarea string "NN F. Last" for player d0 of team a2, built in
+									;TextBuffer. Called from PenaltyShotBox and others
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	move.w	Xvel(a2),d7
 	bsr.w	GetPlayerNamePointer
 
-NumInitialBody	;Shared body of FormatPlayerNumInitial
+NumInitialBody						;Shared body of FormatPlayerNumInitial
 	move.l	a0,-(sp)
 	movea.w	#(TextBuffer-M68K_RAM),a1
 	adda.w	(a0),a0
@@ -804,7 +825,7 @@ NumInitialBody	;Shared body of FormatPlayerNumInitial
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
 
-FormatPlayerNameD7	;FormatPlayerName for team d7
+FormatPlayerNameD7					;FormatPlayerName for team d7
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	bsr.w	getplayernameD7
 	move.l	a0,-(sp)
@@ -828,7 +849,8 @@ FormatPlayerNameD7	;FormatPlayerName for team d7
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
 
-FormatPlayerName	;a1 = mesarea string "NN Last" for player d0 of team a2, built in TextBuffer. Called from ShowGoalBox and others
+FormatPlayerName					;a1 = mesarea string "NN Last" for player d0 of team a2, built in
+									;TextBuffer. Called from ShowGoalBox and others
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	move.w	Xvel(a2),d7
 	bsr.w	GetPlayerNamePointer
@@ -853,17 +875,20 @@ FormatPlayerName	;a1 = mesarea string "NN Last" for player d0 of team a2, built 
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
 
-FormatPlayerNameLast	;FormatPlayerNameShort without the leading space ("Last", space padded). Branches into FormatLastName
+FormatPlayerNameLast				;FormatPlayerNameShort without the leading space ("Last", space padded).
+									;Branches into FormatLastName
 	movem.l	d0-d3/a0/a2,-(sp)
 	bsr.w	GetPlayerNamePointer
 	movea.w	#(TextBuffer-M68K_RAM),a1
 	bra.w	FormatLastName
-FormatPlayerNameShort	;a1 = mesarea string " Last" for player d0 of team a2, space padded to 12 characters
+FormatPlayerNameShort				;a1 = mesarea string " Last" for player d0 of team a2, space padded to 12
+									;characters
 	movem.l	d0-d3/a0/a2,-(sp)
 	bsr.w	GetPlayerNamePointer
 	movea.w	#(TextBuffer-M68K_RAM),a1
 	move.b	#$20,(a1)+
-FormatLastName	;Skip the first name, copy the last name, pad; branched to from FormatPlayerNameLast, so global
+FormatLastName						;Skip the first name, copy the last name, pad; branched to from
+									;FormatPlayerNameLast, so global
 	move.w	(a0)+,d0
 	lea	-2(a0,d0.w),a2
 .loop
@@ -885,7 +910,7 @@ FormatLastName	;Skip the first name, copy the last name, pad; branched to from F
 	movem.l	(sp)+,d0-d3/a0/a2
 	rts
 
-FormatFirstNameD7	;a1 = mesarea "First" for player d0 of team d7
+FormatFirstNameD7					;a1 = mesarea "First" for player d0 of team d7
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	bsr.w	getplayernameD7
 	movea.w	#(TextBuffer-M68K_RAM),a1
@@ -898,7 +923,7 @@ FormatFirstNameD7	;a1 = mesarea "First" for player d0 of team d7
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
 
-FormatLastNameAlt	;FormatLastNameD7 with the name string from GetCreatedName
+FormatLastNameAlt					;FormatLastNameD7 with the name string from GetCreatedName
 	movem.l	d0-d3/d7/a0/a2,-(sp)
 	movem.l	d0/d7/a2,-(sp)
 	jsr	(GetCreatedName).l
@@ -906,10 +931,10 @@ FormatLastNameAlt	;FormatLastNameD7 with the name string from GetCreatedName
 	movem.l	(sp)+,d0/d7/a2
 	bra.w	formatlastbody
 
-FormatLastNameD7	;a1 = mesarea "Last" for player d0 of team d7
+FormatLastNameD7					;a1 = mesarea "Last" for player d0 of team d7
 	movem.l	d0-d3/d7-a0/a2,-(sp)
 	bsr.w	getplayernameD7
-formatlastbody	;FormatLastNameAlt joins here
+formatlastbody						;FormatLastNameAlt joins here
 	move.l	a0,-(sp)
 	movea.w	#(TextBuffer-M68K_RAM),a1
 	adda.w	(a0),a0
@@ -928,7 +953,8 @@ formatlastbody	;FormatLastNameAlt joins here
 	movem.l	(sp)+,d0-d3/d7-a0/a2
 	rts
 
-FinalizeTextBuffer	;mesarea length word = a1 - mesarea, with a 0 pad byte when odd. Returns a1 = mesarea. Called from the FormatPlayerName routines
+FinalizeTextBuffer					;mesarea length word = a1 - mesarea, with a 0 pad byte when odd. Returns
+									;a1 = mesarea. Called from the FormatPlayerName routines
 	move.w	a1,d0
 	subi.w	#(mesarea-M68K_RAM),d0
 	btst	#0,d0
@@ -940,38 +966,40 @@ FinalizeTextBuffer	;mesarea length word = a1 - mesarea, with a 0 pad byte when o
 	move.w	d0,(a1)
 	rts
 
-getplayernameD7	;Getplayername for team d7
+getplayernameD7						;Getplayername for team d7
 	movem.l	d0/d7/a2,-(sp)
 	bra.w	getnamea0
 
-GetPlayerNamePointer	;a0 = name string of player d0 (roster offset) of team struct a2. Each
-	;record is a length word String and 8 more bytes
+GetPlayerNamePointer				;a0 = name string of player d0 (roster offset) of team struct a2. Each
+									;record is a length word String and 8 more bytes
 	movem.l	d0/d7/a2,-(sp)
 	move.w	Xvel(a2),d7
 
-getnamea0	;Shared tail of getplayername: GetRosterName, a0 = the name
+getnamea0							;Shared tail of getplayername: GetRosterName, a0 = the name
 	jsr	(GetRosterName).l
 	movea.l	a1,a0
 	movem.l	(sp)+,d0/d7/a2
 	rts
 
-ConvertByteToDigits	;Converts decimal number in d0 to ascii: two ascii digits of bcd byte d0 to (a1)+, a leading 0 becomes a space ($F0 + '0')
-	move.w	d0,-(sp)	;push to stack
-	lsr.b	#4,d0	;divide by 16 (get upper digit in d0)
+ConvertByteToDigits					;Converts decimal number in d0 to ascii: two ascii digits of bcd byte d0
+									;to (a1)+, a leading 0 becomes a space ($F0 + '0')
+	move.w	d0,-(sp)				;push to stack
+	lsr.b	#4,d0					;divide by 16 (get upper digit in d0)
 	bne.w	.n0
-	move.b	#$F0,d0	;move $F0 into d0
+	move.b	#$F0,d0					;move $F0 into d0
 .n0
-	addi.b	#$30,d0	;'0'   ; add $30 (48 dec) to d0
-	move.b	d0,(a1)+	;move d0 into a1 and increment
-	move.w	(sp)+,d0	;pop d0 from stack
-	andi.w	#$F,d0	;pass bottom 4 bytes of d0 (lower digit in d0)
-	addi.b	#$30,d0	;'0'   ; add $30 (48 dec) to d0
-	move.b	d0,(a1)+	;move d0 into a1 and increment
+	addi.b	#$30,d0					;'0'   ; add $30 (48 dec) to d0
+	move.b	d0,(a1)+				;move d0 into a1 and increment
+	move.w	(sp)+,d0				;pop d0 from stack
+	andi.w	#$F,d0					;pass bottom 4 bytes of d0 (lower digit in d0)
+	addi.b	#$30,d0					;'0'   ; add $30 (48 dec) to d0
+	move.b	d0,(a1)+				;move d0 into a1 and increment
 	rts
 
-CalcAttrib	;The overall rating of player d0: his attributes weighted by OvrPlayerWgtList (skaters) or OvrGoalWgtList (goalies), and by
-	;AttribWgtList. Called from getNameandAttrib and PrintOverallRating
-	move.l	a6,-(sp)	;push a6 to stack
+CalcAttrib							;The overall rating of player d0: his attributes weighted by
+									;OvrPlayerWgtList (skaters) or OvrGoalWgtList (goalies), and by
+									;AttribWgtList. Called from getNameandAttrib and PrintOverallRating
+	move.l	a6,-(sp)				;push a6 to stack
 	clr.w	(attribsum).w
 	clr.w	(attribcount).w
 	movea.l	#AttribWgtList,a6
@@ -984,11 +1012,11 @@ CalcAttrib	;The overall rating of player d0: his attributes weighted by OvrPlaye
 	movea.l	#OvrGoalWgtList,a6
 .1
 	lea	$1A4(a2),a4
-	clr.l	d1	;clear d1
-	move.w	d0,d1	;move d0 into d1. d0 is the offset of the player
-	asl.w	#4,d1	;mult d1 by 16
-	adda.l	d1,a4	;add d1 to a4
-	adda.l	#$10,a4	;add 16 dec to a4. Move to start of Hot/Cold for player.
+	clr.l	d1						;clear d1
+	move.w	d0,d1					;move d0 into d1. d0 is the offset of the player
+	asl.w	#4,d1					;mult d1 by 16
+	adda.l	d1,a4					;add d1 to a4
+	adda.l	#$10,a4					;add 16 dec to a4. Move to start of Hot/Cold for player.
 	movem.l	d7/a1,-(sp)
 	move.w	Xvel(a2),d7
 	jsr	(GetRosterName).l
@@ -1000,8 +1028,9 @@ CalcAttrib	;The overall rating of player d0: his attributes weighted by OvrPlaye
 	movea.l	(sp)+,a6
 	rts
 
-CalcAttribRating	;The rating sum of CalcAttrib: d0 / d1 = weighted sum of the attributes in d4 bits (weights a6), d1 the maximum. With AttribWgtList (create
-	;player) it clamps the attribute to 0-$63 and adjusts CreatePoints
+CalcAttribRating					;The rating sum of CalcAttrib: d0 / d1 = weighted sum of the attributes in
+									;d4 bits (weights a6), d1 the maximum. With AttribWgtList (create player)
+									;it clamps the attribute to 0-$63 and adjusts CreatePoints
 	clr.w	(attribsum).w
 	clr.w	(attribcount).w
 	clr.w	d0
@@ -1068,7 +1097,7 @@ CalcAttribRating	;The rating sum of CalcAttrib: d0 / d1 = weighted sum of the at
 	bpl.w	.chkmax
 	clr.b	d3
 	addq.b	#1,-1(a4,d2.w)
-	opt	osq-	;keep the retail subi / addi (SNASM would make subq / addq)
+	opt	osq-						;keep the retail subi / addi (SNASM would make subq / addq)
 	subi.w	#1,(CreatePoints).l
 	opt	osq+
 .chkmax
@@ -1104,16 +1133,16 @@ CalcAttribRating	;The rating sum of CalcAttrib: d0 / d1 = weighted sum of the at
 .exit
 	rts
 
-OvrPlayerWgtList	;Skater attribute weights for the overall rating (CalcAttrib)
+OvrPlayerWgtList					;Skater attribute weights for the overall rating (CalcAttrib)
 	dc.b	$02,$02,$02,$02,$04,$06,$02,$04,$02,$04,$06,$06,$04,$02,$02,$02
 
-OvrGoalWgtList	;Goalie attribute weights
+OvrGoalWgtList						;Goalie attribute weights
 	dc.b	$02,$02,$02,$02,$02,$02,$02,$02,$09,$09,$02,$02,$09,$02,$02,$02
 
-AttribWgtList	;Single attribute weights
+AttribWgtList						;Single attribute weights
 	dc.b	$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02
 
-PushTime	;a1 = String "M:SS" of the time d0 (seconds), built back from mesarea+30
+PushTime							;a1 = String "M:SS" of the time d0 (seconds), built back from mesarea+30
 	movea.w	#(mesarea+30-M68K_RAM),a1
 	move.l	d0,-(sp)
 	move.l	a1,-(sp)
@@ -1154,7 +1183,7 @@ PushTime	;a1 = String "M:SS" of the time d0 (seconds), built back from mesarea+3
 	move.l	(sp)+,d0
 	rts
 
-PushNumber	;a1 = String of the decimal number d0, built back from PushNumberBuf
+PushNumber							;a1 = String of the decimal number d0, built back from PushNumberBuf
 	movea.w	#(PushNumberBuf-M68K_RAM),a1
 	move.l	d0,-(sp)
 	move.l	a1,-(sp)
@@ -1179,46 +1208,47 @@ PushNumber	;a1 = String of the decimal number d0, built back from PushNumberBuf
 	move.l	(sp)+,d0
 	rts
 
-PushNumberWidth	;Right-justified number
-	movem.l	d0-d3,-(sp)	;push to stack
+PushNumberWidth						;Right-justified number
+	movem.l	d0-d3,-(sp)				;push to stack
 	movea.w	#(PushWidthBuf+2-M68K_RAM),a1
-	moveq	#1,d2	;move 1 into d2
-	sub.w	d2,d1	;sub d2 from d1
+	moveq	#1,d2					;move 1 into d2
+	sub.w	d2,d1					;sub d2 from d1
 	bra.w	.loop
 .mul
-	mulu.w	#$A,d2	;mult d2 by 10 dec
+	mulu.w	#$A,d2					;mult d2 by 10 dec
 .loop
 	dbf	d1,.mul
-	moveq	#$20,d3	;' '   ; move 20 into d3
+	moveq	#$20,d3					;' '   ; move 20 into d3
 .loop2
-	ext.l	d0	;sign extend d0
-	divu.w	d2,d0	;divide d2 into d0
+	ext.l	d0						;sign extend d0
+	divu.w	d2,d0					;divide d2 into d0
 	bne.w	.3
-	cmp.w	#1,d2	;compare d2 to 1
+	cmp.w	#1,d2					;compare d2 to 1
 	beq.w	.3
-	move.w	d3,d0	;move d3 into d0
+	move.w	d3,d0					;move d3 into d0
 	bra.w	.put
 .3
-	moveq	#$30,d3	;'0'   ; move 48 dec into d3
-	add.w	d3,d0	;add d3 to d0
+	moveq	#$30,d3					;'0'   ; move 48 dec into d3
+	add.w	d3,d0					;add d3 to d0
 .put
-	move.b	d0,(a1)+	;move d0 into a1 and increment a1
-	swap	d0	;swap d0 words
-	divu.w	#$A,d2	;divide d2 by 10 dec
+	move.b	d0,(a1)+				;move d0 into a1 and increment a1
+	swap	d0						;swap d0 words
+	divu.w	#$A,d2					;divide d2 by 10 dec
 	bne.s	.loop2
-	move.l	a1,d0	;move a1 into d0
+	move.l	a1,d0					;move a1 into d0
 	subi.w	#(PushWidthBuf-M68K_RAM),d0
-	btst	#0,d0	;test bit 0 of d0
+	btst	#0,d0					;test bit 0 of d0
 	beq.w	.even
-	clr.b	(a1)+	;clear byte at a1 and increment
-	addq.w	#1,d0	;add 1 to d0
+	clr.b	(a1)+					;clear byte at a1 and increment
+	addq.w	#1,d0					;add 1 to d0
 .even
 	movea.w	#(PushWidthBuf-M68K_RAM),a1
-	move.w	d0,(a1)	;move d0 into a1 address location
-	movem.l	(sp)+,d0-d3	;push from stack
+	move.w	d0,(a1)					;move d0 into a1 address location
+	movem.l	(sp)+,d0-d3				;push from stack
 	rts
 
-PushNumberWidthZero	;PushNumberWidth with leading zeros: d0 as d1 digits to PushWidthBuf (a String)
+PushNumberWidthZero					;PushNumberWidth with leading zeros: d0 as d1 digits to PushWidthBuf (a
+									;String)
 	movem.l	d0-d3,-(sp)
 	movea.w	#(PushWidthBuf+2-M68K_RAM),a1
 	moveq	#1,d2
@@ -1257,12 +1287,13 @@ PushNumberWidthZero	;PushNumberWidth with leading zeros: d0 as d1 digits to Push
 	movem.l	(sp)+,d0-d3
 	rts
 
-appendz	;appstring with the String after the call
+appendz								;appstring with the String after the call
 	movea.l	(sp)+,a1
 	bsr.w	appstring
 	jmp	(a1)
 
-appstring	;Append String a1 to String a3 (the 0 pad byte dropped, the result padded to an even length)
+appstring							;Append String a1 to String a3 (the 0 pad byte dropped, the result padded
+									;to an even length)
 	movem.l	d0/a0,-(sp)
 	lea	2(a3),a0
 	move.w	(a3),d0
@@ -1294,7 +1325,7 @@ appstring	;Append String a1 to String a3 (the 0 pad byte dropped, the result pad
 	movem.l	(sp)+,d0/a0
 	rts
 
-AttribAdjust	;d0 below $32: d0 / 2 + $19
+AttribAdjust						;d0 below $32: d0 / 2 + $19
 	cmp.w	#$32,d0
 	bge.w	.exit
 	asr.w	#1,d0
@@ -1302,7 +1333,8 @@ AttribAdjust	;d0 below $32: d0 / 2 + $19
 .exit
 	rts
 
-PutTeamBlock	;Draw team block d0 (TeamBlockMaps, teamblockwidth wide, 2 rows) at printx / printy
+PutTeamBlock						;Draw team block d0 (TeamBlockMaps, teamblockwidth wide, 2 rows) at printx
+									;/ printy
 	movem.l	d0-d2/a0-a1,-(sp)
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -1325,8 +1357,10 @@ PutTeamBlock	;Draw team block d0 (TeamBlockMaps, teamblockwidth wide, 2 rows) at
 	movem.l	(sp)+,d0-d2/a0-a1
 	rts
 
-setupTeamBlocksMap	;Load the TeamBlocks map tiles (Teamblocksmap) at d4+$2C (93 $30) and copy the home and visitor team blocks to vram at basetileoffset and
-	;basetileoffset+$16. d4 = 1st vram char; return d4 = basetileoffset+$2C. Called from setupice
+setupTeamBlocksMap					;Load the TeamBlocks map tiles (Teamblocksmap) at d4+$2C (93 $30) and copy
+									;the home and visitor team blocks to vram at basetileoffset and
+									;basetileoffset+$16. d4 = 1st vram char; return d4 = basetileoffset+$2C.
+									;Called from setupice
 	move.w	d4,(basetileoffset).w
 	movea.l	(teamblocksmapptr).w,a0
 	adda.l	4(a0),a0
@@ -1359,8 +1393,9 @@ setupTeamBlocksMap	;Load the TeamBlocks map tiles (Teamblocksmap) at d4+$2C (93 
 	move.w	(sp)+,d0
 	rts
 
-CopyTeamBlockMapData	;Copy one team's 22 block chars (93 used 24) from the loaded tile set to vram at d1 by vram dma (DoDMA_nd2), and store their map words at
-	;(a1)+. a0 = map data, d0 = team, d1 = vram address
+CopyTeamBlockMapData				;Copy one team's 22 block chars (93 used 24) from the loaded tile set to
+									;vram at d1 by vram dma (DoDMA_nd2), and store their map words at (a1)+.
+									;a0 = map data, d0 = team, d1 = vram address
 	move.w	(teamblockwidth).w,d3
 	asl.w	#2,d3
 	mulu.w	d3,d0
@@ -1390,7 +1425,7 @@ CopyTeamBlockMapData	;Copy one team's 22 block chars (93 used 24) from the loade
 	dbf	d3,.row
 	rts
 
-DoDMA_nd2	;Vram to vram copy by dma, protected from vblank
+DoDMA_nd2							;Vram to vram copy by dma, protected from vblank
 	movem.l	d0-d3/a1,-(sp)
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -1434,13 +1469,13 @@ DoDMA_nd2	;Vram to vram copy by dma, protected from vblank
 	movem.l	(sp)+,d0-d3/a1
 	rts
 
-GetTeamLogo	;a0 = logo bitmap of team d3 (TeamLogoBitmaps); returns d3 = team * 4
+GetTeamLogo							;a0 = logo bitmap of team d3 (TeamLogoBitmaps); returns d3 = team * 4
 	asl.w	#2,d3
 	movea.l	#TeamLogoBitmaps,a0
 	movea.l	0(a0,d3.w),a0
 	rts
 
-TeamLogoBitmaps	;Team logo bitmaps by team number (TeamList order)
+TeamLogoBitmaps						;Team logo bitmaps by team number (TeamList order)
 	dc.l	logoANH,logoBOS,logoBUF,logoCGY,logoCHI,logoDAL,logoDET,logoEDM
 	dc.l	logoFLA,logoHFD,logoLA,logoMTL,logoNJ,logoNYI,logoNYR,logoOTW
 	dc.l	logoPHI,logoPIT,logoQUE,logoSJ,logoSTL,logoTB,logoTOR,logoVAN
@@ -1448,8 +1483,10 @@ TeamLogoBitmaps	;Team logo bitmaps by team number (TeamList order)
 	IF (*-TeamLogoBitmaps)/4<>NumTeams
 	inform 3,"TeamLogoBitmaps does not match the team count"
 	ENDIF
-DrawTeamLogo	;Draw logo a0 (GetTeamLogo, d3 = team * 4) at printx / printy, 6 x 6, palette
-	;TeamLogoPalettes + team * 8 - $20 (d5 = 4) or - $40 (d5 = 2), through dobitmap
+DrawTeamLogo						;Draw logo a0 (GetTeamLogo, d3 = team * 4) at
+									;printx / printy, 6 x 6, palette
+									;TeamLogoPalettes + team * 8 - $20 (d5 = 4) or - $40 (d5 = 2), through
+									;dobitmap
 	movea.l	a0,a1
 	movea.l	a0,a2
 	adda.l	(a2)+,a0
@@ -1470,34 +1507,37 @@ DrawTeamLogo	;Draw logo a0 (GetTeamLogo, d3 = team * 4) at printx / printy, 6 x 
 	clr.w	d1
 	jmp	(dobitmap).l
 
-ResetClock	;gameclock = PerTimeTotal = the period length (GetPeriodTime; $258 in overtime unless OptPlayMode), clock stopped
-	;(gmclock). Called from StartPer
-	bsr.w	GetPeriodTime	;d0 = period length in seconds
-	cmpi.w	#3,(gsp).w	;overtime?
+ResetClock							;gameclock = PerTimeTotal = the period length (GetPeriodTime; $258 in
+									;overtime unless OptPlayMode), clock stopped
+									;(gmclock). Called from StartPer
+	bsr.w	GetPeriodTime			;d0 = period length in seconds
+	cmpi.w	#3,(gsp).w				;overtime?
 	blt.w	.set
 	tst.w	(OptPlayMode).w
 	bne.w	.set
-	move.w	#$258,d0	;OptPlayMode 0 overtime is always 10:00
+	move.w	#$258,d0				;OptPlayMode 0 overtime is always 10:00
 .set
 	move.w	d0,(gameclock).w
 	move.w	d0,(PerTimeTotal).w
 	bset	#gmclock,(gmode).w
 	rts
 
-GetPeriodTime	;Return d0 = period length in seconds for the period length option
+GetPeriodTime						;Return d0 = period length in seconds for the period length option
 	move.w	(OptPerlen).w,d0
 	asl.w	#1,d0
 	lea	.times(pc),a0
 	move.w	(a0,d0.w),d0
 	rts
-.times	;Period length in seconds by OptPerlen
+.times								;Period length in seconds by OptPerlen
 	dc.w	$12C,$258,$4B0,$1E
 
-ClrHor	;Unreferenced. Revert the graphics back to vertical ice rink mode: the rink tiles, LoadHomeTeamGfx
-	;and the EASN map at their chars, SprSort, and unless paused clear the screen (eraser). 95 no longer prints the scores here
+ClrHor								;Unreferenced. Revert the graphics back to vertical ice rink mode: the
+									;rink tiles, LoadHomeTeamGfx and the EASN map at their chars, SprSort, and
+									;unless paused clear the screen (eraser). 95 no longer prints the scores
+									;here
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#sfhor,(sflags).w
-	move.w	#$3E8,(Oldrow).w	;1000
+	move.w	#$3E8,(Oldrow).w		;1000
 	move.w	(rinkvrcset).w,d4
 	movea.l	#Rinktilelist+8,a2
 	jsr	(DecompressGraphicsPlain).l
@@ -1509,17 +1549,18 @@ ClrHor	;Unreferenced. Revert the graphics back to vertical ice rink mode: the ri
 	bne.w	.ex
 	bsr.w	printz
 	String	-TXMAP1,0,0,0
-	moveq	#$20,d0	;32
-	moveq	#$1C,d1	;28
-	move.w	#$7FF,d2	;blank tile
+	moveq	#$20,d0					;32
+	moveq	#$1C,d1					;28
+	move.w	#$7FF,d2				;blank tile
 	jsr	(eraser).l
 .ex
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-AssignPads	;Unreferenced. Clear c1playernum-c4playernum, then give each pad on a team a player: in Practice Mode
-	;(sflags9 bit 7) with no practice players on its team (homepracplayers / awaypracplayers 0), the team's goalie
-	;(getGoalieSCnum, setc1player ...), else chgplayer
+AssignPads							;Unreferenced. Clear c1playernum-c4playernum, then give each pad on a team
+									;a player: in Practice Mode (sflags9 bit 7) with no practice players on
+									;its team (homepracplayers / awaypracplayers 0), the team's goalie
+									;(getGoalieSCnum, setc1player ...), else chgplayer
 	move.w	#$FFFF,(c1playernum).w
 	move.w	#$FFFF,(c2playernum).w
 	move.w	#$FFFF,(c3playernum).w
@@ -1638,7 +1679,7 @@ AssignPads	;Unreferenced. Clear c1playernum-c4playernum, then give each pad on a
 .x
 	rts
 
-setupIceRinkPal	;Copy the rink palette (16 longs at the Rinktilelist header) to palfadenew
+setupIceRinkPal						;Copy the rink palette (16 longs at the Rinktilelist header) to palfadenew
 	movea.l	#Rinktilelist,a0
 	adda.l	(a0),a0
 	moveq	#$F,d0
@@ -1648,7 +1689,8 @@ setupIceRinkPal	;Copy the rink palette (16 longs at the Rinktilelist header) to 
 	dbf	d0,.ipal
 	rts
 
-waitx	;Wait d0 frames (negative: until a button) for a button on any pad; waitxpad = the buttons held
+waitx								;Wait d0 frames (negative: until a button) for a button on any pad;
+									;waitxpad = the buttons held
 	clr.w	(waitxpad).w
 	neg.w	d0
 	move.w	d0,(vcount).w
@@ -1681,18 +1723,20 @@ waitx	;Wait d0 frames (negative: until a button) for a button on any pad; waitxp
 .3
 	rts
 
-GetPeriodTimeRemaining	;Return d0 = (gsp << 14 | PerTimeTotal) - gameclock
+GetPeriodTimeRemaining				;Return d0 = (gsp << 14 | PerTimeTotal) - gameclock
 	move.w	(gsp).w,d0
 	swap	d0
 	clr.w	d0
-	lsr.l	#2,d0	;gsp in bits 14-15
+	lsr.l	#2,d0					;gsp in bits 14-15
 	or.w	(PerTimeTotal).w,d0
 	sub.w	(gameclock).w,d0
 	rts
 
-printscores1	;Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; period name gsp of PerLabels, or name 4
-	;of PerLabels2 with gmode2 bit 1) and EASNLogo, then unless sflags3 bit 0 the score box (Framer 8 x 5 at $17, $17) with both team
-	;names and scores (PrintTeamNameAndScore). sflags5 bit 7 sets crowdnoisedelay = $78. 95 has no horizontal rink scoreboard
+printscores1						;Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; period name gsp
+									;of PerLabels, or name 4 of PerLabels2 with gmode2 bit 1) and EASNLogo,
+									;then unless sflags3 bit 0 the score box (Framer 8 x 5 at $17, $17) with
+									;both team names and scores (PrintTeamNameAndScore). sflags5 bit 7 sets
+									;crowdnoisedelay = $78. 95 has no horizontal rink scoreboard
 	movem.l	d0-d2/a0-a3,-(sp)
 	bclr	#7,(sflags5).w
 	beq.w	.0
@@ -1708,7 +1752,7 @@ printscores1	;Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; period na
 	bset	#dfclock,(disflags).w
 	bsr.w	printz
 	String	-(TXPRI+TXMAP1),1,$18,0
-	move.w	(gsp).w,d0	;period name
+	move.w	(gsp).w,d0				;period name
 	movea.l	#PerLabels,a1
 	btst	#1,(gmode2).w
 	beq.w	.1
@@ -1736,10 +1780,11 @@ printscores1	;Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; period na
 	movem.l	(sp)+,d0-d2/a0-a3
 	rts
 
-PrintTeamNameAndScore	;Print the team name of team a2 at printx/printy, then its score as 2 digits at x $1C. Called twice from printscores1
+PrintTeamNameAndScore				;Print the team name of team a2 at printx/printy, then its score as 2
+									;digits at x $1C. Called twice from printscores1
 	movea.l	$1E(a2),a1
 	adda.w	4(a1),a1
-	adda.w	(a1),a1	;skip the first string to the team name
+	adda.w	(a1),a1					;skip the first string to the team name
 	bsr.w	print
 	move.w	#$1C,(printx).w
 	move.w	$C(a2),d0
@@ -1747,15 +1792,16 @@ PrintTeamNameAndScore	;Print the team name of team a2 at printx/printy, then its
 	bsr.w	PushNumberWidth
 	bra.w	print
 
-ReAddFramer	;Unreferenced. AddFramer again at framercset
+ReAddFramer							;Unreferenced. AddFramer again at framercset
 	move.w	(framercset).w,d4
 	jmp	(AddFramer).l
-ReAddSmallFont	;Unreferenced. AddSmallFont again at smallfontchars
+ReAddSmallFont						;Unreferenced. AddSmallFont again at smallfontchars
 	move.w	(smallfontchars).w,d4
 	jmp	(AddSmallFont).l
 
-AddFonts	;Load the small font at d4 (smallfontchars, smallfontptr = SmallFontMap2) and the big font after it
-	;(BigFontChars, BigFontMap). Called from setupice
+AddFonts							;Load the small font at d4 (smallfontchars, smallfontptr = SmallFontMap2)
+									;and the big font after it (BigFontChars, BigFontMap). Called from
+									;setupice
 	move.w	d4,(smallfontchars).w
 	movea.l	#SmallFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
@@ -1765,13 +1811,13 @@ AddFonts	;Load the small font at d4 (smallfontchars, smallfontptr = SmallFontMap
 	jsr	(DecompressGraphicsPlain).l
 	rts
 
-chkpk	;Unreferenced. With a power play (sflags2 bit 5) chkpk2, else Z set
+chkpk								;Unreferenced. With a power play (sflags2 bit 5) chkpk2, else Z set
 	btst	#sf2pwrplay,(sflags2).w	;#sf2pwrplay - check if power play in progress
 	bne.w	chkpk2
-	eori	#4,ccr	;Z flag
+	eori	#4,ccr					;Z flag
 	rts
 
-chkpk2	;Z set when a3's team is on the power play (sflags2 bit 6 against pfteam)
+chkpk2								;Z set when a3's team is on the power play (sflags2 bit 6 against pfteam)
 	movem.l	d0-d1,-(sp)
 	btst	#sf2pwrtm,(sflags2).w	;#sf2pwrtm - 0 for team 1, 1 for team 2
 	move	sr,d0
@@ -1782,7 +1828,7 @@ chkpk2	;Z set when a3's team is on the power play (sflags2 bit 6 against pfteam)
 	movem.l	(sp)+,d0-d1
 	rts
 
-CheckNewCarrier	;Clear GameFlags bits 0-1 when puckc changes (lastpuckc)
+CheckNewCarrier						;Clear GameFlags bits 0-1 when puckc changes (lastpuckc)
 	move.w	(lastpuckc).w,d0
 	cmp.w	(puckc).w,d0
 	beq.w	.0
@@ -1792,7 +1838,7 @@ CheckNewCarrier	;Clear GameFlags bits 0-1 when puckc changes (lastpuckc)
 	move.w	(puckc).w,(lastpuckc).w
 	rts
 
-printbigz	;String macro follows the call
+printbigz							;String macro follows the call
 	move.l	a1,-(sp)
 	movea.l	4(sp),a1
 	bsr.w	printbig
@@ -1800,7 +1846,8 @@ printbigz	;String macro follows the call
 	movea.l	(sp)+,a1
 	rts
 
-printbigz2	;Unreferenced. Printbigz with the third big font (printbig2). String macro follows the call
+printbigz2							;Unreferenced. Printbigz with the third big font (printbig2).
+									;String macro follows the call
 	move.l	a1,-(sp)
 	movea.l	4(sp),a1
 	bsr.w	printbig2
@@ -1808,7 +1855,7 @@ printbigz2	;Unreferenced. Printbigz with the third big font (printbig2). String 
 	movea.l	(sp)+,a1
 	rts
 
-printbigz1	;printbigz with BigFontMap
+printbigz1							;printbigz with BigFontMap
 	move.l	a1,-(sp)
 	movea.l	4(sp),a1
 	bsr.w	printbig1
@@ -1816,18 +1863,19 @@ printbigz1	;printbigz with BigFontMap
 	movea.l	(sp)+,a1
 	rts
 
-printbig1	;printbig with BigFontMap (the AddFonts big font)
+printbig1							;printbig with BigFontMap (the AddFonts big font)
 	move.l	#BigFontMap,(bigfontptr).l
 	bra.w	printbigtext
 
-printbig	;print String a1 with the big font at printx / printy. BigFontMap2
+printbig							;print String a1 with the big font at printx / printy. BigFontMap2
 	move.l	#BigFontMap2,(bigfontptr).l
 	bra.w	printbigtext
 
-printbig2	;printbig with BigFontMap3. Falls into printbigtext
+printbig2							;printbig with BigFontMap3. Falls into printbigtext
 	move.l	#BigFontMap3,(bigfontptr).l
 
-printbigtext	;Print with the font map at bigfontptr. Lower case is printed as upper case
+printbigtext						;Print with the font map at bigfontptr. Lower
+									;case is printed as upper case
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
 	movem.l	d0-d7/a0/a2,-(sp)
@@ -1880,7 +1928,8 @@ printbigtext	;Print with the font map at bigfontptr. Lower case is printed as up
 	move.w	(sp)+,(disflags).w
 	rts
 
-PrintBigChar	;Draw big font char d0 (bfasciicon) at d4 / d5: one or two columns of two tiles (PutBigTile)
+PrintBigChar						;Draw big font char d0 (bfasciicon) at d4 / d5: one or two columns of two
+									;tiles (PutBigTile)
 	subi.w	#$20,d0
 	movea.l	#bfasciicon,a0
 	moveq	#1,d2
@@ -1909,7 +1958,7 @@ PrintBigChar	;Draw big font char d0 (bfasciicon) at d4 / d5: one or two columns 
 	dbf	d2,.loop
 	rts
 
-PutBigTile	;Write tile d3 + d6 at column d4, row d5 of the map at VmMap1 + printm
+PutBigTile							;Write tile d3 + d6 at column d4, row d5 of the map at VmMap1 + printm
 	add.w	d6,d3
 	movem.l	d1/a0,-(sp)
 	move.w	d5,d0
@@ -1925,14 +1974,16 @@ PutBigTile	;Write tile d3 + d6 at column d4, row d5 of the map at VmMap1 + print
 	movem.l	(sp)+,d1/a0
 	rts
 
-bfasciicon	;Char definitions for the big font, indexed by ascii - $20 (PrintBigChar); negative = one tile wide
+bfasciicon							;Char definitions for the big font, indexed by ascii - $20 (PrintBigChar);
+									;negative = one tile wide
 	dc.b	$B4,$B7,$00,$00,$00,$00,$00,$B9,$00,$00,$00,$00,$00,$00,$B8,$00
 	dc.b	$33,$35,$37,$39,$3B,$3D,$3F,$41,$43,$45,$B9,$00,$00,$00,$00,$4A
 	dc.b	$4A,$00,$02,$04,$06,$08,$0A,$0C,$0E,$F0,$11,$13,$15,$17,$19,$1B
 	dc.b	$1D,$1F,$21,$23,$25,$27,$29,$2B,$2D,$2F,$31,$FF
 
-UnpackPicture	;Unpack a picture a2: count.w, then 3 bytes per row of 8 pixels to 4 bit pixels + 5 at picturebuf (count first). Called from DrawPictureBox
-	;DrawMatchupPicture and PlayerCardScreen
+UnpackPicture						;Unpack a picture a2: count.w, then 3 bytes per row of 8 pixels to 4 bit
+									;pixels + 5 at picturebuf (count first). Called from DrawPictureBox
+									;DrawMatchupPicture and PlayerCardScreen
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#picturebuf,a0
 	movea.l	#picturebits,a1
@@ -1993,18 +2044,19 @@ UnpackPicture	;Unpack a picture a2: count.w, then 3 bytes per row of 8 pixels to
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-RestoreBenchEnergy	;Once a second (periodicevents): unless OptLine: bench players (tmpdst -2) of both teams get 9 energy, up to $1000 (.team)
+RestoreBenchEnergy					;Once a second (periodicevents): unless OptLine: bench players (tmpdst -2)
+									;of both teams get 9 energy, up to $1000 (.team)
 	tst.w	(OptLine).w
 	bne.w	.ex
 	movea.w	#(tmstruct-M68K_RAM),a2	;team 1
 	bsr.w	.notinprog
-	lea	tmsize(a2),a2	;team 2 (tmsize)
+	lea	tmsize(a2),a2				;team 2 (tmsize)
 .notinprog
-	moveq	#(maxros-1)*2,d0	;(maxros-1)*2
+	moveq	#(maxros-1)*2,d0		;(maxros-1)*2
 .b0
 	cmpi.w	#$FFFE,tmpdst(a2,d0.w)
 	bne.w	.next
-	addi.w	#9,tmpde(a2,d0.w)	;tmpde: energy +9
+	addi.w	#9,tmpde(a2,d0.w)		;tmpde: energy +9
 	cmpi.w	#$1000,tmpde(a2,d0.w)
 	blt.w	.next
 	move.w	#$1000,tmpde(a2,d0.w)	;max energy
@@ -2014,9 +2066,10 @@ RestoreBenchEnergy	;Once a second (periodicevents): unless OptLine: bench player
 .ex
 	rts
 
-RestoreTeamEnergy	;Unreferenced. A2 = team: max energy (tmpde $1000) for every player. The skip needs tmpdst to be both -3 and
-	;-4, so it never happens
-	moveq	#(maxros-1)*2,d0	;(MaxRos-1)*2
+RestoreTeamEnergy					;Unreferenced. A2 = team: max energy (tmpde $1000) for every player. The
+									;skip needs tmpdst to be both -3 and
+									;-4, so it never happens
+	moveq	#(maxros-1)*2,d0		;(MaxRos-1)*2
 .loop
 	cmpi.w	#$FFFD,tmpdst(a2,d0.w)
 	bne.w	.0
@@ -2030,7 +2083,8 @@ RestoreTeamEnergy	;Unreferenced. A2 = team: max energy (tmpde $1000) for every p
 	bpl.s	.loop
 	rts
 
-reenergizeteam	;a2 = team: full energy for every player not injured for the game (tmpdst -4); period injuries (-3) go back to the bench (-2)
+reenergizeteam						;a2 = team: full energy for every player not injured for the game (tmpdst
+									;-4); period injuries (-3) go back to the bench (-2)
 	moveq	#$32,d0
 .0
 	cmpi.w	#$FFFC,$68(a2,d0.w)
@@ -2044,7 +2098,8 @@ reenergizeteam	;a2 = team: full energy for every player not injured for the game
 	bpl.s	.0
 	rts
 
-setpde	;d1 = rostnum of player * 2, a2 = team struct, d0 = new energy level (0 if negative)
+setpde								;d1 = rostnum of player * 2, a2 = team struct, d0 = new energy level (0 if
+									;negative)
 	tst.w	d0
 	bpl.w	.0
 	clr.w	d0
@@ -2052,7 +2107,8 @@ setpde	;d1 = rostnum of player * 2, a2 = team struct, d0 = new energy level (0 i
 	move.w	d0,$34(a2,d1.w)
 	rts
 
-SeasonPlayerOut	;Unless sflags11 bit 6: Z set when player d0 of team d7 is out in the season data (save RAM SRRosters, low 5 bits $1E)
+SeasonPlayerOut						;Unless sflags11 bit 6: Z set when player d0 of team d7 is out in the
+									;season data (save RAM SRRosters, low 5 bits $1E)
 	btst	#6,(sflags11).w
 	bne.w	.exit
 	movem.l	d0/d7-a0,-(sp)
@@ -2069,7 +2125,8 @@ SeasonPlayerOut	;Unless sflags11 bit 6: Z set when player d0 of team d7 is out i
 .exit
 	rts
 
-WeightedRandomSelect	;d0 = number of word weights at nibblebuffer: return a weighted random index
+WeightedRandomSelect				;d0 = number of word weights at nibblebuffer:
+									;return a weighted random index
 	movem.l	d1/a1,-(sp)
 	movea.w	#(nibblebuffer-M68K_RAM),a1
 	clr.w	d1
@@ -2089,7 +2146,8 @@ WeightedRandomSelect	;d0 = number of word weights at nibblebuffer: return a weig
 	movem.l	(sp)+,d1/a1
 	rts
 
-AppendTeamName	;Append the city name of team d0 (TeamList block Strings) to a1 (appstring)
+AppendTeamName						;Append the city name of team d0 (TeamList block Strings) to a1
+									;(appstring)
 	movem.l	d0/a0-a3,-(sp)
 	ext.w	d0
 	asl.w	#2,d0
@@ -2104,7 +2162,7 @@ AppendTeamName	;Append the city name of team d0 (TeamList block Strings) to a1 (
 	jsr	(appstring).l
 	movem.l	(sp)+,d0/a0-a3
 	rts
-CopyString	;Copy String a1 (length word first) to a3
+CopyString							;Copy String a1 (length word first) to a3
 	movem.l	d0,-(sp)
 	move.w	(a1),d0
 	subq.w	#1,d0
@@ -2113,8 +2171,9 @@ CopyString	;Copy String a1 (length word first) to a3
 	dbf	d0,.loop
 	movem.l	(sp)+,d0
 	rts
-AppendUserName	;Append user name d2 (12 bytes of the name log at namelog, spaces for 0) to a1, or NoNameTxt when d2 is 0
-	;trailing spaces trimmed (TrimSpaces)
+AppendUserName						;Append user name d2 (12 bytes of the name log at namelog, spaces for 0)
+									;to a1, or NoNameTxt when d2 is 0
+									;trailing spaces trimmed (TrimSpaces)
 	movem.l	d0-d3/a0-a3,-(sp)
 	movea.l	a1,a2
 	tst.w	d2
@@ -2149,9 +2208,9 @@ AppendUserName	;Append user name d2 (12 bytes of the name log at namelog, spaces
 .x
 	movem.l	(sp)+,d0-d3/a0-a3
 	rts
-NoNameTxt	;An empty String
+NoNameTxt							;An empty String
 	dc.w	2
-TrimSpaces	;Trim the trailing spaces of String a2 and pad it to an even length
+TrimSpaces							;Trim the trailing spaces of String a2 and pad it to an even length
 	movem.l	a3,-(sp)
 	movea.l	a2,a3
 	adda.w	(a2),a3
@@ -2168,8 +2227,9 @@ TrimSpaces	;Trim the trailing spaces of String a2 and pad it to an even length
 	movem.l	(sp)+,a3
 	rts
 
-setupice	;Set all variables, send non purgeable graphics, build sprite frame lists for ice rink. 95 has no reverse rink tiles, loads AddFramer2
-	;AddFonts, and clears c3playernum / c4playernum too
+setupice							;Set all variables, send non purgeable graphics, build sprite frame lists
+									;for ice rink. 95 has no reverse rink tiles, loads AddFramer2 AddFonts,
+									;and clears c3playernum / c4playernum too
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#df32c,(disflags).w
 	move.w	#$C000,(VmMap2).w
@@ -2203,7 +2263,7 @@ setupice	;Set all variables, send non purgeable graphics, build sprite frame lis
 	move.w	d4,(energybarchars).w	;energy bar chars
 	movea.l	#EnergyBarMap+8,a2
 	jsr	(DecompressGraphicsPlain).l
-	move.w	d4,(animchars).w	;crowd chars
+	move.w	d4,(animchars).w		;crowd chars
 	movea.l	#CrowdFrameList+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(spritechars).w
@@ -2262,8 +2322,9 @@ setupice	;Set all variables, send non purgeable graphics, build sprite frame lis
 ;	The home team arena graphics, the EASN logo and the period time display.
 
 
-LoadHomeTeamGfx	;Load the HomeTeam graphics of TeamGfxList to VRAM d4 - $18 (DecompressGraphicsPlain). Called from setupice
-	;and ClrHor
+LoadHomeTeamGfx						;Load the HomeTeam graphics of TeamGfxList to VRAM d4 - $18
+									;(DecompressGraphicsPlain). Called from setupice
+									;and ClrHor
 	move.w	d0,-(sp)
 	subi.w	#$18,d4
 	movea.l	#TeamGfxList,a2
@@ -2274,7 +2335,8 @@ LoadHomeTeamGfx	;Load the HomeTeam graphics of TeamGfxList to VRAM d4 - $18 (Dec
 	jsr	(DecompressGraphicsPlain).l
 	move.w	(sp)+,d0
 	rts
-TeamGfxList	;LoadHomeTeamGfx: one address per team (TeamList order) in the ArenaGfxBank (ASE and ASW share one)
+TeamGfxList							;LoadHomeTeamGfx: one address per team (TeamList order) in the
+									;ArenaGfxBank (ASE and ASW share one)
 	dc.l	ArenaGfxBank,ArenaGfxBank+$4BFA,ArenaGfxBank+$30A,ArenaGfxBank+$614
 	dc.l	ArenaGfxBank+$91E,ArenaGfxBank+$C28,ArenaGfxBank+$F32,ArenaGfxBank+$123C
 	dc.l	ArenaGfxBank+$1546,ArenaGfxBank+$1850,ArenaGfxBank+$1B5A,ArenaGfxBank+$1E64
@@ -2286,18 +2348,19 @@ TeamGfxList	;LoadHomeTeamGfx: one address per team (TeamList order) in the Arena
 	inform 3,"TeamGfxList does not match the team count"
 	ENDIF
 
-EASNLogo	;Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertical ice rink if no power play.
-	;from printscores1
+EASNLogo							;Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertical ice rink
+									;if no power play.
+									;from printscores1
 	btst	#sf2pwrplay,(sflags2).w	;sf2pwrplay
 	bne.w	.x
 	bsr.w	printz
 	String	-(TXPRI+TXMAP1),2,$19	;/ move.b d0,-(a4)
 	movea.l	#EASNmap,a1
 	adda.l	4(a1),a1
-	movea.w	#ZeroLong,a2	;a zero long: no palettes
+	movea.w	#ZeroLong,a2			;a zero long: no palettes
 	clr.w	d0
 	clr.w	d1
-	move.w	(a1),d2	;width and height from the map header
+	move.w	(a1),d2					;width and height from the map header
 	move.w	2(a1),d3
 	move.w	(EASNcset).w,d4
 	clr.w	d5
@@ -2305,13 +2368,13 @@ EASNLogo	;Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertical ice rin
 .x
 	rts
 
-setupEASNmap	;Load the EASN logo tiles at EASNcset. Called from setupice and ClrHor
+setupEASNmap						;Load the EASN logo tiles at EASNcset. Called from setupice and ClrHor
 	move.w	(EASNcset).w,d4
 	movea.l	#EASNmap+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	rts
 
-FormatAndPrintTime	;Unreferenced. D0 bits 14-15 = period, bits 0-13 = seconds
+FormatAndPrintTime					;Unreferenced. D0 bits 14-15 = period, bits 0-13 = seconds
 	swap	d0
 	clr.w	d0
 	rol.l	#2,d0
@@ -2322,7 +2385,7 @@ FormatAndPrintTime	;Unreferenced. D0 bits 14-15 = period, bits 0-13 = seconds
 	lsr.w	#2,d0
 	bsr.w	PushTime
 	bra.w	print
-PeriodLabelTable	;String list for FormatAndPrintTime: " 1", " 2", " 3", "OT"
+PeriodLabelTable					;String list for FormatAndPrintTime: " 1", " 2", " 3", "OT"
 	String	' 1'
 	String	' 2'
 	String	' 3'

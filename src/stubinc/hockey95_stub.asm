@@ -1,40 +1,40 @@
 ;	Segment build for hockey95.asm: sets its origin and the outside routines and data it uses,
 ;	then includes hockey95.asm on its own for checking against the ROM.
 
-	include	macros\genesis.mac	;String
+	include	macros\genesis.mac		;String
 
 ; region code
 	org	$9AC8
 
 ; includes for stubs to replace removed code
-	include	stubinc\ports.inc	;IO_* / VDP_* ports
-	include	stubinc\equals.inc	;VDP status bits
-	include	ram95.asm		;RAM map
+	include	stubinc\ports.inc		;IO_* / VDP_* ports
+	include	stubinc\equals.inc		;VDP status bits
+	include	ram95.asm				;RAM map
 
-; External addresses outside, read from lst/nhl95.bin: jsr / jmp (x).l and movea.l / move.l #x carry the address
-; bsr.w is the displacement word address + displacement.
+; External addresses outside, read from lst/nhl95.bin: jsr / jmp (x).l and movea.l / move.l #x carry the
+; address bsr.w is the displacement word address + displacement.
 KillCrowd = $67988
 newTitleScreen = $A12AA
-stop_current_song = $67938		;Stop the song in progress.
+stop_current_song = $67938			;Stop the song in progress.
 SoundCmd = $676D8
 song = $678C2
 Z80Program = $BD86
 SoundBanks = $D8EC
-GameSetUp = $85A9E		;The main menu.
+GameSetUp = $85A9E					;The main menu.
 PracticeGoalies = $8CADE
 SeasonMain = $8E06E
 TradePlayers = $96C14
 CreatePlayer = $97D9A
 SignFreeAgents = $99E8C
 ReleasePlayers = $9A5C8
-SetContTeams = $8CD3C		;set cont1team-cont4team.
+SetContTeams = $8CD3C				;set cont1team-cont4team.
 UserNameEntry = $9B6F4
 PlayoffScreen = $87BA2
 vb2 = $7A3F6
 ReadJoy1 = $7A4B0
 ClearShotData = $883B8
 clearTeamStats = $AE48
-reenergizeteam = $7DBA2	;a2 team, energy $1000, -3 slots to -2.
+reenergizeteam = $7DBA2				;a2 team, energy $1000, -3 slots to -2.
 Create_HotCold_Table = $83E88
 ScoutingReport = $9F590
 restoreteams = $83D3E
@@ -48,7 +48,7 @@ assreplace = $8157A
 ChooseSong = $679C4
 demoread = $8DF5A
 Pausemode = $7E36C
-CheckNewCarrier = $7D8B2	;clear GameFlags bits 0-1 when puckc changes.
+CheckNewCarrier = $7D8B2			;clear GameFlags bits 0-1 when puckc changes.
 PenaltyManager = $891FE
 updatecrowdf = $A0B3E
 updatesound = $67710
@@ -69,9 +69,9 @@ SetupTeamForIntermission = $8A572
 PlaceBoardFall = $8C1FA
 updateanim = $A536
 loadTeamStruct = $7CAF0
-updatevel = $8BB6C		;the velocity update 94 does in line.
+updatevel = $8BB6C					;the velocity update 94 does in line.
 setpads = $AB2A
-updatepadinput = $A95C		;the pad input 94 does in line (.tp2).
+updatepadinput = $A95C				;the pad input 94 does in line (.tp2).
 ; SPA tables
 SPAboardfront = $20B0
 SPAboardright = $2122

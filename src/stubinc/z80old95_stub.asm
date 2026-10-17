@@ -11,12 +11,12 @@
 	org	$7E0E0
 
 ; includes for stubs to replace removed code
-	include	stubinc\ports.inc	;IO_* / VDP_* ports
-	include	stubinc\equals.inc	;VDP status bits
-	include	ram95.asm		;RAM map
+	include	stubinc\ports.inc		;IO_* / VDP_* ports
+	include	stubinc\equals.inc		;VDP status bits
+	include	ram95.asm				;RAM map
 
 ; External addresses outside, read from lst/nhl95.bin.
-fm_instrument_patches = $79502	;the Z80 ld bc / ld a bytes
+fm_instrument_patches = $79502		;the Z80 ld bc / ld a bytes
 
 ; Main segment code
 	include	sound\z80old95.asm

@@ -1,14 +1,14 @@
 ;	The credits text that scrolls on the title screen, screen by screen.
 
-	include	macros\genesis.mac	;String
+	include	macros\genesis.mac		;String
 
-Credits	;Title screen scroller: the copyright and trademark lines
+Credits								;Title screen scroller: the copyright and trademark lines
 	String	'$ 1994 Electronic Arts'
 	String	'Licensed by'
 	String	'Sega Enterprises, Ltd.'
 	String	-1
 
-CreditsList	;The credits after the copyright lines
+CreditsList							;The credits after the copyright lines
 	String	'NHL and NHL logo are'
 	String	'registered trademarks of the'
 	String	'National Hockey League.'
@@ -152,9 +152,9 @@ CreditsList	;The credits after the copyright lines
 	String	'Ken Rogers'
 	String	-1
 
-	dc.w	2	;empty String
+	dc.w	2						;empty String
 	String	-1
 
 	String	-1
 
-	dc.w	-1	;the end of the credits
+	dc.w	-1						;the end of the credits

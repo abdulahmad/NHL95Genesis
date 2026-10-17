@@ -6,10 +6,10 @@
 
 
 
-	include	macros\genesis.mac	;String
+	include	macros\genesis.mac		;String
 
-ClearShootout	;Clear the player structs (SortCords) and the shootout state, then the shooter
-	;lists of both teams (InitShooters)
+ClearShootout						;Clear the player structs (SortCords) and the shootout state, then the
+									;shooter lists of both teams (InitShooters)
 	movea.l	#SortCords,a0
 	move.w	#$3FF,d0
 .loop
@@ -27,8 +27,9 @@ ClearShootout	;Clear the player structs (SortCords) and the shootout state, then
 	bsr.w	InitShooters
 	clr.w	(shootoutteam).w
 	rts
-InitShooters	;The 6 starters of the home (shootoutteam 0) or away team (save RAM roster
-	;SRLines, $82 bytes a team) as the shooter list below homeshootnum / shootoutteam
+InitShooters						;The 6 starters of the home (shootoutteam 0) or away team (save RAM roster
+									;SRLines, $82 bytes a team) as the shooter list below homeshootnum /
+									;shootoutteam
 	movea.l	#homeshootnum,a0
 	move.w	(HomeTeam).w,d0
 	tst.w	(shootoutteam).w
@@ -47,23 +48,23 @@ InitShooters	;The 6 starters of the home (shootoutteam 0) or away team (save RAM
 	move.w	d1,-(a0)
 	dbf	d0,.loop
 	rts
-PSandSOpassdir	;Penalty shot / shootout: passdir = sopathdir (the end of the skate path
-	;NextPathPoint), turned by passdirlist for the bottom net
+PSandSOpassdir						;Penalty shot / shootout: passdir = sopathdir (the end of the skate path
+									;NextPathPoint), turned by passdirlist for the bottom net
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(sopathdir).w,d0
-	btst	#pfgoal,pflags(a3)	;check what net shooting at
-	bne.w	.0	;branch if top net
+	btst	#pfgoal,pflags(a3)		;check what net shooting at
+	bne.w	.0						;branch if top net
 	movea.l	#passdirlist,a0
 	add.w	d0,d0
 	move.w	(a0,d0.w),d0
 .0
-	move.w	d0,(passdir).w	;move d0 into passdir
+	move.w	d0,(passdir).w			;move d0 into passdir
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-passdirlist	;PSandSOpassdir: passdir for the other net
+passdirlist							;PSandSOpassdir: passdir for the other net
 	dc.w	0,7,6,5,4,3,2,1,8
-StartShootoutPath	;Shootout: pick one of the 7 skate paths (ShootoutPaths) at random (sopath) and start
-	;it (NextPathPoint)
+StartShootoutPath					;Shootout: pick one of the 7 skate paths (ShootoutPaths) at random
+									;(sopath) and start it (NextPathPoint)
 	movem.l	d0-d7/a0-a6,-(sp)
 .loop
 	move.w	#7,d0
@@ -77,7 +78,7 @@ StartShootoutPath	;Shootout: pick one of the 7 skate paths (ShootoutPaths) at ra
 	bsr.w	NextPathPoint
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-ShootoutPaths	;The 7 shootout skate paths (NextPathPoint)
+ShootoutPaths						;The 7 shootout skate paths (NextPathPoint)
 	dc.l	ShootoutPath1
 	dc.l	ShootoutPath2
 	dc.l	ShootoutPath3
@@ -85,22 +86,30 @@ ShootoutPaths	;The 7 shootout skate paths (NextPathPoint)
 	dc.l	ShootoutPath5
 	dc.l	ShootoutPath6
 	dc.l	ShootoutPath7
-ShootoutPath1	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
+ShootoutPath1						;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte:
+									;sopathend, then sopathdir)
 	dc.w	$10,$E2,$10,$D0,$8020,5
-ShootoutPath2	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
+ShootoutPath2						;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte:
+									;sopathend, then sopathdir)
 	dc.w	$FFC9,$A0,$FFFF,$C8,$FFE0,$D0,$8020,5
-ShootoutPath3	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
+ShootoutPath3						;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte:
+									;sopathend, then sopathdir)
 	dc.w	$FFB0,$40,$1A,$BC,$8020,5
-ShootoutPath4	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
+ShootoutPath4						;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte:
+									;sopathend, then sopathdir)
 	dc.w	$FFCE,$58,$14,$D0,$802C,5
-ShootoutPath5	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
+ShootoutPath5						;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte:
+									;sopathend, then sopathdir)
 	dc.w	$FFCE,8,$20,$D0,$8028,6
-ShootoutPath6	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
+ShootoutPath6						;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte:
+									;sopathend, then sopathdir)
 	dc.w	$1C,$F4,8,$E0,$8020,6
-ShootoutPath7	;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte: sopathend, then sopathdir)
+ShootoutPath7						;ShootoutPaths path: x, y points; $80 in the high byte ends it (low byte:
+									;sopathend, then sopathdir)
 	dc.w	$FFE6,$F8,0,$E0,$8020,2
-NextPathPoint	;Next point of shootout path sopath: sopathx / sopathy = x (turned by bit 0
-	;of $76(a3)) / y; at the end ($80) sflags7 bit 3, sopathend and sopathdir
+NextPathPoint						;Next point of shootout path sopath: sopathx / sopathy = x (turned by bit
+									;0 of $76(a3)) / y; at the end ($80) sflags7 bit 3, sopathend and
+									;sopathdir
 	movem.l	d0-d7/a0-a6,-(sp)
 	cmpi.b	#$80,(sopathx).w
 	beq.w	.x
@@ -126,8 +135,9 @@ NextPathPoint	;Next point of shootout path sopath: sopathx / sopathy = x (turned
 .x
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-SkatePath	;Shootout skate path: d0 / d1 = the point (mirrored for the bottom net); within $A of it ($12
-	;while $28 / $2A(a3) are 0) take the next one (NextPathPoint)
+SkatePath							;Shootout skate path: d0 / d1 = the point (mirrored for the bottom net);
+									;within $A of it ($12 while $28 / $2A(a3) are 0) take the next one
+									;(NextPathPoint)
 	movem.l	d2-d7/a0-a6,-(sp)
 	cmpi.b	#$80,(sopathx).w
 	beq.w	.x
@@ -173,8 +183,9 @@ SkatePath	;Shootout skate path: d0 / d1 = the point (mirrored for the bottom net
 .x
 	movem.l	(sp)+,d2-d7/a0-a6
 	rts
-ShootoutShootCheck	;Shootout, skater a3 has the puck (gmode2 bit 1): Z set (d0 is restored) = shoot now
-	;after 3 (shootoutclock) at the path end, within sopathend of its last point, or with the puck stopped before $F
+ShootoutShootCheck					;Shootout, skater a3 has the puck (gmode2 bit 1): Z set (d0 is restored) =
+									;shoot now after 3 (shootoutclock) at the path end, within sopathend of
+									;its last point, or with the puck stopped before $F
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#1,(gmode2).w
 	beq.w	.yes
@@ -227,8 +238,8 @@ ShootoutShootCheck	;Shootout, skater a3 has the puck (gmode2 bit 1): Z set (d0 i
 ;	Shooter turns, the shootout result and the shooters screen.
 
 
-NextShooter	;Shootout: the next shooter (BA_Team, BA_Goalie_SCnum, StartShootoutPath), or the end
-	;(ExitToOpening)
+NextShooter							;Shootout: the next shooter (BA_Team, BA_Goalie_SCnum, StartShootoutPath),
+									;or the end (ExitToOpening)
 	btst	#3,(gmode2).w
 	beq.w	.0
 	jmp	(ExitToOpening).l
@@ -249,8 +260,8 @@ NextShooter	;Shootout: the next shooter (BA_Team, BA_Goalie_SCnum, StartShootout
 	bclr	#pfnc,(SortCords+(puckscnum*SCstruct)+pflags).w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-CountShootoutGoals	;Shootout: count the goals and end it when one team cannot catch up
-	;(EndShootout)
+CountShootoutGoals					;Shootout: count the goals and end it when one team cannot catch up
+									;(EndShootout)
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#0,(shootoutteam+1).w
 	beq.w	.switch
@@ -274,8 +285,9 @@ CountShootoutGoals	;Shootout: count the goals and end it when one team cannot ca
 .x
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-EndShootout	;Shootout over: LockScroll, then the 5 skaters of player slots 1-5 (homeshootgoals >
-	;awayshootgoals) or 7-$B are set up (setplayer) above or below the view and get assscore (assinsert 7)
+EndShootout							;Shootout over: LockScroll, then the 5 skaters of player slots 1-5
+									;(homeshootgoals > awayshootgoals) or 7-$B are set up (setplayer) above or
+									;below the view and get assscore (assinsert 7)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#sf2drec,(sflags2).w
 	jsr	(LockScroll).l
@@ -304,7 +316,7 @@ EndShootout	;Shootout over: LockScroll, then the 5 skaters of player slots 1-5 (
 	add.w	(Vpos).w,d0
 	move.w	d0,Ypos(a3)
 	move.w	#0,(a3)
-	move.w	#$1C,d0	;assscore
+	move.w	#$1C,d0					;assscore
 	jsr	(assinsert).l
 	bclr	#pfalock,pflags(a3)
 	bclr	#pf2aip,pflags2(a3)
@@ -315,8 +327,8 @@ EndShootout	;Shootout over: LockScroll, then the 5 skaters of player slots 1-5 (
 	dbf	d2,.loop
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-ShootoutModeBox	;Shootout round box: "SHOOTOUT MODE" (ShootoutModeBigTxt), the shooter " vs." the
-	;goalie, the goals of both teams and the round
+ShootoutModeBox						;Shootout round box: "SHOOTOUT MODE" (ShootoutModeBigTxt), the shooter "
+									;vs." the goalie, the goals of both teams and the round
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$FFFF,d0
 	jsr	(prefmes).l
@@ -384,9 +396,9 @@ ShootoutModeBox	;Shootout round box: "SHOOTOUT MODE" (ShootoutModeBigTxt), the s
 	jsr	(print).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-ShootoutModeBigTxt	;ShootoutModeBox big text
+ShootoutModeBigTxt					;ShootoutModeBox big text
 	String	$BF,$4,$3,'SHOOTOUT MODE',$BF,$4,$5,$0
-ShootoutWonBy	;Shootout: "SHOOTOUT WON BY" and the winning team (printbig1)
+ShootoutWonBy						;Shootout: "SHOOTOUT WON BY" and the winning team (printbig1)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$1,$D,$0
@@ -410,7 +422,7 @@ ShootoutWonBy	;Shootout: "SHOOTOUT WON BY" and the winning team (printbig1)
 	jsr	(printbig1).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-ShootoutShooters	;Pause menu SHOOTOUT SETUP: pick the 5 shooters and the goalie of team a2
+ShootoutShooters					;Pause menu SHOOTOUT SETUP: pick the 5 shooters and the goalie of team a2
 	btst	#0,(gmode2).w
 	beq.w	ShootersExit
 	moveq	#0,d0
@@ -428,11 +440,12 @@ ShootoutShooters	;Pause menu SHOOTOUT SETUP: pick the 5 shooters and the goalie 
 	jsr	(LineEditorBg).l
 	bsr.w	PrintShooterSlots
 	move.w	#0,(TestList).w
-ShootersRedraw	;Shootout shooters: redraw (ShootersBackground, PrintShooterNames, PrintShooterBox)
+ShootersRedraw						;Shootout shooters: redraw (ShootersBackground,
+									;PrintShooterNames, PrintShooterBox)
 	bsr.w	ShootersBackground
 	bsr.w	PrintShooterNames
 	bsr.w	PrintShooterBox
-ShootersLoop	;Shootout shooters: the input loop
+ShootersLoop						;Shootout shooters: the input loop
 	jsr	(vcountwait).l
 	jsr	(ReadMenuJoy).l
 	jsr	(ProcessInputWithRepeat).l
@@ -453,10 +466,10 @@ ShootersLoop	;Shootout shooters: the input loop
 	btst	#5,d1
 	bne.w	ShooterSelectList
 	bra.s	ShootersLoop
-ShootersExit	;Leave (ExitStatsScreen)
+ShootersExit						;Leave (ExitStatsScreen)
 	jmp	(ExitStatsScreen).l
-ShooterSelectList	;Shootout shooters: the "{Select Player}" list for slot TestList (skaters, or the
-	;goalies for slot 5)
+ShooterSelectList					;Shootout shooters: the "{Select Player}" list for slot TestList (skaters,
+									;or the goalies for slot 5)
 	move.w	#$C000,d7
 	movea.l	#homeshooters,a0
 	cmpa.l	#tmstruct,a2
@@ -565,8 +578,8 @@ ShooterSelectList	;Shootout shooters: the "{Select Player}" list for slot TestLi
 	move.w	d0,(a0,d2.w)
 	jsr	(LineEditorBg).l
 	bra.w	ShootersRedraw
-PrintShooterList	;Shootout shooters: the player list rows (getNameandAttrib); the selected row in
-	;printa d7 ($E000 with BA_PS_flags bit 1)
+PrintShooterList					;Shootout shooters: the player list rows (getNameandAttrib); the selected
+									;row in printa d7 ($E000 with BA_PS_flags bit 1)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$16,$1,$0
 .loop
@@ -624,18 +637,19 @@ PrintShooterList	;Shootout shooters: the player list rows (getNameandAttrib); th
 	addq.w	#1,d2
 	dbf	d1,.loop3
 	rts
-ShooterOverallTxt	;PrintShooterList heading, then the attribute long (d4)
+ShooterOverallTxt					;PrintShooterList heading, then the attribute long (d4)
 	String	'    Overall    ]'
 	dc.w	$1F3A,$A
-ShooterOverallTxt2	;PrintShooterList goalie heading, then the attribute long (d4)
+ShooterOverallTxt2					;PrintShooterList goalie heading, then the attribute long (d4)
 	String	'    Overall    ]'
 	dc.w	$1B0F,$A
-ShootersPick	;Shootout shooters: C on a slot; the same slot (TestList) goes back to the loop, else
-	;select it (ShootersSelect)
+ShootersPick						;Shootout shooters: C on a slot; the same slot (TestList) goes back to the
+									;loop, else select it (ShootersSelect)
 	cmp.w	(TestList).w,d0
 	beq.w	ShootersLoop
 	bra.w	ShootersSelect
-ShootersMove	;Shootout shooters: move the slot cursor by d0, wrapping in 0 ... 4 (not on slot 5)
+ShootersMove						;Shootout shooters: move the slot cursor by d0, wrapping in 0 ... 4 (not
+									;on slot 5)
 	cmpi.w	#5,(TestList).w
 	beq.w	ShootersLoop
 	add.w	(TestList).w,d0
@@ -646,12 +660,13 @@ ShootersMove	;Shootout shooters: move the slot cursor by d0, wrapping in 0 ... 4
 	bra.w	ShootersSelect
 .0
 	move.w	#4,d0
-ShootersSelect	;Shootout shooters: TestList = d0, redraw the names and the player box, back to the loop
+ShootersSelect						;Shootout shooters: TestList = d0, redraw the names and the player box,
+									;back to the loop
 	move.w	d0,(TestList).w
 	bsr.w	PrintShooterNames
 	bsr.w	PrintShooterBox
 	bra.w	ShootersLoop
-ShootersBackground	;Shootout shooters: "Shootout" title and the team block (PutTeamBlock)
+ShootersBackground					;Shootout shooters: "Shootout" title and the team block (PutTeamBlock)
 	bsr.w	ClearShooterScreen
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$7,$1,$0
@@ -665,18 +680,19 @@ ShootersBackground	;Shootout shooters: "Shootout" title and the team block (PutT
 	move.w	#$2C,d0
 .0
 	jmp	(PutTeamBlock).l
-ClearShooterScreen	;Shootout shooters: erase the top of the screen
+ClearShooterScreen					;Shootout shooters: erase the top of the screen
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$0,$0,$0
 	moveq	#$28,d0
 	moveq	#$A,d1
 	move.w	#$7FF,d2
 	jmp	(eraser).l
-ResetShooterScroll	;Clear the list scroll words palfadenew+$5A and palfadenew+$7A. Nothing calls it in 95
+ResetShooterScroll					;Clear the list scroll words palfadenew+$5A and
+									;palfadenew+$7A. Nothing calls it in 95
 	clr.w	(palfadenew+$5A).w
 	clr.w	(palfadenew+$7A).w
 	rts
-PrintShooterSlots	;Shootout shooters: "Shooters" 1. ... 5. and "Goalie"
+PrintShooterSlots					;Shootout shooters: "Shooters" 1. ... 5. and "Goalie"
 	jsr	(printsmallz).l
 	String	CC_SetFont,$0,CC_SetMap,$2,CC_SetX,$0,CC_SetY,$A
 	jsr	(printsmallz).l
@@ -696,7 +712,7 @@ PrintShooterSlots	;Shootout shooters: "Shooters" 1. ... 5. and "Goalie"
 	jsr	(printsmallz).l
 	String	CC_SetX,$1A,CC_SetY,$C,'Goalie'
 	rts
-PrintShooterBox	;Shootout shooters: the selected player (getname), centred
+PrintShooterBox						;Shootout shooters: the selected player (getname), centred
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$4,$2,$8,$7,CC_SetFont,$1,$0
 	jsr	(printsmallz).l
@@ -719,8 +735,8 @@ PrintShooterBox	;Shootout shooters: the selected player (getname), centred
 	jsr	(printsmall).l
 	clr.w	(printfontset).w
 	rts
-PrintShooterNames	;Shootout shooters: the shooters' names (FormatPlayerNameShort), slot TestList
-	;highlighted
+PrintShooterNames					;Shootout shooters: the shooters' names (FormatPlayerNameShort), slot
+									;TestList highlighted
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printsmallz).l
 	String	CC_SetX,$6,CC_SetY,$E,CC_SetAttribute,$6,CC_SetFont,$0
@@ -759,8 +775,9 @@ PrintShooterNames	;Shootout shooters: the shooters' names (FormatPlayerNameShort
 
 
 
-puckshootout	;Start a penalty shot or shootout attempt: the pads cleared, the shooter (NextShooter) or the path
-	;(StartShootoutPath), the song, the goalies back, SelectPenaltyShotSkater; the puck assignment $20 (3 with no skater)
+puckshootout						;Start a penalty shot or shootout attempt: the pads cleared, the shooter
+									;(NextShooter) or the path (StartShootoutPath), the song, the goalies
+									;back, SelectPenaltyShotSkater; the puck assignment $20 (3 with no skater)
 	bclr	#pfna,pflags(a3)
 	beq.w	.selectskater
 	bclr	#sfhor,(sflags).w
@@ -874,7 +891,8 @@ puckshootout	;Start a penalty shot or shootout attempt: the pads cleared, the sh
 	move.w	#$20,d0
 	jmp	(assreplace).l
 
-SelectPenaltyShotSkater	;The best rated free skater of the shooting team (9 rating nibbles) in BA_Skater_Offset, a3 his sort object; d0 = 1, or -1 with none
+SelectPenaltyShotSkater				;The best rated free skater of the shooting team (9 rating nibbles) in
+									;BA_Skater_Offset, a3 his sort object; d0 = 1, or -1 with none
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#tmstruct,a0
 	tst.w	(BA_Team).w
@@ -976,7 +994,9 @@ SelectPenaltyShotSkater	;The best rated free skater of the shooting team (9 rati
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-puckpenshot	;Penalty shot / shootout face-off: rink, puck and nets reset, the shooter at the puck and the goalie in the net, the others off the ice; without $62(a3) bit 1 resume play
+puckpenshot							;Penalty shot / shootout face-off: rink, puck and nets reset, the shooter
+									;at the puck and the goalie in the net, the others off the ice; without
+									;$62(a3) bit 1 resume play
 	bclr	#pfna,pflags(a3)
 	beq.w	.21
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1041,7 +1061,7 @@ puckpenshot	;Penalty shot / shootout face-off: rink, puck and nets reset, the sh
 	jsr	(resetplstuff).l
 	move.l	a3,-(sp)
 	movea.l	#SortCords+(11*SCstruct),a3	;away goalie SCstruct
-	move.w	#$B,d2	;11 = # of player SCstructs
+	move.w	#$B,d2					;11 = # of player SCstructs
 .playerloop
 	cmp.w	(BA_Sktr_SCnum).w,d2
 	beq.w	.4
@@ -1189,12 +1209,14 @@ puckpenshot	;Penalty shot / shootout face-off: rink, puck and nets reset, the sh
 	clr.w	Yvel(a3)
 	rts
 
-PenShotTable	;Penalty shot data. Unreferenced
+PenShotTable						;Penalty shot data. Unreferenced
 	dc.b	0,1,2,3,4,5,6,0,0,1,5,3,4,2,0,0
 	dc.b	0,3,5,1,4,0,0,0,0,0
 	dc.w	$FF06,$FFDD,$FFCE,$0023,$FFCE,$FFCE,$FFF6,$0000,$FFF1,$0032,$FFF6,$0000,$FFC4
 
-UpdatePenaltyShotEnd	;The shot ends (BA_PS_flags bit 4) when the goalie has the puck, the loose puck timer or the clock runs out; the first time AddPenalty2 $A. Runs on into EndPenaltyShotPlay
+UpdatePenaltyShotEnd				;The shot ends (BA_PS_flags bit 4) when the goalie has the puck, the loose
+									;puck timer or the clock runs out; the first time AddPenalty2 $A. Runs on
+									;into EndPenaltyShotPlay
 	movem.w	d0,-(sp)
 	move.w	(puckc).w,d0
 	cmp.w	(BA_Goalie_SCnum).w,d0
@@ -1232,7 +1254,8 @@ UpdatePenaltyShotEnd	;The shot ends (BA_PS_flags bit 4) when the goalie has the 
 	move.w	#$A,d0
 	jsr	(AddPenalty2).l
 
-EndPenaltyShotPlay	;LockScroll, end the penalty shot play (the BA flags), the shooter newpnum back, then CountShootoutGoals
+EndPenaltyShotPlay					;LockScroll, end the penalty shot play (the BA flags), the shooter newpnum
+									;back, then CountShootoutGoals
 	jsr	(LockScroll).l
 	btst	#0,(gmode2).w
 	bne.w	.stopplay
@@ -1254,10 +1277,11 @@ EndPenaltyShotPlay	;LockScroll, end the penalty shot play (the BA flags), the sh
 	movem.l	(sp)+,d0/a0
 	jsr	(CountShootoutGoals).l
 
-PenaltyShotEndReturn	;Shared rts
+PenaltyShotEndReturn				;Shared rts
 	rts
 
-SetupPenaltyShot	;Penalty shot for team a2: the shooter plays center (BA_Skater_Offset), the goalie stays, the other players unavailable (assreplace $1D)
+SetupPenaltyShot					;Penalty shot for team a2: the shooter plays center (BA_Skater_Offset),
+									;the goalie stays, the other players unavailable (assreplace $1D)
 	movem.l	d0-d5/a0-a3,-(sp)
 	movea.w	$22(a2),a3
 	moveq	#5,d4
@@ -1295,7 +1319,8 @@ SetupPenaltyShot	;Penalty shot for team a2: the shooter plays center (BA_Skater_
 	movem.l	(sp)+,d0-d5/a0-a3
 	rts
 
-PenaltyShotBox	;In a shootout ShootoutModeBox; else the "PENALTY SHOT!" box: the shooter, the penalty (Penaltylist) and " by" the checker
+PenaltyShotBox						;In a shootout ShootoutModeBox; else the "PENALTY SHOT!" box: the shooter,
+									;the penalty (Penaltylist) and " by" the checker
 	bset	#7,(gmode2).w
 	btst	#0,(gmode2).w
 	beq.w	.box
@@ -1303,7 +1328,7 @@ PenaltyShotBox	;In a shootout ShootoutModeBox; else the "PENALTY SHOT!" box: the
 .box
 	movem.l	d0-d2/a0-a4,-(sp)
 	move.w	#$FFFF,d0
-	jsr	(prefmes).l	;d0 = -1
+	jsr	(prefmes).l					;d0 = -1
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$3,$2,$0
 	moveq	#$1B,d0
@@ -1312,11 +1337,11 @@ PenaltyShotBox	;In a shootout ShootoutModeBox; else the "PENALTY SHOT!" box: the
 	lea	PenShotBigTxt(pc),a1
 	jsr	(printbig1).l
 	move.w	(BA_Sktr_SCnum).w,d0
-	asl.w	#7,d0	;sprite structs are $80 bytes
+	asl.w	#7,d0					;sprite structs are $80 bytes
 	movea.l	#SortCords,a2
 	adda.w	d0,a2
 	clr.w	d0
-	move.b	$66(a2),d0	;roster slot
+	move.b	$66(a2),d0				;roster slot
 	movea.l	#tmstruct,a2
 	tst.w	(BA_Team).w
 	beq.w	.1
@@ -1346,10 +1371,11 @@ PenaltyShotBox	;In a shootout ShootoutModeBox; else the "PENALTY SHOT!" box: the
 	movem.l	(sp)+,d0-d2/a0-a4
 	rts
 
-PenShotBigTxt	;PenaltyShotBox big text
+PenShotBigTxt						;PenaltyShotBox big text
 	String	$BF,$4,$3,'PENALTY SHOT!',$BF,$4,$5,$0
 
-PenShotChk	;A breakaway shooter hit: a penalty shot when penalty d0 allows one (PenShotPenalties); d0 = the penalty
+PenShotChk							;A breakaway shooter hit: a penalty shot when penalty d0 allows one
+									;(PenShotPenalties); d0 = the penalty
 	movem.l	d1-d3/a0,-(sp)
 	btst	#pf3break,pflags3(a2)	;breakaway
 	beq.w	.loop
@@ -1369,7 +1395,7 @@ PenShotChk	;A breakaway shooter hit: a penalty shot when penalty d0 allows one (
 	movea.l	#PenShotPenalties,a0
 	move.w	(a0,d0.w),d1
 	bmi.w	.end
-	move.w	SCnum(a2),d2	;SCnum
+	move.w	SCnum(a2),d2			;SCnum
 	movem.w	d0-d1,-(sp)
 	move.w	d2,d0
 	jsr	(getBAplayerInfo).l
@@ -1379,12 +1405,13 @@ PenShotChk	;A breakaway shooter hit: a penalty shot when penalty d0 allows one (
 	bra.s	.loop
 .found
 	move.w	d1,(pspenalty).w
-	move.w	d1,d0	;return the penalty shot penalty
+	move.w	d1,d0					;return the penalty shot penalty
 .end
 	movem.l	(sp)+,d1-d3/a0
 	rts
 
-getBAplayerInfo	;Keep the breakaway shooter, team, goalie and checker for the penalty shot; N clear when set
+getBAplayerInfo						;Keep the breakaway shooter, team, goalie and checker for the penalty
+									;shot; N clear when set
 	movem.l	d1-d3/a1,-(sp)
 	tst.w	(OptPen).w
 	beq.w	.noPen
@@ -1401,16 +1428,16 @@ getBAplayerInfo	;Keep the breakaway shooter, team, goalie and checker for the pe
 	jsr	(getGoalieSCnum).l
 	tst.w	d0
 	bpl.w	.goaliein
-	movem.w	(sp)+,d0	;no goalie
+	movem.w	(sp)+,d0				;no goalie
 	bclr	#3,(BA_PS_flags).w
 	bra.w	.end
 .goaliein
-	move.w	d0,d1	;d1 = goalie's SCnum
-	move.w	(sp)+,d0	;d0 now back to player checked on breakaway SCnum
+	move.w	d0,d1					;d1 = goalie's SCnum
+	move.w	(sp)+,d0				;d0 now back to player checked on breakaway SCnum
 	move.w	d0,(BA_Sktr_SCnum).w
 	movea.l	#SortCords,a1
 	move.w	d0,d3
-	asl.w	#scsize,d3	;scsize
+	asl.w	#scsize,d3				;scsize
 	move.w	#0,(BA_Team).w
 	btst	#pfteam,pflags(a1,d3.w)
 	beq.w	.2
@@ -1419,7 +1446,7 @@ getBAplayerInfo	;Keep the breakaway shooter, team, goalie and checker for the pe
 	move.w	#0,(BA_Skater_Offset).w
 	move.b	pnum(a1,d3.w),(BA_Skater_Offset+1).w
 	move.w	d1,(BA_Goalie_SCnum).w
-	asl.w	#scsize,d1	;scsize
+	asl.w	#scsize,d1				;scsize
 	move.w	#0,(BA_Goalie_Offset).w
 	move.b	pnum(a1,d1.w),(BA_Goalie_Offset+1).w
 	move.w	#0,(BA_Checker_Offset).w
@@ -1428,10 +1455,11 @@ getBAplayerInfo	;Keep the breakaway shooter, team, goalie and checker for the pe
 	movem.l	(sp)+,d1-d3/a1
 	rts
 .noPen
-	move.w	#$FFFF,d1	;N set: no penalty shot
+	move.w	#$FFFF,d1				;N set: no penalty shot
 	bra.s	.end
 
-ShortenMsgTimer	;Cap the message timer at 2, unless a second pad is on and a3 is not the puck carrier
+ShortenMsgTimer						;Cap the message timer at 2, unless a second pad is on and a3 is not the
+									;puck carrier
 	movem.l	d0,-(sp)
 	tst.w	(cont2team).w
 	beq.w	.0

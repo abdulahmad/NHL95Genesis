@@ -5,9 +5,9 @@
 	org	$83EB2
 
 ; includes for stubs to replace removed code
-	include	stubinc\ports.inc	;IO_* / VDP_* ports
-	include	stubinc\equals.inc	;VDP status bits
-	include	ram95.asm		;RAM map
+	include	stubinc\ports.inc		;IO_* / VDP_* ports
+	include	stubinc\equals.inc		;VDP status bits
+	include	ram95.asm				;RAM map
 
 ; External addresses outside, read from lst/nhl95.bin.
 holdplayer = $AA18
@@ -38,7 +38,7 @@ PuckOnAttackHalf = $82E88
 checkob = $89F5C
 SetLCmode = $8A056
 lineinput = $8A202
-doinput_goaliedive = $8B6F8	;the goalie dive on A
+doinput_goaliedive = $8B6F8			;the goalie dive on A
 getGoalieSCnum = $8B974
 dirtab = $8B9D6
 runspeed = 240

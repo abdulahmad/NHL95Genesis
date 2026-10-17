@@ -1,12 +1,14 @@
 ;	Title screens. This file shows the title with the scrolling credits and the high score
 ;	screen. New in 95: the Stanley Cup screen.
 
-;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp / cmpi; fixopcodes.js patches the
-;	cmp encoding after assembly.
+;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp /
+;	cmpi; fixopcodes.js patches the cmp encoding after assembly.
 
-	include	macros\genesis.mac	;String
+	include	macros\genesis.mac		;String
 
-newTitleScreen	;The title screen (TitleScreenImg, TitleImg) with the vblank TitleVBlank and the song, then the scrolling credits (Credits, CreditsList, CreditsPrintRow) until start
+newTitleScreen						;The title screen (TitleScreenImg, TitleImg) with the vblank TitleVBlank
+									;and the song, then the scrolling credits (Credits, CreditsList,
+									;CreditsPrintRow) until start
 	move	#$2700,sr
 	move.w	(HVcount).l,(seed).w
 	move.w	(HVcount).l,(seed+2).w
@@ -96,7 +98,7 @@ newTitleScreen	;The title screen (TitleScreenImg, TitleImg) with the vblank Titl
 	clr.w	(TempWord1).w
 	jsr	(printz).l
 	String	-(TXPAL1+TXMAP1),0,0,0
-	movea.l	#Credits,a1	;start of credits for scrolling
+	movea.l	#Credits,a1				;start of credits for scrolling
 	jsr	(CreditsPrintRow).l
 	addi.w	#$20,(Vscroll).w
 	move.w	#$104,(clampcounter).w
@@ -153,7 +155,8 @@ newTitleScreen	;The title screen (TitleScreenImg, TitleImg) with the vblank Titl
 	bpl.s	.loop3
 	rts
 
-CreditsPrintRow	;Credits: clear the row below the screen (Vscroll / 8 + $1C) and print the Strings from a1 centred there
+CreditsPrintRow						;Credits: clear the row below the screen (Vscroll / 8 + $1C) and print the
+									;Strings from a1 centred there
 	move.w	(Vscroll).w,d0
 	asr.w	#3,d0
 	addi.w	#$1C,d0
@@ -179,7 +182,8 @@ CreditsPrintRow	;Credits: clear the row below the screen (Vscroll / 8 + $1C) and
 	bpl.s	.loop
 	rts
 
-CreditsWait	;Credits: wait one frame, run the clampcounter count down; from TempWord1 5 on, start returns from the caller
+CreditsWait							;Credits: wait one frame, run the clampcounter count down; from TempWord1
+									;5 on, start returns from the caller
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(vcount).w,d0
 .loop
@@ -202,7 +206,8 @@ CreditsWait	;Credits: wait one frame, run the clampcounter count down; from Temp
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-VBlank_TitleScreen	;newTitleScreen vblank: the line scroll table and Vscroll, the sprites, cramfade, CreditsScrollStep, the music; rte
+VBlank_TitleScreen					;newTitleScreen vblank: the line scroll table and Vscroll, the sprites,
+									;cramfade, CreditsScrollStep, the music; rte
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w
 	bne.w	.1
@@ -228,7 +233,7 @@ VBlank_TitleScreen	;newTitleScreen vblank: the line scroll table and Vscroll, th
 	movem.l	(sp)+,d0-d7/a0-a6
 	rte
 
-CreditsLineScroll	;Credits: the line scroll table at SortCords
+CreditsLineScroll					;Credits: the line scroll table at SortCords
 	movem.l	d0-d1,-(sp)
 	move.w	#$14,(Hscroll).w
 	move.w	#$50,(TempWord2).w
@@ -251,7 +256,7 @@ CreditsLineScroll	;Credits: the line scroll table at SortCords
 	movem.l	(sp)+,d0-d1
 	rts
 
-CreditsScrollStep	;Credits: line scroll step, every TempWord2 frames
+CreditsScrollStep					;Credits: line scroll step, every TempWord2 frames
 	subq.w	#1,(TempWord2).w
 	bmi.w	.0
 	rts
@@ -285,7 +290,8 @@ CreditsScrollStep	;Credits: line scroll step, every TempWord2 frames
 	movem.l	(sp)+,d0-d2/a0
 	rts
 
-HiScoreScreen	;vb2, the HiScoreBgMap and HiScoreImg bitmaps, then wait up to $50 * 4 frames or a button (waitx)
+HiScoreScreen						;vb2, the HiScoreBgMap and HiScoreImg bitmaps, then wait up to $50 * 4
+									;frames or a button (waitx)
 	move.l	#vb2,(vbint).w
 	bclr	#df32c,(disflags).w
 	move.w	#5,(Map3col1).w
@@ -344,7 +350,9 @@ HiScoreScreen	;vb2, the HiScoreBgMap and HiScoreImg bitmaps, then wait up to $50
 	move	#$2700,sr
 	rts
 
-StanleyCupScreen	;The Stanley Cup screen: the vblank CupVBlank, the cup (StanleyCupImg), the winner team block (CupDrawTeam), the song, then the animated sprites until start
+StanleyCupScreen					;The Stanley Cup screen: the vblank CupVBlank, the cup (StanleyCupImg),
+									;the winner team block (CupDrawTeam), the song, then the animated sprites
+									;until start
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	#CupVBlank,(vbint).l
 	bclr	#df32c,(disflags).w
@@ -405,7 +413,8 @@ StanleyCupScreen	;The Stanley Cup screen: the vblank CupVBlank, the cup (Stanley
 	jsr	(CupReadPads).l
 	bra.s	.loop
 
-CupReadPads	;StanleyCupScreen: the buttons of all pads; start leaves StanleyCupScreen (drops the return address)
+CupReadPads							;StanleyCupScreen: the buttons of all pads; start leaves StanleyCupScreen
+									;(drops the return address)
 	jsr	(ReadJoy1).l
 	move.w	d3,-(sp)
 	jsr	(ReadJoy2).l
@@ -422,19 +431,20 @@ CupReadPads	;StanleyCupScreen: the buttons of all pads; start leaves StanleyCupS
 	bne.w	CupExit
 	rts
 
-CupWaitFrame	;StanleyCupScreen: wait for the next vblank
+CupWaitFrame						;StanleyCupScreen: wait for the next vblank
 	move.w	(vcount).w,d0
 .loop
 	cmp.w	(vcount).w,d0
 	beq.s	.loop
 	rts
 
-CupExit	;Leave StanleyCupScreen (CupReadPads on start: drop its return address)
+CupExit								;Leave StanleyCupScreen (CupReadPads on start: drop its return address)
 	addq.w	#4,sp
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CupVBlank	;StanleyCupScreen vblank: the sprites, cramfade, vcount, the music; nothing with disflags bit 2; rte
+CupVBlank							;StanleyCupScreen vblank: the sprites, cramfade, vcount, the music;
+									;nothing with disflags bit 2; rte
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w
 	bne.w	.skip
@@ -452,7 +462,7 @@ CupVBlank	;StanleyCupScreen vblank: the sprites, cramfade, vcount, the music; no
 	movem.l	(sp)+,d0-d7/a0-a6
 	rte
 
-CupDrawTeam	;StanleyCupScreen: the team block of the winner (cupwinner, Teamblocksmap)
+CupDrawTeam							;StanleyCupScreen: the team block of the winner (cupwinner, Teamblocksmap)
 	movem.l	d0-d7/a0-a3,-(sp)
 	jsr	(printz).l
 	String	-TXMAP2,$17,$16,$0
@@ -470,7 +480,8 @@ CupDrawTeam	;StanleyCupScreen: the team block of the winner (cupwinner, Teambloc
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-CupBuildSprites	;StanleyCupScreen: the sprite list at Satt from the animated CupSprites frame (cupframe, one step every $A cupticks over $E frames), Sattsize
+CupBuildSprites						;StanleyCupScreen: the sprite list at Satt from the animated CupSprites
+									;frame (cupframe, one step every $A cupticks over $E frames), Sattsize
 	movea.w	#(Satt-M68K_RAM),a6
 	moveq	#1,d6
 	movea.l	#CupSprites,a0
@@ -501,7 +512,8 @@ CupBuildSprites	;StanleyCupScreen: the sprite list at Satt from the animated Cup
 	move.w	d0,(Sattsize).w
 	rts
 
-AddSpriteFrame	;Add the sprites of frame d2 of a0, offset by d0 / d1, to the sprite list at a6 (d6 sprites, at most $40)
+AddSpriteFrame						;Add the sprites of frame d2 of a0, offset by d0 / d1, to the sprite list
+									;at a6 (d6 sprites, at most $40)
 	cmp.w	#$40,d6
 	bge.w	.exit
 	movem.l	d0-d5/a0,-(sp)

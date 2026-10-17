@@ -1,13 +1,15 @@
 ;	Crowd animation. This file steps the crowd through its frames and draws the crowd sprites.
 
 
-	include	macros\genesis.mac	;String
+	include	macros\genesis.mac		;String
 
-updatecrowdf	;Every game loop, d7 = elapsed frames: the crowd level falls (faster when loud); every $10 frames the next crowd frame of CrowdFrameTbl in crowdframe.
-	;a frame table instead of the 94 random frame / time pairs
+updatecrowdf						;Every game loop, d7 = elapsed frames: the crowd level falls (faster when
+									;loud); every $10 frames the next crowd frame of CrowdFrameTbl in
+									;crowdframe.
+									;a frame table instead of the 94 random frame / time pairs
 	cmpi.w	#$15E,(crowdlevel).w
 	blt.w	.dec
-	subq.w	#3,(crowdlevel).w	;loud crowd calms down faster
+	subq.w	#3,(crowdlevel).w		;loud crowd calms down faster
 .dec
 	sub.w	d7,(crowdlevel).w
 	bpl.w	.1
@@ -33,7 +35,7 @@ updatecrowdf	;Every game loop, d7 = elapsed frames: the crowd level falls (faste
 .3
 	rts
 
-CrowdFrameTbl	;updatecrowdf crowd animation frames, -1 wraps
+CrowdFrameTbl						;updatecrowdf crowd animation frames, -1 wraps
 	dc.b	1,2,3,4,5,6,5,6,5,9,$A,4,3,4,3,4
 	dc.b	5,4,3,4,5,6,7,8,9,$A,$B,$C,9,$A,8,7
 	dc.b	6,5,4,$C,9,$A,5,6,7,8,1,2,3,4,5,6
@@ -42,9 +44,10 @@ CrowdFrameTbl	;updatecrowdf crowd animation frames, -1 wraps
 	dc.b	4,5,4,3,2,3,4,5,4,5,$B,$C,6,7,8,9
 	dc.b	$FF,$FF
 
-showcrowd	;Crowd sprites: up to 3 frames per PBnum nibble (ShowCrowdPb), then the crowdframe frame
-	;none in a reverse angle replay (sflags4 bit 4). a6 = sprite table, d6 = link counter
-	btst	#4,(sflags4).w	;check if reverse angle replay
+showcrowd							;Crowd sprites: up to 3 frames per PBnum nibble (ShowCrowdPb), then the
+									;crowdframe frame none in a reverse angle replay (sflags4 bit 4). a6 =
+									;sprite table, d6 = link counter
+	btst	#4,(sflags4).w			;check if reverse angle replay
 	bne.w	rtsShowCrowd
 	movea.l	#CrowdFrameList,a1
 	adda.l	4(a1),a1
@@ -61,7 +64,8 @@ showcrowd	;Crowd sprites: up to 3 frames per PBnum nibble (ShowCrowdPb), then th
 	move.b	(crowdframe+1).w,d0
 	bra.w	ShowCrowdFrame
 
-ShowCrowdPb	;Crowd frames for the penalty box: d2 = the count (PBnum nibble, at most 3), d3 = the first frame
+ShowCrowdPb							;Crowd frames for the penalty box: d2 = the count (PBnum nibble, at most
+									;3), d3 = the first frame
 	andi.w	#$F,d2
 	cmp.w	#3,d2
 	bls.w	.0
@@ -76,7 +80,8 @@ ShowCrowdPb	;Crowd frames for the penalty box: d2 = the count (PBnum nibble, at 
 	dbf	d2,.1
 	rts
 
-ShowCrowdFrame	;Crowd frame d0 (0 = none): its sprites in view as sprite table entries at a6 (at most $40)
+ShowCrowdFrame						;Crowd frame d0 (0 = none): its sprites in view as sprite table entries at
+									;a6 (at most $40)
 	ext.w	d0
 	beq.w	rtsShowCrowd
 	cmp.w	#$40,d6
@@ -143,5 +148,5 @@ ShowCrowdFrame	;Crowd frame d0 (0 = none): its sprites in view as sprite table e
 .x
 	movem.l	(sp)+,d0-d5
 
-rtsShowCrowd	;Shared rts of showcrowd
+rtsShowCrowd						;Shared rts of showcrowd
 	rts
