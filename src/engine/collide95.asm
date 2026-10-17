@@ -329,7 +329,7 @@ checkplcoll							;Check collision with other players. d2/d3 = x/y cords, a3 = s
 	move.b	1(a1,d1.w),d4			;next higher object number
 	move.w	(a2,d4.w),d5
 	sub.w	d3,d5
-	cmp.w	#$10,d5					;#collrad*2
+	cmp.w	#collrad*2,d5			;#collrad*2
 	bgt.w	.cl
 	bsr.w	checkcx
 	addq.w	#1,d1
@@ -342,7 +342,7 @@ checkplcoll							;Check collision with other players. d2/d3 = x/y cords, a3 = s
 	move.b	-1(a1,d1.w),d4			;next lower object number
 	move.w	d3,d5
 	sub.w	(a2,d4.w),d5
-	cmp.w	#$10,d5					;#collrad*2
+	cmp.w	#collrad*2,d5			;#collrad*2
 	bgt.w	.ex
 	bsr.w	checkcx
 	subq.w	#1,d1
@@ -368,14 +368,14 @@ checkcx								;d4 = obj. # * 2 for possible collision so check x range and dist
 	bgt.w	.exit
 	move.w	(a2),d0					;Xpos
 	sub.w	d2,d0					;subtract d2 from d0
-	cmp.w	#$FFF0,d0				;compare delta Xpos to -collrad*2
+	cmp.w	#-collrad*2,d0			;compare delta Xpos to -collrad*2
 	blt.w	.exit
-	cmp.w	#$10,d0					;compare delta Xpos to collrad*2
+	cmp.w	#collrad*2,d0			;compare delta Xpos to collrad*2
 	bgt.w	.exit
 	muls.w	d5,d5					;delta y^2
 	muls.w	d0,d0					;delta x^2
 	add.l	d5,d0
-	cmp.l	#$100,d0				;compare d0 to (collrad*2)*(collrad*2)
+	cmp.l	#(collrad*2)*(collrad*2),d0	;compare d0 to (collrad*2)*(collrad*2)
 	bgt.w	.exit
 	move.b	pflags(a3),d6			;move pflags into d6
 	move.b	pflags(a2),d0			;move pflags into d0

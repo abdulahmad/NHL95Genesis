@@ -70,7 +70,7 @@ checksso							;Do graphics for sso structure: arrows for the players when they 
 	move.w	#SPFarrow,d3			;the first arrow frame (94: $180)
 	bsr.w	.ca
 	adda.w	#$1C,a0					;ffosize
-	adda.w	#$14,a3					;ssosize
+	adda.w	#ssosize,a3				;ssosize
 	move.w	#SPFarrow+3,d3
 	bsr.w	.ca
 	tst.w	(cont3team).w
@@ -373,7 +373,7 @@ defaultsprites						;Allocate vram and assign char area for graphic structures. 
 									;defaultsprites2. Called from setupice
 	movea.l	#.listsso,a2
 	movea.w	#(sso-M68K_RAM),a3
-	moveq	#3,d0					;#ssonum-1 into d0
+	moveq	#ssonum-1,d0			;#ssonum-1 into d0
 .ssotop
 	move.w	#$FFFF,oldframe(a3)		;screen objects not locked to scroll of screen
 	move.w	(a2)+,(a3)
@@ -382,11 +382,11 @@ defaultsprites						;Allocate vram and assign char area for graphic structures. 
 	move.w	(a2)+,attribute(a3)
 	move.w	d4,VRchar(a3)
 	add.w	(a2)+,d4
-	adda.w	#$14,a3					;#ssosize
+	adda.w	#ssosize,a3				;#ssosize
 	dbf	d0,.ssotop
 	movea.l	#.listffo,a2
 	movea.l	#pads,a3				;ffo
-	moveq	#5,d0					;#ffonum-1 (94: 6)
+	moveq	#ffonum-1,d0			;#ffonum-1 (94: 6)
 .ffotop
 	st	oldframe(a3)				;objects tied to screen scrolling (not players/net/puck)
 	move.w	(a2)+,(a3)

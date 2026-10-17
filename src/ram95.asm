@@ -312,6 +312,11 @@ PenRoughingPS	equ	$36
 PenChargingPS	equ	$38
 PenCrossChkPS	equ	$3A
 PenSlashingPS	equ	$3C
+; Sprite object counts and sizes (92 names)
+collrad	equ	8						;collision radius of an object (objects collide within collrad*2)
+ssosize	equ	$14						;bytes per sso object
+ssonum	equ	4						;screen objects not tied to the rink scroll
+ffonum	equ	6						;objects tied to the rink scroll (94: 7)
 Pencntdwn	equ	$FFFFC010			;94 $FFFFC3E6
 Penaltytimer	equ	$FFFFC012		;94 $FFFFC3E8
 PBnum	equ	$FFFFC014				;94 $FFFFC3EA. Players in the penalty boxes: home in the high nibble, away
