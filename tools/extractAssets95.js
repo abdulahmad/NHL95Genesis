@@ -248,7 +248,7 @@ const assets = [
     { name: 'sfx_crowdboo_pcm.bin', folder: 'NHL95/Sound', start: 0x0006C4B4, end: 0x0006EA01 }, // 94 file, same bytes (94 $1F1FA)
     { name: 'sfx_check_pcm.bin', folder: 'NHL95/Sound', start: 0x0006EA02, end: 0x00070954 }, // 94 file, same bytes (94 $21748)
     { name: 'sfx_crowdcheer_pcm.bin', folder: 'NHL95/Sound', start: 0x00070954, end: 0x00073834 }, // 94 file, same bytes (94 $2369A)
-    { name: 'sfx_id_0E_pcm.bin', folder: 'NHL95/Sound', start: 0x00073834, end: 0x000772B3 }, // 94 file, same bytes (94 $2657A)
+    { name: 'sfx_bglass_pcm.bin', folder: 'NHL95/Sound', start: 0x00073834, end: 0x000772B3 }, // 94 file, same bytes (94 $2657A)
     { name: 'sfx_playerwall_pcm.bin', folder: 'NHL95/Sound', start: 0x000772B4, end: 0x00077764 }, // 94 file, same bytes (94 $29FFA)
     { name: 'sfx_check2_pcm.bin', folder: 'NHL95/Sound', start: 0x00077764, end: 0x00078193 }, // 94 file, same bytes (94 $2A4AA)
     { name: 'sfx_hithigh_pcm.bin', folder: 'NHL95/Sound', start: 0x00078194, end: 0x000786EA }, // 94 file, same bytes (94 $2AEDA)

@@ -75,7 +75,7 @@ SetStatScroll	;Plane A vertical scroll (VSRAM 0) = VertLineScrolling - $50, with
 	;set while it writes
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.l	#VSRAM_W+(2<<16),Vctrl-Vdata(a0)
 	move.w	#$FFB0,d0
 	add.w	(VertLineScrolling).w,d0
@@ -445,7 +445,7 @@ UpdateStatsListScroll	;Stats screen per frame: scroll 0 ... SelectedPlayerIdx, s
 SetStatsListScrollReg	;VSRAM = VertLineScrolling - $68
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.l	#VSRAM_W+(2<<16),Vctrl-Vdata(a0)
 	move.w	#$FF98,d0
 	add.w	(VertLineScrolling).w,d0
@@ -1446,7 +1446,7 @@ SeasonPlayersScreen	;Run the season stats screen, then jump to ExitStatsScreen
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY,Vctrl-Vdata(a0)
 	move.w	(VSPRITES).w,d0
@@ -1603,7 +1603,7 @@ SeasonStatsListScroll	;Per-frame scroll of the player list
 SeasonStatsListScrollReg	;VSRAM = VertLineScrolling - $68
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.l	#VSRAM_W+(2<<16),Vctrl-Vdata(a0)
 	move.w	#$FF98,d0
 	add.w	(VertLineScrolling).w,d0

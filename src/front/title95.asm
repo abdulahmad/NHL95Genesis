@@ -8,8 +8,8 @@
 
 newTitleScreen	;The title screen (TitleScreenImg, TitleImg) with the vblank TitleVBlank and the song, then the scrolling credits (Credits, CreditsList, CreditsPrintRow) until start
 	move	#$2700,sr
-	move.w	(VDP_CNTR).l,(seed).w
-	move.w	(VDP_CNTR).l,(seed+2).w
+	move.w	(HVcount).l,(seed).w
+	move.w	(HVcount).l,(seed+2).w
 	move.l	#VBlank_TitleScreen,(vbint).l
 	bset	#df32c,(disflags).w
 	move.w	#5,(Map3col1).w
@@ -22,7 +22,7 @@ newTitleScreen	;The title screen (TitleScreenImg, TitleImg) with the vblank Titl
 	move.w	#$FC00,(VSCRLPM).w
 	move.w	#0,d0
 	jsr	(setVram).l
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$17,Vctrl-Vdata(a0)
 	move.w	#VDPR_MODE3+$03,Vctrl-Vdata(a0)
@@ -210,7 +210,7 @@ VBlank_TitleScreen	;newTitleScreen vblank: the line scroll table and Vscroll, th
 	move.w	(VSCRLPM).w,d1
 	move.w	#$1C0,d0
 	jsr	(DoDMA).l
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.l	#VSRAM_W,Vctrl-Vdata(a0)
 	move.w	(Vscroll).w,(a0)
 	movea.w	#(Satt-M68K_RAM),a0

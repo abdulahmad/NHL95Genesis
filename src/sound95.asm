@@ -1499,12 +1499,12 @@ updatesound	;Move the crowd noise volume (psg noise channel, asv) toward crowdle
 	bpl.w	.non
 	clr.w	(asv).w
 .non
-	move.b	#$C8,(VDP_PSG).l
-	move.b	#1,(VDP_PSG).l
+	move.b	#$C8,(Asound).l
+	move.b	#1,(Asound).l
 	move.b	(asv).w,d0
 	eori.b	#$F,d0
 	ori.b	#$F0,d0
-	move.b	d0,(VDP_PSG).l
+	move.b	d0,(Asound).l
 	rts
 
 CheckLateGameSong	;Called once per second. 3rd period: choose and play a song once at the random trigger time set by ResetClock
@@ -1670,11 +1670,11 @@ stop_current_song2	;Unreferenced. A copy of stop_current_song that skips the sav
 	rts
 
 KillCrowd	;Silence the crowd noise (psg)
-	move.b	#$E7,(VDP_PSG).l
-	move.b	#$DF,(VDP_PSG).l
-	move.b	#$C8,(VDP_PSG).l
-	move.b	#1,(VDP_PSG).l
-	move.b	#$FF,(VDP_PSG).l
+	move.b	#$E7,(Asound).l
+	move.b	#$DF,(Asound).l
+	move.b	#$C8,(Asound).l
+	move.b	#1,(Asound).l
+	move.b	#$FF,(Asound).l
 	rts
 
 SoundOff	;Sound driver command $F, every song off
@@ -2222,7 +2222,7 @@ pcm_sample_table	;(sample address, 0) for PCM patches $60-$6E (lea in handle_com
 	dc.l	sfx_crowdboo_pcm,0		;patch $6B
 	dc.l	sfx_oooh_pcm,0		;patch $6C
 	dc.l	sfx_crowdcheer_pcm,0		;patch $6D
-	dc.l	sfx_id_0E_pcm,0		;patch $6E
+	dc.l	sfx_bglass_pcm,0		;patch $6E
 sfx_shotbh_pcm
 	incbin	..\Extracted\NHL95\Sound\sfx_shotbh_pcm.bin	;sample 2: shotbh
 	even
@@ -2230,7 +2230,7 @@ sfx_pass_pcm
 	incbin	..\Extracted\NHL95\Sound\sfx_pass_pcm.bin	;sample 1: pass
 	dc.b	$FF			;pad: retail leftover byte
 sfx_oooh_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_oooh_pcm.bin	;sample 12: oooh, sfx_id_0D, sfx_id_0E
+	incbin	..\Extracted\NHL95\Sound\sfx_oooh_pcm.bin	;sample 12: oooh, sfx_oooh2, sfx_bglass
 	even
 sfx_crowdboo_pcm
 	incbin	..\Extracted\NHL95\Sound\sfx_crowdboo_pcm.bin	;sample 11: crowdboo
@@ -2241,11 +2241,11 @@ sfx_check_pcm
 sfx_crowdcheer_pcm
 	incbin	..\Extracted\NHL95\Sound\sfx_crowdcheer_pcm.bin	;sample 13: crowdcheer, homewin
 	even
-sfx_id_0E_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_id_0E_pcm.bin	;sample 14: sfx_id_0E
+sfx_bglass_pcm
+	incbin	..\Extracted\NHL95\Sound\sfx_bglass_pcm.bin	;sample 14: sfx_bglass
 	dc.b	$FF			;pad: retail leftover byte
 sfx_playerwall_pcm
-	incbin	..\Extracted\NHL95\Sound\sfx_playerwall_pcm.bin	;sample 6: playerwall, sfx_id_21-23
+	incbin	..\Extracted\NHL95\Sound\sfx_playerwall_pcm.bin	;sample 6: playerwall, sfx_playerwall2-23
 	even
 sfx_check2_pcm
 	incbin	..\Extracted\NHL95\Sound\sfx_check2_pcm.bin	;sample 4: check2, check4

@@ -170,7 +170,7 @@ Add a file here when the listing shows a system 94 does not have.
   95: schedule95 Day uses the same equates; SimGoals*/SimTieTbl rows carry their team.
 - VDP commands: `ports.inc` adds `VRAM_W`, `CRAM_W`, `VSRAM_W` (long control words; add `(addr&$3FFF)<<16 + addr>>14`): `move.l #VSRAM_W+(2<<16),Vctrl-Vdata(a0)`.
 - Extracted: `Extracted/NHL95/Text/ScoutTextScript.bin` ($A0718-$A08DB, 452 bytes), as 94.
-- Original names: where NHL92Genesis `src/ram.asm` (EA original source) has a name it is used: `pflags3`, `pf3oside`, `aggress`, `SFXsiren` ... `SFXoooh` (92 names, 94 values), `SngTitle`, `SngIntermission`, `Vdata` / `Vctrl` (`Vctrl-Vdata(a0)`). Names 92 lacks follow its style (`SFXhomewin`, `SFX0D`, `SngScout`).
+- Original names: where NHL92Genesis `src/ram.asm` (EA original source) has a name it is used: `pflags3`, `pf3oside`, `aggress`, `SFXsiren` ... `SFXoooh` (92 names, 94 values), `SngTitle`, `SngEOP`, `Vdata` / `Vctrl` (`Vctrl-Vdata(a0)`). Names 92 lacks follow its style (`SFXhomewin`, `SFXoooh2`, `SngScout`).
 
 ## Naming lineage
 

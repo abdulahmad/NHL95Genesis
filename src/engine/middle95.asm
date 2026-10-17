@@ -1394,7 +1394,7 @@ DoDMA_nd2	;Vram to vram copy by dma, protected from vblank
 	movem.l	d0-d3/a1,-(sp)
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	lea	(VDP_CTRL).l,a1
+	lea	(Vctrl).l,a1
 	move.w	#VDPR_MODE2+$54,(a1)
 	move.w	#VDPR_AUTOINC+$01,(a1)
 	move.w	#$9300,d3

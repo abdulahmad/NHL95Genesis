@@ -13,7 +13,7 @@
 ; d2 = data to fill with
 DoFill	;Called,. 95 writes the long straight to the vdp (94 went through dmaram)
 	movem.l	d3/a1,-(sp)
-	movea.l	#VDP_DATA,a1
+	movea.l	#Vdata,a1
 	andi.l	#$FFFF,d1
 	asl.l	#2,d1
 	lsr.w	#2,d1
@@ -44,7 +44,7 @@ setVram_0	;Second half of setVram without the fade: clear vram and set the VDP r
 	;VmMap1-3, VSPRITES and VSCRLPM. Falls in from setVram, called from EASportsScreen
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	move.w	#VDPR_AUTOINC+$02,(VDP_CTRL).l
+	move.w	#VDPR_AUTOINC+$02,(Vctrl).l
 	clr.w	d0
 	bsr.w	Vmaddr
 	move.w	#$3FFF,d0
@@ -101,7 +101,7 @@ setVram_0	;Second half of setVram without the fade: clear vram and set the VDP r
 ; d0 = vram address
 ; returns a0 = Vdata!!!
 Vmaddr
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	asl.l	#2,d0
 	lsr.w	#2,d0
 	ori.w	#$4000,d0
@@ -191,7 +191,7 @@ DoDMApro	;DoDMA protected from vblank (dfng set)
 	rts
 
 WaitDMA	;Wait for the vdp dma busy bit to clear
-	move.w	(VDP_CTRL).l,-(sp)
+	move.w	(Vctrl).l,-(sp)
 	btst	#1,1(sp)
 	addq.w	#2,sp
 	bne.s	WaitDMA
@@ -235,7 +235,7 @@ cramfade	;Step the palette fade (palcount) and copy the palette to cram. Called 
 	move.w	d5,d4
 	not.w	d4
 	movea.l	#palfadenew,a1
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	clr.w	d6
 .top
 	move.w	d3,d2
@@ -273,7 +273,7 @@ CopyPaletteToCRAM	;Copy all 64 palfadenew colours to colour ram (dfng set), then
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
 	movea.w	#(palfadenew-M68K_RAM),a1
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.l	#CRAM_W,Vctrl-Vdata(a0)	;cram write, address 0
 	moveq	#$1F,d0
 .0
@@ -387,7 +387,7 @@ DoDMA	;95 drops the 94 Z80 bus request, the sr save and the last word fix for a 
 .dd	;(only DoDMA calls it)
 	movem.l	d2/a1,-(sp)
 .nd
-	lea	(VDP_CTRL).l,a1
+	lea	(Vctrl).l,a1
 	move.w	#VDPR_MODE2+$54,(a1)
 	move.w	#VDPR_AUTOINC+$02,(a1)
 	move.w	#$9300,d2

@@ -66,7 +66,7 @@ Start	;Power on: the Sega hardware init, then the region lock, the checksum and 
 
 CHECK_VDP	;Hot start lands here. Match the console region to the CountryCode letters; on a mismatch draw the
 	;"DEVELOPED FOR USE ONLY WITH ... SYSTEMS." screen and hang
-	tst.w	(VDP_CTRL).l		; this is protect to push. start_bottum rapid_firely
+	tst.w	(Vctrl).l		; this is protect to push. start_bottum rapid_firely
 	clr.l	d0
 	move.b	(IO_PCBVER+1).l,d0	;version register: bit 7 = overseas, bit 6 = PAL
 	lsr.b	#6,d0
@@ -83,8 +83,8 @@ CHECK_VDP	;Hot start lands here. Match the console region to the CountryCode let
 	addq.l	#1,a0
 	dbf	d1,.find
 	;wrong region: set the VDP up and load RegionFont as tiles 0-$3A
-	lea	(VDP_DATA).l,a4
-	lea	(VDP_CTRL).l,a5
+	lea	(Vdata).l,a4
+	lea	(Vctrl).l,a5
 	move.w	#VDPR_MODE2+$64,(a5)		;reg 1: display on, vblank int, DMA off
 	move.w	#VDPR_PLANEA+$30,(a5)		;reg 2: plane A at $C000
 	move.w	#VDPR_MODE4+$81,(a5)		;reg 12: 40 cell mode
@@ -300,7 +300,7 @@ Begin	;Cold start, entered from RegionOK. Clear RAM, init sound and menus, go to
 	cmpa.w	#(varend-M68K_RAM),a0
 	blt.s	.0
 	clr.w	(PALflag).l		;clear the PAL flag
-	move.w	(VDP_CTRL).l,d0
+	move.w	(Vctrl).l,d0
 	andi.w	#1<<PAL_MODE,d0		;VDP status bit 0 = PAL (50 Hz)
 	move.w	d0,(PalMode).l
 	beq.w	.ntsc

@@ -255,7 +255,7 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	bset	#sf2replay,(sflags2).w
 	bclr	#4,(sflags4).w
 	jsr	(RestoreGameScreen).l
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
 	move.w	#$400,d0

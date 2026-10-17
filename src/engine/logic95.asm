@@ -219,7 +219,7 @@ checkanim	;Goalie animation check; assgoaliectrl branches here too
 	st	temp4(a3)	;FFFF into temp4
 	cmpi.w	#$5A,temp5(a3)	;'Z' ; compare to temp5
 	bgt.w	.de1	;branch if greater
-	move.w	(VDP_CNTR).l,d0
+	move.w	(HVcount).l,d0
 	andi.w	#3,d0	;pass first 2 bits
 	bne.w	.de1	;branch if not 0
 	moveq	#5,d0
@@ -1199,7 +1199,7 @@ asswingo	;asstab entry 9. Winger on offense: a random spot in the puck zone (.de
 	bne.w	.de3	;branch if different zone
 	btst	#sf2offsig,(sflags2).w	;a new spot every time with sflags2 bit 7
 	bne.w	.de3	;branch if different zone
-	move.w	(VDP_CNTR).l,d0	;move frame counter into d0
+	move.w	(HVcount).l,d0	;move frame counter into d0
 	andi.w	#$7F,d0	;pass first 7 bits
 	bne.w	.nodec	;branch if not equal to 0 - this allows random movement in zone while waiting
 .de3
@@ -1436,7 +1436,7 @@ asscentero	;asstab entry $B. Center on offense: a random spot in the puck zone
 .de2
 	cmp.w	temp5(a3),d2	;compare temp5 to d2
 	bne.w	.de3
-	move.w	(VDP_CNTR).l,d0	;move frame counter into d0.
+	move.w	(HVcount).l,d0	;move frame counter into d0.
 	;This allows a chance for random movement in zone when waiting
 	andi.w	#$7F,d0	;pass bottom 7 bits
 	bne.w	.nodec
@@ -2091,7 +2091,7 @@ check4check	;Check an opponent in front of a3. 95: a joystick player blocks the 
 	bgt.s	.burst
 	btst	#5,(sflags6).w	;check if puckc in slot
 	bne.w	.check	;branch if in slot
-	move.w	(VDP_CNTR).l,d0	;move HVcounter into d0
+	move.w	(HVcount).l,d0	;move HVcounter into d0
 	andi.w	#3,d0	;pass first 2 bits
 	bne.s	.burst	;throw check
 .check
@@ -2190,7 +2190,7 @@ check4check2	;check4check with a puck y test before the check (burstchk) or Ache
 	bgt.s	.side
 	btst	#5,(sflags6).w
 	bne.w	.check
-	move.w	(VDP_CNTR).l,d0
+	move.w	(HVcount).l,d0
 	andi.w	#3,d0
 	bne.s	.side
 .check
@@ -2874,7 +2874,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 .6
 	clr.w	temp1(a3)
 	move.w	#8,temp2(a3)
-	move.w	(VDP_CNTR).l,d0
+	move.w	(HVcount).l,d0
 	andi.w	#3,d0
 	move.w	d0,temp3(a3)
 .nna
@@ -2997,7 +2997,7 @@ asspuckc	;asstab entry $F. The puck carrier. 95: a penalty shot SPA while a mess
 	eori.w	#4,d1
 	cmp.w	d0,d1
 	bne.w	.next
-	move.w	(VDP_CNTR).l,d1
+	move.w	(HVcount).l,d1
 	andi.w	#1,d1
 	add.w	d1,d0
 	andi.w	#7,d0
@@ -3032,7 +3032,7 @@ chk4shot	;Shoot or clear the puck (CompShoot). 95: the breakaway deke always in 
 	bne.w	.pkill	;killing penalty
 	tst.w	(threat).w
 	beq.w	.pkill	;no threat
-	move.w	(VDP_CNTR).l,d0
+	move.w	(HVcount).l,d0
 	andi.w	#3,d0
 	bne.w	.pkill
 	move.w	#$56,d0	;top blue line Y position (94 $58)
