@@ -1,5 +1,7 @@
 #!/bin/bash
-# verify_all.sh: top ROM + all segments under wine. Usage: tools/verify_all.sh
+# verify_all.sh: top ROM + all segments under wine. Usage: tools/verify_all.sh [-q|--quiet]
+# -q: print only failures and the final ALL MATCH / VERIFY FAILED line.
+quiet=0; case "$1" in -q|--quiet) quiet=1;; esac
 set -- "$(cd "$(dirname "$0")/.." && pwd)" build95.bat nhl95 lst/nhl95.bin
 export WINEDEBUG=-all
 cd "$1"; bat=$2; top=$3; ref=$4
@@ -15,7 +17,7 @@ fail=0
 node tools/fixopcodes.js "output/$top .lst" output/$top.bin >/dev/null 2>&1
 node tools/fixrom.js output/modified_$top.bin || fail=1
 topmatch=$(node tools/verifyRom.js output/modified_$top.bin $ref 2>&1 | grep -iE 'match|differ' | head -2)
-printf '%s\n' "$topmatch"
+{ [ $quiet = 1 ] && printf '%s\n' "$topmatch" | grep -q '^MATCH:'; } || printf '%s\n' "$topmatch"
 printf '%s\n' "$topmatch" | grep -q '^MATCH:' || fail=1
 grep -qP '^[1-9]\d* error' "$log" && fail=1
 [ -s output/$top.bin ] || fail=1
@@ -29,7 +31,7 @@ for s in $(node -e 'for(const k in require("./package.json").scripts) if(/^seg:/
     case "$part" in
       npm*) ;;
       buildseg*) wine cmd /c "$part" >/tmp/seg.log 2>&1; [ -s output/$seg.bin ] || { echo "$s: NO BIN"; ok=0; } ;;
-      node\ tools/verifySegment*) r=$(eval "$(echo "$part" | tr '\\' '/')" 2>&1 | grep -iE 'match|differ|fail' | head -1); echo "$s: $r"; printf '%s\n' "$r" | grep -q '^MATCH:' || fail=1 ;;
+      node\ tools/verifySegment*) r=$(eval "$(echo "$part" | tr '\\' '/')" 2>&1 | grep -iE 'match|differ|fail' | head -1); { [ $quiet = 1 ] && printf '%s\n' "$r" | grep -q '^MATCH:'; } || echo "$s: $r"; printf '%s\n' "$r" | grep -q '^MATCH:' || fail=1 ;;
       node*) eval "$(echo "$part" | tr '\\' '/')" >/dev/null 2>&1 ;;
     esac
   done; unset IFS
