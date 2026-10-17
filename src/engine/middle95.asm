@@ -199,7 +199,7 @@ printsmallz	;printsmall with the String after the call
 printsmall	;print String a1 with the small font at printx / printy (control codes < 0 through ControlCodeJumpTable, $40 a blank, $5E a new line). 95 takes the map from
 	;smallfontptr
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movem.l	d0-d3/a0/a2-a3,-(sp)
 	movea.w	#(smallfontchars-M68K_RAM),a3
 	bsr.w	xyVmMap
@@ -319,7 +319,7 @@ printz	;See print. String macro should follow jsr to this routine
 print	;print String a1 at printx / printy with the small font (smallfontptr): a negative byte sets printa / printm / printx / printy from the next bytes, $40 a blank,
 	;$5E a new line
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movem.l	d0-d3/a0/a2,-(sp)
 	bsr.w	xyVmMap
 	move.w	(printa).w,d2
@@ -380,7 +380,7 @@ print	;print String a1 at printx / printy with the small font (smallfontptr): a 
 eraser	;Fill a d0 x d1 rectangle with char d2 at printx / printy / printm
 	movem.l	d0-d2/a0,-(sp)
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movem.w	d0-d1,-(sp)
 .0
 	jsr	(xyVmMap).l
@@ -463,9 +463,9 @@ PutClockDigit	;Draw big clock digit d0 (0-9, $A the colon) at printx / printy fr
 
 showclockdma	;When dfclock is set queue the clock chars in the dma list (a5); with gmode2 bit 1 shootoutclock is shown. Not in a
 	;stoppage (sflags2 bit 3) or game over (gsp 4)
-	bclr	#3,(disflags).w
+	bclr	#dfclock,(disflags).w
 	beq.w	.exit
-	btst	#3,(sflags2).w
+	btst	#sf2replay,(sflags2).w
 	bne.w	.exit
 	cmpi.w	#4,(gsp).w
 	beq.w	.exit
@@ -554,7 +554,7 @@ makepde	;Pass d0 as value to be scaled by player a0's energy level (full energy 
 
 getpde	;Get player a3's energy level into d0. Return a2 = his team struct, d1 = pnum*2
 	movea.w	#(tmstruct-M68K_RAM),a2
-	btst	#6,pflags(a3)
+	btst	#pfteam,pflags(a3)
 	beq.w	.0
 	adda.w	#tmsize,a2	;team is away
 .0
@@ -568,7 +568,7 @@ loadTeamStruct	;a2 = team struct of player a3, a1 = the other team
 	movea.w	#(tmstruct-M68K_RAM),a2
 	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a1
-	btst	#6,pflags(a3)
+	btst	#pfteam,pflags(a3)
 	beq.w	.0
 	exg	a1,a2
 .0
@@ -578,7 +578,7 @@ ReadGoaliePulled	;Z clear when the team of a3 pulled its goalie ($26 of the team
 	;asspuckc and assnearest
 	movem.l	a1,-(sp)
 	movea.l	#tmstruct,a1
-	btst	#6,pflags(a3)
+	btst	#pfteam,pflags(a3)
 	beq.w	.0
 	movea.l	#AwShots,a1
 .0
@@ -1305,7 +1305,7 @@ AttribAdjust	;d0 below $32: d0 / 2 + $19
 PutTeamBlock	;Draw team block d0 (TeamBlockMaps, teamblockwidth wide, 2 rows) at printx / printy
 	movem.l	d0-d2/a0-a1,-(sp)
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movea.w	#(TeamBlockMaps-M68K_RAM),a1
 	adda.w	d0,a1
 	moveq	#1,d2
@@ -1393,7 +1393,7 @@ CopyTeamBlockMapData	;Copy one team's 22 block chars (93 used 24) from the loade
 DoDMA_nd2	;Vram to vram copy by dma, protected from vblank
 	movem.l	d0-d3/a1,-(sp)
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	lea	(VDP_CTRL).l,a1
 	move.w	#VDPR_MODE2+$54,(a1)
 	move.w	#VDPR_AUTOINC+$01,(a1)
@@ -1481,7 +1481,7 @@ ResetClock	;gameclock = PerTimeTotal = the period length (GetPeriodTime; $258 in
 .set
 	move.w	d0,(gameclock).w
 	move.w	d0,(PerTimeTotal).w
-	bset	#0,(gmode).w
+	bset	#gmclock,(gmode).w
 	rts
 
 GetPeriodTime	;Return d0 = period length in seconds for the period length option
@@ -1496,7 +1496,7 @@ GetPeriodTime	;Return d0 = period length in seconds for the period length option
 ClrHor	;Unreferenced. Revert the graphics back to vertical ice rink mode: the rink tiles, LoadHomeTeamGfx
 	;and the EASN map at their chars, SprSort, and unless paused clear the screen (eraser). 95 no longer prints the scores here
 	movem.l	d0-d7/a0-a6,-(sp)
-	bclr	#7,(sflags).w
+	bclr	#sfhor,(sflags).w
 	move.w	#$3E8,(Oldrow).w	;1000
 	move.w	(rinkvrcset).w,d4
 	movea.l	#Rinktilelist+8,a2
@@ -1698,7 +1698,7 @@ printscores1	;Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; period na
 	beq.w	.0
 	move.w	#$78,(crowdnoisedelay).w
 .0
-	btst	#3,(sflags2).w
+	btst	#sf2replay,(sflags2).w
 	bne.w	.x
 	bsr.w	printz
 	String	-(TXPRI+TXMAP1),0,$17,0
@@ -1717,7 +1717,7 @@ printscores1	;Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; period na
 .1
 	bsr.w	PrintSmallListItem
 	bsr.w	EASNLogo
-	btst	#0,(sflags3).w
+	btst	#sf3llcs,(sflags3).w
 	bne.w	.x
 	bsr.w	printz
 	String	-(TXPRI+TXMAP1),$17,$17,0
@@ -1766,16 +1766,16 @@ AddFonts	;Load the small font at d4 (smallfontchars, smallfontptr = SmallFontMap
 	rts
 
 chkpk	;Unreferenced. With a power play (sflags2 bit 5) chkpk2, else Z set
-	btst	#5,(sflags2).w	;#sf2pwrplay - check if power play in progress
+	btst	#sf2pwrplay,(sflags2).w	;#sf2pwrplay - check if power play in progress
 	bne.w	chkpk2
 	eori	#4,ccr	;Z flag
 	rts
 
 chkpk2	;Z set when a3's team is on the power play (sflags2 bit 6 against pfteam)
 	movem.l	d0-d1,-(sp)
-	btst	#6,(sflags2).w	;#sf2pwrtm - 0 for team 1, 1 for team 2
+	btst	#sf2pwrtm,(sflags2).w	;#sf2pwrtm - 0 for team 1, 1 for team 2
 	move	sr,d0
-	btst	#6,pflags(a3)
+	btst	#pfteam,pflags(a3)
 	move	sr,d1
 	eor.w	d1,d0
 	move	d0,ccr
@@ -1829,7 +1829,7 @@ printbig2	;printbig with BigFontMap3. Falls into printbigtext
 
 printbigtext	;Print with the font map at bigfontptr. Lower case is printed as upper case
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movem.l	d0-d7/a0/a2,-(sp)
 	move.w	(printx).w,d4
 	move.w	(printy).w,d5
@@ -2171,7 +2171,7 @@ TrimSpaces	;Trim the trailing spaces of String a2 and pad it to an even length
 setupice	;Set all variables, send non purgeable graphics, build sprite frame lists for ice rink. 95 has no reverse rink tiles, loads AddFramer2
 	;AddFonts, and clears c3playernum / c4playernum too
 	movem.l	d0-d7/a0-a6,-(sp)
-	bset	#1,(disflags).w
+	bset	#df32c,(disflags).w
 	move.w	#$C000,(VmMap2).w
 	move.w	#6,(Map2col1).w
 	move.w	#$DC00,(VSPRITES).w
@@ -2182,9 +2182,9 @@ setupice	;Set all variables, send non purgeable graphics, build sprite frame lis
 	move.w	#$FC00,(VSCRLPM).w
 	moveq	#0,d0
 	jsr	(setVram).l
-	bclr	#0,(sflags).w
+	bclr	#sfpz,(sflags).w
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	clr.w	(Hpos).w
 	clr.w	(Vpos).w
 	move.w	#$7D0,(Oldrow).w
@@ -2213,12 +2213,12 @@ setupice	;Set all variables, send non purgeable graphics, build sprite frame lis
 	jsr	(AddFramer2).l
 	jsr	(AddFonts).l
 	move.w	d4,(ExtraChars).w
-	btst	#1,(gmode).w
+	btst	#gmdir,(gmode).w
 	beq.w	.1
 	movea.w	#(SortCords-M68K_RAM),a3
 	moveq	#$B,d0
 .0
-	bchg	#7,pflags(a3)
+	bchg	#pfgoal,pflags(a3)
 	adda.w	#SCstruct,a3
 	dbf	d0,.0
 .1
@@ -2252,8 +2252,8 @@ setupice	;Set all variables, send non purgeable graphics, build sprite frame lis
 	jsr	(DoDMAList).l
 	move.w	(sp)+,(disflags).w
 	move.l	#VBlank,(vbint).w
-	bclr	#0,(disflags).w
-	bclr	#2,(disflags).w
+	bclr	#dfok,(disflags).w
+	bclr	#dfng,(disflags).w
 	move	#$2300,sr
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -2288,7 +2288,7 @@ TeamGfxList	;LoadHomeTeamGfx: one address per team (TeamList order) in the Arena
 
 EASNLogo	;Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertical ice rink if no power play.
 	;from printscores1
-	btst	#5,(sflags2).w	;sf2pwrplay
+	btst	#sf2pwrplay,(sflags2).w	;sf2pwrplay
 	bne.w	.x
 	bsr.w	printz
 	String	-(TXPRI+TXMAP1),2,$19	;/ move.b d0,-(a4)

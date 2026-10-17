@@ -23,14 +23,14 @@ SetLCmode	;Open the line change box for team of player a3 (loadTeamStruct): not 
 	btst	#4,(sflags7).w
 	bne.w	rtslc
 	jsr	(loadTeamStruct).l
-	bset	#1,tmflags(a2)
+	bset	#tmflc,tmflags(a2)
 	bne.w	rtslc
 	btst	#3,(sflags5).w
 	bne.w	.0
-	bclr	#2,(sflags).w
+	bclr	#sfspdir,(sflags).w
 .0
-	bclr	#3,(sflags).w
-	bset	#3,pflags2(a3)
+	bclr	#sfssdir,(sflags).w
+	bset	#pf2lcm,pflags2(a3)
 
 SetLCmode2	;a2 = team struct. Draw the line change box (box, Framer) with the line names (linelist) and their
 	;energy bars (linebar)
@@ -38,7 +38,7 @@ SetLCmode2	;a2 = team struct. Draw the line change box (box, Framer) with the li
 	bsr.w	setlccords
 	cmpi.w	#$F,(printy).w
 	blt.w	.box
-	bset	#0,(sflags3).w
+	bset	#sf3llcs,(sflags3).w
 	bra.w	.1
 .box
 	jsr	(box).l
@@ -53,7 +53,7 @@ SetLCmode2	;a2 = team struct. Draw the line change box (box, Framer) with the li
 	bsr.w	getlchoice
 	tst.w	d0
 	bmi.w	.next
-	btst	#1,tmflags(a2)
+	btst	#tmflc,tmflags(a2)
 	bne.w	.pr
 	cmp.w	$2E(a2),d4
 	bne.w	.up
@@ -87,7 +87,7 @@ setlccords	;Set printx / printy for the line change box of team a2
 	bne.w	.0
 	eori.w	#$16,d0
 .0
-	btst	#1,(gmode).w
+	btst	#gmdir,(gmode).w
 	beq.w	.1
 	eori.w	#$16,d0
 .1
@@ -145,11 +145,11 @@ lineinput	;Process input for line changes: d1 = new button presses (passmode fir
 	clr.w	(a0,d4.w)
 .0
 	movea.w	#(tmstruct-M68K_RAM),a2
-	btst	#6,pflags(a3)
+	btst	#pfteam,pflags(a3)
 	beq.w	.1
 	adda.w	#tmsize,a2
 .1
-	bclr	#0,tmflags(a2)
+	bclr	#tmflcc,tmflags(a2)
 	beq.w	.2
 	bsr.w	lcfound2
 	bsr.w	SetLCmode2
@@ -182,11 +182,11 @@ lineinput	;Process input for line changes: d1 = new button presses (passmode fir
 	bne.w	.5
 	bra.w	lcfound
 .5
-	btst	#3,pflags(a3)
+	btst	#pfjoycon,pflags(a3)
 	beq.w	.x
-	btst	#5,pflags(a3)
+	btst	#pfalock,pflags(a3)
 	bne.w	.x
-	btst	#0,pflags2(a3)
+	btst	#pf2fight,pflags2(a3)
 	beq.w	doplayeracc
 .x
 	rts
@@ -197,21 +197,21 @@ lcfound	;Line d2 was picked: store it ($2E), set tmline and the players (SetPers
 	bsr.w	getlchoice	;translate choice 0-2 into line number 0-6
 	tst.w	d0
 	bmi.w	rtslc
-	bclr	#3,pflags2(a3)
-	bset	#3,pflags(a3)
+	bclr	#pf2lcm,pflags2(a3)
+	bset	#pfjoycon,pflags(a3)
 	jsr	(loadTeamStruct).l
-	bclr	#1,tmflags(a2)
+	bclr	#tmflc,tmflags(a2)
 	move.w	d0,tmline(a2)
 	jsr	(setpersonel).l
 
 lcfound2	;Erase the line change box and redraw the scores (printscores1)
-	btst	#7,(sflags).w
+	btst	#sfhor,(sflags).w
 	bne.w	rtslc
 	bsr.w	setlccords
 	bsr.w	setlccords
 	cmpi.w	#$F,(printy).w
 	blt.w	.nollcm
-	bclr	#0,(sflags3).w
+	bclr	#sf3llcs,(sflags3).w
 .nollcm
 	addq.w	#1,d1
 	move.w	#$7FF,d2
@@ -380,7 +380,7 @@ chk4lc	;Computer line change on the fly: puck in the player's own end (pucky 0-$
 	btst	#4,(sflags7).w
 	bne.w	rtslc
 	move.w	(pucky).w,d0
-	btst	#7,pflags(a3)
+	btst	#pfgoal,pflags(a3)
 	bne.w	.0
 	neg.w	d0
 .0
@@ -391,11 +391,11 @@ chk4lc	;Computer line change on the fly: puck in the player's own end (pucky 0-$
 	move.w	(VDP_CNTR).l,d0
 	andi.w	#3,d0
 	bne.w	rtslc
-	btst	#3,pflags2(a3)
+	btst	#pf2lcm,pflags2(a3)
 	bne.w	rtslc
 	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a1
-	btst	#6,pflags(a3)
+	btst	#pfteam,pflags(a3)
 	beq.w	.1
 	exg	a2,a1
 .1
@@ -883,7 +883,7 @@ LineSlotFixTbl	;CheckTeamLines slot handlers by slot & 7: goalie (the best one),
 EASportsScreen	;Called from Begin. Show the EA Sports screen (EASportsMap) until a button, or $50 x 4
 	;frames
 	move.l	#vb2,(vbint).w	;vblank handler
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#5,(Map3col1).w
 	move.w	#$A000,(VmMap2).w
 	move.w	#7,(Map2col1).w
@@ -938,7 +938,7 @@ chkatop	;Attack time of possession stat update. Called once a second from update
 	cmp.w	#$56,d0
 	blt.w	.2
 .0
-	btst	#1,(gmode).w
+	btst	#gmdir,(gmode).w
 	beq.w	.1
 	eori.w	#tmsize,d1
 .1
@@ -948,10 +948,10 @@ chkatop	;Attack time of possession stat update. Called once a second from update
 	rts
 
 updatePPTeamTime	;Power play time of the teams, once a second. Called from updatepentime
-	btst	#5,(sflags2).w	;check if PP
+	btst	#sf2pwrplay,(sflags2).w	;check if PP
 	beq.w	.x
 	movea.l	#tmstruct,a2	;move home team struct into a2
-	btst	#6,(sflags2).w	;check who's on PP
+	btst	#sf2pwrtm,(sflags2).w	;check who's on PP
 	beq.w	.0	;branch if home (team 1)
 	movea.l	#AwShots,a2	;move away team struct into a2
 .0
@@ -960,11 +960,11 @@ updatePPTeamTime	;Power play time of the teams, once a second. Called from updat
 	rts
 
 ChkShotStat	;Determine if a shot was taken and add it to the stats (crowd, team, shooter and goalie)
-	btst	#0,(gmode).w	;gmclock: clock stopped
+	btst	#gmclock,(gmode).w	;gmclock: clock stopped
 	bne.w	.10
-	btst	#4,(gmode).w	;gmhl: highlight
+	btst	#gmhl,(gmode).w	;gmhl: highlight
 	bne.w	.10
-	bclr	#4,(sflags2).w	;sf2shot: shot taken
+	bclr	#sf2shot,(sflags2).w	;sf2shot: shot taken
 	bne.w	.Cwdupdate
 	btst	#0,(sflags4).w
 	beq.w	.10
@@ -988,7 +988,7 @@ ChkShotStat	;Determine if a shot was taken and add it to the stats (crowd, team,
 	movea.w	tmsort(a2),a2
 	move.w	#5,d1
 .findplayer
-	cmp.b	$66(a2),d0	;pnum
+	cmp.b	pnum(a2),d0	;pnum
 	beq.w	.foundplayer
 	adda.w	#SCstruct,a2
 	dbf	d1,.findplayer
@@ -1007,17 +1007,17 @@ ChkShotStat	;Determine if a shot was taken and add it to the stats (crowd, team,
 	adda.w	d0,a3
 	jsr	(loadTeamStruct).l
 	addq.w	#1,(a2)	;tmshots
-	btst	#5,(sflags2).w	;sf2pwrplay
+	btst	#sf2pwrplay,(sflags2).w	;sf2pwrplay
 	beq.w	.8
-	btst	#6,(sflags2).w	;sf2pwrtm: 0 home, 1 visitors
+	btst	#sf2pwrtm,(sflags2).w	;sf2pwrtm: 0 home, 1 visitors
 	bne.w	.7
-	btst	#6,pflags(a3)
+	btst	#pfteam,pflags(a3)
 	bne.w	.8
 .6
 	addq.w	#1,$356(a2)
 	bra.w	.8
 .7
-	btst	#6,pflags(a3)
+	btst	#pfteam,pflags(a3)
 	bne.s	.6
 .8
 	move.l	a2,-(sp)
@@ -1045,13 +1045,13 @@ DrawTeamScreen2	;A DrawTeamScreen for the season / stats screens: screenarg is t
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
 .0
-	btst	#0,(disflags).w
+	btst	#dfok,(disflags).w
 	bne.s	.0
 	clr.w	(Hscroll).w
 	clr.w	(Vscroll).w
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movea.l	#VDP_DATA,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
@@ -1065,7 +1065,7 @@ DrawTeamScreen2	;A DrawTeamScreen for the season / stats screens: screenarg is t
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	(sp)+,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 	moveq	#1,d4
 	movem.l	a0-a6,-(sp)
 	move.l	#Teamblocksmap,(teamblocksmapptr).l
@@ -1134,13 +1134,13 @@ DrawTeamScreen3	;The same with SmallFontMap
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
 .0
-	btst	#0,(disflags).w
+	btst	#dfok,(disflags).w
 	bne.s	.0
 	clr.w	(Hscroll).w
 	clr.w	(Vscroll).w
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movea.l	#VDP_DATA,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
@@ -1154,7 +1154,7 @@ DrawTeamScreen3	;The same with SmallFontMap
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	(sp)+,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 	moveq	#1,d4
 	movem.l	a0-a6,-(sp)
 	move.l	#Teamblocksmap,(teamblocksmapptr).l
@@ -1226,13 +1226,13 @@ DrawTeamScreen4	;The same as DrawTeamScreen3 with the team block tiles decompres
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
 .0
-	btst	#0,(disflags).w
+	btst	#dfok,(disflags).w
 	bne.s	.0
 	clr.w	(Hscroll).w
 	clr.w	(Vscroll).w
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movea.l	#VDP_DATA,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
@@ -1246,7 +1246,7 @@ DrawTeamScreen4	;The same as DrawTeamScreen3 with the team block tiles decompres
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	(sp)+,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 
 DrawTeamScreen4Body	;DrawTeamScreen4 after the screen setup; DrawTeamScreen4NoSetup branches here
 	moveq	#1,d4
@@ -1316,13 +1316,13 @@ DrawTeamScreen5	;DrawTeamScreen4 with three small fonts and palette word $A00
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
 .0
-	btst	#0,(disflags).w
+	btst	#dfok,(disflags).w
 	bne.s	.0
 	clr.w	(Hscroll).w
 	clr.w	(Vscroll).w
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movea.l	#VDP_DATA,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
@@ -1336,7 +1336,7 @@ DrawTeamScreen5	;DrawTeamScreen4 with three small fonts and palette word $A00
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	(sp)+,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 	moveq	#1,d4
 	movem.l	a0-a6,-(sp)
 	movea.l	#Teamblocksmap+8,a2
@@ -1402,13 +1402,13 @@ DrawTeamScreen6	;The team blocks (screen6chars1), the bitmap, Screen6Tiles1 / 2 
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
 .0
-	btst	#0,(disflags).w
+	btst	#dfok,(disflags).w
 	bne.s	.0
 	clr.w	(Hscroll).w
 	clr.w	(Vscroll).w
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movea.l	#VDP_DATA,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
@@ -1422,7 +1422,7 @@ DrawTeamScreen6	;The team blocks (screen6chars1), the bitmap, Screen6Tiles1 / 2 
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	(sp)+,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 	moveq	#1,d4
 	moveq	#1,d4
 	movem.l	a0-a6,-(sp)

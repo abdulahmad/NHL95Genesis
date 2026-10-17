@@ -38,6 +38,24 @@ ifcgl equ 0		;iflags: crossed goalline
 ifdir equ 1		;iflags: 1=must cross top line
 ifok equ 2		;iflags: icing
 tmflcc equ 0		;tmflags: line change on
+;flag bits added in 93 and shared by the later games (names and meanings from NHLPA93Genesis ram93.asm)
+dffaceoff equ 4		;face off sprites on (92 tested sf2faceoff).
+gmend equ 6		;game over: also ends the period.
+pf2inj equ 6		;player is injured (SPAfinjury animation, max speed 1/8).
+pf2lcm equ 3		;line change mode. 92 bit 5
+pf2npc equ 5		;no player collision. 92 bit 7
+pf2pen equ 4		;player has caused a penalty. 92 bit 6
+pf2unav equ 2		;player is unavailable (going to/from bench/penalty). 92 bit 4
+pfrev equ 4		;skating backwards
+sf2refref equ 1		;ref needs refresh
+sf3alttree equ 2		;alt. tree
+sf3fo equ 4		;face off just ended (set by the drop): the next puck pickup wins it, with a crowd cheer.
+sf3icetime equ 6		;set once a second by updatepentime: each player on the ice adds 1 to its time on ice.
+sf3llcs equ 0		;lower line change sel.
+sf3track equ 5		;the scroll window tracks an object.
+tmflast equ 3		;next touch overwrites the last touch only.
+tmflc equ 1		;team is in line change mode.
+tmfoffside equ 4		;team is offsides.
 ; ----------------------------------
 ; Structure and flag equates. Empty until the first segment confirms the 95 values.
 

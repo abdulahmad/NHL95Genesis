@@ -87,7 +87,7 @@ checksso	;Do graphics for sso structure: arrows for the players when they are of
 	move.w	(a0),d0
 	btst	#0,(gmode2).w
 	bne.w	.0
-	btst	#3,(sflags2).w
+	btst	#sf2replay,(sflags2).w
 	bne.w	.0
 	btst	#2,(BA_PS_flags).w
 	beq.w	.7

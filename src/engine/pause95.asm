@@ -260,7 +260,7 @@ SetPauseMenuItems	;menulist = PauseMenus, menuitemoffset by mode: tmflags bit 2 
 	btst	#7,(sflags9).w
 	beq.w	.2
 	move.l	#$13E,(menuitemoffset).l
-	btst	#0,(sflags).w
+	btst	#sfpz,(sflags).w
 	beq.w	.2
 	move.l	#$1D2,(menuitemoffset).l
 .2
@@ -312,7 +312,7 @@ SetInfoMenuItems	;menulist = InfoMenus, menuitemoffset $7E in a shootout, $D0 in
 	rts
 
 startpause	;Pause on (sfpz)
-	bset	#0,(sflags).w	;sfpz
+	bset	#sfpz,(sflags).w	;sfpz
 	rts
 
 startpause1	;Pause initiated by cont 1
@@ -587,7 +587,7 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	clr.w	(tmstruct+$32).w
 	clr.w	(AwShots+$32).w
 	move.l	#VBlank,(vbint).w
-	bset	#1,(disflags).w
+	bset	#df32c,(disflags).w
 	move.w	#$C000,(VmMap2).w
 	move.w	#6,(Map2col1).w
 	move.w	#$DC00,(VSPRITES).w
@@ -621,7 +621,7 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	jsr	(setupEASNmap).l
 	btst	#4,(disflags).w
 	beq.w	.ref
-	btst	#3,(sflags2).w
+	btst	#sf2replay,(sflags2).w
 	bne.w	.ref
 	move.w	(ExtraChars).w,d4
 	movea.l	#FaceoffTiles+8,a2
@@ -633,7 +633,7 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	bra.w	.rink
 .ref
 	move.w	(ExtraChars).w,d4
-	btst	#7,(sflags).w
+	btst	#sfhor,(sflags).w
 	beq.w	.2
 	movea.l	#RefTilesHor+8,a2
 	bra.w	.load
@@ -643,7 +643,7 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	jsr	(DecompressGraphicsPlain).l
 .rink
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	move.w	#$7D0,(Oldrow).w
 	clr.w	d4
 	move.w	d4,(rinkvrcset).w
@@ -653,17 +653,17 @@ RestoreGameScreen	;Rebuild the game screen after the pause screen: the vdp maps,
 	jsr	(setplayercolors).l
 	jsr	(setupIceRinkPal).l
 	move.w	(sp)+,(disflags).w
-	bclr	#0,(disflags).w
-	bclr	#2,(disflags).w
+	bclr	#dfok,(disflags).w
+	bclr	#dfng,(disflags).w
 	move	#$2300,sr
 	jsr	(SprSort).l
 	move.w	(vcount).w,d0
 .wait
 	cmp.w	(vcount).w,d0
 	beq.s	.wait
-	bset	#3,(disflags).w
+	bset	#dfclock,(disflags).w
 	jsr	(printscores1).l
-	btst	#3,(sflags2).w
+	btst	#sf2replay,(sflags2).w
 	bne.w	.6
 	move.w	#$64,(palcount).w
 .6
@@ -821,7 +821,7 @@ PrintMenuItem	;printsmall item String a1 (advanced past it). y: START GAME, RESU
 	cmpi.w	#4,(gsp).w
 	beq.w	.1
 	movea.l	#.4,a1
-	btst	#0,(sflags).w
+	btst	#sfpz,(sflags).w
 	bne.w	.2
 	tst.w	(gsp).w
 	bne.w	.2
@@ -1272,7 +1272,7 @@ PauseMenus	;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0, $AA,
 	String	$FF,0
 
 AbortGame	;Pause menu ABORT GAME: stop the replay (recbpr), demoflag on, back to Opening2
-	bclr	#4,(sflags).w
+	bclr	#sfwrap,(sflags).w
 	move.w	#$FFFF,(lastsfx).w
 	move.l	#M68K_RAM,(recbpr).w
 	st	(demoflag).w

@@ -270,7 +270,7 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(ShowReplayIcon).l
 	bclr	#sfscrl,(sflags).w
-	bclr	#5,(sflags3).w
+	bclr	#sf3track,(sflags3).w
 	st	(replayactive).w
 	movea.l	(recbpr).w,a4
 .rwd
@@ -279,7 +279,7 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	bne.s	.rwd
 	jsr	(SprSort).l
 	jsr	(setvideo).l
-	bclr	#1,(sflags3).w
+	bclr	#sf3rmplay,(sflags3).w
 	clr.l	(padcont).w
 	clr.l	(padcont+4).w
 	clr.l	(padcont+8).w
@@ -314,7 +314,7 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	andi.w	#$FFF0,d3
 .2
 	movea.w	#(ReplayStarStruct-M68K_RAM),a5
-	btst	#5,(sflags3).w
+	btst	#sf3track,(sflags3).w
 	beq.w	.dir
 	move.w	d1,d5
 	andi.w	#$F,d5
@@ -341,7 +341,7 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	eori.w	#4,d5
 	movea.w	#(SortCords-M68K_RAM),a1
 	st	d3
-	bclr	#5,(sflags3).w
+	bclr	#sf3track,(sflags3).w
 	beq.w	.find
 	move.w	$16(a5),d3
 .find
@@ -376,12 +376,12 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	bhi.w	.skip
 	move.l	d0,d4
 	move.w	SCnum(a1),$16(a5)
-	bset	#5,(sflags3).w
+	bset	#sf3track,(sflags3).w
 .skip
 	adda.w	#SCstruct,a1
 	dbf	d2,.loop
 	addq.w	#4,sp
-	btst	#5,(sflags3).w
+	btst	#sf3track,(sflags3).w
 	beq.w	.scrl
 	move.w	$16(a5),d0
 	asl.w	#7,d0
@@ -393,7 +393,7 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	jsr	(setvideo).l
 	bra.w	.top
 .scrl
-	bset	#5,(sflags).w
+	bset	#sfscrl,(sflags).w
 	eori.w	#4,d5
 	asl.w	#2,d5
 	lea	.dirtab(pc),a0
@@ -444,7 +444,7 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	jsr	(SprSort).l
 	jsr	(setvideo).l
 	moveq	#1,d7
-	bclr	#1,(sflags3).w
+	bclr	#sf3rmplay,(sflags3).w
 .5
 	btst	#0,(sflags5).w
 	bne.w	.1
@@ -452,8 +452,8 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	beq.w	.1
 	btst	#6,d3
 	beq.w	.f1
-	bclr	#5,(sflags3).w
-	bclr	#5,(sflags).w
+	bclr	#sf3track,(sflags3).w
+	bclr	#sfscrl,(sflags).w
 	move.w	d0,-(sp)
 	move.l	(PadControlBits).w,d0
 	andi.l	#$FFFFF,d0
@@ -466,7 +466,7 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	jsr	(SprSort).l
 	jsr	(setvideo).l
 	asl.w	#1,d7
-	bclr	#1,(sflags3).w
+	bclr	#sf3rmplay,(sflags3).w
 .1
 	btst	#sf3rmplay,(sflags3).w
 	beq.w	.noplay
@@ -482,7 +482,7 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	btst	#7,d1
 	beq.w	.top
 	jsr	(ShowReplayBanner).l
-	bclr	#1,(sflags3).w
+	bclr	#sf3rmplay,(sflags3).w
 	bset	#0,(sflags5).w
 	bne.w	.6
 	bra.w	.top
@@ -509,12 +509,12 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 .exit
 	jsr	(forceblack).l
 	ori.l	#$F0000000,(PadControlBits).w
-	bclr	#5,(sflags).w
+	bclr	#sfscrl,(sflags).w
 	movea.l	(recbpr).w,a4
 	bclr	#4,(sflags4).w
 	jsr	(RestoreReplayFrame).l
 	jsr	(SprSort).l
-	bclr	#3,(sflags2).w
+	bclr	#sf2replay,(sflags2).w
 	move.w	(sp)+,(disflags).w
 	movea.l	(menulist).w,a0
 	movea.l	(menudraw).w,a1
@@ -617,7 +617,7 @@ adda4	;Step forward 1 frame. 94 first handles a reverse angle switch (sflags4 bi
 	move.w	#1,8(a0)
 	movem.l	(sp)+,a0
 	bsr.w	RevReplayAdj
-	btst	#5,(sflags).w
+	btst	#sfscrl,(sflags).w
 	beq.w	*+4
 .0
 	jsr	(ShowReplayIcon).l
@@ -817,7 +817,7 @@ RestoreReplayFrame	;a4 = current replay frame address to convert into normal cor
 	btst	#sfscrl,(sflags).w
 	beq.w	.pos
 	movea.w	a5,a3
-	btst	#5,(sflags3).w
+	btst	#sf3track,(sflags3).w
 	beq.w	.cam
 	clr.w	$18(a5)
 	move.w	$16(a5),d0

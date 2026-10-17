@@ -11,7 +11,7 @@ newTitleScreen	;The title screen (TitleScreenImg, TitleImg) with the vblank Titl
 	move.w	(VDP_CNTR).l,(seed).w
 	move.w	(VDP_CNTR).l,(seed+2).w
 	move.l	#VBlank_TitleScreen,(vbint).l
-	bset	#1,(disflags).w
+	bset	#df32c,(disflags).w
 	move.w	#5,(Map3col1).w
 	move.w	#$A000,(VmMap2).w
 	move.w	#7,(Map2col1).w
@@ -204,7 +204,7 @@ CreditsWait	;Credits: wait one frame, run the clampcounter count down; from Temp
 
 VBlank_TitleScreen	;newTitleScreen vblank: the line scroll table and Vscroll, the sprites, cramfade, CreditsScrollStep, the music; rte
 	movem.l	d0-d7/a0-a6,-(sp)
-	btst	#2,(disflags).w
+	btst	#dfng,(disflags).w
 	bne.w	.1
 	movea.w	#(SortCords-M68K_RAM),a0
 	move.w	(VSCRLPM).w,d1
@@ -287,7 +287,7 @@ CreditsScrollStep	;Credits: line scroll step, every TempWord2 frames
 
 HiScoreScreen	;vb2, the HiScoreBgMap and HiScoreImg bitmaps, then wait up to $50 * 4 frames or a button (waitx)
 	move.l	#vb2,(vbint).w
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#5,(Map3col1).w
 	move.w	#$A000,(VmMap2).w
 	move.w	#7,(Map2col1).w
@@ -347,7 +347,7 @@ HiScoreScreen	;vb2, the HiScoreBgMap and HiScoreImg bitmaps, then wait up to $50
 StanleyCupScreen	;The Stanley Cup screen: the vblank CupVBlank, the cup (StanleyCupImg), the winner team block (CupDrawTeam), the song, then the animated sprites until start
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	#CupVBlank,(vbint).l
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$BC00,(VSPRITES).w
 	move.w	#$B000,(VmMap3).w
@@ -436,7 +436,7 @@ CupExit	;Leave StanleyCupScreen (CupReadPads on start: drop its return address)
 
 CupVBlank	;StanleyCupScreen vblank: the sprites, cramfade, vcount, the music; nothing with disflags bit 2; rte
 	movem.l	d0-d7/a0-a6,-(sp)
-	btst	#2,(disflags).w
+	btst	#dfng,(disflags).w
 	bne.w	.skip
 	movea.w	#(Satt-M68K_RAM),a0
 	move.w	(Sattsize).w,d0

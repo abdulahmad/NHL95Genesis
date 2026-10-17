@@ -3,7 +3,7 @@
 
 goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets the ready SPA
 	;turning (AdjustFacingDirection); stopna2 deep in the crease; then playeracc. A computer goalie keeps or turns its facing
-	btst	#3,pflags(a3)
+	btst	#pfjoycon,pflags(a3)
 	beq.w	.9
 	movem.w	d0,-(sp)
 	move.w	(puckc).w,d0
@@ -57,18 +57,18 @@ goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets
 	movem.w	(sp)+,d0-d1
 .5
 	bsr.w	GoalieReadySPA
-	btst	#1,pflags2(a3)
+	btst	#pf2aip,pflags2(a3)
 	bne.w	.15
 	jsr	(SetSPA).l
 	cmp.w	#8,d0
 	bne.w	.8
 	tst.w	position(a3)
 	bne.w	.8
-	btst	#3,pflags(a3)
+	btst	#pfjoycon,pflags(a3)
 	beq.w	.8
 	move.w	d0,-(sp)
 	move.w	Ypos(a3),d0
-	btst	#7,pflags(a3)
+	btst	#pfgoal,pflags(a3)
 	beq.w	.6
 	neg.w	d0
 .6
@@ -90,9 +90,9 @@ goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets
 	jmp	playeracc
 .9
 	bsr.w	GoalieReadySPA
-	btst	#3,pflags(a3)
+	btst	#pfjoycon,pflags(a3)
 	beq.w	.goalieacc2
-	btst	#2,pflags(a3)
+	btst	#pfnc,pflags(a3)
 	bne.w	.14
 	cmp.w	#8,d0
 	bne.w	.turnskater
@@ -100,7 +100,7 @@ goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets
 	bne.w	.14
 	move.w	d0,-(sp)
 	move.w	Ypos(a3),d0
-	btst	#7,pflags(a3)
+	btst	#pfgoal,pflags(a3)
 	beq.w	.10
 	neg.w	d0
 .10
@@ -130,7 +130,7 @@ goalieacc	;Goalie movement: a pad goalie near his crease faces the puck and gets
 	beq.w	.14
 	jmp	stopna2
 .14
-	btst	#1,pflags2(a3)
+	btst	#pf2aip,pflags2(a3)
 	beq.w	.16
 .15
 	rts
@@ -164,8 +164,8 @@ doinput_goaliedive	;The goalie dive on button A (bit 6): face TempWord1, nopuck 
 	move.b	#8,nopuck(a3)
 	move.w	#SPAgdive,d1
 	jsr	(SetSPA).l
-	bset	#1,pflags2(a3)
-	bset	#5,pflags(a3)
+	bset	#pf2aip,pflags2(a3)
+	bset	#pfalock,pflags(a3)
 	addi.w	#$96,(crowdlevel).w
 
 rtss15	;The rts of doinput_goaliedive
@@ -201,7 +201,7 @@ doinput_cbut	;Button C (bit 5): new press: face the puck
 	move.w	#$A,SPAcnt(a3)
 	rts
 .press
-	btst	#5,pflags(a3)
+	btst	#pfalock,pflags(a3)
 	bne.w	doinput_chkanim
 	movem.w	d0-d1,-(sp)
 	move.w	(puckx).w,d0
@@ -245,7 +245,7 @@ doinput_cbut	;Button C (bit 5): new press: face the puck
 	moveq	#1,d2
 	add.w	d0,d2
 	moveq	#$12,d4
-	btst	#3,(sflags).w
+	btst	#sfssdir,(sflags).w
 	beq.w	.6
 	addq.w	#8,d4
 .6
@@ -264,12 +264,12 @@ doinput_cbut	;Button C (bit 5): new press: face the puck
 	cmpi.w	#$C,2(a0)
 	cmpi.w	#$10B,(pucky).w
 	cmpi.w	#$FEF5,(pucky).w
-	bset	#1,pflags2(a3)
+	bset	#pf2aip,pflags2(a3)
 	bne.w	doinput_chkanim
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#puckcross,a0
 	move.w	#$10B,d3
-	btst	#7,pflags(a3)
+	btst	#pfgoal,pflags(a3)
 	beq.w	.save	;branch if bottom net
 	neg.w	d3	;negate d3 (-108 hex)
 	addq.w	#4,a0	;puckcross+4 (for bottom goalie)
@@ -301,7 +301,7 @@ ClampTargetY	;Clamp target y d1 to $106 / $FEFA (94 $103 / $FEFD), then d1 - d3;
 
 doinput_chkanim	;Animation in progress (pflags2 bit 1): rts. A
 	;goalie (position 0) is held inside x $24 / y $E7 of his net (BA_PS_flags bit 1), then playeracc with TempWord1
-	btst	#1,pflags2(a3)
+	btst	#pf2aip,pflags2(a3)
 	beq.w	.0
 	rts
 .0
@@ -373,7 +373,7 @@ getGoalieSCnum	;d0 = SCnum of the goalie of the team of player d0 (the first pos
 GoalieReadySPA	;d1 = the goalie ready SPA: SPAgready near the puck (within $56 in y) or in a shootout, else SPAgready2
 	move.w	d0,-(sp)
 	move.w	#SPAgready2,d1
-	btst	#0,(gmode).w
+	btst	#gmclock,(gmode).w
 	bne.w	.1
 	move.w	(pucky).w,d0
 	sub.w	Ypos(a3),d0
@@ -438,7 +438,7 @@ dostop	;Stop player a3: under $1000 speed in x and y the velocities are cleared,
 .1
 	move.w	#SPAglidewp,d1
 .2
-	btst	#4,pflags(a3)
+	btst	#pfrev,pflags(a3)
 	bne.w	.6
 	move.w	#SPAstop,d1
 	movem.w	d1,-(sp)
@@ -463,7 +463,7 @@ dostop	;Stop player a3: under $1000 speed in x and y the velocities are cleared,
 	cmp.w	#$2000,d0
 	movem.w	(sp)+,d0
 	ble.w	.6
-	bset	#1,pflags2(a3)
+	bset	#pf2aip,pflags2(a3)
 	move.w	#SPAstop,d1
 	movem.w	d1,-(sp)
 	move.w	SCnum(a3),d1
@@ -518,7 +518,7 @@ updatevel	;The velocity update 94 does in line
 	tst.w	Zpos(a3)
 	bne.w	.7
 	moveq	#5,d2
-	btst	#0,pflags(a3)
+	btst	#pfdoff,pflags(a3)
 	beq.w	.2
 	moveq	#9,d2
 	cmpi.w	#$E,SCnum(a3)
@@ -645,7 +645,7 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 .1
 	move.w	#SPAglidewp,d1
 .2
-	btst	#4,pflags(a3)
+	btst	#pfrev,pflags(a3)
 	beq.w	.d0
 	move.w	#SPAglideback,d1
 .d0
@@ -658,7 +658,7 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 	or.w	Yvel(a3),d0	;OR Yvel with Xvel
 	bne.w	.5
 .4
-	btst	#1,pflags2(a3)
+	btst	#pf2aip,pflags2(a3)
 	beq.w	.6
 	rts
 .5
@@ -679,14 +679,14 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 	ext.w	d1
 	add.w	(pucky).w,d1	;add pucky to d1
 	sub.w	d3,d1	;sub Ypos from d1
-	btst	#7,pflags(a3)
+	btst	#pfgoal,pflags(a3)
 	bne.w	.8
 	neg.w	d0
 	neg.w	d1
 	neg.w	d3
 	eori.w	#4,d2
 .8
-	btst	#4,pflags(a3)
+	btst	#pfrev,pflags(a3)
 	tst.w	d3
 	bpl.w	.11
 	cmp.w	#4,d2
@@ -707,7 +707,7 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 	cmp.w	#4,d0
 	bhi.w	.11
 .9
-	btst	#4,pflags(a3)
+	btst	#pfrev,pflags(a3)
 	bne.w	.done
 	move.w	Xvel(a3),d0	;move Xvel into d0
 	or.w	Yvel(a3),d0	;or with Yvel
@@ -721,10 +721,10 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 	cmp.w	#2,d0
 	bhi.w	.done
 .10
-	bset	#4,pflags(a3)
+	bset	#pfrev,pflags(a3)
 	bra.w	.done
 .11
-	bclr	#4,pflags(a3)
+	bclr	#pfrev,pflags(a3)
 	beq.w	.done
 	clr.w	Xvel(a3)
 	clr.w	Yvel(a3)
@@ -747,7 +747,7 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 	cmp.w	#8,d0
 	bne.w	.16
 	bra.s	.13
-	btst	#3,pflags(a3)
+	btst	#pfjoycon,pflags(a3)
 	bne.s	.13
 	move.w	(VDP_CNTR).l,d4
 	btst	#1,d4
@@ -782,7 +782,7 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 	move.w	#$180,d4
 .17
 	muls.w	(turnstep).w,d4
-	btst	#4,pflags(a3)
+	btst	#pfrev,pflags(a3)
 	beq.w	.i0
 	neg.l	d4
 .i0
@@ -813,7 +813,7 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 	bne.w	.21
 	addi.w	#SPAturnrwp-SPAturnr,d1
 .21
-	bset	#1,pflags2(a3)
+	bset	#pf2aip,pflags2(a3)
 .22
 	jsr	(SetSPA).l
 	move.b	(turnstep+1).w,$77(a3)
@@ -826,7 +826,7 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 
 noturn0	;doplayeracc: no turn
 	moveq	#2,d4
-	btst	#4,pflags(a3)
+	btst	#pfrev,pflags(a3)
 	beq.w	.0
 	addq.w	#4,d4
 	eori.w	#8,d0
@@ -861,10 +861,10 @@ noturn0	;doplayeracc: no turn
 	bra.w	SetSPA
 .5
 	move.w	#SPAskateback,d1
-	btst	#4,pflags(a3)
+	btst	#pfrev,pflags(a3)
 	bne.w	.9
 	move.w	#SPAskateburst,d1
-	btst	#7,(sflags).w
+	btst	#sfhor,(sflags).w
 	beq.w	.6
 	move.w	#SPAskate,d1
 .6
@@ -886,12 +886,12 @@ noturn0	;doplayeracc: no turn
 .8
 	move.w	#SPAburst,d1
 .9
-	btst	#1,pflags2(a3)
+	btst	#pf2aip,pflags2(a3)
 	bne.w	noturn
 	bsr.w	SetSPA
 
 noturn	;doplayeracc: no turn, d2 = facedir
-	btst	#4,pflags(a3)
+	btst	#pfrev,pflags(a3)
 	beq.w	playeracc
 	eori.w	#4,d2
 
@@ -927,7 +927,7 @@ playeracc	;Player acceleration with facing d2 (doplayeracc entry used by the goa
 	muls.w	d7,d1	;mult d1 by frames elapsed (d7)
 	tst.w	position(a3)
 	bne.w	.noy3
-	btst	#3,pflags(a3)
+	btst	#pfjoycon,pflags(a3)
 	bne.w	.noy3
 	cmpi.w	#SPAgskate,SPA(a3)
 	beq.w	.noy3
@@ -972,7 +972,7 @@ playeracc	;Player acceleration with facing d2 (doplayeracc entry used by the goa
 	asr.l	#1,d2	;divide by 2
 	add.l	(TempMaxSpd).w,d2	;add TempMaxSpd to d2 (so halves the difference between the 2 Speed steps)
 .fgtinj
-	btst	#6,pflags2(a3)	;check if injured during fight
+	btst	#pf2inj,pflags2(a3)	;check if injured during fight
 	beq.w	.5
 	lsr.l	#3,d2	;divide d2 by 8
 .5

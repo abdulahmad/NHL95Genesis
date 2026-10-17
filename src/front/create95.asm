@@ -10,9 +10,9 @@
 CreateScreenGfx	;Set up VDP planes and load create-player graphics/palettes
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
-	bclr	#0,(disflags).w
-	bset	#2,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#dfok,(disflags).w
+	bset	#dfng,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
 .0
@@ -83,7 +83,7 @@ CreatePlayer	;Create Player screen entry: load graphics, draw title, init player
 	movea.l	#NameEntryBgMap+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 
 .createPlayerRedraw	;(re)draw "Create Player" title and player list
 	jsr	(printbigz).l
@@ -1052,9 +1052,9 @@ CreateRatingsGfx	;Set up the create player screen: VDP setup, decompress graphic
 	move	#$2700,sr
 	move.w	#2,d4
 	move.l	#VBlank_SetOptions,(vbint).w
-	bclr	#0,(disflags).w
-	bset	#2,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#dfok,(disflags).w
+	bset	#dfng,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
 	move.w	#$B800,(VmMap3).w
@@ -1262,9 +1262,9 @@ ModifyRatings	;Create Player "Modify Ratings" screen: load graphics/text, then j
 	move	#$2700,sr
 	move.w	#2,d4
 	move.l	#VBlank_SetOptions,(vbint).w
-	bclr	#0,(disflags).w
-	bset	#2,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#dfok,(disflags).w
+	bset	#dfng,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
 	move.w	#$B800,(VmMap3).w
@@ -1334,7 +1334,7 @@ ModifyRatings	;Create Player "Modify Ratings" screen: load graphics/text, then j
 	dc.b	$1,$FD,$4,'A,B=Decrease/Increase',$FD,$1C,'START=Done',$F9
 	dc.b	$0,$0
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 	bsr.w	ClearAttribDeltas
 	bsr.w	LoadCreateTemplate
 	bsr.w	SetPointsPool
@@ -2409,7 +2409,7 @@ SignFreeAgents	;Sign Free Agents screen: draw, input loop
 	clr.w	(TradeData).l
 	bsr.w	FreeAgentTeamBlock
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 
 FreeAgentRedraw	;SignFreeAgents: redraw the lists
 	jsr	(MarkSeasonRosters).l
@@ -2838,7 +2838,7 @@ ReleasePlayers	;Release Player screen: up/down scroll roster, switch team, relea
 	jsr	(clearTeamStats).l
 	bsr.w	ReleaseTeamBlock
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 
 ReleaseRedraw	;ReleasePlayers: redraw the roster
 	move.w	(SaveRAM+2*SRFreeAgentCount).l,d0

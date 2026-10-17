@@ -22,7 +22,7 @@ NameEntryScreen	;Name Entry screen: draw team logo, NAME ENTRY title and Name Lo
 	movea.l	#NameEntryBgMap+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 	jsr	(printz).l
 	String	-(TXPRI+TXPAL3+TXMAP1),$1B,$8,$0
 	move.w	(HomeTeam).w,d3
@@ -1735,13 +1735,13 @@ SetupScreen	;Common start of the stats screens: blank, scroll 0, 40 cell mode, t
 	movem.l	d0-d1/a2,-(sp)
 	jsr	(forceblack).l
 .0
-	btst	#0,(disflags).w
+	btst	#dfok,(disflags).w
 	bne.s	.0
 	clr.w	(Hscroll).w
 	clr.w	(Vscroll).w
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movea.l	#VDP_DATA,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
@@ -1755,7 +1755,7 @@ SetupScreen	;Common start of the stats screens: blank, scroll 0, 40 cell mode, t
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	(sp)+,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#1,d4
 	jsr	(printz).l
 	String	-TXMAP2,$0,$0,$0
@@ -1794,7 +1794,7 @@ SetupScreen	;Common start of the stats screens: blank, scroll 0, 40 cell mode, t
 	move.w	#$7FF,d2
 	jsr	(eraser).l
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 	movem.l	(sp)+,d0-d1/a2
 	rts
 

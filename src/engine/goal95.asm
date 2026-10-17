@@ -13,7 +13,7 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals 
 	asl.w	#7,d0
 	movea.l	#SortCords,a0
 	adda.w	d0,a0
-	btst	#7,pflags(a0)
+	btst	#pfgoal,pflags(a0)
 	movem.l	(sp)+,d0/a0
 	bne.w	.1
 	bra.w	.2
@@ -40,7 +40,7 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals 
 	jsr	(EndPenaltyShotPlay).l
 	bra.w	.7
 .6
-	btst	#0,(gmode).w
+	btst	#gmclock,(gmode).w
 	bne.w	rtsgoal
 .7
 	bset	#0,(sflags4).w
@@ -63,7 +63,7 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals 
 	bpl.w	.9
 	exg	a2,a1
 .9
-	btst	#1,(gmode).w
+	btst	#gmdir,(gmode).w
 	beq.w	.addg
 	exg	a2,a1
 .addg
@@ -78,9 +78,9 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals 
 	beq.w	.12
 	addq.w	#1,$35C(a2)
 .12
-	btst	#5,(sflags2).w
+	btst	#sf2pwrplay,(sflags2).w
 	beq.w	.14
-	btst	#6,(sflags2).w
+	btst	#sf2pwrtm,(sflags2).w
 	bne.w	.13
 	cmpa.l	#AwShots,a2
 	bne.w	.14
@@ -195,7 +195,7 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals 
 	clr.w	Zpos(a3)
 	st	(puckcross2).w
 	st	(puckcross6).w
-	bset	#2,pflags(a3)
+	bset	#pfnc,pflags(a3)
 	move.w	#5,d0
 	jsr	(assreplace).l
 	move.l	a3,-(sp)
@@ -215,9 +215,9 @@ AssignTeam	;Give assignment d0 to every player of team a2 on the ice (assinsert)
 .loop
 	tst.w	position(a3)
 	ble.w	.next
-	btst	#0,pflags2(a3)
+	btst	#pf2fight,pflags2(a3)
 	bne.w	.next
-	bclr	#2,pflags(a3)
+	bclr	#pfnc,pflags(a3)
 	bclr	#pf3onetimer,pflags3(a3)
 	beq.w	.assign
 	jsr	(EndOneTimer).l
@@ -236,7 +236,7 @@ PenGoalStuff	;Do this stuff after a goal: a1 = scored on team, a2 = scoring team
 	movem.l	d0-d2/a0,-(sp)
 	cmpi.w	#3,(gsp).w
 	bne.w	.0
-	bclr	#3,(gmode).w
+	bclr	#gmpendel,(gmode).w
 	jsr	(ClearPenaltyBuffer).l
 	bra.w	.1
 .0
@@ -278,7 +278,7 @@ ShowGoalBox	;Goal box: close both line change boxes (lcfound2), then the scorer 
 	movem.l	d0-d2/a0-a4,-(sp)
 	btst	#2,(BA_PS_flags).w
 	beq.w	.0
-	bset	#2,(sflags2).w
+	bset	#sf2drec,(sflags2).w
 .0
 	movea.w	#(tmstruct-M68K_RAM),a2
 	jsr	(lcfound2).l	;close lc box
@@ -418,14 +418,14 @@ PrintParenNumber	;Print the number at d0 of a2 (1 to 3 digits) and ")"
 LockScroll	;xc1 / yc1 = Hpos / Vpos, sfslock
 	move.w	(Vpos).w,(yc1).w
 	move.w	(Hpos).w,(xc1).w
-	bset	#6,(sflags).w
+	bset	#sfslock,(sflags).w
 	rts
 
 checkwindow	;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the puck
 	movem.l	d0-d3/a3,-(sp)
 	move.w	(yc1).w,d2
 	move.w	(xc1).w,d3
-	btst	#6,(sflags).w
+	btst	#sfslock,(sflags).w
 	bne.w	.dd
 	movea.l	#puckx,a3
 	move.w	(puckc).w,d0
@@ -435,7 +435,7 @@ checkwindow	;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the p
 	adda.w	d0,a3
 	move.w	d7,d0
 	add.w	d0,d0
-	btst	#7,pflags(a3)
+	btst	#pfgoal,pflags(a3)
 	beq.w	.gd
 	add.w	d0,(yleader).w
 	cmpi.w	#$32,(yleader).w
@@ -546,7 +546,7 @@ PullPracticePlayers	;Practice Mode: take off the ice (position -1, assignment $1
 .pull
 	move.w	#$FFFF,position(a0,d2.w)
 	bset	#2,pflags2(a0,d2.w)
-	bset	#2,pflags(a0,d2.w)
+	bset	#pfnc,pflags(a0,d2.w)
 	move.w	#$FFFF,Zpos(a0,d2.w)
 	movem.l	d0/a3,-(sp)
 	move.w	#$19,d0
@@ -607,7 +607,7 @@ PeriodOver	;What to do if the period is over: next period, overtime or game over
 	btst	#7,(sflags9).w
 	bne.w	.2
 	addq.w	#1,(gsp).w
-	bchg	#1,(gmode).w
+	bchg	#gmdir,(gmode).w
 	cmpi.w	#3,(gsp).w
 	blt.w	.3
 	beq.w	.1
@@ -668,7 +668,7 @@ clockcont_0	;The clock ran out in overtime / the game: game over handling, the S
 .3
 	moveq	#$B,d2
 .4
-	bclr	#3,pflags(a3)
+	bclr	#pfjoycon,pflags(a3)
 	adda.w	#SCstruct,a3
 	dbf	d2,.4
 	movea.w	#(SortCords-M68K_RAM),a3
@@ -690,8 +690,8 @@ clockcont_0	;The clock ran out in overtime / the game: game over handling, the S
 .eog
 	jsr	(ClearPenaltyBuffer).l
 	addi.w	#$3E8,(crowdlevel).w	;1000
-	bset	#0,(gmode).w	;gmclock: stop clock
-	bset	#6,(gmode).w	;set at end of game
+	bset	#gmclock,(gmode).w	;gmclock: stop clock
+	bset	#gmend,(gmode).w	;set at end of game
 	jsr	(ClearPenalties).l
 	move.w	#4,d0	;PenEOG
 	jmp	AddPenalty2
@@ -723,11 +723,11 @@ ExitToOpening	;Jmp to the opening
 	jmp	Opening2
 
 clockcont	;Clock continue: when the clock is at 0 stop the play (sfx 4) and go to clockcont_0
-	btst	#0,(gmode).w
+	btst	#gmclock,(gmode).w
 	bne.w	.0
 	tst.w	(gameclock).w
 	bne.w	.0
-	bset	#3,(disflags).w	;dfclock: clock needs update
+	bset	#dfclock,(disflags).w	;dfclock: clock needs update
 	jsr	(stop_current_song).l
 	move.w	#SFXhorn,-(sp)	;horn
 	jsr	(sfx).l
@@ -761,7 +761,7 @@ SetContTeams	;The controller setup screen: pick the team of each pad (cont1team 
 	bsr.w	PrintPracticePlayers
 .2
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 	clr.w	(carddelay).w
 .frame
 	move.w	(vcount).w,d0
@@ -1009,9 +1009,9 @@ ControllerSetupScreen	;Build the controller setup screen: vram, fonts, the team 
 	;"Controller SetUp" (printbigz); the team blocks of VisTeam / HomeTeam
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
-	bclr	#0,(disflags).w
-	bset	#2,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#dfok,(disflags).w
+	bset	#dfng,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
 	move.w	#$B800,(VmMap3).w

@@ -411,7 +411,7 @@ updateplayers	;This routine calls all collision/animation/assignment code for al
 	bpl.w	.np2
 	clr.b	nopuck+1(a3)	;clear lower byte of nopuck
 .np2
-	btst	#6,(sflags3).w	;check if penalty timer is up
+	btst	#sf3icetime,(sflags3).w	;check if penalty timer is up
 	beq.w	.11
 	clr.w	d0
 	move.b	pnum(a3),d0	;player offset on roster

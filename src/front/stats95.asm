@@ -74,7 +74,7 @@ StatScrollStep	;One scroll step of PlayerScrollCtr, within 0 ... matchupvis
 SetStatScroll	;Plane A vertical scroll (VSRAM 0) = VertLineScrolling - $50, with disflags bit 2
 	;set while it writes
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movea.l	#VDP_DATA,a0
 	move.l	#VSRAM_W+(2<<16),Vctrl-Vdata(a0)
 	move.w	#$FFB0,d0
@@ -444,7 +444,7 @@ UpdateStatsListScroll	;Stats screen per frame: scroll 0 ... SelectedPlayerIdx, s
 
 SetStatsListScrollReg	;VSRAM = VertLineScrolling - $68
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movea.l	#VDP_DATA,a0
 	move.l	#VSRAM_W+(2<<16),Vctrl-Vdata(a0)
 	move.w	#$FF98,d0
@@ -1421,7 +1421,7 @@ MarkSeasonRosters	;Set bit 15 of every player's goals and shots words in save RA
 	rts
 
 SeasonPlayerStats	;Season Player Stats screen: set the VRAM layout (VSCRLPM ... Map3col1), clear VRAM (setVram), then run the stats screen and return
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#$C000,(VmMap2).w
 	move.w	#6,(Map2col1).w
 	move.w	#$DC00,(VSPRITES).w
@@ -1439,13 +1439,13 @@ SeasonPlayersScreen	;Run the season stats screen, then jump to ExitStatsScreen
 	jmp	(ExitStatsScreen).l
 
 .seasonPlayersRedraw	;Wait for vblank, reset scroll, clear the window/scroll VDP areas, draw the team screen (DrawTeamScreen4NoSetup) and enter the stats screen draw
-	btst	#0,(disflags).w
+	btst	#dfok,(disflags).w
 	bne.s	.seasonPlayersRedraw
 	clr.w	(Hscroll).w
 	clr.w	(Vscroll).w
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movea.l	#VDP_DATA,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY,Vctrl-Vdata(a0)
@@ -1459,7 +1459,7 @@ SeasonPlayersScreen	;Run the season stats screen, then jump to ExitStatsScreen
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	(sp)+,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#$800,d0
 	move.w	(VmMap1).w,d1
 	move.w	#$7FF,d2
@@ -1602,7 +1602,7 @@ SeasonStatsListScroll	;Per-frame scroll of the player list
 
 SeasonStatsListScrollReg	;VSRAM = VertLineScrolling - $68
 	move.w	(disflags).w,-(sp)
-	bset	#2,(disflags).w
+	bset	#dfng,(disflags).w
 	movea.l	#VDP_DATA,a0
 	move.l	#VSRAM_W+(2<<16),Vctrl-Vdata(a0)
 	move.w	#$FF98,d0
@@ -1910,7 +1910,7 @@ DrawSeasonStatsLogo	;Draw bitmap Teamblocksmap via dobitmap with tile base $69A,
 	rts
 
 SeasonTeamStats	;Season TEAM STATS screen (sflags11 bit 3 = playoff "Playoff Teams"): d7 = team 0-$19, left/right (bits 6/4 of d1) change team, start exits
-	bclr	#1,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#$C000,(VmMap2).w
 	move.w	#6,(Map2col1).w
 	move.w	#$DC00,(VSPRITES).w
@@ -2202,7 +2202,7 @@ LeagueLeadersScreen	;League Leaders screen (season menu): team / individual stat
 	move.l	#PlayerStatsBgMap,(screenarg).l
 	bsr.w	StandingsGfx
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),$6,$2,'League Leaders',$0
 	clr.w	(StatWork).w
@@ -3871,7 +3871,7 @@ ShowThreeStars	;End of game Stars of the Game box. Called from UpdatePA while Re
 	btst	#7,(sflags9).w
 	bne.w	.4
 	movem.l	d0/a1,-(sp)
-	bset	#3,(disflags).w
+	bset	#dfclock,(disflags).w
 	move.w	(vcount).w,d0
 .loop2
 	cmp.w	(vcount).w,d0
@@ -4057,7 +4057,7 @@ HighlightsScreen	;Season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left
 	clr.w	(rosterscroll).w
 	move.w	#$FFFF,(setupdir).w
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 	bsr.w	DrawHighlightPage
 .page
 	cmpi.w	#$FFFF,(setupdir).w

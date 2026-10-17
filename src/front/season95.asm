@@ -1502,7 +1502,7 @@ SeasonSetup	;SEASON SETUP screen: period length, penalties, line changes, playof
 	move.w	#4,(VertLineScrolling).w
 	move.w	#$FFFF,(setupdir).w
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 .loop
 	bsr.w	SeasonSetupLines
 	bsr.w	DrawSeasonSetup
@@ -1660,9 +1660,9 @@ SeasonSetupLines	;a0 = setupvalues; 5 setup lines
 SeasonSetupGfx	;Season setup screen video set up and graphics
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
-	bclr	#0,(disflags).w
-	bset	#2,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#dfok,(disflags).w
+	bset	#dfng,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
 	move.w	#$B800,(VmMap3).w
@@ -1856,7 +1856,7 @@ GamesToday	;GAMES TODAY screen: list the day's games, A toggles human / computer
 	bsr.w	GamesTodayLines
 	move.w	#$FFFF,(setupdir).w
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 
 GamesTodayLoop	;GamesToday: draw and read the pads
 	bsr.w	DrawGamesToday
@@ -2384,9 +2384,9 @@ GameRowsTbl6
 GamesTodayGfx	;Games today screen video set up and graphics
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
-	bclr	#0,(disflags).w
-	bset	#2,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#dfok,(disflags).w
+	bset	#dfng,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
 	move.w	#$B800,(VmMap3).w
@@ -2462,7 +2462,7 @@ SeasonOptions	;SEASON OPTIONS menu: the regular season, end of season or playoff
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),$7,$2,'SEASON OPTIONS',$0
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 .draw
 	bsr.w	DrawSeasonMenu
 .input
@@ -2933,9 +2933,9 @@ PlayoffMenuText	;Playoff menu
 SeasonOptionsGfx	;Season options screen video set up and graphics
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
-	bclr	#0,(disflags).w
-	bset	#2,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#dfok,(disflags).w
+	bset	#dfng,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
 	move.w	#$B800,(VmMap3).w
@@ -3028,7 +3028,7 @@ CalendarScreen	;CALENDAR (team schedule): {} change team, [] change month, start
 	jsr	(printsmallz).l
 	String	CC_SetX,$1,CC_SetY,$15,'START',CC_SetX,$1,CC_AddY,$1,'= Exit',CC_SetFont,$0,$0
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 .draw
 	bsr.w	CalendarBg
 	bsr.w	DrawCalendar
@@ -3118,9 +3118,9 @@ ReadCalendarPad	;As ReadAnyPad
 CalendarGfx	;Calendar screen video set up and graphics
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
-	bclr	#0,(disflags).w
-	bset	#2,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#dfok,(disflags).w
+	bset	#dfng,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
 	move.w	#$B800,(VmMap3).w
@@ -3497,7 +3497,7 @@ StandingsScreen	;NHL STANDINGS: {} conference / division, [] the other group; st
 	move.l	#ControllerBgMap,(screenarg).l
 	bsr.w	StandingsGfx
 	move.w	#$18,(palcount).w
-	bclr	#2,(disflags).w
+	bclr	#dfng,(disflags).w
 	jsr	(PrintStandingsHelp).l
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),$8,$2,'NHL STANDINGS'
@@ -3679,9 +3679,9 @@ StandingsGroup3
 StandingsGfx	;Standings screen video set up and graphics
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
-	bclr	#0,(disflags).w
-	bset	#2,(disflags).w
-	bclr	#1,(disflags).w
+	bclr	#dfok,(disflags).w
+	bset	#dfng,(disflags).w
+	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
 	move.w	#$B800,(VmMap3).w
