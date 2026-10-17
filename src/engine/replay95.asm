@@ -4,10 +4,11 @@
 
 ;	A replay frame object packs a 9-bit x and an 11-bit frame.
 
-	include	macros\genesis.mac	;String
-chkblock	;Called with d1 = SPAhook for a player a3 about to check: d1 becomes the shot block
-	;SPAblock when the puck carrier (shot dir mode set) or the last shooter (ShotTimer running)
-	;is on the other team
+	include	macros\genesis.mac		;String
+chkblock							;Called with d1 = SPAhook for a player a3 about to check:
+									;d1 becomes the shot block
+									;SPAblock when the puck carrier (shot dir mode set) or the last shooter
+									;(ShotTimer running) is on the other team
 	btst	#sfssdir,(sflags).w
 	bne.w	.carrier
 	tst.w	(ShotTimer).w
@@ -19,7 +20,7 @@ chkblock	;Called with d1 = SPAhook for a player a3 about to check: d1 becomes th
 	btst	#pfteam,d0
 	beq.w	.done
 	bra.w	.start
-	btst	#sfssdir,(sflags).w	;not reached
+	btst	#sfssdir,(sflags).w		;not reached
 	beq.w	.rts
 	tst.w	(puckc).w
 	bmi.w	.rts
@@ -37,7 +38,7 @@ chkblock	;Called with d1 = SPAhook for a player a3 about to check: d1 becomes th
 .start
 	move.w	#SPAblock,d1
 	bra.w	.done
-	movem.w	d1,-(sp)	;not reached: the same facing test as CanBlock
+	movem.w	d1,-(sp)				;not reached: the same facing test as CanBlock
 	move.w	(puckx).w,d0
 	sub.w	Xpos(a3),d0
 	move.w	(pucky).w,d1
@@ -62,11 +63,13 @@ chkblock	;Called with d1 = SPAhook for a player a3 about to check: d1 becomes th
 .rts
 	rts
 
-CanBlock	;Ne when joystick player a3 may block the shot (SPAblock): pfalock clear, sflags sfssdir
-	;set and GameFlags bit 2 clear (one block per shot; cleared while sfssdir is clear), a3 at y $56 or more toward the goal it shoots
-	;at, the puck carrier on the other team, the direction (vtoa) from a3 to the puck the same as from the goal at
-	;y $10B to the puck, a3 on the puck's side of x 0 and within y $B2 of it, and a3 facing that direction or one
-	;next to it. d0 is restored
+CanBlock							;Ne when joystick player a3 may block the shot (SPAblock): pfalock clear,
+									;sflags sfssdir set and GameFlags bit 2 clear (one block per shot; cleared
+									;while sfssdir is clear), a3 at y $56 or more toward the goal it shoots
+									;at, the puck carrier on the other team, the direction (vtoa) from a3 to
+									;the puck the same as from the goal at y $10B to the puck, a3 on the
+									;puck's side of x 0 and within y $B2 of it, and a3 facing that direction
+									;or one next to it. d0 is restored
 	movem.l	d0-d3/a0-a2,-(sp)
 	btst	#pfalock,pflags(a3)
 	bne.w	.no
@@ -96,13 +99,13 @@ CanBlock	;Ne when joystick player a3 may block the shot (SPAblock): pfalock clea
 	beq.w	.no
 	btst	#sfssdir,(sflags).w
 	beq.w	.no
-	move.w	(puckx).w,d0	;d0 = direction from a3 to the puck
+	move.w	(puckx).w,d0			;d0 = direction from a3 to the puck
 	sub.w	Xpos(a3),d0
 	move.w	(pucky).w,d1
 	sub.w	Ypos(a3),d1
 	jsr	(vtoa).l
 	move.w	d0,-(sp)
-	move.w	(puckx).w,d0	;direction from the goal at y $10B to the puck
+	move.w	(puckx).w,d0			;direction from the goal at y $10B to the puck
 	move.w	#$10B,d1
 	btst	#pfgoal,pflags(a3)
 	beq.w	.2
@@ -145,12 +148,12 @@ CanBlock	;Ne when joystick player a3 may block the shot (SPAblock): pfalock clea
 	movem.l	(sp)+,d0-d3/a0-a2
 	rts
 
-updatereplay	;Called every frame to save replay events, d7 = elapsed frames. 95 packs x in 9 bits
-	;and frame in 11 bits, and saves both pad words
-	btst	#gmhl,(gmode).w	;check if highlight
-	bne.w	rtss8	;exit if so
+updatereplay						;Called every frame to save replay events, d7 = elapsed frames. 95 packs x
+									;in 9 bits and frame in 11 bits, and saves both pad words
+	btst	#gmhl,(gmode).w			;check if highlight
+	bne.w	rtss8					;exit if so
 	btst	#sf2drec,(sflags2).w	;check if replay record disabled
-	beq.w	.0	;branch if not
+	beq.w	.0						;branch if not
 	tst.w	(replaydelay).w
 	beq.w	.rec
 	subq.w	#1,(replaydelay).w
@@ -227,11 +230,13 @@ updatereplay	;Called every frame to save replay events, d7 = elapsed frames. 95 
 	move.w	(sp)+,d0
 	move.w	(Hpos).w,(a0)+
 	move.w	(Vpos).w,(a0)+
-rtss8	;rts (rtss8)
+rtss8								;rts (rtss8)
 	rts
 
-ReplayMode	;Instant replay play-back control and display code. Called from the pause menu.
-	;95 first restarts the sound driver: load the Z80 program and the sound banks
+ReplayMode							;Instant replay play-back control and display code.
+									;Called from the pause menu.
+									;95 first restarts the sound driver: load the Z80 program and the sound
+									;banks
 	jsr	(SoundOff).l
 	move.w	#$FFFF,(PlayingSong).w
 	move.w	#0,d0
@@ -420,7 +425,7 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	jsr	(UpdateCameraPos).l
 	jsr	(setvideo).l
 	bra.w	.top
-.dirtab;scroll step per d-pad direction 0-7: x, y
+.dirtab								;scroll step per d-pad direction 0-7: x, y
 	dc.w	0,2, 2,2
 	dc.w	2,0, 2,-2
 	dc.w	0,-2, -2,-2
@@ -522,7 +527,8 @@ ReplayMode	;Instant replay play-back control and display code. Called from the p
 	move.w	#$18,(palcount).w
 	rts
 
-ShowReplayIcon	;Show the replay icon and start the $F0 frame replayicontimer timer. 95: the icon is $A x 5 at 0,0 from ReplayIconChars
+ShowReplayIcon						;Show the replay icon and start the $F0 frame replayicontimer timer. 95:
+									;the icon is $A x 5 at 0,0 from ReplayIconChars
 	move.w	#$F0,(replayicontimer).w
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),2,2,0
@@ -537,7 +543,7 @@ ShowReplayIcon	;Show the replay icon and start the $F0 frame replayicontimer tim
 	movea.w	#ZeroLong,a2
 	jmp	dobitmap
 
-EraseReplayIcon	;Erase the $A x 5 replay icon (replayicontimer ran out)
+EraseReplayIcon						;Erase the $A x 5 replay icon (replayicontimer ran out)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),2,2,0
 	move.w	#$A,d0
@@ -545,7 +551,8 @@ EraseReplayIcon	;Erase the $A x 5 replay icon (replayicontimer ran out)
 	move.w	#$7FF,d2
 	jmp	eraser
 
-ShowReplayBanner	;Show the replay banner at 0,0 and stop the replayicontimer timer. 95: $A x 6 from ExtraChars
+ShowReplayBanner					;Show the replay banner at 0,0 and stop the replayicontimer timer.
+									;95: $A x 6 from ExtraChars
 	st	(replayicontimer).w
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),2,2,0
@@ -560,7 +567,7 @@ ShowReplayBanner	;Show the replay banner at 0,0 and stop the replayicontimer tim
 	movea.w	#ZeroLong,a2
 	jmp	dobitmap
 
-EraseReplayBanner	;Erase the $A x 6 area ShowReplayBanner drew
+EraseReplayBanner					;Erase the $A x 6 area ShowReplayBanner drew
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),2,2,0
 	move.w	#$A,d0
@@ -568,8 +575,9 @@ EraseReplayBanner	;Erase the $A x 6 area ShowReplayBanner drew
 	move.w	#$7FF,d2
 	jmp	eraser
 
-suba4	;a4 = current replay frame. Back up 1 frame and set video parameters for display.
-	;d7 = delay between frames, or zero at the end of the replay
+suba4								;a4 = current replay frame. Back up 1 frame and set video parameters for
+									;display.
+									;d7 = delay between frames, or zero at the end of the replay
 	cmpa.l	#M68K_RAM,a4
 	bne.w	.1
 	btst	#sfwrap,(sflags).w
@@ -585,7 +593,8 @@ suba4	;a4 = current replay frame. Back up 1 frame and set video parameters for d
 	clr.w	d7
 	rts
 
-adda4	;Step forward 1 frame. 94 first handles a reverse angle switch (sflags4 bit 6)
+adda4								;Step forward 1 frame. 94 first handles a reverse angle switch (sflags4
+									;bit 6)
 	bclr	#6,(sflags4).w
 	beq.w	.1
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -633,13 +642,13 @@ adda4	;Step forward 1 frame. 94 first handles a reverse angle switch (sflags4 bi
 	movem.l	(sp)+,a4
 	beq.w	rtsAdda4
 
-adda42	;adda4 without the sf2drec look-ahead: stop at the record point, else show the frame and
-	;fall into adda43
+adda42								;adda4 without the sf2drec look-ahead: stop at the record point, else show
+									;the frame and fall into adda43
 	cmpa.l	(recbpr).w,a4
 	beq.w	rtsAdda4
 	bsr.w	RestoreReplayFrame
 
-adda43	;a4 += replay frame size ($62), wrapping from replayend to M68K_RAM
+adda43								;a4 += replay frame size ($62), wrapping from replayend to M68K_RAM
 	adda.w	#$62,a4
 	cmpa.l	#replayend,a4
 	bne.w	rtsAdda4
@@ -647,7 +656,8 @@ adda43	;a4 += replay frame size ($62), wrapping from replayend to M68K_RAM
 
 rtsAdda4	rts
 
-UpdateCameraPos	;Camera struct a5 = object a3 x/y (negated for the reverse angle), Hpos/Vpos clamped
+UpdateCameraPos						;Camera struct a5 = object a3 x/y (negated for the reverse angle),
+									;Hpos/Vpos clamped
 	movem.l	d0-d2,-(sp)
 	move.w	(a3),d0
 	btst	#7,(sflags4).w
@@ -683,18 +693,20 @@ UpdateCameraPos	;Camera struct a5 = object a3 x/y (negated for the reverse angle
 	rts
 	; set flag for reverse replay setup if needed
 
-RevReplayAdj	;Set sflags4 bit 7 for a reverse angle replay, then fall into RestoreReplayFrame
-	btst	#4,(sflags4).w;check if reverse angle replay
-	beq.w	RestoreReplayFrame;branch if not
-	bset	#7,(sflags4).w;set bit 7
+RevReplayAdj						;Set sflags4 bit 7 for a reverse angle replay, then fall into
+									;RestoreReplayFrame
+	btst	#4,(sflags4).w			;check if reverse angle replay
+	beq.w	RestoreReplayFrame		;branch if not
+	bset	#7,(sflags4).w			;set bit 7
 	; a4 = current replay frame address to convert into normal coordinates
 
-RestoreReplayFrame	;a4 = current replay frame address to convert into normal cordinates (92
-	;SetRCords), then the other replay variables. 94 flips x/y and frames for the reverse angle
+RestoreReplayFrame					;a4 = current replay frame address to convert into normal cordinates (92
+									;SetRCords), then the other replay variables. 94 flips x/y and frames for
+									;the reverse angle
 	movem.l	d0-d2/a0/a6,-(sp)
 	movea.l	#revframetbl,a6
 	movea.l	a4,a0
-	moveq	#$F,d1;16 objects to convert (12 players/2 nets/puck/puck shadow)
+	moveq	#$F,d1					;16 objects to convert (12 players/2 nets/puck/puck shadow)
 	movea.w	#(SortCords-M68K_RAM),a3
 .top
 	move.w	2(a0),d2
@@ -703,11 +715,11 @@ RestoreReplayFrame	;a4 = current replay frame address to convert into normal cor
 	beq.w	.chkrevx
 	ori.w	#$FE00,d2
 .chkrevx
-	btst	#4,(sflags4).w	;check if reverse angle
-	beq.w	.p	;branch if not
+	btst	#4,(sflags4).w			;check if reverse angle
+	beq.w	.p						;branch if not
 	neg.w	d2
 .p
-	move.w	d2,(a3)	;update Xpos
+	move.w	d2,(a3)					;update Xpos
 	move.l	(a0),d2
 	asr.l	#3,d2
 	asr.w	#6,d2
@@ -715,42 +727,42 @@ RestoreReplayFrame	;a4 = current replay frame address to convert into normal cor
 	beq.w	.chkrevy
 	ori.w	#$FC00,d2
 .chkrevy
-	btst	#4,(sflags4).w	;check if reverse angle
-	beq.w	.p1	;branch if not
+	btst	#4,(sflags4).w			;check if reverse angle
+	beq.w	.p1						;branch if not
 	neg.w	d2
-	cmp.w	#0,d1	;check if last object (puck shadow)
-	bne.w	.p1	;branch if not
-	addq.w	#2,d2	;update puck shadow Xpos
+	cmp.w	#0,d1					;check if last object (puck shadow)
+	bne.w	.p1						;branch if not
+	addq.w	#2,d2					;update puck shadow Xpos
 .p1
-	move.w	d2,Ypos(a3)	;update Ypos
+	move.w	d2,Ypos(a3)				;update Ypos
 	move.w	(a0),d2
 	asr.w	#3,d2
 	andi.w	#$7FF,d2
-	btst	#4,(sflags4).w	;check if reverse angle
-	beq.w	.2	;branch if not
+	btst	#4,(sflags4).w			;check if reverse angle
+	beq.w	.2						;branch if not
 	asl.w	#1,d2
 	move.w	(a6,d2.w),d2
 	cmpi.w	#$F,SCnum(a3)
-	bne.w	.0	;branch if not
+	bne.w	.0						;branch if not
 	cmp.w	#SPFpuck,d2
 	beq.w	.0
 	move.w	#$FC00,Ypos(a3)
 .0
-	cmp.w	#1,d2	;check if frame is before frame 1 (out of range)
-	blt.w	.1	;branch if so
-	cmp.w	#SPFfaceoff+6,d2	;one past the last frame
-	bge.w	.1	;branch if so
-	bra.w	.2	;branch if valid object frame
+	cmp.w	#1,d2					;check if frame is before frame 1 (out of range)
+	blt.w	.1						;branch if so
+	cmp.w	#SPFfaceoff+6,d2		;one past the last frame
+	bge.w	.1						;branch if so
+	bra.w	.2						;branch if valid object frame
 .1
 	move.w	(a0),d2
 	asr.w	#3,d2
 	andi.w	#$7FF,d2
 .2
 	move.w	d2,frame(a3)
-	cmp.w	#SPFbglass,d2	;glass shatter frames
-	blt.w	.3	;branch if so
-	cmp.w	#SPFPen,d2	;the penalty frame, past the glass
-	bge.w	.3	;branch if so
+	cmp.w	#SPFbglass,d2			;glass shatter frames
+	blt.w	.3						;branch if so
+	cmp.w	#SPFPen,d2				;the penalty frame, past the glass
+	bge.w	.3						;branch if so
 	btst	#4,(sflags4).w
 	beq.w	.3
 	move.w	#$190,Ypos(a3)
@@ -760,12 +772,12 @@ RestoreReplayFrame	;a4 = current replay frame address to convert into normal cor
 	andi.w	#$1800,d2
 	andi.w	#$E7FF,attribute(a3)
 	or.w	d2,attribute(a3)
-	btst	#4,(sflags4).w	;check if reverse angle replay
-	beq.w	.4	;branch if not
+	btst	#4,(sflags4).w			;check if reverse angle replay
+	beq.w	.4						;branch if not
 .4
 	addq.w	#4,a0
 	adda.w	#SCstruct,a3
-	dbf	d1,.top	;loop to next object
+	dbf	d1,.top						;loop to next object
 	moveq	#5,d2
 	movea.w	#(SortCords-M68K_RAM),a3
 .loop
@@ -840,7 +852,7 @@ RestoreReplayFrame	;a4 = current replay frame address to convert into normal cor
 	movem.l	(sp)+,d0-d2/a0/a6
 	rts
 
-ClampReplayView	;Clamp Hpos to -$3C..$3C and Vpos to -$C8..$100
+ClampReplayView						;Clamp Hpos to -$3C..$3C and Vpos to -$C8..$100
 	move.w	d0,-(sp)
 	move.w	#$3C,d0
 	cmp.w	(Hpos).w,d0

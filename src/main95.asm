@@ -15,7 +15,7 @@
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-InitialSP = $FFFFF6	;reset vector 0. 24-bit form of $FFFFFFF6. Begin moves the stack to Stack
+InitialSP = $FFFFF6					;reset vector 0. 24-bit form of $FFFFFFF6. Begin moves the stack to Stack
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
@@ -23,25 +23,26 @@ InitialSP = $FFFFF6	;reset vector 0. 24-bit form of $FFFFFFF6. Begin moves the s
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-	dc.l	InitialSP	; 0 initial stack pointer
-	dc.l	Start		; 1 initial program counter ( $200)
-	dc.l	BusErr		; 2 bus error. 95 has its own (an rts); 94 pointed bus and address error at AddError
-	dc.l	AdrErr		; 3 address error (an rts)
-	dc.l	InvOpCode	; 4 illegal instruction (an rts)
-	dc.l	DivBy0		; 5 zero divide (an rts)
-	dcb.b	72,$FF		; 6-23 ($18-$5F): CHK ... reserved, not used. $FF as in 94
+	dc.l	InitialSP				; 0 initial stack pointer
+	dc.l	Start					; 1 initial program counter ( $200)
+	dc.l	BusErr					;2 bus error. 95 has its own (an rts); 94 pointed bus and address error at
+									;AddError
+	dc.l	AdrErr					; 3 address error (an rts)
+	dc.l	InvOpCode				; 4 illegal instruction (an rts)
+	dc.l	DivBy0					; 5 zero divide (an rts)
+	dcb.b	72,$FF					; 6-23 ($18-$5F): CHK ... reserved, not used. $FF as in 94
 
-	dc.l	IRQ7		; 24 ($60) spurious interrupt. IRQ7 is an rte
-	dc.l	IRQ7		; 25 ($64) level 1, not used
-	dc.l	IRQ7		; 26 ($68) level 2 (external), not used
-	dc.l	IRQ7		; 27 ($6C) level 3, not used
-	dc.l	IRQ7		; 28 ($70) level 4: horizontal retrace (not used)
-	dc.l	0		; 29 ($74) level 5: not used
-	dc.l	VBjsr		; 30 ($78) level 6: vertical retrace, jumps through vbint
-	dc.l	IRQ7		; 31 ($7C) level 7
+	dc.l	IRQ7					; 24 ($60) spurious interrupt. IRQ7 is an rte
+	dc.l	IRQ7					; 25 ($64) level 1, not used
+	dc.l	IRQ7					; 26 ($68) level 2 (external), not used
+	dc.l	IRQ7					; 27 ($6C) level 3, not used
+	dc.l	IRQ7					; 28 ($70) level 4: horizontal retrace (not used)
+	dc.l	0						; 29 ($74) level 5: not used
+	dc.l	VBjsr					; 30 ($78) level 6: vertical retrace, jumps through vbint
+	dc.l	IRQ7					; 31 ($7C) level 7
 
-	dc.l	0,0,0,0		; 32-35 ($80-$8F): trap #0-#3, not used. 0 in retail
-	dcb.b	112,$FF		; 36-63 ($90-$FF): trap #4-#15 and reserved, not used
+	dc.l	0,0,0,0					; 32-35 ($80-$8F): trap #0-#3, not used. 0 in retail
+	dcb.b	112,$FF					; 36-63 ($90-$FF): trap #4-#15 and reserved, not used
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
@@ -55,8 +56,9 @@ InitialSP = $FFFFF6	;reset vector 0. 24-bit form of $FFFFFFF6. Begin moves the s
 ;	Start ($200)
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-Start	;Power on: the Sega hardware init, then the region lock, the checksum and Begin
-	include	sega\SegaInit.asm	;SegaInit, falls into CHECK_VDP
+Start								;Power on: the Sega hardware init, then the region lock, the checksum and
+									;Begin
+	include	sega\SegaInit.asm		;SegaInit, falls into CHECK_VDP
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;
@@ -64,80 +66,81 @@ Start	;Power on: the Sega hardware init, then the region lock, the checksum and 
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-CHECK_VDP	;Hot start lands here. Match the console region to the CountryCode letters; on a mismatch draw the
-	;"DEVELOPED FOR USE ONLY WITH ... SYSTEMS." screen and hang
-	tst.w	(Vctrl).l		; this is protect to push. start_bottum rapid_firely
+CHECK_VDP							;Hot start lands here. Match the console region to the CountryCode
+									;letters; on a mismatch draw the
+									;"DEVELOPED FOR USE ONLY WITH ... SYSTEMS." screen and hang
+	tst.w	(Vctrl).l				; this is protect to push. start_bottum rapid_firely
 	clr.l	d0
-	move.b	(IO_PCBVER+1).l,d0	;version register: bit 7 = overseas, bit 6 = PAL
+	move.b	(IO_PCBVER+1).l,d0		;version register: bit 7 = overseas, bit 6 = PAL
 	lsr.b	#6,d0
-	andi.b	#3,d0			;0 Japan NTSC, 1 Japan PAL, 2 overseas NTSC, 3 overseas PAL
+	andi.b	#3,d0					;0 Japan NTSC, 1 Japan PAL, 2 overseas NTSC, 3 overseas PAL
 	lea	RegionLetters(pc),a0
-	move.b	(a0,d0.w),d0		;region letter J / U / E, 0 for Japan PAL
+	move.b	(a0,d0.w),d0			;region letter J / U / E, 0 for Japan PAL
 	tst.b	d0
-	beq.w	.regionHang		;Japan PAL: hang with a blank screen
+	beq.w	.regionHang				;Japan PAL: hang with a blank screen
 	lea	(CountryCode).l,a0
-	move.w	#$F,d1			;16 country code letters
+	move.w	#$F,d1					;16 country code letters
 .find
 	cmp.b	(a0),d0
-	beq.w	RegionOK		;the cartridge lists this region: start the game
+	beq.w	RegionOK				;the cartridge lists this region: start the game
 	addq.l	#1,a0
 	dbf	d1,.find
 	;wrong region: set the VDP up and load RegionFont as tiles 0-$3A
 	lea	(Vdata).l,a4
 	lea	(Vctrl).l,a5
-	move.w	#VDPR_MODE2+$64,(a5)		;reg 1: display on, vblank int, DMA off
-	move.w	#VDPR_PLANEA+$30,(a5)		;reg 2: plane A at $C000
-	move.w	#VDPR_MODE4+$81,(a5)		;reg 12: 40 cell mode
-	move.w	#VDPR_AUTOINC+$02,(a5)		;reg 15: auto increment 2
-	move.w	#VDPR_PLANESIZE+$01,(a5)		;reg 16: 64 x 32 cell planes
-	move.l	#CRAM_W+(2<<16),(a5)		;cram write, address 2 (colour 1)
-	move.w	#$EEE,(a4)		;colour 1 = white
-	move.l	#VRAM_W,(a5)		;vram write, address 0
+	move.w	#VDPR_MODE2+$64,(a5)	;reg 1: display on, vblank int, DMA off
+	move.w	#VDPR_PLANEA+$30,(a5)	;reg 2: plane A at $C000
+	move.w	#VDPR_MODE4+$81,(a5)	;reg 12: 40 cell mode
+	move.w	#VDPR_AUTOINC+$02,(a5)	;reg 15: auto increment 2
+	move.w	#VDPR_PLANESIZE+$01,(a5)	;reg 16: 64 x 32 cell planes
+	move.l	#CRAM_W+(2<<16),(a5)	;cram write, address 2 (colour 1)
+	move.w	#$EEE,(a4)				;colour 1 = white
+	move.l	#VRAM_W,(a5)			;vram write, address 0
 	lea	RegionFont(pc),a0
-	move.w	#$3A,d0			;59 characters, space to Z
-	move.l	#$10000000,d2		;pixel mask: colour 1 in the nibble rol.l moves into place
+	move.w	#$3A,d0					;59 characters, space to Z
+	move.l	#$10000000,d2			;pixel mask: colour 1 in the nibble rol.l moves into place
 .char
-	move.w	#7,d6			;8 rows
+	move.w	#7,d6					;8 rows
 .row
-	move.b	(a0)+,d1		;1 bit per pixel, left pixel in bit 7
+	move.b	(a0)+,d1				;1 bit per pixel, left pixel in bit 7
 	move.l	#0,d4
-	move.w	#7,d5			;8 pixels
+	move.w	#7,d5					;8 pixels
 .pixel
 	rol.l	#4,d2
 	ror.b	#1,d1
 	bcc.s	.clear
-	or.l	d2,d4			;set the pixel to colour 1
+	or.l	d2,d4					;set the pixel to colour 1
 .clear
 	dbf	d5,.pixel
-	move.l	d4,(a4)			;one 4 bpp tile row
+	move.l	d4,(a4)					;one 4 bpp tile row
 	dbf	d6,.row
 	dbf	d0,.char
-	move.b	#8,d1			;row 8
+	move.b	#8,d1					;row 8
 	lea	DevelopedTxt(pc),a0
-	move.b	(a0)+,d0		;column
+	move.b	(a0)+,d0				;column
 	bsr.w	RegionPrint
 	lea	(CountryCode).l,a1
-.letter	;One line for each country code letter, up to the first space
+.letter								;One line for each country code letter, up to the first space
 	cmpi.b	#$20,(a1)
 	beq.s	.done
 	lea	RegionSystems(pc),a2
 .look
-	move.w	(a2)+,d4		;letter, 0 = end of RegionSystems
+	move.w	(a2)+,d4				;letter, 0 = end of RegionSystems
 	tst.b	d4
 	beq.s	.next
 	cmp.b	(a1),d4
 	bne.s	.skip
 	cmpi.b	#$20,1(a1)
-	bne.s	.name			;not the last letter
+	bne.s	.name					;not the last letter
 	cmpa.l	#CountryCode,a1
-	beq.s	.name			;the only letter
-	lea	AndTxt(pc),a0		;"&" before the last system
+	beq.s	.name					;the only letter
+	lea	AndTxt(pc),a0				;"&" before the last system
 	move.b	(a0)+,d0
 	addq.w	#1,d1
 	bsr.w	RegionPrint
 .name
 	lea	RegionLetters(pc),a0
-	adda.l	(a2)+,a0		;system name text
+	adda.l	(a2)+,a0				;system name text
 	move.b	(a0)+,d0
 	addq.w	#1,d1
 	bsr.w	RegionPrint
@@ -153,20 +156,21 @@ CHECK_VDP	;Hot start lands here. Match the console region to the CountryCode let
 	move.b	(a0)+,d0
 	addq.w	#1,d1
 	bsr.w	RegionPrint
-.regionHang	;Wrong region (or Japan PAL): hang
+.regionHang							;Wrong region (or Japan PAL): hang
 	bra.s	.regionHang
 
-RegionPrint	;Print the 0 terminated text at a0 on plane A ($C000), row d1, column d0. Tile = character - $20
+RegionPrint							;Print the 0 terminated text at a0 on plane A ($C000), row d1, column d0.
+									;Tile = character - $20
 	move.b	d1,d2
 	andi.l	#$FF,d2
 	swap	d2
-	lsl.l	#7,d2			;row * $80, in the address half of the vram command
+	lsl.l	#7,d2					;row * $80, in the address half of the vram command
 	move.b	d0,d3
 	andi.l	#$FF,d3
 	swap	d3
-	asl.l	#1,d3			;column * 2
+	asl.l	#1,d3					;column * 2
 	add.l	d3,d2
-	addi.l	#VRAM_W+(($C000&$3FFF)<<16)+($C000>>14),d2		;vram write at $C000 + row * $80 + column * 2
+	addi.l	#VRAM_W+(($C000&$3FFF)<<16)+($C000>>14),d2	;vram write at $C000 + row * $80 + column * 2
 	move.l	d2,(a5)
 .0
 	tst.b	(a0)
@@ -179,9 +183,11 @@ RegionPrint	;Print the 0 terminated text at a0 on plane A ($C000), row d1, colum
 .1
 	rts
 
-RegionLetters	;Letter for each version register region (0 Japan NTSC ... 3 overseas PAL). 0 = hang
+RegionLetters						;Letter for each version register region (0 Japan NTSC ...
+									;3 overseas PAL). 0 = hang
 	dc.b	'J',0,'U','E'
-RegionSystems	;Country code letter (word), then its system name as an offset from RegionLetters (long). 0 ends
+RegionSystems						;Country code letter (word), then its system name as an offset from
+									;RegionLetters (long). 0 ends
 	dc.w	'J'
 	dc.l	NtscMegaDriveTxt-RegionLetters
 	dc.w	'U'
@@ -196,13 +202,13 @@ AndTxt
 	dc.b	$12,'&',0
 SystemsTxt
 	dc.b	$F,'SYSTEMS.',0
-NtscMegaDriveTxt	;J
+NtscMegaDriveTxt					;J
 	dc.b	$C,'NTSC MEGA DRIVE',0
-NtscGenesisTxt	;U
+NtscGenesisTxt						;U
 	dc.b	$D,'NTSC GENESIS',0
-PalMegaDriveTxt	;E
+PalMegaDriveTxt						;E
 	dc.b	4,'PAL AND FRENCH SECAM MEGA DRIVE',0
-RegionFont	;8 x 8, 1 bit per pixel, characters $20-$5A
+RegionFont							;8 x 8, 1 bit per pixel, characters $20-$5A
 	dc.b	$00,$00,$00,$00,$00,$00,$00,$00	;' '
 	dc.b	$18,$18,$18,$18,$00,$18,$18,$00	;'!'
 	dc.b	$36,$36,$48,$00,$00,$00,$00,$00	;'"'
@@ -263,7 +269,7 @@ RegionFont	;8 x 8, 1 bit per pixel, characters $20-$5A
 	dc.b	$66,$66,$66,$3C,$18,$18,$18,$00	;'Y'
 	dc.b	$7F,$07,$0E,$1C,$38,$70,$7F,$00	;'Z'
 
-RegionOK	;The region is listed: checksum, then the game
+RegionOK							;The region is listed: checksum, then the game
 	IF CHECKSUM=1
 		jsr	(ValidationRoutine).l	;jsr (x).l, 4EB9. Red screen and hang if the ROM sum is wrong
 	ELSE
@@ -273,17 +279,17 @@ RegionOK	;The region is listed: checksum, then the game
 	ENDIF
 	bra.w	Begin
 
-ZeroLong	;A zero long: the empty palette list / menu list pointer.
+ZeroLong							;A zero long: the empty palette list / menu list pointer.
 	dc.l	0
 
 ;exception vectors 2-5. 95 returns; 94 printed the error (AddError, Illinst, ZeroDiv) and hung
-BusErr	;Vector 2
+BusErr								;Vector 2
 	rts
-AdrErr	;Vector 3
+AdrErr								;Vector 3
 	rts
-InvOpCode	;Vector 4
+InvOpCode							;Vector 4
 	rts
-DivBy0	;Vector 5
+DivBy0								;Vector 5
 	rts
 
 ;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -292,44 +298,46 @@ DivBy0	;Vector 5
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-Begin	;Cold start, entered from RegionOK. Clear RAM, init sound and menus, go to title
-	move	#$2700,sr		;interrupts off
+Begin								;Cold start, entered from RegionOK. Clear RAM, init sound and menus, go to
+									;title
+	move	#$2700,sr				;interrupts off
 	movea.w	#(Stack-M68K_RAM),sp	;stack pointer to RAM $FDFA (94: $FFFE)
 	movea.w	#(VSCRLPM-M68K_RAM),a0	;clear out ram
-.0	clr.l	(a0)+			;clear RAM $AC00-$DC7F (94: $B000-$DEF3)
+.0	clr.l	(a0)+					;clear RAM $AC00-$DC7F (94: $B000-$DEF3)
 	cmpa.w	#(varend-M68K_RAM),a0
 	blt.s	.0
-	clr.w	(PALflag).l		;clear the PAL flag
+	clr.w	(PALflag).l				;clear the PAL flag
 	move.w	(Vctrl).l,d0
-	andi.w	#1<<PAL_MODE,d0		;VDP status bit 0 = PAL (50 Hz)
+	andi.w	#1<<PAL_MODE,d0			;VDP status bit 0 = PAL (50 Hz)
 	move.w	d0,(PalMode).l
 	beq.w	.ntsc
-	bset	#0,(PALflag).l	;PAL
+	bset	#0,(PALflag).l			;PAL
 .ntsc	move.w	#$FFFF,(PlayingSong).l	;no song playing
 	;sound stuff. 94 calls p_initialZ80, p_turnoff, p_music_vblank; 95 sends commands to its own driver
-	move.w	#0,d0			;command 0: load the Z80 program
-	move.w	#$1B63,d1		;length
+	move.w	#0,d0					;command 0: load the Z80 program
+	move.w	#$1B63,d1				;length
 	movea.l	#Z80Program,a0
 	jsr	(SoundCmd).l
-	move.w	#9,d0			;command 9
+	move.w	#9,d0					;command 9
 	jsr	(SoundCmd).l
-	move.w	#6,d0			;command 6: the sound data
+	move.w	#6,d0					;command 6: the sound data
 	clr.w	d1
 	movea.l	#SoundBanks,a0
 	jsr	(SoundCmd).l
-	move.w	#7,d0			;command 7
+	move.w	#7,d0					;command 7
 	move.w	#0,d1
 	jsr	(SoundCmd).l
-	jsr	(SoundOff).l		;command $F
+	jsr	(SoundOff).l				;command $F
 	jsr	(KillCrowd).l
 	jsr	(Detect4WayPlay).l
 	;94 sets PadControlBits34 to -1 here
 	jsr	(EASportsScreen).l
 	jsr	(InitSaveRAM).l
-	jsr	(HiScoreScreen).l	;94 calls ReadLineData first
+	jsr	(HiScoreScreen).l			;94 calls ReadLineData first
 	jsr	(ReadLineData).l
 	jsr	(DefaultMenus).l
 	move.w	(OptLine).l,(TmpOptLine2).l
 	move.w	(OptPlayMode).l,(TempOptPlayMode).l
-	jsr	(orjoy).l		;clear any previous button presses
-	jmp	(Opening).l		;goto title screen and options etc. Last instruction ($76C-$771). TeamList is $772
+	jsr	(orjoy).l					;clear any previous button presses
+	jmp	(Opening).l					;goto title screen and options etc. Last instruction ($76C-$771). TeamList
+									;is $772

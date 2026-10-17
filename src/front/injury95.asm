@@ -1,49 +1,50 @@
 ;	Injuries and the power play box. This file decides how long an injured player is out and
 ;	shows the power play timer. New in 95: injuries that last through the season.
 
-setInjuryType	;a2 injured: out for the period ($FFFD) or the game ($FFFC); in a season a random games count (SetInjuryGames)
+setInjuryType						;a2 injured: out for the period ($FFFD) or the game ($FFFC); in a season a
+									;random games count (SetInjuryGames)
 	bclr	#1,(sflags12).w
 	move.w	d0,-(sp)
 	bset	#pf2unav,pflags2(a2)
 	addi.w	#$12C,(crowdlevel).w
 	addi.w	#$1E,(CwdExciteLvl).w
-	move.w	#SFXoooh2,-(sp)	;sound effect
+	move.w	#SFXoooh2,-(sp)			;sound effect
 	jsr	(sfx).l
 	clr.w	Xvel(a2)
 	clr.w	Yvel(a2)
-	move.w	(a2),(xc1).w	;move Xpos to scroll center
+	move.w	(a2),(xc1).w			;move Xpos to scroll center
 	move.w	Ypos(a2),(yc1).w
 	bset	#sfslock,(sflags).w
-	clr.w	d1	;clear d1
+	clr.w	d1						;clear d1
 	movea.w	#(tmstruct-M68K_RAM),a0	;move Home team Struct to a0
 	btst	#pfteam,pflags(a2)
-	beq.w	.0	;branch if home
+	beq.w	.0						;branch if home
 	move.w	#$8000,d1
-	adda.w	#tmsize,a0	;add $364 to a0 (Away Team Struct start)
+	adda.w	#tmsize,a0				;add $364 to a0 (Away Team Struct start)
 .0
 	move.b	$66(a2),d1
 	move.w	d1,(TempPlOffset).w
-	ext.w	d1	;sign extend - in this case just makes upper bye of word 00
-	add.w	d1,d1	;add d1 to itself
+	ext.w	d1						;sign extend - in this case just makes upper bye of word 00
+	add.w	d1,d1					;add d1 to itself
 	btst	#1,(sflags13).w
 	bne.w	.not0
-	exg	a2,a3	;swap a2 and a3
-	jsr	(getFgtbyte).l	;get the Fgt byte (divided by 4)
-	exg	a2,a3	;swap back
-	tst.w	d0	;check if d0 is zero
+	exg	a2,a3						;swap a2 and a3
+	jsr	(getFgtbyte).l				;get the Fgt byte (divided by 4)
+	exg	a2,a3						;swap back
+	tst.w	d0						;check if d0 is zero
 	bne.w	.not0
-	bclr	#5,(sflags7).w	;clear injury game bit
+	bclr	#5,(sflags7).w			;clear injury game bit
 	move.w	#$FFFD,tmpdst(a0,d1.w)
 	bra.w	.exit
 .not0
-	cmp.w	#3,d0	;compare d0 to 3 (if H/F was 12, d0 = 3)
+	cmp.w	#3,d0					;compare d0 to 3 (if H/F was 12, d0 = 3)
 	beq.w	.2
 	bclr	#5,(sflags7).w
 	move.w	#$FFFD,tmpdst(a0,d1.w)
-	jsr	(chkFgtBit1).l	;check Fgt bit 1 of player.
+	jsr	(chkFgtBit1).l				;check Fgt bit 1 of player.
 	beq.w	.exit
 .2
-	bset	#5,(sflags7).w	;set injury game bit
+	bset	#5,(sflags7).w			;set injury game bit
 	move.w	#$FFFC,tmpdst(a0,d1.w)
 	btst	#3,(GameFlags).w
 	beq.w	.exit
@@ -80,7 +81,8 @@ setInjuryType	;a2 injured: out for the period ($FFFD) or the game ($FFFC); in a 
 	move.w	(sp)+,d0
 	rts
 
-SetSeasonInjuries	;The players of team a2 with injury games left (save RAM SRInjuries) are out ($FFFC)
+SetSeasonInjuries					;The players of team a2 with injury games left (save RAM SRInjuries) are
+									;out ($FFFC)
 	movem.l	d0-d3/a0/a2,-(sp)
 	movea.l	#SaveRAM+2*SRInjuries,a0
 	move.w	Xvel(a2),d0
@@ -109,7 +111,8 @@ SetSeasonInjuries	;The players of team a2 with injury games left (save RAM SRInj
 	movem.l	(sp)+,d0-d3/a0/a2
 	rts
 
-TickTeamInjuries	;A game played: one injury game off for teams d0 and d1 (TickInjuries), save RAM checksum
+TickTeamInjuries					;A game played: one injury game off for teams d0 and d1 (TickInjuries),
+									;save RAM checksum
 	movem.l	d2-d4/a0,-(sp)
 	bsr.w	TickInjuries
 	move.w	d1,d0
@@ -118,7 +121,8 @@ TickTeamInjuries	;A game played: one injury game off for teams d0 and d1 (TickIn
 	movem.l	(sp)+,d2-d4/a0
 	rts
 
-TickInjuries	;One game off every injury of team d0 (save RAM SRInjuries, a nibble per player)
+TickInjuries						;One game off every injury of team d0 (save RAM
+									;SRInjuries, a nibble per player)
 	movea.l	#SaveRAM+2*SRInjuries,a0
 	mulu.w	#$1C,d0
 	adda.l	d0,a0
@@ -142,7 +146,8 @@ TickInjuries	;One game off every injury of team d0 (save RAM SRInjuries, a nibbl
 	dbf	d2,.loop
 	rts
 
-SetInjuryGames	;Injury games d0 for player d1 of team d7 (save RAM SRInjuries); sflags12 bit 1 and injurygames
+SetInjuryGames						;Injury games d0 for player d1 of team d7 (save RAM SRInjuries); sflags12
+									;bit 1 and injurygames
 	movem.l	d0-d7/a0-a7,-(sp)
 	bset	#1,(sflags12).w
 	move.w	d0,(injurygames).w
@@ -167,7 +172,7 @@ SetInjuryGames	;Injury games d0 for player d1 of team d7 (save RAM SRInjuries); 
 	movem.l	(sp)+,d0-d7/a0-a7
 	rts
 
-GetInjuryGames	;d0 = the injury games of player d1 of team d7 (save RAM SRInjuries)
+GetInjuryGames						;d0 = the injury games of player d1 of team d7 (save RAM SRInjuries)
 	movem.l	d1-d7/a0,-(sp)
 	movea.l	#SaveRAM+2*SRInjuries,a0
 	mulu.w	#$1C,d7
@@ -184,13 +189,13 @@ GetInjuryGames	;d0 = the injury games of player d1 of team d7 (save RAM SRInjuri
 	movem.l	(sp)+,d1-d7/a0
 	rts
 
-getFgtbyte	;d0 = $74(a2) / 4
-	clr.w	d0	;clear d0
-	move.b	fighting(a2),d0	;move H/F bit into d0 (this is always even)
-	lsr.w	#2,d0	;shift 2 right (divide by 4)
+getFgtbyte							;d0 = $74(a2) / 4
+	clr.w	d0						;clear d0
+	move.b	fighting(a2),d0			;move H/F bit into d0 (this is always even)
+	lsr.w	#2,d0					;shift 2 right (divide by 4)
 	rts
 
-chkFgtBit1	;Z from bit 1 of a random 0-99 (94 tested bit 1 of $74(a2))
+chkFgtBit1							;Z from bit 1 of a random 0-99 (94 tested bit 1 of $74(a2))
 	movem.w	d0,-(sp)
 	move.w	#$64,d0
 	jsr	(randomd0).l
@@ -198,7 +203,8 @@ chkFgtBit1	;Z from bit 1 of a random 0-99 (94 tested bit 1 of $74(a2))
 	movem.w	(sp)+,d0
 	rts
 
-CheckInjury	;The injury message when its timer runs out: "Injury to:" the player, "Out for period", "game" or n "games"
+CheckInjury							;The injury message when its timer runs out: "Injury to:" the player, "Out
+									;for period", "game" or n "games"
 	subq.w	#1,(InjCntDown).w
 	beq.w	.0
 	rts
@@ -251,7 +257,8 @@ CheckInjury	;The injury message when its timer runs out: "Injury to:" the player
 	movem.l	(sp)+,d0-d2/a0-a4
 	rts
 
-InsertInjurySlot	;Open an injury slot at player d1 of team d7 (the later nibbles up one); a player traded in
+InsertInjurySlot					;Open an injury slot at player d1 of team d7 (the later nibbles up one); a
+									;player traded in
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SaveRAM+2*SRInjuries,a0
 	mulu.w	#$1C,d7
@@ -283,7 +290,8 @@ InsertInjurySlot	;Open an injury slot at player d1 of team d7 (the later nibbles
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DeleteInjurySlot	;Remove the injury slot of player d1 of team d7 (the later nibbles down one); a player traded out
+DeleteInjurySlot					;Remove the injury slot of player d1 of team d7 (the later nibbles down
+									;one); a player traded out
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SaveRAM+2*SRInjuries,a0
 	mulu.w	#$1C,d7
@@ -315,7 +323,7 @@ DeleteInjurySlot	;Remove the injury slot of player d1 of team d7 (the later nibb
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-updatepwrplay	;The power play box: the team and the time left (GetLowestPen)
+updatepwrplay						;The power play box: the team and the time left (GetLowestPen)
 	btst	#1,(gmode2).w
 	bne.w	rtsPowerPlay
 	movea.w	#(tmstruct-M68K_RAM),a2
@@ -356,24 +364,25 @@ updatepwrplay	;The power play box: the team and the time left (GetLowestPen)
 	move.w	#2,(a3)
 	jsr	(appendz).l
 	String	$BF,$1,$19,$0
-	adda.w	4(a0),a0	;team name
+	adda.w	4(a0),a0				;team name
 	adda.w	(a0),a0
 	movea.l	a0,a1
 	jsr	(appstring).l
 	movea.w	a3,a1
 	jmp	(print).l
 
-ClearPowerPlay	;Clear the power play box (sflags2 bit 5)
+ClearPowerPlay						;Clear the power play box (sflags2 bit 5)
 	bclr	#sf2pwrplay,(sflags2).w
 	beq.w	rtsPowerPlay
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$1,$19,' '
 	jmp	(EASNLogo).l
 
-rtsPowerPlay	;Shared rts of updatepwrplay / ClearPowerPlay
+rtsPowerPlay						;Shared rts of updatepwrplay / ClearPowerPlay
 	rts
 
-GetLowestPen	;a2 = shorthanded team, a3 = team on the power play. d0 = power play time left from the penalty box times
+GetLowestPen						;a2 = shorthanded team, a3 = team on the power play. d0 = power play time
+									;left from the penalty box times
 	clr.w	d0
 	clr.w	d3
 	lea	$9C(a2),a0
@@ -382,14 +391,14 @@ GetLowestPen	;a2 = shorthanded team, a3 = team on the power play. d0 = power pla
 	move.b	(a0)+,d2
 	bmi.w	.1
 	move.w	$68(a2,d2.w),d2
-	btst	#$E,d2	;bit 14: coincidental
+	btst	#$E,d2					;bit 14: coincidental
 	bne.s	.getstatus
 	sub.w	d3,d2
 	add.w	d2,d0
 	move.w	d2,d3
 	bra.s	.getstatus
 .1
-	cmpi.w	#6,OldZpos(a3)	;tmap: 6 on ice, done
+	cmpi.w	#6,OldZpos(a3)			;tmap: 6 on ice, done
 	beq.w	.3
 	sub.w	d3,d0
 	lea	$9C(a3),a0

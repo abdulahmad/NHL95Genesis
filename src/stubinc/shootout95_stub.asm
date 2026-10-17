@@ -1,14 +1,14 @@
 ;	Segment build for shootout95.asm: sets its origin and the outside routines and data it uses,
 ;	then includes shootout95.asm on its own for checking against the ROM.
 
-	include	macros\genesis.mac	;String
+	include	macros\genesis.mac		;String
 ; region code
 	org	$9DA50
 
 ; includes for stubs to replace removed code
-	include	stubinc\ports.inc	;IO_* / VDP_* ports
-	include	stubinc\equals.inc	;VDP status bits
-	include	ram95.asm		;RAM map
+	include	stubinc\ports.inc		;IO_* / VDP_* ports
+	include	stubinc\equals.inc		;VDP status bits
+	include	ram95.asm				;RAM map
 
 ; External addresses outside, read from lst/nhl95.bin.
 TeamList = $772
@@ -60,7 +60,7 @@ prefmes = $89898
 Penaltylist = $89C2E
 PenShotPenalties = $89FFC
 DrawTeamScreen6 = $8B32A
-getGoalieSCnum = $8B974		;d0 = SCnum of the goalie of the team of player d0
+getGoalieSCnum = $8B974				;d0 = SCnum of the goalie of the team of player d0
 SetSPA = $8BC9A
 SPAglide = $B5C
 SPFpuck = $1B3

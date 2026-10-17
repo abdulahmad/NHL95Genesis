@@ -1,14 +1,14 @@
 ;	Segment build for playoff95.asm: sets its origin and the outside routines and data it uses,
 ;	then includes playoff95.asm on its own for checking against the ROM.
 
-	include	macros\genesis.mac	;String
+	include	macros\genesis.mac		;String
 ; region code
 	org	$87BA2
 
 ; includes for stubs to replace removed code
-	include	stubinc\ports.inc	;IO_* / VDP_* ports
-	include	stubinc\equals.inc	;VDP status bits
-	include	ram95.asm		;RAM map
+	include	stubinc\ports.inc		;IO_* / VDP_* ports
+	include	stubinc\equals.inc		;VDP status bits
+	include	ram95.asm				;RAM map
 
 ; External addresses outside, read from lst/nhl95.bin.
 ZeroLong = $69A
@@ -18,7 +18,7 @@ Vmaddr = $79A22
 dobitmap = $79A3C
 DecompressGraphicsPlain = $79AC0
 cramfade = $79B54
-rtss2 = $79CC8		;asstab entry 0, the shared rts
+rtss2 = $79CC8						;asstab entry 0, the shared rts
 DoDMA = $79CE6
 DecompressGraphicsWithCallback = $7A264
 p_music_vblank = $7A3E6

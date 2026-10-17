@@ -6,11 +6,12 @@
 ;	The game statistics screens.
 
 
-	include	macros\genesis.mac	;String
+	include	macros\genesis.mac		;String
 
-StatsReport	;(was GameStatisticsScreen) Pause menu GAME STATS: both teams' totals
-	;(DisplayStats). There are more rows than the screen: up / down scroll them (matchupvis the most, $70 or $30 without
-	;penalties, OptPen), start exits (ExitStatsScreen). 95 draws the screen with DrawTeamScreen2
+StatsReport							;(was GameStatisticsScreen) Pause menu GAME STATS: both teams' totals
+									;(DisplayStats). There are more rows than the screen: up / down scroll
+									;them (matchupvis the most, $70 or $30 without penalties, OptPen), start
+									;exits (ExitStatsScreen). 95 draws the screen with DrawTeamScreen2
 	moveq	#9,d0
 	moveq	#$19,d1
 	move.l	#ControllerBgMap,(screenarg).l
@@ -20,10 +21,10 @@ StatsReport	;(was GameStatisticsScreen) Pause menu GAME STATS: both teams' total
 	clr.w	(DispAttribCtr).w
 	clr.w	(VertLineScrolling).w
 	clr.w	(PlayerScrollCtr).w
-	move.w	#$70,(matchupvis).w	;the most scroll: 15 rows
+	move.w	#$70,(matchupvis).w		;the most scroll: 15 rows
 	tst.w	(OptPen).w
 	bne.w	.0
-	move.w	#$30,(matchupvis).w	;11 rows
+	move.w	#$30,(matchupvis).w		;11 rows
 .0
 	bsr.w	DisplayStats
 	bsr.w	PrintStatScrollArrows
@@ -47,7 +48,7 @@ StatsReport	;(was GameStatisticsScreen) Pause menu GAME STATS: both teams' total
 	bsr.w	StatScrollStep
 	bsr.w	PrintStatScrollArrows
 	bra.s	.loop
-StatScrollStep	;One scroll step of PlayerScrollCtr, within 0 ... matchupvis
+StatScrollStep						;One scroll step of PlayerScrollCtr, within 0 ... matchupvis
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsStatTables
 	add.w	(VertLineScrolling).w,d0
@@ -71,8 +72,8 @@ StatScrollStep	;One scroll step of PlayerScrollCtr, within 0 ... matchupvis
 	cmp.w	#2,d0
 	bne.w	SetStatScroll
 	bsr.w	StatScrollRowEnd
-SetStatScroll	;Plane A vertical scroll (VSRAM 0) = VertLineScrolling - $50, with disflags bit 2
-	;set while it writes
+SetStatScroll						;Plane A vertical scroll (VSRAM 0) = VertLineScrolling - $50, with
+									;disflags bit 2 set while it writes
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
 	movea.l	#Vdata,a0
@@ -82,19 +83,19 @@ SetStatScroll	;Plane A vertical scroll (VSRAM 0) = VertLineScrolling - $50, with
 	move.w	d0,(a0)
 	move.w	(sp)+,(disflags).w
 	rts
-StatScrollRow	;d3 = VertLineScrolling / 16
+StatScrollRow						;d3 = VertLineScrolling / 16
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	bra.w	rtsStatScroll
-StatScrollRowEnd	;d3 = VertLineScrolling / 16 + 6
+StatScrollRowEnd					;d3 = VertLineScrolling / 16 + 6
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	addq.w	#6,d3
 	bra.w	rtsStatScroll
-rtsStatScroll	;rts of StatScrollRow / StatScrollRowEnd
+rtsStatScroll						;rts of StatScrollRow / StatScrollRowEnd
 	rts
-PrintStatScrollArrows	;Scroll arrows (printz2): up ($7B) when VertLineScrolling > 0, down
-	;($7D) when it is below matchupvis
+PrintStatScrollArrows				;Scroll arrows (printz2): up ($7B) when VertLineScrolling > 0, down ($7D)
+									;when it is below matchupvis
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printsmallz).l
 	String	CC_SetFont,1
@@ -121,9 +122,10 @@ PrintStatScrollArrows	;Scroll arrows (printz2): up ($7B) when VertLineScrolling 
 	String	CC_SetFont,0
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-DisplayStats	;(was DisplayTeamStatsScreen) Team blocks (PutTeamBlock), then each TeamStatTextTbl row
-	;(TeamStatTextTblNoPen when penalties are off, OptPen) centred, with the home value at x $22 and the visitors' at x 9 (PrintStatValue);
-	;SetStatScroll first
+DisplayStats						;(was DisplayTeamStatsScreen) Team blocks (PutTeamBlock), then each
+									;TeamStatTextTbl row (TeamStatTextTblNoPen when penalties are off, OptPen)
+									;centred, with the home value at x $22 and the visitors' at x 9
+									;(PrintStatValue); SetStatScroll first
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),3,6,0
 	move.w	#$2C,d0
@@ -159,12 +161,13 @@ DisplayStats	;(was DisplayTeamStatsScreen) Team blocks (PutTeamBlock), then each
 	addq.w	#2,(printy).w
 	dbf	d6,.row
 	rts
-PrintStatValue	;Print TeamStatTextTbl entry a0 for team a2 centred at printx: the
-	;value (offsets $A and $354 are times, PushTime), "/second" if any, " (pct%)" for passing; offset $FFFF is the shooting percentage
-	;(goals $C * 100 / shots 0), printed with a "%"
+PrintStatValue						;Print TeamStatTextTbl entry a0 for team a2 centred at printx: the value
+									;(offsets $A and $354 are times, PushTime), "/second" if any, " (pct%)"
+									;for passing; offset $FFFF is the shooting percentage (goals $C * 100 /
+									;shots 0), printed with a "%"
 	movea.w	#(mesarea-M68K_RAM),a3
 	move.w	#2,(a3)
-	cmpi.w	#$FFFF,(a0)	;shooting percentage row
+	cmpi.w	#$FFFF,(a0)				;shooting percentage row
 	bne.w	.1
 	move.w	#$C,d0
 	move.w	(a2,d0.w),d0
@@ -182,7 +185,7 @@ PrintStatValue	;Print TeamStatTextTbl entry a0 for team a2 centred at printx: th
 .1
 	move.w	(a0),d0
 	move.w	(a2,d0.w),d0
-	cmpi.w	#$354,(a0)	;PP Minutes: a time (94 $352)
+	cmpi.w	#$354,(a0)				;PP Minutes: a time (94 $352)
 	bne.w	.2
 	bsr.w	.8
 	bra.w	.4
@@ -229,8 +232,8 @@ PrintStatValue	;Print TeamStatTextTbl entry a0 for team a2 centred at printx: th
 	jmp	PushNumber
 .8
 	jmp	PushTime
-TeamStatTextTbl	;Label, then the team struct stat offset and the second offset ($FFFF
-	;none). 15 rows; the offsets from $354 are 2 more than 94 (95 team struct)
+TeamStatTextTbl						;Label, then the team struct stat offset and the second offset ($FFFF
+									;none). 15 rows; the offsets from $354 are 2 more than 94 (95 team struct)
 	dc.w	$0008
 	dc.b	'Score',0
 	dc.w	$C,$FFFF
@@ -276,8 +279,8 @@ TeamStatTextTbl	;Label, then the team struct stat offset and the second offset (
 	dc.w	$000A
 	dc.b	'Passing',0
 	dc.w	$14,$12
-TeamStatTextTblNoPen	;The rows without the power play ones, used when penalties are off.
-	;11 rows
+TeamStatTextTblNoPen				;The rows without the power play ones, used when penalties are off. 11
+									;rows
 	dc.w	$0008
 	dc.b	'Score',0
 	dc.w	$C,$FFFF
@@ -318,13 +321,13 @@ TeamStatTextTblNoPen	;The rows without the power play ones, used when penalties 
 
 
 
-rtsStatTables	;Shared rts
+rtsStatTables						;Shared rts
 	rts
 
-PlayerStatsScreen	;Pause menu PLAYER STATS: PlayerStatsList with d7 = 0 (this game)
+PlayerStatsScreen					;Pause menu PLAYER STATS: PlayerStatsList with d7 = 0 (this game)
 	clr.w	d7
 
-PlayerStatsList	;Stats screen for team a2, d7 = 0 game / 1 playoff
+PlayerStatsList						;Stats screen for team a2, d7 = 0 game / 1 playoff
 	moveq	#$D,d0
 	moveq	#$18,d1
 	move.l	#PlayerStatsBgMap,(screenarg).l
@@ -415,8 +418,8 @@ PlayerStatsList	;Stats screen for team a2, d7 = 0 game / 1 playoff
 	movea.w	#(tmstruct-M68K_RAM),a2
 	bra.w	.redraw
 
-UpdateStatsListScroll	;Stats screen per frame: scroll 0 ... SelectedPlayerIdx, stop on a 16 line boundary, draw
-	;the row coming into view
+UpdateStatsListScroll				;Stats screen per frame: scroll 0 ... SelectedPlayerIdx, stop on a 16 line
+									;boundary, draw the row coming into view
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsStatsList
 	add.w	(VertLineScrolling).w,d0
@@ -442,7 +445,7 @@ UpdateStatsListScroll	;Stats screen per frame: scroll 0 ... SelectedPlayerIdx, s
 	bne.w	SetStatsListScrollReg
 	bsr.w	DrawStatsRowDown
 
-SetStatsListScrollReg	;VSRAM = VertLineScrolling - $68
+SetStatsListScrollReg				;VSRAM = VertLineScrolling - $68
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
 	movea.l	#Vdata,a0
@@ -452,21 +455,22 @@ SetStatsListScrollReg	;VSRAM = VertLineScrolling - $68
 	move.w	d0,(a0)
 	move.w	(sp)+,(disflags).w
 
-rtsStatsList	;rts (shared exit of the DisplayAttribute routines)
+rtsStatsList						;rts (shared exit of the DisplayAttribute routines)
 	rts
 
-DrawStatsRowUp	;Draw the stats row at the top of the view (VertLineScrolling / 16)
+DrawStatsRowUp						;Draw the stats row at the top of the view (VertLineScrolling / 16)
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	bra.w	DrawStatsRow
 
-DrawStatsRowDown	;Draw the stats row at the bottom of the view (VertLineScrolling / 16 + 6)
+DrawStatsRowDown					;Draw the stats row at the bottom of the view (VertLineScrolling / 16 + 6)
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	addq.w	#6,d3
 	bra.w	DrawStatsRow
 
-DrawStatsList	;Draw the stats screen column headers (the selected column highlighted, DispAttribCtr), the title and the rows
+DrawStatsList						;Draw the stats screen column headers (the selected column highlighted,
+									;DispAttribCtr), the title and the rows
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,4,3,4,9,CC_SetFont,1,'Player',CC_AddX,7,0
 	lea	StatColumnHeaders(pc),a1
@@ -562,8 +566,8 @@ DrawStatsList	;Draw the stats screen column headers (the selected column highlig
 	dbf	d4,.ent
 	bra.w	SetStatsListScrollReg
 
-DrawStatsRow	;Stats screen row d3 of Satt: rank, name, then the 5 columns, or for goalies saves, shots
-	;and save %
+DrawStatsRow						;Stats screen row d3 of Satt: rank, name, then the 5 columns, or for
+									;goalies saves, shots and save %
 	movea.w	#(Satt-M68K_RAM),a4
 	adda.w	d3,a4
 	jsr	(printz).l
@@ -654,8 +658,9 @@ DrawStatsRow	;Stats screen row d3 of Satt: rank, name, then the 5 columns, or fo
 .x
 	rts
 
-GetStatColumn	;d2 = stat column d1 for player d0. Goalies only have PIM; 95 sets sflags5 bit 2
-	;for a goalie column it does not show (DrawStatsList leaves the player out)
+GetStatColumn						;d2 = stat column d1 for player d0. Goalies only have PIM; 95 sets sflags5
+									;bit 2 for a goalie column it does not show (DrawStatsList leaves the
+									;player out)
 	bclr	#2,(sflags5).w
 	move.w	d0,-(sp)
 	jsr	(GetGoalieCount).l
@@ -668,8 +673,8 @@ GetStatColumn	;d2 = stat column d1 for player d0. Goalies only have PIM; 95 sets
 	beq.w	SkipStatColumn
 	moveq	#1,d1
 
-ReadStatColumn	;d2 = stat column d1 for player d0. d7 = 0: the team struct byte arrays
-	;(StatColumnOffsets); d7 = 1: the playoff tables (GetStatsValue)
+ReadStatColumn						;d2 = stat column d1 for player d0. d7 = 0: the team struct byte arrays
+									;(StatColumnOffsets); d7 = 1: the playoff tables (GetStatsValue)
 	tst.w	d7
 	bne.w	GetPlayoffStat
 	lea	StatColumnOffsets(pc),a1
@@ -687,11 +692,11 @@ ReadStatColumn	;d2 = stat column d1 for player d0. d7 = 0: the team struct byte 
 	add.w	d3,d2
 	rts
 
-SkipStatColumn	;The column is not shown for this goalie (sflags5 bit 2)
+SkipStatColumn						;The column is not shown for this goalie (sflags5 bit 2)
 	bset	#2,(sflags5).w
 	rts
 
-GetPlayoffStat	;d7 = 1: G, A, ... from the playoff stat tables (GetStatsValue)
+GetPlayoffStat						;d7 = 1: G, A, ... from the playoff stat tables (GetStatsValue)
 	asl.w	#2,d1
 	add.w	d0,d0
 	clr.w	d2
@@ -701,7 +706,7 @@ GetPlayoffStat	;d7 = 1: G, A, ... from the playoff stat tables (GetStatsValue)
 	lsr.w	#1,d0
 	rts
 
-GetStatsValue	;d2 += word d0 of the RAM table at StatsOffsetTbl2+d1 (0 = none)
+GetStatsValue						;d2 += word d0 of the RAM table at StatsOffsetTbl2+d1 (0 = none)
 	movea.l	#StatsOffsetTbl2,a1
 	tst.w	0(a1,d1.w)
 	beq.w	rtsStatsList
@@ -709,13 +714,13 @@ GetStatsValue	;d2 += word d0 of the RAM table at StatsOffsetTbl2+d1 (0 = none)
 	add.w	0(a1,d0.w),d2
 	rts
 
-StatsOffsetTbl2	;Playoff stat RAM tables per column (G, A, G+A, SOG, PIM)
+StatsOffsetTbl2						;Playoff stat RAM tables per column (G, A, G+A, SOG, PIM)
 	dc.w	$C954,0,$C988,0,$C954,$C988,$C9BC,0,$C9F0,0
 
-StatColumnOffsets	;Team struct byte arrays per column, same order (94 + 2)
+StatColumnOffsets					;Team struct byte arrays per column, same order (94 + 2)
 	dc.w	$B6,$FFFF,$D0,$FFFF,$B6,$D0,$EA,$FFFF,$104,$FFFF
 
-StatColumnHeaders	;Column headers (goalie header, then 5 columns)
+StatColumnHeaders					;Column headers (goalie header, then 5 columns)
 	String	'Saves Shots Save %  '
 	String	'   G'
 	String	'   A'
@@ -723,7 +728,7 @@ StatColumnHeaders	;Column headers (goalie header, then 5 columns)
 	String	' SOG'
 	String	' PIM'
 
-StatSortTitles	;Sort column titles
+StatSortTitles						;Sort column titles
 	String	'    Goalie Saves   ]'
 	String	'[      Goals       ]'
 	String	'[     Assists      ]'
@@ -731,7 +736,7 @@ StatSortTitles	;Sort column titles
 	String	'[  Shots On Goal   ]'
 	String	'[ Penalty Minutes   '
 
-DrawStatsListArrows	;Up / down arrows (ScrollArrowTbl2). Saves d0-d1/a1
+DrawStatsListArrows					;Up / down arrows (ScrollArrowTbl2). Saves d0-d1/a1
 	movem.l	d0-d1/a1,-(sp)
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,4,3,'$',$C,CC_SetFont,3,0
@@ -750,14 +755,15 @@ DrawStatsListArrows	;Up / down arrows (ScrollArrowTbl2). Saves d0-d1/a1
 	movem.l	(sp)+,d0-d1/a1
 	rts
 
-ScrollArrowTbl2	;None, up, down, both
+ScrollArrowTbl2						;None, up, down, both
 	String	' ',$FB,$FF,$FA,$E,' ',$F9,0
 	String	'{',$FB,$FF,$FA,$E,' ',$F9,0
 	String	' ',$FB,$FF,$FA,$E,'}',$F9,0
 	String	'{',$FB,$FF,$FA,$E,'}',$F9,0
 
-InitSeasonStats	;New season: clear the player stat blocks (SRGoals on, $1B6C bytes), SRTeamBlock2, SRTeamStats and SRInjuries in save RAM
-	;then MarkSeasonRosters
+InitSeasonStats						;New season: clear the player stat blocks (SRGoals on, $1B6C bytes),
+									;SRTeamBlock2, SRTeamStats and SRInjuries in save RAM then
+									;MarkSeasonRosters
 	movem.l	d0-d7/a0-a6,-(sp)
 	lea	(M68K_RAM).l,a0
 	move.w	#$6DC,d0
@@ -805,8 +811,9 @@ InitSeasonStats	;New season: clear the player stat blocks (SRGoals on, $1B6C byt
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SaveSimGame	;Save a finished season game: the cup winner, SimFlags bit 0 when a user team won, player stats, highlights, both team
-	;records and the injury ticks
+SaveSimGame							;Save a finished season game: the cup winner, SimFlags bit 0 when a user
+									;team won, player stats, highlights, both team
+									;records and the injury ticks
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(tmstruct+$28).w,(SaveRAM+2*SRCupWinner).l
 	move.w	(HmGoals).w,d7
@@ -861,8 +868,9 @@ SaveSimGame	;Save a finished season game: the cup winner, SimFlags bit 0 when a 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-AddTeamSeasonStats	;Add the game totals of team a1 (a2 = other team) to team d0's record in SRTeamStats (SRPOTeamStats in the playoffs
-	;SeasonDay bit 5)
+AddTeamSeasonStats					;Add the game totals of team a1 (a2 = other team) to team d0's record in
+									;SRTeamStats (SRPOTeamStats in the playoffs
+									;SeasonDay bit 5)
 	mulu.w	#$A,d0
 	btst	#5,(SeasonDay+1).w
 	beq.w	.0
@@ -891,8 +899,10 @@ AddTeamSeasonStats	;Add the game totals of team a1 (a2 = other team) to team d0'
 	jsr	(MakeSRAMChecksum).l
 	rts
 
-AddPlayerSeasonStats	;Add the goals, assists, shots, penalty minutes (goalies: goals against scaled to a full game) and games played of
-	;team d0 (game stats a1) to its save RAM stat blocks; bit 15 marks the players dressed (d6 = last one)
+AddPlayerSeasonStats				;Add the goals, assists, shots, penalty minutes (goalies: goals against
+									;scaled to a full game) and games played of
+									;team d0 (game stats a1) to its save RAM stat blocks; bit 15 marks the
+									;players dressed (d6 = last one)
 	move.l	#SRGoals,d2
 	btst	#5,(SeasonDay+1).w
 	beq.w	.0
@@ -1016,8 +1026,9 @@ AddPlayerSeasonStats	;Add the goals, assists, shots, penalty minutes (goalies: g
 	jsr	(MakeSRAMChecksum).l
 	rts
 
-ReadStatBlock	;Read the $34 byte stat block of team d0 at save RAM d2 to StatBuf; saves the address for WriteStatBlock. Returns d0 = 0
-	;d7 = $19
+ReadStatBlock						;Read the $34 byte stat block of team d0 at save RAM d2 to StatBuf; saves
+									;the address for WriteStatBlock. Returns d0 = 0
+									;d7 = $19
 	mulu.w	#$34,d0
 	add.l	d2,d0
 	movea.l	#StatBuf,a0
@@ -1030,12 +1041,13 @@ ReadStatBlock	;Read the $34 byte stat block of team d0 at save RAM d2 to StatBuf
 	move.w	#$19,d7
 	rts
 
-WriteStatBlock	;Write StatBuf back where ReadStatBlock read it
+WriteStatBlock						;Write StatBuf back where ReadStatBlock read it
 	movem.l	(a5)+,d0-d1/a0
 	jmp	WriteSRAM
 
-SaveGameHighlights	;Pick today's highlight of HomeTeam's game (most goals, best goalie, most assists, the type in the top 3 bits) and save it
-	;at GetHighlightSlot. Skipped with SeasonDay bit 3
+SaveGameHighlights					;Pick today's highlight of HomeTeam's game (most goals, best goalie, most
+									;assists, the type in the top 3 bits) and save it
+									;at GetHighlightSlot. Skipped with SeasonDay bit 3
 	btst	#3,(SeasonDay+1).w
 	bne.w	rtsHighlight
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -1135,7 +1147,8 @@ SaveGameHighlights	;Pick today's highlight of HomeTeam's game (most goals, best 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-BestGoalieSaves	;d2 / d3 = the most saves (shots against - goals against) and its roster slot in team a2
+BestGoalieSaves						;d2 / d3 = the most saves (shots against - goals against) and its roster
+									;slot in team a2
 	movem.l	d4-d6/a2-a3,-(sp)
 	jsr	(GetGoalieCount).l
 	clr.w	d2
@@ -1162,7 +1175,8 @@ BestGoalieSaves	;d2 / d3 = the most saves (shots against - goals against) and it
 	movem.l	(sp)+,d4-d6/a2-a3
 	rts
 
-MostAssists	;d2 / d3 = the most assists and its roster slot among the skaters of team a2
+MostAssists							;d2 / d3 = the most assists and its roster slot
+									;among the skaters of team a2
 	jsr	(GetGoalieCount).l
 	move.w	#$1A,d1
 	sub.w	d0,d1
@@ -1182,7 +1196,7 @@ MostAssists	;d2 / d3 = the most assists and its roster slot among the skaters of
 	movea.l	(sp)+,a2
 	rts
 
-MostGoals	;d2 / d3 = the most goals and its roster slot among the skaters of team a2
+MostGoals							;d2 / d3 = the most goals and its roster slot among the skaters of team a2
 	jsr	(GetGoalieCount).l
 	move.w	#$1A,d1
 	sub.w	d0,d1
@@ -1202,8 +1216,9 @@ MostGoals	;d2 / d3 = the most goals and its roster slot among the skaters of tea
 	movea.l	(sp)+,a2
 	rts
 
-AddHighlight	;Make highlight d0 (type bits + team*$1A + slot) a roster id and keep it at (a0) / value d2 unless (a0) already holds one
-	;(CompareHighlight)
+AddHighlight						;Make highlight d0 (type bits + team*$1A + slot) a roster id and keep it
+									;at (a0) / value d2 unless (a0) already holds one
+									;(CompareHighlight)
 	move.w	d3,-(sp)
 	movem.l	d7,-(sp)
 	move.w	d0,d7
@@ -1231,7 +1246,8 @@ AddHighlight	;Make highlight d0 (type bits + team*$1A + slot) a roster id and ke
 	move.w	(sp)+,d3
 	rts
 
-CompareHighlight	;Compare highlight d0 with the one in d1; d3 = 1 and Z clear when d1 is empty
+CompareHighlight					;Compare highlight d0 with the one in d1; d3 = 1 and Z clear when d1 is
+									;empty
 	move.w	d1,d3
 	andi.w	#$E000,d3
 	beq.w	.0
@@ -1243,11 +1259,12 @@ CompareHighlight	;Compare highlight d0 with the one in d1; d3 = 1 and Z clear wh
 .0
 	move.w	#1,d3
 
-rtsHighlight	;rts (SaveGameHighlights in the playoffs)
+rtsHighlight						;rts (SaveGameHighlights in the playoffs)
 	rts
 
-ReadTeamPlayerStats	;Read the five stat blocks (goals, assists, shots, games played, penalty minutes) of team d7 to a0, $34 bytes each
-	;playoff blocks with SeasonDay bit 5
+ReadTeamPlayerStats					;Read the five stat blocks (goals, assists, shots, games played, penalty
+									;minutes) of team d7 to a0, $34 bytes each
+									;playoff blocks with SeasonDay bit 5
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d7,d0
 	mulu.w	#$34,d0
@@ -1305,7 +1322,7 @@ ReadTeamPlayerStats	;Read the five stat blocks (goals, assists, shots, games pla
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-WriteTeamPlayerStats	;Write the five stat blocks of team d7 from a0 (as ReadTeamPlayerStats)
+WriteTeamPlayerStats				;Write the five stat blocks of team d7 from a0 (as ReadTeamPlayerStats)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d7,d0
 	mulu.w	#$34,d0
@@ -1363,7 +1380,8 @@ WriteTeamPlayerStats	;Write the five stat blocks of team d7 from a0 (as ReadTeam
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReadSeasonTeamRecord	;Read the season record of team d7 (save RAM SRTeamStats, or SRPOTeamStats with SeasonDay bit 5) to a0
+ReadSeasonTeamRecord				;Read the season record of team d7 (save RAM SRTeamStats, or SRPOTeamStats
+									;with SeasonDay bit 5) to a0
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d7,d0
 	mulu.w	#$A,d0
@@ -1393,7 +1411,8 @@ ReadSeasonTeamRecord	;Read the season record of team d7 (save RAM SRTeamStats, o
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-MarkSeasonRosters	;Set bit 15 of every player's goals and shots words in save RAM, for all $1A teams (all on the roster)
+MarkSeasonRosters					;Set bit 15 of every player's goals and shots words in save RAM, for all
+									;$1A teams (all on the roster)
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d7
 	movea.l	#SaveRAM+2*SRGoals,a0
@@ -1420,7 +1439,8 @@ MarkSeasonRosters	;Set bit 15 of every player's goals and shots words in save RA
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SeasonPlayerStats	;Season Player Stats screen: set the VRAM layout (VSCRLPM ... Map3col1), clear VRAM (setVram), then run the stats screen and return
+SeasonPlayerStats					;Season Player Stats screen: set the VRAM layout (VSCRLPM ... Map3col1),
+									;clear VRAM (setVram), then run the stats screen and return
 	bclr	#df32c,(disflags).w
 	move.w	#$C000,(VmMap2).w
 	move.w	#6,(Map2col1).w
@@ -1434,11 +1454,12 @@ SeasonPlayerStats	;Season Player Stats screen: set the VRAM layout (VSCRLPM ... 
 	jsr	(setVram).l
 	bra.w	SeasonStatsList
 
-SeasonPlayersScreen	;Run the season stats screen, then jump to ExitStatsScreen
+SeasonPlayersScreen					;Run the season stats screen, then jump to ExitStatsScreen
 	bsr.w	SeasonStatsList
 	jmp	(ExitStatsScreen).l
 
-.seasonPlayersRedraw	;Wait for vblank, reset scroll, clear the window/scroll VDP areas, draw the team screen (DrawTeamScreen4NoSetup) and enter the stats screen draw
+.seasonPlayersRedraw				;Wait for vblank, reset scroll, clear the window/scroll VDP areas, draw
+									;the team screen (DrawTeamScreen4NoSetup) and enter the stats screen draw
 	btst	#dfok,(disflags).w
 	bne.s	.seasonPlayersRedraw
 	clr.w	(Hscroll).w
@@ -1471,7 +1492,7 @@ SeasonPlayersScreen	;Run the season stats screen, then jump to ExitStatsScreen
 	jsr	(DrawTeamScreen4NoSetup).l
 	bra.w	SeasonStatsListDraw
 
-SeasonStatsList	;d7 = team 0-$19 (A/B cycles teams); sflags11 bit 3 = playoff variant
+SeasonStatsList						;d7 = team 0-$19 (A/B cycles teams); sflags11 bit 3 = playoff variant
 	move.b	(SeasonDay+1).w,-(sp)
 	btst	#3,(sflags11).w
 	bne.w	.0
@@ -1483,7 +1504,8 @@ SeasonStatsList	;d7 = team 0-$19 (A/B cycles teams); sflags11 bit 3 = playoff va
 	move.l	#PlayerStatsBgMap,(screenarg).l
 	jsr	(DrawTeamScreen4).l
 
-SeasonStatsListDraw	;Draw the season player stats screen for team d7 (SeasonStatsList continues here)
+SeasonStatsListDraw					;Draw the season player stats screen for team d7 (SeasonStatsList
+									;continues here)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),$0,$6,$0
 	movea.l	#PlayerStatsTitleMap,a0
@@ -1509,7 +1531,7 @@ SeasonStatsListDraw	;Draw the season player stats screen for team d7 (SeasonStat
 	btst	#3,(sflags11).w
 	bne.w	.1
 	jsr	(printbigz).l
-	dc.w	$20	;String length
+	dc.w	$20						;String length
 	dc.b	$BD,$2,$4,'Season',$BD,$F,$4,'Player'
 	dc.b	$BD,$1C,$4,'Stats',$BD,$E,$1,$0
 	bra.w	.2
@@ -1574,7 +1596,7 @@ SeasonStatsListDraw	;Draw the season player stats screen for team d7 (SeasonStat
 	clr.w	d7
 	bra.w	.team
 
-SeasonStatsListScroll	;Per-frame scroll of the player list
+SeasonStatsListScroll				;Per-frame scroll of the player list
 	move.w	(PlayerScrollCtr).w,d0
 	beq.w	rtsSeasonStats
 	add.w	(VertLineScrolling).w,d0
@@ -1600,7 +1622,7 @@ SeasonStatsListScroll	;Per-frame scroll of the player list
 	bne.w	SeasonStatsListScrollReg
 	bsr.w	SeasonStatsRowDown
 
-SeasonStatsListScrollReg	;VSRAM = VertLineScrolling - $68
+SeasonStatsListScrollReg			;VSRAM = VertLineScrolling - $68
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
 	movea.l	#Vdata,a0
@@ -1610,21 +1632,21 @@ SeasonStatsListScrollReg	;VSRAM = VertLineScrolling - $68
 	move.w	d0,(a0)
 	move.w	(sp)+,(disflags).w
 
-rtsSeasonStats	;rts (shared exit of the SeasonAttribute routines)
+rtsSeasonStats						;rts (shared exit of the SeasonAttribute routines)
 	rts
 
-SeasonStatsRowUp	;Draw the season stats row at the top of the view
+SeasonStatsRowUp					;Draw the season stats row at the top of the view
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	bra.w	DrawSeasonStatsRow
 
-SeasonStatsRowDown	;Draw the season stats row at the bottom of the view
+SeasonStatsRowDown					;Draw the season stats row at the bottom of the view
 	move.w	(VertLineScrolling).w,d3
 	lsr.w	#4,d3
 	addq.w	#6,d3
 	bra.w	DrawSeasonStatsRow
 
-DrawSeasonStatsList	;Headers, sort title, sorted player list at Satt, draws 6 rows
+DrawSeasonStatsList					;Headers, sort title, sorted player list at Satt, draws 6 rows
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$4,$3,$4,$9,CC_SetFont,$1,'Player',CC_AddX,$7,$0
 	lea	SeasonStatColumnHeaders(pc),a1
@@ -1717,7 +1739,8 @@ DrawSeasonStatsList	;Headers, sort title, sorted player list at Satt, draws 6 ro
 	dbf	d4,.rows
 	bra.w	SeasonStatsListScrollReg
 
-DrawSeasonStatsRow	;Draws list row d3 (rank, name, 3 stat columns or goalie saves/shots/save %)
+DrawSeasonStatsRow					;Draws list row d3 (rank, name, 3 stat columns or goalie saves/shots/save
+									;%)
 	movea.w	#(Satt-M68K_RAM),a4
 	adda.w	d3,a4
 	jsr	(printz).l
@@ -1809,7 +1832,8 @@ DrawSeasonStatsRow	;Draws list row d3 (rank, name, 3 stat columns or goalie save
 .exit
 	rts
 
-SeasonGetStatColumn	;d2 = stat column d1 for player d0; goalies: columns 1-2 read column 1 (A), others set sflags5 bit 2 (skip)
+SeasonGetStatColumn					;d2 = stat column d1 for player d0; goalies: columns 1-2 read column 1
+									;(A), others set sflags5 bit 2 (skip)
 	bclr	#2,(sflags5).w
 	move.w	d0,-(sp)
 	jsr	(GetGoalieCountD7).l
@@ -1822,7 +1846,8 @@ SeasonGetStatColumn	;d2 = stat column d1 for player d0; goalies: columns 1-2 rea
 	beq.w	SeasonSkipStatColumn
 	moveq	#1,d1
 
-SeasonReadStatColumn	;d2 = sum of the season stat words (low 15 bits) at StatBuf + SeasonStatColumnOffsets column offsets, player d0
+SeasonReadStatColumn				;d2 = sum of the season stat words (low 15 bits) at StatBuf +
+									;SeasonStatColumnOffsets column offsets, player d0
 	movem.w	d0,-(sp)
 	movea.l	#StatBuf,a2
 	lea	SeasonStatColumnOffsets(pc),a1
@@ -1837,20 +1862,21 @@ SeasonReadStatColumn	;d2 = sum of the season stat words (low 15 bits) at StatBuf
 	bmi.w	.0
 	add.w	d0,d1
 	move.w	0(a2,d1.w),d3
-	andi.w	#$7FFF,d2	;(sic: masks d2 again, not d3)
+	andi.w	#$7FFF,d2				;(sic: masks d2 again, not d3)
 	add.w	d3,d2
 .0
 	movem.w	(sp)+,d0
 	rts
 
-SeasonSkipStatColumn	;Column not shown for this goalie: set sflags5 bit 2
+SeasonSkipStatColumn				;Column not shown for this goalie: set sflags5 bit 2
 	bset	#2,(sflags5).w
 	rts
 
-SeasonStatColumnOffsets	;Word offsets into StatBuf per column (G, A, Pts = G+A, SOG, PIM), -1 = none
+SeasonStatColumnOffsets				;Word offsets into StatBuf per column (G, A, Pts = G+A, SOG, PIM), -1 =
+									;none
 	dc.w	$0,$FFFF,$34,$FFFF,$0,$34,$68,$FFFF,$D0,$FFFF
 
-SeasonStatColumnHeaders	;Column headers (goalie header, then G, A, Pts, SOG, PIM)
+SeasonStatColumnHeaders				;Column headers (goalie header, then G, A, Pts, SOG, PIM)
 	String	'Saves Shots Save %  '
 	String	'   G'
 	String	'     A'
@@ -1858,7 +1884,7 @@ SeasonStatColumnHeaders	;Column headers (goalie header, then G, A, Pts, SOG, PIM
 	String	' SOG'
 	String	' PIM'
 
-SeasonStatSortTitles	;Sort column titles
+SeasonStatSortTitles				;Sort column titles
 	String	'    Goalie Saves   ]'
 	String	'[      Goals       ]'
 	String	'[     Assists      ]'
@@ -1866,7 +1892,7 @@ SeasonStatSortTitles	;Sort column titles
 	String	'[  Shots On Goal   ]'
 	String	'[ Penalty Minutes   '
 
-SeasonScrollArrows	;Up / down arrows (SeasonScrollArrowTbl). Saves d0-d1/a1
+SeasonScrollArrows					;Up / down arrows (SeasonScrollArrowTbl). Saves d0-d1/a1
 	movem.l	d0-d1/a1,-(sp)
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$4,$3,'$',$C,CC_SetFont,$3,$0
@@ -1885,13 +1911,14 @@ SeasonScrollArrows	;Up / down arrows (SeasonScrollArrowTbl). Saves d0-d1/a1
 	movem.l	(sp)+,d0-d1/a1
 	rts
 
-SeasonScrollArrowTbl	;None, up, down, both
+SeasonScrollArrowTbl				;None, up, down, both
 	String	' ',$FB,$FF,$FA,$E,' ',$F9,$0
 	String	'{',$FB,$FF,$FA,$E,' ',$F9,$0
 	String	' ',$FB,$FF,$FA,$E,'}',$F9,$0
 	String	'{',$FB,$FF,$FA,$E,'}',$F9,$0
 
-DrawSeasonStatsLogo	;Draw bitmap Teamblocksmap via dobitmap with tile base $69A, d1 = 2*d0 (team d0). Saves all regs
+DrawSeasonStatsLogo					;Draw bitmap Teamblocksmap via dobitmap with tile base $69A, d1 = 2*d0
+									;(team d0). Saves all regs
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#1,d4
 	move.w	d0,d1
@@ -1909,7 +1936,8 @@ DrawSeasonStatsLogo	;Draw bitmap Teamblocksmap via dobitmap with tile base $69A,
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SeasonTeamStats	;Season TEAM STATS screen (sflags11 bit 3 = playoff "Playoff Teams"): d7 = team 0-$19, left/right (bits 6/4 of d1) change team, start exits
+SeasonTeamStats						;Season TEAM STATS screen (sflags11 bit 3 = playoff "Playoff Teams"): d7 =
+									;team 0-$19, left/right (bits 6/4 of d1) change team, start exits
 	bclr	#df32c,(disflags).w
 	move.w	#$C000,(VmMap2).w
 	move.w	#6,(Map2col1).w
@@ -1923,11 +1951,13 @@ SeasonTeamStats	;Season TEAM STATS screen (sflags11 bit 3 = playoff "Playoff Tea
 	jsr	(setVram).l
 	bra.w	SeasonTeamStatsRun
 
-SeasonTeamsScreen	;Pause / season menu Season Team Stats (Playoff Teams): SeasonTeamStatsRun, then ExitStatsScreen
+SeasonTeamsScreen					;Pause / season menu Season Team Stats (Playoff Teams):
+									;SeasonTeamStatsRun, then ExitStatsScreen
 	bsr.w	SeasonTeamStatsRun
 	jmp	(ExitStatsScreen).l
 
-SeasonTeamStatsRun	;Season (or playoff, sflags11 bit 3) team stats screen: team records from ReadSeasonTeamRecord, A / B switch teams
+SeasonTeamStatsRun					;Season (or playoff, sflags11 bit 3) team stats screen: team records from
+									;ReadSeasonTeamRecord, A / B switch teams
 	move.b	(SeasonDay+1).w,-(sp)
 	btst	#3,(sflags11).w
 	bne.w	.0
@@ -1981,7 +2011,8 @@ SeasonTeamStatsRun	;Season (or playoff, sflags11 bit 3) team stats screen: team 
 	move.w	#NumPlayoffTeams-1,d7
 	bra.w	.team
 
-PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): W,L,T,Pts, then per-game / percentage stats
+PrintSeasonTeamStats				;print the team stat rows from the record at StatBuf (a6): W,L,T,Pts, then
+									;per-game / percentage stats
 	movem.l	a6,-(sp)
 	movea.l	#StatBuf,a6
 	jsr	(printsmallz).l
@@ -2178,7 +2209,8 @@ PrintSeasonTeamStats	;print the team stat rows from the record at StatBuf (a6): 
 	movem.l	(sp)+,a6
 	rts
 
-DrawTeamStatsLogo	;Draw team d0's logo: frame d0*2 of the bitmap set at Teamblocksmap, tile $69A, via dobitmap
+DrawTeamStatsLogo					;Draw team d0's logo: frame d0*2 of the bitmap set at Teamblocksmap, tile
+									;$69A, via dobitmap
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#1,d4
 	move.w	d0,d1
@@ -2196,7 +2228,8 @@ DrawTeamStatsLogo	;Draw team d0's logo: frame d0*2 of the bitmap set at Teambloc
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LeagueLeadersScreen	;League Leaders screen (season menu): team / individual stat leader lists, scroll and category select
+LeagueLeadersScreen					;League Leaders screen (season menu): team / individual stat leader lists,
+									;scroll and category select
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(MarkSeasonRosters).l
 	move.l	#PlayerStatsBgMap,(screenarg).l
@@ -2300,7 +2333,7 @@ LeagueLeadersScreen	;League Leaders screen (season menu): team / individual stat
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LeadersScrollArrows	;League Leaders: draw up/down scroll arrows depending on list position
+LeadersScrollArrows					;League Leaders: draw up/down scroll arrows depending on list position
 	movem.l	d0-d7/a0-a6,-(sp)
 	tst.w	(SeasonGameCount).w
 	beq.w	.0
@@ -2324,7 +2357,8 @@ LeadersScrollArrows	;League Leaders: draw up/down scroll arrows depending on lis
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintTeamCategory	;League Leaders: print category name, team mode (7 categories); individual mode goes to PrintPlayerCategory
+PrintTeamCategory					;League Leaders: print category name, team mode (7 categories); individual
+									;mode goes to PrintPlayerCategory
 	tst.w	(StatWork).w
 	bne.w	PrintPlayerCategory
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -2345,7 +2379,7 @@ TeamCategoryText
 	String	'      Shots Avg.     ',$0
 	String	'  Shots Allowed Avg. ',$0
 
-PrintPlayerCategory	;League Leaders: print category name, individual mode (4 categories)
+PrintPlayerCategory					;League Leaders: print category name, individual mode (4 categories)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$19,$7,$0
@@ -2361,7 +2395,7 @@ PlayerCategoryText
 	String	'  Points       ',$0
 	String	'      GAA      ',$0
 
-PrintLeadersHeader	;League Leaders: print TEAM / INDIVIDUAL column headers
+PrintLeadersHeader					;League Leaders: print TEAM / INDIVIDUAL column headers
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$0,$5,$0
@@ -2377,7 +2411,8 @@ LeaderModeText
 	String	$BF,$11,$5,'TEAM',$BF,$5,$7,'   Team    ',$0
 	String	$BF,$F,$5,'INDIVIDUAL',$BF,$6,$7,'No. Player   Team  ',$0
 
-ReadLeadersPad	;League Leaders: wait (frame-synced) until a joypad reports input; d1 = buttons
+ReadLeadersPad						;League Leaders: wait (frame-synced) until a joypad reports input; d1 =
+									;buttons
 	move.l	#$5460,d6
 .wait
 	move.w	#$64,d6
@@ -2414,7 +2449,8 @@ ReadLeadersPad	;League Leaders: wait (frame-synced) until a joypad reports input
 .exit
 	rts
 
-ClearLeadersArea	;League Leaders: clear a $28x$14 text area with tile $7FF (individual mode only; team mode returns at once)
+ClearLeadersArea					;League Leaders: clear a $28x$14 text area with tile $7FF (individual mode
+									;only; team mode returns at once)
 	tst.w	(StatWork).w
 	beq.w	.exit
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -2428,7 +2464,8 @@ ClearLeadersArea	;League Leaders: clear a $28x$14 text area with tile $7FF (indi
 .exit
 	rts
 
-BuildLeaders	;League Leaders: build sorted team leader list for category StatWork+2 (TeamLeaderJumps) or individual list
+BuildLeaders						;League Leaders: build sorted team leader list for category StatWork+2
+									;(TeamLeaderJumps) or individual list
 	tst.w	(StatWork).w
 	bne.w	BuildPlayerLeaders
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -2441,7 +2478,7 @@ BuildLeaders	;League Leaders: build sorted team leader list for category StatWor
 TeamLeaderJumps
 	dc.l	LeadersPoints,LeadersGoalsAvg,LeadersGoalsAllowed,LeadersSavePct,LeadersShootPct,LeadersShotsAvg,LeadersShotsAllowed
 
-LeadersPoints	;Points: 2*wins+ties per team, sort descending
+LeadersPoints						;Points: 2*wins+ties per team, sort descending
 	movea.l	#StatBuf,a0
 	jsr	(ReadStandings).l
 	move.w	#NumPlayoffTeams-1,d3
@@ -2463,7 +2500,7 @@ LeadersPoints	;Points: 2*wins+ties per team, sort descending
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
-LeadersGoalsAvg	;Goals Avg: goals*100/games per team, sort descending
+LeadersGoalsAvg						;Goals Avg: goals*100/games per team, sort descending
 	move.l	#SRTeamStats,d0
 	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#StatBuf,a0
@@ -2496,7 +2533,7 @@ LeadersGoalsAvg	;Goals Avg: goals*100/games per team, sort descending
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
-LeadersGoalsAllowed	;Goals Allowed Avg: goals against*100/games per team, sort ascending
+LeadersGoalsAllowed					;Goals Allowed Avg: goals against*100/games per team, sort ascending
 	move.l	#SRTeamStats,d0
 	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#StatBuf,a0
@@ -2529,7 +2566,7 @@ LeadersGoalsAllowed	;Goals Allowed Avg: goals against*100/games per team, sort a
 	bsr.w	SortLeadersUp
 	bra.w	BuildLeadersDone
 
-LeadersPenMinAvg	;Unreferenced: penalty minutes*100/games per team, sort descending
+LeadersPenMinAvg					;Unreferenced: penalty minutes*100/games per team, sort descending
 	move.l	#SRTeamStats,d0
 	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#StatBuf,a0
@@ -2562,7 +2599,8 @@ LeadersPenMinAvg	;Unreferenced: penalty minutes*100/games per team, sort descend
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
-LeadersSavePct	;Save Percentage: (shots against - goals against)*100/shots against per team, sort descending
+LeadersSavePct						;Save Percentage: (shots against - goals against)*100/shots against per
+									;team, sort descending
 	move.l	#SRTeamStats,d0
 	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#StatBuf,a0
@@ -2592,7 +2630,7 @@ LeadersSavePct	;Save Percentage: (shots against - goals against)*100/shots again
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
-LeadersShootPct	;Shooting Percentage: goals*100/shots per team, sort descending
+LeadersShootPct						;Shooting Percentage: goals*100/shots per team, sort descending
 	move.l	#SRTeamStats,d0
 	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#StatBuf,a0
@@ -2623,7 +2661,7 @@ LeadersShootPct	;Shooting Percentage: goals*100/shots per team, sort descending
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
-LeadersShotsAvg	;Shots Avg: shots*100/games per team, sort descending
+LeadersShotsAvg						;Shots Avg: shots*100/games per team, sort descending
 	move.l	#SRTeamStats,d0
 	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#StatBuf,a0
@@ -2656,7 +2694,7 @@ LeadersShotsAvg	;Shots Avg: shots*100/games per team, sort descending
 	bsr.w	SortLeadersDown
 	bra.w	BuildLeadersDone
 
-LeadersShotsAllowed	;Shots Allowed Avg: shots against*100/games per team, sort ascending
+LeadersShotsAllowed					;Shots Allowed Avg: shots against*100/games per team, sort ascending
 	move.l	#SRTeamStats,d0
 	move.l	#NumPlayoffTeams*10,d1
 	movea.l	#StatBuf,a0
@@ -2689,11 +2727,12 @@ LeadersShotsAllowed	;Shots Allowed Avg: shots against*100/games per team, sort a
 	bsr.w	SortLeadersUp
 	bra.w	BuildLeadersDone
 
-BuildLeadersDone	;Shared exit of the team leader builders
+BuildLeadersDone					;Shared exit of the team leader builders
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SortLeadersDown	;League Leaders: bubble sort word values at TeamLeaderValues (25 pairs) descending, swapping index bytes at a0
+SortLeadersDown						;League Leaders: bubble sort word values at TeamLeaderValues (25 pairs)
+									;descending, swapping index bytes at a0
 	movea.l	#TeamLeaderValues,a1
 .pass
 	clr.w	d1
@@ -2722,7 +2761,7 @@ SortLeadersDown	;League Leaders: bubble sort word values at TeamLeaderValues (25
 	bne.s	.pass
 	rts
 
-SortLeadersUp	;League Leaders: same bubble sort, ascending
+SortLeadersUp						;League Leaders: same bubble sort, ascending
 	movea.l	#TeamLeaderValues,a1
 .pass
 	clr.w	d1
@@ -2751,7 +2790,8 @@ SortLeadersUp	;League Leaders: same bubble sort, ascending
 	bne.s	.pass
 	rts
 
-BuildPlayerLeaders	;League Leaders: individual mode, dispatch on category StatWork+2 through PlayerLeaderJumps
+BuildPlayerLeaders					;League Leaders: individual mode, dispatch on category StatWork+2 through
+									;PlayerLeaderJumps
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(StatWork+2).w,d0
 	asl.w	#2,d0
@@ -2759,17 +2799,19 @@ BuildPlayerLeaders	;League Leaders: individual mode, dispatch on category StatWo
 	movea.l	0(a0,d0.w),a0
 	jmp	(a0)
 
-BuildPlayerLeadersDone	;Shared exit of the player leader builders
+BuildPlayerLeadersDone				;Shared exit of the player leader builders
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PlayerLeaderJumps	;League Leaders: per category (StatWork+2) handler that builds and sorts the leader list
+PlayerLeaderJumps					;League Leaders: per category (StatWork+2) handler that builds and sorts
+									;the leader list
 	dc.l	PlayerLeadersGoals
 	dc.l	PlayerLeadersAssists
 	dc.l	PlayerLeadersPoints
 	dc.l	PlayerLeadersGAA
 
-PlayerLeadersGoals	;Category 0: gather with BuildLeaderList (d0 = SRGoals, d1 = $548), sort descending
+PlayerLeadersGoals					;Category 0: gather with BuildLeaderList (d0 = SRGoals, d1 = $548), sort
+									;descending
 	move.l	#SRGoals,d0
 	move.l	#$548,d1
 	movea.l	#BuildLeaderList,a5
@@ -2777,7 +2819,8 @@ PlayerLeadersGoals	;Category 0: gather with BuildLeaderList (d0 = SRGoals, d1 = 
 	bsr.w	GatherAndSort
 	bra.s	BuildPlayerLeadersDone
 
-PlayerLeadersAssists	;Category 1: gather with BuildLeaderList (d0 = SRAssists, d1 = $548), sort descending
+PlayerLeadersAssists				;Category 1: gather with BuildLeaderList (d0 = SRAssists, d1 = $548), sort
+									;descending
 	move.l	#SRAssists,d0
 	move.l	#$548,d1
 	movea.l	#BuildLeaderList,a5
@@ -2785,7 +2828,8 @@ PlayerLeadersAssists	;Category 1: gather with BuildLeaderList (d0 = SRAssists, d
 	bsr.w	GatherAndSort
 	bra.s	BuildPlayerLeadersDone
 
-PlayerLeadersPoints	;Category 2: gather with BuildLeaderListSum (d0 = SRGoals, d1 = $548), sort descending
+PlayerLeadersPoints					;Category 2: gather with BuildLeaderListSum (d0 = SRGoals, d1 = $548),
+									;sort descending
 	move.l	#SRGoals,d0
 	move.l	#$548,d1
 	movea.l	#BuildLeaderListSum,a5
@@ -2793,7 +2837,8 @@ PlayerLeadersPoints	;Category 2: gather with BuildLeaderListSum (d0 = SRGoals, d
 	bsr.w	GatherAndSort
 	bra.s	BuildPlayerLeadersDone
 
-PlayerLeadersGAA	;Category 3: gather with BuildLeaderListPct (d0 = SRGoals, d1 = $548), sort ascending (bit 1 of BA_PS_flags set)
+PlayerLeadersGAA					;Category 3: gather with BuildLeaderListPct (d0 = SRGoals, d1 = $548),
+									;sort ascending (bit 1 of BA_PS_flags set)
 	move.l	#SRGoals,d0
 	move.l	#$548,d1
 	movea.l	#BuildLeaderListPct,a5
@@ -2801,7 +2846,9 @@ PlayerLeadersGAA	;Category 3: gather with BuildLeaderListPct (d0 = SRGoals, d1 =
 	bsr.w	GatherAndSort
 	bra.w	BuildPlayerLeadersDone
 
-GatherAndSort	;Call a5 to fill values at LeaderValues / players at LeaderPlayers (count StatWork+$C), then bubble sort both lists by value (descending, or ascending when bit 1 of BA_PS_flags)
+GatherAndSort						;Call a5 to fill values at LeaderValues / players at LeaderPlayers (count
+									;StatWork+$C), then bubble sort both lists by value (descending, or
+									;ascending when bit 1 of BA_PS_flags)
 	movea.l	#LeaderValues,a0
 	movea.l	#StatWork+$C,a2
 	movea.l	#LeaderPlayers,a3
@@ -2815,7 +2862,8 @@ GatherAndSort	;Call a5 to fill values at LeaderValues / players at LeaderPlayers
 	btst	#1,(BA_PS_flags).w
 	bne.w	.sortValuesUp
 
-.sortValuesDown	;Descending pass: swap neighbours where the next value is larger, repeat until no swap
+.sortValuesDown						;Descending pass: swap neighbours where the next value is larger, repeat
+									;until no swap
 	clr.w	d0
 	clr.w	(TempWord1).w
 	move.w	(StatWork+$C).w,d2
@@ -2846,7 +2894,8 @@ GatherAndSort	;Call a5 to fill values at LeaderValues / players at LeaderPlayers
 .rtsSortValues
 	rts
 
-.sortValuesUp	;Ascending pass: swap neighbours where the next value is smaller, repeat until no swap
+.sortValuesUp						;Ascending pass: swap neighbours where the next value is smaller, repeat
+									;until no swap
 	clr.w	d0
 	clr.w	(TempWord1).w
 	move.w	(StatWork+$C).w,d2
@@ -2875,7 +2924,10 @@ GatherAndSort	;Call a5 to fill values at LeaderValues / players at LeaderPlayers
 	bne.s	.sortValuesUp
 	rts
 
-DrawLeaderRows	;Draw the leader rows (StatWork+8 rows from StatWork+4): when StatWork is set use the sorted list (DrawPlayerLeaderRows), else rank, team logo (DrawLeaderLogo), and the category value (LeaderPrintJumps) from the RAM tables in LeaderTables
+DrawLeaderRows						;Draw the leader rows (StatWork+8 rows from StatWork+4): when StatWork is
+									;set use the sorted list (DrawPlayerLeaderRows), else rank, team logo
+									;(DrawLeaderLogo), and the category value (LeaderPrintJumps) from the RAM
+									;tables in LeaderTables
 	tst.w	(StatWork).w
 	bne.w	DrawPlayerLeaderRows
 	clr.w	d6
@@ -2926,7 +2978,7 @@ DrawLeaderRows	;Draw the leader rows (StatWork+8 rows from StatWork+4): when Sta
 	blt.w	.row
 	bra.w	rtsLeaderRows
 
-LeaderPrintJumps	;Value print handlers per category (StatWork+2)
+LeaderPrintJumps					;Value print handlers per category (StatWork+2)
 	dc.l	PrintLeaderNum
 	dc.l	PrintLeaderAvg
 	dc.l	PrintLeaderAvg
@@ -2935,12 +2987,12 @@ LeaderPrintJumps	;Value print handlers per category (StatWork+2)
 	dc.l	PrintLeaderAvg
 	dc.l	PrintLeaderAvg
 
-PrintLeaderNum	;Print d0 3 wide
+PrintLeaderNum						;Print d0 3 wide
 	move.w	#3,d1
 	jsr	(PushNumberWidth).l
 	jmp	(print).l
 
-PrintLeaderAvg	;Print d0 / 100 as nn.nn (3 wide, '.', 2 digits)
+PrintLeaderAvg						;Print d0 / 100 as nn.nn (3 wide, '.', 2 digits)
 	ext.l	d0
 	divu.w	#$64,d0
 	swap	d0
@@ -2956,13 +3008,15 @@ PrintLeaderAvg	;Print d0 / 100 as nn.nn (3 wide, '.', 2 digits)
 	jsr	(PushNumberWidthZero).l
 	jmp	(print).l
 
-PrintLeaderPct	;Print d0 3 wide followed by '%'
+PrintLeaderPct						;Print d0 3 wide followed by '%'
 	jsr	(PrintLeaderNum).l
 	jsr	(printz).l
 	String	'%',$0
 	rts
 
-DrawPlayerLeaderRows	;Sorted list rows: rank, player name (TeamList, d7 = value / 26 team, remainder player) and value from LeaderValues (category 3 as nn.nn); records the last row in StatWork+$A
+DrawPlayerLeaderRows				;Sorted list rows: rank, player name (TeamList, d7 = value / 26 team,
+									;remainder player) and value from LeaderValues (category 3 as nn.nn);
+									;records the last row in StatWork+$A
 	clr.w	d6
 	movea.l	#LeaderValues,a5
 	move.w	#9,(printy).w
@@ -3049,10 +3103,10 @@ DrawPlayerLeaderRows	;Sorted list rows: rank, player name (TeamList, d7 = value 
 	blt.w	.row
 	bra.w	rtsLeaderRows
 
-rtsLeaderRows	;rts (DrawLeaderRows)
+rtsLeaderRows						;rts (DrawLeaderRows)
 	rts
 
-LeaderTables	;RAM tables (team order) per category for DrawLeaderRows
+LeaderTables						;RAM tables (team order) per category for DrawLeaderRows
 	dc.l	LeaderTeamTbls
 	dc.l	LeaderTeamTbls+NumPlayoffTeams
 	dc.l	LeaderTeamTbls+(NumPlayoffTeams*2)
@@ -3061,7 +3115,7 @@ LeaderTables	;RAM tables (team order) per category for DrawLeaderRows
 	dc.l	LeaderTeamTbls+(NumPlayoffTeams*6)
 	dc.l	LeaderTeamTbls+(NumPlayoffTeams*7)
 
-DrawLeaderLogo	;Draw small team logo d1 from Teamblocksmap at printx / printy. Saves all
+DrawLeaderLogo						;Draw small team logo d1 from Teamblocksmap at printx / printy. Saves all
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	asl.w	#1,d1
@@ -3078,10 +3132,11 @@ DrawLeaderLogo	;Draw small team logo d1 from Teamblocksmap at printx / printy. S
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-BlankLine40	;String record (40 spaces) used by the League Leaders code
+BlankLine40							;String record (40 spaces) used by the League Leaders code
 	String	'                                       ',0
 
-LeadersHelp	;League Leaders footer: "[]=Change Stats  B=Individual Leaders", or "B=Team Leaders" in individual mode (StatWork set)
+LeadersHelp							;League Leaders footer: "[]=Change Stats B=Individual Leaders", or "B=Team
+									;Leaders" in individual mode (StatWork set)
 	movem.l	d0-d7/a0-a6,-(sp)
 	tst.w	(StatWork).w
 	beq.w	.0
@@ -3099,7 +3154,8 @@ LeadersHelp	;League Leaders footer: "[]=Change Stats  B=Individual Leaders", or 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PeriodStatsScreen	;Both team logos, goals/shots by period and total; left/right switch, start exits
+PeriodStatsScreen					;Both team logos, goals/shots by period and total; left/right switch,
+									;start exits
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	(matchup).w
 	moveq	#0,d0
@@ -3182,12 +3238,12 @@ PeriodStatsScreen	;Both team logos, goals/shots by period and total; left/right 
 	btst	#1,(sflags7).w
 	beq.w	.0
 	jsr	(printz).l
-	dc.w	$001C	;String length: too many arguments for the String macro
+	dc.w	$001C					;String length: too many arguments for the String macro
 	dc.b	$BE,$C,7,'1',$BE,$11,7,'2',$BE,$16,7,'3',$BE,$1A,7,'OT',$BE,' ',7,'Total',0
 	bra.w	.1
 .0
 	jsr	(printz).l
-	dc.w	$0016	;String length: too many arguments for the String macro
+	dc.w	$0016					;String length: too many arguments for the String macro
 	dc.b	$BE,$C,7,'1',$BE,$11,7,'2',$BE,$16,7,'3',$BE,' ',7,'Total'
 .1
 	bsr.w	PeriodStatsCaption
@@ -3220,7 +3276,7 @@ PeriodStatsScreen	;Both team logos, goals/shots by period and total; left/right 
 	movem.l	(sp)+,d0-d7/a0-a6
 	jmp	(ExitStatsScreen).l
 
-PeriodStatsCaption	;Caption "Shots" + "[ For Goals" or "Goals" + "For Shots ]" by matchup
+PeriodStatsCaption					;Caption "Shots" + "[ For Goals" or "Goals" + "For Shots ]" by matchup
 	tst.w	(matchup).w
 	beq.w	.0
 	jsr	(printz).l
@@ -3235,7 +3291,8 @@ PeriodStatsCaption	;Caption "Shots" + "[ For Goals" or "Goals" + "For Shots ]" b
 	String	CC_SetFont,1,'For Shots ]',CC_SetFont,0,0
 	rts
 
-PeriodStatsColumns	;Print both teams' period columns (away row $B, home row $12) and the total
+PeriodStatsColumns					;Print both teams' period columns (away row $B,
+									;home row $12) and the total
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$0,$0,$0
@@ -3248,7 +3305,8 @@ PeriodStatsColumns	;Print both teams' period columns (away row $B, home row $12)
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PeriodStatsTeam	;PeriodStatsScreen per team: goals ($344) or shots ($34C) by period up to the current one (OT if sflags7 bit 1), then the total
+PeriodStatsTeam						;PeriodStatsScreen per team: goals ($344) or shots ($34C) by period up to
+									;the current one (OT if sflags7 bit 1), then the total
 	lea	$344(a2),a0
 	tst.w	(matchup).w
 	beq.w	.0
@@ -3286,7 +3344,8 @@ PeriodStatsTeam	;PeriodStatsScreen per team: goals ($344) or shots ($34C) by per
 	jsr	(print).l
 	rts
 
-PeriodStatsValue	;PeriodStatsScreen: print the next period value (a0)+ and add it to the total
+PeriodStatsValue					;PeriodStatsScreen: print the next period value
+									;(a0)+ and add it to the total
 	move.w	(a0)+,d0
 	add.w	d0,(matchuptimer).w
 	jsr	(printz).l
@@ -3300,7 +3359,7 @@ PeriodStatsValue	;PeriodStatsScreen: print the next period value (a0)+ and add i
 	jsr	(PushNumberWidth).l
 	jmp	(print).l
 
-LineEditor	;"Line Editor" screen for team a2, slot cursor = 1
+LineEditor							;"Line Editor" screen for team a2, slot cursor = 1
 	bset	#0,$30(a2)
 	moveq	#0,d0
 	moveq	#$1C,d1
@@ -3310,11 +3369,12 @@ LineEditor	;"Line Editor" screen for team a2, slot cursor = 1
 	clr.w	(PlayerScrollCtr).w
 	move.w	#1,(setupvalues).w
 
-LineEditorRedraw	;Clear and redraw the whole editor (also the exit menu's return point)
+LineEditorRedraw					;Clear and redraw the whole editor (also the exit menu's return point)
 	jsr	(LineEditorBg).l
 	jsr	(seta2).l
 
-LineEditorReturn	;Line editor: back from the exit menu (load, copy or save lines): clear the screen and redraw the lines
+LineEditorReturn					;Line editor: back from the exit menu (load, copy or save lines): clear
+									;the screen and redraw the lines
 	jsr	(printsmallz).l
 	String	CC_SetMap,$2,CC_SetX,$0,CC_SetY,$0
 	moveq	#$28,d0
@@ -3324,7 +3384,8 @@ LineEditorReturn	;Line editor: back from the exit menu (load, copy or save lines
 	st	(redrawicons).w
 	jsr	(ClearMenuFlags).l
 
-LineEditorMenu	;Slot cursor loop; start exits, C picks a player, d-pad moves via LineCursorTable
+LineEditorMenu						;Slot cursor loop; start exits, C picks a player, d-pad moves via
+									;LineCursorTable
 	jsr	(DrawLineEditorScreen).l
 	jsr	(DrawLineIcons).l
 .0
@@ -3356,12 +3417,13 @@ LineEditorMenu	;Slot cursor loop; start exits, C picks a player, d-pad moves via
 	cmp.w	#5,d0
 	bgt.s	.0
 .2
-	lea	LineCursorTable(pc),a0	;the slot after the move
+	lea	LineCursorTable(pc),a0		;the slot after the move
 	move.b	8(a0,d0.w),(setupvalues+1).w
 	jsr	(DrawLineIcons).l
 	bra.s	.0
 
-SelectLinePlayer	;Build the list of players for the slot and let the user pick one (SetLineSlot)
+SelectLinePlayer					;Build the list of players for the slot and let the user pick one
+									;(SetLineSlot)
 	jsr	(GetGoalieCount).l
 	move.w	d0,d1
 	jsr	(GetForwards).l
@@ -3457,7 +3519,8 @@ SelectLinePlayer	;Build the list of players for the slot and let the user pick o
 	jsr	(LineEditorBg).l
 	bra.w	LineEditorMenu
 
-PrintAttribHeader	;Player list column header (PAttribColumns page DispAttribCtr), then 6 rows of names, selected row highlighted
+PrintAttribHeader					;Player list column header (PAttribColumns page DispAttribCtr), then 6
+									;rows of names, selected row highlighted
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$16,$1,$0
 .top
@@ -3504,7 +3567,7 @@ PrintAttribHeader	;Player list column header (PAttribColumns page DispAttribCtr)
 	dbf	d1,.5
 	rts
 
-DrawLineIcons	;Draw the line icons for the cursor's line, then the selected player box
+DrawLineIcons						;Draw the line icons for the cursor's line, then the selected player box
 	moveq	#6,d5
 	lea	LineIconGroups(pc),a0
 	move.w	(setupvalues).w,d0
@@ -3540,12 +3603,12 @@ DrawLineIcons	;Draw the line icons for the cursor's line, then the selected play
 	jsr	(printsmall).l
 	clr.w	(printfontset).w
 	rts
-	dc.b	0,1	;the entry before LineIconGroups (read with OptLine set)
+	dc.b	0,1						;the entry before LineIconGroups (read with OptLine set)
 
-LineIconGroups	;Per line, bit mask of the lines drawn together
+LineIconGroups						;Per line, bit mask of the lines drawn together
 	dc.b	7,7,7,$18,$18,$60,$60,$FF
 
-DrawLineIcon	;Draw line d5 (name, then its player slots) at LineIconPosTable
+DrawLineIcon						;Draw line d5 (name, then its player slots) at LineIconPosTable
 	moveq	#6,d0
 	mulu.w	d5,d0
 	lea	LineIconPosTable(pc),a0
@@ -3589,7 +3652,7 @@ DrawLineIcon	;Draw line d5 (name, then its player slots) at LineIconPosTable
 	dbf	d3,.slot
 	rts
 
-ClearLineArea	;Erase the line area and print the position header (LD RD LW C RW)
+ClearLineArea						;Erase the line area and print the position header (LD RD LW C RW)
 	jsr	(printsmallz).l
 	String	CC_SetMap,$2,CC_SetX,$0,CC_SetY,$A
 	moveq	#$28,d0
@@ -3603,14 +3666,14 @@ ClearLineArea	;Erase the line area and print the position header (LD RD LW C RW)
 	move.w	(LineIconPosTable-6).l,(printx).l
 .0
 	jsr	(printsmallz).l
-	dc.w	$22	;String length
+	dc.w	$22						;String length
 	dc.b	$FE,$4,$FB,$FD,$FA,$2,'LD',$FB
 	dc.b	$FE,$FA,$2,'RD',$FB,$FE,$FA,$2
 	dc.b	'LW',$FB,$FE,$FA,$2,'C ',$FB,$FE
 	dc.b	$FA,$2,'RW'
 	rts
 
-DrawLineEditorScreen	;Clear, print the "Line Editor" title and the team logo
+DrawLineEditorScreen				;Clear, print the "Line Editor" title and the team logo
 	jsr	(ClearLineEditorTop).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$7,$1,$0
@@ -3625,7 +3688,7 @@ DrawLineEditorScreen	;Clear, print the "Line Editor" title and the team logo
 .0
 	jmp	(PutTeamBlock).l
 
-ClearLineEditorTop	;Erase 40 x 10 at the top of map 2
+ClearLineEditorTop					;Erase 40 x 10 at the top of map 2
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP2),$0,$0,$0
 	moveq	#$28,d0
@@ -3633,13 +3696,13 @@ ClearLineEditorTop	;Erase 40 x 10 at the top of map 2
 	move.w	#$7FF,d2
 	jmp	(eraser).l
 
-ClearMenuFlags	;Clear palfadenew+$5A and palfadenew+$7A
+ClearMenuFlags						;Clear palfadenew+$5A and palfadenew+$7A
 	clr.w	(palfadenew+$5A).w
 	clr.w	(palfadenew+$7A).w
 	rts
-	dc.w	$10,$C,4	;LineIconPosTable-6: the entry used with OptLine set
+	dc.w	$10,$C,4				;LineIconPosTable-6: the entry used with OptLine set
 
-LineIconPosTable	;Line icons x, y, slot count - 1
+LineIconPosTable					;Line icons x, y, slot count - 1
 	dc.w	4,$C,4
 	dc.w	$10,$C,4
 	dc.w	$1C,$C,4
@@ -3649,7 +3712,7 @@ LineIconPosTable	;Line icons x, y, slot count - 1
 	dc.w	$10,$C,3
 	dc.w	$FFFF
 
-LineCursorTable	;The slot after a cursor move, indexed by slot + 8
+LineCursorTable						;The slot after a cursor move, indexed by slot + 8
 	dc.b	1,1,2,3,4,5,$19,1
 	dc.b	1,1,2,3,4,5,$19,1
 	dc.b	9,9,$A,$B,$C,$D,$21,1
@@ -3660,7 +3723,8 @@ LineCursorTable	;The slot after a cursor move, indexed by slot + 8
 	dc.b	$25,$31,$32,$33,$34,$34,1,1
 	dc.b	$25,$31,$32,$33,$34,$34,1,1
 
-LineEditorExit	;Exit box (rewritten in 95): Start leaves, A original lines, B load / C save team line (save RAM)
+LineEditorExit						;Exit box (rewritten in 95): Start leaves, A original lines, B load / C
+									;save team line (save RAM)
 	jsr	(ClearMenuFlags).l
 	btst	#6,(sflags11).w
 	beq.w	.0
@@ -3670,7 +3734,7 @@ LineEditorExit	;Exit box (rewritten in 95): Start leaves, A original lines, B lo
 	move.w	#9,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	dc.w	$32	;String length
+	dc.w	$32						;String length
 	dc.b	$F8,$4,$2,$9,$B,$F9,$2,'Start = Exit'
 	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$F9,$0,$0
 	bra.w	.loop
@@ -3688,7 +3752,7 @@ LineEditorExit	;Exit box (rewritten in 95): Start leaves, A original lines, B lo
 	move.w	#9,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	dc.w	$5E	;String length
+	dc.w	$5E						;String length
 	dc.b	$F8,$4,$2,$9,$B,$F9,$2,'Start = Exit'
 	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$FD,$9,$FC
 	dc.b	$F,'B = Load Team Line',$FD,$9,$FC,$11,'C = Save Team Line',$F9
@@ -3702,7 +3766,7 @@ LineEditorExit	;Exit box (rewritten in 95): Start leaves, A original lines, B lo
 	move.w	#7,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	dc.w	$48	;String length
+	dc.w	$48						;String length
 	dc.b	$F8,$4,$2,$9,$B,$F9,$2,'Start = Exit'
 	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$FD,$9,$FC
 	dc.b	$F,'C = Save Team Line',$F9,$0,$0
@@ -3740,7 +3804,8 @@ LineEditorExit	;Exit box (rewritten in 95): Start leaves, A original lines, B lo
 .7
 	jmp	(ExitStatsScreen).l
 
-LineEditorBg	;Draw the line editor background bitmap (LineEditorBgMap) on map 2, clear BA_PS_flags bit 1
+LineEditorBg						;Draw the line editor background bitmap (LineEditorBgMap) on map 2, clear
+									;BA_PS_flags bit 1
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#1,(BA_PS_flags).w
 	move.w	(screen6chars2).w,d4
@@ -3762,7 +3827,8 @@ LineEditorBg	;Draw the line editor background bitmap (LineEditorBgMap) on map 2,
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PlayerSelectBg	;Draw the player select list background bitmaps (PlayerSelectMap1, PlayerSelectMap2) on map 2, set BA_PS_flags bit 1
+PlayerSelectBg						;Draw the player select list background bitmaps (PlayerSelectMap1,
+									;PlayerSelectMap2) on map 2, set BA_PS_flags bit 1
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#1,(BA_PS_flags).w
 	move.w	(screen6chars1).w,d4
@@ -3798,7 +3864,7 @@ PlayerSelectBg	;Draw the player select list background bitmaps (PlayerSelectMap1
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SetLineSlot	;Put player d0 in line slot d2 of team a2 (swap if already in that line)
+SetLineSlot							;Put player d0 in line slot d2 of team a2 (swap if already in that line)
 	movem.l	d0-d2/a0-a1,-(sp)
 	lea	$16C(a2),a0
 	move.w	d2,d1
@@ -3815,7 +3881,8 @@ SetLineSlot	;Put player d0 in line slot d2 of team a2 (swap if already in that l
 	movem.l	(sp)+,d0-d2/a0-a1
 	rts
 
-SaveTeamLines	;C in exit menu: save team a2's lines ($16C) to save RAM at the team's slot and mark the buffer valid ($64)
+SaveTeamLines						;C in exit menu: save team a2's lines ($16C) to save RAM at the team's
+									;slot and mark the buffer valid ($64)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	TeamLinesOffset
 	move.l	d0,-(sp)
@@ -3831,7 +3898,8 @@ SaveTeamLines	;C in exit menu: save team a2's lines ($16C) to save RAM at the te
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CopyTeamLines	;B in exit menu: copy the loaded line data (a0, 56 bytes) into team a2's lines ($16C)
+CopyTeamLines						;B in exit menu: copy the loaded line data (a0, 56 bytes) into team a2's
+									;lines ($16C)
 	movem.l	d0-d7/a0-a6,-(sp)
 	lea	$16C(a2),a1
 	move.w	#$D,d0
@@ -3841,7 +3909,8 @@ CopyTeamLines	;B in exit menu: copy the loaded line data (a0, 56 bytes) into tea
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-TeamLinesOffset	;d0 = save RAM offset of team a2's saved line ($39 bytes per team; base by GameFlags bit 3 / sflags10 bit 0)
+TeamLinesOffset						;d0 = save RAM offset of team a2's saved line ($39 bytes per team; base by
+									;GameFlags bit 3 / sflags10 bit 0)
 	move.l	#SRSavedLines1,d0
 	btst	#3,(GameFlags).w
 	bne.w	.1
@@ -3861,9 +3930,11 @@ TeamLinesOffset	;d0 = save RAM offset of team a2's saved line ($39 bytes per tea
 	move.w	(sp)+,d1
 	rts
 
-ShowThreeStars	;End of game Stars of the Game box. Called from UpdatePA while RefPen is the game over penalty. Waits for RefCnt
-	;<= $40 and runs once (gmode bit 7); then disflags bit 3 and a vblank. Frames the box, draws a bitmap, then the three best star
-	;scores (TakeTopStarScore). 95: not with sflags9 bit 7
+ShowThreeStars						;End of game Stars of the Game box. Called from UpdatePA while RefPen is
+									;the game over penalty. Waits for RefCnt
+									;<= $40 and runs once (gmode bit 7); then disflags bit 3 and a vblank.
+									;Frames the box, draws a bitmap, then the three best star scores
+									;(TakeTopStarScore). 95: not with sflags9 bit 7
 	cmpi.w	#$40,(RefCnt).w
 	bgt.w	.4
 	bset	#gmstars,(gmode).w
@@ -3880,16 +3951,16 @@ ShowThreeStars	;End of game Stars of the Game box. Called from UpdatePA while Re
 	movem.l	d0-d5/a0-a4,-(sp)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$2,$E,$0
-	moveq	#$1C,d0	;framer size
+	moveq	#$1C,d0					;framer size
 	moveq	#9,d1
 	jsr	(Framer).l
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$9,$10,'Stars of the Game',-(TXPRI+TXMAP1),$3,$F,$0
 	bsr.w	CalcStarScores
 	move.w	#$12,(printy).w
-	moveq	#2,d2	;3 stars
+	moveq	#2,d2					;3 stars
 .loop
-	bsr.w	TakeTopStarScore	;a2 = team, d0 = player
+	bsr.w	TakeTopStarScore		;a2 = team, d0 = player
 	move.w	#$1A,(printx).w
 .2
 	addq.w	#1,(printy).w
@@ -3904,15 +3975,16 @@ ShowThreeStars	;End of game Stars of the Game box. Called from UpdatePA while Re
 	move.w	(HmGoals).w,d0
 	sub.w	(AwGoals).w,d0
 	ble.w	.nosong
-	move.w	#SFXhomewin,-(sp)	;home team won
+	move.w	#SFXhomewin,-(sp)		;home team won
 	jsr	(song).l
 .nosong
 	movem.l	(sp)+,d0-d5/a0-a4
 .4
 	rts
 
-TakeTopStarScore	;Take the highest of the 52 star scores at ThreeStars (26 per team, home first) and clear it. Returns d0 = player
-	;slot, a2 = its team struct
+TakeTopStarScore					;Take the highest of the 52 star scores at ThreeStars (26 per team, home
+									;first) and clear it. Returns d0 = player
+									;slot, a2 = its team struct
 	movem.l	d1-d2/a1/a4,-(sp)
 .0
 	movea.w	#(ThreeStars-M68K_RAM),a4
@@ -3928,28 +4000,30 @@ TakeTopStarScore	;Take the highest of the 52 star scores at ThreeStars (26 per t
 	clr.l	(a1)
 	move.w	a1,d0
 	subi.w	#(ThreeStars-M68K_RAM),d0
-	lsr.w	#2,d0	;entry number
+	lsr.w	#2,d0					;entry number
 	movea.w	#(tmstruct-M68K_RAM),a2
 	cmp.w	#$1A,d0
 	blt.w	.home
 	subi.w	#$1A,d0
-	adda.w	#tmsize,a2	;26-51: away team (tmsize)
+	adda.w	#tmsize,a2				;26-51: away team (tmsize)
 .home
 	movem.l	(sp)+,d1-d2/a1/a4
 	rts
 
-CalcStarScores	;Star score for every roster slot of both teams to ThreeStars (26 longs per team, home first). d5 = GetPeriodTime
-	;+ d2, the goalie ice time needed. If gsp is 3 and the score is not tied, the scorer of the last goal gets $7FFFFFFF
+CalcStarScores						;Star score for every roster slot of both teams to ThreeStars (26 longs
+									;per team, home first). d5 = GetPeriodTime
+									;+ d2, the goalie ice time needed. If gsp is 3 and the score is not tied,
+									;the scorer of the last goal gets $7FFFFFFF
 	movea.w	#(ThreeStars-M68K_RAM),a4
 	jsr	(GetPeriodTime).l
 	move.w	d0,d5
 	add.w	d2,d5
 	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a3
-	bsr.w	CalcTeamStarScores	;home
+	bsr.w	CalcTeamStarScores		;home
 	movea.w	a3,a2
 	lea	-tmsize(a2),a3
-	bsr.w	CalcTeamStarScores	;away (d3 = away - home score)
+	bsr.w	CalcTeamStarScores		;away (d3 = away - home score)
 	cmpi.w	#3,(gsp).w
 	bne.w	.x
 	tst.w	d3
@@ -3959,7 +4033,7 @@ CalcStarScores	;Star score for every roster slot of both teams to ThreeStars (26
 	clr.w	d0
 	btst	#7,2(a0)
 	beq.w	.slot
-	addi.w	#$1A,d0	;away goal: second 26 entries
+	addi.w	#$1A,d0					;away goal: second 26 entries
 .slot
 	add.b	3(a0),d0
 	asl.w	#2,d0
@@ -3968,14 +4042,18 @@ CalcStarScores	;Star score for every roster slot of both teams to ThreeStars (26
 .x
 	rts
 
-CalcTeamStarScores	;Star scores of team a2 (a3 = other team) to (a4)+, one long per roster slot. Each starts at the goal difference.
-	;Skaters: goals*11000 + assists*10100 + shots*10, or in a tied game shots*1000 + frames on ice. Goalies on ice at least d5 with
-	;shots against: +32000 if goals against*100/shots <= 4, +75000 more for a shutout. 95: the team stat arrays are 2 bytes on
+CalcTeamStarScores					;Star scores of team a2 (a3 = other team) to (a4)+, one long per roster
+									;slot. Each starts at the goal difference.
+									;Skaters: goals*11000 + assists*10100 + shots*10, or in a tied game
+									;shots*1000 + frames on ice. Goalies on ice at least d5 with shots
+									;against: +32000 if goals against*100/shots <= 4, +75000 more for a
+									;shutout.
+									;95: the team stat arrays are 2 bytes on
 	movea.w	a2,a1
 	move.w	$C(a2),d3
 	sub.w	$C(a3),d3
 	ext.l	d3
-	moveq	#$19,d4	;26 slots
+	moveq	#$19,d4					;26 slots
 	jsr	(GetGoalieCount).l
 	neg.w	d0
 	add.w	d4,d0
@@ -3985,18 +4063,18 @@ CalcTeamStarScores	;Star scores of team a2 (a3 = other team) to (a4)+, one long 
 	bhi.w	.2
 	clr.w	d1
 	move.b	$B6(a2),d1
-	mulu.w	#$2AF8,d1	;goals * 11000
+	mulu.w	#$2AF8,d1				;goals * 11000
 	add.l	d1,(a4)
 	clr.w	d1
 	move.b	$D0(a2),d1
-	mulu.w	#$2774,d1	;assists * 10100
+	mulu.w	#$2774,d1				;assists * 10100
 	add.l	d1,(a4)
 	clr.w	d1
 	move.b	$EA(a2),d1
 	mulu.w	#$A,d1
 	tst.w	d3
 	bne.w	.add
-	mulu.w	#$64,d1	;tied: shots * 1000
+	mulu.w	#$64,d1					;tied: shots * 1000
 	add.l	d1,(a4)
 	clr.l	d1
 	add.w	$138(a1),d1
@@ -4015,10 +4093,10 @@ CalcTeamStarScores	;Star scores of team a2 (a3 = other team) to (a4)+, one long 
 	divu.w	d2,d1
 	cmp.w	#4,d1
 	bhi.w	.next
-	addi.l	#$7D00,(a4)	;32000
+	addi.l	#$7D00,(a4)				;32000
 	tst.w	d1
 	bne.w	.next
-	addi.l	#$124F8,(a4)	;75000 for a shutout
+	addi.l	#$124F8,(a4)			;75000 for a shutout
 .next
 	addq.w	#2,a1
 	addq.w	#1,a2
@@ -4026,7 +4104,8 @@ CalcTeamStarScores	;Star scores of team a2 (a3 = other team) to (a4)+, one long 
 	dbf	d4,.loop
 	rts
 
-HighlightsScreen	;Season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left/right change day, up/down change game (rosterscroll), Start exits
+HighlightsScreen					;Season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left/right
+									;change day, up/down change game (rosterscroll), Start exits
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(ReadSeasonHeader).l
 	btst	#0,(sflags11).w
@@ -4148,7 +4227,8 @@ HighlightsScreen	;Season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: left
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReadHighlightsPad	;Highlights joypad wait: each frame poll joypads (ReadJoy1-4 + ProcessInputWithRepeat) until d1 != 0
+ReadHighlightsPad					;Highlights joypad wait: each frame poll joypads (ReadJoy1-4 +
+									;ProcessInputWithRepeat) until d1 != 0
 	move.l	#$5460,d6
 .wait
 	move.w	#$64,d6
@@ -4186,12 +4266,13 @@ ReadHighlightsPad	;Highlights joypad wait: each frame poll joypads (ReadJoy1-4 +
 .exit
 	rts
 
-PrintHighlightsTitle	;print big title NHL HIGHLIGHTS
+PrintHighlightsTitle				;print big title NHL HIGHLIGHTS
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),$8,$2,'NHL HIGHLIGHTS',$0
 	rts
 
-DrawHighlightPage	;Draw the current highlight page: date, logos and score of game rosterscroll, then its highlight (DrawHighlightEntry)
+DrawHighlightPage					;Draw the current highlight page: date, logos and score of game
+									;rosterscroll, then its highlight (DrawHighlightEntry)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(VisTeam).w,-(sp)
 	move.w	(HomeTeam).w,-(sp)
@@ -4239,7 +4320,8 @@ DrawHighlightPage	;Draw the current highlight page: date, logos and score of gam
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawHighlightEntry	;Read the highlight record of the game (GetHighlightSlot) to StatBuf and print it (PrintHighlight)
+DrawHighlightEntry					;Read the highlight record of the game (GetHighlightSlot) to StatBuf and
+									;print it (PrintHighlight)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	GetHighlightSlot
 	moveq	#4,d1
@@ -4251,7 +4333,8 @@ DrawHighlightEntry	;Read the highlight record of the game (GetHighlightSlot) to 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintRecordHighlight	;Print a type 4 highlight record: team name and its W-L-T record from SRStandings, centered
+PrintRecordHighlight				;Print a type 4 highlight record: team name and its W-L-T record from
+									;SRStandings, centered
 	move.l	a0,-(sp)
 	jsr	(printz).l
 	String	-TXMAP1,$14,$13,$0
@@ -4301,7 +4384,7 @@ PrintRecordHighlight	;Print a type 4 highlight record: team name and its W-L-T r
 	movea.l	(sp)+,a0
 	rts
 
-AppendNumber	;Append number d0 (1 or 2 digits) to string at mesarea
+AppendNumber						;Append number d0 (1 or 2 digits) to string at mesarea
 	movea.l	#mesarea,a3
 	move.w	#2,d1
 	cmp.w	#9,d0
@@ -4313,7 +4396,8 @@ AppendNumber	;Append number d0 (1 or 2 digits) to string at mesarea
 	movea.l	#mesarea,a3
 	rts
 
-PrintHighlight	;Print highlight record a0: type (bits 13-15) 0 none, 4 team record, else player name + count + GOAL(S)/ASSIST(S)/SAVE(S)
+PrintHighlight						;Print highlight record a0: type (bits 13-15) 0 none, 4 team record, else
+									;player name + count + GOAL(S)/ASSIST(S)/SAVE(S)
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.l	d0
 	move.w	(a0),d0
@@ -4361,10 +4445,10 @@ PrintHighlight	;Print highlight record a0: type (bits 13-15) 0 none, 4 team reco
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-HighlightPlurals	;Plural suffix pointers by record type
+HighlightPlurals					;Plural suffix pointers by record type
 	dc.l	0,GoalsText,AssistsText,SavesText
 
-HighlightSingulars	;Singular suffix pointers by record type
+HighlightSingulars					;Singular suffix pointers by record type
 	dc.l	0,GoalText,AssistText,SaveText
 
 AssistsText
@@ -4385,7 +4469,8 @@ GoalsText
 GoalText
 	String	' GOAL',$0
 
-PrintGameScore2	;print the game's score (bytes 2/3 of game record a0+d0) or ".......LATER" if not yet played
+PrintGameScore2						;print the game's score (bytes 2/3 of game record a0+d0) or ".......LATER"
+									;if not yet played
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#1,4(a0,d0.w)
 	bne.w	.0
@@ -4406,7 +4491,7 @@ PrintGameScore2	;print the game's score (bytes 2/3 of game record a0+d0) or "...
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintScore2	;print 2-digit number d5 at current cursor (PushNumberWidth + printbig)
+PrintScore2							;print 2-digit number d5 at current cursor (PushNumberWidth + printbig)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d5,d0
 	moveq	#2,d1
@@ -4415,7 +4500,8 @@ PrintScore2	;print 2-digit number d5 at current cursor (PushNumberWidth + printb
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawHighlightLogo	;Draw team logo d1 (from Teamblocksmap graphics, palette teamblocksmapptr) via dobitmap
+DrawHighlightLogo					;Draw team logo d1 (from Teamblocksmap graphics, palette teamblocksmapptr)
+									;via dobitmap
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	asl.w	#1,d1
@@ -4432,7 +4518,8 @@ DrawHighlightLogo	;Draw team logo d1 (from Teamblocksmap graphics, palette teamb
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-GetHighlightSlot	;d0 = save RAM offset (SRHighlights + 4 a game) of the highlight slot of HomeTeam's game today, -1 none
+GetHighlightSlot					;d0 = save RAM offset (SRHighlights + 4 a game) of the highlight slot of
+									;HomeTeam's game today, -1 none
 	movem.l	d1-d7/a0-a6,-(sp)
 	clr.w	d1
 	move.b	(SeasonDay).w,d1
@@ -4472,7 +4559,8 @@ GetHighlightSlot	;d0 = save RAM offset (SRHighlights + 4 a game) of the highligh
 	movem.l	(sp)+,d1-d7/a0-a6
 	rts
 
-HighlightsHelp	;HighlightsScreen help line: {} More games, [] Change day (called from HighlightsScreen)
+HighlightsHelp						;HighlightsScreen help line: {} More games, [] Change day (called from
+									;HighlightsScreen)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(smallfontchars).w,-(sp)
 	move.w	(smallfont2chars).w,(smallfontchars).w

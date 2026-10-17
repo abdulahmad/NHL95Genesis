@@ -1,15 +1,15 @@
 ;	Segment build for sram95.asm: sets its origin and the outside routines and data it uses,
 ;	then includes sram95.asm on its own for checking against the ROM.
 
-	include	macros\genesis.mac	;String
+	include	macros\genesis.mac		;String
 
 ; region code
 	org	$9722
 
 ; includes for stubs to replace removed code
-	include	stubinc\ports.inc	;IO_* / VDP_* ports
-	include	stubinc\equals.inc	;VDP status bits
-	include	ram95.asm		;RAM map
+	include	stubinc\ports.inc		;IO_* / VDP_* ports
+	include	stubinc\equals.inc		;VDP status bits
+	include	ram95.asm				;RAM map
 
 ; External addresses outside, read from lst/nhl95.bin: jsr (x).l carries the address.
 ReadJoy1 = $7A4B0

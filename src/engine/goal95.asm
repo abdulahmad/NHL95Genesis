@@ -2,8 +2,10 @@
 ;	runs practice mode, ends periods and games and keeps the clock. New in 95: the controller
 ;	setup screen.
 
-Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals / awayshootgoals), EndPenaltyShotPlay, the
-	;score summary (ScoreSum), the assignments of both teams (AssignTeam), PenGoalStuff
+Goal								;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals
+									;/ awayshootgoals), EndPenaltyShotPlay, the
+									;score summary (ScoreSum), the assignments of both teams (AssignTeam),
+									;PenGoalStuff
 	btst	#2,(BA_PS_flags).w
 	beq.w	.6
 	btst	#0,(gmode2).w
@@ -208,7 +210,7 @@ Goal	;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshootgoals 
 	movea.l	(sp)+,a3
 	rts
 
-AssignTeam	;Give assignment d0 to every player of team a2 on the ice (assinsert)
+AssignTeam							;Give assignment d0 to every player of team a2 on the ice (assinsert)
 	move.l	a3,-(sp)
 	movea.w	tmsort(a2),a3
 	moveq	#5,d3
@@ -228,11 +230,12 @@ AssignTeam	;Give assignment d0 to every player of team a2 on the ice (assinsert)
 	dbf	d3,.loop
 	movea.l	(sp)+,a3
 
-rtsgoal	;The shared rts of Goal and AssignTeam
+rtsgoal								;The shared rts of Goal and AssignTeam
 	rts
 
-PenGoalStuff	;Do this stuff after a goal: a1 = scored on team, a2 = scoring team. Clears PenBuf, lets the
-	;first penalized player of the scored on team out (RemovePlayerFromList), erases the message box
+PenGoalStuff						;Do this stuff after a goal: a1 = scored on team, a2 = scoring team.
+									;Clears PenBuf, lets the first penalized player of the scored on team out
+									;(RemovePlayerFromList), erases the message box
 	movem.l	d0-d2/a0,-(sp)
 	cmpi.w	#3,(gsp).w
 	bne.w	.0
@@ -265,7 +268,8 @@ PenGoalStuff	;Do this stuff after a goal: a1 = scored on team, a2 = scoring team
 	movem.l	(sp)+,d0-d2/a0
 	rts
 
-box	;Fill a $13 x 8 rectangle at printz position $FF,$B,2 with char $7FF (eraser)
+box									;Fill a $13 x 8 rectangle at printz position
+									;$FF,$B,2 with char $7FF (eraser)
 	jsr	(printz).l
 	String	-TXMAP1,$B,2,0
 	moveq	#$13,d0
@@ -273,15 +277,17 @@ box	;Fill a $13 x 8 rectangle at printz position $FF,$B,2 with char $7FF (eraser
 	move.l	#$7FF,d2
 	jmp	eraser
 
-ShowGoalBox	;Goal box: close both line change boxes (lcfound2), then the scorer and the assists from
-	;ScoreSum (PrintPlayerGoals / PrintPlayerAssists), the goalie counts (CountGoalies)
+ShowGoalBox							;Goal box: close both line change boxes (lcfound2), then the scorer and
+									;the assists from
+									;ScoreSum (PrintPlayerGoals / PrintPlayerAssists), the goalie counts
+									;(CountGoalies)
 	movem.l	d0-d2/a0-a4,-(sp)
 	btst	#2,(BA_PS_flags).w
 	beq.w	.0
 	bset	#sf2drec,(sflags2).w
 .0
 	movea.w	#(tmstruct-M68K_RAM),a2
-	jsr	(lcfound2).l	;close lc box
+	jsr	(lcfound2).l				;close lc box
 	adda.w	#tmsize,a2
 	jsr	(lcfound2).l
 	movea.w	#(ChkCnt-M68K_RAM),a4	;+ ScoreSumbytes = last goal entry
@@ -289,13 +295,13 @@ ShowGoalBox	;Goal box: close both line change boxes (lcfound2), then the scorer 
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$B,2,0
 	moveq	#$13,d0
-	move.w	#5,d1	;5 rows: no assist
+	move.w	#5,d1					;5 rows: no assist
 	tst.b	4(a4)
 	bmi.w	.frame
-	addq.w	#2,d1	;7: one assist
+	addq.w	#2,d1					;7: one assist
 	tst.b	5(a4)
 	bmi.w	.frame
-	addq.w	#1,d1	;8: two assists
+	addq.w	#1,d1					;8: two assists
 .frame
 	jsr	(Framer).l
 	jsr	(CountGoalies).l
@@ -312,7 +318,7 @@ ShowGoalBox	;Goal box: close both line change boxes (lcfound2), then the scorer 
 	lea	PPGoalBigTxt(pc),a1
 .2
 	clr.w	d0
-	move.b	3(a4),d0	;scorer
+	move.b	3(a4),d0				;scorer
 	addi.w	#$B6,d0
 	cmpi.b	#3,(a2,d0.w)
 	bne.w	.print
@@ -322,7 +328,7 @@ ShowGoalBox	;Goal box: close both line change boxes (lcfound2), then the scorer 
 	cmp.w	(recwins).w,d1
 	movem.w	(sp)+,d1
 	blt.w	.print
-	adda.w	(a1),a1	;HAT TRICK!
+	adda.w	(a1),a1					;HAT TRICK!
 	move.w	d0,-(sp)
 	move.w	Xvel(a2),d0
 	cmp.w	(HomeTeam).w,d0
@@ -348,7 +354,7 @@ ShowGoalBox	;Goal box: close both line change boxes (lcfound2), then the scorer 
 	jsr	(PrintPlayerGoals).l
 .5
 	clr.w	d0
-	move.b	4(a4),d0	;first assist
+	move.b	4(a4),d0				;first assist
 	bmi.w	.6
 	bclr	#5,(sflags4).w
 	bne.w	.6
@@ -360,7 +366,7 @@ ShowGoalBox	;Goal box: close both line change boxes (lcfound2), then the scorer 
 	move.w	(sp)+,d0
 	jsr	(PrintPlayerAssists).l
 	clr.w	d0
-	move.b	5(a4),d0	;second assist
+	move.b	5(a4),d0				;second assist
 	bmi.w	.6
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$C,8,0
@@ -374,28 +380,28 @@ ShowGoalBox	;Goal box: close both line change boxes (lcfound2), then the scorer 
 	movem.l	(sp)+,d0-d2/a0-a4
 	rts
 
-GoalBigTxt	;printbig Strings for ShowGoalBox: GOAL!, then HAT TRICK!
+GoalBigTxt							;printbig Strings for ShowGoalBox: GOAL!, then HAT TRICK!
 	String	$BF,$F,3,'GOAL!',$BF,$C,5
 	String	$BF,$C,3,'HAT TRICK!',$BF,$C,5
 
-PPGoalBigTxt	;The same after a power play: PP GOAL!, then HAT TRICK!
+PPGoalBigTxt						;The same after a power play: PP GOAL!, then HAT TRICK!
 	String	$BF,$D,3,'PP GOAL!',$BF,$C,5
 	String	$BF,$C,3,'HAT TRICK!',$BF,$C,5
 
-PrintPlayerAssists	;Print " (" and the assists of player d0 of team a2 (PrintParenNumber)
+PrintPlayerAssists					;Print " (" and the assists of player d0 of team a2 (PrintParenNumber)
 	movem.l	d0/a2,-(sp)
 	jsr	(printz).l
 	String	' ('
 	adda.w	#$D0,a2
 	bra.w	PrintParenNumber
 
-PrintPlayerGoals	;Print " (" and the goals of player d0 of team a2
+PrintPlayerGoals					;Print " (" and the goals of player d0 of team a2
 	movem.l	d0/a2,-(sp)
 	jsr	(printz).l
 	String	' ('
 	adda.w	#$B6,a2
 
-PrintParenNumber	;Print the number at d0 of a2 (1 to 3 digits) and ")"
+PrintParenNumber					;Print the number at d0 of a2 (1 to 3 digits) and ")"
 	move.b	(a2,d0.w),d0
 	ext.w	d0
 	move.w	#1,d1
@@ -415,13 +421,13 @@ PrintParenNumber	;Print the number at d0 of a2 (1 to 3 digits) and ")"
 	movem.l	(sp)+,d0/a2
 	rts
 
-LockScroll	;xc1 / yc1 = Hpos / Vpos, sfslock
+LockScroll							;xc1 / yc1 = Hpos / Vpos, sfslock
 	move.w	(Vpos).w,(yc1).w
 	move.w	(Hpos).w,(xc1).w
 	bset	#sfslock,(sflags).w
 	rts
 
-checkwindow	;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the puck
+checkwindow							;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the puck
 	movem.l	d0-d3/a3,-(sp)
 	move.w	(yc1).w,d2
 	move.w	(xc1).w,d3
@@ -517,8 +523,9 @@ checkwindow	;Scroll the window one step toward xc1 / yc1 (sflags bit 6) or the p
 	movem.l	(sp)+,d0-d3/a3
 	rts
 
-PullPracticePlayers	;Practice Mode: take off the ice (position -1, assignment $19) the players whose position needs
-	;more players (PracticePlayerLimits) than homepracplayers / awaypracplayers allow
+PullPracticePlayers					;Practice Mode: take off the ice (position -1, assignment $19) the players
+									;whose position needs more players (PracticePlayerLimits) than
+									;homepracplayers / awaypracplayers allow
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#SortCords,a0
 	move.w	(homepracplayers).w,d0
@@ -555,10 +562,10 @@ PullPracticePlayers	;Practice Mode: take off the ice (position -1, assignment $1
 	movem.l	(sp)+,d0/a3
 	bra.s	.next
 
-PracticePlayerLimits	;Number of practice players needed for each position
+PracticePlayerLimits				;Number of practice players needed for each position
 	dc.b	0,4,5,2,1,3
 
-GetPracticePlayers	;Test the practice player count of team d0 (1 home, else away)
+GetPracticePlayers					;Test the practice player count of team d0 (1 home, else away)
 	movem.l	a0,-(sp)
 	movea.l	#homepracplayers,a0
 	cmp.w	#1,d0
@@ -569,7 +576,8 @@ GetPracticePlayers	;Test the practice player count of team d0 (1 home, else away
 	movem.l	(sp)+,a0
 	rts
 
-PracticeGoalies	;Practice Mode: goaliemode1 / goaliemode2 = 0 for a team with a pad and no practice players
+PracticeGoalies						;Practice Mode: goaliemode1 / goaliemode2 = 0 for a team with a pad and no
+									;practice players
 	movem.l	d0-d1,-(sp)
 	cmpi.w	#1,(cont1team).w
 	beq.w	.home
@@ -602,8 +610,10 @@ PracticeGoalies	;Practice Mode: goaliemode1 / goaliemode2 = 0 for a team with a 
 	movem.l	(sp)+,d0-d1
 	rts
 
-PeriodOver	;What to do if the period is over: next period, overtime or game over (gsp 4); Practice Mode
-	;(sflags9 bit 7) ends the game; a season game with season flag bit 5 plays on in overtime. Then forceblack and IntermissionStart
+PeriodOver							;What to do if the period is over: next period, overtime or game over (gsp
+									;4); Practice Mode (sflags9 bit 7) ends the game; a season game with
+									;season flag bit 5 plays on in overtime. Then forceblack and
+									;IntermissionStart
 	btst	#7,(sflags9).w
 	bne.w	.2
 	addq.w	#1,(gsp).w
@@ -630,26 +640,27 @@ PeriodOver	;What to do if the period is over: next period, overtime or game over
 	jsr	(forceblack).l
 	jmp	IntermissionStart
 
-clockcont_0	;The clock ran out in overtime / the game: game over handling, the Stanley Cup (sflags13 bit 2, cupwinner)
+clockcont_0							;The clock ran out in overtime / the game: game over handling, the Stanley
+									;Cup (sflags13 bit 2, cupwinner)
 	movea.w	#(puckx-M68K_RAM),a3
 	moveq	#1,d0
 	jsr	(assinsert).l
-	cmpi.w	#2,(gsp).w	;periods 1-2 just end the period
+	cmpi.w	#2,(gsp).w				;periods 1-2 just end the period
 	blt.w	.9
 	moveq	#$1C,d0
 	movea.w	#(SortCords-M68K_RAM),a3
-	cmpi.w	#3,(gamelevel).w	;playoffs?
+	cmpi.w	#3,(gamelevel).w		;playoffs?
 	bne.w	.t3
 	cmpi.w	#7,(bosgames).w
 	beq.w	.2
-	moveq	#$10,d3	;gssize
+	moveq	#$10,d3					;gssize
 	mulu.w	(gamenum).w,d3
 	movea.w	#(gsstruct-M68K_RAM),a0	;game structs (games stored for playoffs and box scores)
 	adda.w	d3,a0
 	clr.w	d3
-	btst	#0,$E(a0)	;gsftf, gsflags(a0): teams are flipped
+	btst	#0,$E(a0)				;gsftf, gsflags(a0): teams are flipped
 	beq.w	.nf
-	eori.w	#2,d3	;gspobwins-gspotwins
+	eori.w	#2,d3					;gspobwins-gspotwins
 .nf
 	move.w	(HmGoals).w,d1
 	sub.w	(AwGoals).w,d1
@@ -682,7 +693,7 @@ clockcont_0	;The clock ran out in overtime / the game: game over handling, the S
 .t2
 	tst.w	position(a3)
 	ble.w	.n2
-	jsr	(assinsert).l	;first skater gets d0, the rest get score
+	jsr	(assinsert).l				;first skater gets d0, the rest get score
 	moveq	#$1C,d0
 .n2
 	adda.w	#SCstruct,a3
@@ -690,8 +701,8 @@ clockcont_0	;The clock ran out in overtime / the game: game over handling, the S
 .eog
 	jsr	(ClearPenaltyBuffer).l
 	addi.w	#$3E8,(crowdlevel).w	;1000
-	bset	#gmclock,(gmode).w	;gmclock: stop clock
-	bset	#gmeog,(gmode).w	;set at end of game
+	bset	#gmclock,(gmode).w		;gmclock: stop clock
+	bset	#gmeog,(gmode).w		;set at end of game
 	jsr	(ClearPenalties).l
 	move.w	#PenEOG,d0
 	jmp	AddPenalty2
@@ -711,7 +722,8 @@ clockcont_0	;The clock ran out in overtime / the game: game over handling, the S
 	move.w	#2,d0
 	jmp	AddPenalty2
 
-GameOver	;EncodePW, the Stanley Cup screen (sflags13 bit 2), SeasonGameOver, then ExitToOpening
+GameOver							;EncodePW, the Stanley Cup screen (sflags13 bit 2), SeasonGameOver, then
+									;ExitToOpening
 	jsr	(EncodePW).l
 	btst	#2,(sflags13).w
 	beq.w	.0
@@ -719,25 +731,27 @@ GameOver	;EncodePW, the Stanley Cup screen (sflags13 bit 2), SeasonGameOver, the
 .0
 	jsr	(SeasonGameOver).l
 
-ExitToOpening	;Jmp to the opening
+ExitToOpening						;Jmp to the opening
 	jmp	Opening2
 
-clockcont	;Clock continue: when the clock is at 0 stop the play (sfx 4) and go to clockcont_0
+clockcont							;Clock continue: when the clock is at 0 stop the play (sfx 4) and go to
+									;clockcont_0
 	btst	#gmclock,(gmode).w
 	bne.w	.0
 	tst.w	(gameclock).w
 	bne.w	.0
 	bset	#dfclock,(disflags).w	;dfclock: clock needs update
 	jsr	(stop_current_song).l
-	move.w	#SFXhorn,-(sp)	;horn
+	move.w	#SFXhorn,-(sp)			;horn
 	jsr	(sfx).l
 	bsr.w	LockScroll
 	jmp	clockcont_0
 .0
 	rts
 
-SetContTeams	;The controller setup screen: pick the team of each pad (cont1team ... cont4team) and the Practice Mode
-	;player counts; a demo or a timeout clears all pads
+SetContTeams						;The controller setup screen: pick the team of each pad (cont1team ...
+									;cont4team) and the Practice Mode
+									;player counts; a demo or a timeout clears all pads
 	tst.w	(demoflag).w
 	bmi.w	.setup
 .clear
@@ -853,13 +867,14 @@ SetContTeams	;The controller setup screen: pick the team of each pad (cont1team 
 .exit
 	rts
 
-ContTeamOrder1	;Pad team order tables for SetContTeams
+ContTeamOrder1						;Pad team order tables for SetContTeams
 	dc.b	2,0,2,$FF
 
 ContTeamOrder2
 	dc.b	1,1,0,$FF
 
-PrintPracticePlayers	;Set homepracplayers / awaypracplayers (player counts) from PracticePlayersTbl and print them
+PrintPracticePlayers				;Set homepracplayers / awaypracplayers (player counts) from
+									;PracticePlayersTbl and print them
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#PracticePlayersTbl,a0
 	move.w	(setupvalues+2).w,d0
@@ -878,7 +893,7 @@ PrintPracticePlayers	;Set homepracplayers / awaypracplayers (player counts) from
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintPlayerCount	;Print PlayerCountTxt string d0 (PrintSetupStr)
+PrintPlayerCount					;Print PlayerCountTxt string d0 (PrintSetupStr)
 	movea.l	#PlayerCountTxt,a1
 	bra.w	.1
 .loop
@@ -887,15 +902,15 @@ PrintPlayerCount	;Print PlayerCountTxt string d0 (PrintSetupStr)
 	dbf	d0,.loop
 	bra.w	PrintSetupStr
 
-PlayerCountTxt	;"0", "1", "2"
+PlayerCountTxt						;"0", "1", "2"
 	String	'0'
 	String	'1'
 	String	'2'
 
-PracticePlayersTbl	;Home / away practice player count by Practice Mode setting
+PracticePlayersTbl					;Home / away practice player count by Practice Mode setting
 	dc.b	1,0,0,1,2,0,0,2,1,2,2,1,1,1,2,2
 
-DrawPadSetup	;Draw the pads, their icons (DrawPadIcon) and the cursor (DrawPadCursor)
+DrawPadSetup						;Draw the pads, their icons (DrawPadIcon) and the cursor (DrawPadCursor)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	#$A,(printy).w
 	move.w	#1,d4
@@ -936,7 +951,7 @@ DrawPadSetup	;Draw the pads, their icons (DrawPadIcon) and the cursor (DrawPadCu
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-DrawPadIcon	;Draw pad icon d7 (PadIconMaps at PadIconChars)
+DrawPadIcon							;Draw pad icon d7 (PadIconMaps at PadIconChars)
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#PadIconMaps,a0
 	asl.w	#2,d7
@@ -957,13 +972,13 @@ DrawPadIcon	;Draw pad icon d7 (PadIconMaps at PadIconChars)
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PadIconMaps	;Pad icon bitmaps, then (PadIconChars) the RAM words with their chars
+PadIconMaps							;Pad icon bitmaps, then (PadIconChars) the RAM words with their chars
 	dc.l	PadIconMap1,PadIconMap2,PadIconMap3,PadIconMap4
 
 PadIconChars
 	dc.l	padiconchars1,padiconchars2,padiconchars3,padiconchars4
 
-DrawPadCursor	;Draw the pad cursor (PadCursorMap, padcursorchars) beside printx / printy
+DrawPadCursor						;Draw the pad cursor (PadCursorMap, padcursorchars) beside printx / printy
 	move.w	(printx).w,-(sp)
 	move.w	(printy).w,-(sp)
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -986,10 +1001,11 @@ DrawPadCursor	;Draw the pad cursor (PadCursorMap, padcursorchars) beside printx 
 	move.w	(sp)+,(printx).w
 	rts
 
-BlankLineTxt	;A blank line
+BlankLineTxt						;A blank line
 	String	$FD,$0,'                                        '
 
-PrintPracticeTitle	;Practice Mode: print PracticePlayersTxt, highlighted (PrintSetupStrHi) when setupvalues is not 0
+PrintPracticeTitle					;Practice Mode: print PracticePlayersTxt, highlighted (PrintSetupStrHi)
+									;when setupvalues is not 0
 	btst	#7,(sflags9).w
 	beq.w	.exit
 	movea.l	#PracticePlayersTxt,a1
@@ -1005,8 +1021,9 @@ PrintPracticeTitle	;Practice Mode: print PracticePlayersTxt, highlighted (PrintS
 PracticePlayersTxt
 	String	$FD,$C,$FC,$16,'PRACTICE PLAYERS',$FD,$19,$FC,$17,'No. of Players',$FD,$2,'No. of Players'
 
-ControllerSetupScreen	;Build the controller setup screen: vram, fonts, the team blocks and pad tiles, the backgrounds and
-	;"Controller SetUp" (printbigz); the team blocks of VisTeam / HomeTeam
+ControllerSetupScreen				;Build the controller setup screen: vram, fonts, the team blocks and pad
+									;tiles, the backgrounds and "Controller SetUp" (printbigz); the team
+									;blocks of VisTeam / HomeTeam
 	move.l	#VBlank_SetOptions,(vbint).w
 	move	#$2500,sr
 	bclr	#dfok,(disflags).w
@@ -1095,7 +1112,7 @@ ControllerSetupScreen	;Build the controller setup screen: vram, fonts, the team 
 	String	-(TXPRI+TXMAP1),5,2,'Controller SetUp'
 	rts
 
-DrawSetupTeamBlock	;Draw team block d1 (Teamblocksmap) at printx / printy
+DrawSetupTeamBlock					;Draw team block d1 (Teamblocksmap) at printx / printy
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d0
 	asl.w	#1,d1
@@ -1112,7 +1129,7 @@ DrawSetupTeamBlock	;Draw team block d1 (Teamblocksmap) at printx / printy
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintSetupStr	;Print String a1 (printz2 $FE,5,$FF,1,$F9,0, then printsmall)
+PrintSetupStr						;Print String a1 (printz2 $FE,5,$FF,1,$F9,0, then printsmall)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a1,-(sp)
 	jsr	(printsmallz).l
@@ -1122,7 +1139,7 @@ PrintSetupStr	;Print String a1 (printz2 $FE,5,$FF,1,$F9,0, then printsmall)
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PrintSetupStrHi	;The same highlighted ($F9,1)
+PrintSetupStrHi						;The same highlighted ($F9,1)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.l	a1,-(sp)
 	jsr	(printsmallz).l
@@ -1132,8 +1149,8 @@ PrintSetupStrHi	;The same highlighted ($F9,1)
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-ReadAllPads	;Read the 4 pads into TempWord1, TempWord2, TempRawSpd and TempMaxSpd
-	;(the same RAM as scratch here), all of them ored in TempLegSpd
+ReadAllPads							;Read the 4 pads into TempWord1, TempWord2, TempRawSpd and TempMaxSpd (the
+									;same RAM as scratch here), all of them ored in TempLegSpd
 	jsr	(ReadJoy1).l
 	jsr	(nodiag).l
 	move.w	d1,(TempWord1).w

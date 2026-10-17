@@ -1,14 +1,14 @@
 ;	Segment build for pause95.asm: sets its origin and the outside routines and data it uses,
 ;	then includes pause95.asm on its own for checking against the ROM.
 
-	include	macros\genesis.mac	;String
+	include	macros\genesis.mac		;String
 ; region code
 	org	$7E36C
 
 ; includes for stubs to replace removed code
-	include	stubinc\ports.inc	;IO_* / VDP_* ports
-	include	stubinc\equals.inc	;VDP status bits
-	include	ram95.asm		;RAM map
+	include	stubinc\ports.inc		;IO_* / VDP_* ports
+	include	stubinc\equals.inc		;VDP status bits
+	include	ram95.asm				;RAM map
 
 ; External addresses outside, read from lst/nhl95.bin.
 ZeroLong = $69A
@@ -60,25 +60,25 @@ LoadHomeTeamGfx = $7DEA0
 setupEASNmap = $7DF6A
 AnyPadAssigned = $7DFAC
 setpersonel = $836CC
-TeamRosterScreen = $84FE8		;Pause menu TEAM ROSTER
-DrawFaceoffWindow = $88E42		;the face off window
+TeamRosterScreen = $84FE8			;Pause menu TEAM ROSTER
+DrawFaceoffWindow = $88E42			;the face off window
 Penaltylist = $89C2E
 PracticeGoalies = $8CADE
-ReplayMode = $8D668		;Pause menu INSTANT REPLAY
-StatsReport = $920DE		;Pause menu GAME STATS
-PlayerStatsScreen = $925B0		;Pause menu PLAYER STATS
+ReplayMode = $8D668					;Pause menu INSTANT REPLAY
+StatsReport = $920DE				;Pause menu GAME STATS
+PlayerStatsScreen = $925B0			;Pause menu PLAYER STATS
 SeasonPlayersScreen = $934CC		;Pause menu SEASON PLAYERS
-SeasonTeamsScreen = $93C14		;Pause menu SEASON TEAMS
-PeriodStatsScreen = $94ED2		;Pause menu PERIOD STATS
-LineEditor = $95220		;Pause menu EDIT LINES
-GetRosterName = $9649E		;a1 = name String of player d0 of team d7 (season roster aware)
-GetJerseyNumber = $965A8		;jerseynum = the jersey number byte of player d0 of team d7
-PlayoffStatsScreen = $9B8D6		;Pause menu PLAYOFF STATS
+SeasonTeamsScreen = $93C14			;Pause menu SEASON TEAMS
+PeriodStatsScreen = $94ED2			;Pause menu PERIOD STATS
+LineEditor = $95220					;Pause menu EDIT LINES
+GetRosterName = $9649E				;a1 = name String of player d0 of team d7 (season roster aware)
+GetJerseyNumber = $965A8			;jerseynum = the jersey number byte of player d0 of team d7
+PlayoffStatsScreen = $9B8D6			;Pause menu PLAYOFF STATS
 RecordHoldersScreen = $9B90E		;Pause menu RECORD HOLDERS
-ShootoutShooters = $9E058		;Pause menu SHOOTOUT SETUP
+ShootoutShooters = $9E058			;Pause menu SHOOTOUT SETUP
 ScoringSummaryScreen = $A0D1A		;Pause menu SCORING SUMMARY
 PenaltySummaryScreen = $A1022		;Pause menu PENALTY SUMMARY
-Rinktilelist = $C4A7C		;Rink map
+Rinktilelist = $C4A7C				;Rink map
 PauseBgBitmap = $13AC70
 PeriodNumberBitmap = $13E09E
 TabBitmap = $13E21C

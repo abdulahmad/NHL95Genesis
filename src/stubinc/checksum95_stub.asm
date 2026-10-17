@@ -5,9 +5,9 @@
 	org	$1A72C0
 
 ; includes for stubs to replace removed code
-	include	stubinc\ports.inc	;IO_* / VDP_* ports
-	include	stubinc\equals.inc	;VDP status bits
-	include	ram95.asm		;RAM map
+	include	stubinc\ports.inc		;IO_* / VDP_* ports
+	include	stubinc\equals.inc		;VDP status bits
+	include	ram95.asm				;RAM map
 
 ; External addresses outside, read from lst/nhl95.bin.
 
