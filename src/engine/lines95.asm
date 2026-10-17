@@ -388,7 +388,7 @@ chk4lc	;Computer line change on the fly: puck in the player's own end (pucky 0-$
 	bmi.w	rtslc
 	cmp.w	#$56,d0
 	bgt.w	rtslc
-	move.w	(VDP_CNTR).l,d0
+	move.w	(HVcount).l,d0
 	andi.w	#3,d0
 	bne.w	rtslc
 	btst	#pf2lcm,pflags2(a3)
@@ -1052,7 +1052,7 @@ DrawTeamScreen2	;A DrawTeamScreen for the season / stats screens: screenarg is t
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
 	move.w	(VSPRITES).w,d0
@@ -1141,7 +1141,7 @@ DrawTeamScreen3	;The same with SmallFontMap
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
 	move.w	(VSPRITES).w,d0
@@ -1233,7 +1233,7 @@ DrawTeamScreen4	;The same as DrawTeamScreen3 with the team block tiles decompres
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
 	move.w	(VSPRITES).w,d0
@@ -1323,7 +1323,7 @@ DrawTeamScreen5	;DrawTeamScreen4 with three small fonts and palette word $A00
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
 	move.w	(VSPRITES).w,d0
@@ -1409,7 +1409,7 @@ DrawTeamScreen6	;The team blocks (screen6chars1), the bitmap, Screen6Tiles1 / 2 
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
 	move.w	(VSPRITES).w,d0

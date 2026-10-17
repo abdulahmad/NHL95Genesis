@@ -105,8 +105,8 @@ hot_start
 
 reg_set					; registers set data table
 	dc.w	$008000,$003fff,$000100		; d5 / d6 / d7
-	dc.l	Z80_RAM,IO_Z80BUS,IO_Z80RES,VDP_DATA	; a0 - a3
-	dc.l	VDP_CTRL		; a4
+	dc.l	Z80_RAM,IO_Z80BUS,IO_Z80RES,Vdata	; a0 - a3
+	dc.l	Vctrl		; a4
 vreg_dt
 	dc.b	$04,$14,$30,$3c,$07,$6c,$00,$00
 	dc.b	$00,$00,$ff,$00,$81,$37,$00,$01

@@ -1499,12 +1499,12 @@ updatesound	;Move the crowd noise volume (psg noise channel, asv) toward crowdle
 	bpl.w	.non
 	clr.w	(asv).w
 .non
-	move.b	#$C8,(VDP_PSG).l
-	move.b	#1,(VDP_PSG).l
+	move.b	#$C8,(Asound).l
+	move.b	#1,(Asound).l
 	move.b	(asv).w,d0
 	eori.b	#$F,d0
 	ori.b	#$F0,d0
-	move.b	d0,(VDP_PSG).l
+	move.b	d0,(Asound).l
 	rts
 
 CheckLateGameSong	;Called once per second. 3rd period: choose and play a song once at the random trigger time set by ResetClock
@@ -1670,11 +1670,11 @@ stop_current_song2	;Unreferenced. A copy of stop_current_song that skips the sav
 	rts
 
 KillCrowd	;Silence the crowd noise (psg)
-	move.b	#$E7,(VDP_PSG).l
-	move.b	#$DF,(VDP_PSG).l
-	move.b	#$C8,(VDP_PSG).l
-	move.b	#1,(VDP_PSG).l
-	move.b	#$FF,(VDP_PSG).l
+	move.b	#$E7,(Asound).l
+	move.b	#$DF,(Asound).l
+	move.b	#$C8,(Asound).l
+	move.b	#1,(Asound).l
+	move.b	#$FF,(Asound).l
 	rts
 
 SoundOff	;Sound driver command $F, every song off

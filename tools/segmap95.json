@@ -12712,7 +12712,7 @@
    "fmtune_id_76_cmdstream $0442BE 2132 data",
    "fmtune_id_77_cmdstream $044B12 1384 data",
    "fmtune_title_cmdstream $04507A 7442 data",
-   "fmtune_intermission_cmdstream $046D8C 9046 data",
+   "fmtune_eop_cmdstream $046D8C 9046 data",
    "fmtune_scouting_cmdstream $0490E2 9438 data"
   ],
   "graphics94": [

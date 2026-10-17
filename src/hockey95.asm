@@ -136,9 +136,9 @@ StartGame	;Reset game state for a new game, then start the first period. 95 has 
 	move.w	#7,d0
 	move.w	#1,d1
 	jsr	(SoundCmd).l
-	move.b	#$E7,(VDP_PSG).l	;psg noise: white noise from tone 3, tone 3 at the top
-	move.b	#$C8,(VDP_PSG).l
-	move.b	#1,(VDP_PSG).l
+	move.b	#$E7,(Asound).l	;psg noise: white noise from tone 3, tone 3 at the top
+	move.b	#$C8,(Asound).l
+	move.b	#1,(Asound).l
 	jsr	(setupice).l
 
 IntermissionStart	;The PeriodOver tail. PeriodOver jumps here after forceblack: reset the
@@ -257,9 +257,9 @@ Gameloop	;Main loop for game
 	btst	#sfpz,(sflags).w	;sfpz
 	beq.s	Gameloop
 	jsr	(Pausemode).l
-	move.b	#$E7,(VDP_PSG).l	;psg noise back on (as StartGame)
-	move.b	#$C8,(VDP_PSG).l
-	move.b	#1,(VDP_PSG).l
+	move.b	#$E7,(Asound).l	;psg noise back on (as StartGame)
+	move.b	#$C8,(Asound).l
+	move.b	#1,(Asound).l
 	bra.s	Gameloop
 
 DoGameFrame	;Wait for at least one vblank, then run one frame of game logic. in 94 this is written in line

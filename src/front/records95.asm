@@ -1742,7 +1742,7 @@ SetupScreen	;Common start of the stats screens: blank, scroll 0, 40 cell mode, t
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
 	move.w	(VSPRITES).w,d0

@@ -711,7 +711,7 @@ Endfaceoff	;Drop the puck: sfx $2C, reload the ref tiles (RefTiles), clear the f
 	btst	#3,d0
 	bne.w	.2
 	andi.w	#7,d0
-	move.w	(VDP_CNTR).l,d1
+	move.w	(HVcount).l,d1
 	andi.w	#3,d1
 	bne.w	.3
 .2

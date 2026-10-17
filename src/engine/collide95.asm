@@ -184,7 +184,7 @@ wallcollb	;Check for puck over wall. a3 = object, d0/d1 = cos/sin of the wall. N
 	move.w	#SPAbglass,d1
 	jsr	(SetSPA).l
 	movea.l	(sp)+,a3
-	move.w	#SFX0E,-(sp)
+	move.w	#SFXbglass,-(sp)
 	jsr	(sfx).l
 	addi.w	#$258,(crowdlevel).w
 	addi.w	#$F,(CwdExciteLvl).w
@@ -741,7 +741,7 @@ FallDown	;Player a2 falls down, player a3 is the hitting player. Skips a2 in som
 	blt.w	.cont2
 	tst.b	nopuck+1(a2)	;check if puck collision possible
 	bne.w	.cont2
-	move.w	(VDP_CNTR).l,d0	;frame counter
+	move.w	(HVcount).l,d0	;frame counter
 	andi.w	#$F,d0	;pass 1st byte of d0
 	addi.w	#$20,d0
 	cmp.w	impact(a2),d0	;compare impact value to d0.
@@ -1778,7 +1778,7 @@ CheckBump	;Supply minimum separation velocity for coll with walls/goal/net. a2 =
 	;near the puck in y moving faster than $24CC knocks the net (a2 gets a quarter of a3's velocity, a3 stops, scroll lock at Vpos) and, while the
 	;clock runs, calls penalty 8. Called from checkgoalp
 	movem.l	d0-d1,-(sp)
-	move.w	(VDP_CNTR).l,d0
+	move.w	(HVcount).l,d0
 	andi.w	#$1F,d0
 	bne.w	.ex
 	move.w	(pucky).w,d0
@@ -1937,7 +1937,7 @@ puckgoalie	;Puck hits goalie a2. a3 = puck, d0/d1 = goalie - puck x/y. A save bo
 	move.w	d0,d1	;move d0 into d1
 	andi.w	#3,d1	;pass first 2 bits of d1
 	bne.w	.2	;will branch if puck is to the left or right of G
-	move.w	(VDP_CNTR).l,d0	;just for random bit
+	move.w	(HVcount).l,d0	;just for random bit
 .2
 	andi.w	#4,d0	;pass 3rd bit of d0. d0 will be either 4 (left) or 0 (right)
 	lsr.w	#2,d0	;divide by 4. d0 will be either 1 (left) or 0 (right)

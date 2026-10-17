@@ -85,7 +85,7 @@ PlayoffScreen	;Bring up the playoff screen if in playoff mode (not Shootout; Opt
 	clr.w	(picturebits).w
 	move.w	#$104,(clampcounter).w
 	move.w	#$A0,(playoffspritey).w
-	movea.l	#VDP_CTRL,a0
+	movea.l	#Vctrl,a0
 	move.w	#VDPR_WINY+$02,(a0)
 	movea.w	#(potree-M68K_RAM),a1
 	movea.l	#PlayoffTreeSetup,a0	;playoff tree layout by gamelevel

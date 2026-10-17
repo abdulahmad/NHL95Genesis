@@ -74,7 +74,7 @@ Pausemode	;(PauseMode). Game is in pause mode now: fade out, stop the sound (unl
 .7
 	move.w	(sp)+,(sflags).w
 	jsr	(RestoreGameScreen).l
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY,Vctrl-Vdata(a0)
 	bclr	#sfpz,(sflags).w
@@ -344,7 +344,7 @@ PauseScreenDraw	;Draw the pause screen (SetupPauseScreen): wait out the dma, pla
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)	;no window
 	move.w	#VDPR_WINY,Vctrl-Vdata(a0)
 	move.w	(VSPRITES).w,d0

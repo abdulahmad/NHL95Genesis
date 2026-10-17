@@ -463,7 +463,7 @@ DrawTeamScreen	;Roster screen background: wait for the dma (disflags bit 0), cle
 	jsr	(SetScroll2).l
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	movea.l	#VDP_DATA,a0
+	movea.l	#Vdata,a0
 	move.w	#VDPR_WINX,Vctrl-Vdata(a0)
 	move.w	#VDPR_WINY+$1C,Vctrl-Vdata(a0)
 	move.w	(VSPRITES).w,d0
@@ -806,8 +806,8 @@ GameSetUp	;The game setup screen, rewritten for ReadLineData, ReadPassBits, the 
 	bra.w	.fix
 .23
 	clr.w	(demoflag).w
-	move.w	(VDP_CNTR).l,(seed).w
-	move.w	(VDP_CNTR).l,(seed+2).w
+	move.w	(HVcount).l,(seed).w
+	move.w	(HVcount).l,(seed+2).w
 	clr.w	(OptPlayMode).w
 	clr.w	(OptNOP).w
 	clr.w	(OptLine).w

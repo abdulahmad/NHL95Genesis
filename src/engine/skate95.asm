@@ -749,7 +749,7 @@ doplayeracc	;Player acceleration toward direction d0 by his speed rating (dirtab
 	bra.s	.13
 	btst	#pfjoycon,pflags(a3)
 	bne.s	.13
-	move.w	(VDP_CNTR).l,d4
+	move.w	(HVcount).l,d4
 	btst	#1,d4
 	beq.s	.13
 	tst.b	$77(a3)
@@ -991,7 +991,7 @@ playeracc	;Player acceleration with facing d2 (doplayeracc entry used by the goa
 .7
 	tst.w	(OptLine).w
 	bne.w	.ex
-	move.w	(VDP_CNTR).l,d0
+	move.w	(HVcount).l,d0
 	andi.w	#$7F,d0
 	bne.w	.ex
 	jsr	(getpde).l
