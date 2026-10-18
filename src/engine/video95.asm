@@ -2,7 +2,7 @@
 ;	palettes, unpacks graphics, draws sprite frames and scrolls the rink. It also runs the
 ;	vertical blank and reads the pads with key repeat.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	VDP helpers: filling and copying VRAM, decompressing graphics, palette fades and the vblank
 ; transfers.
 
@@ -435,7 +435,7 @@ DoDMA								;95 drops the 94 Z80 bus request, the sr save and the last word fix
 	movem.l	(sp)+,d2/a1
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Adding sprite frames and scrolling the rink.
 
 addframe							;a3 = sort cord object. Project it with find3d, then addframe2. a5 = dma
@@ -671,7 +671,7 @@ updatescroll						;Using hpos and vpos set scroll cords; queue rink map rows on 
 	dbeq	d3,.su
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The graphics decompressor, the vblank handlers and the pad reads.
 
 ; fade all colors to black but don't upset palfadenew
@@ -1357,7 +1357,7 @@ ReadMenuJoy							;Read the menu pad: with sflags12 bit 0 clear, pad menupadnum
 .all
 	jmp	(orjoy4way).l
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Key repeat on the pad input.
 
 ProcessInputWithRepeat				;nodiag, then key repeat on d1-d3. 95: first repeat after $19 frames, then

@@ -1,7 +1,7 @@
 ;	The playoff screen. It shows the playoff tree with the series scores and team blocks, scrolls
 ;	it with the pad and draws the playoff sprite.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The playoff tree screen: pad input, scrolling, series scores and team blocks.
 
 
@@ -320,7 +320,7 @@ PlayoffScreenText					;Round titles by gamelevel, printbig Strings with their po
 	String	$CF,$3B,$19,'Finals'
 	String	$CF,$37,$19,'Champions'
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The playoff tree setup and its sprite.
 
 

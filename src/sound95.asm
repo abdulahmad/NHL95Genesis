@@ -1477,7 +1477,7 @@ SoundBanks							;Bank 0 (SndSetBank, Begin and Opening2): the item count, then 
 	incbin	..\Extracted\NHL95\Sound\Bank\snd95_list_00.bin
 	incbin	..\Extracted\NHL95\Sound\Bank\snd95_list_01.bin
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The sound calls, then the unused remains of the old sound driver with its PCM samples and FM patches.
 
 SoundCmd							;Send command d0 to the 95 sound driver (SndDriver, above). Called from

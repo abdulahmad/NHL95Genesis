@@ -2,7 +2,7 @@
 ;	the season's player stats, team stats and league leaders, and runs the line editor, the
 ;	three stars and the highlights of the day's games.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The game statistics screens.
 
 
@@ -315,7 +315,7 @@ TeamStatTextTblNoPen				;The rows without the power play ones, used when penalti
 	dc.b	'Passing',0
 	dc.w	$14,$12
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The player stats screen, saving season stats, the season stats and leaders screens, the line editor,
 ; the three stars and the season highlights. New in 95: the season stats, leaders and highlights screens.
 

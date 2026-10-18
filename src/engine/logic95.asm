@@ -1,9 +1,8 @@
 ;	Player logic. Every player on the ice has an assignment, and this file runs them: the goalie's
-;	positioning and saves, the defense, wing and center positions, the puck carrier, skating,
-;	checking and breakaways, trips to the bench and the penalty box, the one-timer, and the
-;	computer's choices of when to shoot, pass and pull its goalie.
+;	positioning and saves, the skaters' positions, the puck carrier, skating, checking, bench and
+;	penalty box trips, the one-timer, and the computer's shoot, pass and goalie-pull choices.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The assignment table and dispatcher, and the goalie's save and positioning logic.
 
 asstab								;Jump table of the player logic assignments, in a new order: the
@@ -828,7 +827,7 @@ assgoalietopuck						;asstab entry $14. Goalie skates to the loose puck
 .go
 	bra.w	skatetopuck
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Defense assignments for the defensemen and wingers.
 
 ; player a3 is defensive player on defense
@@ -1149,7 +1148,7 @@ asswingd							;asstab entry 8
 	move.w	#$64,d0
 	bra.s	.go
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Center and offense assignments, puck handling, skating to targets, breakaways and the shoot / pass checks.
 
 asswingo							;asstab entry 9. Winger on offense: a random spot in the puck zone
@@ -3338,7 +3337,7 @@ check4bench							;Go to the bench for a line change, or take the new position
 	move.w	d0,position(a3)
 	jmp	(Setplass).l
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Going to the bench and serving penalties.
 
 assbench							;asstab entry $12. Player a3 goes to the bench: skate to the bench door,
@@ -3588,7 +3587,7 @@ assepen								;asstab entry $16. Player a3 leaves the penalty box
 	move.w	#$F000,Xvel(a3)
 	bra.w	assexit
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	One-timer shots.
 
 
@@ -3901,7 +3900,7 @@ CheckOneTimerFacing					;Findhittype on direction d0 (the angle to the goal), d0
 	movem.w	(sp)+,d0
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Shooting, goalie control, offsides, scoring celebrations and pulling the goalie.
 
 

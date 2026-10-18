@@ -1,7 +1,7 @@
 ;	User records. This file runs the name entry screen and the name log, shows Record Holders and
 ;	the playoff stats, and updates the saved records after each game.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The user name entry screen.
 
 
@@ -725,7 +725,7 @@ WriteNameRecord						;Clear name slot namelogsel from every saved record (read R
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	User name entry for each pad, the name log, and the records screens.
 
 
@@ -1330,7 +1330,7 @@ ClearWinRecords						;Clear bytes 8-$B (wins, games) of the 8 ThreeStars records
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Updating the user records after a game and reading and writing them in save RAM.
 
 

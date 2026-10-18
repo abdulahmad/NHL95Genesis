@@ -172,7 +172,7 @@ doinput_goaliedive					;The goalie dive on button A (bit 6): face TempWord1, nop
 rtss15								;The rts of doinput_goaliedive
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Pad input helpers: limiting the target y and the goalie's animation checks.
 
 
@@ -370,7 +370,7 @@ getGoalieSCnum						;d0 = SCnum of the goalie of the team of player d0 (the firs
 	movem.l	(sp)+,d1/a0
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Skating speed and stopping, goals and their messages, period and game end, the clock,
 ; and the controller setup screen.
 

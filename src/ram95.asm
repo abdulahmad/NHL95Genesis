@@ -650,11 +650,14 @@ SndSeqArg1	equ	$FFFFFF2E			;SndStartSeq d1 (d2-d4 follow at SndDrvRAM+$134-$138)
 SndBanks	equ	$FFFFFF36			;4 sound banks (SndSetBank), -1 = none
 
 ;	Save RAM map. The battery save RAM is $8000 bytes on the odd bytes at SaveRAM: byte n is the low byte of
-;	the word at SaveRAM+2*n. InitSaveRAM copies it to M68K_RAM, so byte n is also at M68K_RAM+n. These SR
-;	names are byte offsets (d0 for ReadSRAM / WriteSRAM); code that reads save RAM in place uses
-;	SaveRAM+2*name. A block keeps its retail address while the one before it still ends on that address. A
-;	larger league starts that block at the previous end, in address order. Crowd records are 16 bytes a team
-;	and end on the team records. The checksum stays on its retail byte; if it moves, the assemble stops.
+;	the word at SaveRAM+2*n. InitSaveRAM copies it to M68K_RAM, so byte n is also at M68K_RAM+n.
+;
+;	These SR names are byte offsets (d0 for ReadSRAM / WriteSRAM); code that reads save RAM in place
+;	uses SaveRAM+2*name.
+;
+;	A block keeps its retail address while the one before it still ends on that address. A larger league
+;	starts that block at the previous end, in address order. Crowd records are 16 bytes a team and end on
+;	the team records. The checksum stays on its retail byte; if it moves, the assemble stops.
 
 SaveRAM	equ	$200000					;the cartridge save RAM (header SRAM range)
 SRAMSize	equ	$8000				;save RAM bytes

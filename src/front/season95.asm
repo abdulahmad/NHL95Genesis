@@ -1,7 +1,7 @@
-;	New in 95: season mode. This file runs the season setup and the season menu, where the user
-;	plays games, plays until a chosen day and looks at standings, schedules, today's games, stats
-;	and the playoffs. It also plays out the computer's games and keeps the season in save RAM.
-;	The demo's input and random teams are at the start.
+;	New in 95: season mode. This file runs the season setup and the season menu (play, play until a
+;	chosen day, standings, schedules, stats, playoffs) and plays out the computer's games.
+;
+;	The season is kept in save RAM. The demo's input and random teams are at the start.
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp /
 ;	cmpi; fixopcodes.js patches the cmp encoding after assembly.

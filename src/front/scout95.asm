@@ -3,7 +3,7 @@
 
 ;	$20xxxx addresses are save RAM (odd bytes).
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The scouting report and its matchup pages.
 
 
@@ -724,7 +724,7 @@ SortHotColdStarters					;Sum the hot / cold values of the 6 starters of team a0 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The scouting text, hot and cold players and team ratings.
 
 
@@ -1246,8 +1246,9 @@ TeamRatings							;GetTeamRating values, one byte per team (TeamList order)
 
 ScoutTextScript						;The scouting text lines, each ended by $D, $FF after the last;
 									;ScoutTextPlayer skips n $D for line n
-									;substitution chars: ^ arena  = home team  * away team  } away (alt intro)  < > | \ hot/cold players  #
-	;  home user name (NextHomeUser)  % away user name (NextAwayUser)
+									;substitution chars: ^ arena  = home team  * away team  } away (alt intro)
+									;< > | \ hot/cold players  #  home user name (NextHomeUser)
+									;% away user name (NextAwayUser)
 	incbin	..\Extracted\NHL95\Text\ScoutTextScript.bin
 
 GetHomeUsers						;homeusers = the count, then the name log entries of the pads on the home

@@ -1,7 +1,7 @@
 ;	Graphics data, all loaded from the extracted files: player pictures, the rink, sprites, fonts,
 ;	screen maps and pictures, team logo colors and the arena graphics.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Player pictures, the rink, sprites, fonts, screen maps and bitmaps, and the team logos.
 ; A map starts with its 8-byte header (palette and map offsets), so its tiles are at Label+8.
 
@@ -671,7 +671,7 @@ logoASE								;Team logo (TeamLogoBitmaps)
 logoASW								;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoASW.map.jim
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Team logo palettes, one per team in TeamList order.
 
 TeamLogoPalettes					;Team logo palettes, 16 colors per team (DrawMatchupLogo, NameEntryScreen,
@@ -708,7 +708,7 @@ TeamLogoPalettes					;Team logo palettes, 16 colors per team (DrawMatchupLogo, N
 	inform 3,"TeamLogoPalettes does not match the team count"
 	ENDIF
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The home team arena graphics, one block per team.
 
 ArenaGfxBank						;LoadHomeTeamGfx: one block of $30A bytes per team (TeamGfxList)

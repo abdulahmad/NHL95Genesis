@@ -1,7 +1,7 @@
 ;	Penalty logic. This file calls penalties and the other stoppages of play, shows the referee
 ;	and his messages, plays the song for the leading team and watches for icing and offsides.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Calling penalties, the penalty displays, the referee and the leading team's song.
 
 
@@ -787,7 +787,7 @@ ClearPenaltyMessage					;Blank the horizontal mode penalty message line (22 spac
 	String	-(TXPRI+TXMAP1),5,$B,'                      '
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Aggression checks, the referee display, clearing penalties, icing and offsides.
 
 

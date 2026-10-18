@@ -2,7 +2,7 @@
 ;	lines and change them on its own, and keeps the saved line sets. It also sets up the teams
 ;	between periods, shows the EA Sports screen and draws the team screens.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The line change menu: choosing a line with the pad and drawing the line bar.
 
 
@@ -301,7 +301,7 @@ AvgCline							;Return d0 = average energy of the current line on team a2
 	movem.l	(sp)+,d1-d3/a0
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Computer line changes, the intermission team setup, the EA Sports screen and the saved line sets.
 
 

@@ -1,7 +1,7 @@
 ;	Pause. This file runs the pause mode and its screen with the three tab pause menu, including
 ;	manual goalie, goalie selection and timeouts, and shows the scores on the pause screen.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Entering pause mode and setting up the pause screen.
 
 
@@ -98,7 +98,7 @@ SetupPauseScreen					;Draw routine for the pause menu: PauseScreenDraw, then Kil
 	jsr	(KillCrowd).l
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The pause menu: its tabs, item lists and drawing, and restoring the game screen afterwards.
 seta2								;Set a2 to the team struct of the pause pad (menupadnum: cont1team ...
 									;cont4team). Called from Pausemode and
@@ -1313,7 +1313,7 @@ PlayGame							;Pause menu PLAY GAME: sflags9 bit 3 ends the pause menu (HandleM
 	bset	#3,(sflags9).w
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Goalie and timeout menu items, the pause screen scores and the pad sides.
 
 

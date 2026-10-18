@@ -2,7 +2,7 @@
 ;	show the clock, format player names and numbers, and draw team blocks, team graphics and the
 ;	EASN logo.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Shared helpers: math, random numbers, text printing, the game clock, player names and attributes,
 ; number formatting, team maps and the rink setup.
 
@@ -2318,7 +2318,7 @@ setupice							;Set all variables, send non purgeable graphics, build sprite fra
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The home team arena graphics, the EASN logo and the period time display.
 
 
