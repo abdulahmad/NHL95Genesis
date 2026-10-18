@@ -9,7 +9,7 @@ cd "$1"; bat=$2; top=$3; ref=$4
 export NHL_PREBUILD_DONE=1
 rm -rf Extracted; node tools/prebuild.js retail >/tmp/x95.log 2>&1 || { echo "PREBUILD FAIL"; cat /tmp/x95.log; exit 1; }
 rm -f output/$top.bin output/modified_$top.bin
-wine cmd /c "set rev=0&& set checksum=1&& $bat" >/tmp/top.log 2>&1
+wine cmd /c "set checksum=1&& $bat" >/tmp/top.log 2>&1
 log=$(ls -t output/Build*.log | head -1)
 grep -qP '^[1-9]\d* error' "$log" && echo "TOP ERRORS in $log"
 [ -s output/$top.bin ] || echo "TOP NO BIN"
