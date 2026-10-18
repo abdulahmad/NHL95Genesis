@@ -2,7 +2,7 @@
 ;	palettes, unpacks graphics, draws sprite frames and scrolls the rink. It also runs the
 ;	vertical blank and reads the pads with key repeat.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	VDP helpers: filling and copying VRAM, decompressing graphics, palette fades and the vblank
 ; transfers.
 
@@ -42,7 +42,7 @@ setVram								;Fade every colour to d0, then fall into setVram_0
 	bsr.w	forcefade
 setVram_0							;Second half of setVram without the fade: clear vram and set the VDP
 									;registers from disflags, Map1col
-									;VmMap1-3, VSPRITES and VSCRLPM. Falls in from setVram, called from
+									;VmMAP1-3, VSPRITES and VSCRLPM. Falls in from setVram, called from
 									;EASportsScreen
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -69,16 +69,16 @@ setVram_0							;Second half of setVram without the fade: clear vram and set the
 .i64
 	move.w	d0,Vctrl-Vdata(a0)
 	move.w	#$8200,d0
-	move.b	(VmMap1).w,d0
+	move.b	(VmMAP1).w,d0
 	lsr.b	#2,d0
 	andi.b	#$38,d0
 	move.w	d0,Vctrl-Vdata(a0)
 	move.w	#$8400,d0
-	move.b	(VmMap2).w,d0
+	move.b	(VmMAP2).w,d0
 	lsr.b	#5,d0
 	move.w	d0,Vctrl-Vdata(a0)
 	move.w	#$8300,d0
-	move.b	(VmMap3).w,d0
+	move.b	(VmMAP3).w,d0
 	lsr.b	#2,d0
 	andi.b	#$3E,d0
 	move.w	d0,Vctrl-Vdata(a0)
@@ -202,19 +202,19 @@ WaitDMA								;Wait for the vdp dma busy bit to clear
 	bne.s	WaitDMA
 	rts
 
-forcefade							;Run the palette fade to the end: vbint = vb2 (fades only), interrupts on,
+forcefade							;Run the palette fade to the end: VBint = vb2 (fades only), interrupts on,
 									;wait for palcount to go negative
 	move	sr,-(sp)
-	move.l	(vbint).w,-(sp)
+	move.l	(VBint).w,-(sp)
 	move.w	(disflags).w,-(sp)
 	bclr	#dfng,(disflags).w
-	move.l	#vb2,(vbint).l
+	move.l	#vb2,(VBint).l
 	move	#$2500,sr
 .1
 	tst.w	(palcount).w
 	bpl.s	.1
 	move.w	(sp)+,(disflags).w
-	move.l	(sp)+,(vbint).w
+	move.l	(sp)+,(VBint).w
 	move	(sp)+,sr
 	rts
 
@@ -292,11 +292,11 @@ CopyPaletteToCRAM					;Copy all 64 palfadenew colours to colour ram (dfng set), 
 	movem.l	(sp)+,d0/a0-a1
 	rts
 
-xyVmMap								;Set the vdp write address to printx, printy in the map at VmMap1 + printm
+xyVmMap								;Set the vdp write address to printx, printy in the map at VmMAP1 + printm
 	movem.l	d0-d2,-(sp)
 	move.w	(printx).w,d0
 	move.w	(printy).w,d1
-	movea.w	#(VmMap1-M68K_RAM),a0
+	movea.w	#(VmMAP1-M68K_RAM),a0
 	adda.w	(printm).w,a0
 	move.w	2(a0),d2
 	asl.w	d2,d1
@@ -349,7 +349,7 @@ DumpSprites2						;Transfer sprite table, then the dma list. Falls into DoDMAlis
 	move.w	(Sattsize).w,d0			;words
 	move.w	(VSPRITES).w,d1
 	bsr.w	DoDMA
-DoDMAList							;Transfer data from dmalist. Also called
+dodmalist							;Transfer data from dmalist. Also called
 	movea.l	(DMAlistend).w,a6
 	cmpa.l	#DMAList,a6
 	beq.w	rtss2					;list empty
@@ -435,7 +435,7 @@ DoDMA								;95 drops the 94 Z80 bus request, the sr save and the last word fix
 	movem.l	(sp)+,d2/a1
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Adding sprite frames and scrolling the rink.
 
 addframe							;a3 = sort cord object. Project it with find3d, then addframe2. a5 = dma
@@ -632,7 +632,7 @@ updatescroll						;Using hpos and vpos set scroll cords; queue rink map rows on 
 	addi.w	#$1E,d0
 	andi.w	#$1F,d0
 	asl.w	#7,d0
-	add.w	(VmMap2).w,d0
+	add.w	(VmMAP2).w,d0
 	move.w	d0,6(a5)
 	move.w	#$1E,d0
 	sub.w	d1,d0
@@ -656,7 +656,7 @@ updatescroll						;Using hpos and vpos set scroll cords; queue rink map rows on 
 	addi.w	#$1D,d0
 	andi.w	#$1F,d0
 	asl.w	#7,d0
-	add.w	(VmMap2).w,d0
+	add.w	(VmMAP2).w,d0
 	move.w	d0,6(a5)
 	move.w	#$3D,d0
 	sub.w	d1,d0
@@ -671,7 +671,7 @@ updatescroll						;Using hpos and vpos set scroll cords; queue rink map rows on 
 	dbeq	d3,.su
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The graphics decompressor, the vblank handlers and the pad reads.
 
 ; fade all colors to black but don't upset palfadenew
@@ -968,9 +968,9 @@ Framer								;Draw a d0 x d1 frame at printx / printy from the framer map. 95 t
 AddFramer							;Jumped to from ReAddFramer. Load the framer tiles at char d4 through
 									;DecompressGraphicsWithCallback with the remap table after the jsr (colour
 									;7 to 1); 95 also stores the map address in framermapptr
-	movea.l	#Framermap+8,a2
+	movea.l	#FramerMap+8,a2
 	move.w	d4,(framercset).w
-	move.l	#Framermap,(framermapptr).l
+	move.l	#FramerMap,(framermapptr).l
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$61,$89,$AB,$CD,$EF	;remap table: colour n to n, except 7 to 1
 	rts
@@ -982,11 +982,11 @@ AddFramer2							;AddFramer for the second framer map, no remap
 	jsr	(DecompressGraphicsPlain).l
 	rts
 
-VBjsr								;Vertical blank interrupt (vector $78), jumps through the vbint RAM vector
-	move.l	(vbint).w,-(sp)			;push handler address
+VBjsr								;Vertical blank interrupt (vector $78), jumps through the VBint RAM vector
+	move.l	(VBint).w,-(sp)			;push handler address
 	rts								;and "return" into it
 
-VBlank								;Main vblank code for game play (vbint target). DumpSprites when dfok is
+VBlank								;Main vblank code for game play (VBint target). DumpSprites when dfok is
 									;set cramfade, then the game clock. gmode2 bit 2 keeps the clock running
 									;after the whistle, and with gmode2 bit 1 (penalty shot / shootout)
 									;shootoutclock counts down instead (shootoutjiffy jiffies, not while
@@ -1022,7 +1022,7 @@ VBlank								;Main vblank code for game play (vbint target). DumpSprites when d
 	move.w	#SFXbeep2,-(sp)			;SFXbeep2, played when gameclock reaches 60
 	jsr	(sfx).l						;jsr (94: bsr.w)
 .c
-	addq.w	#1,(vcount).w
+	addq.w	#1,(Vcount).w
 	jsr	(p_music_vblank).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rte
@@ -1044,20 +1044,20 @@ p_music_vblank						;Read the pads, then SoundCmd 1: the 95 sound driver's vblan
 	jsr	(SoundCmd).l
 	rts
 
-vb2									;Vblank used for palfades only, no dmas (vbint target). No rte here: falls
+vb2									;Vblank used for palfades only, no dmas (VBint target). No rte here: falls
 									;into IRQ7
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w
 	bne.w	.nograph
 	bsr.w	cramfade
 .nograph
-	addq.w	#1,(vcount).w
+	addq.w	#1,(Vcount).w
 	jsr	(p_music_vblank).l
 	movem.l	(sp)+,d0-d7/a0-a6
 IRQ7								;Rte only. vb2 falls in; the vector table ($60, $64, ...) points here
 	rte
 
-VBlank_SetOptions					;vbint handler stored by the menus: cramfade unless dfng, plus
+VBlank_SetOptions					;VBint handler stored by the menus: cramfade unless dfng, plus
 									;DumpSprites2 when dfok is set
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w
@@ -1068,7 +1068,7 @@ VBlank_SetOptions					;vbint handler stored by the menus: cramfade unless dfng, 
 .fade
 	bsr.w	cramfade
 .nograph
-	addq.w	#1,(vcount).w
+	addq.w	#1,(Vcount).w
 	jsr	(p_music_vblank).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rte
@@ -1357,7 +1357,7 @@ ReadMenuJoy							;Read the menu pad: with sflags12 bit 0 clear, pad menupadnum
 .all
 	jmp	(orjoy4way).l
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Key repeat on the pad input.
 
 ProcessInputWithRepeat				;nodiag, then key repeat on d1-d3. 95: first repeat after $19 frames, then
@@ -1384,9 +1384,9 @@ ProcessInputWithRepeat				;nodiag, then key repeat on d1-d3. 95: first repeat af
 
 WaitVSyncAndReadInput				;Wait for the next vblank, read the menu pad (ReadMenuJoy, nodiag) until a
 									;new button press
-	move.w	(vcount).w,d1
+	move.w	(Vcount).w,d1
 .wait
-	cmp.w	(vcount).w,d1
+	cmp.w	(Vcount).w,d1
 	beq.s	.wait
 	bsr.w	ReadMenuJoy
 	bsr.w	nodiag

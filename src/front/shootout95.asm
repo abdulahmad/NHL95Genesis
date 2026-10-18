@@ -1,7 +1,7 @@
 ;	Shootouts and penalty shots. This file sets up the shooters and their skating paths, moves on
 ;	to the next shooter, counts the goals, runs the shooters screen and plays penalty shots.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Shootout setup and the shooters' skating paths.
 
 
@@ -234,7 +234,7 @@ ShootoutShootCheck					;Shootout, skater a3 has the puck (gmode2 bit 1): Z set (
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Shooter turns, the shootout result and the shooters screen.
 
 
@@ -770,7 +770,7 @@ PrintShooterNames					;Shootout shooters: the shooters' names (FormatPlayerNameS
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Penalty shots, season injuries and power plays.
 
 
@@ -1004,9 +1004,9 @@ puckpenshot							;Penalty shot / shootout face-off: rink, puck and nets reset, 
 .waitvblank
 	btst	#dfok,(disflags).w
 	bne.s	.waitvblank
-	cmpi.w	#$258,(crowdlevel).w
+	cmpi.w	#$258,(Crowdlevel).w
 	bls.w	.1
-	move.w	#$258,(crowdlevel).w
+	move.w	#$258,(Crowdlevel).w
 	addi.w	#$14,(CwdExciteLvl).w
 .1
 	move.w	(ExtraChars).w,d4

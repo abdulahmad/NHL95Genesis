@@ -21,8 +21,8 @@ SPFpad34	=	SPFreplay+7			; 121 not used by a 95 table: joypad 3 and 4 stars
 SPFshoulderl	=	SPFpad34+2		; 123 (94: 241)
 SPFshoulderr	=	SPFshoulderl+8	; 131 (94: 249)
 SPFhook	=	SPFshoulderr+8			; 139 (94: 593)
-SPFhold	=	SPFhook+16				; 155 (94: 345)
-SPFsweep	=	SPFhold+8			; 163 (94: 257)
+SPFHold	=	SPFhook+16				; 155 (94: 345)
+SPFsweep	=	SPFHold+8			; 163 (94: 257)
 SPFfallfwd	=	SPFsweep+16			; 179 (94: 305)
 SPFfallback	=	SPFfallfwd+48		; 227 (94: 273)
 
@@ -464,14 +464,14 @@ SPAHold_table:						;Frames 155-162
 	dc.w	.7-.t
 	dc.w	0
 
-.0	dc.w	SPFhold,-30
-.1	dc.w	SPFhold+1,-30
-.2	dc.w	SPFhold+2,-30
-.3	dc.w	SPFhold+3,-30
-.4	dc.w	SPFhold+4,-30
-.5	dc.w	SPFhold+5,-30
-.6	dc.w	SPFhold+6,-30
-.7	dc.w	SPFhold+7,-30
+.0	dc.w	SPFHold,-30
+.1	dc.w	SPFHold+1,-30
+.2	dc.w	SPFHold+2,-30
+.3	dc.w	SPFHold+3,-30
+.4	dc.w	SPFHold+4,-30
+.5	dc.w	SPFHold+5,-30
+.6	dc.w	SPFHold+6,-30
+.7	dc.w	SPFHold+7,-30
 
 SPAHold2	=	*-SPAlist			; holdcheck
 SPAHold2_table:						;Frames 155-162
@@ -486,16 +486,16 @@ SPAHold2_table:						;Frames 155-162
 	dc.w	.7-.t
 	dc.w	0
 
-.0	dc.w	SPFhold,-55
-.1	dc.w	SPFhold+1,-55
-.2	dc.w	SPFhold+2,-55
-.3	dc.w	SPFhold+3,-55
-.4	dc.w	SPFhold+4,-55
-.5	dc.w	SPFhold+5,-55
-.6	dc.w	SPFhold+6,-55
-.7	dc.w	SPFhold+7,-55
+.0	dc.w	SPFHold,-55
+.1	dc.w	SPFHold+1,-55
+.2	dc.w	SPFHold+2,-55
+.3	dc.w	SPFHold+3,-55
+.4	dc.w	SPFHold+4,-55
+.5	dc.w	SPFHold+5,-55
+.6	dc.w	SPFHold+6,-55
+.7	dc.w	SPFHold+7,-55
 
-SPAhook	=	*-SPAlist				; holdplayer, Acheck, CCStart
+SPAhook	=	*-SPAlist				; Holdplayer, Acheck, CCStart
 SPAhook_table:						;Frames 139-153
 .t									;Offset to each direction of animation (0-7)
 	dc.w	.0-.t

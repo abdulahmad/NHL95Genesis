@@ -1,7 +1,7 @@
 ;	User records. This file runs the name entry screen and the name log, shows Record Holders and
 ;	the playoff stats, and updates the saved records after each game.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The user name entry screen.
 
 
@@ -16,7 +16,7 @@ NameEntryScreen						;Name Entry screen: draw team logo, NAME ENTRY title and Na
 	jsr	(CreateRatingsGfx).l
 	move.w	d4,(homepicchars).w
 	addi.w	#$24,d4
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(spritechars).w
@@ -109,9 +109,9 @@ NameEntryScreen						;Name Entry screen: draw team logo, NAME ENTRY title and Na
 .4
 	bsr.w	MoveLogArrows
 .loop2
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .loop3
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.loop3
 	cmpa.l	#pad1user,a5
 	beq.w	.input
@@ -725,7 +725,7 @@ WriteNameRecord						;Clear name slot namelogsel from every saved record (read R
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	User name entry for each pad, the name log, and the records screens.
 
 
@@ -1330,7 +1330,7 @@ ClearWinRecords						;Clear bytes 8-$B (wins, games) of the 8 ThreeStars records
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Updating the user records after a game and reading and writing them in save RAM.
 
 
@@ -1819,7 +1819,7 @@ SetupScreen							;Common start of the stats screens: blank, scroll 0, 40 cell m
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$0B,$83,$48,$67,$89,$AB,$CD,$EF	;remap table
 	move.l	#SmallFontMap,(smallfontptr).l
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l

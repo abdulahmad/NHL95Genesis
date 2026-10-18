@@ -12,14 +12,14 @@ newTitleScreen						;The title screen (TitleScreenImg, TitleImg) with the vblank
 	move	#$2700,sr
 	move.w	(HVcount).l,(seed).w
 	move.w	(HVcount).l,(seed+2).w
-	move.l	#VBlank_TitleScreen,(vbint).l
+	move.l	#VBlank_TitleScreen,(VBint).l
 	bset	#df32c,(disflags).w
 	move.w	#5,(Map3col1).w
-	move.w	#$A000,(VmMap2).w
+	move.w	#$A000,(VmMAP2).w
 	move.w	#7,(Map2col1).w
-	move.w	#$C000,(VmMap1).w
+	move.w	#$C000,(VmMAP1).w
 	move.w	#7,(Map1col1).w
-	move.w	#$F000,(VmMap3).w
+	move.w	#$F000,(VmMAP3).w
 	move.w	#$F800,(VSPRITES).w
 	move.w	#$FC00,(VSCRLPM).w
 	move.w	#0,d0
@@ -185,9 +185,9 @@ CreditsPrintRow						;Credits: clear the row below the screen (Vscroll / 8 + $1C
 CreditsWait							;Credits: wait one frame, run the clampcounter count down; from TempWord1
 									;5 on, start returns from the caller
 	movem.l	d0-d7/a0-a6,-(sp)
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .loop
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.loop
 	subq.w	#2,(clampcounter).w
 	bpl.w	.1
@@ -227,7 +227,7 @@ VBlank_TitleScreen					;newTitleScreen vblank: the line scroll table and Vscroll
 .0
 	jsr	(cramfade).l
 .1
-	addq.w	#1,(vcount).w
+	addq.w	#1,(Vcount).w
 	jsr	(CreditsScrollStep).l
 	jsr	(p_music_vblank).l
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -292,14 +292,14 @@ CreditsScrollStep					;Credits: line scroll step, every TempWord2 frames
 
 HiScoreScreen						;vb2, the HiScoreBgMap and HiScoreImg bitmaps, then wait up to $50 * 4
 									;frames or a button (waitx)
-	move.l	#vb2,(vbint).w
+	move.l	#vb2,(VBint).w
 	bclr	#df32c,(disflags).w
 	move.w	#5,(Map3col1).w
-	move.w	#$A000,(VmMap2).w
+	move.w	#$A000,(VmMAP2).w
 	move.w	#7,(Map2col1).w
-	move.w	#$C000,(VmMap1).w
+	move.w	#$C000,(VmMAP1).w
 	move.w	#7,(Map1col1).w
-	move.w	#$F000,(VmMap3).w
+	move.w	#$F000,(VmMAP3).w
 	move.w	#$F800,(VSPRITES).w
 	move.w	#$FC00,(VSCRLPM).w
 	jsr	(forceblack).l
@@ -354,15 +354,15 @@ StanleyCupScreen					;The Stanley Cup screen: the vblank CupVBlank, the cup (Sta
 									;the winner team block (CupDrawTeam), the song, then the animated sprites
 									;until start
 	movem.l	d0-d7/a0-a6,-(sp)
-	move.l	#CupVBlank,(vbint).l
+	move.l	#CupVBlank,(VBint).l
 	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$BC00,(VSPRITES).w
-	move.w	#$B000,(VmMap3).w
+	move.w	#$B000,(VmMAP3).w
 	move.w	#6,(Map3col1).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#7,(Map2col1).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#7,(Map1col1).w
 	move.w	#0,d0
 	jsr	(setVram).l
@@ -432,9 +432,9 @@ CupReadPads							;StanleyCupScreen: the buttons of all pads; start leaves Stanl
 	rts
 
 CupWaitFrame						;StanleyCupScreen: wait for the next vblank
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .loop
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.loop
 	rts
 
@@ -443,7 +443,7 @@ CupExit								;Leave StanleyCupScreen (CupReadPads on start: drop its return ad
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CupVBlank							;StanleyCupScreen vblank: the sprites, cramfade, vcount, the music;
+CupVBlank							;StanleyCupScreen vblank: the sprites, cramfade, Vcount, the music;
 									;nothing with disflags bit 2; rte
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w
@@ -457,7 +457,7 @@ CupVBlank							;StanleyCupScreen vblank: the sprites, cramfade, vcount, the mus
 .nodma
 	jsr	(cramfade).l
 .skip
-	addq.w	#1,(vcount).w
+	addq.w	#1,(Vcount).w
 	jsr	(p_music_vblank).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rte

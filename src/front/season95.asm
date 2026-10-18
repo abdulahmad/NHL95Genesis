@@ -1,7 +1,7 @@
-;	New in 95: season mode. This file runs the season setup and the season menu, where the user
-;	plays games, plays until a chosen day and looks at standings, schedules, today's games, stats
-;	and the playoffs. It also plays out the computer's games and keeps the season in save RAM.
-;	The demo's input and random teams are at the start.
+;	New in 95: season mode. This file runs the season setup and the season menu (play, play until a
+;	chosen day, standings, schedules, stats, playoffs) and plays out the computer's games.
+;
+;	The season is kept in save RAM. The demo's input and random teams are at the start.
 
 ;	EA's compiler emits cmp #imm,Dn as CMP (Bxxx), SNASM emits CMPI (0Cxx). The source has the real cmp /
 ;	cmpi; fixopcodes.js patches the cmp encoding after assembly.
@@ -578,7 +578,7 @@ SimDayGames							;Simulate every computer game of the day (flags bit 0 set, bit
 SimGameStats						;Fill the team structs for a simulated game a0 (teams, scores, shots,
 									;scorers, goalies) and SaveSimGame
 	movem.l	d0-d7/a0-a6,-(sp)
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 	jsr	(randomd0).l
 	movea.l	#tmstruct,a1
 	move.w	#$365,d0
@@ -1355,7 +1355,7 @@ SimScore							;Simulate the score of game a0: SimTeamGoals for each team, SimTi
 	move.b	3(a0),d1
 	cmp.b	d0,d1
 	bne.w	.2
-	btst	#2,(vcount).w
+	btst	#2,(Vcount).w
 	beq.w	.1
 	addq.b	#1,3(a0)
 	bra.w	.2
@@ -1597,10 +1597,10 @@ ReadAnyPad							;Wait for a pad press (pads 3, 4 with FourWayPlay;
 	move.l	#$5460,d6
 .wait
 	move.w	#$64,d6
-	move.w	(vcount).w,d1
-	sub.w	(oldvcount).w,d1
+	move.w	(Vcount).w,d1
+	sub.w	(OldVcount).w,d1
 	beq.s	.wait
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
@@ -1688,18 +1688,18 @@ SeasonSetupLines					;a0 = setupvalues; 5 setup lines
 	rts
 
 SeasonSetupGfx						;Season setup screen video set up and graphics
-	move.l	#VBlank_SetOptions,(vbint).w
+	move.l	#VBlank_SetOptions,(VBint).w
 	move	#$2500,sr
 	bclr	#dfok,(disflags).w
 	bset	#dfng,(disflags).w
 	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
-	move.w	#$B800,(VmMap3).w
+	move.w	#$B800,(VmMAP3).w
 	move.w	#5,(Map3col1).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0
 	jsr	(setVram).l
@@ -1713,7 +1713,7 @@ SeasonSetupGfx						;Season setup screen video set up and graphics
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l
@@ -2063,10 +2063,10 @@ GamesTodayDone						;GamesToday: return
 ReadGamesTodayPad					;As ReadAnyPad, but times out after $5460 frames with d1 = 0
 	move.l	#$5460,d6
 .wait
-	move.w	(vcount).w,d1
-	sub.w	(oldvcount).w,d1
+	move.w	(Vcount).w,d1
+	sub.w	(OldVcount).w,d1
 	beq.s	.wait
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
@@ -2417,18 +2417,18 @@ GameRowsTbl6
 	dc.b	$A,$10,$16,$FF
 
 GamesTodayGfx						;Games today screen video set up and graphics
-	move.l	#VBlank_SetOptions,(vbint).w
+	move.l	#VBlank_SetOptions,(VBint).w
 	move	#$2500,sr
 	bclr	#dfok,(disflags).w
 	bset	#dfng,(disflags).w
 	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
-	move.w	#$B800,(VmMap3).w
+	move.w	#$B800,(VmMAP3).w
 	move.w	#5,(Map3col1).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0
 	jsr	(setVram).l
@@ -2443,7 +2443,7 @@ GamesTodayGfx						;Games today screen video set up and graphics
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
 	move.l	#SmallFontMap,(smallfontptr).l
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(gamestoday1chars).w
@@ -2684,9 +2684,9 @@ MenuPlayUntil						;Play Until A Day: pick the day with A (month) / B (day), C c
 	dc.b	$7,$FA,$2,$F9,$2,'Press START to continue.',$F9,$0
 	dc.b	$0
 .loop
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .loop2
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.loop2
 	jsr	(orjoy4way).l
 	btst	#7,d1
@@ -2715,9 +2715,9 @@ MenuPlayUntil						;Play Until A Day: pick the day with A (month) / B (day), C c
 	move.b	d0,(AutoplayDay).w
 	bsr.w	PrintAutoplayDay
 .3
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .input
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.input
 	jsr	(orjoy4way).l
 	btst	#5,d1
@@ -2843,10 +2843,10 @@ ReadSeasonMenuPad					;As ReadAnyPad
 	move.l	#$5460,d6
 .wait
 	move.w	#$64,d6
-	move.w	(vcount).w,d1
-	sub.w	(oldvcount).w,d1
+	move.w	(Vcount).w,d1
+	sub.w	(OldVcount).w,d1
 	beq.s	.wait
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
@@ -2968,18 +2968,18 @@ PlayoffMenuText						;Playoff menu
 	dc.w	0						;end
 
 SeasonOptionsGfx					;Season options screen video set up and graphics
-	move.l	#VBlank_SetOptions,(vbint).w
+	move.l	#VBlank_SetOptions,(VBint).w
 	move	#$2500,sr
 	bclr	#dfok,(disflags).w
 	bset	#dfng,(disflags).w
 	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
-	move.w	#$B800,(VmMap3).w
+	move.w	#$B800,(VmMAP3).w
 	move.w	#5,(Map3col1).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0
 	jsr	(setVram).l
@@ -2998,11 +2998,11 @@ SeasonOptionsGfx					;Season options screen video set up and graphics
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$BB,$83,$44,$67,$89,$AB,$CD,$EF	;remap table
 	move.l	#SmallFontMap,(smallfontptr).l
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
-	movea.l	#Framermap+8,a2
-	move.l	#Framermap,(framermapptr).l
+	movea.l	#FramerMap+8,a2
+	move.l	#FramerMap,(framermapptr).l
 	move.w	d4,(framercset).w
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
@@ -3118,10 +3118,10 @@ ReadCalendarPad						;As ReadAnyPad
 	move.l	#$5460,d6
 .wait
 	move.w	#$64,d6
-	move.w	(vcount).w,d1
-	sub.w	(oldvcount).w,d1
+	move.w	(Vcount).w,d1
+	sub.w	(OldVcount).w,d1
 	beq.s	.wait
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
@@ -3153,18 +3153,18 @@ ReadCalendarPad						;As ReadAnyPad
 	rts
 
 CalendarGfx							;Calendar screen video set up and graphics
-	move.l	#VBlank_SetOptions,(vbint).w
+	move.l	#VBlank_SetOptions,(VBint).w
 	move	#$2500,sr
 	bclr	#dfok,(disflags).w
 	bset	#dfng,(disflags).w
 	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
-	move.w	#$B800,(VmMap3).w
+	move.w	#$B800,(VmMAP3).w
 	move.w	#5,(Map3col1).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0
 	jsr	(setVram).l
@@ -3179,7 +3179,7 @@ CalendarGfx							;Calendar screen video set up and graphics
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
@@ -3586,10 +3586,10 @@ ReadStandingsPad					;As ReadAnyPad
 	move.l	#$5460,d6
 .wait
 	move.w	#$64,d6
-	move.w	(vcount).w,d1
-	sub.w	(oldvcount).w,d1
+	move.w	(Vcount).w,d1
+	sub.w	(OldVcount).w,d1
 	beq.s	.wait
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
@@ -3714,18 +3714,18 @@ StandingsGroup3
 	dc.b	7,8,$C,$D,$E,$10,$15,$18
 
 StandingsGfx						;Standings screen video set up and graphics
-	move.l	#VBlank_SetOptions,(vbint).w
+	move.l	#VBlank_SetOptions,(VBint).w
 	move	#$2500,sr
 	bclr	#dfok,(disflags).w
 	bset	#dfng,(disflags).w
 	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
-	move.w	#$B800,(VmMap3).w
+	move.w	#$B800,(VmMAP3).w
 	move.w	#5,(Map3col1).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0
 	jsr	(setVram).l
@@ -3740,7 +3740,7 @@ StandingsGfx						;Standings screen video set up and graphics
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
 	move.l	#SmallFontMap,(smallfontptr).l
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(teamblocksmapptr).w

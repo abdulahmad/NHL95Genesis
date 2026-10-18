@@ -1,7 +1,7 @@
 ;	Graphics data, all loaded from the extracted files: player pictures, the rink, sprites, fonts,
 ;	screen maps and pictures, team logo colors and the arena graphics.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Player pictures, the rink, sprites, fonts, screen maps and bitmaps, and the team logos.
 ; A map starts with its 8-byte header (palette and map offsets), so its tiles are at Label+8.
 
@@ -460,8 +460,8 @@ FaceoffTiles	equ	FaceOffMap		;the same address
 FaceOffSprites						;The face-off sprites; +8 the tiles
 	incbin	..\Extracted\NHL95\Graphics\FaceOffSprites.map.jim
 FaceoffTiles2	equ	FaceOffSprites	;the same address
-Framermap							;The Framermap map
-	incbin	..\Extracted\NHL95\Graphics\Framermap.map.jim
+FramerMap							;The FramerMap map
+	incbin	..\Extracted\NHL95\Graphics\FramerMap.map.jim
 Framermap2							;The Framermap2 map
 	incbin	..\Extracted\NHL95\Graphics\Framermap2.map.jim
 EnergyBarMap						;The EnergyBarMap map
@@ -604,8 +604,8 @@ ColdIconMap							;The ColdIconMap map
 	incbin	..\Extracted\NHL95\Graphics\ColdIconMap.map.jim
 RonBarrMap							;The RonBarrMap map
 	incbin	..\Extracted\NHL95\Graphics\RonBarrMap.map.jim
-CrowdFrameList						;The crowd sprites; +8 the tiles
-	incbin	..\Extracted\NHL95\Graphics\CrowdFrameList.map.jim
+Crowdframelist						;The crowd sprites; +8 the tiles
+	incbin	..\Extracted\NHL95\Graphics\Crowdframelist.map.jim
 TitleScreenImg						;The TitleScreenImg map
 	incbin	..\Extracted\NHL95\Graphics\TitleScreenImg.map.jim
 TitleImg							;The TitleImg map
@@ -671,7 +671,7 @@ logoASE								;Team logo (TeamLogoBitmaps)
 logoASW								;Team logo (TeamLogoBitmaps)
 	incbin	..\Extracted\NHL95\Graphics\logoASW.map.jim
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Team logo palettes, one per team in TeamList order.
 
 TeamLogoPalettes					;Team logo palettes, 16 colors per team (DrawMatchupLogo, NameEntryScreen,
@@ -708,7 +708,7 @@ TeamLogoPalettes					;Team logo palettes, 16 colors per team (DrawMatchupLogo, N
 	inform 3,"TeamLogoPalettes does not match the team count"
 	ENDIF
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The home team arena graphics, one block per team.
 
 ArenaGfxBank						;LoadHomeTeamGfx: one block of $30A bytes per team (TeamGfxList)

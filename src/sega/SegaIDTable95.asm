@@ -9,7 +9,7 @@
 																;bytes)
 	dc.b	'GM T-50856 -00'		;05 $180 cartridge cat., product no., version no. (14 bytes). 94: T-50656
 	IF CHECKSUM=1					; Security check enabled
-		dc.w	$3C61			; 06	$18E	check sum data (installed by checsum program) (2 bytes)
+		dc.w	$3C61				; 06	$18E	check sum data (installed by checsum program) (2 bytes)
 	ELSE							; Security check disabled
 		dc.w	$0000				; 06	$18E	check sum data (installed by checsum program) (2 bytes)
 	ENDIF

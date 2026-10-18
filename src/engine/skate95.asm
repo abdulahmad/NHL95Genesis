@@ -167,12 +167,12 @@ doinput_goaliedive					;The goalie dive on button A (bit 6): face TempWord1, nop
 	jsr	(SetSPA).l
 	bset	#pf2aip,pflags2(a3)
 	bset	#pfalock,pflags(a3)
-	addi.w	#$96,(crowdlevel).w
+	addi.w	#$96,(Crowdlevel).w
 
 rtss15								;The rts of doinput_goaliedive
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Pad input helpers: limiting the target y and the goalie's animation checks.
 
 
@@ -243,7 +243,7 @@ doinput_cbut						;Button C (bit 5): new press: face the puck
 	movem.w	(sp)+,d0-d1
 	bra.w	.near
 .far
-	jsr	(sroot).l
+	jsr	(Sroot).l
 	moveq	#1,d2
 	add.w	d0,d2
 	moveq	#$12,d4
@@ -370,7 +370,7 @@ getGoalieSCnum						;d0 = SCnum of the goalie of the team of player d0 (the firs
 	movem.l	(sp)+,d1/a0
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Skating speed and stopping, goals and their messages, period and game end, the clock,
 ; and the controller setup screen.
 
@@ -1016,7 +1016,7 @@ playeracc							;Player acceleration with facing d2 (doplayeracc entry used by t
 	jsr	(setpde).l
 	btst	#0,endurance(a3)
 	beq.w	.ex
-	btst	#0,(vcount+1).w
+	btst	#0,(Vcount+1).w
 	beq.w	.ex
 	addq.w	#1,d0
 .8

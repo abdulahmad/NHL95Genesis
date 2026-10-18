@@ -3,7 +3,7 @@
 
 ;	$20xxxx addresses are save RAM (odd bytes).
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The scouting report and its matchup pages.
 
 
@@ -34,7 +34,7 @@ ScoutingReport						;Pregame scouting report: the Ron Barr picture, the text box
 	jsr	(SoundCmd).l
 	move.w	#3,-(sp)
 	jsr	(song).l
-	move.l	#vb2,(vbint).w
+	move.l	#vb2,(VBint).w
 	jsr	(clearTeamStats).l
 	move.l	a0,-(sp)
 	movea.l	#tmstruct,a0
@@ -53,7 +53,7 @@ ScoutingReport						;Pregame scouting report: the Ron Barr picture, the text box
 	addi.w	#$24,d4
 	move.w	d4,(vispicchars).w		;visitors picture chars
 	addi.w	#$24,d4
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF
@@ -124,7 +124,7 @@ ScoutingReport						;Pregame scouting report: the Ron Barr picture, the text box
 .0
 	bsr.w	PrintMatchupRatings
 	move.w	#$18,(palcount).w		;24
-	move.l	#vb2,(vbint).w
+	move.l	#vb2,(VBint).w
 	move	#$2500,sr
 	jsr	(InitScoutingDisplay).l
 	cmpi.w	#ASE,(HomeTeam).w
@@ -724,7 +724,7 @@ SortHotColdStarters					;Sum the hot / cold values of the 6 starters of team a0 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The scouting text, hot and cold players and team ratings.
 
 
@@ -954,7 +954,7 @@ ScrollDisplayUp						;Next text line of ScoutTextPlayer; at 7 lines scroll the 8
 	subq.w	#1,(VertLineScrolling).w
 	movem.l	d0-d3,-(sp)
 	move.l	#7,d3
-	move.w	(VmMap1).w,d1
+	move.w	(VmMAP1).w,d1
 	addi.w	#$316,d1
 .0
 	move.l	#$30,d0
@@ -1246,8 +1246,9 @@ TeamRatings							;GetTeamRating values, one byte per team (TeamList order)
 
 ScoutTextScript						;The scouting text lines, each ended by $D, $FF after the last;
 									;ScoutTextPlayer skips n $D for line n
-									;substitution chars: ^ arena  = home team  * away team  } away (alt intro)  < > | \ hot/cold players  #
-	;  home user name (NextHomeUser)  % away user name (NextAwayUser)
+									;substitution chars: ^ arena  = home team  * away team  } away (alt intro)
+									;< > | \ hot/cold players  #  home user name (NextHomeUser)
+									;% away user name (NextAwayUser)
 	incbin	..\Extracted\NHL95\Text\ScoutTextScript.bin
 
 GetHomeUsers						;homeusers = the count, then the name log entries of the pads on the home

@@ -1,7 +1,8 @@
-;	Top level of the ROM build. It includes the equates and then every module in ROM order, and
-;	each file assembles right after the one before it. The engine and the front end each have a
-;	list file of their own. Only this file sets the start address; a segment build sets its own
-;	in its stub.
+;	Top level of the ROM build. It includes the equates and then every module in ROM order, and each
+;	file assembles right after the one before it.
+;
+;	The engine and the front end each have a list file of their own. Only this file sets the start
+;	address; a segment build sets its own in its stub.
 
 	include	stubinc\ports.inc		;IO_* / VDP_* ports. Equates only
 	include	stubinc\equals.inc		;VDP status bits. Equates only

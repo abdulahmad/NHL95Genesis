@@ -32,15 +32,15 @@ replayend	equ	$FFFFAB80			;94 $FFFFAF54. End of the replay frames ($62 bytes eac
 VSCRLPM	equ	$FFFFAC00				;94 $FFFFB000. Hscroll table vram address (VDP reg $0D); first long Begin
 									;clears
 VSPRITES	equ	$FFFFAC02			;94 $FFFFB002. Sprite table vram address (VDP reg $05)
-VmMap1	equ	$FFFFAC04				;94 $FFFFB004. Plane A vram address, then the map size shift (xyVmMap
-									;reads printm(VmMap1))
+VmMAP1	equ	$FFFFAC04				;94 $FFFFB004. Plane A vram address, then the map size shift (xyVmMap
+									;reads printm(VmMAP1))
 Map1col1	equ	$FFFFAC06			;94 $FFFFB006
-VmMap2	equ	$FFFFAC08				;94 $FFFFB008. Plane B vram address
+VmMAP2	equ	$FFFFAC08				;94 $FFFFB008. Plane B vram address
 Map2col1	equ	$FFFFAC0A			;94 $FFFFB00A
-VmMap3	equ	$FFFFAC0C				;94 $FFFFB00C. Window vram address
+VmMAP3	equ	$FFFFAC0C				;94 $FFFFB00C. Window vram address
 Map3col1	equ	$FFFFAC0E			;94 $FFFFB00E
 bigfontptr	equ	$FFFFAC10			;Address of the big font map printbig uses
-BigFontChars	equ	$FFFFAC14		;94 $FFFFB010. First vram char of the big font
+BigFontchars	equ	$FFFFAC14		;94 $FFFFB010. First vram char of the big font
 smallfontchars	equ	$FFFFAC16		;94 $FFFFB012. First vram char of the small font (AddSmallFont)
 smallfont2chars	equ	$FFFFAC18		;94 $FFFFB014. Second small font chars (the pause font with another remap)
 smallfont3chars	equ	$FFFFAC1A		;Third small font chars (the highlight remap)
@@ -63,14 +63,14 @@ framermapptr	equ	$FFFFAC3C		;Address of the framer map Framer reads (AddFramer, 
 printx	equ	$FFFFAC40				;94 $FFFFB028
 printy	equ	$FFFFAC42				;94 $FFFFB02A
 printa	equ	$FFFFAC44				;94 $FFFFB02C. Print attribute (palette / priority bits)
-printm	equ	$FFFFAC46				;94 $FFFFB02E. Print map offset from VmMap1
+printm	equ	$FFFFAC46				;94 $FFFFB02E. Print map offset from VmMAP1
 printfontset	equ	$FFFFAC48		;94 $FFFFB030. Char set index of printsmall
 fodropx	equ	$FFFFAC4A				;94 $FFFFB032. Faceoff window x (DrawFaceoffWindow)
 fodropy	equ	$FFFFAC4C				;94 $FFFFB034
 recbpr	equ	$FFFFAC4E				;94 $FFFFB036. Replay record pointer
-vbint	equ	$FFFFAC52				;94 $FFFFB03A. Vertical blank handler address (VBjsr jumps through it)
-vcount	equ	$FFFFAC56				;94 $FFFFB03E. Vertical blank counter
-oldvcount	equ	$FFFFAC58			;94 $FFFFB040
+VBint	equ	$FFFFAC52				;94 $FFFFB03A. Vertical blank handler address (VBjsr jumps through it)
+Vcount	equ	$FFFFAC56				;94 $FFFFB03E. Vertical blank counter
+OldVcount	equ	$FFFFAC58			;94 $FFFFB040
 repeatdelayframes	equ	$FFFFAC5A	;94 $FFFFB042. Key repeat count down (ProcessInputWithRepeat)
 asv	equ	$FFFFAC5C					;94 $FFFFB044. Crowd noise volume (updatesound)
 lldisp	equ	$FFFFAC5E				;94 $FFFFB046. Count down to the once a second updates
@@ -87,15 +87,15 @@ puck_pflags2	equ	$FFFFB3C5		;94 $FFFFB7AD. puckx+pflags2 (the puck struct)
 Ylist	equ	$FFFFB462				;94 $FFFFB84A
 OOlistpos	equ	$FFFFB482			;94 $FFFFB86A
 OOlist	equ	$FFFFB4A2				;94 $FFFFB88A. Sort objects in draw order (SprSort)
-crowdframe	equ	$FFFFB4B2			;94 $FFFFB89A
-crowdlevel	equ	$FFFFB4B4			;94 $FFFFB89C
-crowdcnt	equ	$FFFFB4B8			;94 $FFFFB8A0. updatecrowdf: frames to the next crowd frame
+Crowdframe	equ	$FFFFB4B2			;94 $FFFFB89A
+Crowdlevel	equ	$FFFFB4B4			;94 $FFFFB89C
+Crowdcnt	equ	$FFFFB4B8			;94 $FFFFB8A0. updatecrowdf: frames to the next crowd frame
 CwdExciteLvl	equ	$FFFFB4BA		;94 $FFFFB8A2
 MaxCwdExciteLvl	equ	$FFFFB4BC		;94 $FFFFB8A4
 NumCwdExciteLvl	equ	$FFFFB4BE		;94 $FFFFB8A6
 SumCwdExciteLvl	equ	$FFFFB4C0		;94 $FFFFB8A8
 crowdtblidx	equ	$FFFFB4C4			;updatecrowdf: the CrowdFrameTbl index
-zamx	equ	$FFFFB4C6				;94 $FFFFB8AC
+Zamx	equ	$FFFFB4C6				;94 $FFFFB8AC
 playoffspritex	equ	$FFFFB4C8		;94 $FFFFB8AE. Playoff sprite x offset while the tree is scrolled
 									;(UpdatePlayoffScroll)
 playoffspritey	equ	$FFFFB4CA		;94 $FFFFB8B0
@@ -317,7 +317,7 @@ collrad	equ	8						;collision radius of an object (objects collide within collra
 ssosize	equ	$14						;bytes per sso object
 ssonum	equ	4						;screen objects not tied to the rink scroll
 ffonum	equ	6						;objects tied to the rink scroll (94: 7)
-Pencntdwn	equ	$FFFFC010			;94 $FFFFC3E6
+PenCntDwn	equ	$FFFFC010			;94 $FFFFC3E6
 Penaltytimer	equ	$FFFFC012		;94 $FFFFC3E8
 PBnum	equ	$FFFFC014				;94 $FFFFC3EA. Players in the penalty boxes: home in the high nibble, away
 									;in the low
@@ -404,7 +404,7 @@ OptPlayMode	equ	$FFFFCC4C			;94 $FFFFD048. Start of the menu options
 OptNOP	equ	$FFFFCC4E				;94 $FFFFD04A. Options menu: number of players
 Opt1team	equ	$FFFFCC50			;94 $FFFFD04C
 Opt2team	equ	$FFFFCC52			;94 $FFFFD04E
-OptPerlen	equ	$FFFFCC54			;94 $FFFFD050
+Optperlen	equ	$FFFFCC54			;94 $FFFFD050
 OptGoalie	equ	$FFFFCC56			;94 $FFFFD052
 OptUserRec	equ	$FFFFCC58			;94 $FFFFD054. 0 = On
 OptPen	equ	$FFFFCC5A				;94 $FFFFD056
@@ -650,11 +650,14 @@ SndSeqArg1	equ	$FFFFFF2E			;SndStartSeq d1 (d2-d4 follow at SndDrvRAM+$134-$138)
 SndBanks	equ	$FFFFFF36			;4 sound banks (SndSetBank), -1 = none
 
 ;	Save RAM map. The battery save RAM is $8000 bytes on the odd bytes at SaveRAM: byte n is the low byte of
-;	the word at SaveRAM+2*n. InitSaveRAM copies it to M68K_RAM, so byte n is also at M68K_RAM+n. These SR
-;	names are byte offsets (d0 for ReadSRAM / WriteSRAM); code that reads save RAM in place uses
-;	SaveRAM+2*name. A block keeps its retail address while the one before it still ends on that address. A
-;	larger league starts that block at the previous end, in address order. Crowd records are 16 bytes a team
-;	and end on the team records. The checksum stays on its retail byte; if it moves, the assemble stops.
+;	the word at SaveRAM+2*n. InitSaveRAM copies it to M68K_RAM, so byte n is also at M68K_RAM+n.
+;
+;	These SR names are byte offsets (d0 for ReadSRAM / WriteSRAM); code that reads save RAM in place
+;	uses SaveRAM+2*name.
+;
+;	A block keeps its retail address while the one before it still ends on that address. A larger league
+;	starts that block at the previous end, in address order. Crowd records are 16 bytes a team and end on
+;	the team records. The checksum stays on its retail byte; if it moves, the assemble stops.
 
 SaveRAM	equ	$200000					;the cartridge save RAM (header SRAM range)
 SRAMSize	equ	$8000				;save RAM bytes

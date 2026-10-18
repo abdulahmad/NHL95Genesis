@@ -1,7 +1,7 @@
 ;	Roster and game setup. This file shows the team roster, runs the game setup screen for every
-;	play mode with the season and player cards, sets the default menus and pads, builds the
-;	playoff tree and keeps the saved line data. New in 95: the game setup screen was rebuilt for
-;	the new play modes.
+;	play mode, sets the default menus and pads, builds the playoff tree and keeps the saved line data.
+;
+;	New in 95: the game setup screen was rebuilt for the new play modes.
 
 	rts								;unused (the byte after CompShoot)
 
@@ -671,8 +671,8 @@ GameSetUp							;The game setup screen, rewritten for ReadLineData, ReadPassBits
 	btst	#5,(GameFlags).w
 	beq.w	.0
 	jsr	(ReadSeasonHeader).l
-	clr.w	(OptPerlen).w
-	move.b	(SeasonPerlen).w,(OptPerlen+1).w
+	clr.w	(Optperlen).w
+	move.b	(SeasonPerlen).w,(Optperlen+1).w
 	clr.w	(OptPen).w
 	move.b	(SeasonPen).w,(OptPen+1).w
 	clr.w	(OptLine).w
@@ -851,10 +851,10 @@ ReadSetupPads						;Wait up to $E10 frames (94 $5460) for a key on pad 1 / 2 (pa
 									;(setupcardflags bit 5). Runs PlayerCardTimer each frame
 	move.l	#$E10,d6
 .loop
-	move.w	(vcount).w,d1
-	sub.w	(oldvcount).w,d1
+	move.w	(Vcount).w,d1
+	sub.w	(OldVcount).w,d1
 	beq.s	.loop
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	tst.w	(carddelay).w
 	bmi.w	.1
 	cmpi.w	#1,(setupshown).w
@@ -1547,7 +1547,7 @@ GetSetupValues						;setupvalues from the options: line 0 = ModeToSetupMode(OptP
 .0
 	move.b	(Opt1team+1).w,(setupvalues+1).w
 	move.b	(Opt2team+1).w,(setupvalues+2).w
-	move.b	(OptPerlen+1).w,(setupvalues+3).w
+	move.b	(Optperlen+1).w,(setupvalues+3).w
 	move.b	(OptGoalie+1).w,(setupvalues+4).w
 	move.b	(OptUserRec+1).w,(setupvalues+4+1).w
 	move.b	(OptPen+1).w,(setupvalues+4+2).w
@@ -1632,7 +1632,7 @@ SetupStart							;Store setupvalues in the options: OptPlayMode, the mode flags 
 	move.w	(Opt1team).w,(HomeTeam).w
 	move.w	(Opt2team).w,(VisTeam).w
 .10
-	move.b	3(a1),(OptPerlen+1).w
+	move.b	3(a1),(Optperlen+1).w
 	tst.w	(demoflag).w
 	bne.w	.11
 	move.w	#1,(OptGoalie).w
@@ -1672,22 +1672,22 @@ SetupStart							;Store setupvalues in the options: OptPlayMode, the mode flags 
 SetupModeToMode						;Setup mode 0-$C to OptPlayMode ($FF ends)
 	dc.w	$0,$2,$301,$0,$0,$0,$4FF
 
-setoptions							;Build the game setup screen: vbint VBlank_SetOptions, the vram map, the
+setoptions							;Build the game setup screen: VBint VBlank_SetOptions, the vram map, the
 									;team bitmap tiles (LoadSetupTiles), the SetupFont tiles at
 									;smallfont2chars / smallfont3chars, then the SetupBgMap1 / SetupBgMap2
 									;bitmaps on maps 1 and 2
-	move.l	#VBlank_SetOptions,(vbint).w
+	move.l	#VBlank_SetOptions,(VBint).w
 	move	#$2500,sr
 	bclr	#dfok,(disflags).w
 	bset	#dfng,(disflags).w
 	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
-	move.w	#$B800,(VmMap3).w
+	move.w	#$B800,(VmMAP3).w
 	move.w	#5,(Map3col1).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0					;fade to color
 	jsr	(setVram).l
@@ -2166,9 +2166,9 @@ PlayerCardTimer						;Player cards, called each frame from ReadSetupPads while c
 .9
 	jsr	(UnpackPicture).l
 	movea.l	#picturebuf,a2
-	move.w	(vcount).w,d3
+	move.w	(Vcount).w,d3
 .loop
-	cmp.w	(vcount).w,d3
+	cmp.w	(Vcount).w,d3
 	beq.s	.loop
 	move.w	#6,d3
 	move.w	#6,d2
@@ -2395,7 +2395,7 @@ EncodePW							;After a playoff game compute winners and save the bits if needed
 	move.w	#1,(OptPlayMode).w		;continue playoffs
 	move.w	#1,(TempOptPlayMode).w
 	bsr.w	ResolveGames
-	bsr.w	maketree
+	bsr.w	MakeTree
 	cmpi.w	#4,(gamelevel).w
 	beq.w	.userwon				;finished playoffs
 	tst.w	(gamenum).w
@@ -2407,7 +2407,7 @@ EncodePW							;After a playoff game compute winners and save the bits if needed
 	beq.w	.1
 	movea.w	#(tpassbits-M68K_RAM),a3
 	bsr.w	ReadPassBits
-	bra.w	maketree
+	bra.w	MakeTree
 .userwon
 	movea.w	#(pwddatabuffer-M68K_RAM),a3
 	bsr.w	ClrPassBits
@@ -2754,7 +2754,7 @@ ContinuePlayoffs					;Continue playoffs: read the saved bits (ReadPassBits from 
 	move.w	(gamelevel).w,d0
 	or.w	(bosgames).w,d0
 	beq.w	.x
-	bsr.w	maketree
+	bsr.w	MakeTree
 	moveq	#7,d0
 	tst.w	(FourWayPlay).w
 	beq.w	.0
@@ -2809,7 +2809,7 @@ NewPO								;New playoff tree with Opt1team in a random
 	clr.w	(gamelevel).w			;0-3 for the depth into the playoff tree
 	move.w	#7,(bosgames).w			;0-6 game of series or 7 if not in best of seven
 	cmpi.w	#2,(OptPlayMode).w		;play mode on Main Menu
-	beq.w	maketree				;jump to make playoff tree if play mode is 2
+	beq.w	MakeTree				;jump to make playoff tree if play mode is 2
 	clr.w	(bosgames).w			;best of seven: game 0
 	moveq	#7,d0					;clr games won
 	movea.w	#(gsstruct-M68K_RAM),a0	;Game struct variables start
@@ -2819,7 +2819,7 @@ NewPO								;New playoff tree with Opt1team in a random
 	adda.w	#$10,a0					;gssize
 	dbf	d0,.cg
 
-maketree							;Make the playoff tree (potree) from playoffseats and WinBits, then
+MakeTree							;Make the playoff tree (potree) from playoffseats and WinBits, then
 									;FigureJoy
 	movem.l	d0-d4/a0-a3,-(sp)
 	move.w	(postarts).w,d1

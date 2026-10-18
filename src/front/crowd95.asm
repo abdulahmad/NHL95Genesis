@@ -5,19 +5,19 @@
 
 updatecrowdf						;Every game loop, d7 = elapsed frames: the crowd level falls (faster when
 									;loud); every $10 frames the next crowd frame of CrowdFrameTbl in
-									;crowdframe.
+									;Crowdframe.
 									;a frame table instead of the 94 random frame / time pairs
-	cmpi.w	#$15E,(crowdlevel).w
+	cmpi.w	#$15E,(Crowdlevel).w
 	blt.w	.dec
-	subq.w	#3,(crowdlevel).w		;loud crowd calms down faster
+	subq.w	#3,(Crowdlevel).w		;loud crowd calms down faster
 .dec
-	sub.w	d7,(crowdlevel).w
+	sub.w	d7,(Crowdlevel).w
 	bpl.w	.1
-	clr.w	(crowdlevel).w
+	clr.w	(Crowdlevel).w
 .1
-	sub.w	d7,(crowdcnt).w
+	sub.w	d7,(Crowdcnt).w
 	bpl.w	.3
-	move.w	#$10,(crowdcnt).w
+	move.w	#$10,(Crowdcnt).w
 	movem.w	d0/a0,-(sp)
 	movea.l	#CrowdFrameTbl,a0
 	move.w	(crowdtblidx).w,d0
@@ -30,7 +30,7 @@ updatecrowdf						;Every game loop, d7 = elapsed frames: the crowd level falls (
 	move.b	(a0,d0.w),d0
 	ext.w	d0
 	subq.w	#1,d0
-	move.w	d0,(crowdframe).w
+	move.w	d0,(Crowdframe).w
 	movem.w	(sp)+,d0/a0
 .3
 	rts
@@ -45,11 +45,11 @@ CrowdFrameTbl						;updatecrowdf crowd animation frames, -1 wraps
 	dc.b	$FF,$FF
 
 showcrowd							;Crowd sprites: up to 3 frames per PBnum nibble (ShowCrowdPb), then the
-									;crowdframe frame none in a reverse angle replay (sflags4 bit 4). a6 =
+									;Crowdframe frame none in a reverse angle replay (sflags4 bit 4). a6 =
 									;sprite table, d6 = link counter
 	btst	#4,(sflags4).w			;check if reverse angle replay
 	bne.w	rtsShowCrowd
-	movea.l	#CrowdFrameList,a1
+	movea.l	#Crowdframelist,a1
 	adda.l	4(a1),a1
 	move.w	(Hpos).w,d4
 	move.w	(Vpos).w,d5
@@ -61,7 +61,7 @@ showcrowd							;Crowd sprites: up to 3 frames per PBnum nibble (ShowCrowdPb), t
 	lsr.w	#4,d2
 	moveq	#$F,d3
 	bsr.w	ShowCrowdPb
-	move.b	(crowdframe+1).w,d0
+	move.b	(Crowdframe+1).w,d0
 	bra.w	ShowCrowdFrame
 
 ShowCrowdPb							;Crowd frames for the penalty box: d2 = the count (PBnum nibble, at most

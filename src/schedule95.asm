@@ -4,10 +4,12 @@
 ;	Layout: a day count, then one record per day: the number of games, then two team
 ;	numbers per game (TeamList order). Each day is written with the Day macro: list the
 ;	matchups as team abbreviations in pairs; a day with no games is just "Day".
+;
 ;	The schedule stores no dates. DayToDate walks SeasonDay+4 through MonthDays, so SeasonDay
-;	0 is October 5 and the last day is April 14 (the 1993-94 NHL season). FindDayGames reads
-;	record (SeasonStartDay + SeasonDay) mod the day count; with the random schedule option
-;	off SeasonStartDay is 0, so "day n" below is SeasonDay n-1.
+;	0 is October 5 and the last day is April 14 (the 1993-94 NHL season).
+;
+;	FindDayGames reads record (SeasonStartDay + SeasonDay) mod the day count; with the random
+;	schedule option off SeasonStartDay is 0, so "day n" below is SeasonDay n-1.
 
 ;	Team numbers ANH ... WPG: stubinc/equals.inc
 

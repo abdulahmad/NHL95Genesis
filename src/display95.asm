@@ -2,7 +2,7 @@
 ;	pad markers and button labels, steps each animation to its next frame and sets up and sorts
 ;	the default sprites.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Sprite sorting and the pad objects, before the animation update.
 
 
@@ -278,7 +278,7 @@ RenderSmallFontChar					;Dma one small font tile (SmallFontMap) to the object's 
 ButtonLabelCharTable				;Third label character by bits 10-8 of the label code
 	dc.b	' DDLCRX',$FF			;pad byte $FF as 94
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 
 updateanim							;Frame switch control on struct a3. Called from updateplayers. 95: no
 									;horizontal rink case, and an animation whose flag has bits 0 and 1 set
@@ -363,7 +363,7 @@ updateanim							;Frame switch control on struct a3. Called from updateplayers. 
 .rtss
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The default sprites and the sprite sort.
 
 

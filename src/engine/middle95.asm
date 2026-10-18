@@ -2,12 +2,12 @@
 ;	show the clock, format player names and numbers, and draw team blocks, team graphics and the
 ;	EASN logo.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	Shared helpers: math, random numbers, text printing, the game clock, player names and attributes,
 ; number formatting, team maps and the rink setup.
 
 
-sroot								;d0 = square root of d0 (long). Small values by odd subtraction, else
+Sroot								;d0 = square root of d0 (long). Small values by odd subtraction, else
 									;Newton steps, else a binary search
 	tst.l	d0
 	beq.w	rtss2					;zero^.5 = zero
@@ -181,15 +181,15 @@ GetHot								;Push long address of structure to get hot spot from; hot spot x/y
 	move.l	(sp)+,(sp)
 	rts
 
-vcountwait							;Waits till vcount changes, then resyncs vcount. Saves d0. 94 reads
-									;oldvcount twice. Called from PauseMode
+vcountwait							;Waits till Vcount changes, then resyncs Vcount. Saves d0. 94 reads
+									;OldVcount twice. Called from PauseMode
 									;and the stats code
 	move.w	d0,-(sp)
-	move.w	(oldvcount).w,d0
+	move.w	(OldVcount).w,d0
 .wait
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.wait
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	move.w	(sp)+,d0
 	rts
 
@@ -509,7 +509,7 @@ showclockdma						;When dfclock is set queue the clock chars in the dma list (a5
 	bsr.w	ClockDigitChar
 	move.l	a0,(a5)+
 	move.w	#5,(a5)+
-	movea.w	#(VmMap1-M68K_RAM),a1
+	movea.w	#(VmMAP1-M68K_RAM),a1
 	moveq	#$18,d0
 	moveq	#3,d2
 	move.w	2(a1),d1
@@ -1523,12 +1523,12 @@ ResetClock							;gameclock = PerTimeTotal = the period length (GetPeriodTime; $
 	rts
 
 GetPeriodTime						;Return d0 = period length in seconds for the period length option
-	move.w	(OptPerlen).w,d0
+	move.w	(Optperlen).w,d0
 	asl.w	#1,d0
 	lea	.times(pc),a0
 	move.w	(a0,d0.w),d0
 	rts
-.times								;Period length in seconds by OptPerlen
+.times								;Period length in seconds by Optperlen
 	dc.w	$12C,$258,$4B0,$1E
 
 ClrHor								;Unreferenced. Revert the graphics back to vertical ice rink mode: the
@@ -1693,7 +1693,7 @@ waitx								;Wait d0 frames (negative: until a button) for a button on any pad;
 									;waitxpad = the buttons held
 	clr.w	(waitxpad).w
 	neg.w	d0
-	move.w	d0,(vcount).w
+	move.w	d0,(Vcount).w
 .0
 	jsr	(ReadJoy1).l
 	move.w	d3,(waitxpad).w
@@ -1714,9 +1714,9 @@ waitx								;Wait d0 frames (negative: until a button) for a button on any pad;
 	tst.w	d1
 	bne.w	.3
 .1
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .2
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.2
 	tst.w	d0
 	bmi.s	.0
@@ -1800,13 +1800,13 @@ ReAddSmallFont						;Unreferenced. AddSmallFont again at smallfontchars
 	jmp	(AddSmallFont).l
 
 AddFonts							;Load the small font at d4 (smallfontchars, smallfontptr = SmallFontMap2)
-									;and the big font after it (BigFontChars, BigFontMap). Called from
+									;and the big font after it (BigFontchars, BigFontMap). Called from
 									;setupice
 	move.w	d4,(smallfontchars).w
 	movea.l	#SmallFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.l	#SmallFontMap2,(smallfontptr).l
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	rts
@@ -1882,7 +1882,7 @@ printbigtext						;Print with the font map at bigfontptr. Lower
 	move.w	(printx).w,d4
 	move.w	(printy).w,d5
 	move.w	(printa).w,d6
-	add.w	(BigFontChars).w,d6
+	add.w	(BigFontchars).w,d6
 	move.w	(a1)+,d3
 	subq.w	#2,d3
 	bra.w	.1
@@ -1897,7 +1897,7 @@ printbigtext						;Print with the font map at bigfontptr. Lower
 	asl.w	#1,d6
 	andi.w	#$F800,d6
 	move.w	d6,(printa).w
-	add.w	(BigFontChars).w,d6
+	add.w	(BigFontchars).w,d6
 	andi.w	#3,d0
 	asl.w	#2,d0
 	subq.w	#4,d0
@@ -1958,11 +1958,11 @@ PrintBigChar						;Draw big font char d0 (bfasciicon) at d4 / d5: one or two col
 	dbf	d2,.loop
 	rts
 
-PutBigTile							;Write tile d3 + d6 at column d4, row d5 of the map at VmMap1 + printm
+PutBigTile							;Write tile d3 + d6 at column d4, row d5 of the map at VmMAP1 + printm
 	add.w	d6,d3
 	movem.l	d1/a0,-(sp)
 	move.w	d5,d0
-	movea.l	#VmMap1,a0
+	movea.l	#VmMAP1,a0
 	adda.w	(printm).w,a0
 	move.w	2(a0),d1
 	asl.w	d1,d0
@@ -2232,12 +2232,12 @@ setupice							;Set all variables, send non purgeable graphics, build sprite fra
 									;and clears c3playernum / c4playernum too
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#df32c,(disflags).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
 	move.w	#$DC00,(VSPRITES).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
-	move.w	#$F000,(VmMap3).w
+	move.w	#$F000,(VmMAP3).w
 	move.w	#5,(Map3col1).w
 	move.w	#$FC00,(VSCRLPM).w
 	moveq	#0,d0
@@ -2248,9 +2248,9 @@ setupice							;Set all variables, send non purgeable graphics, build sprite fra
 	clr.w	(Hpos).w
 	clr.w	(Vpos).w
 	move.w	#$7D0,(Oldrow).w
-	st	(zamx).w
+	st	(Zamx).w
 	move.w	#$800,d0
-	move.w	(VmMap1).w,d1
+	move.w	(VmMAP1).w,d1
 	move.w	#$7FF,d2
 	jsr	(DoFill).l
 	clr.w	d4
@@ -2264,7 +2264,7 @@ setupice							;Set all variables, send non purgeable graphics, build sprite fra
 	movea.l	#EnergyBarMap+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(animchars).w		;crowd chars
-	movea.l	#CrowdFrameList+8,a2
+	movea.l	#Crowdframelist+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(spritechars).w
 	jsr	(defaultsprites).l
@@ -2309,16 +2309,16 @@ setupice							;Set all variables, send non purgeable graphics, build sprite fra
 	adda.w	#$1C,a3
 	jsr	(addframe2).l
 	move.l	a5,(DMAlistend).w
-	jsr	(DoDMAList).l
+	jsr	(dodmalist).l
 	move.w	(sp)+,(disflags).w
-	move.l	#VBlank,(vbint).w
+	move.l	#VBlank,(VBint).w
 	bclr	#dfok,(disflags).w
 	bclr	#dfng,(disflags).w
 	move	#$2300,sr
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The home team arena graphics, the EASN logo and the period time display.
 
 

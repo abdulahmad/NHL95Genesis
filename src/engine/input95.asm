@@ -103,7 +103,7 @@ doinput								;Process controller input for player a3: d0 = dpad, d1 = new butt
 .10
 	btst	#6,d1
 	beq.w	.11
-	jmp	holdplayer
+	jmp	Holdplayer
 .11
 	tst.w	position(a3)
 	beq.w	.12
@@ -679,7 +679,7 @@ passtoa0							;Pass to player a0
 	move.w	d4,d0					;d0 = j
 	muls.w	d0,d0					;j^2
 	sub.l	d3,d0					;j^2 - ((k*a^2)/4)
-	jsr	(sroot).l
+	jsr	(Sroot).l
 	moveq	#1,d3					;limit infinite loop
 	asr.w	#2,d5					;k divide by 4
 	bne.w	.1
@@ -834,7 +834,7 @@ OneTimerPass						;One-timer pass: puckvz = sqrt(12 * onetimerheight), then puck
 	mulu.w	d1,d0
 	swap	d0
 	andi.l	#$FFFF0000,d0
-	jsr	(sroot).l
+	jsr	(Sroot).l
 	move.w	d0,(puckvz).w
 	ext.l	d0
 	move.w	#3,d4
@@ -1049,7 +1049,7 @@ doshot								;Shoot the puck: speed and direction from the shooter's ratings, s
 	muls.w	d0,d0
 	muls.w	d1,d1
 	add.l	d1,d0
-	jsr	(sroot).l
+	jsr	(Sroot).l
 	tst.w	d0						;distance in pix to goal
 	bne.w	.8
 	addq.w	#1,d0
@@ -1205,7 +1205,7 @@ shotdiradj							;a3 = shooter. Where to shoot for a computer player or a one ti
 	muls.w	d1,d1					;square d1
 	add.l	d1,d0					;add d1 to d0
 	addq.l	#1,d0					;add 1 to d0
-	jsr	(sroot).l
+	jsr	(Sroot).l
 	move.w	d0,d2					;move result into d2
 	movem.w	(sp)+,d0-d1				;pop from stack (distance x and y from G to puck)
 	moveq	#$12,d3					;post?

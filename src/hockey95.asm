@@ -76,12 +76,12 @@ Opening2							;Restart the sound (unless coming from Opening), reset the stack 
 
 StartGame							;Reset game state for a new game, then start the first period. 95 has no
 									;jump from Opening2 (94 jmp (StartGame).w)
-	move.l	#vb2,(vbint).l
+	move.l	#vb2,(VBint).l
 	move	#$2500,sr
 	jsr	(ReadJoy1).l				;pad 1 = $E0 at game start forces 30 second periods
 	cmp.b	#$E0,d3
 	bne.w	.chkpen
-	move.w	#3,(OptPerlen).w		;period length index 3 = 30 seconds
+	move.w	#3,(Optperlen).w		;period length index 3 = 30 seconds
 .chkpen
 	clr.b	(gmode).w
 	cmpi.w	#1,(OptPen).w
@@ -149,15 +149,15 @@ IntermissionStart					;The PeriodOver tail. PeriodOver jumps here after forcebla
 									;GameOver or StartPer
 	jsr	(ResetClock).l
 	move.w	d0,-(sp)
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .vb
-	cmp.w	(vcount).w,d0			;wait for the next vblank
+	cmp.w	(Vcount).w,d0			;wait for the next vblank
 	beq.s	.vb
 	jsr	(SoundOff).l
 	move.w	d0,-(sp)
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .vb2
-	cmp.w	(vcount).w,d0			;and the one after
+	cmp.w	(Vcount).w,d0			;and the one after
 	beq.s	.vb2
 	move.w	(sp)+,d0
 	jsr	(stop_current_song).l		;restart the sound driver, command 7 with d1 = 0
@@ -219,7 +219,7 @@ StartPer							;Start a period: reset stack, rink and clock, face off, run the g
 	bclr	#sfwrap,(sflags).w		;sfwrap: reset replay stuff
 	move.w	#$FFFF,(lastsfx).w
 	move.l	#replaystart,(recbpr).w	;replaystart
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	bsr.w	DoGameFrame				;run two frames before the loop
 	move.w	#$FFFF,(palcount).w
 	bsr.w	DoGameFrame
@@ -268,10 +268,10 @@ Gameloop							;Main loop for game
 
 DoGameFrame							;Wait for at least one vblank, then run one frame of game logic. in 94
 									;this is written in line
-	move.w	(vcount).w,d7
-	sub.w	(oldvcount).w,d7		;number of frames since last loop
+	move.w	(Vcount).w,d7
+	sub.w	(OldVcount).w,d7		;number of frames since last loop
 	beq.s	DoGameFrame
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	tst.w	(ShotTimer).w
 	bmi.w	.periodic
 	sub.w	d7,(ShotTimer).w

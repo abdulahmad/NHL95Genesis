@@ -61,7 +61,7 @@ updatepadinput						;Pad input for a player. Called from updateplayers with a3 =
 ;
 ; a3 = holder
 ; a0 = player being held
-holdplayer							;Jumped to from doinput
+Holdplayer							;Jumped to from doinput
 	bset	#pfalock,pflags(a3)		;lock animation
 	move.w	#SPAhook,d1				;move anim into d1 - normal hold check
 	tst.w	impact(a3)				;check if impact = 0

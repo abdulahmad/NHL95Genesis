@@ -1,7 +1,7 @@
 ;	The playoff screen. It shows the playoff tree with the series scores and team blocks, scrolls
 ;	it with the pad and draws the playoff sprite.
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The playoff tree screen: pad input, scrolling, series scores and team blocks.
 
 
@@ -18,15 +18,15 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 	tst.w	(OptPlayMode).w
 	beq.s	rtsLineData
 .0
-	move.l	#VBlank_Playoff,(vbint).l
+	move.l	#VBlank_Playoff,(VBint).l
 	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$BC00,(VSPRITES).w
-	move.w	#$B000,(VmMap3).w
+	move.w	#$B000,(VmMAP3).w
 	move.w	#6,(Map3col1).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#7,(Map2col1).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#7,(Map1col1).w
 	move.w	#0,d0
 	jsr	(setVram).l
@@ -52,7 +52,7 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 	addq.w	#8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	movea.l	#Arrowsmap+8,a2
@@ -218,7 +218,7 @@ PlayoffScreenExit					;Drop HandlePlayoffInput's return address and return from 
 	addq.w	#4,sp
 	rts
 
-waitxc1								;(was PlayoffScreen_waitvsync) Each time palcount runs out, eor the color
+waitxc1								;Each time palcount runs out, eor the color
 									;word at palfadenew+$42 with $EE and
 									;restart palcount at $18; then wait for the next vblank
 	tst.w	(palcount).w
@@ -226,10 +226,10 @@ waitxc1								;(was PlayoffScreen_waitvsync) Each time palcount runs out, eor t
 	eori.w	#$EE,(palfadenew+$42).w
 	move.w	#$18,(palcount).w
 .wait
-	move.w	(vcount).w,d0
-	cmp.w	(oldvcount).w,d0
+	move.w	(Vcount).w,d0
+	cmp.w	(OldVcount).w,d0
 	beq.s	.wait
-	move.w	d0,(oldvcount).w
+	move.w	d0,(OldVcount).w
 	rts
 
 PrintSeriesScore					;Print best of 7 wins "t-b" for game struct a2 at printx / printy
@@ -288,8 +288,8 @@ DrawTeamBlocks						;Draw team block d1 (team * 2) from Teamblocksmap at printx 
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-VBlank_Playoff						;The PlayoffScreen vblank handler (vbint): dma the sprite table, write
-									;$FEA0+DispAttribCtr to the hscroll, cramfade. Always vcount+1,
+VBlank_Playoff						;The PlayoffScreen vblank handler (VBint): dma the sprite table, write
+									;$FEA0+DispAttribCtr to the hscroll, cramfade. Always Vcount+1,
 									;p_music_vblank, rte
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w
@@ -308,7 +308,7 @@ VBlank_Playoff						;The PlayoffScreen vblank handler (vbint): dma the sprite ta
 .0
 	jsr	(cramfade).l
 .nograph
-	addq.w	#1,(vcount).w
+	addq.w	#1,(Vcount).w
 	jsr	(p_music_vblank).l
 	movem.l	(sp)+,d0-d7/a0-a6
 	rte
@@ -320,7 +320,7 @@ PlayoffScreenText					;Round titles by gamelevel, printbig Strings with their po
 	String	$CF,$3B,$19,'Finals'
 	String	$CF,$37,$19,'Champions'
 
-;------------------------------------------------------------------------------------------------------------------------
+;-------------------------------------------------------------------------------------------------------------
 ;	The playoff tree setup and its sprite.
 
 
