@@ -1004,9 +1004,9 @@ puckpenshot							;Penalty shot / shootout face-off: rink, puck and nets reset, 
 .waitvblank
 	btst	#dfok,(disflags).w
 	bne.s	.waitvblank
-	cmpi.w	#$258,(crowdlevel).w
+	cmpi.w	#$258,(Crowdlevel).w
 	bls.w	.1
-	move.w	#$258,(crowdlevel).w
+	move.w	#$258,(Crowdlevel).w
 	addi.w	#$14,(CwdExciteLvl).w
 .1
 	move.w	(ExtraChars).w,d4

@@ -293,7 +293,7 @@ checkanim							;Goalie animation check; assgoaliectrl branches here too
 	move.w	#SPAgdive,d1			;goalie dive anim (94 $2F4)
 	jsr	(SetSPA).l					;set animation
 	bset	#pf2aip,pflags2(a3)		;set anim in progress
-	addi.w	#$96,(crowdlevel).w
+	addi.w	#$96,(Crowdlevel).w
 	rts
 .de1
 	movea.w	#(puckcross-M68K_RAM),a0	;puckcross = xcord/frames top to bottom for goalies to react to
@@ -370,7 +370,7 @@ checkanim							;Goalie animation check; assgoaliectrl branches here too
 	movem.w	(sp)+,d0-d1
 	bra.w	.near
 .far
-	jsr	(sroot).l
+	jsr	(Sroot).l
 	moveq	#1,d2
 	add.w	d0,d2
 	moveq	#$12,d4
@@ -770,7 +770,7 @@ goaliesave							;95 first aims the goalie: Xvel from where the puck crosses his
 	movem.w	(sp)+,d0
 .31
 	jsr	(SetSPA).l
-	addi.w	#$96,(crowdlevel).w
+	addi.w	#$96,(Crowdlevel).w
 	addi.w	#$A,(CwdExciteLvl).w
 	asr.w	Xvel(a3)
 	asr.w	Xvel(a3)
@@ -1689,7 +1689,7 @@ pucknorm							;asstab entry 1. The puck: follow the carrier, icing / offsides c
 	move.w	Xvel(a2),Xvel(a3)		;Xvel
 	move.w	Yvel(a2),Yvel(a3)		;Yvel
 .nothandled
-	jsr	(puckIChk).l
+	jsr	(PuckIChk).l
 	jsr	(ChkOffsides).l
 	btst	#gmclock,(gmode).w		;check for play stoppage
 	bne.w	.end
@@ -2131,7 +2131,7 @@ check4check							;Check an opponent in front of a3. 95: a joystick player block
 	rts
 
 check4check2						;check4check with a puck y test before the check (burstchk) or Acheck (or
-									;$A beyond it), else on vcount bit 8. Called from assdefdchase
+									;$A beyond it), else on Vcount bit 8. Called from assdefdchase
 	tst.w	position(a3)			;check if goalie
 	bne.w	.player					;branch if not
 	rts
@@ -2204,7 +2204,7 @@ check4check2						;check4check with a puck y test before the check (burstchk) or
 	move.w	(pucky).w,d1
 	eor.w	d1,d0
 	bmi.w	.burst
-	move.w	(vcount).w,d0			;else a check on vcount bit 8
+	move.w	(Vcount).w,d0			;else a check on Vcount bit 8
 	andi.w	#$100,d0
 	beq.w	.check
 .burst
@@ -2355,7 +2355,7 @@ assnearest							;asstab entry $E. The player nearest the puck without it. 95: s
 .addcrowd
 	addq.w	#1,$35A(a2)				;add to breakaway attempt (94 $358)
 	addi.w	#$14,(CwdExciteLvl).w	;add to excite level
-	addi.w	#$C8,(crowdlevel).w		;add to crowd level
+	addi.w	#$C8,(Crowdlevel).w		;add to crowd level
 	movem.l	(sp)+,a2				;pop off stack into a2
 .nobreak
 	clr.w	temp3(a3)				;clear temp3
@@ -2756,7 +2756,7 @@ breakaway							;Breakaway for the carrier
 .c0
 	addq.w	#1,$35A(a2)				;add one to breakaway attempt (94 $358)
 	addi.w	#$14,(CwdExciteLvl).w	;add to CwdExcite
-	addi.w	#$C8,(crowdlevel).w		;add to crowdlevel
+	addi.w	#$C8,(Crowdlevel).w		;add to Crowdlevel
 	movem.l	(sp)+,a2
 .nna
 	movem.w	d1,-(sp)				;push d1 on stack
@@ -2902,7 +2902,7 @@ asspuckc							;asstab entry $F. The puck carrier. 95: a penalty shot SPA while 
 .5
 	addq.w	#1,$35A(a2)				;94 $358
 	addi.w	#$14,(CwdExciteLvl).w
-	addi.w	#$C8,(crowdlevel).w
+	addi.w	#$C8,(Crowdlevel).w
 	movem.l	(sp)+,a2
 .6
 	clr.w	temp1(a3)
@@ -2944,7 +2944,7 @@ asspuckc							;asstab entry $F. The puck carrier. 95: a penalty shot SPA while 
 	beq.w	.shot
 	cmp.w	(cont2team).w,d0
 	beq.w	.shot
-	btst	#1,(vcount+1).w
+	btst	#1,(Vcount+1).w
 	bne.w	.pass
 .shot
 	bsr.w	chk4shot
@@ -3844,7 +3844,7 @@ PuckOnAttackHalf					;d0 = 1 when the puck is on the half of the goal player a3 
 	rts
 
 onetimershot						;Do the one-timer shot (doshot), credit the last two passers as the
-									;assists, add to crowdlevel /
+									;assists, add to Crowdlevel /
 									;CwdExciteLvl and to the one-timer attempts ($35E of the team struct; 94
 									;$35C). Called from puckstick
 	move.w	#4,(passdir).w
@@ -3861,7 +3861,7 @@ onetimershot						;Do the one-timer shot (doshot), credit the last two passers a
 	move.w	$18(a0),$1A(a0)			;move last player to touch puck to assist 1
 	move.w	d0,$18(a0)				;move d0 into player touching puck
 	bset	#7,(sflags8).w			;set bit 7
-	addi.w	#$96,(crowdlevel).w		;add to crowdlevel
+	addi.w	#$96,(Crowdlevel).w		;add to Crowdlevel
 	addi.w	#$A,(CwdExciteLvl).w	;add to Excite Level
 	addq.w	#1,$35E(a0)				;add to one timer attempt (94 $35C)
 	movem.l	(sp)+,d0/a0

@@ -10,7 +10,7 @@
 	include	ram95.asm				;RAM map
 
 ; External addresses outside, read from lst/nhl95.bin.
-holdplayer = $AA18
+Holdplayer = $AA18
 burstchk = $AA7A
 setpads = $AB2A
 chgplayer = $AB4E
@@ -19,7 +19,7 @@ setc2player = $AD8A
 setc3player = $AD96
 setc4player = $ADA2
 sfx = $677AC
-sroot = $7C512
+Sroot = $7C512
 vtoa = $7C586
 randomd0s = $7C62E
 randomd0 = $7C63A

@@ -292,10 +292,10 @@ AwardsLoop							;Awards frames: finalists for $12C frames, then the winner to $
 									;AwardWait frames
 	move.w	#$5460,(AwardWait).w
 .wait
-	move.w	(vcount).w,d1
-	sub.w	(oldvcount).w,d1
+	move.w	(Vcount).w,d1
+	sub.w	(OldVcount).w,d1
 	beq.s	.wait
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	tst.l	(AwardTimer).w
 	bne.w	.1
 	bsr.w	DrawFinalistsPanel
@@ -374,18 +374,18 @@ AwardsLoop							;Awards frames: finalists for $12C frames, then the winner to $
 
 AwardsScreenSetup					;Awards screen setup: vram layout, the small font (two remaps) and the
 									;background bitmap (AwardsBgMap)
-	move.l	#VBlank_SetOptions,(vbint).w
+	move.l	#VBlank_SetOptions,(VBint).w
 	move	#$2500,sr
 	bclr	#dfok,(disflags).w
 	bset	#dfng,(disflags).w
 	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
-	move.w	#$B800,(VmMap3).w
+	move.w	#$B800,(VmMAP3).w
 	move.w	#5,(Map3col1).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0
 	jsr	(setVram).l

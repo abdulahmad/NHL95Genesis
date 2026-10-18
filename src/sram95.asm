@@ -10,7 +10,7 @@ InitSaveRAM							;Called from Begin. Copy the $8000 byte save RAM (the odd byte
 									;$12,$34,$56,$78 to bytes 0-3 and flashes the screen green, or red at the
 									;first bad byte; Start+B+C held flashes green if bytes 0-3 are $12345678,
 									;else red
-	move.l	#VBcount,(vbint).l
+	move.l	#VBcount,(VBint).l
 	move	#$2500,sr
 	clr.w	(ValidSRAM).l			;good until checked
 	jsr	(ReadJoy1).l				;get joypad buttons held
@@ -83,10 +83,10 @@ SRAMWaitVblank						;Wait for the next vblank. Called from InitSaveRAM
 	jsr	(vcountwait).l
 	rts
 
-VBcount								;vbint handler while InitSaveRAM runs: vcount + 1 only. 95 writes addi.w
+VBcount								;VBint handler while InitSaveRAM runs: Vcount + 1 only. 95 writes addi.w
 									;#1 (94: addq.w)
 	opt	oaq-						;keep the addi (SNASM would make it addq)
-	addi.w	#1,(vcount).l			;vblank with counter only
+	addi.w	#1,(Vcount).l			;vblank with counter only
 	opt	oaq+
 	rte
 

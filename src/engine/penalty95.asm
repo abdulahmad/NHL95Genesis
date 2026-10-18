@@ -116,7 +116,7 @@ Stop4Pen							;a0 = Penaltylist penalty + 2. Stop the clock, set the faceoff sp
 	addq.w	#4,sp
 	jsr	(limitfo).l
 .5
-	clr.w	(Pencntdwn).w
+	clr.w	(PenCntDwn).w
 	bset	#gmpen,(gmode).w
 	jsr	(stop_current_song).l
 	move.w	#SFXwhistle,-(sp)		;whistle (92 used 10)
@@ -167,7 +167,7 @@ AddPenalty2							;Forced penalties like faceoff and game over. d0 = penalty num
 	movem.l	d1/a0-a1,-(sp)
 	cmp.w	#$E,d0					;goal (92 used 6) and up
 	blt.w	.nonoise
-	addi.w	#$C8,(crowdlevel).w		;200
+	addi.w	#$C8,(Crowdlevel).w		;200
 	move.w	#$C,-(sp)				;song $C for the home team
 	btst	#pfteam,pflags(a3)
 	beq.w	.0
@@ -245,9 +245,9 @@ chkprogress							;Control the progress of the ref and the game through penalty 
 .3
 	btst	#gmpen,(gmode).w		;gmpen: penalty called
 	beq.w	rtspen
-	tst.w	(Pencntdwn).w
+	tst.w	(PenCntDwn).w
 	bmi.w	InProgress
-	sub.w	d7,(Pencntdwn).w
+	sub.w	d7,(PenCntDwn).w
 	bpl.w	rtspen
 	bclr	#gmpendel,(gmode).w
 	movea.w	#(PenBuf-M68K_RAM),a0
@@ -596,9 +596,9 @@ checkfornewpen						;Look for a new penalty (entered through AddPenalty / AddPen
 	clr.w	d1
 	move.b	(a1),d1					;delay for stopping action
 	asl.w	#5,d1
-	cmp.w	(Pencntdwn).w,d1
+	cmp.w	(PenCntDwn).w,d1
 	ble.s	.0
-	move.w	d1,(Pencntdwn).w
+	move.w	d1,(PenCntDwn).w
 	bra.s	.0
 .3
 	bset	#gmpendel,(gmode).w
@@ -856,11 +856,11 @@ checkagr							;Aggression check: d0 = randomd0((($32 - Agr) / 2) * 13) (94 $28)
 	rts
 
 showref								;Ref window: when sflags2 bit 1 is set add the 8 RefRamMap rows to the dma
-									;list at a5 (VmMap1)
+									;list at a5 (VmMAP1)
 	bclr	#sf2refref,(sflags2).w
 	beq.w	rtspen
 	movea.w	#(RefRamMap-M68K_RAM),a0
-	movea.w	#(VmMap1-M68K_RAM),a1
+	movea.w	#(VmMAP1-M68K_RAM),a1
 	move.w	2(a1),d2
 	moveq	#2,d0					;refy: Xpos on ice screen
 	btst	#sfhor,(sflags).w
@@ -893,12 +893,12 @@ ClearPenaltyBuffer					;Clear PenBuf
 	dbf	d0,.loop
 	rts
 
-ClearPenalties						;Clear the penalties: PBnum, Penaltytimer, Pencntdwn, PenBuf and both
+ClearPenalties						;Clear the penalties: PBnum, Penaltytimer, PenCntDwn, PenBuf and both
 									;teams' penalty slots (clrTmPdst)
 	movem.l	d0/a0,-(sp)
 	clr.w	(PBnum).w
 	clr.w	(Penaltytimer).w
-	clr.w	(Pencntdwn).w
+	clr.w	(PenCntDwn).w
 	move.w	#$10,d0
 	movea.l	#PenBuf,a0
 .loop
@@ -920,7 +920,7 @@ clrTmPdst							;Set the 26 tmpdst words of team a0 to -2 (bench), then -1
 	move.w	#$FFFF,(a0)				;-1 = ice
 	rts
 
-puckIChk							;Icing check: once the puck is loose (puckc negative) past the goal line
+PuckIChk							;Icing check: once the puck is loose (puckc negative) past the goal line
 									;($10B, 94 $108) set iflags bit 0
 									;(ifcgl), unless it went in the crease ($2C either side), which clears bit
 									;2 (ifok)

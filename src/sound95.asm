@@ -1505,9 +1505,9 @@ UpdateCwdExcite						;Called once per second. Track peak and running total of cr
 .ex
 	rts
 
-updatesound							;Move the crowd noise volume (psg noise channel, asv) toward crowdlevel.
+updatesound							;Move the crowd noise volume (psg noise channel, asv) toward Crowdlevel.
 									;Called from DoGameFrame
-	move.w	(crowdlevel).w,d0
+	move.w	(Crowdlevel).w,d0
 	asl.w	#3,d0
 	addi.w	#$400,d0
 	cmp.w	#$EFF,d0

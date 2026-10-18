@@ -344,9 +344,9 @@ puckfaceoff2						;Puck assignment 4. First call: set up the faceoff: clear the 
 .lockinterrupts
 	move	#$2700,sr
 .limitcrowd
-	cmpi.w	#$258,(crowdlevel).w
+	cmpi.w	#$258,(Crowdlevel).w
 	bls.w	.3
-	move.w	#$258,(crowdlevel).w	;limit crowd level
+	move.w	#$258,(Crowdlevel).w	;limit crowd level
 .3
 	bset	#dfclock,(disflags).w
 	bclr	#sfpz,(sflags).w

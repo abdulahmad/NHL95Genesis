@@ -11,7 +11,7 @@
 	include	ram95.asm				;RAM map
 
 ; External addresses outside, read from lst/nhl95.bin.
-CrowdFrameList = $18B628
+Crowdframelist = $18B628
 
 ; Main segment code
 	include	front\crowd95.asm

@@ -16,9 +16,9 @@ Pausemode							;(PauseMode). Game is in pause mode now: fade out, stop the soun
 	clr.l	(menuitemoffset).w
 	jsr	(forceblack).l				;fade screen to black
 	move.w	d0,-(sp)
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .vb
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.vb						;wait for the next vblank
 	move.w	(sp)+,d0
 	btst	#sfpz,(sflags).w
@@ -89,7 +89,7 @@ Pausemode							;(PauseMode). Game is in pause mode now: fade out, stop the soun
 .wait
 	tst.w	(palcount).w
 	bpl.s	.wait
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	move.w	(sp)+,(smallfontchars).w
 	rts
 
@@ -375,7 +375,7 @@ PauseScreenDraw						;Draw the pause screen (SetupPauseScreen): wait out the dma
 	move.w	(sp)+,(disflags).w
 	bclr	#df32c,(disflags).w
 	move.w	#$800,d0
-	move.w	(VmMap1).w,d1
+	move.w	(VmMAP1).w,d1
 	move.w	#$7FF,d2
 	jsr	(DoFill).l
 	jsr	(printz).l
@@ -606,14 +606,14 @@ RestoreGameScreen					;Rebuild the game screen after the pause screen: the vdp m
 	bclr	#5,(sflags9).w
 	clr.w	(tmstruct+$32).w
 	clr.w	(AwShots+$32).w
-	move.l	#VBlank,(vbint).w
+	move.l	#VBlank,(VBint).w
 	bset	#df32c,(disflags).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
 	move.w	#$DC00,(VSPRITES).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
-	move.w	#$F000,(VmMap3).w
+	move.w	#$F000,(VmMAP3).w
 	move.w	#5,(Map3col1).w
 	move.w	#$FC00,(VSCRLPM).w
 	movea.w	#(palfadenew-M68K_RAM),a0
@@ -626,7 +626,7 @@ RestoreGameScreen					;Rebuild the game screen after the pause screen: the vdp m
 	jsr	(setVram_0).l
 	jsr	(ClearOldFrames).l
 	move.w	#$800,d0
-	move.w	(VmMap1).w,d1
+	move.w	(VmMAP1).w,d1
 	move.w	#$7FF,d2
 	jsr	(DoFill).l
 	move.w	(framerchars).w,d4
@@ -636,7 +636,7 @@ RestoreGameScreen					;Rebuild the game screen after the pause screen: the vdp m
 	movea.l	#EnergyBarMap+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.w	(animchars).w,d4
-	movea.l	#CrowdFrameList+8,a2
+	movea.l	#Crowdframelist+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(setupEASNmap).l
 	btst	#4,(disflags).w
@@ -677,9 +677,9 @@ RestoreGameScreen					;Rebuild the game screen after the pause screen: the vdp m
 	bclr	#dfng,(disflags).w
 	move	#$2300,sr
 	jsr	(SprSort).l
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .wait
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.wait
 	bset	#dfclock,(disflags).w
 	jsr	(printscores1).l

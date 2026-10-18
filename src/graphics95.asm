@@ -460,8 +460,8 @@ FaceoffTiles	equ	FaceOffMap		;the same address
 FaceOffSprites						;The face-off sprites; +8 the tiles
 	incbin	..\Extracted\NHL95\Graphics\FaceOffSprites.map.jim
 FaceoffTiles2	equ	FaceOffSprites	;the same address
-Framermap							;The Framermap map
-	incbin	..\Extracted\NHL95\Graphics\Framermap.map.jim
+FramerMap							;The FramerMap map
+	incbin	..\Extracted\NHL95\Graphics\FramerMap.map.jim
 Framermap2							;The Framermap2 map
 	incbin	..\Extracted\NHL95\Graphics\Framermap2.map.jim
 EnergyBarMap						;The EnergyBarMap map
@@ -604,8 +604,8 @@ ColdIconMap							;The ColdIconMap map
 	incbin	..\Extracted\NHL95\Graphics\ColdIconMap.map.jim
 RonBarrMap							;The RonBarrMap map
 	incbin	..\Extracted\NHL95\Graphics\RonBarrMap.map.jim
-CrowdFrameList						;The crowd sprites; +8 the tiles
-	incbin	..\Extracted\NHL95\Graphics\CrowdFrameList.map.jim
+Crowdframelist						;The crowd sprites; +8 the tiles
+	incbin	..\Extracted\NHL95\Graphics\Crowdframelist.map.jim
 TitleScreenImg						;The TitleScreenImg map
 	incbin	..\Extracted\NHL95\Graphics\TitleScreenImg.map.jim
 TitleImg							;The TitleImg map

@@ -16,7 +16,7 @@ NameEntryScreen						;Name Entry screen: draw team logo, NAME ENTRY title and Na
 	jsr	(CreateRatingsGfx).l
 	move.w	d4,(homepicchars).w
 	addi.w	#$24,d4
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(spritechars).w
@@ -109,9 +109,9 @@ NameEntryScreen						;Name Entry screen: draw team logo, NAME ENTRY title and Na
 .4
 	bsr.w	MoveLogArrows
 .loop2
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .loop3
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.loop3
 	cmpa.l	#pad1user,a5
 	beq.w	.input
@@ -1819,7 +1819,7 @@ SetupScreen							;Common start of the stats screens: blank, scroll 0, 40 cell m
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$0B,$83,$48,$67,$89,$AB,$CD,$EF	;remap table
 	move.l	#SmallFontMap,(smallfontptr).l
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l

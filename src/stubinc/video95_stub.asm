@@ -16,7 +16,7 @@ sfx = $677AC
 find3d = $7C5EE
 Rinktilelist = $C4A7C				;Rink map
 Sprites = $CA56A					;Sprite frames and tiles
-Framermap = $14C148
+FramerMap = $14C148
 Framermap2 = $14C308				;#. Second framer map, tiles at +8
 RevRinkTilelist = $16060E			;Reverse angle rink map
 

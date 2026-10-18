@@ -8,7 +8,7 @@
 	include	macros\genesis.mac		;String
 
 CreateScreenGfx						;Set up VDP planes and load create-player graphics/palettes
-	move.l	#VBlank_SetOptions,(vbint).w
+	move.l	#VBlank_SetOptions,(VBint).w
 	move	#$2500,sr
 	bclr	#dfok,(disflags).w
 	bset	#dfng,(disflags).w
@@ -16,11 +16,11 @@ CreateScreenGfx						;Set up VDP planes and load create-player graphics/palettes
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
 .0
-	move.w	#$B800,(VmMap3).w
+	move.w	#$B800,(VmMAP3).w
 	move.w	#5,(Map3col1).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0
 	jsr	(setVram).l
@@ -43,16 +43,16 @@ CreateScreenGfx						;Set up VDP planes and load create-player graphics/palettes
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$BB,$23,$44,$67,$89,$AB,$CD,$EF
 	move.l	#SmallFontMap,(smallfontptr).l
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF
 	move.w	d4,(teamblocksmapptr).w
 	movea.l	#Teamblocksmap+8,a2
 	jsr	(DecompressGraphicsPlain).l
-	movea.l	#Framermap+8,a2
+	movea.l	#FramerMap+8,a2
 	move.w	d4,(framercset).w
-	move.l	#Framermap,(framermapptr).l
+	move.l	#FramerMap,(framermapptr).l
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF
 	jsr	(printz).l
@@ -76,7 +76,7 @@ CreatePlayer						;Create Player screen entry: load graphics, draw title, init p
 	movem.l	d0-d7/a0-a6,-(sp)
 	bclr	#1,(BA_PS_flags).w
 	bsr.w	CreateRatingsGfx
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF
@@ -144,9 +144,9 @@ CreatePlayer						;Create Player screen entry: load graphics, draw title, init p
 .4
 	bsr.w	MoveListMarkers
 .loop
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .loop2
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.loop2
 	jsr	(ReadJoy1).l
 	tst.w	d1
@@ -839,9 +839,9 @@ InvalidName							;SaveCreateName: "Invalid Name. Make sure player has both a fi
 	dc.b	$F9,$3,$FD,$6,$FC,$6,'Invalid Name.',$FD
 	dc.b	$6,$FA,$1,'Make sure player has',$FD,$6,$FA,$1
 	dc.b	'both a first and last name.'
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .loop
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.loop
 .1
 	jsr	(ReadJoy1).l
@@ -1071,29 +1071,29 @@ CreateRatingsGfx					;Set up the create player screen: VDP setup, decompress gra
 									;draw background map
 	move	#$2700,sr
 	move.w	#2,d4
-	move.l	#VBlank_SetOptions,(vbint).w
+	move.l	#VBlank_SetOptions,(VBint).w
 	bclr	#dfok,(disflags).w
 	bset	#dfng,(disflags).w
 	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
-	move.w	#$B800,(VmMap3).w
+	move.w	#$B800,(VmMAP3).w
 	move.w	#5,(Map3col1).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0
 	jsr	(setVram).l
 	move	#$2500,sr
 	jsr	(orjoy).l
 	move.w	d4,(framercset).w
-	movea.l	#Framermap+8,a2
-	move.l	#Framermap,(framermapptr).l
+	movea.l	#FramerMap+8,a2
+	move.l	#FramerMap,(framermapptr).l
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF
 	move.w	d4,(nameframechars).w
-	movea.l	#Framermap+8,a2
+	movea.l	#FramerMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$60,$89,$AB,$CD,$EF
 	move.w	d4,(smallfontchars).w
@@ -1287,29 +1287,29 @@ ModifyRatings						;Create Player "Modify Ratings" screen: load graphics/text, t
 									;loop (up/down/left/right pick rating, A/B change it, START done)
 	move	#$2700,sr
 	move.w	#2,d4
-	move.l	#VBlank_SetOptions,(vbint).w
+	move.l	#VBlank_SetOptions,(VBint).w
 	bclr	#dfok,(disflags).w
 	bset	#dfng,(disflags).w
 	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
-	move.w	#$B800,(VmMap3).w
+	move.w	#$B800,(VmMAP3).w
 	move.w	#5,(Map3col1).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0
 	jsr	(setVram).l
 	move	#$2500,sr
 	jsr	(orjoy).l
 	move.w	d4,(framercset).w
-	move.l	#Framermap,(framermapptr).l
-	movea.l	#Framermap+8,a2
+	move.l	#FramerMap,(framermapptr).l
+	movea.l	#FramerMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF
 	move.w	d4,(nameframechars).w
-	movea.l	#Framermap+8,a2
+	movea.l	#FramerMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$60,$89,$AB,$CD,$EF
 	move.w	d4,(smallfontchars).w
@@ -1348,7 +1348,7 @@ ModifyRatings						;Create Player "Modify Ratings" screen: load graphics/text, t
 	moveq	#$1C,d3
 	moveq	#$F,d5
 	jsr	(dobitmap).l
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF
@@ -1370,9 +1370,9 @@ ModifyRatings						;Create Player "Modify Ratings" screen: load graphics/text, t
 .draw
 	bsr.w	DrawRatings
 .frame
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .vwait
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.vwait
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
@@ -2806,10 +2806,10 @@ ReadFreeAgentPads					;Wait for a joypad press (polls both pads via ReadJoy1/Rea
 	move.l	#$5460,d6
 .wait
 	move.w	#$64,d6
-	move.w	(vcount).w,d1
-	sub.w	(oldvcount).w,d1
+	move.w	(Vcount).w,d1
+	sub.w	(OldVcount).w,d1
 	beq.s	.wait
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
@@ -3251,10 +3251,10 @@ ReadReleasePads						;Wait for a joypad press on any of up to 4 pads (4-way play
 	move.l	#$5460,d6
 .wait
 	move.w	#$64,d6
-	move.w	(vcount).w,d1
-	sub.w	(oldvcount).w,d1
+	move.w	(Vcount).w,d1
+	sub.w	(OldVcount).w,d1
 	beq.s	.wait
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1

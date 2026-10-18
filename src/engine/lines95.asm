@@ -898,14 +898,14 @@ LineSlotFixTbl						;CheckTeamLines slot handlers by slot & 7: goalie (the best 
 
 EASportsScreen						;Called from Begin. Show the EA Sports screen (EASportsMap) until a
 									;button, or $50 x 4 frames
-	move.l	#vb2,(vbint).w			;vblank handler
+	move.l	#vb2,(VBint).w			;vblank handler
 	bclr	#df32c,(disflags).w
 	move.w	#5,(Map3col1).w
-	move.w	#$A000,(VmMap2).w
+	move.w	#$A000,(VmMAP2).w
 	move.w	#7,(Map2col1).w
-	move.w	#$C000,(VmMap1).w
+	move.w	#$C000,(VmMAP1).w
 	move.w	#7,(Map1col1).w
-	move.w	#$F000,(VmMap3).w
+	move.w	#$F000,(VmMAP3).w
 	move.w	#$F800,(VSPRITES).w
 	move.w	#$FC00,(VSCRLPM).w
 	movea.w	#(palfadenew-M68K_RAM),a0
@@ -1016,7 +1016,7 @@ ChkShotStat							;Determine if a shot was taken and add it to the stats (crowd,
 	bra.w	.addShot
 .Cwdupdate
 	movem.l	d0-d1/a1-a3,-(sp)
-	addi.w	#$64,(crowdlevel).w		;100
+	addi.w	#$64,(Crowdlevel).w		;100
 	addi.w	#$A,(CwdExciteLvl).w
 	move.w	(shotplayer).w,d0
 .addShot
@@ -1136,7 +1136,7 @@ DrawTeamScreen2						;A DrawTeamScreen for the season / stats screens: screenarg
 	movea.l	#RosterFont+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$16,$83,$45,$67,$89,$AB,$CD,$EF	;remap table
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
@@ -1224,7 +1224,7 @@ DrawTeamScreen3						;The same with SmallFontMap
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$1B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
@@ -1321,7 +1321,7 @@ DrawTeamScreen4Body					;DrawTeamScreen4 after the screen setup;
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$1B,$83,$4C,$67,$89,$AB,$CD,$EF	;remap table
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$81,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
@@ -1405,7 +1405,7 @@ DrawTeamScreen5						;DrawTeamScreen4 with three small fonts and palette word $A
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$E1,$23,$46,$67,$89,$AB,$CD,$EF	;remap table
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
@@ -1500,11 +1500,11 @@ DrawTeamScreen6						;The team blocks (screen6chars1), the bitmap, Screen6Tiles1
 	movea.l	#SmallFontMap+8,a2
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$B1,$23,$46,$67,$89,$AB,$CD,$EF	;remap table
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
-	movea.l	#Framermap+8,a2
-	move.l	#Framermap,(framermapptr).l
+	movea.l	#FramerMap+8,a2
+	move.l	#FramerMap,(framermapptr).l
 	move.w	d4,(framercset).w
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$07,$89,$A5,$6B,$89,$AB,$CD,$EF	;remap table

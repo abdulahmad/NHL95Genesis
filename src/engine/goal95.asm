@@ -50,15 +50,15 @@ Goal								;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshoo
 	bsr.w	ChkShotStat
 	jsr	(stop_current_song).l
 	move.w	d0,-(sp)
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .loop
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.loop
 	move.w	(sp)+,d0
 	move.w	#SFXsiren,-(sp)
 	jsr	(sfx).l
 	jsr	(LockScroll).l
-	addi.w	#$1F4,(crowdlevel).w
+	addi.w	#$1F4,(Crowdlevel).w
 	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a1
 	tst.w	Ypos(a3)
@@ -700,7 +700,7 @@ clockcont_0							;The clock ran out in overtime / the game: game over handling,
 	dbf	d2,.t2
 .eog
 	jsr	(ClearPenaltyBuffer).l
-	addi.w	#$3E8,(crowdlevel).w	;1000
+	addi.w	#$3E8,(Crowdlevel).w	;1000
 	bset	#gmclock,(gmode).w		;gmclock: stop clock
 	bset	#gmeog,(gmode).w		;set at end of game
 	jsr	(ClearPenalties).l
@@ -778,9 +778,9 @@ SetContTeams						;The controller setup screen: pick the team of each pad (cont1
 	bclr	#dfng,(disflags).w
 	clr.w	(carddelay).w
 .frame
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .wait
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.wait
 	addq.w	#1,(carddelay).w
 	cmpi.w	#$5460,(carddelay).w
@@ -1024,18 +1024,18 @@ PracticePlayersTxt
 ControllerSetupScreen				;Build the controller setup screen: vram, fonts, the team blocks and pad
 									;tiles, the backgrounds and "Controller SetUp" (printbigz); the team
 									;blocks of VisTeam / HomeTeam
-	move.l	#VBlank_SetOptions,(vbint).w
+	move.l	#VBlank_SetOptions,(VBint).w
 	move	#$2500,sr
 	bclr	#dfok,(disflags).w
 	bset	#dfng,(disflags).w
 	bclr	#df32c,(disflags).w
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
-	move.w	#$B800,(VmMap3).w
+	move.w	#$B800,(VmMAP3).w
 	move.w	#5,(Map3col1).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
 	move.w	#0,d0
 	jsr	(setVram).l
@@ -1053,7 +1053,7 @@ ControllerSetupScreen				;Build the controller setup screen: vram, fonts, the te
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$0D,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
 	move.l	#RosterFont,(smallfontptr).l
-	move.w	d4,(BigFontChars).w
+	move.w	d4,(BigFontchars).w
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(teamblocksmapptr).w

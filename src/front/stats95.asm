@@ -1442,12 +1442,12 @@ MarkSeasonRosters					;Set bit 15 of every player's goals and shots words in sav
 SeasonPlayerStats					;Season Player Stats screen: set the VRAM layout (VSCRLPM ... Map3col1),
 									;clear VRAM (setVram), then run the stats screen and return
 	bclr	#df32c,(disflags).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
 	move.w	#$DC00,(VSPRITES).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
-	move.w	#$F000,(VmMap3).w
+	move.w	#$F000,(VmMAP3).w
 	move.w	#5,(Map3col1).w
 	move.w	#$FC00,(VSCRLPM).w
 	moveq	#0,d0
@@ -1482,7 +1482,7 @@ SeasonPlayersScreen					;Run the season stats screen, then jump to ExitStatsScre
 	move.w	(sp)+,(disflags).w
 	bclr	#df32c,(disflags).w
 	move.w	#$800,d0
-	move.w	(VmMap1).w,d1
+	move.w	(VmMAP1).w,d1
 	move.w	#$7FF,d2
 	jsr	(DoFill).l
 	clr.w	d7
@@ -1939,12 +1939,12 @@ DrawSeasonStatsLogo					;Draw bitmap Teamblocksmap via dobitmap with tile base $
 SeasonTeamStats						;Season TEAM STATS screen (sflags11 bit 3 = playoff "Playoff Teams"): d7 =
 									;team 0-$19, left/right (bits 6/4 of d1) change team, start exits
 	bclr	#df32c,(disflags).w
-	move.w	#$C000,(VmMap2).w
+	move.w	#$C000,(VmMAP2).w
 	move.w	#6,(Map2col1).w
 	move.w	#$DC00,(VSPRITES).w
-	move.w	#$E000,(VmMap1).w
+	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col1).w
-	move.w	#$F000,(VmMap3).w
+	move.w	#$F000,(VmMAP3).w
 	move.w	#5,(Map3col1).w
 	move.w	#$FC00,(VSCRLPM).w
 	moveq	#0,d0
@@ -2417,10 +2417,10 @@ ReadLeadersPad						;League Leaders: wait (frame-synced) until a joypad reports 
 .wait
 	move.w	#$64,d6
 .1
-	move.w	(vcount).w,d1
-	sub.w	(oldvcount).w,d1
+	move.w	(Vcount).w,d1
+	sub.w	(OldVcount).w,d1
 	beq.s	.wait
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1
@@ -3943,9 +3943,9 @@ ShowThreeStars						;End of game Stars of the Game box. Called from UpdatePA whi
 	bne.w	.4
 	movem.l	d0/a1,-(sp)
 	bset	#dfclock,(disflags).w
-	move.w	(vcount).w,d0
+	move.w	(Vcount).w,d0
 .loop2
-	cmp.w	(vcount).w,d0
+	cmp.w	(Vcount).w,d0
 	beq.s	.loop2
 	movem.l	(sp)+,d0/a1
 	movem.l	d0-d5/a0-a4,-(sp)
@@ -4232,10 +4232,10 @@ ReadHighlightsPad					;Highlights joypad wait: each frame poll joypads (ReadJoy1
 	move.l	#$5460,d6
 .wait
 	move.w	#$64,d6
-	move.w	(vcount).w,d1
-	sub.w	(oldvcount).w,d1
+	move.w	(Vcount).w,d1
+	sub.w	(OldVcount).w,d1
 	beq.s	.wait
-	move.w	(vcount).w,(oldvcount).w
+	move.w	(Vcount).w,(OldVcount).w
 	jsr	(ReadJoy1).l
 	jsr	(ProcessInputWithRepeat).l
 	tst.w	d1

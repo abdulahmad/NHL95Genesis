@@ -90,7 +90,7 @@ FaceoffTiles2 = $14A490
 EnergyBarMap = $14C4C8
 RefTiles = $14EB04
 RefTilesHor = $14FBA2
-CrowdFrameList = $18B628
+Crowdframelist = $18B628
 
 ; Main segment code
 	include	engine\pause95.asm

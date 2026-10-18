@@ -158,7 +158,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 ### control95
 
 - **new in 95** (188 bytes): updatepadinput
-- **input94** (98 bytes): holdplayer, Acheck
+- **input94** (98 bytes): Holdplayer, Acheck
 - **new in 95** (12 bytes): burstchk
 - **input94** (200 bytes): burst, setpads
 - **title94** (524 bytes): chgplayer
@@ -228,7 +228,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 ### engine/middle95
 
-- **video94** (116 bytes): sroot
+- **video94** (116 bytes): Sroot
 - **checks94** (104 bytes): vtoa
 - **display94** (64 bytes): find3d
 - **video94** (68 bytes): randomd0s, randomd0
@@ -433,7 +433,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **display94** (78 bytes): showref
 - **penalty94** (14 bytes): ClearPenaltyBuffer
 - **title94** (80 bytes): ClearPenalties, clrTmPdst
-- **checks94** (340 bytes): puckIChk, ChkOffsides
+- **checks94** (340 bytes): PuckIChk, ChkOffsides
 - **data94** (814 bytes): (tables only)
 - **checks94** (160 bytes): checkob
 - **data94** (90 bytes): (tables only)

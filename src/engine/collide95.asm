@@ -131,7 +131,7 @@ checkwallcoll						;d2/d3 = x/y to test, a3 = object, wcradiusx/wcradiusy = radi
 	cmp.l	#$1690,d3
 	bls.w	.exit
 	exg	d0,d3
-	bsr.w	sroot					;distance from the circle center
+	bsr.w	Sroot					;distance from the circle center
 	exg	d0,d3
 	ext.l	d0
 	asl.l	#8,d0
@@ -194,7 +194,7 @@ wallcollb							;Check for puck over wall. a3 = object, d0/d1 = cos/sin of the w
 	movea.l	(sp)+,a3
 	move.w	#SFXbglass,-(sp)
 	jsr	(sfx).l
-	addi.w	#$258,(crowdlevel).w
+	addi.w	#$258,(Crowdlevel).w
 	addi.w	#$F,(CwdExciteLvl).w
 .1
 	bset	#sfslock,(sflags).w
@@ -865,7 +865,7 @@ FallDown							;Player a2 falls down, player a3 is the hitting player. Skips a2 
 	cmpi.w	#$B,SCnum(a3)
 	bgt.w	.12
 	addi.w	#$A,(CwdExciteLvl).w
-	addi.w	#$96,(crowdlevel).w
+	addi.w	#$96,(Crowdlevel).w
 	move.w	d1,-(sp)				;push to stack
 	move.b	#0,temp1(a3)
 	move.b	#0,glitch(a3)
@@ -1455,7 +1455,7 @@ puckglue							;Player a2 takes the puck (92 puckstick.glue): faceoff and pass s
 	bclr	#sf3fo,(sflags3).w		;clear flag (not sure what, might have to do with faceoff)
 	beq.w	.snd					;branch if it was cleared already
 	addq.w	#1,$E(a1)				;add 1 to faceoff won
-	addi.w	#$C8,(crowdlevel).w		;add to crowdlevel
+	addi.w	#$C8,(Crowdlevel).w		;add to Crowdlevel
 	move.w	#$C,(sp)				;move C to stack
 	cmpa.w	#(tmstruct-M68K_RAM),a1	;compare if a1 is home
 	bne.w	.snd					;branch if not
@@ -1735,7 +1735,7 @@ checkgoal							;Look for coll with goal/net. a2 = goal struct, a3 = object, d2/
 	btst	#gmclock,(gmode).w		;gmclock: no goal after the whistle
 	bne.w	.5
 	move.w	#8,(sp)					;sfx 8 (92 used 31) and crowd
-	addi.w	#$12C,(crowdlevel).w
+	addi.w	#$12C,(Crowdlevel).w
 	addi.w	#$28,(CwdExciteLvl).w
 .5
 	jsr	(sfx).l
@@ -1802,7 +1802,7 @@ checkgoalp							;Check for player a3 collision with goal/net a2. Entered from c
 	muls.w	d0,d0
 	muls.w	d1,d1
 	add.l	d1,d0
-	bsr.w	sroot
+	bsr.w	Sroot
 	move.w	d0,d2
 	movem.w	(sp)+,d0-d1
 	addq.w	#1,d2
@@ -1927,7 +1927,7 @@ checkcornercoll						;Corner circles and side walls for object a3 at d2 / d3 (wc
 	cmp.l	#$1000,d3
 	bls.w	.2
 	exg	d0,d3
-	jsr	(sroot).l
+	jsr	(Sroot).l
 	exg	d0,d3
 	ext.l	d0
 	asl.l	#8,d0

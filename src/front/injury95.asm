@@ -6,7 +6,7 @@ setInjuryType						;a2 injured: out for the period ($FFFD) or the game ($FFFC); 
 	bclr	#1,(sflags12).w
 	move.w	d0,-(sp)
 	bset	#pf2unav,pflags2(a2)
-	addi.w	#$12C,(crowdlevel).w
+	addi.w	#$12C,(Crowdlevel).w
 	addi.w	#$1E,(CwdExciteLvl).w
 	move.w	#SFXoooh2,-(sp)			;sound effect
 	jsr	(sfx).l
