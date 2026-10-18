@@ -8,7 +8,7 @@
 
 	include	macros\genesis.mac		;String
 
-StatsReport							;(was GameStatisticsScreen) Pause menu GAME STATS: both teams' totals
+StatsReport							;Pause menu GAME STATS: both teams' totals
 									;(DisplayStats). There are more rows than the screen: up / down scroll
 									;them (matchupvis the most, $70 or $30 without penalties, OptPen), start
 									;exits (ExitStatsScreen). 95 draws the screen with DrawTeamScreen2
@@ -122,7 +122,7 @@ PrintStatScrollArrows				;Scroll arrows (printz2): up ($7B) when VertLineScrolli
 	String	CC_SetFont,0
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-DisplayStats						;(was DisplayTeamStatsScreen) Team blocks (PutTeamBlock), then each
+DisplayStats						;Team blocks (PutTeamBlock), then each
 									;TeamStatTextTbl row (TeamStatTextTblNoPen when penalties are off, OptPen)
 									;centred, with the home value at x $22 and the visitors' at x 9
 									;(PrintStatValue); SetStatScroll first
