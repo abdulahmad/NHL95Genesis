@@ -688,7 +688,7 @@ SRNext	=	\1+\3
 	SRAMBlock SRPenMin,$3794,NumPlayoffTeams*27*2	;penalty minutes; goalies: goals against scaled to a full
 													;game
 	SRAMBlock SRTeamStats,$3D10,NumPlayoffTeams*10	;team stats, 10 bytes a playoff team (AddTeamSeasonStats)
-	SRAMBlock SRLines,$3E14,NumTeams*$41	;line sets (LoadTeamLines; DefaultLineData fills the RAM copy)
+	SRAMBlock SRLines,$3E14,NumTeams*$41	;line sets (SetOriginalLines; DefaultLineData fills the RAM copy)
 	SRAMBlock SRSavedLines1,$4530,NumTeams*$39	;first saved line block, one record a team (TeamRecordSRAM)
 	SRAMBlock SRSavedLines2,$4B6C,NumPlayoffTeams*$39	;second saved line block
 	SRAMBlock SRSavedLines3,$5136,NumPlayoffTeams*$39	;third saved line block

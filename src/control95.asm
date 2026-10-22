@@ -464,13 +464,13 @@ setteams							;Use hometeam/visteam to set team structures (InitTeamStructure f
 	rts
 
 InitTeamStructure					;Set up team struct a2 for team d0: store the team number at $28 and the
-									;team data address at $1E (tmdata), then LoadTeamLines (95; 94 copied the
-									;line sets here)
+									;team data address at $1E (tmdata), then SetOriginalLines (95; 94
+									;copied the line sets here)
 	move.w	d0,Xvel(a2)
 	movea.w	#TeamList,a0
 	asl.w	#2,d0
 	move.l	(a0,d0.w),tmdata(a2)
-	jmp	(LoadTeamLines).l
+	jmp	(SetOriginalLines).l
 
 setplayercolors						;Copy in correct color data for each team: .team for the home team, then
 									;falls in for the visitors. Called from setupice and others

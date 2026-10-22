@@ -39,7 +39,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | DrawTeamScreen6 | ok |
 | FixSavedLines | ok |
 | LineSlotFixTbl | ok |
-| LoadTeamLines | ok |
+| SetOriginalLines | ok |
 | ReadTeamSRAM | ok |
 | SetupTeamLine | ok |
 | rtslc | ok |
@@ -536,7 +536,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | BuildPlayerLeadersDone | ok |
 | ClearLeadersArea | ok |
 | CompareHighlight | ok |
-| LoadSavedLines | ok |
+| LoadTeamLines | ok |
 | DrawHighlightEntry | ok |
 | DrawHighlightLogo | ok |
 | DrawHighlightPage | ok |
@@ -1504,7 +1504,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | new-in-95 locals: awards | full body read of every new-in-95 routine (68): names ok; headers fixed: GetTeamUser (tmstruct), SelkeScore (score formula); locals named in GetTeamUser, SeasonAwards, PrintFinalists (.blank String, .player, .item ...), FlashWinnerCaption, AwardsLoop, SortAwardScores, ScanPresidents, ScanAllPlayers, SortSeeds, CalcSeedPoints, SetupPlayoffs, RestoreSeasonHeader, NextPlayoffRound, InitPlayoffSeries, BuildPlayoffDayGames, ReadPlayoffSchedule, RecordPlayoffGame, CollectSeriesWinners, PlayoffTreeScreen |
 | new-in-95 locals: pause | full body read of every new-in-95 routine (36): names ok; ShowPenaltyMessages header fixed (shows and removes the last queued entry); locals: SetStatsMenuItems .set, ShowPenaltyBox .count/.counted/.list/.next, ListPenaltyBox .next, ShowPenaltyBoxPlayer .full, RestoreGameScreen .clrpal/.ref/.load/.rink/.wait, ClearOldFrames .sort/.sso/.pads, DrawMenuInfo .get/.draw/.done, ShowPenaltyMessages .notempty/.next/.empty/.end/.skip/.find/.found/.done/.exit, PauseScores .tens/.ones/.tens2/.ones2 |
 | new-in-95 locals: middle | full body read of every new-in-95 routine (36): names ok; AssignPads header fixed (practice player counts, not goalie control); locals: showclockdma .gotclock, GetGoalieCountD7 .teamdata, name formatters .skipfirst/.copy (were auto .loop/.loop2), CalcAttribRating .create/.chkmax/.add, PushNumberWidthZero .pow/.digit/.num/.put; printbigtext keeps print's .0/.1 pattern (auto .loop -> .0) |
-| new-in-95 locals: lines | full body read of every new-in-95 routine (16): names ok; headers fixed: LoadTeamLines (sets per line change option, SRAM rule), DrawTeamScreen4 (no dma); locals: DrawTeamScreen2-6 vblank wait .0 as in DrawTeamScreen, DefaultLineData .team/.set, LoadTeamLines .nolc/.teamdata/.copy/.teamdata2/.copy2, FixSavedLines .rec/.line/.nextrec and clamp subroutines .goalie/.defense/.dlow/.forward/.flow/.extra/.nextslot (were auto .loop3-.loop9), CheckTeamLines .rec/.slot/.nextslot/.nextrec/.invalid, LineSlotFixTbl handlers .goalie/.defense/.forward/.extra/.none with .d*/.f*/.x* steps and .inlines/.search/.found |
+| new-in-95 locals: lines | full body read of every new-in-95 routine (16): names ok; headers fixed: SetOriginalLines (sets per line change option, SRAM rule), DrawTeamScreen4 (no dma); locals: DrawTeamScreen2-6 vblank wait .0 as in DrawTeamScreen, DefaultLineData .team/.set, SetOriginalLines .nolc/.teamdata/.copy/.teamdata2/.copy2, FixSavedLines .rec/.line/.nextrec and clamp subroutines .goalie/.defense/.dlow/.forward/.flow/.extra/.nextslot (were auto .loop3-.loop9), CheckTeamLines .rec/.slot/.nextslot/.nextrec/.invalid, LineSlotFixTbl handlers .goalie/.defense/.forward/.extra/.none with .d*/.f*/.x* steps and .inlines/.search/.found |
 | new-in-95 locals: records | full body read of every new-in-95 routine (CountTeamPads, NameInUse, SkipPadName, ClearNameHelp, GetPadUser, UpdateUserRecord): names and headers ok; UpdateUserRecord .hasteam, .chkaway, .order, .awayfirst, .user (was an auto .loop, not a loop) |
 | new-in-95 locals: goal | full body read of every new-in-95 routine (27): the practice 'goalie control' is the practice player count (strings 'No. of Players', limits by position), renamed SetGoaliesCtl->PullPracticePlayers, GoalieCtlLimits->PracticePlayerLimits, GetGoalieCtl->GetPracticePlayers, PrintPracticeGoalies->PrintPracticePlayers, PrintGoalieCount->PrintPlayerCount, GoalieCountTxt->PlayerCountTxt, PracticeGoalieTbl->PracticePlayersTbl (RAM renamed homepracplayers / awaypracplayers); headers fixed (those, PracticeGoalies, SetContTeams, PrintPracticeTitle had highlight inverted); locals: AssignTeam .assign/.next, PullPracticePlayers .team/.pull/.next, PracticeGoalies .home/.chkaway/.away/.done, SetContTeams .clear (auto .loop, not a loop)/.setup/.frame/.wait/.keys/.up/.pads/.pad/.right/.fewer/.more/.nextpad, DrawPadSetup .draw, PrintPracticeTitle .normal |
 | new-in-95 locals: scout | full body read of every new-in-95 routine (10): names ok; GetPlayerPicture header fixed (featured picture for the first six, else generic) and locals .sram, .gotslot, .find, .featured, .generic, .alt, .done |
