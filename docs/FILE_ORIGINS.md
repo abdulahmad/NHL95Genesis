@@ -513,7 +513,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **stats94** (52 bytes): LineEditor, LineEditorRedraw
 - **new in 95** (38 bytes): LineEditorReturn
 - **stats94** (2070 bytes): LineEditorMenu, SelectLinePlayer, PrintAttribHeader, DrawLineIcons, DrawLineIcon, ClearLineArea, DrawLineEditorScreen, ClearLineEditorTop, ClearMenuFlags, LineEditorExit, LineEditorBg, PlayerSelectBg, SetLineSlot
-- **new in 95** (142 bytes): SaveTeamLines, CopyTeamLines
+- **new in 95** (142 bytes): SaveTeamLines, LoadSavedLines
 - **data94** (1000 bytes): ShowThreeStars, TakeTopStarScore, CalcStarScores, CalcTeamStarScores, HighlightsScreen
 - **new in 95** (566 bytes): ReadAnyPad7, PrintHighlightsTitle, DrawHighlightPage, DrawHighlightEntry, PrintStatHighlight
 - **cards94** (42 bytes): AppendNumber

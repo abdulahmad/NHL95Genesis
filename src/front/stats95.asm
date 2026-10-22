@@ -3792,7 +3792,7 @@ LineEditorExit						;Exit box (rewritten in 95): Start leaves, A original lines,
 	btst	#1,(sflags10).w
 	beq.w	.5
 	movea.l	#StatBuf,a0
-	jsr	(CopyTeamLines).l
+	jsr	(LoadSavedLines).l
 	bra.w	LineEditorReturn
 .5
 	btst	#5,d1
@@ -3898,7 +3898,7 @@ SaveTeamLines						;C in exit menu: save team a2's lines ($16C) to save RAM at t
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-CopyTeamLines						;B in exit menu: copy the loaded line data (a0, 56 bytes) into team a2's
+LoadSavedLines						;B in exit menu: copy the loaded line data (a0, 56 bytes) into team a2's
 									;lines ($16C)
 	movem.l	d0-d7/a0-a6,-(sp)
 	lea	$16C(a2),a1
