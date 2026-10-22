@@ -445,7 +445,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **penalty94** (204 bytes): linebar, getlinee, AvgCline
 - **checks94** (372 bytes): CompLine, AutoLineChange
 - **penalty94** (18 bytes): SetupTeamForIntermission
-- **new in 95** (1348 bytes): SetupTeamLine, ReadTeamSRAM, DefaultLineData, LoadTeamLines, FixSavedLines, CheckSavedLines, CheckTeamLines
+- **new in 95** (1348 bytes): SetupTeamLine, ReadTeamSRAM, DefaultLineData, SetOriginalLines, FixSavedLines, CheckSavedLines, CheckTeamLines
 - **attract94** (182 bytes): EASportsScreen
 - **penalty94** (54 bytes): chkatop
 - **period94** (38 bytes): updatePPTeamTime
@@ -513,7 +513,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **stats94** (52 bytes): LineEditor, LineEditorRedraw
 - **new in 95** (38 bytes): LineEditorReturn
 - **stats94** (2070 bytes): LineEditorMenu, SelectLinePlayer, PrintAttribHeader, DrawLineIcons, DrawLineIcon, ClearLineArea, DrawLineEditorScreen, ClearLineEditorTop, ClearMenuFlags, LineEditorExit, LineEditorBg, PlayerSelectBg, SetLineSlot
-- **new in 95** (142 bytes): SaveTeamLines, LoadSavedLines
+- **new in 95** (142 bytes): SaveTeamLines, LoadTeamLines
 - **data94** (1000 bytes): ShowThreeStars, TakeTopStarScore, CalcStarScores, CalcTeamStarScores, HighlightsScreen
 - **new in 95** (566 bytes): ReadAnyPad7, PrintHighlightsTitle, DrawHighlightPage, DrawHighlightEntry, PrintStatHighlight
 - **cards94** (42 bytes): AppendNumber

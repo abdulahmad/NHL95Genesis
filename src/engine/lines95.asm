@@ -482,10 +482,11 @@ DefaultLineData						;Copy the default line sets of the 28 teams (TeamList + 6, 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LoadTeamLines						;The line sets of team struct a2 ($16C) from save RAM (SRLines + team *
+SetOriginalLines					;The line sets of team struct a2 ($16C) from save RAM (SRLines + team *
 									;$41) when it is valid, else (or with line changes on and sflags11 bit 6)
 									;from the team data; line changes on: sets 0 and 2-7, off:
-									;sets 1-7. Jumped to from InitTeamStructure
+									;sets 1-7. Jumped to from InitTeamStructure.
+									;93 CopyTeamLines reworked ("A = Set Original Lines")
 	tst.w	(OptLine).w
 	beq.w	.nolc
 	tst.w	(ValidSRAM).w
