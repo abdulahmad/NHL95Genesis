@@ -536,7 +536,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | BuildPlayerLeadersDone | ok |
 | ClearLeadersArea | ok |
 | CompareHighlight | ok |
-| CopyTeamLines | ok |
+| LoadSavedLines | ok |
 | DrawHighlightEntry | ok |
 | DrawHighlightLogo | ok |
 | DrawHighlightPage | ok |

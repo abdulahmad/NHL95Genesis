@@ -1287,7 +1287,7 @@ front/stats95.asm,$095998,76,LineEditorBg,code,stats94,follows LineEditorExit
 front/stats95.asm,$0959E4,124,PlayerSelectBg,code,stats94,follows LineEditorBg
 front/stats95.asm,$095A60,48,SetLineSlot,code,stats94,name
 front/stats95.asm,$095A90,58,SaveTeamLines,code,new in 95,header
-front/stats95.asm,$095ACA,84,CopyTeamLines,code,new in 95,header
+front/stats95.asm,$095ACA,84,LoadSavedLines,code,new in 95,header
 front/stats95.asm,$095B1E,204,ShowThreeStars,code,data94,name
 front/stats95.asm,$095BEA,64,TakeTopStarScore,code,data94,name
 front/stats95.asm,$095C2A,96,CalcStarScores,code,data94,name

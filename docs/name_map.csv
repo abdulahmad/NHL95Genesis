@@ -1311,7 +1311,7 @@ $095998,LineEditorBg,,,front/stats95
 $0959E4,PlayerSelectBg,,,front/stats95
 $095A60,SetLineSlot,,UpdatePlayerAttribute,front/stats95
 $095A90,SaveTeamLines,,,front/stats95
-$095ACA,CopyTeamLines,,,front/stats95
+$095ACA,LoadSavedLines,,,front/stats95
 $095AE2,TeamLinesOffset,,,front/stats95
 $095B1E,ShowThreeStars,sub_95B1E,DisplayPeriodOver,front/stats95
 $095BEA,TakeTopStarScore,sub_95BEA,FindMaxAttributeTEam,front/stats95
