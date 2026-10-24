@@ -92,6 +92,10 @@ The batch files run `assembler\Assembler.exe` (SNASM68K) on Windows. Under Linux
 
 `SEGMENT_AGENT.md` has the rules the segments were transcribed by and the ROM map: one row per segment with its range, its 94 file and what is in it. `PROMPT.md` is the prompt that was used for each segment session.
 
+## AI assistance
+
+This project is AI-assisted. The work is directed by a strict ruleset and curated by hand, with the aim of producing correctly labelled and commented code that matches the spirit of what the original source code would have been. We can't guarantee it's perfect, and ultimately this will always be a work in progress. If you see something that needs fixing, raise an issue, or even better, raise a PR.
+
 ## Credits
 
 Thanks to chaos, StaticEck, McMarkis and Drezz for their help with the disassembly.
