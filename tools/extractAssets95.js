@@ -255,8 +255,7 @@ const assets = [
     { name: 'sfx_shotfh_pcm.bin', folder: 'NHL95/Sound', start: 0x000786EA, end: 0x000792A2 }, // 94 file, same bytes (94 $2B430)
     { name: 'sfx_puckget_pcm.bin', folder: 'NHL95/Sound', start: 0x000792A2, end: 0x00079502 }, // 94 file, same bytes (94 $2BFE8)
     { name: 'fm_instrument_patches.bin', folder: 'NHL95/Sound', start: 0x00079502, end: 0x00079902 }, // 94 file, same bytes (94 $2C248)
-    { name: 'z80_snd_drv93.bin', folder: 'NHL95/Sound', start: 0x0007E0E1, end: 0x0007E358 }, // z80old95: the 94 Z80 driver after its first byte, up to the ld bc of the FM patch bank address (93 / 94 file, same bytes; 94 $1AD91)
-    { name: 'z80_snd_drv93_end.bin', folder: 'NHL95/Sound', start: 0x0007E35D, end: 0x0007E36B }, // z80old95: rest of the 94 Z80 driver (93 / 94 file, same bytes; 94 $1B00D)
+    { name: 'z80_snd_drv93.bin', folder: 'NHL95/Sound', start: 0x0007E0E0, end: 0x0007E36B }, // z80old95: the old (93 / 94) Z80 driver, 651 bytes; tools/buildZ80.js checks the asm80 build of src/sound/z80_snd_drv93.asm against it
     // NHL 95 graphics95 ($A1A5A-$1A1699): the player pictures, the rink, the sprites, the fonts and screen maps, the team logos.
     // One slice per asset the code references (its label in src/graphics95.asm), one per FeaturedPictures picture (PlayerCards).
     { name: 'NoPlayerPicture.map.jim', folder: 'NHL95/Graphics', start: 0x000A1A5A, end: 0x000A1E90 }, // NoPlayerPicture

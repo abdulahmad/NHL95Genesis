@@ -54,6 +54,7 @@
     "seg:checksum95": "node tools/prebuild.js retail && set NHL_PREBUILD_DONE=1&& buildseg.bat checksum95 && node tools/fixopcodes.js \"output\\\\checksum95 .lst\" output\\\\checksum95.bin && node tools/verifySegment.js checksum95 0x1A72C0 lst/nhl95.bin"
   },
   "devDependencies": {
+    "asm80": "1.11.14",
     "crc-32": "^1.2.2"
   },
   "license": "ISC"
