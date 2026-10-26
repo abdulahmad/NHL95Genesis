@@ -1786,28 +1786,47 @@ RandomSongs							;8 songs ChooseSong picks from at random
 ;
 ;<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-z80_bus_release_delay				;Z80 busy: give the bus back, wait, then falls into
+;	RAM of the old (93 / 94) Z80 driver, src/sound/z80_snd_drv93.asm (offsets from Z80_RAM; names as in 93
+;	sound93.asm and 94 sound94.asm). In 95 the Z80 runs the new driver (Z80Program), so if this code ran,
+;	these writes would land in that driver's RAM instead.
+z80_cmdbuf			=	$02			;where Z80_command_buffer is copied to
+CmdBufSize			=	33			;bytes copied
+z80_pcm_addr		=	$23			;3 bytes: PCM sample start (high byte first)
+z80_pcm_next_addr	=	$26			;3 bytes: where the Z80 carries on after a 0 sample byte (high byte first)
+z80_pcm_vol			=	$83			;volume table page ($03-$1F, $1F loudest)
+z80_pcm_rate		=	$8E			;sample step per DAC write; 0 holds the current byte (no advance)
+z80_cmd				=	$96			;low byte of the sample loop's jump target: Z80Idle when the Z80 can take
+									;a command
+z80_cmd_high		=	$97			;high byte of that jump target; the old driver always leaves 0 here
+z80_tables			=	$2000		;end of the 29 tables of 256 bytes below it
+Z80Idle				=	$7D			;the sample loop (PcmLoop): no command pending
+Z80Cmd_Upload		=	$D1			;UploadHandler: take the command buffer
+Z80Cmd_PCM			=	$29			;Start: restart with the PCM sample set up at z80_pcm_addr
+Z80ProgramLen		=	$295		;bytes of the old Z80 program copied to Z80 RAM
+Z80Tables			=	29			;tables of 256 bytes built by p_initialZ80
+
+z80_bus_release_delay				;Z80 still on a command: give the bus back, wait, then falls into
 									;UploadCommandBufferToZ80 to retry
 	clr.w	(IO_Z80BUS).l
 	moveq	#$64,d0
 .delay
 	dbf	d0,.delay
-UploadCommandBufferToZ80			;Copy the 33 byte command buffer (Z80_command_buffer) to Z80 RAM $02 once
-									;the Z80 is idle (Z80 RAM $97 = 0, $96 = $7D)
+UploadCommandBufferToZ80			;Copy the 33 byte command buffer (Z80_command_buffer) to z80_cmdbuf once
+									;the Z80 is idle (z80_cmd_high 0, z80_cmd Z80Idle)
 	move.w	d0,-(sp)				;pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
 	move.w	#$D,d0
 	jsr	(SoundCmd).l
 	move.w	(sp)+,d0
 	movea.l	#Z80_RAM,a0
-	cmpi.b	#0,$97(a0)
+	cmpi.b	#0,z80_cmd_high(a0)
 	bne.s	z80_bus_release_delay
-	cmpi.b	#$7D,$96(a0)
+	cmpi.b	#Z80Idle,z80_cmd(a0)
 	bne.s	z80_bus_release_delay
-	move.b	#$D1,$96(a0)
-	move.b	#0,$97(a0)
-	adda.w	#2,a0
+	move.b	#Z80Cmd_Upload,z80_cmd(a0)	;the sample loop jumps to UploadHandler next
+	move.b	#0,z80_cmd_high(a0)
+	adda.w	#z80_cmdbuf,a0
 	movea.w	#(Z80_command_buffer-M68K_RAM),a1
-	moveq	#$20,d0
+	moveq	#CmdBufSize-1,d0
 .copy
 	move.b	(a1)+,(a0)+
 	dbf	d0,.copy
@@ -1881,13 +1900,13 @@ ReleaseChannelAndNote				;Key off channel struct a2 if it is on. The PCM patches
 	bset	d0,(Z80_command_buffer).w
 	st	(music_needs_z80_update).w
 	rts
-StopPCMChannel						;Clear Z80 RAM $8E (Z80_RAM+$8E, the PCM rate byte written by
-									;UpdateChannelFrequencyAndVolume): stops the PCM channel
+StopPCMChannel						;Clear z80_pcm_rate (written by UpdateChannelFrequencyAndVolume): the old
+									;driver then stops advancing through the sample
 	move.w	d0,-(sp)				;pause the 95 sound driver (SndPauseZ80) where 94 took the Z80 bus
 	move.w	#$D,d0
 	jsr	(SoundCmd).l
 	move.w	(sp)+,d0
-	clr.b	(Z80_RAM+$8E).l
+	clr.b	(Z80_RAM+z80_pcm_rate).l
 	clr.w	(IO_Z80BUS).l
 rtsfx								;The shared rts (94 had it in play_sfx_or_music_track, not in 95).
 									;ProcessOneMusicTrack, handle_command_00 and StartSong branch here
@@ -1981,18 +2000,18 @@ handle_command_10					;Event $1x: key on note +2 at volume +3 on channel +1 bits
 	jsr	(SoundCmd).l
 	move.w	(sp)+,d0
 	movea.l	#Z80_RAM,a1
-	move.b	d0,$25(a1)
+	move.b	d0,z80_pcm_addr+2(a1)	;sample start, high byte first
 	lsr.w	#8,d0
-	move.b	d0,$24(a1)
+	move.b	d0,z80_pcm_addr+1(a1)
 	swap	d0
-	move.b	d0,$23(a1)
-	move.b	d1,$28(a1)
+	move.b	d0,z80_pcm_addr(a1)
+	move.b	d1,z80_pcm_next_addr+2(a1)	;where to carry on after a 0 byte
 	lsr.w	#8,d1
-	move.b	d1,$27(a1)
+	move.b	d1,z80_pcm_next_addr+1(a1)
 	swap	d1
-	move.b	d1,$26(a1)
-	move.b	#$29,$96(a1)
-	move.b	#0,$97(a1)
+	move.b	d1,z80_pcm_next_addr(a1)
+	move.b	#Z80Cmd_PCM,z80_cmd(a1)	;play the sample: the old driver restarts at Start
+	move.b	#0,z80_cmd_high(a1)
 	clr.w	(IO_Z80BUS).l
 	bsr.w	SetChannelVolume
 UpdateChannelFrequencyAndVolume		;Set the frequency of channel struct a2 from its note and the pitch bend
@@ -2054,7 +2073,7 @@ UpdateChannelFrequencyAndVolume		;Set the frequency of channel struct a2 from it
 	neg.w	d3
 	addq.w	#8,d3
 	lsr.w	d3,d2
-	move.b	d2,(Z80_RAM+$8E).l
+	move.b	d2,(Z80_RAM+z80_pcm_rate).l
 	clr.w	(IO_Z80BUS).l
 .x
 	rts
@@ -2102,7 +2121,7 @@ UpdateChannelFrequencyAndVolume		;Set the frequency of channel struct a2 from it
 	dc.w	$FC54,$FD3E,$FE28,$FF13,$FF13
 SetChannelVolume					;Set the volume of channel struct a2: note volume (+2) * the voice volume
 									;(voice table +4) / 128. FM: attenuation from
-									;veltab (volume / 8); PCM: Z80 RAM $83 (Z80_RAM+$83, at least 3). Called
+									;veltab (volume / 8); PCM: z80_pcm_vol (the volume table page, at least 3). Called
 									;from handle_command_10 and handle_command_30
 	movem.l	d0,-(sp)
 	clr.w	d0
@@ -2137,7 +2156,7 @@ SetChannelVolume					;Set the volume of channel struct a2: note volume (+2) * th
 	bgt.w	.1
 	moveq	#3,d0
 .1
-	move.b	d0,(Z80_RAM+$83).l
+	move.b	d0,(Z80_RAM+z80_pcm_vol).l
 	clr.w	(IO_Z80BUS).l
 	movem.l	(sp)+,d0
 	rts
@@ -2199,9 +2218,9 @@ handle_command_30					;Event $3x, controller +2 = +3 on channel +1 bits 3-0 of t
 	rts
 handle_command_skip					;Events $2x, $5x and $7x: ignored
 	rts
-p_initialZ80						;(initialization). Free all slots, load the Z80 program (Z80_Program_Code,
-									;$295 bytes) into Z80 RAM, build 29
-									;tables of 256 bytes below Z80 RAM $2000 (Z80_RAM+$2000; (x - $80) * 8 / n
+p_initialZ80						;(initialization). Free all slots, load the old Z80 program (Z80_Program_Code,
+									;Z80ProgramLen bytes) into Z80 RAM, build 29
+									;tables of 256 bytes below z80_tables ( (x - $80) * 8 / n
 									;+ $80 for n = 8-$24), then reset and start the Z80. Called from Begin
 	movem.l	d0-d2/a0-a2,-(sp)
 	bsr.w	ClearAllTrackAndSFXSlots
@@ -2212,13 +2231,13 @@ p_initialZ80						;(initialization). Free all slots, load the Z80 program (Z80_P
 	bne.s	.loop
 	movea.l	#Z80_Program_Code,a1
 	movea.l	#Z80_RAM,a2
-	move.w	#$294,d0				;$295 bytes
+	move.w	#Z80ProgramLen-1,d0
 .loop2
 	move.b	(a1)+,(a2)+
 	dbf	d0,.loop2
-	movea.l	#Z80_RAM+$2000,a2
+	movea.l	#Z80_RAM+z80_tables,a2
 	moveq	#8,d2
-	move.l	#$1C,d3
+	move.l	#Z80Tables-1,d3
 .loop3
 	move.w	#$FF,d0
 .loop4

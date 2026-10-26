@@ -23,6 +23,13 @@ const ROOT = path.join(__dirname, '..');
 const EXTRACTED = path.join(ROOT, 'Extracted');
 const MARKER = path.join(EXTRACTED, '.extract-complete.json');
 
+// 3. The old Z80 driver: asm80 builds src/sound/z80_snd_drv93.asm and checks it (tools/buildZ80.js).
+function z80() {
+    const r = require('./buildZ80')();
+    if (!r.ok) { console.error(r.msg); console.error('*** BUILD STOPPED: Z80 driver ***'); process.exit(1); }
+    console.log('prebuild: ' + r.msg);
+}
+
 const sha1Of = (buf) => crypto.createHash('sha1').update(buf).digest('hex');
 const sizeText = (n) => `${n} bytes (0x${n.toString(16).toUpperCase()}, ${n / 0x100000 >= 1 ? n / 0x100000 + ' MB' : n / 1024 + ' KB'})`;
 
@@ -138,6 +145,7 @@ const why = extractedState();
 if (!why) {
     writeTeamCounts();
     console.log('prebuild: ROM OK, Extracted/ assets complete.');
+    z80();
     process.exit(0);
 }
 console.log(`prebuild: ${why}; extracting assets from ${path.relative(ROOT, romPath)} ...`);
@@ -153,3 +161,4 @@ const summary = out.split(/\r?\n/).filter((l) => /^ROM:|^Extracted \d+ (assets|s
 for (const l of summary) console.log('prebuild: ' + l);
 writeTeamCounts();
 console.log('prebuild: Extracted/ assets complete.');
+z80();
