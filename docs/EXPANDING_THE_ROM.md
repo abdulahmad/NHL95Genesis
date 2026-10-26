@@ -35,7 +35,7 @@ Each of these is one entry per team. The assemble stops when the length is wrong
 - `TeamLogoBitmaps` and `TeamGfxList` in `src/engine/middle95.asm`: one long each. ASE and ASW share one ice-logo block. The list still has one long per team.
 - `TeamLogoPalettes` in `src/graphics95.asm`: 32 bytes.
 - `FeaturedPicIdx` in `src/graphics95.asm`: 6 bytes. `FeaturedPictures` is the picture list, not one entry per team.
-- `TeamSongs` in `src/sound95.asm`: 6 bytes.
+- `TeamSongs` in `src/sound/sound95.asm`: 6 bytes.
 - `TeamRatings` and `TeamRatingsLine` in `src/front/scout95.asm`: one byte per team, then two unused bytes. The check is `NumTeams+2`. Insert the new byte at the team's index. The unused bytes stay at the end.
 
 These are one entry per playoff team. They do not grow when only `NumTeams` grows.
