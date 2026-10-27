@@ -1,6 +1,9 @@
 // NHL 95 asset extractor.
 // Usage: node tools/extractAssets95.js lst/nhl95.bin
 // Add a slice only after the listing label and the retail range are confirmed.
+// It also writes Extracted/PlayerNames.txt and Extracted/TeamNicknames.txt: the real NHLPA player names and NHL team nicknames, one
+// per line in the order of the rows of src/teamdata95.asm, which holds placeholders; tools/prebuild.js (writeNames) puts them
+// back into the copies of the source that are assembled.
 const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -263,162 +266,162 @@ const assets = [
     { name: 'NoPicSkater1.bin', folder: 'NHL95/Graphics', start: 0x000A21FA, end: 0x000A2564 }, // NoPicSkater1
     { name: 'NoPicGoalie2.bin', folder: 'NHL95/Graphics', start: 0x000A2564, end: 0x000A28CE }, // NoPicGoalie2
     { name: 'NoPicGoalie1.bin', folder: 'NHL95/Graphics', start: 0x000A28CE, end: 0x000A2C38 }, // NoPicGoalie1
-    { name: 'CardGuyHebert.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A2C38, end: 0x000A2FA2 }, // CardGuyHebert
-    { name: 'CardBobCorkum.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A2FA2, end: 0x000A330C }, // CardBobCorkum
-    { name: 'CardTerryYake.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A330C, end: 0x000A3676 }, // CardTerryYake
-    { name: 'CardGarryValk.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A3676, end: 0x000A39E0 }, // CardGarryValk
-    { name: 'CardSeanHill.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A39E0, end: 0x000A3D4A }, // CardSeanHill
-    { name: 'CardBillHoulder.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A3D4A, end: 0x000A40B4 }, // CardBillHoulder
-    { name: 'CardJonCasey.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A40B4, end: 0x000A441E }, // CardJonCasey
-    { name: 'CardAdamOates.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A441E, end: 0x000A4788 }, // CardAdamOates
-    { name: 'CardBryanSmolinski.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A4788, end: 0x000A4AF2 }, // CardBryanSmolinski
-    { name: 'CardCamNeely.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A4AF2, end: 0x000A4E5C }, // CardCamNeely
-    { name: 'CardRayBourque.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A4E5C, end: 0x000A51C6 }, // CardRayBourque
-    { name: 'CardAlIafrate.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A51C6, end: 0x000A5530 }, // CardAlIafrate
-    { name: 'CardDominikHasek.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A5530, end: 0x000A589A }, // CardDominikHasek
-    { name: 'CardPatLaFontaine.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A589A, end: 0x000A5C04 }, // CardPatLaFontaine
-    { name: 'CardDaleHawerchuk.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A5C04, end: 0x000A5F6E }, // CardDaleHawerchuk
-    { name: 'CardAlexnderMogilny.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A5F6E, end: 0x000A62D8 }, // CardAlexnderMogilny
-    { name: 'CardDougBodger.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A62D8, end: 0x000A6642 }, // CardDougBodger
-    { name: 'CardPetrSvoboda.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A6642, end: 0x000A69AC }, // CardPetrSvoboda
-    { name: 'CardMikeVernon.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A69AC, end: 0x000A6D16 }, // CardMikeVernon
-    { name: 'CardJoeNieuwendyk.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A6D16, end: 0x000A7080 }, // CardJoeNieuwendyk
-    { name: 'CardGaryRoberts.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A7080, end: 0x000A73EA }, // CardGaryRoberts
-    { name: 'CardTheorenFleury.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A73EA, end: 0x000A7754 }, // CardTheorenFleury
-    { name: 'CardZarleyZalapski.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A7754, end: 0x000A7ABE }, // CardZarleyZalapski
-    { name: 'CardAlMacInnis.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A7ABE, end: 0x000A7E28 }, // CardAlMacInnis
-    { name: 'CardEdBelfour.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A7E28, end: 0x000A8192 }, // CardEdBelfour
-    { name: 'CardJeremyRoenick.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A8192, end: 0x000A84FC }, // CardJeremyRoenick
-    { name: 'CardMichelGoulet.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A84FC, end: 0x000A8866 }, // CardMichelGoulet
-    { name: 'CardJoeMurphy.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A8866, end: 0x000A8BD0 }, // CardJoeMurphy
-    { name: 'CardChrisChelios.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A8BD0, end: 0x000A8F3A }, // CardChrisChelios
-    { name: 'CardSteveSmith.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A8F3A, end: 0x000A92A4 }, // CardSteveSmith
-    { name: 'CardAndyMoog.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A92A4, end: 0x000A960E }, // CardAndyMoog
-    { name: 'CardMikeModano.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A960E, end: 0x000A9978 }, // CardMikeModano
-    { name: 'CardDaveGagner.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A9978, end: 0x000A9CE2 }, // CardDaveGagner
-    { name: 'CardRussCourtnall.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A9CE2, end: 0x000AA04C }, // CardRussCourtnall
-    { name: 'CardMarkTinordi.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AA04C, end: 0x000AA3B6 }, // CardMarkTinordi
-    { name: 'CardDerianHatcher.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AA3B6, end: 0x000AA720 }, // CardDerianHatcher
-    { name: 'CardBobEssensa.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AA720, end: 0x000AAA8A }, // CardBobEssensa
-    { name: 'CardSteveYzerman.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AAA8A, end: 0x000AADF4 }, // CardSteveYzerman
-    { name: 'CardSergeiFedorov.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AADF4, end: 0x000AB15E }, // CardSergeiFedorov
-    { name: 'CardDinoCiccarelli.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AB15E, end: 0x000AB4C8 }, // CardDinoCiccarelli
-    { name: 'CardPaulCoffey.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AB4C8, end: 0x000AB832 }, // CardPaulCoffey
-    { name: 'CardSteveChiasson.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AB832, end: 0x000ABB9C }, // CardSteveChiasson
-    { name: 'CardBillRanford.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000ABB9C, end: 0x000ABF06 }, // CardBillRanford
-    { name: 'CardDougWeight.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000ABF06, end: 0x000AC30C }, // CardDougWeight
-    { name: 'CardShayneCorson.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AC30C, end: 0x000AC676 }, // CardShayneCorson
-    { name: 'CardZdenoCiger.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AC676, end: 0x000ACA7C }, // CardZdenoCiger
-    { name: 'CardIgorKravchuk.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000ACA7C, end: 0x000ACDE6 }, // CardIgorKravchuk
-    { name: 'CardBobBeers.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000ACDE6, end: 0x000AD150 }, // CardBobBeers
-    { name: 'CardJohnVanbiesbrk.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AD150, end: 0x000AD4BA }, // CardJohnVanbiesbrk
-    { name: 'CardJesseBelanger.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AD4BA, end: 0x000AD824 }, // CardJesseBelanger
-    { name: 'CardAndreiLomakin.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AD824, end: 0x000ADB8E }, // CardAndreiLomakin
-    { name: 'CardBobKudelski.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000ADB8E, end: 0x000ADFAC }, // CardBobKudelski
-    { name: 'CardBrianBenning.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000ADFAC, end: 0x000AE316 }, // CardBrianBenning
-    { name: 'CardGordMurphy.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AE316, end: 0x000AE680 }, // CardGordMurphy
-    { name: 'CardSeanBurke.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AE680, end: 0x000AE9EA }, // CardSeanBurke
-    { name: 'CardAndrewCassels.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AE9EA, end: 0x000AED54 }, // CardAndrewCassels
-    { name: 'CardGeoffSanderson.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AED54, end: 0x000AF0BE }, // CardGeoffSanderson
-    { name: 'CardPatVerbeek.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AF0BE, end: 0x000AF428 }, // CardPatVerbeek
-    { name: 'CardAlexnderGodynyuk.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AF428, end: 0x000AF792 }, // CardAlexnderGodynyuk
-    { name: 'CardChrisPronger.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AF792, end: 0x000AFAFC }, // CardChrisPronger
-    { name: 'CardKellyHrudey.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AFAFC, end: 0x000AFEEA }, // CardKellyHrudey
-    { name: 'CardWayneGretzky.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AFEEA, end: 0x000B0254 }, // CardWayneGretzky
-    { name: 'CardLucRobitaille.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B0254, end: 0x000B05BE }, // CardLucRobitaille
-    { name: 'CardJariKurri.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B05BE, end: 0x000B0928 }, // CardJariKurri
-    { name: 'CardRobBlake.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B0928, end: 0x000B0C92 }, // CardRobBlake
-    { name: 'CardMartyMcSorley.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B0C92, end: 0x000B0FFC }, // CardMartyMcSorley
-    { name: 'CardPatrickRoy.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B0FFC, end: 0x000B1366 }, // CardPatrickRoy
-    { name: 'CardKirkMuller.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B1366, end: 0x000B16D0 }, // CardKirkMuller
-    { name: 'CardVincentDamphousse.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B16D0, end: 0x000B1A3A }, // CardVincentDamphousse
-    { name: 'CardBrianBellows.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B1A3A, end: 0x000B1DA4 }, // CardBrianBellows
-    { name: 'CardEricDesjardins.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B1DA4, end: 0x000B210E }, // CardEricDesjardins
-    { name: 'CardMattSchneider.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B210E, end: 0x000B24E4 }, // CardMattSchneider
-    { name: 'CardChrisTerreri.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B24E4, end: 0x000B284E }, // CardChrisTerreri
-    { name: 'CardCoreyMillen.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B284E, end: 0x000B2BB8 }, // CardCoreyMillen
-    { name: 'CardJohnMacLean.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B2BB8, end: 0x000B2F22 }, // CardJohnMacLean
-    { name: 'CardStephaneRicher.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B2F22, end: 0x000B328C }, // CardStephaneRicher
-    { name: 'CardScottStevens.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B328C, end: 0x000B35F6 }, // CardScottStevens
-    { name: 'CardScottNiedrmayer.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B35F6, end: 0x000B3960 }, // CardScottNiedrmayer
-    { name: 'CardRonHextall.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B3960, end: 0x000B3D36 }, // CardRonHextall
-    { name: 'CardPierreTurgeon.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B3D36, end: 0x000B40A0 }, // CardPierreTurgeon
-    { name: 'CardBenoitHogue.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B40A0, end: 0x000B440A }, // CardBenoitHogue
-    { name: 'CardSteveThomas.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B440A, end: 0x000B4774 }, // CardSteveThomas
-    { name: 'CardDariusKasparitis.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B4774, end: 0x000B4B7A }, // CardDariusKasparitis
-    { name: 'CardVladimirMalakhov.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B4B7A, end: 0x000B4EE4 }, // CardVladimirMalakhov
-    { name: 'CardMikeRichter.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B4EE4, end: 0x000B524E }, // CardMikeRichter
-    { name: 'CardMarkMessier.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B524E, end: 0x000B55B8 }, // CardMarkMessier
-    { name: 'CardAdamGraves.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B55B8, end: 0x000B59D6 }, // CardAdamGraves
-    { name: 'CardSteveLarmer.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B59D6, end: 0x000B5D40 }, // CardSteveLarmer
-    { name: 'CardBrianLeetch.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B5D40, end: 0x000B60AA }, // CardBrianLeetch
-    { name: 'CardSergeiZubov.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B60AA, end: 0x000B6414 }, // CardSergeiZubov
-    { name: 'CardCraigBillington.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B6414, end: 0x000B677E }, // CardCraigBillington
-    { name: 'CardAlexnderDaigle.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B677E, end: 0x000B6AE8 }, // CardAlexnderDaigle
-    { name: 'CardAlexeiYashin.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B6AE8, end: 0x000B6E52 }, // CardAlexeiYashin
-    { name: 'CardSylvainTurgeon.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B6E52, end: 0x000B71BC }, // CardSylvainTurgeon
-    { name: 'CardNormMaciver.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B71BC, end: 0x000B7526 }, // CardNormMaciver
-    { name: 'CardBradShaw.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B7526, end: 0x000B7890 }, // CardBradShaw
-    { name: 'CardDominicRoussel.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B7890, end: 0x000B7BFA }, // CardDominicRoussel
-    { name: 'CardEricLindros.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B7BFA, end: 0x000B7F64 }, // CardEricLindros
-    { name: 'CardRodBrindAmour.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B7F64, end: 0x000B82CE }, // CardRodBrindAmour
-    { name: 'CardMarkRecchi.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B82CE, end: 0x000B8638 }, // CardMarkRecchi
-    { name: 'CardGarryGalley.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B8638, end: 0x000B89A2 }, // CardGarryGalley
-    { name: 'CardDimitriYushkevich.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B89A2, end: 0x000B8D0C }, // CardDimitriYushkevich
-    { name: 'CardTomBarrasso.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B8D0C, end: 0x000B9076 }, // CardTomBarrasso
-    { name: 'CardMarioLemieux.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B9076, end: 0x000B93E0 }, // CardMarioLemieux
-    { name: 'CardKevinStevens.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B93E0, end: 0x000B974A }, // CardKevinStevens
-    { name: 'CardJaromirJagr.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B974A, end: 0x000B9AB4 }, // CardJaromirJagr
-    { name: 'CardUlfSamuelsson.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B9AB4, end: 0x000B9E1E }, // CardUlfSamuelsson
-    { name: 'CardLarryMurphy.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B9E1E, end: 0x000BA188 }, // CardLarryMurphy
-    { name: 'CardStephaneFiset.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BA188, end: 0x000BA4F2 }, // CardStephaneFiset
-    { name: 'CardJoeSakic.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BA4F2, end: 0x000BA85C }, // CardJoeSakic
-    { name: 'CardMatsSundin.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BA85C, end: 0x000BABC6 }, // CardMatsSundin
-    { name: 'CardValeriKamensky.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BABC6, end: 0x000BAF30 }, // CardValeriKamensky
-    { name: 'CardCurtisLeschyshyn.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BAF30, end: 0x000BB29A }, // CardCurtisLeschyshyn
-    { name: 'CardAlexeiGusarov.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BB29A, end: 0x000BB604 }, // CardAlexeiGusarov
-    { name: 'CardArtursIrbe.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BB604, end: 0x000BB96E }, // CardArtursIrbe
-    { name: 'CardIgorLarionov.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BB96E, end: 0x000BBCD8 }, // CardIgorLarionov
-    { name: 'CardUlfDahlen.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BBCD8, end: 0x000BC042 }, // CardUlfDahlen
-    { name: 'CardSergeiMakarov.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BC042, end: 0x000BC3AC }, // CardSergeiMakarov
-    { name: 'CardJeffNorton.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BC3AC, end: 0x000BC716 }, // CardJeffNorton
-    { name: 'CardSandisOzolinsh.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BC716, end: 0x000BCA80 }, // CardSandisOzolinsh
-    { name: 'CardCurtisJoseph.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BCA80, end: 0x000BCDEA }, // CardCurtisJoseph
-    { name: 'CardCraigJanney.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BCDEA, end: 0x000BD154 }, // CardCraigJanney
-    { name: 'CardBrendanShanahan.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BD154, end: 0x000BD4BE }, // CardBrendanShanahan
-    { name: 'CardBrettHull.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BD4BE, end: 0x000BD828 }, // CardBrettHull
-    { name: 'CardPhilHousley.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BD828, end: 0x000BDB92 }, // CardPhilHousley
-    { name: 'CardSteveDuchesne.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BDB92, end: 0x000BDEFC }, // CardSteveDuchesne
-    { name: 'CardDarenPuppa.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BDEFC, end: 0x000BE266 }, // CardDarenPuppa
-    { name: 'CardChrisGratton.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BE266, end: 0x000BE5D0 }, // CardChrisGratton
-    { name: 'CardBrianBradley.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BE5D0, end: 0x000BE93A }, // CardBrianBradley
-    { name: 'CardPetrKlima.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BE93A, end: 0x000BECA4 }, // CardPetrKlima
-    { name: 'CardRomanHamrlik.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BECA4, end: 0x000BF00E }, // CardRomanHamrlik
-    { name: 'CardShawnChambers.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BF00E, end: 0x000BF378 }, // CardShawnChambers
-    { name: 'CardFelixPotvin.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BF378, end: 0x000BF6E2 }, // CardFelixPotvin
-    { name: 'CardDougGilmour.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BF6E2, end: 0x000BFA4C }, // CardDougGilmour
-    { name: 'CardWendelClark.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BFA4C, end: 0x000BFDB6 }, // CardWendelClark
-    { name: 'CardDaveAndreychuk.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BFDB6, end: 0x000C01BC }, // CardDaveAndreychuk
-    { name: 'CardJamieMacoun.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C01BC, end: 0x000C0526 }, // CardJamieMacoun
-    { name: 'CardDaveEllett.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C0526, end: 0x000C0890 }, // CardDaveEllett
-    { name: 'CardKirkMcLean.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C0890, end: 0x000C0BFA }, // CardKirkMcLean
-    { name: 'CardCliffRonning.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C0BFA, end: 0x000C0F64 }, // CardCliffRonning
-    { name: 'CardGeoffCourtnall.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C0F64, end: 0x000C12CE }, // CardGeoffCourtnall
-    { name: 'CardPavelBure.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C12CE, end: 0x000C1638 }, // CardPavelBure
-    { name: 'CardJyrkiLumme.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C1638, end: 0x000C19A2 }, // CardJyrkiLumme
-    { name: 'CardJeffBrown.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C19A2, end: 0x000C1D0C }, // CardJeffBrown
-    { name: 'CardDonBeaupre.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C1D0C, end: 0x000C2076 }, // CardDonBeaupre
-    { name: 'CardMikeRidley.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C2076, end: 0x000C23E0 }, // CardMikeRidley
-    { name: 'CardJoeJuneau.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C23E0, end: 0x000C274A }, // CardJoeJuneau
-    { name: 'CardDimitriKhristich.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C274A, end: 0x000C2AB4 }, // CardDimitriKhristich
-    { name: 'CardKevinHatcher.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C2AB4, end: 0x000C2E1E }, // CardKevinHatcher
-    { name: 'CardSylvainCote.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C2E1E, end: 0x000C3188 }, // CardSylvainCote
-    { name: 'CardTimCheveldae.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C3188, end: 0x000C34F2 }, // CardTimCheveldae
-    { name: 'CardAlexeiZhamnov.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C34F2, end: 0x000C385C }, // CardAlexeiZhamnov
-    { name: 'CardKeithTkachuk.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C385C, end: 0x000C3C62 }, // CardKeithTkachuk
-    { name: 'CardTeemuSelanne.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C3C62, end: 0x000C3FCC }, // CardTeemuSelanne
-    { name: 'CardTeppoNumminen.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C3FCC, end: 0x000C43EA }, // CardTeppoNumminen
-    { name: 'CardDaveManson.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C43EA, end: 0x000C4754 }, // CardDaveManson
+    { name: 'Card001.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A2C38, end: 0x000A2FA2 }, // Card001
+    { name: 'Card002.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A2FA2, end: 0x000A330C }, // Card002
+    { name: 'Card003.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A330C, end: 0x000A3676 }, // Card003
+    { name: 'Card004.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A3676, end: 0x000A39E0 }, // Card004
+    { name: 'Card005.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A39E0, end: 0x000A3D4A }, // Card005
+    { name: 'Card006.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A3D4A, end: 0x000A40B4 }, // Card006
+    { name: 'Card007.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A40B4, end: 0x000A441E }, // Card007
+    { name: 'Card008.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A441E, end: 0x000A4788 }, // Card008
+    { name: 'Card009.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A4788, end: 0x000A4AF2 }, // Card009
+    { name: 'Card010.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A4AF2, end: 0x000A4E5C }, // Card010
+    { name: 'Card011.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A4E5C, end: 0x000A51C6 }, // Card011
+    { name: 'Card012.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A51C6, end: 0x000A5530 }, // Card012
+    { name: 'Card013.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A5530, end: 0x000A589A }, // Card013
+    { name: 'Card014.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A589A, end: 0x000A5C04 }, // Card014
+    { name: 'Card015.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A5C04, end: 0x000A5F6E }, // Card015
+    { name: 'Card016.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A5F6E, end: 0x000A62D8 }, // Card016
+    { name: 'Card017.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A62D8, end: 0x000A6642 }, // Card017
+    { name: 'Card018.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A6642, end: 0x000A69AC }, // Card018
+    { name: 'Card019.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A69AC, end: 0x000A6D16 }, // Card019
+    { name: 'Card020.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A6D16, end: 0x000A7080 }, // Card020
+    { name: 'Card021.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A7080, end: 0x000A73EA }, // Card021
+    { name: 'Card022.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A73EA, end: 0x000A7754 }, // Card022
+    { name: 'Card023.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A7754, end: 0x000A7ABE }, // Card023
+    { name: 'Card024.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A7ABE, end: 0x000A7E28 }, // Card024
+    { name: 'Card025.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A7E28, end: 0x000A8192 }, // Card025
+    { name: 'Card026.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A8192, end: 0x000A84FC }, // Card026
+    { name: 'Card027.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A84FC, end: 0x000A8866 }, // Card027
+    { name: 'Card028.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A8866, end: 0x000A8BD0 }, // Card028
+    { name: 'Card029.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A8BD0, end: 0x000A8F3A }, // Card029
+    { name: 'Card030.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A8F3A, end: 0x000A92A4 }, // Card030
+    { name: 'Card031.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A92A4, end: 0x000A960E }, // Card031
+    { name: 'Card032.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A960E, end: 0x000A9978 }, // Card032
+    { name: 'Card033.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A9978, end: 0x000A9CE2 }, // Card033
+    { name: 'Card034.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000A9CE2, end: 0x000AA04C }, // Card034
+    { name: 'Card035.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AA04C, end: 0x000AA3B6 }, // Card035
+    { name: 'Card036.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AA3B6, end: 0x000AA720 }, // Card036
+    { name: 'Card037.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AA720, end: 0x000AAA8A }, // Card037
+    { name: 'Card038.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AAA8A, end: 0x000AADF4 }, // Card038
+    { name: 'Card039.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AADF4, end: 0x000AB15E }, // Card039
+    { name: 'Card040.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AB15E, end: 0x000AB4C8 }, // Card040
+    { name: 'Card041.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AB4C8, end: 0x000AB832 }, // Card041
+    { name: 'Card042.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AB832, end: 0x000ABB9C }, // Card042
+    { name: 'Card043.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000ABB9C, end: 0x000ABF06 }, // Card043
+    { name: 'Card044.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000ABF06, end: 0x000AC30C }, // Card044
+    { name: 'Card045.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AC30C, end: 0x000AC676 }, // Card045
+    { name: 'Card046.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AC676, end: 0x000ACA7C }, // Card046
+    { name: 'Card047.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000ACA7C, end: 0x000ACDE6 }, // Card047
+    { name: 'Card048.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000ACDE6, end: 0x000AD150 }, // Card048
+    { name: 'Card049.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AD150, end: 0x000AD4BA }, // Card049
+    { name: 'Card050.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AD4BA, end: 0x000AD824 }, // Card050
+    { name: 'Card051.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AD824, end: 0x000ADB8E }, // Card051
+    { name: 'Card052.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000ADB8E, end: 0x000ADFAC }, // Card052
+    { name: 'Card053.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000ADFAC, end: 0x000AE316 }, // Card053
+    { name: 'Card054.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AE316, end: 0x000AE680 }, // Card054
+    { name: 'Card055.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AE680, end: 0x000AE9EA }, // Card055
+    { name: 'Card056.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AE9EA, end: 0x000AED54 }, // Card056
+    { name: 'Card057.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AED54, end: 0x000AF0BE }, // Card057
+    { name: 'Card058.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AF0BE, end: 0x000AF428 }, // Card058
+    { name: 'Card059.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AF428, end: 0x000AF792 }, // Card059
+    { name: 'Card060.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AF792, end: 0x000AFAFC }, // Card060
+    { name: 'Card061.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AFAFC, end: 0x000AFEEA }, // Card061
+    { name: 'Card062.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000AFEEA, end: 0x000B0254 }, // Card062
+    { name: 'Card063.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B0254, end: 0x000B05BE }, // Card063
+    { name: 'Card064.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B05BE, end: 0x000B0928 }, // Card064
+    { name: 'Card065.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B0928, end: 0x000B0C92 }, // Card065
+    { name: 'Card066.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B0C92, end: 0x000B0FFC }, // Card066
+    { name: 'Card067.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B0FFC, end: 0x000B1366 }, // Card067
+    { name: 'Card068.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B1366, end: 0x000B16D0 }, // Card068
+    { name: 'Card069.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B16D0, end: 0x000B1A3A }, // Card069
+    { name: 'Card070.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B1A3A, end: 0x000B1DA4 }, // Card070
+    { name: 'Card071.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B1DA4, end: 0x000B210E }, // Card071
+    { name: 'Card072.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B210E, end: 0x000B24E4 }, // Card072
+    { name: 'Card073.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B24E4, end: 0x000B284E }, // Card073
+    { name: 'Card074.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B284E, end: 0x000B2BB8 }, // Card074
+    { name: 'Card075.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B2BB8, end: 0x000B2F22 }, // Card075
+    { name: 'Card076.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B2F22, end: 0x000B328C }, // Card076
+    { name: 'Card077.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B328C, end: 0x000B35F6 }, // Card077
+    { name: 'Card078.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B35F6, end: 0x000B3960 }, // Card078
+    { name: 'Card079.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B3960, end: 0x000B3D36 }, // Card079
+    { name: 'Card080.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B3D36, end: 0x000B40A0 }, // Card080
+    { name: 'Card081.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B40A0, end: 0x000B440A }, // Card081
+    { name: 'Card082.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B440A, end: 0x000B4774 }, // Card082
+    { name: 'Card083.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B4774, end: 0x000B4B7A }, // Card083
+    { name: 'Card084.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B4B7A, end: 0x000B4EE4 }, // Card084
+    { name: 'Card085.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B4EE4, end: 0x000B524E }, // Card085
+    { name: 'Card086.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B524E, end: 0x000B55B8 }, // Card086
+    { name: 'Card087.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B55B8, end: 0x000B59D6 }, // Card087
+    { name: 'Card088.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B59D6, end: 0x000B5D40 }, // Card088
+    { name: 'Card089.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B5D40, end: 0x000B60AA }, // Card089
+    { name: 'Card090.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B60AA, end: 0x000B6414 }, // Card090
+    { name: 'Card091.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B6414, end: 0x000B677E }, // Card091
+    { name: 'Card092.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B677E, end: 0x000B6AE8 }, // Card092
+    { name: 'Card093.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B6AE8, end: 0x000B6E52 }, // Card093
+    { name: 'Card094.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B6E52, end: 0x000B71BC }, // Card094
+    { name: 'Card095.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B71BC, end: 0x000B7526 }, // Card095
+    { name: 'Card096.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B7526, end: 0x000B7890 }, // Card096
+    { name: 'Card097.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B7890, end: 0x000B7BFA }, // Card097
+    { name: 'Card098.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B7BFA, end: 0x000B7F64 }, // Card098
+    { name: 'Card099.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B7F64, end: 0x000B82CE }, // Card099
+    { name: 'Card100.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B82CE, end: 0x000B8638 }, // Card100
+    { name: 'Card101.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B8638, end: 0x000B89A2 }, // Card101
+    { name: 'Card102.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B89A2, end: 0x000B8D0C }, // Card102
+    { name: 'Card103.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B8D0C, end: 0x000B9076 }, // Card103
+    { name: 'Card104.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B9076, end: 0x000B93E0 }, // Card104
+    { name: 'Card105.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B93E0, end: 0x000B974A }, // Card105
+    { name: 'Card106.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B974A, end: 0x000B9AB4 }, // Card106
+    { name: 'Card107.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B9AB4, end: 0x000B9E1E }, // Card107
+    { name: 'Card108.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000B9E1E, end: 0x000BA188 }, // Card108
+    { name: 'Card109.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BA188, end: 0x000BA4F2 }, // Card109
+    { name: 'Card110.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BA4F2, end: 0x000BA85C }, // Card110
+    { name: 'Card111.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BA85C, end: 0x000BABC6 }, // Card111
+    { name: 'Card112.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BABC6, end: 0x000BAF30 }, // Card112
+    { name: 'Card113.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BAF30, end: 0x000BB29A }, // Card113
+    { name: 'Card114.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BB29A, end: 0x000BB604 }, // Card114
+    { name: 'Card115.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BB604, end: 0x000BB96E }, // Card115
+    { name: 'Card116.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BB96E, end: 0x000BBCD8 }, // Card116
+    { name: 'Card117.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BBCD8, end: 0x000BC042 }, // Card117
+    { name: 'Card118.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BC042, end: 0x000BC3AC }, // Card118
+    { name: 'Card119.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BC3AC, end: 0x000BC716 }, // Card119
+    { name: 'Card120.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BC716, end: 0x000BCA80 }, // Card120
+    { name: 'Card121.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BCA80, end: 0x000BCDEA }, // Card121
+    { name: 'Card122.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BCDEA, end: 0x000BD154 }, // Card122
+    { name: 'Card123.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BD154, end: 0x000BD4BE }, // Card123
+    { name: 'Card124.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BD4BE, end: 0x000BD828 }, // Card124
+    { name: 'Card125.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BD828, end: 0x000BDB92 }, // Card125
+    { name: 'Card126.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BDB92, end: 0x000BDEFC }, // Card126
+    { name: 'Card127.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BDEFC, end: 0x000BE266 }, // Card127
+    { name: 'Card128.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BE266, end: 0x000BE5D0 }, // Card128
+    { name: 'Card129.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BE5D0, end: 0x000BE93A }, // Card129
+    { name: 'Card130.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BE93A, end: 0x000BECA4 }, // Card130
+    { name: 'Card131.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BECA4, end: 0x000BF00E }, // Card131
+    { name: 'Card132.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BF00E, end: 0x000BF378 }, // Card132
+    { name: 'Card133.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BF378, end: 0x000BF6E2 }, // Card133
+    { name: 'Card134.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BF6E2, end: 0x000BFA4C }, // Card134
+    { name: 'Card135.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BFA4C, end: 0x000BFDB6 }, // Card135
+    { name: 'Card136.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000BFDB6, end: 0x000C01BC }, // Card136
+    { name: 'Card137.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C01BC, end: 0x000C0526 }, // Card137
+    { name: 'Card138.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C0526, end: 0x000C0890 }, // Card138
+    { name: 'Card139.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C0890, end: 0x000C0BFA }, // Card139
+    { name: 'Card140.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C0BFA, end: 0x000C0F64 }, // Card140
+    { name: 'Card141.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C0F64, end: 0x000C12CE }, // Card141
+    { name: 'Card142.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C12CE, end: 0x000C1638 }, // Card142
+    { name: 'Card143.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C1638, end: 0x000C19A2 }, // Card143
+    { name: 'Card144.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C19A2, end: 0x000C1D0C }, // Card144
+    { name: 'Card145.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C1D0C, end: 0x000C2076 }, // Card145
+    { name: 'Card146.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C2076, end: 0x000C23E0 }, // Card146
+    { name: 'Card147.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C23E0, end: 0x000C274A }, // Card147
+    { name: 'Card148.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C274A, end: 0x000C2AB4 }, // Card148
+    { name: 'Card149.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C2AB4, end: 0x000C2E1E }, // Card149
+    { name: 'Card150.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C2E1E, end: 0x000C3188 }, // Card150
+    { name: 'Card151.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C3188, end: 0x000C34F2 }, // Card151
+    { name: 'Card152.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C34F2, end: 0x000C385C }, // Card152
+    { name: 'Card153.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C385C, end: 0x000C3C62 }, // Card153
+    { name: 'Card154.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C3C62, end: 0x000C3FCC }, // Card154
+    { name: 'Card155.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C3FCC, end: 0x000C43EA }, // Card155
+    { name: 'Card156.bin', folder: 'NHL95/Graphics/PlayerCards', start: 0x000C43EA, end: 0x000C4754 }, // Card156
     { name: 'Rinktilelist.map.jim', folder: 'NHL95/Graphics', start: 0x000C4A7C, end: 0x000CA56A }, // Rinktilelist
     { name: 'Sprites.bin', folder: 'NHL95/Graphics', start: 0x000CA56A, end: 0x000CA574 }, // Sprites
     { name: 'Spritetiles.bin', folder: 'NHL95/Graphics', start: 0x000CA574, end: 0x001318F4 }, // Spritetiles
@@ -599,6 +602,33 @@ const assets = [
     { name: 'ArenaGfxBOS.bin', folder: 'NHL95/Graphics/ArenaGfx', start: 0x001A6614, end: 0x001A691E }, // ArenaGfxBank+$4BFA, BOS
     { name: 'ArenaGfxASEASW.bin', folder: 'NHL95/Graphics/ArenaGfx', start: 0x001A691E, end: 0x001A6C28 }, // ArenaGfxBank+$4F04, ASE / ASW
 ];
+// The licensed names of the ROM, in the order of the rows of src/teamdata95.asm (the team records in ROM order): the player names
+// (the Player rows) and the team nicknames (the .tm String of each team; the All-Star teams have a generic one that stays in the
+// source). TeamList ($772) holds 28 long pointers to the team records. A record starts with six word offsets, the first leads to
+// the players: each is a row prefix word that counts itself, the name (padded to an even length with $00) and 8 rating bytes; the
+// word 2 (an empty String) ends them. Then come four Strings (a length word that counts itself, then the text): city,
+// abbreviation, nickname, arena.
+const TEAM_LIST = 0x772;
+function readTeamNames(romData) {
+  const records = [];
+  for (let i = 0; i < 28; i++) records.push(romData.readUInt32BE(TEAM_LIST + i * 4));
+  records.sort((a, b) => a - b);
+  const players = [], nicknames = [];
+  for (const rec of records) {
+    let pos = rec + romData.readUInt16BE(rec);
+    for (let len = romData.readUInt16BE(pos); len > 2; len = romData.readUInt16BE(pos)) {
+      players.push(romData.toString('latin1', pos + 2, pos + len).replace(/\0/g, ''));
+      pos += len + 8;
+    }
+    pos += 2;                                            // the empty String that ends the players
+    pos += romData.readUInt16BE(pos);                    // city
+    pos += romData.readUInt16BE(pos);                    // abbreviation
+    const len = romData.readUInt16BE(pos);               // nickname
+    const nick = len > 2 ? romData.toString('latin1', pos + 2, pos + len).replace(/\0/g, '') : '';
+    if (nick && !nick.startsWith('All Stars')) nicknames.push(nick);
+  }
+  return { players, nicknames };
+}
 const outRoot = path.join(ROOT, 'Extracted');
 const rom = fs.readFileSync(romPath);
 const version = detectVersion(rom);
@@ -614,8 +644,15 @@ for (const asset of assets) {
   fs.writeFileSync(path.join(dir, asset.name), data);
   written.push({ path: path.posix.join(asset.folder.replace(/\\/g, '/'), asset.name), size: data.length });
 }
+// The licensed names (see readTeamNames).
+const { players, nicknames } = readTeamNames(rom);
+for (const [file, lines] of [['PlayerNames.txt', players], ['TeamNicknames.txt', nicknames]]) {
+  const text = lines.join('\n') + '\n';
+  fs.writeFileSync(path.join(outRoot, file), text, 'latin1');
+  written.push({ path: file, size: text.length });
+}
 // Completion marker for tools/prebuild.js: ROM, extractor version and every file written.
 const sha1 = (b) => require('crypto').createHash('sha1').update(b).digest('hex');
 fs.writeFileSync(markerPath, JSON.stringify({ rom: version.id, romSha1: sha1(rom), extractor: path.basename(__filename),
   extractorSha1: sha1(fs.readFileSync(__filename)), files: written }, null, 1) + '\n');
-console.log('Extracted ' + assets.length + ' slices to ' + outRoot + '.');
+console.log('Extracted ' + assets.length + ' slices and ' + players.length + ' player names to ' + outRoot + '.');

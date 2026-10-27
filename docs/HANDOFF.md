@@ -25,7 +25,7 @@ Failed-assembly detection: delete output/*.bin first, then check the bin exists 
 - A name not from 92 that is inaccurate (checked against the routine body / usage) gets fixed, and the fix is propagated
   forward: 93 -> 94 -> 95, and to abdulahmad/NHLPA93SNES for 93 names that exist there.
 - Clash rule: never reuse a name already used for a different item; pick a descriptive name instead.
-- Teams: 93 (unlicensed) uses city names only; 94/95 use NYIslanders/NYRangers (NYI/NYR) style names.
+- Teams: 93 (unlicensed) uses city names only; 94/95 use NewYorkI/NewYorkR (NYI/NYR) style names.
 
 ## Comment rules
 No other games' names or "X name" notes, no source-file/segment names, no IDA references (IDA, loc_, sub_, unk_),

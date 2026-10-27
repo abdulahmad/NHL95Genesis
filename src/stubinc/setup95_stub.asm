@@ -83,4 +83,4 @@ TeamBitmaps = $15974A
 TeamLogoPalettes = $1A169A
 
 ; Main segment code
-	include	engine\setup95.asm
+	include	..\output\names\setup95.asm

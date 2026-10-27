@@ -10,7 +10,7 @@ Naming lineage is 92G -> 93G -> 94G -> 95G, and the SNES ports sit beside their 
 - A routine, variable or table that matches its parent takes the parent's name. 92G is the naming root.
 - Clash rule: if one name would mean two different things, the earliest game's meaning keeps the name and the later one gets a new name.
 - Fix the earliest repo first, then propagate the change down the lineage (92 -> 93 -> 94 -> 95, and to the SNES repos).
-- Team names: 93 uses the city names of its own data; 94 and 95 use NYIslanders / NYRangers (short NYI / NYR).
+- Team names: 93 uses the city names of its own data; 94 and 95 use NYI / NYR style abbreviations (team nicknames are not in the repo).
 
 Source style:
 - No rename-history, provenance or origin-tag comments ("was X", "from 93G", "renamed"). That history lives in `docs/name_map.csv` only.
@@ -61,7 +61,7 @@ The first split came from the fingerprint map `tools/segmap95.json` (every 94 ro
 
 ## Teams
 
-Provisional until the listing confirms it. NHL 95 is the 1994-95 season, still 26 teams. Quebec is still the Nordiques. Winnipeg is still the Jets. Colorado and Phoenix are NHL 96. A 94 team index is not a 95 index until the listing confirms the order.
+Provisional until the listing confirms it. NHL 95 is the 1994-95 season, still 26 teams. Quebec and Winnipeg are still there. Colorado and Phoenix are NHL 96. A 94 team index is not a 95 index until the listing confirms the order.
 
 ## Build
 

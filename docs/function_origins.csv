@@ -1835,160 +1835,160 @@ graphics95.asm,$0A1E90,874,NoPicSkater2,data,graphics94,name
 graphics95.asm,$0A21FA,874,NoPicSkater1,data,graphics94,name
 graphics95.asm,$0A2564,874,NoPicGoalie2,data,graphics94,name
 graphics95.asm,$0A28CE,874,NoPicGoalie1,data,graphics94,name
-graphics95.asm,$0A2C38,874,CardGuyHebert,data,graphics94,follows NoPicGoalie1
-graphics95.asm,$0A2FA2,874,CardBobCorkum,data,graphics94,follows CardGuyHebert
-graphics95.asm,$0A330C,874,CardTerryYake,data,graphics94,follows CardBobCorkum
-graphics95.asm,$0A3676,874,CardGarryValk,data,graphics94,follows CardTerryYake
-graphics95.asm,$0A39E0,874,CardSeanHill,data,graphics94,follows CardGarryValk
-graphics95.asm,$0A3D4A,874,CardBillHoulder,data,graphics94,follows CardSeanHill
-graphics95.asm,$0A40B4,874,CardJonCasey,data,graphics94,name
-graphics95.asm,$0A441E,874,CardAdamOates,data,graphics94,name
-graphics95.asm,$0A4788,874,CardBryanSmolinski,data,graphics94,follows CardAdamOates
-graphics95.asm,$0A4AF2,874,CardCamNeely,data,graphics94,name
-graphics95.asm,$0A4E5C,874,CardRayBourque,data,graphics94,name
-graphics95.asm,$0A51C6,874,CardAlIafrate,data,graphics94,name
-graphics95.asm,$0A5530,874,CardDominikHasek,data,graphics94,follows CardAlIafrate
-graphics95.asm,$0A589A,874,CardPatLaFontaine,data,graphics94,name
-graphics95.asm,$0A5C04,874,CardDaleHawerchuk,data,graphics94,name
-graphics95.asm,$0A5F6E,874,CardAlexnderMogilny,data,graphics94,name
-graphics95.asm,$0A62D8,874,CardDougBodger,data,graphics94,name
-graphics95.asm,$0A6642,874,CardPetrSvoboda,data,graphics94,name
-graphics95.asm,$0A69AC,874,CardMikeVernon,data,graphics94,name
-graphics95.asm,$0A6D16,874,CardJoeNieuwendyk,data,graphics94,name
-graphics95.asm,$0A7080,874,CardGaryRoberts,data,graphics94,name
-graphics95.asm,$0A73EA,874,CardTheorenFleury,data,graphics94,name
-graphics95.asm,$0A7754,874,CardZarleyZalapski,data,graphics94,name
-graphics95.asm,$0A7ABE,874,CardAlMacInnis,data,graphics94,name
-graphics95.asm,$0A7E28,874,CardEdBelfour,data,graphics94,name
-graphics95.asm,$0A8192,874,CardJeremyRoenick,data,graphics94,name
-graphics95.asm,$0A84FC,874,CardMichelGoulet,data,graphics94,name
-graphics95.asm,$0A8866,874,CardJoeMurphy,data,graphics94,follows CardMichelGoulet
-graphics95.asm,$0A8BD0,874,CardChrisChelios,data,graphics94,name
-graphics95.asm,$0A8F3A,874,CardSteveSmith,data,graphics94,name
-graphics95.asm,$0A92A4,874,CardAndyMoog,data,graphics94,name
-graphics95.asm,$0A960E,874,CardMikeModano,data,graphics94,name
-graphics95.asm,$0A9978,874,CardDaveGagner,data,graphics94,name
-graphics95.asm,$0A9CE2,874,CardRussCourtnall,data,graphics94,name
-graphics95.asm,$0AA04C,874,CardMarkTinordi,data,graphics94,name
-graphics95.asm,$0AA3B6,874,CardDerianHatcher,data,graphics94,follows CardMarkTinordi
-graphics95.asm,$0AA720,874,CardBobEssensa,data,graphics94,name
-graphics95.asm,$0AAA8A,874,CardSteveYzerman,data,graphics94,name
-graphics95.asm,$0AADF4,874,CardSergeiFedorov,data,graphics94,name
-graphics95.asm,$0AB15E,874,CardDinoCiccarelli,data,graphics94,name
-graphics95.asm,$0AB4C8,874,CardPaulCoffey,data,graphics94,name
-graphics95.asm,$0AB832,874,CardSteveChiasson,data,graphics94,name
-graphics95.asm,$0ABB9C,874,CardBillRanford,data,graphics94,name
-graphics95.asm,$0ABF06,1030,CardDougWeight,data,graphics94,name
-graphics95.asm,$0AC30C,874,CardShayneCorson,data,graphics94,name
-graphics95.asm,$0AC676,1030,CardZdenoCiger,data,graphics94,follows CardShayneCorson
-graphics95.asm,$0ACA7C,1748,CardIgorKravchuk,data,graphics94,name
-graphics95.asm,$0AD150,874,CardJohnVanbiesbrk,data,graphics94,name
-graphics95.asm,$0AD4BA,874,CardJesseBelanger,data,graphics94,follows CardJohnVanbiesbrk
-graphics95.asm,$0AD824,874,CardAndreiLomakin,data,graphics94,follows CardJesseBelanger
-graphics95.asm,$0ADB8E,1054,CardBobKudelski,data,graphics94,name
-graphics95.asm,$0ADFAC,874,CardBrianBenning,data,graphics94,follows CardBobKudelski
-graphics95.asm,$0AE316,874,CardGordMurphy,data,graphics94,follows CardBrianBenning
-graphics95.asm,$0AE680,874,CardSeanBurke,data,graphics94,name
-graphics95.asm,$0AE9EA,874,CardAndrewCassels,data,graphics94,name
-graphics95.asm,$0AED54,874,CardGeoffSanderson,data,graphics94,name
-graphics95.asm,$0AF0BE,874,CardPatVerbeek,data,graphics94,name
-graphics95.asm,$0AF428,874,CardAlexnderGodynyuk,data,graphics94,follows CardPatVerbeek
-graphics95.asm,$0AF792,874,CardChrisPronger,data,graphics94,follows CardAlexnderGodynyuk
-graphics95.asm,$0AFAFC,1006,CardKellyHrudey,data,graphics94,name
-graphics95.asm,$0AFEEA,874,CardWayneGretzky,data,graphics94,name
-graphics95.asm,$0B0254,874,CardLucRobitaille,data,graphics94,name
-graphics95.asm,$0B05BE,874,CardJariKurri,data,graphics94,follows CardLucRobitaille
-graphics95.asm,$0B0928,874,CardRobBlake,data,graphics94,name
-graphics95.asm,$0B0C92,874,CardMartyMcSorley,data,graphics94,name
-graphics95.asm,$0B0FFC,874,CardPatrickRoy,data,graphics94,name
-graphics95.asm,$0B1366,874,CardKirkMuller,data,graphics94,name
-graphics95.asm,$0B16D0,874,CardVincentDamphousse,data,graphics94,name
-graphics95.asm,$0B1A3A,874,CardBrianBellows,data,graphics94,name
-graphics95.asm,$0B1DA4,874,CardEricDesjardins,data,graphics94,name
-graphics95.asm,$0B210E,982,CardMattSchneider,data,graphics94,name
-graphics95.asm,$0B24E4,874,CardChrisTerreri,data,graphics94,name
-graphics95.asm,$0B284E,874,CardCoreyMillen,data,graphics94,follows CardChrisTerreri
-graphics95.asm,$0B2BB8,874,CardJohnMacLean,data,graphics94,follows CardCoreyMillen
-graphics95.asm,$0B2F22,874,CardStephaneRicher,data,graphics94,name
-graphics95.asm,$0B328C,874,CardScottStevens,data,graphics94,name
-graphics95.asm,$0B35F6,874,CardScottNiedrmayer,data,graphics94,follows CardScottStevens
-graphics95.asm,$0B3960,982,CardRonHextall,data,graphics94,name
-graphics95.asm,$0B3D36,874,CardPierreTurgeon,data,graphics94,name
-graphics95.asm,$0B40A0,874,CardBenoitHogue,data,graphics94,name
-graphics95.asm,$0B440A,874,CardSteveThomas,data,graphics94,name
-graphics95.asm,$0B4774,1030,CardDariusKasparitis,data,graphics94,name
-graphics95.asm,$0B4B7A,874,CardVladimirMalakhov,data,graphics94,name
-graphics95.asm,$0B4EE4,874,CardMikeRichter,data,graphics94,follows CardVladimirMalakhov
-graphics95.asm,$0B524E,874,CardMarkMessier,data,graphics94,name
-graphics95.asm,$0B55B8,1054,CardAdamGraves,data,graphics94,follows CardMarkMessier
-graphics95.asm,$0B59D6,874,CardSteveLarmer,data,graphics94,name
-graphics95.asm,$0B5D40,874,CardBrianLeetch,data,graphics94,name
-graphics95.asm,$0B60AA,874,CardSergeiZubov,data,graphics94,follows CardBrianLeetch
-graphics95.asm,$0B6414,874,CardCraigBillington,data,graphics94,follows CardSergeiZubov
-graphics95.asm,$0B677E,874,CardAlexnderDaigle,data,graphics94,follows CardCraigBillington
-graphics95.asm,$0B6AE8,874,CardAlexeiYashin,data,graphics94,follows CardAlexnderDaigle
-graphics95.asm,$0B6E52,874,CardSylvainTurgeon,data,graphics94,name
-graphics95.asm,$0B71BC,874,CardNormMaciver,data,graphics94,name
-graphics95.asm,$0B7526,874,CardBradShaw,data,graphics94,name
-graphics95.asm,$0B7890,874,CardDominicRoussel,data,graphics94,follows CardBradShaw
-graphics95.asm,$0B7BFA,874,CardEricLindros,data,graphics94,name
-graphics95.asm,$0B7F64,874,CardRodBrindAmour,data,graphics94,name
-graphics95.asm,$0B82CE,874,CardMarkRecchi,data,graphics94,name
-graphics95.asm,$0B8638,874,CardGarryGalley,data,graphics94,name
-graphics95.asm,$0B89A2,874,CardDimitriYushkevich,data,graphics94,name
-graphics95.asm,$0B8D0C,874,CardTomBarrasso,data,graphics94,name
-graphics95.asm,$0B9076,874,CardMarioLemieux,data,graphics94,name
-graphics95.asm,$0B93E0,874,CardKevinStevens,data,graphics94,name
-graphics95.asm,$0B974A,874,CardJaromirJagr,data,graphics94,name
-graphics95.asm,$0B9AB4,874,CardUlfSamuelsson,data,graphics94,name
-graphics95.asm,$0B9E1E,1748,CardLarryMurphy,data,graphics94,name
-graphics95.asm,$0BA4F2,874,CardJoeSakic,data,graphics94,name
-graphics95.asm,$0BA85C,874,CardMatsSundin,data,graphics94,name
-graphics95.asm,$0BABC6,874,CardValeriKamensky,data,graphics94,follows CardMatsSundin
-graphics95.asm,$0BAF30,874,CardCurtisLeschyshyn,data,graphics94,name
-graphics95.asm,$0BB29A,874,CardAlexeiGusarov,data,graphics94,follows CardCurtisLeschyshyn
-graphics95.asm,$0BB604,874,CardArtursIrbe,data,graphics94,name
-graphics95.asm,$0BB96E,874,CardIgorLarionov,data,graphics94,follows CardArtursIrbe
-graphics95.asm,$0BBCD8,874,CardUlfDahlen,data,graphics94,follows CardIgorLarionov
-graphics95.asm,$0BC042,874,CardSergeiMakarov,data,graphics94,follows CardUlfDahlen
-graphics95.asm,$0BC3AC,874,CardJeffNorton,data,graphics94,follows CardSergeiMakarov
-graphics95.asm,$0BC716,874,CardSandisOzolinsh,data,graphics94,follows CardJeffNorton
-graphics95.asm,$0BCA80,874,CardCurtisJoseph,data,graphics94,name
-graphics95.asm,$0BCDEA,874,CardCraigJanney,data,graphics94,name
-graphics95.asm,$0BD154,874,CardBrendanShanahan,data,graphics94,name
-graphics95.asm,$0BD4BE,874,CardBrettHull,data,graphics94,name
-graphics95.asm,$0BD828,874,CardPhilHousley,data,graphics94,name
-graphics95.asm,$0BDB92,874,CardSteveDuchesne,data,graphics94,name
-graphics95.asm,$0BDEFC,874,CardDarenPuppa,data,graphics94,follows CardSteveDuchesne
-graphics95.asm,$0BE266,874,CardChrisGratton,data,graphics94,follows CardDarenPuppa
-graphics95.asm,$0BE5D0,874,CardBrianBradley,data,graphics94,name
-graphics95.asm,$0BE93A,874,CardPetrKlima,data,graphics94,name
-graphics95.asm,$0BECA4,1748,CardRomanHamrlik,data,graphics94,name
-graphics95.asm,$0BF378,874,CardFelixPotvin,data,graphics94,name
-graphics95.asm,$0BF6E2,874,CardDougGilmour,data,graphics94,name
-graphics95.asm,$0BFA4C,874,CardWendelClark,data,graphics94,follows CardDougGilmour
-graphics95.asm,$0BFDB6,1030,CardDaveAndreychuk,data,graphics94,name
-graphics95.asm,$0C01BC,874,CardJamieMacoun,data,graphics94,follows CardDaveAndreychuk
-graphics95.asm,$0C0526,874,CardDaveEllett,data,graphics94,name
-graphics95.asm,$0C0890,874,CardKirkMcLean,data,graphics94,name
-graphics95.asm,$0C0BFA,874,CardCliffRonning,data,graphics94,name
-graphics95.asm,$0C0F64,874,CardGeoffCourtnall,data,graphics94,name
-graphics95.asm,$0C12CE,874,CardPavelBure,data,graphics94,name
-graphics95.asm,$0C1638,874,CardJyrkiLumme,data,graphics94,name
-graphics95.asm,$0C19A2,874,CardJeffBrown,data,graphics94,name
-graphics95.asm,$0C1D0C,874,CardDonBeaupre,data,graphics94,name
-graphics95.asm,$0C2076,874,CardMikeRidley,data,graphics94,name
-graphics95.asm,$0C23E0,874,CardJoeJuneau,data,graphics94,name
-graphics95.asm,$0C274A,874,CardDimitriKhristich,data,graphics94,name
-graphics95.asm,$0C2AB4,874,CardKevinHatcher,data,graphics94,name
-graphics95.asm,$0C2E1E,874,CardSylvainCote,data,graphics94,follows CardKevinHatcher
-graphics95.asm,$0C3188,874,CardTimCheveldae,data,graphics94,name
-graphics95.asm,$0C34F2,874,CardAlexeiZhamnov,data,graphics94,name
-graphics95.asm,$0C385C,1030,CardKeithTkachuk,data,graphics94,follows CardAlexeiZhamnov
-graphics95.asm,$0C3C62,874,CardTeemuSelanne,data,graphics94,name
-graphics95.asm,$0C3FCC,1054,CardTeppoNumminen,data,graphics94,name
-graphics95.asm,$0C43EA,874,CardDaveManson,data,graphics94,name
-graphics95.asm,$0C4754,168,FeaturedPicIdx,data,graphics94,follows CardDaveManson
+graphics95.asm,$0A2C38,874,Card001,data,graphics94,follows NoPicGoalie1
+graphics95.asm,$0A2FA2,874,Card002,data,graphics94,follows Card001
+graphics95.asm,$0A330C,874,Card003,data,graphics94,follows Card002
+graphics95.asm,$0A3676,874,Card004,data,graphics94,follows Card003
+graphics95.asm,$0A39E0,874,Card005,data,graphics94,follows Card004
+graphics95.asm,$0A3D4A,874,Card006,data,graphics94,follows Card005
+graphics95.asm,$0A40B4,874,Card007,data,graphics94,name
+graphics95.asm,$0A441E,874,Card008,data,graphics94,name
+graphics95.asm,$0A4788,874,Card009,data,graphics94,follows Card008
+graphics95.asm,$0A4AF2,874,Card010,data,graphics94,name
+graphics95.asm,$0A4E5C,874,Card011,data,graphics94,name
+graphics95.asm,$0A51C6,874,Card012,data,graphics94,name
+graphics95.asm,$0A5530,874,Card013,data,graphics94,follows Card012
+graphics95.asm,$0A589A,874,Card014,data,graphics94,name
+graphics95.asm,$0A5C04,874,Card015,data,graphics94,name
+graphics95.asm,$0A5F6E,874,Card016,data,graphics94,name
+graphics95.asm,$0A62D8,874,Card017,data,graphics94,name
+graphics95.asm,$0A6642,874,Card018,data,graphics94,name
+graphics95.asm,$0A69AC,874,Card019,data,graphics94,name
+graphics95.asm,$0A6D16,874,Card020,data,graphics94,name
+graphics95.asm,$0A7080,874,Card021,data,graphics94,name
+graphics95.asm,$0A73EA,874,Card022,data,graphics94,name
+graphics95.asm,$0A7754,874,Card023,data,graphics94,name
+graphics95.asm,$0A7ABE,874,Card024,data,graphics94,name
+graphics95.asm,$0A7E28,874,Card025,data,graphics94,name
+graphics95.asm,$0A8192,874,Card026,data,graphics94,name
+graphics95.asm,$0A84FC,874,Card027,data,graphics94,name
+graphics95.asm,$0A8866,874,Card028,data,graphics94,follows Card027
+graphics95.asm,$0A8BD0,874,Card029,data,graphics94,name
+graphics95.asm,$0A8F3A,874,Card030,data,graphics94,name
+graphics95.asm,$0A92A4,874,Card031,data,graphics94,name
+graphics95.asm,$0A960E,874,Card032,data,graphics94,name
+graphics95.asm,$0A9978,874,Card033,data,graphics94,name
+graphics95.asm,$0A9CE2,874,Card034,data,graphics94,name
+graphics95.asm,$0AA04C,874,Card035,data,graphics94,name
+graphics95.asm,$0AA3B6,874,Card036,data,graphics94,follows Card035
+graphics95.asm,$0AA720,874,Card037,data,graphics94,name
+graphics95.asm,$0AAA8A,874,Card038,data,graphics94,name
+graphics95.asm,$0AADF4,874,Card039,data,graphics94,name
+graphics95.asm,$0AB15E,874,Card040,data,graphics94,name
+graphics95.asm,$0AB4C8,874,Card041,data,graphics94,name
+graphics95.asm,$0AB832,874,Card042,data,graphics94,name
+graphics95.asm,$0ABB9C,874,Card043,data,graphics94,name
+graphics95.asm,$0ABF06,1030,Card044,data,graphics94,name
+graphics95.asm,$0AC30C,874,Card045,data,graphics94,name
+graphics95.asm,$0AC676,1030,Card046,data,graphics94,follows Card045
+graphics95.asm,$0ACA7C,1748,Card047,data,graphics94,name
+graphics95.asm,$0AD150,874,Card049,data,graphics94,name
+graphics95.asm,$0AD4BA,874,Card050,data,graphics94,follows Card049
+graphics95.asm,$0AD824,874,Card051,data,graphics94,follows Card050
+graphics95.asm,$0ADB8E,1054,Card052,data,graphics94,name
+graphics95.asm,$0ADFAC,874,Card053,data,graphics94,follows Card052
+graphics95.asm,$0AE316,874,Card054,data,graphics94,follows Card053
+graphics95.asm,$0AE680,874,Card055,data,graphics94,name
+graphics95.asm,$0AE9EA,874,Card056,data,graphics94,name
+graphics95.asm,$0AED54,874,Card057,data,graphics94,name
+graphics95.asm,$0AF0BE,874,Card058,data,graphics94,name
+graphics95.asm,$0AF428,874,Card059,data,graphics94,follows Card058
+graphics95.asm,$0AF792,874,Card060,data,graphics94,follows Card059
+graphics95.asm,$0AFAFC,1006,Card061,data,graphics94,name
+graphics95.asm,$0AFEEA,874,Card062,data,graphics94,name
+graphics95.asm,$0B0254,874,Card063,data,graphics94,name
+graphics95.asm,$0B05BE,874,Card064,data,graphics94,follows Card063
+graphics95.asm,$0B0928,874,Card065,data,graphics94,name
+graphics95.asm,$0B0C92,874,Card066,data,graphics94,name
+graphics95.asm,$0B0FFC,874,Card067,data,graphics94,name
+graphics95.asm,$0B1366,874,Card068,data,graphics94,name
+graphics95.asm,$0B16D0,874,Card069,data,graphics94,name
+graphics95.asm,$0B1A3A,874,Card070,data,graphics94,name
+graphics95.asm,$0B1DA4,874,Card071,data,graphics94,name
+graphics95.asm,$0B210E,982,Card072,data,graphics94,name
+graphics95.asm,$0B24E4,874,Card073,data,graphics94,name
+graphics95.asm,$0B284E,874,Card074,data,graphics94,follows Card073
+graphics95.asm,$0B2BB8,874,Card075,data,graphics94,follows Card074
+graphics95.asm,$0B2F22,874,Card076,data,graphics94,name
+graphics95.asm,$0B328C,874,Card077,data,graphics94,name
+graphics95.asm,$0B35F6,874,Card078,data,graphics94,follows Card077
+graphics95.asm,$0B3960,982,Card079,data,graphics94,name
+graphics95.asm,$0B3D36,874,Card080,data,graphics94,name
+graphics95.asm,$0B40A0,874,Card081,data,graphics94,name
+graphics95.asm,$0B440A,874,Card082,data,graphics94,name
+graphics95.asm,$0B4774,1030,Card083,data,graphics94,name
+graphics95.asm,$0B4B7A,874,Card084,data,graphics94,name
+graphics95.asm,$0B4EE4,874,Card085,data,graphics94,follows Card084
+graphics95.asm,$0B524E,874,Card086,data,graphics94,name
+graphics95.asm,$0B55B8,1054,Card087,data,graphics94,follows Card086
+graphics95.asm,$0B59D6,874,Card088,data,graphics94,name
+graphics95.asm,$0B5D40,874,Card089,data,graphics94,name
+graphics95.asm,$0B60AA,874,Card090,data,graphics94,follows Card089
+graphics95.asm,$0B6414,874,Card091,data,graphics94,follows Card090
+graphics95.asm,$0B677E,874,Card092,data,graphics94,follows Card091
+graphics95.asm,$0B6AE8,874,Card093,data,graphics94,follows Card092
+graphics95.asm,$0B6E52,874,Card094,data,graphics94,name
+graphics95.asm,$0B71BC,874,Card095,data,graphics94,name
+graphics95.asm,$0B7526,874,Card096,data,graphics94,name
+graphics95.asm,$0B7890,874,Card097,data,graphics94,follows Card096
+graphics95.asm,$0B7BFA,874,Card098,data,graphics94,name
+graphics95.asm,$0B7F64,874,Card099,data,graphics94,name
+graphics95.asm,$0B82CE,874,Card100,data,graphics94,name
+graphics95.asm,$0B8638,874,Card101,data,graphics94,name
+graphics95.asm,$0B89A2,874,Card102,data,graphics94,name
+graphics95.asm,$0B8D0C,874,Card103,data,graphics94,name
+graphics95.asm,$0B9076,874,Card104,data,graphics94,name
+graphics95.asm,$0B93E0,874,Card105,data,graphics94,name
+graphics95.asm,$0B974A,874,Card106,data,graphics94,name
+graphics95.asm,$0B9AB4,874,Card107,data,graphics94,name
+graphics95.asm,$0B9E1E,1748,Card108,data,graphics94,name
+graphics95.asm,$0BA4F2,874,Card110,data,graphics94,name
+graphics95.asm,$0BA85C,874,Card111,data,graphics94,name
+graphics95.asm,$0BABC6,874,Card112,data,graphics94,follows Card111
+graphics95.asm,$0BAF30,874,Card113,data,graphics94,name
+graphics95.asm,$0BB29A,874,Card114,data,graphics94,follows Card113
+graphics95.asm,$0BB604,874,Card115,data,graphics94,name
+graphics95.asm,$0BB96E,874,Card116,data,graphics94,follows Card115
+graphics95.asm,$0BBCD8,874,Card117,data,graphics94,follows Card116
+graphics95.asm,$0BC042,874,Card118,data,graphics94,follows Card117
+graphics95.asm,$0BC3AC,874,Card119,data,graphics94,follows Card118
+graphics95.asm,$0BC716,874,Card120,data,graphics94,follows Card119
+graphics95.asm,$0BCA80,874,Card121,data,graphics94,name
+graphics95.asm,$0BCDEA,874,Card122,data,graphics94,name
+graphics95.asm,$0BD154,874,Card123,data,graphics94,name
+graphics95.asm,$0BD4BE,874,Card124,data,graphics94,name
+graphics95.asm,$0BD828,874,Card125,data,graphics94,name
+graphics95.asm,$0BDB92,874,Card126,data,graphics94,name
+graphics95.asm,$0BDEFC,874,Card127,data,graphics94,follows Card126
+graphics95.asm,$0BE266,874,Card128,data,graphics94,follows Card127
+graphics95.asm,$0BE5D0,874,Card129,data,graphics94,name
+graphics95.asm,$0BE93A,874,Card130,data,graphics94,name
+graphics95.asm,$0BECA4,1748,Card131,data,graphics94,name
+graphics95.asm,$0BF378,874,Card133,data,graphics94,name
+graphics95.asm,$0BF6E2,874,Card134,data,graphics94,name
+graphics95.asm,$0BFA4C,874,Card135,data,graphics94,follows Card134
+graphics95.asm,$0BFDB6,1030,Card136,data,graphics94,name
+graphics95.asm,$0C01BC,874,Card137,data,graphics94,follows Card136
+graphics95.asm,$0C0526,874,Card138,data,graphics94,name
+graphics95.asm,$0C0890,874,Card139,data,graphics94,name
+graphics95.asm,$0C0BFA,874,Card140,data,graphics94,name
+graphics95.asm,$0C0F64,874,Card141,data,graphics94,name
+graphics95.asm,$0C12CE,874,Card142,data,graphics94,name
+graphics95.asm,$0C1638,874,Card143,data,graphics94,name
+graphics95.asm,$0C19A2,874,Card144,data,graphics94,name
+graphics95.asm,$0C1D0C,874,Card145,data,graphics94,name
+graphics95.asm,$0C2076,874,Card146,data,graphics94,name
+graphics95.asm,$0C23E0,874,Card147,data,graphics94,name
+graphics95.asm,$0C274A,874,Card148,data,graphics94,name
+graphics95.asm,$0C2AB4,874,Card149,data,graphics94,name
+graphics95.asm,$0C2E1E,874,Card150,data,graphics94,follows Card149
+graphics95.asm,$0C3188,874,Card151,data,graphics94,name
+graphics95.asm,$0C34F2,874,Card152,data,graphics94,name
+graphics95.asm,$0C385C,1030,Card153,data,graphics94,follows Card152
+graphics95.asm,$0C3C62,874,Card154,data,graphics94,name
+graphics95.asm,$0C3FCC,1054,Card155,data,graphics94,name
+graphics95.asm,$0C43EA,874,Card156,data,graphics94,name
+graphics95.asm,$0C4754,168,FeaturedPicIdx,data,graphics94,follows Card156
 graphics95.asm,$0C47FC,640,FeaturedPictures,data,cards94,name
 graphics95.asm,$0C4A7C,23278,Rinktilelist,data,graphics94,name
 graphics95.asm,$0CA56A,10,Sprites,data,graphics94,name

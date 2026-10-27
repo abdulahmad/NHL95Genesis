@@ -11,7 +11,7 @@
 	org	0							;the ROM starts at 0. Without an org SNASM writes a short, misaligned bin
 									;(the stubs carry their own org)
 	include	main95.asm				; vectors, cartridge header, SegaInit, the 95 region lock, Begin
-	include	teamdata95.asm			; team data: TeamList and one block per team
+	include	..\output\names\teamdata95.asm	; team data: TeamList and one block per team
 	include	frames95.asm			; sprite animation tables and revframetbl
 	include	schedule95.asm			; the season schedule
 	include	sram95.asm				; battery save RAM: init, read / write, checksum, leader list builders
