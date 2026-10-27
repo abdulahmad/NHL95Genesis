@@ -3,8 +3,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const [segment, orgArg, referencePath, firstArg, lastArg] = process.argv.slice(2);
-if (!segment || !orgArg || !referencePath) {
+const [segment, orgArg, referenceArg, firstArg, lastArg] = process.argv.slice(2);
+// The reference is a path or an id (retail: the ROM in the repo folder, found by SHA-1 and size, tools/roms.js).
+const referencePath = referenceArg && !fs.existsSync(referenceArg) ? (require('./roms').romPath(referenceArg) || referenceArg) : referenceArg;
+if (!segment || !orgArg || !referenceArg) {
   console.error('Usage: node tools/verifySegment.js <segment> <org> <reference.bin> [<first> <last>]');
   process.exit(1);
 }

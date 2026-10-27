@@ -15,13 +15,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how changes are made (names, comments
 
 Bitwise rebuild of NHL 95 for the Sega Genesis. Every segment is matched: the full build is byte for byte the retail ROM (SHA-1 `09e87b076aa4cd6f057a1d65bb50fd889b509b44`), and each segment also builds and verifies on its own.
 
-The reference ROM goes at `lst/nhl95.bin` (2 MB; it is not in the repo, `lst/*.bin` is gitignored). It is what every build is compared with. Do not use a different ROM. The listing the source was transcribed from, `lst/nhl95.bin.lst` (an IDA LST in ASM68K / MRI mode with no address column: `loc_` / `sub_` names are the address), is no longer in the repo either; keep a local copy there if you have one.
+The reference ROM goes in the repo folder (2 MB; it is not in the repo, `/*.bin` is gitignored). Any file name works: the build finds it by its SHA-1 and size (`tools/roms.js`; `nhl95retail.bin` is the usual name). It is what every build is compared with. Do not use a different ROM. The listing the source was transcribed from, `lst/nhl95.bin.lst` (an IDA LST in ASM68K / MRI mode with no address column: `loc_` / `sub_` names are the address), is no longer in the repo either; keep a local copy there if you have one.
 ## Supported ROMs
 NHL 95 had one retail release; `tools/extractAssets95.js` accepts only that ROM, found by SHA-1, and refuses any other (bad dump, hack, prototype) with its SHA-1, size and header. The slices are kept as a per-version map from retail address, so a new version only needs a row with its SHA-1 and offsets.
 
 | Version | Header | File | Size | SHA-1 |
 | --- | --- | --- | --- | --- |
-| Retail | `1994.JUL`, `GM T-50856 -00` | `lst/nhl95.bin` | 2 MB | `09e87b076aa4cd6f057a1d65bb50fd889b509b44` |
+| Retail | `1994.JUL`, `GM T-50856 -00` | `nhl95retail.bin` (usual name; any file name) | 2 MB | `09e87b076aa4cd6f057a1d65bb50fd889b509b44` |
 
 
 The source follows [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis): its file names, routine names, RAM names and comments, with [NHLPA93Genesis](https://github.com/abdulahmad/NHLPA93Genesis) where 94 does not have the routine. A comment `;95: ...` marks a 94 routine 95 changed; `95 only.` marks a routine 94 does not have.
@@ -53,13 +53,13 @@ The graphics and sound are not in the repo. Extract them from the reference ROM 
 
     npm run extractassets
 
-That writes `Extracted/` from `lst/nhl95.bin` with `tools/extractAssets95.js`.
+That writes `Extracted/` from the ROM in the repo folder with `tools/extractAssets95.js`.
 
-Full ROM builds assemble `src/nhl95.asm` with `build95.bat`. The listing is `output/nhl95 .lst`. The opcode-corrected output is `output/modified_nhl95.bin`.
+Full ROM builds (`node tools/build.js`, one line per step; `--verbose` shows the tools' output, `--clean` deletes `output/` and `Extracted/`) assemble `src/nhl95.asm` with SNASM68k (directly on Windows, under wine elsewhere). The listing is `output/nhl95 .lst`. The opcode-corrected output is `output/modified_nhl95.bin`.
 
 | Script | Flags | Result |
 | --- | --- | --- |
-| `npm run build:retail` | `checksum=1` | Retail, then a byte compare to `lst/nhl95.bin`. |
+| `npm run build:retail` | `checksum=1` | Retail, then a byte compare to the retail ROM. |
 | `npm run build:dev` | `checksum=0` | No validation and no retail verify. Use this while editing. |
 
 `build:dev` (`checksum=0`): `RegionOK` skips `jsr ValidationRoutine` (3 `nop`s instead) and the header checksum is 0, so changed code still boots. With `checksum=1` the validation routine sums the ROM, and any change turns the screen red.
@@ -78,7 +78,7 @@ If the ROM is missing (or is a different dump), the build stops with the full pa
 
 | Build | ROM needed | SHA-1 | Size |
 | --- | --- | --- | --- |
-| every build and segment | `lst/nhl95.bin` | `09e87b076aa4cd6f057a1d65bb50fd889b509b44` | 2097152 bytes |
+| every build and segment | `nhl95retail.bin` (usual name; any file name) | `09e87b076aa4cd6f057a1d65bb50fd889b509b44` | 2097152 bytes |
 
 `npm run assets` runs only this step. `npm run extractassets` still forces a fresh extraction. The npm scripts set `NHL_PREBUILD_DONE=1` after the step so the batch file does not repeat it; `tools/verify_all.sh` runs the step with Linux node and sets the same variable for wine (there is no node under wine).
 
