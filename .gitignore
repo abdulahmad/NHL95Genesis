@@ -145,3 +145,8 @@ output/**
 lst/*.bin
 lst/*.lst
 nhl*.md
+
+# The retail ROM is a local file in the repo folder (any file name; found by SHA-1)
+/*.bin
+/*.gen
+nhl95retail.bin

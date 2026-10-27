@@ -7,9 +7,11 @@
 const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');
-const romPath = process.argv[2] || path.join(ROOT, 'lst', 'nhl95.bin');
+// No argument (or an id: retail): the ROM in the repo folder, found by its SHA-1 and size (tools/roms.js).
+const romArg = process.argv[2];
+const romPath = romArg && fs.existsSync(romArg) ? romArg : (require('./roms').romPath(romArg || 'retail') || romArg || path.join(ROOT, 'nhl95retail.bin'));
 if (!fs.existsSync(romPath)) {
-  console.error('Missing ' + romPath + '. Put the IDA ROM at lst/nhl95.bin first.');
+  console.error('Missing ' + romPath + '. Put the retail ROM in the repo folder first (any file name).');
   process.exit(1);
 }
 

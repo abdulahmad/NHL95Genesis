@@ -2,7 +2,7 @@
 # verify_all.sh: top ROM + all segments under wine. Usage: tools/verify_all.sh [-q|--quiet]
 # -q: print only failures and the final ALL MATCH / VERIFY FAILED line.
 quiet=0; case "$1" in -q|--quiet) quiet=1;; esac
-set -- "$(cd "$(dirname "$0")/.." && pwd)" build95.bat nhl95 lst/nhl95.bin
+set -- "$(cd "$(dirname "$0")/.." && pwd)" build95.bat nhl95 retail
 export WINEDEBUG=-all
 cd "$1"; bat=$2; top=$3; ref=$4
 # tools/prebuild.js runs here with Linux node (fresh extract, ROM check); the .bat files skip it (no node under wine).
