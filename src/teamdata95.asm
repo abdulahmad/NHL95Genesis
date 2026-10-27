@@ -1,3 +1,22 @@
+;	*** ANONYMIZED: the player names and team nicknames are placeholders. ***
+;	Players are P001 ... P662, nicknames N01 ... N26. The real ones are NHLPA / NHL licensed
+;	data and are not in this repository.
+
+;	Each Player row and each nickname String has a placeholder of the same length as the
+;	real text (the Player macro writes the row length, so it must not change). The ratings
+;	after a name are unchanged.
+
+;	This file does not assemble into the real game by itself and is not included directly:
+;	it needs the original ROM.
+
+;	tools/extractAssets95.js reads the names from your ROM into Extracted/PlayerNames.txt
+;	and Extracted/TeamNicknames.txt (one per line, in the order they appear below).
+
+;	tools/prebuild.js (run by every build) copies this file to output/names/teamdata95.asm
+;	with the real names put back, and nhl95.asm includes that copy.
+
+;	Keep the placeholder lengths when editing a name or adding a player.
+;
 ;	Team data. TeamList points to one record per team, the two All-Star teams included, and the
 ;	playoff seeds follow the teams.
 
@@ -15,8 +34,8 @@ TeamList							;Team number = index (ANH 0 ... WPG 25, ASE 26, ASW 27)
 	dc.l	LosAngeles				;10 LA
 	dc.l	Montreal				;11 MTL
 	dc.l	NewJersey				;12 NJ
-	dc.l	NYIslanders				;13 NYI
-	dc.l	NYRangers				;14 NYR
+	dc.l	NewYorkI				;13 NYI
+	dc.l	NewYorkR				;14 NYR
 	dc.l	Ottawa					;15 OTW
 	dc.l	Philadelphia			;16 PHI
 	dc.l	Pittsburgh				;17 PIT
@@ -109,29 +128,29 @@ AllStarsEast						;ASE, $7E2 (94 $37E)
 	dc.b	01,21,18,17,04,13,09,00	;line 8 8th line (94 addition, no linelist name)
 .pld								;roster, ended by an empty String
 ;										unwl,sodp,chga,eytm
-	Player	'Patrick Roy',	3366,4355,0000,5666
-	Player	'Mike Richter',	3575,4344,0000,5555
-	Player	'John Vanbiesbrk',	3454,3453,0000,4455
-	Player	'Mark Messier',	1195,4433,4993,4253
-	Player	'Adam Oates',	1275,4653,3A54,5061
-	Player	'Pierre Turgeon',	7794,4534,0995,4140
-	Player	'Joe Sakic',	1964,3543,29C5,5262
-	Player	'Brian Bradley',	1944,4434,2A64,4243
-	Player	'Alexei Yashin',	1974,4414,1AC4,3242
-	Player	'Eric Lindros',	88C4,3445,56A6,5344
-	Player	'Joe Mullen',	0764,3433,3A65,4431
-	Player	'Adam Graves',	0994,4433,5D73,4535
-	Player	'Geoff Sanderson',	0864,5434,2B64,4331
-	Player	'Mark Recchi',	0865,4534,3D95,4343
-	Player	'Jaromir Jagr',	68A5,4534,4BC3,6152
-	Player	'Bob Kudelski',	2292,3434,2C64,3432
-	Player	'Alexnder Mogilny',	8976,6634,1794,4451
-	Player	'Brian Leetch',	0266,3544,2DC2,5252
-	Player	'Scott Stevens',	04B4,4464,5D73,5145
-	Player	'Garry Galley',	0373,3342,3BA1,3233
-	Player	'Ray Bourque',	77A5,4555,49C5,6452
-	Player	'Al Iafrate',	43B4,4446,49A2,3344
-	Player	'Larry Murphy',	55A4,3554,3C92,5152
+	Player	'P001_______',	3366,4355,0000,5666
+	Player	'P002________',	3575,4344,0000,5555
+	Player	'P003___________',	3454,3453,0000,4455
+	Player	'P004________',	1195,4433,4993,4253
+	Player	'P005______',	1275,4653,3A54,5061
+	Player	'P006__________',	7794,4534,0995,4140
+	Player	'P007_____',	1964,3543,29C5,5262
+	Player	'P008_________',	1944,4434,2A64,4243
+	Player	'P009_________',	1974,4414,1AC4,3242
+	Player	'P010________',	88C4,3445,56A6,5344
+	Player	'P011______',	0764,3433,3A65,4431
+	Player	'P012_______',	0994,4433,5D73,4535
+	Player	'P013___________',	0864,5434,2B64,4331
+	Player	'P014_______',	0865,4534,3D95,4343
+	Player	'P015________',	68A5,4534,4BC3,6152
+	Player	'P016________',	2292,3434,2C64,3432
+	Player	'P017____________',	8976,6634,1794,4451
+	Player	'P018________',	0266,3544,2DC2,5252
+	Player	'P019_________',	04B4,4464,5D73,5145
+	Player	'P020________',	0373,3342,3BA1,3233
+	Player	'P021_______',	77A5,4555,49C5,6452
+	Player	'P022______',	43B4,4446,49A2,3344
+	Player	'P023________',	55A4,3554,3C92,5152
 	dc.w	2						;end of the player list: an empty String
 .tn									;City
 	String	'All Stars East'
@@ -167,27 +186,27 @@ AllStarsWest						;ASW, $AB2 (94 $674)
 	dc.b	01,18,19,09,12,10,05,00
 	dc.b	01,21,16,08,14,06,04,00
 .pld
-	Player	'Curtis Joseph',	3165,4564,0000,4444
-	Player	'Arturs Irbe',	3253,4443,0000,4444
-	Player	'Felix Potvin',	2964,4664,0000,5454
-	Player	'Doug Gilmour',	9345,4554,4BC4,6043
-	Player	'Wayne Gretzky',	9946,4643,19C4,6160
-	Player	'Joe Nieuwendyk',	2584,3534,3795,4342
-	Player	'Jeremy Roenick',	2745,5545,3CD5,5253
-	Player	'Sergei Fedorov',	9176,6654,2BC5,5253
-	Player	'Shayne Corson',	0993,3344,4773,4334
-	Player	'Dave Andreychuk',	14B3,2534,3A95,5432
-	Player	'Brendan Shanahan',	19A3,3545,3AA5,4244
-	Player	'Pavel Bure',	1056,6625,29C5,4542
-	Player	'Teemu Selanne',	1365,6524,38C5,5442
-	Player	'Brett Hull',	1694,4536,3A94,4432
-	Player	'Russ Courtnall',	2665,6434,2C93,4342
-	Player	'Rob Blake',	04A4,4444,4AA2,4344
-	Player	'Al MacInnis',	0284,4446,3892,5343
-	Player	'Alexei Kasatonov',	07A4,3233,3761,3142
-	Player	'Sandis Ozolinsh',	0673,4434,2B94,4242
-	Player	'Chris Chelios',	0774,4465,4AA2,6245
-	Player	'Paul Coffey',	7796,5434,2BC2,5163
+	Player	'P024_________',	3165,4564,0000,4444
+	Player	'P025_______',	3253,4443,0000,4444
+	Player	'P026________',	2964,4664,0000,5454
+	Player	'P027________',	9345,4554,4BC4,6043
+	Player	'P028_________',	9946,4643,19C4,6160
+	Player	'P029__________',	2584,3534,3795,4342
+	Player	'P030__________',	2745,5545,3CD5,5253
+	Player	'P031__________',	9176,6654,2BC5,5253
+	Player	'P032_________',	0993,3344,4773,4334
+	Player	'P033___________',	14B3,2534,3A95,5432
+	Player	'P034____________',	19A3,3545,3AA5,4244
+	Player	'P035______',	1056,6625,29C5,4542
+	Player	'P036_________',	1365,6524,38C5,5442
+	Player	'P037______',	1694,4536,3A94,4432
+	Player	'P038__________',	2665,6434,2C93,4342
+	Player	'P039_____',	04A4,4444,4AA2,4344
+	Player	'P040_______',	0284,4446,3892,5343
+	Player	'P041____________',	07A4,3233,3761,3142
+	Player	'P042___________',	0673,4434,2B94,4242
+	Player	'P043_________',	0774,4465,4AA2,6245
+	Player	'P044_______',	7796,5434,2BC2,5163
 	dc.w	2
 .tn
 	String	'All Stars West'
@@ -223,36 +242,36 @@ Anaheim								;ANH, $D66 (94 $5330)
 	dc.b	01,19,23,13,03,08,09,00
 	dc.b	01,21,18,15,06,09,03,00
 .pld
-	Player	'Guy Hebert',	3164,3332,0000,3333
-	Player	'Mikhail Shtalenkov',	3562,2223,0000,2222
-	Player	'Bob Corkum',	20A3,3333,3863,3522
-	Player	'Stephan Lebeau',	4753,3433,2664,4231
-	Player	'Anatoli Semenov',	1973,4343,2763,4032
-	Player	'Shaun VanAllen',	2292,2222,3B62,3122
-	Player	'Joe Sacco',	1483,3323,3B63,3322
-	Player	'Terry Yake',	2563,4423,3A64,4232
-	Player	'Peter Douris',	1683,3233,2832,2421
-	Player	'Todd Ewen',	36B1,1212,3852,2315
-	Player	'Steven King',	1772,2322,2663,3422
-	Player	'Troy Loney',	24A2,3232,4971,3212
-	Player	'Garry Valk',	1872,2233,3973,3323
-	Player	'Stu Grimson',	32B1,1021,2B21,2515
-	Player	'Tim Sweeney',	0873,2333,1B63,3421
-	Player	'Patrik Carnback',	2172,2322,0762,2322
-	Player	'David Williams',	0482,2222,2832,2423
-	Player	'Sean Hill',	0683,3222,2662,3324
-	Player	'Bobby Dollas',	02A3,2243,3962,3222
-	Player	'Don McSween',	3982,1223,2762,2222
-	Player	'Bill Houlder',	23B1,2223,2B63,3422
-	Player	'Mark Ferner',	0382,1222,2732,2322
-	Player	'Randy Ladouceur',	29B3,2141,3971,4514
+	Player	'P045______',	3164,3332,0000,3333
+	Player	'P046______________',	3562,2223,0000,2222
+	Player	'P047______',	20A3,3333,3863,3522
+	Player	'P048__________',	4753,3433,2664,4231
+	Player	'P049___________',	1973,4343,2763,4032
+	Player	'P050__________',	2292,2222,3B62,3122
+	Player	'P051_____',	1483,3323,3B63,3322
+	Player	'P052______',	2563,4423,3A64,4232
+	Player	'P053________',	1683,3233,2832,2421
+	Player	'P054_____',	36B1,1212,3852,2315
+	Player	'P055_______',	1772,2322,2663,3422
+	Player	'P056______',	24A2,3232,4971,3212
+	Player	'P057______',	1872,2233,3973,3323
+	Player	'P058_______',	32B1,1021,2B21,2515
+	Player	'P059_______',	0873,2333,1B63,3421
+	Player	'P060___________',	2172,2322,0762,2322
+	Player	'P061__________',	0482,2222,2832,2423
+	Player	'P062_____',	0683,3222,2662,3324
+	Player	'P063________',	02A3,2243,3962,3222
+	Player	'P064_______',	3982,1223,2762,2222
+	Player	'P065________',	23B1,2223,2B63,3422
+	Player	'P066_______',	0382,1222,2732,2322
+	Player	'P067___________',	29B3,2141,3971,4514
 	dc.w	2
 .tn
 	String	'Anaheim'
 .ta
 	String	'ANH'
 .tm
-	String	'Mighty Ducks'
+	String	'N01_________'
 .ar
 	String	'Arrowhead Pond'
 
@@ -281,37 +300,37 @@ Boston								;BOS, $102A (94 $966)
 	dc.b	01,18,21,15,03,08,06,00
 	dc.b	01,19,23,16,06,10,03,00
 .pld
-	Player	'Jon Casey',	3024,3343,0000,4343
-	Player	'Vincent Riendeau',	3763,3222,0000,3222
-	Player	'Adam Oates',	1275,4653,3A54,5061
-	Player	'Jozef Stumpel',	2252,2222,1863,3231
-	Player	'Andrew McKim',	4582,2221,1832,2321
-	Player	'Bryan Smolinski',	2004,4433,2A93,3433
-	Player	'Dan Marois',	3373,3213,1463,2423
-	Player	'Cam Neely',	08A3,3545,4045,5444
-	Player	'Stephen Leach',	2763,2334,3473,4433
-	Player	'Stephen Heinze',	2363,4333,3A33,3431
-	Player	'Glen Murray',	4404,3323,2A64,3422
-	Player	'Mariusz Czerkawski',	1973,3322,1262,3332
-	Player	'Brent Hughes',	1863,3232,3972,2534
-	Player	'Dmitri Kvartalnov',	1064,4413,1794,4241
-	Player	'Ted Donato',	2143,4343,2D33,3332
-	Player	'Dave Reid',	1793,3233,2B24,4220
-	Player	'Paul Stanton',	2583,3234,3921,3543
-	Player	'Ray Bourque',	77A5,4555,49C5,6452
-	Player	'David Shaw',	3492,2242,3672,4523
-	Player	'Al Iafrate',	43B4,4446,49A2,3344
-	Player	'Don Sweeney',	3244,3343,46A1,4142
-	Player	'Glen Wesley',	2685,4444,3B42,4442
-	Player	'Gordie Roberts',	1473,2131,3723,3023
-	Player	'Glen Feathrston',	06B3,3122,4743,2325
+	Player	'P068_____',	3024,3343,0000,4343
+	Player	'P069____________',	3763,3222,0000,3222
+	Player	'P070______',	1275,4653,3A54,5061
+	Player	'P071_________',	2252,2222,1863,3231
+	Player	'P072________',	4582,2221,1832,2321
+	Player	'P073___________',	2004,4433,2A93,3433
+	Player	'P074______',	3373,3213,1463,2423
+	Player	'P075_____',	08A3,3545,4045,5444
+	Player	'P076_________',	2763,2334,3473,4433
+	Player	'P077__________',	2363,4333,3A33,3431
+	Player	'P078_______',	4404,3323,2A64,3422
+	Player	'P079______________',	1973,3322,1262,3332
+	Player	'P080________',	1863,3232,3972,2534
+	Player	'P081_____________',	1064,4413,1794,4241
+	Player	'P082______',	2143,4343,2D33,3332
+	Player	'P083_____',	1793,3233,2B24,4220
+	Player	'P084________',	2583,3234,3921,3543
+	Player	'P085_______',	77A5,4555,49C5,6452
+	Player	'P086______',	3492,2242,3672,4523
+	Player	'P087______',	43B4,4446,49A2,3344
+	Player	'P088_______',	3244,3343,46A1,4142
+	Player	'P089_______',	2685,4444,3B42,4442
+	Player	'P090__________',	1473,2131,3723,3023
+	Player	'P091___________',	06B3,3122,4743,2325
 	dc.w	2
 .tn
 	String	'Boston'
 .ta
 	String	'BOS'
 .tm
-	String	'Bruins'
+	String	'N02___'
 .ar
 	String	'Boston Garden'
 
@@ -340,37 +359,37 @@ Buffalo								;BUF, $1304 (94 $C4C)
 	dc.b	01,23,24,08,05,16,04,00
 	dc.b	01,20,22,09,03,15,05,00
 .pld
-	Player	'Dominik Hasek',	3945,3554,0000,5656
-	Player	'Grant Fuhr',	3175,4555,0100,3455
-	Player	'Dave Hannan',	1463,2232,2B63,2122
-	Player	'Pat LaFontaine',	1655,4644,24C4,6252
-	Player	'Dale Hawerchuk',	1066,4544,2BC3,4052
-	Player	'Bob Sweeney',	2093,2353,3734,4233
-	Player	'Rob Ray',	32A3,4121,4B52,1515
-	Player	'Randy Wood',	1982,5342,3D33,4423
-	Player	'Yuri Khmylev',	1374,3444,3694,4332
-	Player	'Brad May',	2792,2323,4B43,3524
-	Player	'Craig Simpson',	2283,3434,2364,3132
-	Player	'Jason Dawe',	4383,3323,2964,3431
-	Player	'Derek Plante',	2644,4433,2B93,3241
-	Player	'Alexnder Mogilny',	8976,6634,1794,4451
-	Player	'Wayne Presley',	1863,3343,3673,3423
-	Player	'Donald Audette',	2853,3434,2664,3532
-	Player	'Matthew Barnaby',	3672,2212,3952,3324
-	Player	'Randy Moller',	24A3,2212,3841,1124
-	Player	'Doug Bodger',	08A4,3342,2991,4132
-	Player	'Ken Sutton',	4183,2242,1932,3232
-	Player	'Philippe Boucher',	0473,3323,2892,3243
-	Player	'Craig Muni',	0592,2152,4B61,4223
-	Player	'Petr Svoboda',	0754,4243,3970,4033
-	Player	'Richard Smehlik',	42A3,2344,3D63,3332
+	Player	'P092_________',	3945,3554,0000,5656
+	Player	'P093______',	3175,4555,0100,3455
+	Player	'P094_______',	1463,2232,2B63,2122
+	Player	'P095__________',	1655,4644,24C4,6252
+	Player	'P096__________',	1066,4544,2BC3,4052
+	Player	'P097_______',	2093,2353,3734,4233
+	Player	'P098___',	32A3,4121,4B52,1515
+	Player	'P099______',	1982,5342,3D33,4423
+	Player	'P100________',	1374,3444,3694,4332
+	Player	'P101____',	2792,2323,4B43,3524
+	Player	'P102_________',	2283,3434,2364,3132
+	Player	'P103______',	4383,3323,2964,3431
+	Player	'P104________',	2644,4433,2B93,3241
+	Player	'P105____________',	8976,6634,1794,4451
+	Player	'P106_________',	1863,3343,3673,3423
+	Player	'P107__________',	2853,3434,2664,3532
+	Player	'P108___________',	3672,2212,3952,3324
+	Player	'P109________',	24A3,2212,3841,1124
+	Player	'P110_______',	08A4,3342,2991,4132
+	Player	'P111______',	4183,2242,1932,3232
+	Player	'P112____________',	0473,3323,2892,3243
+	Player	'P113______',	0592,2152,4B61,4223
+	Player	'P114________',	0754,4243,3970,4033
+	Player	'P115___________',	42A3,2344,3D63,3332
 	dc.w	2
 .tn
 	String	'Buffalo'
 .ta
 	String	'BUF'
 .tm
-	String	'Sabres'
+	String	'N03___'
 .ar
 	String	'Memorial Auditorium'
 
@@ -399,37 +418,37 @@ Calgary								;CGY, $15E0 (94 $F3A)
 	dc.b	01,16,18,08,12,04,03,00
 	dc.b	01,17,21,09,03,07,14,00
 .pld
-	Player	'Mike Vernon',	3043,4444,0000,4444
-	Player	'Trevor Kidd',	3733,3222,0000,3322
-	Player	'Joe Nieuwendyk',	2584,3534,3795,4342
-	Player	'Robert Reichel',	2664,3435,2D95,3342
-	Player	'Joel Otto',	29B3,2253,5A74,4225
-	Player	'Michael Nylander',	9254,4433,2792,3142
-	Player	'Kelly Kisio',	1163,2343,4263,4133
-	Player	'German Titov',	1373,3333,3964,3532
-	Player	'Gary Roberts',	1073,4544,49A5,5345
-	Player	'Paul Kruse',	1292,2222,3952,3424
-	Player	'Wes Walz',	1762,3332,1663,3131
-	Player	'Theoren Fleury',	1435,5444,4CA4,4333
-	Player	'Sandy McCarthy',	1571,1222,3A52,3425
-	Player	'Ronnie Stern',	2282,2212,3852,2325
-	Player	'Brad Schlegel',	2172,2122,2631,3422
-	Player	'Zarley Zalapski',	33A5,4434,3792,5332
-	Player	'James Patrick',	0695,4343,3692,3242
-	Player	'Al MacInnis',	0284,4446,3892,5343
-	Player	'Dan Keczmer',	3972,2131,2762,2513
-	Player	'Trent Yawney',	1873,3242,2762,3232
-	Player	'Frank Musil',	0393,4142,3941,3323
-	Player	'Michel Petit',	0793,3234,4671,3223
-	Player	'Kevin Dahl',	0473,2141,3461,3132
-	Player	'Chris Dahlquist',	0583,2142,3971,3323
+	Player	'P116_______',	3043,4444,0000,4444
+	Player	'P117_______',	3733,3222,0000,3322
+	Player	'P118__________',	2584,3534,3795,4342
+	Player	'P119__________',	2664,3435,2D95,3342
+	Player	'P120_____',	29B3,2253,5A74,4225
+	Player	'P121____________',	9254,4433,2792,3142
+	Player	'P122_______',	1163,2343,4263,4133
+	Player	'P123________',	1373,3333,3964,3532
+	Player	'P124________',	1073,4544,49A5,5345
+	Player	'P125______',	1292,2222,3952,3424
+	Player	'P126____',	1762,3332,1663,3131
+	Player	'P127__________',	1435,5444,4CA4,4333
+	Player	'P128__________',	1571,1222,3A52,3425
+	Player	'P129________',	2282,2212,3852,2325
+	Player	'P130_________',	2172,2122,2631,3422
+	Player	'P131___________',	33A5,4434,3792,5332
+	Player	'P132_________',	0695,4343,3692,3242
+	Player	'P133_______',	0284,4446,3892,5343
+	Player	'P134_______',	3972,2131,2762,2513
+	Player	'P135________',	1873,3242,2762,3232
+	Player	'P136_______',	0393,4142,3941,3323
+	Player	'P137________',	0793,3234,4671,3223
+	Player	'P138______',	0473,2141,3461,3132
+	Player	'P139___________',	0583,2142,3971,3323
 	dc.w	2
 .tn
 	String	'Calgary'
 .ta
 	String	'CGY'
 .tm
-	String	'Flames'
+	String	'N04___'
 .ar
 	String	'Olympic Saddledome'
 
@@ -458,37 +477,37 @@ Chicago								;CHI, $18BE (94 $1234)
 	dc.b	01,19,18,04,03,14,11,00
 	dc.b	01,24,23,05,13,11,14,00
 .pld
-	Player	'Ed Belfour',	3066,4665,0000,6655
-	Player	'Jeff Hackett',	3152,3112,0000,2222
-	Player	'Jeremy Roenick',	2745,5545,3CD5,5253
-	Player	'Christan Ruuttu',	2284,4343,4762,4243
-	Player	'Brent Sutter',	1263,2353,47A3,5134
-	Player	'Jeff Shantz',	1172,3312,2662,3232
-	Player	'Steve Dubinsky',	3273,3223,1962,3221
-	Player	'Paul Ysebaert',	1474,4343,2963,3342
-	Player	'Michel Goulet',	1684,3332,2564,3312
-	Player	'Randy Cunnyworth',	1962,3233,3972,3533
-	Player	'Patrick Poulin',	44A3,3323,3963,5232
-	Player	'Darin Kimble',	2091,1211,3624,1315
-	Player	'Dirk Graham',	3384,3353,4872,4534
-	Player	'Tony Amonte',	1064,5434,1D63,4532
-	Player	'Rich Sutter',	1573,3241,2A42,4424
-	Player	'Joe Murphy',	1774,5434,3B73,4343
-	Player	'Eric Weinrich',	02A3,4333,3962,4132
-	Player	'Chris Chelios',	0774,4465,4AA2,6245
-	Player	'Steve Smith',	05B4,4343,4772,5244
-	Player	'Neil Wilkinson',	2373,3132,3870,4433
-	Player	'Keith Carney',	0492,3212,3962,1424
-	Player	'Greg Smyth',	03A1,1110,1621,1405
-	Player	'Gary Suter',	0675,4444,47A2,5244
-	Player	'Cam Russell',	0853,3132,3951,3525
+	Player	'P140______',	3066,4665,0000,6655
+	Player	'P141________',	3152,3112,0000,2222
+	Player	'P142__________',	2745,5545,3CD5,5253
+	Player	'P143___________',	2284,4343,4762,4243
+	Player	'P144________',	1263,2353,47A3,5134
+	Player	'P145_______',	1172,3312,2662,3232
+	Player	'P146__________',	3273,3223,1962,3221
+	Player	'P147_________',	1474,4343,2963,3342
+	Player	'P148_________',	1684,3332,2564,3312
+	Player	'P149____________',	1962,3233,3972,3533
+	Player	'P150__________',	44A3,3323,3963,5232
+	Player	'P151________',	2091,1211,3624,1315
+	Player	'P152_______',	3384,3353,4872,4534
+	Player	'P153_______',	1064,5434,1D63,4532
+	Player	'P154_______',	1573,3241,2A42,4424
+	Player	'P155______',	1774,5434,3B73,4343
+	Player	'P156_________',	02A3,4333,3962,4132
+	Player	'P157_________',	0774,4465,4AA2,6245
+	Player	'P158_______',	05B4,4343,4772,5244
+	Player	'P159__________',	2373,3132,3870,4433
+	Player	'P160________',	0492,3212,3962,1424
+	Player	'P161______',	03A1,1110,1621,1405
+	Player	'P162______',	0675,4444,47A2,5244
+	Player	'P163_______',	0853,3132,3951,3525
 	dc.w	2
 .tn
 	String	'Chicago'
 .ta
 	String	'CHI'
 .tm
-	String	'Blackhawks'
+	String	'N05_______'
 .ar
 	String	'United Center'
 
@@ -517,37 +536,37 @@ Detroit								;DET, $1B9E (94 $152E)
 	dc.b	01,19,23,09,04,03,14,00
 	dc.b	01,21,20,05,03,14,04,00
 .pld
-	Player	'Bob Essensa',	3533,4433,0000,3333
-	Player	'Chris Osgood',	3034,3343,0000,3333
-	Player	'Steve Yzerman',	1966,5644,18C4,6151
-	Player	'Sergei Fedorov',	9176,6654,2BC5,5253
-	Player	'Keith Primeau',	55B2,2433,3975,3224
-	Player	'Kris Draper',	3373,4242,2962,4232
-	Player	'Greg Johnson',	2363,3322,2962,3322
-	Player	'Vachslav Kozlov',	1354,3423,1B94,3532
-	Player	'Shawn Burr',	1162,2242,3772,3124
-	Player	'Bob Probert',	24B4,3223,4952,4236
-	Player	'Micah Aivazoff',	2772,2222,2763,3221
-	Player	'Mike Sillinger',	1273,3222,2762,4021
-	Player	'Dino Ciccarelli',	2255,3525,2675,4344
-	Player	'Ray Sheppard',	2662,2513,1865,3421
-	Player	'Darren McCarty',	25A2,2232,4A52,4326
-	Player	'Sheldon Kennedy',	1543,5222,1833,2521
-	Player	'Sergei Bautin',	2973,2133,1931,2221
-	Player	'Paul Coffey',	7796,5434,2BC2,5163
-	Player	'Steve Chiasson',	0393,3444,3B72,4234
-	Player	'Terry Carkner',	02A1,2132,3741,3024
-	Player	'Nicklas Lidstrom',	0554,3344,2B61,4241
-	Player	'Mark Howe',	0463,2343,2361,3031
-	Player	'Vladimir Konstantov',	1664,4243,4A71,4235
-	Player	'Bob Halkidis',	2191,2122,3742,3224
+	Player	'P164_______',	3533,4433,0000,3333
+	Player	'P165________',	3034,3343,0000,3333
+	Player	'P166_________',	1966,5644,18C4,6151
+	Player	'P167__________',	9176,6654,2BC5,5253
+	Player	'P168_________',	55B2,2433,3975,3224
+	Player	'P169_______',	3373,4242,2962,4232
+	Player	'P170________',	2363,3322,2962,3322
+	Player	'P171___________',	1354,3423,1B94,3532
+	Player	'P172______',	1162,2242,3772,3124
+	Player	'P173_______',	24B4,3223,4952,4236
+	Player	'P174__________',	2772,2222,2763,3221
+	Player	'P175__________',	1273,3222,2762,4021
+	Player	'P176___________',	2255,3525,2675,4344
+	Player	'P177________',	2662,2513,1865,3421
+	Player	'P178__________',	25A2,2232,4A52,4326
+	Player	'P179___________',	1543,5222,1833,2521
+	Player	'P180_________',	2973,2133,1931,2221
+	Player	'P181_______',	7796,5434,2BC2,5163
+	Player	'P182__________',	0393,3444,3B72,4234
+	Player	'P183_________',	02A1,2132,3741,3024
+	Player	'P184____________',	0554,3344,2B61,4241
+	Player	'P185_____',	0463,2343,2361,3031
+	Player	'P186_______________',	1664,4243,4A71,4235
+	Player	'P187________',	2191,2122,3742,3224
 	dc.w	2
 .tn
 	String	'Detroit'
 .ta
 	String	'DET'
 .tm
-	String	'Red Wings'
+	String	'N06______'
 .ar
 	String	'Joe Louis Sports Arena'
 
@@ -576,37 +595,37 @@ Edmonton							;EDM, $1E9C (94 $1848)
 	dc.b	01,23,22,10,03,05,14,00
 	dc.b	01,19,24,17,05,03,14,00
 .pld
-	Player	'Bill Ranford',	3045,3435,0000,4455
-	Player	'Fred Brathwaite',	3152,2222,0000,2122
-	Player	'Doug Weight',	3963,3433,3DA3,3243
-	Player	'Todd Marchant',	3674,4223,0263,3232
-	Player	'Jason Arnott',	0783,3444,3AA4,3343
-	Player	'Dean McAmmond',	3773,4243,2962,3221
-	Player	'Scott Thornton',	1793,3132,2742,3223
-	Player	'Mike Stapleton',	2563,3222,2A62,2530
-	Player	'Brent Grieve',	3493,4223,3974,3322
-	Player	'Shayne Corson',	0993,3344,4773,4334
-	Player	'Louie DeBrusk',	29C1,1212,3753,1515
-	Player	'Scott Pearson',	3393,3122,3542,3123
-	Player	'Zdeno Ciger',	0873,3334,2D64,3230
-	Player	'Steven Rice',	12B2,2322,2742,2223
-	Player	'Shjon Podein',	2692,2322,2734,2512
-	Player	'Kirk Maltby',	1873,2232,3872,4323
-	Player	'Kelly Buchberger',	16A3,3232,4C72,3214
-	Player	'Ilya Byakin',	1073,2322,0763,2240
-	Player	'Igor Kravchuk',	2195,3344,3B92,4332
-	Player	'Fredrik Olausson',	1594,3434,1892,3141
-	Player	'Adam Bennett',	3592,2121,2640,1312
-	Player	'Bob Beers',	0293,3233,3A72,3323
-	Player	'Luke Richardson',	22B3,3132,4970,2434
-	Player	'Boris Mironov',	2064,3223,3871,2323
+	Player	'P188________',	3045,3435,0000,4455
+	Player	'P189___________',	3152,2222,0000,2122
+	Player	'P190_______',	3963,3433,3DA3,3243
+	Player	'P191_________',	3674,4223,0263,3232
+	Player	'P192________',	0783,3444,3AA4,3343
+	Player	'P193_________',	3773,4243,2962,3221
+	Player	'P194__________',	1793,3132,2742,3223
+	Player	'P195__________',	2563,3222,2A62,2530
+	Player	'P196________',	3493,4223,3974,3322
+	Player	'P197_________',	0993,3344,4773,4334
+	Player	'P198_________',	29C1,1212,3753,1515
+	Player	'P199_________',	3393,3122,3542,3123
+	Player	'P200_______',	0873,3334,2D64,3230
+	Player	'P201_______',	12B2,2322,2742,2223
+	Player	'P202________',	2692,2322,2734,2512
+	Player	'P203_______',	1873,2232,3872,4323
+	Player	'P204____________',	16A3,3232,4C72,3214
+	Player	'P205_______',	1073,2322,0763,2240
+	Player	'P206_________',	2195,3344,3B92,4332
+	Player	'P207____________',	1594,3434,1892,3141
+	Player	'P208________',	3592,2121,2640,1312
+	Player	'P209_____',	0293,3233,3A72,3323
+	Player	'P210___________',	22B3,3132,4970,2434
+	Player	'P211_________',	2064,3223,3871,2323
 	dc.w	2
 .tn
 	String	'Edmonton'
 .ta
 	String	'EDM'
 .tm
-	String	'Oilers'
+	String	'N07___'
 .ar
 	String	'Northlands Coliseum'
 
@@ -635,37 +654,37 @@ Florida								;FLA, $218E (94 $50E6)
 	dc.b	01,23,21,08,03,10,06,00
 	dc.b	01,17,18,13,04,06,03,00
 .pld
-	Player	'John Vanbiesbrk',	3454,3453,0000,4455
-	Player	'Mark Fitzpatrik',	3073,4223,0000,3434
-	Player	'Brian Skrudland',	2084,3252,4973,4334
-	Player	'Stu Barnes',	1452,3433,2893,3431
-	Player	'Rob Neidrmayer',	4494,5223,3773,3422
-	Player	'Jesse Belanger',	2653,4433,2894,3241
-	Player	'Tom Fitzgerald',	2182,3233,3A63,3222
-	Player	'Mike Hough',	1873,2233,3972,3233
-	Player	'Dave Lowry',	1082,3332,3B72,3424
-	Player	'Andrei Lomakin',	1974,3333,1993,3242
-	Player	'Bill Lindsay',	1161,2232,2D41,2322
-	Player	'Jeff Daniels',	2392,2122,2933,2421
-	Player	'Jody Hull',	1292,2232,3432,3321
-	Player	'Scott Mellanby',	2791,1333,4A74,3324
-	Player	'Bob Kudelski',	2292,3434,2C64,3432
-	Player	'Mike Foligno',	1782,2232,4243,3423
-	Player	'Brian Benning',	0783,2323,2762,4234
-	Player	'Geoff Smith',	2594,3131,2491,3231
-	Player	'Brent Severyn',	24A2,2133,4752,3325
-	Player	'Gord Murphy',	0585,4334,3C62,3333
-	Player	'Joe Cirella',	02A2,2133,3642,3323
-	Player	'Paul Laus',	0393,2022,4621,3325
-	Player	'Keith Brown',	0472,2232,3441,3433
-	Player	'Peter Andersson',	0693,3322,2992,3342
+	Player	'P212___________',	3454,3453,0000,4455
+	Player	'P213___________',	3073,4223,0000,3434
+	Player	'P214___________',	2084,3252,4973,4334
+	Player	'P215______',	1452,3433,2893,3431
+	Player	'P216__________',	4494,5223,3773,3422
+	Player	'P217__________',	2653,4433,2894,3241
+	Player	'P218__________',	2182,3233,3A63,3222
+	Player	'P219______',	1873,2233,3972,3233
+	Player	'P220______',	1082,3332,3B72,3424
+	Player	'P221__________',	1974,3333,1993,3242
+	Player	'P222________',	1161,2232,2D41,2322
+	Player	'P223________',	2392,2122,2933,2421
+	Player	'P224_____',	1292,2232,3432,3321
+	Player	'P225__________',	2791,1333,4A74,3324
+	Player	'P226________',	2292,3434,2C64,3432
+	Player	'P227________',	1782,2232,4243,3423
+	Player	'P228_________',	0783,2323,2762,4234
+	Player	'P229_______',	2594,3131,2491,3231
+	Player	'P230_________',	24A2,2133,4752,3325
+	Player	'P231_______',	0585,4334,3C62,3333
+	Player	'P232_______',	02A2,2133,3642,3323
+	Player	'P233_____',	0393,2022,4621,3325
+	Player	'P234_______',	0472,2232,3441,3433
+	Player	'P235___________',	0693,3322,2992,3342
 	dc.w	2
 .tn
 	String	'Florida'
 .ta
 	String	'FLA'
 .tm
-	String	'Panthers'
+	String	'N08_____'
 .ar
 	String	'Miami Arena'
 
@@ -694,37 +713,37 @@ Hartford							;HFD, $246E (94 $1B44)
 	dc.b	01,20,23,15,04,09,06,00
 	dc.b	01,22,18,10,05,09,06,00
 .pld
-	Player	'Sean Burke',	01A4,3223,0000,3344
-	Player	'Jeff Reese',	3542,3322,0000,2222
-	Player	'Frank Pietrngelo',	4063,3113,0000,2222
-	Player	'Andrew Cassels',	2173,3442,2B33,4142
-	Player	'Mark Janssens',	22B3,2243,4D73,4124
-	Player	'Ted Drury',	1774,4232,3592,3232
-	Player	'Igor Chibirev',	3253,4323,1763,3231
-	Player	'Darren Turcotte',	8964,4434,2792,4331
-	Player	'Geoff Sanderson',	0864,5434,2B64,4331
-	Player	'Brian Propp',	2683,3233,3532,2530
-	Player	'Kevin Smyth',	20B3,3232,3933,4224
-	Player	'Jim Storm',	2493,3232,3972,4332
-	Player	'Jocelyn Lemieux',	2394,4334,3B72,3314
-	Player	'Paul Ranheim',	1484,5333,1A62,3431
-	Player	'Pat Verbeek',	1673,4434,3CA4,4444
-	Player	'Jim Sandlak',	41B1,2233,2442,3324
-	Player	'Robert Kron',	1853,4342,2993,3330
-	Player	'Bryan Marchment',	2783,3242,4741,3215
-	Player	'Alexnder Godynyuk',	05A2,3232,3972,3512
-	Player	'Adam Burt',	0674,3234,4771,4334
-	Player	'Brad McCrimmon',	1083,2142,4430,3133
-	Player	'Frantsek Kucera',	0493,3243,2961,3422
-	Player	'Chris Pronger',	4473,3332,3BA2,3334
-	Player	'Ted Crowley',	3373,3232,2872,3322
+	Player	'P236______',	01A4,3223,0000,3344
+	Player	'P237______',	3542,3322,0000,2222
+	Player	'P238____________',	4063,3113,0000,2222
+	Player	'P239__________',	2173,3442,2B33,4142
+	Player	'P240_________',	22B3,2243,4D73,4124
+	Player	'P241_____',	1774,4232,3592,3232
+	Player	'P242_________',	3253,4323,1763,3231
+	Player	'P243___________',	8964,4434,2792,4331
+	Player	'P244___________',	0864,5434,2B64,4331
+	Player	'P245_______',	2683,3233,3532,2530
+	Player	'P246_______',	20B3,3232,3933,4224
+	Player	'P247_____',	2493,3232,3972,4332
+	Player	'P248___________',	2394,4334,3B72,3314
+	Player	'P249________',	1484,5333,1A62,3431
+	Player	'P250_______',	1673,4434,3CA4,4444
+	Player	'P251_______',	41B1,2233,2442,3324
+	Player	'P252_______',	1853,4342,2993,3330
+	Player	'P253___________',	2783,3242,4741,3215
+	Player	'P254_____________',	05A2,3232,3972,3512
+	Player	'P255_____',	0674,3234,4771,4334
+	Player	'P256__________',	1083,2142,4430,3133
+	Player	'P257___________',	0493,3243,2961,3422
+	Player	'P258_________',	4473,3332,3BA2,3334
+	Player	'P259_______',	3373,3232,2872,3322
 	dc.w	2
 .tn
 	String	'Hartford'
 .ta
 	String	'HFD'
 .tm
-	String	'Whalers'
+	String	'N09____'
 .ar
 	String	'Hartford Civic Center'
 
@@ -753,36 +772,36 @@ LosAngeles							;LA, $2762 (94 $1E52)
 	dc.b	01,16,19,07,11,03,08,00
 	dc.b	01,18,20,10,03,11,08,00
 .pld
-	Player	'Kelly Hrudey',	3263,3343,0000,2223
-	Player	'Robb Stauber',	3562,3443,0000,2222
-	Player	'Wayne Gretzky',	9946,4643,19C4,6160
-	Player	'Robert Lang',	1363,3322,1664,3240
-	Player	'Kevin Todd',	1452,3333,2742,3332
-	Player	'Brian McReynolds',	2683,3132,3B33,3232
-	Player	'Pat Conacher',	1572,2232,2963,2432
-	Player	'Luc Robitaille',	2074,4535,2B96,5443
-	Player	'Warren Rychel',	1073,2211,3B52,1415
-	Player	'Mike Donnelly',	1164,4332,3B63,4332
-	Player	'Jari Kurri',	1784,3444,2B94,4232
-	Player	'Tony Granato',	2164,5443,36A4,3335
-	Player	'Dixon Ward',	0993,3333,3864,3123
-	Player	'Gary Shuchuk',	1462,2211,2632,1322
-	Player	'John Druce',	1992,2342,3633,3322
-	Player	'Rob Blake',	04A4,4444,4AA2,4344
-	Player	'Marty McSorley',	33C2,2243,4782,5436
-	Player	'Alex Zhitnik',	0265,4333,3B92,4143
-	Player	'Darryl Sydor',	2594,3323,3DA1,3332
-	Player	'Charlie Huddy',	22A3,2243,3972,3132
-	Player	'Jim Paek',	0782,3122,2731,3122
-	Player	'Doug Houda',	0672,2122,3631,2414
-	Player	'Tim Watters',	0562,2121,2510,2122
+	Player	'P260________',	3263,3343,0000,2223
+	Player	'P261________',	3562,3443,0000,2222
+	Player	'P262_________',	9946,4643,19C4,6160
+	Player	'P263_______',	1363,3322,1664,3240
+	Player	'P264______',	1452,3333,2742,3332
+	Player	'P265____________',	2683,3132,3B33,3232
+	Player	'P266________',	1572,2232,2963,2432
+	Player	'P267__________',	2074,4535,2B96,5443
+	Player	'P268_________',	1073,2211,3B52,1415
+	Player	'P269_________',	1164,4332,3B63,4332
+	Player	'P270______',	1784,3444,2B94,4232
+	Player	'P271________',	2164,5443,36A4,3335
+	Player	'P272______',	0993,3333,3864,3123
+	Player	'P273________',	1462,2211,2632,1322
+	Player	'P274______',	1992,2342,3633,3322
+	Player	'P275_____',	04A4,4444,4AA2,4344
+	Player	'P276__________',	33C2,2243,4782,5436
+	Player	'P277________',	0265,4333,3B92,4143
+	Player	'P278________',	2594,3323,3DA1,3332
+	Player	'P279_________',	22A3,2243,3972,3132
+	Player	'P280____',	0782,3122,2731,3122
+	Player	'P281______',	0672,2122,3631,2414
+	Player	'P282_______',	0562,2121,2510,2122
 	dc.w	2
 .tn
 	String	'Los Angeles'
 .ta
 	String	'LA'
 .tm
-	String	'Kings'
+	String	'N10__'
 .ar
 	String	'The Great Western Forum'
 
@@ -811,37 +830,37 @@ Dallas								;DAL, $2A24 (94 $214E)
 	dc.b	01,19,24,11,05,03,16,00
 	dc.b	01,21,20,17,07,03,16,00
 .pld
-	Player	'Andy Moog',	3543,3123,0000,3233
-	Player	'Darcy Wakaluk',	3463,3334,0000,3344
-	Player	'Mike Modano',	0975,5645,29C4,5342
-	Player	'Dave Gagner',	1564,4433,2994,4444
-	Player	'Neal Broten',	0743,4353,2962,4241
-	Player	'Dave Barr',	1082,2132,3472,3222
-	Player	'Dean Evason',	1662,2232,2A73,3133
-	Player	'Trent Klatt',	2993,3322,1863,3321
-	Player	'Pelle Eklund',	0655,3433,2593,4041
-	Player	'Brent Gilchrist',	4164,3323,3973,2532
-	Player	'Mike McPhee',	1794,3343,4B73,4422
-	Player	'Alan May',	2393,2233,3851,3425
-	Player	'Shane Churla',	2792,2221,4852,2125
-	Player	'Mike Craig',	2063,3323,3673,3323
-	Player	'Mike Needham',	3062,2222,2843,2421
-	Player	'Russ Courtnall',	2665,6434,2C93,4342
-	Player	'Paul Broten',	2172,2241,2662,3314
-	Player	'Doug Zmolek',	0584,3232,3571,3235
-	Player	'Mark Tinordi',	2493,3344,5773,4325
-	Player	'Derian Hatcher',	0293,2242,4B72,4224
-	Player	'Craig Ludwig',	03C2,2142,3B40,3324
-	Player	'Richard Matvichuk',	0473,3133,3931,3522
-	Player	'Grant Ledyard',	1294,3331,3960,2232
-	Player	'Paul Cavallini',	14A3,3243,3962,3532
+	Player	'P283_____',	3543,3123,0000,3233
+	Player	'P284_________',	3463,3334,0000,3344
+	Player	'P285_______',	0975,5645,29C4,5342
+	Player	'P286_______',	1564,4433,2994,4444
+	Player	'P287_______',	0743,4353,2962,4241
+	Player	'P288_____',	1082,2132,3472,3222
+	Player	'P289_______',	1662,2232,2A73,3133
+	Player	'P290_______',	2993,3322,1863,3321
+	Player	'P291________',	0655,3433,2593,4041
+	Player	'P292___________',	4164,3323,3973,2532
+	Player	'P293_______',	1794,3343,4B73,4422
+	Player	'P294____',	2393,2233,3851,3425
+	Player	'P295________',	2792,2221,4852,2125
+	Player	'P296______',	2063,3323,3673,3323
+	Player	'P297________',	3062,2222,2843,2421
+	Player	'P298__________',	2665,6434,2C93,4342
+	Player	'P299_______',	2172,2241,2662,3314
+	Player	'P300_______',	0584,3232,3571,3235
+	Player	'P301________',	2493,3344,5773,4325
+	Player	'P302__________',	0293,2242,4B72,4224
+	Player	'P303________',	03C2,2142,3B40,3324
+	Player	'P304_____________',	0473,3133,3931,3522
+	Player	'P305_________',	1294,3331,3960,2232
+	Player	'P306__________',	14A3,3243,3962,3532
 	dc.w	2
 .tn
 	String	'Dallas'
 .ta
 	String	'DAL'
 .tm
-	String	'Stars'
+	String	'N11__'
 .ar
 	String	'Reunion Arena'
 
@@ -870,37 +889,37 @@ Montreal							;MTL, $2CF8 (94 $243E)
 	dc.b	01,24,17,10,05,03,09,00
 	dc.b	01,18,23,04,03,09,14,00
 .pld
-	Player	'Patrick Roy',	3366,4355,0000,5666
-	Player	'Ron Tugnutt',	0122,3231,0000,1122
-	Player	'Kirk Muller',	1194,4444,4BA3,4144
-	Player	'John Leclair',	17B3,4335,3962,3122
-	Player	'Guy Carbonneau',	2164,3252,4861,4241
-	Player	'Paul DiPietro',	1563,3323,2862,3221
-	Player	'Ron Wilson',	0863,2241,2732,4222
-	Player	'Gilbert Dionne',	4583,2422,3994,3232
-	Player	'Vincent Damphousse',	2564,4524,1DC5,4242
-	Player	'Benoit Brunet',	2262,2322,2323,2222
-	Player	'Mario Roberge',	3261,1112,3742,1314
-	Player	'Pierre Sevigny',	2072,2212,1772,1223
-	Player	'Mike Keane',	1253,4342,4A62,4033
-	Player	'Brian Bellows',	2384,4424,2994,4342
-	Player	'Oleg Petrov',	0643,2332,1762,3330
-	Player	'Ed Ronan',	3182,2212,3222,1421
-	Player	'Eric Desjardins',	2894,3354,4C72,4333
-	Player	'Matt Schneider',	2774,4444,2762,4343
-	Player	'Patrice Brisebois',	4353,2333,2663,3322
-	Player	'Kevin Haller',	1463,2232,2772,4523
-	Player	'Bryan Fogarty',	4481,1211,2760,1011
-	Player	'J.J. Daigneault',	4864,3233,1762,4221
-	Player	'Lyle Odelein',	2493,2243,4B52,3425
-	Player	'Peter Popovic',	34A2,2123,3661,2211
+	Player	'P307_______',	3366,4355,0000,5666
+	Player	'P308_______',	0122,3231,0000,1122
+	Player	'P309_______',	1194,4444,4BA3,4144
+	Player	'P310________',	17B3,4335,3962,3122
+	Player	'P311__________',	2164,3252,4861,4241
+	Player	'P312_________',	1563,3323,2862,3221
+	Player	'P313______',	0863,2241,2732,4222
+	Player	'P314__________',	4583,2422,3994,3232
+	Player	'P315______________',	2564,4524,1DC5,4242
+	Player	'P316_________',	2262,2322,2323,2222
+	Player	'P317_________',	3261,1112,3742,1314
+	Player	'P318__________',	2072,2212,1772,1223
+	Player	'P319______',	1253,4342,4A62,4033
+	Player	'P320_________',	2384,4424,2994,4342
+	Player	'P321_______',	0643,2332,1762,3330
+	Player	'P322____',	3182,2212,3222,1421
+	Player	'P323___________',	2894,3354,4C72,4333
+	Player	'P324__________',	2774,4444,2762,4343
+	Player	'P325_____________',	4353,2333,2663,3322
+	Player	'P326________',	1463,2232,2772,4523
+	Player	'P327_________',	4481,1211,2760,1011
+	Player	'P328___________',	4864,3233,1762,4221
+	Player	'P329________',	2493,2243,4B52,3425
+	Player	'P330_________',	34A2,2123,3661,2211
 	dc.w	2
 .tn
 	String	'Montreal'
 .ta
 	String	'MTL'
 .tm
-	String	'Canadiens'
+	String	'N12______'
 .ar
 	String	'Montreal Forum'
 
@@ -929,41 +948,41 @@ NewJersey							;NJ, $2FE8 (94 $2740)
 	dc.b	01,21,18,16,04,15,05,00
 	dc.b	01,20,22,11,06,15,04,00
 .pld
-	Player	'Chris Terreri',	3124,4443,0000,4433
-	Player	'Martin Brodeur',	3075,3344,0000,5555
-	Player	'Alexnder Semak',	2063,2333,2693,3232
-	Player	'Bernie Nicholls',	0963,2443,2893,4143
-	Player	'Corey Millen',	1043,5422,1494,3233
-	Player	'Bob Carpenter',	1973,2242,2931,3333
-	Player	'Jim Dowd',	1173,4322,1862,3132
-	Player	'Valeri Zelepukin',	2564,4443,1B94,3232
-	Player	'Bobby Holik',	16A2,3224,3862,3323
-	Player	'Randy McKay',	2163,2233,4A83,3425
-	Player	'Tom Chorske',	1794,4332,3A63,3322
-	Player	'Mike Peluso',	0891,2222,4921,4415
-	Player	'Claude Lemieux',	22B4,4334,4872,4334
-	Player	'Bill Guerin',	1294,3335,4A74,3524
-	Player	'John MacLean',	1593,2544,3873,4524
-	Player	'Stephane Richer',	4494,4435,2AC4,4432
-	Player	'Jason Smith',	2683,3132,3871,3232
-	Player	'Scott Stevens',	04B4,4464,5D73,5145
-	Player	'Vachslav Fetisov',	02B4,2132,2931,3133
-	Player	'Bruce Driver',	2364,3342,3B62,4232
-	Player	'Scott Niedrmayer',	2793,3333,3992,3142
-	Player	'Ken Daneyko',	03A3,2151,5D40,4414
-	Player	'Tommy Albelin',	0673,2232,2960,3232
-	Player	'Jaroslav Modry',	0583,3132,2961,3221
+	Player	'P331_________',	3124,4443,0000,4433
+	Player	'P332__________',	3075,3344,0000,5555
+	Player	'P333__________',	2063,2333,2693,3232
+	Player	'P334___________',	0963,2443,2893,4143
+	Player	'P335________',	1043,5422,1494,3233
+	Player	'P336_________',	1973,2242,2931,3333
+	Player	'P337____',	1173,4322,1862,3132
+	Player	'P338____________',	2564,4443,1B94,3232
+	Player	'P339_______',	16A2,3224,3862,3323
+	Player	'P340_______',	2163,2233,4A83,3425
+	Player	'P341_______',	1794,4332,3A63,3322
+	Player	'P342_______',	0891,2222,4921,4415
+	Player	'P343__________',	22B4,4334,4872,4334
+	Player	'P344_______',	1294,3335,4A74,3524
+	Player	'P345________',	1593,2544,3873,4524
+	Player	'P346___________',	4494,4435,2AC4,4432
+	Player	'P347_______',	2683,3132,3871,3232
+	Player	'P348_________',	04B4,4464,5D73,5145
+	Player	'P349____________',	02B4,2132,2931,3133
+	Player	'P350________',	2364,3342,3B62,4232
+	Player	'P351____________',	2793,3333,3992,3142
+	Player	'P352_______',	03A3,2151,5D40,4414
+	Player	'P353_________',	0673,2232,2960,3232
+	Player	'P354__________',	0583,3132,2961,3221
 	dc.w	2
 .tn
 	String	'New Jersey'
 .ta
 	String	'NJ'
 .tm
-	String	'Devils'
+	String	'N13___'
 .ar
 	String	'Brendan Byrne Arena'
 
-NYIslanders							;NYI, $32DA (94 $2A58)
+NewYorkI							;NYI, $32DA (94 $2A58)
 .0
 	dc.w	.pld-.0
 	dc.w	.pad-.0
@@ -988,41 +1007,41 @@ NYIslanders							;NYI, $32DA (94 $2A58)
 	dc.b	01,19,20,08,03,10,13,00
 	dc.b	01,18,24,09,04,03,13,00
 .pld
-	Player	'Ron Hextall',	7273,4443,0000,2233
-	Player	'Jamie McLennan',	2973,3222,0000,2222
-	Player	'Pierre Turgeon',	7794,4534,0995,4140
-	Player	'Ray Ferraro',	2063,3334,2993,4433
-	Player	'Keith Acton',	2442,2243,3972,4233
-	Player	'Travis Green',	3983,2324,3A62,3422
-	Player	'Claude Loiselle',	1083,2211,3363,1524
-	Player	'Benoit Hogue',	3374,5433,1964,4143
-	Player	'Marty McInnis',	1843,3342,2A64,3022
-	Player	'Derek King',	2793,2414,0965,4421
-	Player	'David Maley',	0881,1112,3750,1414
-	Player	'Dave Volek',	2564,4322,1262,4532
-	Player	'Steve Thomas',	3264,4434,4974,4234
-	Player	'Brad Dalgarno',	15B2,2231,3664,2123
-	Player	'Patrick Flatley',	2683,2342,4242,4144
-	Player	'Mick Vukota',	1282,2011,3A51,2415
-	Player	'Yan Kaminsky',	1763,2212,1562,2421
-	Player	'Vladimir Malakhov',	23A4,3434,2962,4333
-	Player	'Darius Kasparitis',	1174,3233,4961,2234
-	Player	'Uwe Krupp',	04E3,2334,2662,4132
-	Player	'Tom Kurvers',	2883,3424,2961,4132
-	Player	'Scott Lachance',	0782,2243,3962,4133
-	Player	'Dennis Vaske',	37A1,1212,2741,1113
-	Player	'Richard Pilon',	4794,2023,3571,2515
+	Player	'P355_______',	7273,4443,0000,2233
+	Player	'P356__________',	2973,3222,0000,2222
+	Player	'P357__________',	7794,4534,0995,4140
+	Player	'P358_______',	2063,3334,2993,4433
+	Player	'P359_______',	2442,2243,3972,4233
+	Player	'P360________',	3983,2324,3A62,3422
+	Player	'P361___________',	1083,2211,3363,1524
+	Player	'P362________',	3374,5433,1964,4143
+	Player	'P363_________',	1843,3342,2A64,3022
+	Player	'P364______',	2793,2414,0965,4421
+	Player	'P365_______',	0881,1112,3750,1414
+	Player	'P366______',	2564,4322,1262,4532
+	Player	'P367________',	3264,4434,4974,4234
+	Player	'P368_________',	15B2,2231,3664,2123
+	Player	'P369___________',	2683,2342,4242,4144
+	Player	'P370_______',	1282,2011,3A51,2415
+	Player	'P371________',	1763,2212,1562,2421
+	Player	'P372_____________',	23A4,3434,2962,4333
+	Player	'P373_____________',	1174,3233,4961,2234
+	Player	'P374_____',	04E3,2334,2662,4132
+	Player	'P375_______',	2883,3424,2961,4132
+	Player	'P376__________',	0782,2243,3962,4133
+	Player	'P377________',	37A1,1212,2741,1113
+	Player	'P378_________',	4794,2023,3571,2515
 	dc.w	2
 .tn
 	String	'New York'
 .ta
 	String	'NYI'
 .tm
-	String	'Islanders'
+	String	'N14______'
 .ar
 	String	'Nassau Coliseum'
 
-NYRangers							;NYR, $35C6 (94 $2D5C)
+NewYorkR							;NYR, $35C6 (94 $2D5C)
 .0
 	dc.w	.pld-.0
 	dc.w	.pad-.0
@@ -1047,37 +1066,37 @@ NYRangers							;NYR, $35C6 (94 $2D5C)
 	dc.b	01,18,21,08,03,15,13,00
 	dc.b	01,22,20,10,05,03,08,00
 .pld
-	Player	'Mike Richter',	3575,4344,0000,5555
-	Player	'Glenn Healy',	3053,4433,0000,3322
-	Player	'Mark Messier',	1195,4433,4993,4253
-	Player	'Sergei Nemchinov',	1364,3353,4D64,6232
-	Player	'Craig MacTavish',	1484,3352,4B62,5223
-	Player	'Alexei Kovalev',	2776,5425,2BC4,3433
-	Player	'Ed Olczyk',	1293,3334,2A63,3442
-	Player	'Adam Graves',	0994,4433,5D73,4535
-	Player	'Nick Kypreos',	1982,2222,3B54,3415
-	Player	'Esa Tikkanen',	1095,4345,4A92,4444
-	Player	'Greg Gilbert',	1772,2242,3763,3112
-	Player	'Mike Hudson',	1573,3233,4972,4223
-	Player	'Glenn Anderson',	3674,4433,2B63,4143
-	Player	'Stephane Matteau',	3283,3342,3B63,3233
-	Player	'Steve Larmer',	2874,4464,4B64,6342
-	Player	'Joey Kocur',	2682,2132,3851,2424
-	Player	'Brian Noonan',	1673,3444,3A64,4533
-	Player	'Brian Leetch',	0266,3544,2DC2,5252
-	Player	'Alex Karpotsev',	2563,3232,3862,3232
-	Player	'Sergei Zubov',	2174,4544,3D92,3242
-	Player	'Jeff Beukeboom',	23B2,2242,4A71,3024
-	Player	'Kevin Lowe',	0483,3242,3961,3133
-	Player	'Doug Lidster',	0693,3233,3A61,4142
-	Player	'Jay Wells',	24A2,2132,4B40,2124
+	Player	'P379________',	3575,4344,0000,5555
+	Player	'P380_______',	3053,4433,0000,3322
+	Player	'P381________',	1195,4433,4993,4253
+	Player	'P382____________',	1364,3353,4D64,6232
+	Player	'P383___________',	1484,3352,4B62,5223
+	Player	'P384__________',	2776,5425,2BC4,3433
+	Player	'P385_____',	1293,3334,2A63,3442
+	Player	'P386_______',	0994,4433,5D73,4535
+	Player	'P387________',	1982,2222,3B54,3415
+	Player	'P388________',	1095,4345,4A92,4444
+	Player	'P389________',	1772,2242,3763,3112
+	Player	'P390_______',	1573,3233,4972,4223
+	Player	'P391__________',	3674,4433,2B63,4143
+	Player	'P392____________',	3283,3342,3B63,3233
+	Player	'P393________',	2874,4464,4B64,6342
+	Player	'P394______',	2682,2132,3851,2424
+	Player	'P395________',	1673,3444,3A64,4533
+	Player	'P396________',	0266,3544,2DC2,5252
+	Player	'P397__________',	2563,3232,3862,3232
+	Player	'P398________',	2174,4544,3D92,3242
+	Player	'P399__________',	23B2,2242,4A71,3024
+	Player	'P400______',	0483,3242,3961,3133
+	Player	'P401________',	0693,3233,3A61,4142
+	Player	'P402_____',	24A2,2132,4B40,2124
 	dc.w	2
 .tn
 	String	'New York'
 .ta
 	String	'NYR'
 .tm
-	String	'Rangers'
+	String	'N15____'
 .ar
 	String	'Madison Square Garden'
 
@@ -1106,37 +1125,37 @@ Ottawa								;OTW, $38A8 (94 $3054)
 	dc.b	01,19,21,11,05,04,12,00
 	dc.b	01,24,20,12,04,03,06,00
 .pld
-	Player	'Craig Billington',	0143,4221,0000,2222
-	Player	'Mark LaForest',	3582,2121,0000,1111
-	Player	'Alexnder Daigle',	9154,4314,2DA3,3242
-	Player	'Alexei Yashin',	1974,4414,1AC4,3242
-	Player	'Troy Murray',	3384,3242,4471,3533
-	Player	'Sylvain Turgeon',	6194,4424,0533,3523
-	Player	'David Archibald',	1573,2333,1763,3522
-	Player	'Darcy Loewen',	1062,2122,2531,2424
-	Player	'Troy Mallette',	1872,2222,2953,2414
-	Player	'Brad Lauer',	1682,2212,2762,2432
-	Player	'Phil Bourque',	2783,4232,3972,5322
-	Player	'Dave McLlwain',	1773,2332,3663,3532
-	Player	'Andrew McBain',	2092,2323,2462,2122
-	Player	'Evgeny Davydov',	1165,4324,1863,3531
-	Player	'Scott Levins',	2692,2212,2632,3222
-	Player	'Rob Burakowsky',	2461,1202,0232,2210
-	Player	'Dennis Vial',	2192,1132,4951,3414
-	Player	'Steve Konroyd',	2483,2232,4531,3222
-	Player	'Norm Maciver',	2263,3423,2792,4133
-	Player	'Brad Shaw',	0473,2323,2661,5232
-	Player	'Darren Rumble',	3491,2212,3B40,3423
-	Player	'Kerry Huffman',	0593,3223,3961,3322
-	Player	'Dimitri Filmanov',	5593,2122,2661,2221
-	Player	'Gord Dineen',	0681,1221,2A30,2513
+	Player	'P403____________',	0143,4221,0000,2222
+	Player	'P404_________',	3582,2121,0000,1111
+	Player	'P405___________',	9154,4314,2DA3,3242
+	Player	'P406_________',	1974,4414,1AC4,3242
+	Player	'P407_______',	3384,3242,4471,3533
+	Player	'P408___________',	6194,4424,0533,3523
+	Player	'P409___________',	1573,2333,1763,3522
+	Player	'P410________',	1062,2122,2531,2424
+	Player	'P411_________',	1872,2222,2953,2414
+	Player	'P412______',	1682,2212,2762,2432
+	Player	'P413________',	2783,4232,3972,5322
+	Player	'P414_________',	1773,2332,3663,3532
+	Player	'P415_________',	2092,2323,2462,2122
+	Player	'P416__________',	1165,4324,1863,3531
+	Player	'P417________',	2692,2212,2632,3222
+	Player	'P418__________',	2461,1202,0232,2210
+	Player	'P419_______',	2192,1132,4951,3414
+	Player	'P420_________',	2483,2232,4531,3222
+	Player	'P421________',	2263,3423,2792,4133
+	Player	'P422_____',	0473,2323,2661,5232
+	Player	'P423_________',	3491,2212,3B40,3423
+	Player	'P424_________',	0593,3223,3961,3322
+	Player	'P425____________',	5593,2122,2661,2221
+	Player	'P426_______',	0681,1221,2A30,2513
 	dc.w	2
 .tn
 	String	'Ottawa'
 .ta
 	String	'OTW'
 .tm
-	String	'Senators'
+	String	'N16_____'
 .ar
 	String	'Ottawa Civic Centre'
 
@@ -1165,37 +1184,37 @@ Philadelphia						;PHI, $3B9E (94 $3348)
 	dc.b	01,18,19,04,03,08,12,00
 	dc.b	01,16,17,05,06,03,04,00
 .pld
-	Player	'Dominic Roussel',	3363,3333,0000,3322
-	Player	'Tommy Soderstrom',	3033,3342,0000,2323
-	Player	'Eric Lindros',	88C4,3445,56A6,5344
-	Player	'Rod BrindAmour',	1794,3444,3D94,4243
-	Player	'Mark Lamb',	2264,3242,3D61,3333
-	Player	'Dave Tippett',	1462,3132,2932,3122
-	Player	'Rob DiMaio',	2072,3232,3662,4223
-	Player	'Brent Fedyk',	1883,3333,2863,3122
-	Player	'Mikael Renberg',	1974,3534,3D95,3242
-	Player	'Josef Beranek',	4263,3433,1994,3433
-	Player	'Andre Faust',	3672,2222,2964,3322
-	Player	'Mark Recchi',	0865,4534,3D95,4343
-	Player	'Kevin Dineen',	1174,4343,2873,4534
-	Player	'Dave Brown',	2191,1031,2650,2514
-	Player	'Allan Conroy',	1552,2232,2862,3222
-	Player	'Garry Galley',	0373,3342,3BA1,3233
-	Player	'Dimitri Yushkevich',	0274,4343,3971,5333
-	Player	'Jason Bowen',	28A3,3133,4572,3322
-	Player	'Yves Racine',	2964,4334,3762,4232
-	Player	'Rob Zettler',	2673,2122,2941,3434
-	Player	'Jeff Finley',	2592,2122,2760,2422
-	Player	'Stewart Malgunas',	2352,2121,3960,3422
-	Player	'Rob Ramage',	0592,2133,4641,3424
-	Player	'Ryan McGill',	2782,2232,3841,3414
+	Player	'P427___________',	3363,3333,0000,3322
+	Player	'P428____________',	3033,3342,0000,2323
+	Player	'P429________',	88C4,3445,56A6,5344
+	Player	'P430__________',	1794,3444,3D94,4243
+	Player	'P431_____',	2264,3242,3D61,3333
+	Player	'P432________',	1462,3132,2932,3122
+	Player	'P433______',	2072,3232,3662,4223
+	Player	'P434_______',	1883,3333,2863,3122
+	Player	'P435__________',	1974,3534,3D95,3242
+	Player	'P436_________',	4263,3433,1994,3433
+	Player	'P437_______',	3672,2222,2964,3322
+	Player	'P438_______',	0865,4534,3D95,4343
+	Player	'P439________',	1174,4343,2873,4534
+	Player	'P440______',	2191,1031,2650,2514
+	Player	'P441________',	1552,2232,2862,3222
+	Player	'P442________',	0373,3342,3BA1,3233
+	Player	'P443______________',	0274,4343,3971,5333
+	Player	'P444_______',	28A3,3133,4572,3322
+	Player	'P445_______',	2964,4334,3762,4232
+	Player	'P446_______',	2673,2122,2941,3434
+	Player	'P447_______',	2592,2122,2760,2422
+	Player	'P448____________',	2352,2121,3960,3422
+	Player	'P449______',	0592,2133,4641,3424
+	Player	'P450_______',	2782,2232,3841,3414
 	dc.w	2
 .tn
 	String	'Philadelphia'
 .ta
 	String	'PHI'
 .tm
-	String	'Flyers'
+	String	'N17___'
 .ar
 	String	'The Spectrum'
 
@@ -1224,37 +1243,37 @@ Pittsburgh							;PIT, $3E7C (94 $3646)
 	dc.b	01,18,19,13,03,12,07,00
 	dc.b	01,20,17,07,04,03,12,00
 .pld
-	Player	'Tom Barrasso',	35A4,4554,0100,4344
-	Player	'Ken Wregget',	3182,3332,0000,3232
-	Player	'Mario Lemieux',	66A5,4635,24C6,6162
-	Player	'Ron Francis',	1094,3553,4B93,5152
-	Player	'Shawn McEachern',	1573,4334,1B63,4432
-	Player	'Bryan Trottier',	1983,2222,2362,2122
-	Player	'Kevin Stevens',	25B3,3525,3B75,5444
-	Player	'Joe Mullen',	0764,3433,3A65,4431
-	Player	'Martin Straka',	8253,4433,1D93,3241
-	Player	'Jim McKenzie',	33A1,1112,3951,3315
-	Player	'Doug Brown',	2463,3242,3863,4333
-	Player	'Rick Tocchet',	2292,3434,4674,3334
-	Player	'Jaromir Jagr',	68A5,4534,4BC3,6152
-	Player	'Tomas Sandstrom',	1794,4535,2763,4434
-	Player	'Markus Naslund',	2964,3223,2962,2221
-	Player	'Chris Tamer',	0274,3222,3972,2321
-	Player	'Kjell Samuelsson',	28E2,2134,4641,4523
-	Player	'Ulf Samuelsson',	0584,4243,5B70,4136
-	Player	'Larry Murphy',	55A4,3554,3C92,5152
-	Player	'Peter Taglianeti',	3291,2133,4440,4424
-	Player	'Mike Ramsey',	0683,1032,4741,3123
-	Player	'Greg Brown',	3473,3322,2862,3222
-	Player	'Greg Hawgood',	0473,3323,2962,3132
-	Player	'Grant Jennings',	0392,2132,3970,2414
+	Player	'P451________',	35A4,4554,0100,4344
+	Player	'P452_______',	3182,3332,0000,3232
+	Player	'P453_________',	66A5,4635,24C6,6162
+	Player	'P454_______',	1094,3553,4B93,5152
+	Player	'P455___________',	1573,4334,1B63,4432
+	Player	'P456__________',	1983,2222,2362,2122
+	Player	'P457_________',	25B3,3525,3B75,5444
+	Player	'P458______',	0764,3433,3A65,4431
+	Player	'P459_________',	8253,4433,1D93,3241
+	Player	'P460________',	33A1,1112,3951,3315
+	Player	'P461______',	2463,3242,3863,4333
+	Player	'P462________',	2292,3434,4674,3334
+	Player	'P463________',	68A5,4534,4BC3,6152
+	Player	'P464___________',	1794,4535,2763,4434
+	Player	'P465__________',	2964,3223,2962,2221
+	Player	'P466_______',	0274,3222,3972,2321
+	Player	'P467____________',	28E2,2134,4641,4523
+	Player	'P468__________',	0584,4243,5B70,4136
+	Player	'P469________',	55A4,3554,3C92,5152
+	Player	'P470____________',	3291,2133,4440,4424
+	Player	'P471_______',	0683,1032,4741,3123
+	Player	'P472______',	3473,3322,2862,3222
+	Player	'P473________',	0473,3323,2962,3132
+	Player	'P474__________',	0392,2132,3970,2414
 	dc.w	2
 .tn
 	String	'Pittsburgh'
 .ta
 	String	'PIT'
 .tm
-	String	'Penguins'
+	String	'N18_____'
 .ar
 	String	'Pittsburgh Civic Arena'
 
@@ -1283,37 +1302,37 @@ Quebec								;QUE, $416C (94 $393C)
 	dc.b	01,20,18,07,04,03,05,00
 	dc.b	01,19,22,06,05,03,09,00
 .pld
-	Player	'Stephane Fiset',	3553,3332,0000,3222
-	Player	'Jocelyn Thibault',	4153,3222,0000,2222
-	Player	'Joe Sakic',	1964,3543,29C5,5262
-	Player	'Mike Ricci',	0974,3433,3975,3245
-	Player	'Mats Sundin',	1374,4544,1C95,4143
-	Player	'Ron Sutter',	2263,3342,4473,4244
-	Player	'Claude Lapointe',	4753,4342,3B62,3124
-	Player	'Martin Rucinsky',	2553,2323,1763,3132
-	Player	'Valeri Kamensky',	3184,4425,2694,4152
-	Player	'Chris Simon',	12D2,1121,3751,0525
-	Player	'Tony Twist',	15A1,1101,3920,1414
-	Player	'Iain Fraser',	3873,3333,2763,3222
-	Player	'Chris Lindberg',	1773,4232,2733,2321
-	Player	'Bob Bassen',	2844,3222,3B33,3323
-	Player	'Owen Nolan',	1183,4425,2625,4334
-	Player	'Andrei Kovalenko',	5133,4433,3694,4232
-	Player	'Scott Young',	4873,5345,1863,3431
-	Player	'Garth Butcher',	5592,3142,5681,4335
-	Player	'Curtis Leschyshyn',	0793,4342,3764,5132
-	Player	'Alexei Gusarov',	0563,3333,3763,4132
-	Player	'Brad Werenka',	2793,3322,1963,2522
-	Player	'Dave Karpa',	5982,2232,3642,3324
-	Player	'Steven Finn',	2982,2233,3B72,3424
-	Player	'Tommy Sjodin',	0264,3324,2892,3331
+	Player	'P475__________',	3553,3332,0000,3222
+	Player	'P476____________',	4153,3222,0000,2222
+	Player	'P477_____',	1964,3543,29C5,5262
+	Player	'P478______',	0974,3433,3975,3245
+	Player	'P479_______',	1374,4544,1C95,4143
+	Player	'P480______',	2263,3342,4473,4244
+	Player	'P481___________',	4753,4342,3B62,3124
+	Player	'P482___________',	2553,2323,1763,3132
+	Player	'P483___________',	3184,4425,2694,4152
+	Player	'P484_______',	12D2,1121,3751,0525
+	Player	'P485______',	15A1,1101,3920,1414
+	Player	'P486_______',	3873,3333,2763,3222
+	Player	'P487__________',	1773,4232,2733,2321
+	Player	'P488______',	2844,3222,3B33,3323
+	Player	'P489______',	1183,4425,2625,4334
+	Player	'P490____________',	5133,4433,3694,4232
+	Player	'P491_______',	4873,5345,1863,3431
+	Player	'P492_________',	5592,3142,5681,4335
+	Player	'P493_____________',	0793,4342,3764,5132
+	Player	'P494__________',	0563,3333,3763,4132
+	Player	'P495________',	2793,3322,1963,2522
+	Player	'P496______',	5982,2232,3642,3324
+	Player	'P497_______',	2982,2233,3B72,3424
+	Player	'P498________',	0264,3324,2892,3331
 	dc.w	2
 .tn
 	String	'Quebec'
 .ta
 	String	'QUE'
 .tm
-	String	'Nordiques'
+	String	'N19______'
 .ar
 	String	'Colisee de Quebec'
 
@@ -1342,36 +1361,36 @@ SanJose								;SJ, $4452 (94 $3C42)
 	dc.b	01,21,23,09,05,03,14,00
 	dc.b	01,18,19,08,03,16,10,00
 .pld
-	Player	'Arturs Irbe',	3254,4443,0000,4444
-	Player	'Jim Waite',	2962,3222,0000,2222
-	Player	'Igor Larionov',	0745,3433,1795,3441
-	Player	'Todd Elik',	2773,4333,2963,3223
-	Player	'Jamie Baker',	1373,3343,3963,4232
-	Player	'Dale Craigwell',	3363,3232,3932,3221
-	Player	'Vachslav Butsayev',	0963,2323,2962,2123
-	Player	'Bob Errey',	1265,4242,4762,4523
-	Player	'Gaetan Duchesne',	1193,4242,3D63,4521
-	Player	'Johan Garpenlov',	1063,3332,1B64,3231
-	Player	'Ray Whitney',	1442,2323,1864,3231
-	Player	'Jeff Odgers',	3691,2222,2A53,3415
-	Player	'Rob Gaudreau',	3763,3332,3C63,4431
-	Player	'Ulf Dahlen',	2284,3434,3B94,5340
-	Player	'Pat Falloon',	1774,4423,1A63,4530
-	Player	'Sergei Makarov',	2465,4433,1B95,3252
-	Player	'Jeff Norton',	0885,4432,1762,4132
-	Player	'Vlastmil Kroupa',	2663,3322,1962,3221
-	Player	'Sandis Ozolinsh',	0673,4434,2B94,4242
-	Player	'Tom Pederson',	4141,2332,2862,2332
-	Player	'Shawn Cronin',	44A1,1011,2722,1514
-	Player	'Mike Rathje',	4083,2132,3971,3323
-	Player	'Jay More',	0473,2133,4642,3534
+	Player	'P499_______',	3254,4443,0000,4444
+	Player	'P500_____',	2962,3222,0000,2222
+	Player	'P501_________',	0745,3433,1795,3441
+	Player	'P502_____',	2773,4333,2963,3223
+	Player	'P503_______',	1373,3343,3963,4232
+	Player	'P504__________',	3363,3232,3932,3221
+	Player	'P505_____________',	0963,2323,2962,2123
+	Player	'P506_____',	1265,4242,4762,4523
+	Player	'P507___________',	1193,4242,3D63,4521
+	Player	'P508___________',	1063,3332,1B64,3231
+	Player	'P509_______',	1442,2323,1864,3231
+	Player	'P510_______',	3691,2222,2A53,3415
+	Player	'P511________',	3763,3332,3C63,4431
+	Player	'P512______',	2284,3434,3B94,5340
+	Player	'P513_______',	1774,4423,1A63,4530
+	Player	'P514__________',	2465,4433,1B95,3252
+	Player	'P515_______',	0885,4432,1762,4132
+	Player	'P516___________',	2663,3322,1962,3221
+	Player	'P517___________',	0673,4434,2B94,4242
+	Player	'P518________',	4141,2332,2862,2332
+	Player	'P519________',	44A1,1011,2722,1514
+	Player	'P520_______',	4083,2132,3971,3323
+	Player	'P521____',	0473,2133,4642,3534
 	dc.w	2
 .tn
 	String	'San Jose'
 .ta
 	String	'SJ'
 .tm
-	String	'Sharks'
+	String	'N20___'
 .ar
 	String	'San Jose Arena'
 
@@ -1400,37 +1419,37 @@ StLouis								;STL, $4716 (94 $3F30)
 	dc.b	01,24,18,08,12,11,03,00
 	dc.b	01,20,21,13,11,03,08,00
 .pld
-	Player	'Curtis Joseph',	3165,4564,0000,4444
-	Player	'Jim Hrivnak',	2962,3222,0000,2222
-	Player	'Craig Janney',	1574,3543,27C4,4060
-	Player	'Peter Stastny',	2694,3433,3794,3241
-	Player	'Petr Nedved',	9353,3433,19C5,4342
-	Player	'Jim Montgomery',	1073,2322,2A62,3232
-	Player	'Basil McRae',	1792,2122,3751,3415
-	Player	'Brendan Shanahan',	19A3,3545,3AA5,4244
-	Player	'Vitali Prokhorov',	2573,3312,1763,2431
-	Player	'Dave Mackey',	2392,2223,2732,2323
-	Player	'Brett Hull',	1694,4536,3A94,4432
-	Player	'Kevin Miller',	1474,3443,3863,4333
-	Player	'Philippe Bozon',	3662,2232,1961,2523
-	Player	'Vitali Karamnov',	1272,2222,2762,3321
-	Player	'Igor Korolev',	3872,2232,2961,3021
-	Player	'Kelly Chase',	3981,1111,2851,2415
-	Player	'Denny Felsner',	0982,2222,2933,2422
-	Player	'Phil Housley',	0666,5533,27C2,4062
-	Player	'Doug Crossman',	3272,2322,2762,4031
-	Player	'Murray Baron',	34A3,3122,2971,2513
-	Player	'Rick Zombo',	0483,3133,3860,4022
-	Player	'Steve Duchesne',	2884,4444,1B92,4242
-	Player	'Tom Tilley',	2072,2121,2832,2421
-	Player	'Alexei Kasatonov',	07A4,3233,3761,3142
+	Player	'P522_________',	3165,4564,0000,4444
+	Player	'P523_______',	2962,3222,0000,2222
+	Player	'P524________',	1574,3543,27C4,4060
+	Player	'P525_________',	2694,3433,3794,3241
+	Player	'P526_______',	9353,3433,19C5,4342
+	Player	'P527__________',	1073,2322,2A62,3232
+	Player	'P528_______',	1792,2122,3751,3415
+	Player	'P529____________',	19A3,3545,3AA5,4244
+	Player	'P530____________',	2573,3312,1763,2431
+	Player	'P531_______',	2392,2223,2732,2323
+	Player	'P532______',	1694,4536,3A94,4432
+	Player	'P533________',	1474,3443,3863,4333
+	Player	'P534__________',	3662,2232,1961,2523
+	Player	'P535___________',	1272,2222,2762,3321
+	Player	'P536________',	3872,2232,2961,3021
+	Player	'P537_______',	3981,1111,2851,2415
+	Player	'P538_________',	0982,2222,2933,2422
+	Player	'P539________',	0666,5533,27C2,4062
+	Player	'P540_________',	3272,2322,2762,4031
+	Player	'P541________',	34A3,3122,2971,2513
+	Player	'P542______',	0483,3133,3860,4022
+	Player	'P543__________',	2884,4444,1B92,4242
+	Player	'P544______',	2072,2121,2832,2421
+	Player	'P545____________',	07A4,3233,3761,3142
 	dc.w	2
 .tn
 	String	'St. Louis'
 .ta
 	String	'STL'
 .tm
-	String	'Blues'
+	String	'N21__'
 .ar
 	String	'St. Louis Arena'
 
@@ -1459,35 +1478,35 @@ TampaBay							;TB, $49FE (94 $4216)
 	dc.b	01,18,19,08,05,04,10,00
 	dc.b	01,17,16,10,03,04,14,00
 .pld
-	Player	'Daren Puppa',	9394,4453,0100,3344
-	Player	'Wendell Young',	0163,3223,0000,2222
-	Player	'Chris Gratton',	7792,3324,3D72,3334
-	Player	'Brian Bradley',	1944,4434,2A64,4243
-	Player	'Denis Savard',	0955,3433,28C3,3043
-	Player	'Marc Bureau',	2872,2232,2862,3323
-	Player	'Gerard Gallant',	1762,2232,4742,3134
-	Player	'Danton Cole',	2473,3333,2A63,4421
-	Player	'Adam Creighton',	10A3,2322,2962,3432
-	Player	'Mikael Andersson',	3462,4232,2962,4531
-	Player	'Rob Zamuner',	0792,2232,3762,4323
-	Player	'Pat Elynuik',	1562,3313,1665,3321
-	Player	'John Tucker',	1492,3343,3663,4233
-	Player	'Petr Klima',	8575,5414,1895,4533
-	Player	'Jim Cummins',	1291,1111,2821,2415
-	Player	'Chris Joseph',	23A3,3313,3872,3234
-	Player	'Roman Hamrlik',	4473,2223,3761,3423
-	Player	'Shawn Chambers',	2292,2332,2762,3222
-	Player	'Marc Bergevin',	2562,3232,1B60,3322
-	Player	'Rudy Poeschek',	20A2,2122,3851,3324
-	Player	'Enrico Ciccone',	3992,1121,2921,3415
-	Player	'Eric Charron',	0382,1121,2911,2414
+	Player	'P546_______',	9394,4453,0100,3344
+	Player	'P547_________',	0163,3223,0000,2222
+	Player	'P548_________',	7792,3324,3D72,3334
+	Player	'P549_________',	1944,4434,2A64,4243
+	Player	'P550________',	0955,3433,28C3,3043
+	Player	'P551_______',	2872,2232,2862,3323
+	Player	'P552__________',	1762,2232,4742,3134
+	Player	'P553_______',	2473,3333,2A63,4421
+	Player	'P554__________',	10A3,2322,2962,3432
+	Player	'P555____________',	3462,4232,2962,4531
+	Player	'P556_______',	0792,2232,3762,4323
+	Player	'P557_______',	1562,3313,1665,3321
+	Player	'P558_______',	1492,3343,3663,4233
+	Player	'P559______',	8575,5414,1895,4533
+	Player	'P560_______',	1291,1111,2821,2415
+	Player	'P561________',	23A3,3313,3872,3234
+	Player	'P562_________',	4473,2223,3761,3423
+	Player	'P563__________',	2292,2332,2762,3222
+	Player	'P564_________',	2562,3232,1B60,3322
+	Player	'P565_________',	20A2,2122,3851,3324
+	Player	'P566__________',	3992,1121,2921,3415
+	Player	'P567________',	0382,1121,2911,2414
 	dc.w	2
 .tn
 	String	'Tampa Bay'
 .ta
 	String	'TB'
 .tm
-	String	'Lightning'
+	String	'N22______'
 .ar
 	String	'Thunderdome'
 
@@ -1516,37 +1535,37 @@ Toronto								;TOR, $4CB6 (94 $4518)
 	dc.b	01,21,19,10,04,09,15,00
 	dc.b	01,17,18,15,07,04,09,00
 .pld
-	Player	'Felix Potvin',	2964,4664,0000,5454
-	Player	'Damian Rhodes',	0152,3223,0000,3322
-	Player	'Mike Eastwood',	3273,4332,2862,3222
-	Player	'Doug Gilmour',	9345,4554,4BC4,6043
-	Player	'John Cullen',	1974,3333,2664,4143
-	Player	'Mike Krushelski',	2693,3342,3763,4322
-	Player	'Peter Zezel',	2593,3243,4773,4141
-	Player	'Ken Baumgartnr',	2292,2022,3721,2325
-	Player	'Wendel Clark',	1783,3436,4774,4444
-	Player	'Dave Andreychuk',	14B3,2534,3A95,5432
-	Player	'Bill Berg',	1073,2232,4B73,4424
-	Player	'Kent Mandrville',	1883,3232,2962,3321
-	Player	'Mark Osborne',	2192,2242,3972,4423
-	Player	'Nikolai Borshevsky',	1664,4423,2594,4241
-	Player	'Mike Gartner',	2275,5425,2C63,5552
-	Player	'Rob Pearson',	1262,2333,2473,4525
-	Player	'Todd Gill',	2363,3332,3562,4123
-	Player	'Dave Ellett',	0495,4345,3991,4242
-	Player	'Dmitri Mironov',	1573,3333,1862,3132
-	Player	'Drake Berehowsky',	55A2,2232,3842,3123
-	Player	'Jamie Macoun',	3483,3244,4B71,4442
-	Player	'Bob Rouse',	03A3,3142,4871,4424
-	Player	'Sylvain Lefebvre',	0292,2131,3D70,4433
-	Player	'Matt Martin',	3372,2222,2962,3232
+	Player	'P568________',	2964,4664,0000,5454
+	Player	'P569_________',	0152,3223,0000,3322
+	Player	'P570_________',	3273,4332,2862,3222
+	Player	'P571________',	9345,4554,4BC4,6043
+	Player	'P572_______',	1974,3333,2664,4143
+	Player	'P573___________',	2693,3342,3763,4322
+	Player	'P574_______',	2593,3243,4773,4141
+	Player	'P575__________',	2292,2022,3721,2325
+	Player	'P576________',	1783,3436,4774,4444
+	Player	'P577___________',	14B3,2534,3A95,5432
+	Player	'P578_____',	1073,2232,4B73,4424
+	Player	'P579___________',	1883,3232,2962,3321
+	Player	'P580________',	2192,2242,3972,4423
+	Player	'P581______________',	1664,4423,2594,4241
+	Player	'P582________',	2275,5425,2C63,5552
+	Player	'P583_______',	1262,2333,2473,4525
+	Player	'P584_____',	2363,3332,3562,4123
+	Player	'P585_______',	0495,4345,3991,4242
+	Player	'P586__________',	1573,3333,1862,3132
+	Player	'P587____________',	55A2,2232,3842,3123
+	Player	'P588________',	3483,3244,4B71,4442
+	Player	'P589_____',	03A3,3142,4871,4424
+	Player	'P590____________',	0292,2131,3D70,4433
+	Player	'P591_______',	3372,2222,2962,3232
 	dc.w	2
 .tn
 	String	'Toronto'
 .ta
 	String	'TOR'
 .tm
-	String	'Maple Leafs'
+	String	'N23________'
 .ar
 	String	'Maple Leaf Gardens'
 
@@ -1575,37 +1594,37 @@ Vancouver							;VAN, $4FA8 (94 $481C)
 	dc.b	01,24,19,13,05,14,09,00
 	dc.b	01,18,22,14,06,09,07,00
 .pld
-	Player	'Kirk McLean',	0164,4444,0000,4444
-	Player	'Kay Whitmore',	3553,3452,0000,2323
-	Player	'Cliff Ronning',	0755,5432,19C3,5141
-	Player	'Jimmy Carson',	1794,4423,1964,4331
-	Player	'Murray Craven',	3263,3333,3964,3131
-	Player	'John McIntyre',	1572,2132,3771,4222
-	Player	'Geoff Courtnall',	1475,5444,1B62,3344
-	Player	'Gino Odjick',	29A3,2233,4982,3326
-	Player	'Greg Adams',	0874,4433,3564,4132
-	Player	'Shawn Antoski',	18C1,1112,3921,2325
-	Player	'Sergio Momesso',	27A4,3334,5772,4424
-	Player	'Tim Hunter',	2692,2122,3652,2325
-	Player	'Pavel Bure',	1056,6625,29C5,4542
-	Player	'Trevor Linden',	1693,3444,3CA4,4342
-	Player	'Martin Gelinas',	2383,3223,2763,2432
-	Player	'Jose Charboneau',	2082,3223,2874,2423
-	Player	'Bret Hedican',	0382,2222,2760,3322
-	Player	'Jyrki Lumme',	2174,3443,1B91,4142
-	Player	'Jeff Brown',	2294,3445,2693,5152
-	Player	'Adrien Plavsic',	0672,2232,3762,3123
-	Player	'Jiri Slegr',	2494,4333,2961,4134
-	Player	'Dave Babych',	44A2,2343,2960,4232
-	Player	'Dana Murzyn',	0592,2234,3B61,4423
-	Player	'Gerald Diduck',	0494,4132,4871,3234
+	Player	'P592_______',	0164,4444,0000,4444
+	Player	'P593________',	3553,3452,0000,2323
+	Player	'P594_________',	0755,5432,19C3,5141
+	Player	'P595________',	1794,4423,1964,4331
+	Player	'P596_________',	3263,3333,3964,3131
+	Player	'P597_________',	1572,2132,3771,4222
+	Player	'P598___________',	1475,5444,1B62,3344
+	Player	'P599_______',	29A3,2233,4982,3326
+	Player	'P600______',	0874,4433,3564,4132
+	Player	'P601_________',	18C1,1112,3921,2325
+	Player	'P602__________',	27A4,3334,5772,4424
+	Player	'P603______',	2692,2122,3652,2325
+	Player	'P604______',	1056,6625,29C5,4542
+	Player	'P605_________',	1693,3444,3CA4,4342
+	Player	'P606__________',	2383,3223,2763,2432
+	Player	'P607___________',	2082,3223,2874,2423
+	Player	'P608________',	0382,2222,2760,3322
+	Player	'P609_______',	2174,3443,1B91,4142
+	Player	'P610______',	2294,3445,2693,5152
+	Player	'P611__________',	0672,2232,3762,3123
+	Player	'P612______',	2494,4333,2961,4134
+	Player	'P613_______',	44A2,2343,2960,4232
+	Player	'P614_______',	0592,2234,3B61,4423
+	Player	'P615_________',	0494,4132,4871,3234
 	dc.w	2
 .tn
 	String	'Vancouver'
 .ta
 	String	'VAN'
 .tm
-	String	'Canucks'
+	String	'N24____'
 .ar
 	String	'General Motors Place'
 
@@ -1634,36 +1653,36 @@ Winnipeg							;WPG, $528E (94 $4B0A)
 	dc.b	01,20,21,08,15,03,13,00
 	dc.b	01,22,19,09,05,03,13,00
 .pld
-	Player	'Tim Cheveldae',	2963,4443,0000,3333
-	Player	'Mike O''Neill',	0142,2222,0000,2212
-	Player	'Alexei Zhamnov',	1075,3443,2793,4142
-	Player	'Thomas Steen',	2583,3333,3794,3053
-	Player	'Dallas Drake',	1844,4343,2993,4134
-	Player	'Mike Eagles',	3673,3142,4962,5123
-	Player	'Randy Gilhen',	1572,2142,3761,4422
-	Player	'Keith Tkachuk',	0793,3444,4DA4,4434
-	Player	'Kris King',	17A3,3242,4B92,4324
-	Player	'Russ Romaniuk',	2163,2122,3963,2522
-	Player	'Darrin Shannon',	3493,2333,3B73,4232
-	Player	'John LeBlanc',	3772,2213,2963,2422
-	Player	'Teemu Selanne',	1365,6524,38C5,5442
-	Player	'Luciano Borsato',	3843,3232,2863,3231
-	Player	'Nelson Emerson',	1944,4434,2A94,4242
-	Player	'Tie Domi',	2093,2233,3A83,4126
-	Player	'Wayne McBean',	0672,2213,2931,3322
-	Player	'Darryl Shannon',	2492,1012,3930,3322
-	Player	'Teppo Numminen',	2774,3333,3662,4132
-	Player	'Stephane Quintal',	04B2,2132,4A71,4433
-	Player	'Igor Ulanov',	0593,2242,4860,4024
-	Player	'Dave Manson',	0394,4325,4981,5434
-	Player	'Dean Kennedy',	2692,2132,3840,4423
+	Player	'P616_________',	2963,4443,0000,3333
+	Player	'P617________',	0142,2222,0000,2212
+	Player	'P618__________',	1075,3443,2793,4142
+	Player	'P619________',	2583,3333,3794,3053
+	Player	'P620________',	1844,4343,2993,4134
+	Player	'P621_______',	3673,3142,4962,5123
+	Player	'P622________',	1572,2142,3761,4422
+	Player	'P623_________',	0793,3444,4DA4,4434
+	Player	'P624_____',	17A3,3242,4B92,4324
+	Player	'P625_________',	2163,2122,3963,2522
+	Player	'P626__________',	3493,2333,3B73,4232
+	Player	'P627________',	3772,2213,2963,2422
+	Player	'P628_________',	1365,6524,38C5,5442
+	Player	'P629___________',	3843,3232,2863,3231
+	Player	'P630__________',	1944,4434,2A94,4242
+	Player	'P631____',	2093,2233,3A83,4126
+	Player	'P632________',	0672,2213,2931,3322
+	Player	'P633__________',	2492,1012,3930,3322
+	Player	'P634__________',	2774,3333,3662,4132
+	Player	'P635____________',	04B2,2132,4A71,4433
+	Player	'P636_______',	0593,2242,4860,4024
+	Player	'P637_______',	0394,4325,4981,5434
+	Player	'P638________',	2692,2132,3840,4423
 	dc.w	2
 .tn
 	String	'Winnipeg'
 .ta
 	String	'WPG'
 .tm
-	String	'Jets'
+	String	'N25_'
 .ar
 	String	'Winnipeg Arena'
 
@@ -1692,37 +1711,37 @@ Washington							;WSH, $5556 (94 $4DFC)
 	dc.b	01,24,18,09,04,05,10,00
 	dc.b	01,21,20,12,06,05,10,00
 .pld
-	Player	'Don Beaupre',	3343,4333,0000,4343
-	Player	'Rick Tabaracci',	3163,3112,0000,3332
-	Player	'Byron Dafoe',	3542,2102,0000,2222
-	Player	'Mike Ridley',	1794,4433,2B95,4042
-	Player	'Joe Juneau',	9054,5534,28C3,4051
-	Player	'Dale Hunter',	3282,2443,4974,4146
-	Player	'Michal Pivonka',	2083,4433,3793,3042
-	Player	'Dave Poulin',	0973,2242,3762,3132
-	Player	'Kelly Miller',	1084,4333,2D63,4142
-	Player	'Dimitri Khristich',	0873,3433,3896,4242
-	Player	'Craig Berube',	2792,2212,3B52,2415
-	Player	'Randy Burridge',	1873,2333,3965,3333
-	Player	'Peter Bondra',	1264,6433,1794,4432
-	Player	'Steve Konowlchuk',	2262,2222,3962,2322
-	Player	'Todd Krygier',	2162,4232,2942,3512
-	Player	'Keith Jones',	2672,3332,4873,3235
-	Player	'Pat Peake',	1484,3323,1463,3421
-	Player	'Kevin Hatcher',	04B3,3445,5872,4444
-	Player	'Joe Reekie',	29A3,2232,3D72,3323
-	Player	'Sylvain Cote',	0363,3343,3C72,4333
-	Player	'Calle Johansson',	0694,4343,2D62,4142
-	Player	'Jim Johnson',	0273,2143,3772,4233
-	Player	'Shawn Anderson',	3692,2122,3961,2321
-	Player	'Jon Slaney',	2873,3223,2963,2521
+	Player	'P639_______',	3343,4333,0000,4343
+	Player	'P640__________',	3163,3112,0000,3332
+	Player	'P641_______',	3542,2102,0000,2222
+	Player	'P642_______',	1794,4433,2B95,4042
+	Player	'P643______',	9054,5534,28C3,4051
+	Player	'P644_______',	3282,2443,4974,4146
+	Player	'P645__________',	2083,4433,3793,3042
+	Player	'P646_______',	0973,2242,3762,3132
+	Player	'P647________',	1084,4333,2D63,4142
+	Player	'P648_____________',	0873,3433,3896,4242
+	Player	'P649________',	2792,2212,3B52,2415
+	Player	'P650__________',	1873,2333,3965,3333
+	Player	'P651________',	1264,6433,1794,4432
+	Player	'P652____________',	2262,2222,3962,2322
+	Player	'P653________',	2162,4232,2942,3512
+	Player	'P654_______',	2672,3332,4873,3235
+	Player	'P655_____',	1484,3323,1463,3421
+	Player	'P656_________',	04B3,3445,5872,4444
+	Player	'P657______',	29A3,2232,3D72,3323
+	Player	'P658________',	0363,3343,3C72,4333
+	Player	'P659___________',	0694,4343,2D62,4142
+	Player	'P660_______',	0273,2143,3772,4233
+	Player	'P661__________',	3692,2122,3961,2321
+	Player	'P662______',	2873,3223,2963,2521
 	dc.w	2
 .tn
 	String	'Washington'
 .ta
 	String	'WSH'
 .tm
-	String	'Capitals'
+	String	'N26_____'
 .ar
 	String	'US Air Arena'
 

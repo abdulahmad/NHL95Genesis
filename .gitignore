@@ -141,4 +141,7 @@ vite.config.ts.timestamp-*
 Extracted/**
 output/**
 # nhl*.bin
+# The reference ROM and its IDA listing are local files: they are derived from the game and are not committed.
+lst/*.bin
+lst/*.lst
 nhl*.md

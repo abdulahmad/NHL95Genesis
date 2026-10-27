@@ -1,6 +1,8 @@
 # NHL 95 Genesis
 
-> **Making a mod, hack, port or other derivative work from this repo? You must credit me (abdulahmad) and everyone credited in this repo, clearly, in your own repo and in every release. See [Credits and derivative works](#credits-and-derivative-works).**
+> **📀 Game data is not included.** This repository has the assembly code only. The graphics, team palettes, sound samples, music, player pictures and the NHLPA player names and NHL team nicknames are extracted from your own copy of the original ROM when you build, and are not in the repo. You need the NHL 95 Genesis ROM, with the file name and SHA-1 listed under [Supported ROMs](#supported-roms), or the build stops.
+
+> **🤝 Making a mod, hack, port or other derivative work from this repo? You must credit me (abdulahmad) and everyone credited in this repo, clearly, in your own repo and in every release. See [Credits and derivative works](#credits-and-derivative-works).**
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for how changes are made (names, comments, layout, verification).
 
@@ -13,7 +15,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how changes are made (names, comments
 
 Bitwise rebuild of NHL 95 for the Sega Genesis. Every segment is matched: the full build is byte for byte the retail ROM (SHA-1 `09e87b076aa4cd6f057a1d65bb50fd889b509b44`), and each segment also builds and verifies on its own.
 
-The reference ROM is `lst/nhl95.bin` (2 MB). It is what every build is compared with. Do not use a different ROM. The listing it was transcribed from is `lst/nhl95.bin.lst`, an IDA LST in ASM68K / MRI mode with no address column (`loc_` / `sub_` names are the address).
+The reference ROM goes at `lst/nhl95.bin` (2 MB; it is not in the repo, `lst/*.bin` is gitignored). It is what every build is compared with. Do not use a different ROM. The listing the source was transcribed from, `lst/nhl95.bin.lst` (an IDA LST in ASM68K / MRI mode with no address column: `loc_` / `sub_` names are the address), is no longer in the repo either; keep a local copy there if you have one.
 ## Supported ROMs
 NHL 95 had one retail release; `tools/extractAssets95.js` accepts only that ROM, found by SHA-1, and refuses any other (bad dump, hack, prototype) with its SHA-1, size and header. The slices are kept as a per-version map from retail address, so a new version only needs a row with its SHA-1 and offsets.
 
@@ -69,7 +71,8 @@ Every build entry point (`npm run build:*`, `npm run seg:*`, and the batch files
 
 1. checks that the ROM the build needs is in place and is exactly the right version (SHA-1 and size);
 2. checks that `Extracted/` is complete: the extractor writes `Extracted/.extract-complete.json` last, listing every file it wrote (with its size), the ROM it read and the extractor's own SHA-1;
-3. runs the extractor if `Extracted/` is missing, incomplete (no marker, a missing or resized file) or was written by an older extractor.
+3. runs the extractor if `Extracted/` is missing, incomplete (no marker, a missing or resized file) or was written by an older extractor;
+4. writes `output/names/teamdata95.asm` and `output/names/setup95.asm`: copies of `src/teamdata95.asm` and `src/engine/setup95.asm` with the real NHLPA player names and NHL team nicknames put back from `Extracted/PlayerNames.txt` and `Extracted/TeamNicknames.txt`. The files in `src/` have same-length placeholders (the licensed names are not in the repo), and `src/nhl95.asm`, `src/engine95.asm` and the two segment stubs include the copies. A name must keep the length of its placeholder.
 
 If the ROM is missing (or is a different dump), the build stops with the full path and file name to put it at, its SHA-1 and size, and a reminder that ROMs are not included in the repo:
 

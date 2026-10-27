@@ -1346,7 +1346,7 @@ ScrollUpTxt
 
 PrintOptionValue					;Print the value of setup line d0 at printx (OptionValueOffsets / the
 									;value Strings) teams 1 / 2 go to the team name (TeamList city,
-									;IslandersTxt / RangersTxt for teams $D / $E), lines not shown print
+									;NewYorkITxt / NewYorkRTxt for teams $D / $E), lines not shown print
 									;BlankValueTxt, Shootout prints N/A for the length. The cursor line is
 									;highlighted (PrintSetupTextHi)
 	movem.l	d0-d2/a0-a1,-(sp)
@@ -1418,20 +1418,21 @@ PrintOptionValue					;Print the value of setup line d0 at printx (OptionValueOff
 	adda.w	4(a1),a1
 	cmp.w	#$E,d1
 	bne.w	.12
-	movea.l	#RangersTxt,a1
+	movea.l	#NewYorkRTxt,a1
 	bra.w	.13
 .12
 	cmp.w	#$D,d1
 	bne.w	.13
-	movea.l	#IslandersTxt,a1
+	movea.l	#NewYorkITxt,a1
 .13
 	bra.w	.4
 
-IslandersTxt						;Full names for the two New York teams (TeamList has only the city)
-	String	'New York Islanders'
+NewYorkITxt							;Full names for the two New York teams (TeamList has only the
+									;city). The nicknames are placeholders (see teamdata95.asm)
+	String	'New York ','N14______'
 
-RangersTxt
-	String	'New York Rangers  '
+NewYorkRTxt
+	String	'New York ','N15____','  '
 
 BlankValueTxt						;A blank value
 	String	'                    '
