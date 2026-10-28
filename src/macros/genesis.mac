@@ -114,25 +114,6 @@ String  MACRO
         org     @end1
     ENDM
 
-; StringStart / StringEnd: same bytes as String for data too long for one macro call
-; (SNASM68k takes at most 31 macro parameters). StringStart reserves the length word;
-; any dc.b lines follow; StringEnd pads to even with 0 and backfills the length
-; (counting the word and pad). Uses its own reassigned symbols, so no label clashes; not nestable.
-StringStart	MACRO
-StrStartPos	=	*
-		dc.w	0
-	ENDM
-
-StringEnd	MACRO
-	IF *&1
-		dc.b	0
-	ENDIF
-StrEndPos	=	*
-		org	StrStartPos
-		dc.w	StrEndPos-StrStartPos
-		org	StrEndPos
-	ENDM
-
 HEX2 MACRO							; macro for hex data
     dc.w    $\1,$\2,$\3,$\4			; handle 4 words at a time, add $ prefix
     ENDM
