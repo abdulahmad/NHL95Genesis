@@ -11,7 +11,7 @@
 	include	engine\logic95.asm		;the player AI: assignments, puck handling, skateto, one-timers, goalie AI
 	include	engine\players95.asm	; SetPersonel, SetPlList, player attributes, the bench, hot / cold
 	include	engine\input95.asm		; doinput: passes, one-timers and shots
-	include	..\output\names\setup95.asm	; team roster and game setup screens, playoff structures, line data
+	include	engine\setup95.asm		; team roster and game setup screens, playoff structures, line data
 	include	engine\playoff95.asm	; PlayoffScreen, the playoff tree
 	include	engine\faceoff95.asm	; the scoreboard after a goal, faceoffs
 	include	engine\penalty95.asm	; penalties, the referee, Penaltylist, icing and offsides

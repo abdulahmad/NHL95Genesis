@@ -13,7 +13,8 @@
 ;	and Extracted/TeamNicknames.txt (one per line, in the order they appear below).
 
 ;	tools/prebuild.js (run by every build) copies this file to output/names/teamdata95.asm
-;	with the real names put back, and nhl95.asm includes that copy.
+;	with the real names put back, and nhl95.asm includes that copy. (The two New York
+;	full names in engine/setup95.asm are included from asm the extractor generates.)
 
 ;	Keep the placeholder lengths when editing a name or adding a player.
 ;
