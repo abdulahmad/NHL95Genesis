@@ -90,20 +90,11 @@ function extractedState() {
     return null;
 }
 
-// Width and height of a banner map. The long at +4 is the offset of the map header
-// (word width, word height). Two rows of tiles are one team.
-function mapGeometry(relPath) {
-    const buf = fs.readFileSync(path.join(EXTRACTED, relPath));
-    const hdr = buf.readUInt32BE(4);
-    return { width: buf.readUInt16BE(hdr), height: buf.readUInt16BE(hdr + 2) };
-}
-
-// The licensed names: src/teamdata95.asm and src/engine/setup95.asm hold placeholders instead of the NHLPA player names and the
-// NHL team nicknames. The extractor writes the real ones to Extracted/PlayerNames.txt and Extracted/TeamNicknames.txt (one per
-// line, in source order); this copies the two files to output/names/ with each placeholder replaced, and nhl95.asm and the
-// teamdata95 / setup95 segment stubs include the copies. A name must have the length of its placeholder (the Player macro
+// The licensed names: src/teamdata95.asm holds placeholders instead of the NHLPA player names and the NHL team nicknames. The extractor writes the real ones to Extracted/PlayerNames.txt and Extracted/TeamNicknames.txt (one per
+// line, in source order); this copies the file to output/names/ with each placeholder replaced, and nhl95.asm and the
+// teamdata95 segment stub include the copy. A name must have the length of its placeholder (the Player macro
 // writes the row length). Player rows are replaced in order; a nickname placeholder is 'N' + its two-digit number in
-// TeamNicknames.txt, padded with '_' (setup95.asm uses two of them for the full names of the New York teams).
+// TeamNicknames.txt, padded with '_'.
 function writeNames() {
     const read = (f) => { const l = fs.readFileSync(path.join(EXTRACTED, f), 'latin1').split('\n'); if (l[l.length - 1] === '') l.pop(); return l; };
     const players = read('PlayerNames.txt'), nicks = read('TeamNicknames.txt');
@@ -111,7 +102,7 @@ function writeNames() {
     let p = 0;
     const outDir = path.join(ROOT, 'output', 'names');
     fs.mkdirSync(outDir, { recursive: true });
-    for (const f of ['teamdata95.asm', path.join('engine', 'setup95.asm')]) {
+    for (const f of ['teamdata95.asm']) {
         const out = fs.readFileSync(path.join(ROOT, 'src', f), 'latin1')
             .replace(/^([ \t]*Player[ \t]+')((?:[^']|'')*)(')/gm, (m, a, ph, z) => {
                 const real = players[p++];
@@ -130,24 +121,6 @@ function writeNames() {
     }
     if (p !== players.length) fail(`PlayerNames.txt has ${players.length} names, src/teamdata95.asm has ${p} Player rows`);
     console.log(`prebuild: ${p} player names, ${nicks.length} team nicknames -> output/names/`);
-}
-
-function writeTeamCounts() {
-    const maps = [
-        ['Teamblocks', 'NHL95/Graphics/Teamblocksmap.map.jim'],
-        ['PauseTeamBlocks', 'NHL95/Graphics/PauseTeamBlocksMap.map.jim'],
-        ['TeamBitmaps', 'NHL95/Graphics/TeamBitmaps.map.jim'],
-    ];
-    const lines = ['; Two rows per team, measured from the banner maps.', ''];
-    for (const [name, rel] of maps) {
-        const { width, height } = mapGeometry(rel);
-        lines.push(`${name}Wide equ ${width}`);
-        lines.push(`${name}Rows equ ${height}`);
-    }
-    lines.push('');
-    const outDir = path.join(ROOT, 'output');
-    fs.mkdirSync(outDir, { recursive: true });
-    fs.writeFileSync(path.join(outDir, 'teamcounts.inc'), lines.join('\n'));
 }
 
 const target = process.argv[2] || 'retail';
@@ -175,7 +148,6 @@ if (!romPath) {
 // 2. Extracted/ assets: extract again if missing or incomplete.
 const why = extractedState();
 if (!why) {
-    writeTeamCounts();
     writeNames();
     console.log('prebuild: ROM OK, Extracted/ assets complete.');
     z80();
@@ -192,7 +164,6 @@ if (after) {
 }
 const summary = out.split(/\r?\n/).filter((l) => /^ROM:|^Extracted \d+ (assets|slices)/.test(l));
 for (const l of summary) console.log('prebuild: ' + l);
-writeTeamCounts();
 writeNames();
 console.log('prebuild: Extracted/ assets complete.');
 z80();

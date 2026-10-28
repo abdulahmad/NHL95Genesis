@@ -72,7 +72,7 @@ Every build entry point (`npm run build:*`, `npm run seg:*`, and the batch files
 1. checks that the ROM the build needs is in place and is exactly the right version (SHA-1 and size);
 2. checks that `Extracted/` is complete: the extractor writes `Extracted/.extract-complete.json` last, listing every file it wrote (with its size), the ROM it read and the extractor's own SHA-1;
 3. runs the extractor if `Extracted/` is missing, incomplete (no marker, a missing or resized file) or was written by an older extractor;
-4. writes `output/names/teamdata95.asm` and `output/names/setup95.asm`: copies of `src/teamdata95.asm` and `src/engine/setup95.asm` with the real NHLPA player names and NHL team nicknames put back from `Extracted/PlayerNames.txt` and `Extracted/TeamNicknames.txt`. The files in `src/` have same-length placeholders (the licensed names are not in the repo), and `src/nhl95.asm`, `src/engine95.asm` and the two segment stubs include the copies. A name must keep the length of its placeholder.
+4. writes `output/names/teamdata95.asm`: a copy of `src/teamdata95.asm` with the real NHLPA player names and NHL team nicknames put back from `Extracted/PlayerNames.txt` and `Extracted/TeamNicknames.txt`. The file in `src/` has same-length placeholders (the licensed names are not in the repo), and `src/nhl95.asm` and the segment stub include the copy. The two New York full names in `src/engine/setup95.asm` are `incbin`s of strings extracted to `Extracted/NHL95/Text/`. A name must keep the length of its placeholder.
 
 If the ROM is missing (or is a different dump), the build stops with the full path and file name to put it at, its SHA-1 and size, and a reminder that ROMs are not included in the repo:
 

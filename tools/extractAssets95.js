@@ -102,6 +102,10 @@ const assets = [
     { name: 'revframetbl.bin', folder: 'NHL95/Graphics', start: 0x00008596, end: 0x00008DD8 }, // revframetbl
     // NHL 95 ScoutTextScript (scout95): the scouting text lines, each ended by $D, $FF after the last (94: NHL94/Text/ScoutTextScript.bin)
     { name: 'ScoutTextScript.bin', folder: 'NHL95/Text', start: 0x000A0718, end: 0x000A08DC }, // ScoutTextScript
+    // NHL 95 NewYorkITxt / NewYorkRTxt (setup95): the full names of the two New York teams, each a String ($14 bytes: length word, 'New York ', the
+    // nickname, the Rangers one padded with two spaces). They hold licensed nicknames, so setup95.asm incbins them from here.
+    { name: 'NewYorkIFull.bin', folder: 'NHL95/Text', start: 0x00086578, end: 0x0008658C }, // NewYorkITxt
+    { name: 'NewYorkRFull.bin', folder: 'NHL95/Text', start: 0x0008658C, end: 0x000865A0 }, // NewYorkRTxt
     // NHL 95 sound driver data, src/sound/sound95.asm: the Z80 program ($BD86, $1B63 bytes loaded by SndLoadZ80, plus its last byte $FF),
     // then the items of the sound bank at $D8EC (SoundBanks) in bank order, named by item type and id.
     { name: 'z80_snd_drv95.bin', folder: 'NHL95/Sound', start: 0x0000BD86, end: 0x0000D8EA }, // Z80Program

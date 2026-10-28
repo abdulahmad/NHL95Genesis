@@ -1428,11 +1428,12 @@ PrintOptionValue					;Print the value of setup line d0 at printx (OptionValueOff
 	bra.w	.4
 
 NewYorkITxt							;Full names for the two New York teams (TeamList has only the
-									;city). The nicknames are placeholders (see teamdata95.asm)
-	String	'New York ','N14______'
+									;city). The nicknames are licensed names, so each String (length word, 'New York ',
+									;the nickname) is extracted from the ROM
+	incbin	..\Extracted\NHL95\Text\NewYorkIFull.bin
 
 NewYorkRTxt
-	String	'New York ','N15____','  '
+	incbin	..\Extracted\NHL95\Text\NewYorkRFull.bin	;the nickname is followed by two spaces
 
 BlankValueTxt						;A blank value
 	String	'                    '
