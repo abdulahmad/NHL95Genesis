@@ -3051,11 +3051,7 @@ CalendarScreen						;CALENDAR (team schedule): {} change team, [] change month, 
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$1,$7,$0
 	jsr	(printsmallz).l
-	dc.w	$38						;String length
-	dc.b	$F9,$1,'[ ]',$FD,$1,$FA,$1,'= Change'
-	dc.b	$FD,$1,$FA,$1,'Month',$FD,$1,$FA
-	dc.b	$2,'{ }',$FD,$1,$FA,$1,'= Change',$FD
-	dc.b	$1,$FA,$1,'Team',$0
+	String	$F9,$01,'[ ]',$FD,$01,$FA,$01,'= Change',$FD,$01,$FA,$01,'Month',$FD,$01,$FA,$02,'{ }',$FD,$01,$FA,$01,'= Change',$FD,$01,$FA,$01,'Team'
 	jsr	(printsmallz).l
 	String	CC_SetX,$1,CC_SetY,$15,'START',CC_SetX,$1,CC_AddY,$1,'= Exit',CC_SetFont,$0,$0
 	move.w	#$18,(palcount).w
