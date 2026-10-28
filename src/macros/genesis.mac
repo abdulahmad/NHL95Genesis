@@ -2,10 +2,20 @@
 ;	strings with their length in front, hex digits, roster entries, pictures, sound bank items
 ;	and schedule days.
 
+; VmInc: set the VDP auto-increment (register 15).
+;   Emits: move.w #$8F00+(\1&255),Vctrl (one instruction, no data).
+;   \1: bytes to step after each VDP data access (2 for word writes).
+;   Example (92G middle.asm:484; unused here): VmInc 2  -> move.w #$8F02,Vctrl
 VmInc MACRO							;set video auto inc. mode
 	move	#$8f00+(\1&255),Vctrl
 	ENDM
 
+; String: a print string with its length in front (print, printz and the string lists read it).
+;   Emits: dc.w length (counts the word itself and any pad), each argument as dc.b in order, then
+;   one 0 pad byte if the data would end on an odd address.
+;   \1..\31: each a quoted text ('abc') or a byte expression (e.g. a control code -$ab,x,y).
+;   Example (teamdata95.asm:157): String 'All Stars East'
+;     -> 00 10 41 6C 6C 20 53 74 61 72 73 20 45 61 73 74
 String  MACRO
         ; Store current position
 @begin1  =   *
@@ -114,11 +124,22 @@ String  MACRO
         org     @end1
     ENDM
 
+; HEX2 (used as hex2): four big-endian words of hex data.
+;   Emits: dc.w $\1,$\2,$\3,$\4 (8 bytes).
+;   \1..\4: 4 hex digits each, written without $ (the macro adds it).
+;   Example (93G teamdata93.asm:94; unused here): hex2 7020,00D6,9999,9099
+;     -> 70 20 00 D6 99 99 90 99
 HEX2 MACRO							; macro for hex data
     dc.w    $\1,$\2,$\3,$\4			; handle 4 words at a time, add $ prefix
     ENDM
 
-; Player record: String-style name (dc.b 0, length; name; 0 pad to even), then 4 rating words
+; PLAYER (used as Player): one roster record.
+;   Emits: dc.b 0, length (counts these 2 bytes, the name and the pad), the name, a 0 pad to even,
+;   then 4 rating words dc.w $\2,$\3,$\4,$\5.
+;   \1: the quoted name (the build puts the real names in place of the P001_ placeholders).
+;   \2..\5: the ratings, 4 hex digits each, written without $.
+;   Example (teamdata95.asm:132): Player 'P001_______',3366,4355,0000,5666
+;     -> 00 0E 50 30 30 31 5F 5F 5F 5F 5F 5F 5F 00 33 66 43 55 00 00 56 66
 PLAYER MACRO
 @begin = *
     dc.b $00, $00
@@ -133,7 +154,12 @@ PLAYER MACRO
     dc.w $\2,$\3,$\4,$\5
     ENDM
 
-; PIX macro for
+; PIX: goalie save odds bytes, looked up for the values the data uses.
+;   Emits: one dc.b per argument: \1 1111=$55, 2131=$9D, 3111=$D5; \2 1111=$55, 2131=$9D, 3300=$F0,
+;   1311=$75; \3 1213=$67. Any other value emits nothing.
+;   \1..\3: four digit numbers, one digit (0-3) per puck region, as 93G/94G PIX1.
+;   Example (92G hockey.asm:2516; unused here): pix 1111,2131,1213
+;     -> 55 9D 67
 PIX     MACRO
         ; First parameter
         IF      \1=1111
@@ -164,14 +190,22 @@ PIX     MACRO
             ENDIF
         ENDIF
     ENDM
-; SoundBanks item: type (SB_PATCH / SB_SAMPLE / SB_SONG / SB_LIST), id, size word
+; SndItem: one sound bank item.
+;   Emits: dc.b \1,\2 then dc.w \3 (4 bytes).
+;   \1: the type, SB_PATCH / SB_SAMPLE / SB_SONG / SB_LIST. \2: the id. \3: the size word.
+;   Example (sound95.asm:1197): SndItem SB_PATCH,$00,$5
+;     -> 00 00 00 05
 SndItem MACRO
 	dc.b	\1,\2
 	dc.w	\3
 	ENDM
 
-;	Day: one schedule record. Args are team abbreviations in pairs (up to 12 games). Emits the game count,
-;	then the teams.
+; Day: one schedule day.
+;   Emits: dc.b the game count (NARG/2), then dc.b each team, two per game. An odd number of
+;   arguments stops the build.
+;   \1..\24: team abbreviations (team numbers), in pairs, up to 12 games.
+;   Example (schedule95.asm:19): Day NYR,BOS, PHI,PIT, DAL,DET, CGY,NYI
+;     -> 04 0E 01 10 11 05 06 03 0D
 Day	MACRO
 	IF NARG&1
 	FAIL	Day needs an even number of teams

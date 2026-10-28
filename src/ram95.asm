@@ -662,6 +662,11 @@ SndBanks			equ	$FFFFFF36	;4 sound banks (SndSetBank), -1 = none
 SaveRAM		equ	$200000				;the cartridge save RAM (header SRAM range)
 SRAMSize	equ	$8000				;save RAM bytes
 SRNext		=	0
+; SRAMBlock: lay out one save RAM block, emits no bytes.
+;   Defines \1 equ \2 (its retail offset) while the previous block ends at or before it, else the
+;   previous end (SRNext), then sets SRNext = \1+\3.
+;   \1: the offset name. \2: the retail offset. \3: the size in bytes.
+;   Example (ram95.asm): SRAMBlock SRTeamRecords,$D22,$80  -> SRTeamRecords equ $D22, no bytes
 SRAMBlock	macro
 	IF SRNext<\2+1
 \1	equ	\2
