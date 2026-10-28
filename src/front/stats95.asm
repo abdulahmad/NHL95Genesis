@@ -234,85 +234,59 @@ PrintStatValue						;Print TeamStatTextTbl entry a0 for team a2 centred at print
 	jmp	PushTime
 TeamStatTextTbl						;Label, then the team struct stat offset and the second offset ($FFFF
 									;none). 15 rows; the offsets from $354 are 2 more than 94 (95 team struct)
-	dc.w	$0008
-	dc.b	'Score',0
+	String	'Score'
 	dc.w	$C,$FFFF
-	dc.w	$0008
-	dc.b	'Shots',0
+	String	'Shots'
 	dc.w	0,$FFFF
-	dc.w	$000E
-	dc.b	'Shooting Pct'
+	String	'Shooting Pct'
 	dc.w	$FFFF,$FFFF
-	dc.w	$000C
-	dc.b	'Power Play'
+	String	'Power Play'
 	dc.w	2,4
-	dc.w	$000C
-	dc.b	'PP Minutes'
+	String	'PP Minutes'
 	dc.w	$354,$FFFF
-	dc.w	$000A
-	dc.b	'PP Shots'
+	String	'PP Shots'
 	dc.w	$356,$FFFF
-	dc.w	$000A
-	dc.b	'SH Goals'
+	String	'SH Goals'
 	dc.w	$358,$FFFF
-	dc.w	$000C
-	dc.b	'Breakaways'
+	String	'Breakaways'
 	dc.w	$35C,$35A
-	dc.w	$000C
-	dc.b	'One-Timers'
+	String	'One-Timers'
 	dc.w	$360,$35E
-	dc.w	$0010
-	dc.b	'Penalty Shots',0
+	String	'Penalty Shots'
 	dc.w	$364,$362
-	dc.w	$000E
-	dc.b	'Faceoffs Won'
+	String	'Faceoffs Won'
 	dc.w	$E,$FFFF
-	dc.w	$000E
-	dc.b	'Body Checks',0
+	String	'Body Checks'
 	dc.w	$10,$FFFF
-	dc.w	$000C
-	dc.b	'Penalties',0
+	String	'Penalties'
 	dc.w	6,8
-	dc.w	$000E
-	dc.b	'Attack Zone',0
+	String	'Attack Zone'
 	dc.w	$A,$FFFF
-	dc.w	$000A
-	dc.b	'Passing',0
+	String	'Passing'
 	dc.w	$14,$12
 TeamStatTextTblNoPen				;The rows without the power play ones, used when penalties are off. 11
 									;rows
-	dc.w	$0008
-	dc.b	'Score',0
+	String	'Score'
 	dc.w	$C,$FFFF
-	dc.w	$0008
-	dc.b	'Shots',0
+	String	'Shots'
 	dc.w	0,$FFFF
-	dc.w	$000E
-	dc.b	'Shooting Pct'
+	String	'Shooting Pct'
 	dc.w	$FFFF,$FFFF
-	dc.w	$000C
-	dc.b	'Breakaways'
+	String	'Breakaways'
 	dc.w	$35C,$35A
-	dc.w	$000C
-	dc.b	'One-Timers'
+	String	'One-Timers'
 	dc.w	$360,$35E
-	dc.w	$0010
-	dc.b	'Penalty Shots',0
+	String	'Penalty Shots'
 	dc.w	$364,$362
-	dc.w	$000E
-	dc.b	'Faceoffs Won'
+	String	'Faceoffs Won'
 	dc.w	$E,$FFFF
-	dc.w	$000E
-	dc.b	'Body Checks',0
+	String	'Body Checks'
 	dc.w	$10,$FFFF
-	dc.w	$000C
-	dc.b	'Penalties',0
+	String	'Penalties'
 	dc.w	6,8
-	dc.w	$000E
-	dc.b	'Attack Zone',0
+	String	'Attack Zone'
 	dc.w	$A,$FFFF
-	dc.w	$000A
-	dc.b	'Passing',0
+	String	'Passing'
 	dc.w	$14,$12
 
 ;-------------------------------------------------------------------------------------------------------------
@@ -1531,9 +1505,7 @@ SeasonStatsListDraw					;Draw the season player stats screen for team d7 (Season
 	btst	#3,(sflags11).w
 	bne.w	.1
 	jsr	(printbigz).l
-	dc.w	$20						;String length
-	dc.b	$BD,$2,$4,'Season',$BD,$F,$4,'Player'
-	dc.b	$BD,$1C,$4,'Stats',$BD,$E,$1,$0
+	String	$BD,$02,$04,'Season',$BD,$0F,$04,'Player',$BD,$1C,$04,'Stats',$BD,$0E,$01
 	bra.w	.2
 .1
 	jsr	(printbigz).l
@@ -3238,13 +3210,11 @@ PeriodStatsScreen					;Both team logos, goals/shots by period and total; left/ri
 	btst	#1,(sflags7).w
 	beq.w	.0
 	jsr	(printz).l
-	dc.w	$001C					;String length: too many arguments for the String macro
-	dc.b	$BE,$C,7,'1',$BE,$11,7,'2',$BE,$16,7,'3',$BE,$1A,7,'OT',$BE,' ',7,'Total',0
+	String	$BE,$0C,$07,'1',$BE,$11,$07,'2',$BE,$16,$07,'3',$BE,$1A,$07,'OT',$BE,' ',$07,'Total'
 	bra.w	.1
 .0
 	jsr	(printz).l
-	dc.w	$0016					;String length: too many arguments for the String macro
-	dc.b	$BE,$C,7,'1',$BE,$11,7,'2',$BE,$16,7,'3',$BE,' ',7,'Total'
+	String	$BE,$0C,$07,'1',$BE,$11,$07,'2',$BE,$16,$07,'3',$BE,' ',$07,'Total'
 .1
 	bsr.w	PeriodStatsCaption
 	bsr.w	PeriodStatsColumns
@@ -3734,9 +3704,7 @@ LineEditorExit						;Exit box (rewritten in 95): Start leaves, A original lines,
 	move.w	#9,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	dc.w	$32						;String length
-	dc.b	$F8,$4,$2,$9,$B,$F9,$2,'Start = Exit'
-	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$F9,$0,$0
+	String	$F8,$04,$02,$09,$0B,$F9,$02,'Start = Exit',$FD,$09,$FC,$0D,'A = Set Original Lines',$F9,$00
 	bra.w	.loop
 .0
 	bsr.w	TeamLinesOffset
@@ -3766,10 +3734,7 @@ LineEditorExit						;Exit box (rewritten in 95): Start leaves, A original lines,
 	move.w	#7,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	dc.w	$48						;String length
-	dc.b	$F8,$4,$2,$9,$B,$F9,$2,'Start = Exit'
-	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$FD,$9,$FC
-	dc.b	$F,'C = Save Team Line',$F9,$0,$0
+	String	$F8,$04,$02,$09,$0B,$F9,$02,'Start = Exit',$FD,$09,$FC,$0D,'A = Set Original Lines',$FD,$09,$FC,$0F,'C = Save Team Line',$F9,$00
 	bra.w	.loop
 .loop
 	jsr	(vcountwait).l
