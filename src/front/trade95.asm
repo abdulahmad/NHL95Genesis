@@ -1169,11 +1169,7 @@ InvalidTradeText					;INVALID TRADE reasons (PrintSmallListItem)
 	String	$FD,$6,$FC,$D,'* No players chosen.'
 
 TradeRulesText						;The roster rules text
-	dc.w	$7A						;String length
-	dc.b	$FD,$6,$FC,$D,'All teams must have:',$FA,$1,$FD
-	dc.b	$6,'* 17 to 25 players.',$FA,$1,$FD,$6,'*  2 to  3 goalies.',$FA
-	dc.b	$1,$FD,$6,'*  9 to 15 forwards.',$FA,$1,$FD,$6
-	dc.b	'*  6 to 15 defensemen.'
+	String	$FD,$06,$FC,$0D,'All teams must have:',$FA,$01,$FD,$06,'* 17 to 25 players.',$FA,$01,$FD,$06,'*  2 to  3 goalies.',$FA,$01,$FD,$06,'*  9 to 15 forwards.',$FA,$01,$FD,$06,'*  6 to 15 defensemen.'
 	String	$FD,$6,$FC,$D,'* No players chosen on one',$FA,$1,$FD,$8,'team.',$0
 	String	$FD,$6,$FC,$D,'* More than three players',$FA,$1,$FD,$8,'chosen on a team.'
 

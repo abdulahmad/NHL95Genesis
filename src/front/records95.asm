@@ -330,11 +330,7 @@ NameEntryHelp						;Name entry: name log key help text (NameEntryHelp)
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$18,$11,$0
 	jsr	(printsmallz).l
-	dc.w	$42						;String length
-	dc.b	'{}=Select',$FA,$1,$FD,$1B,'name',$FA,$2
-	dc.b	$FD,$19,'B=Enter/edit',$FA,$1,$FD,$1B,'name'
-	dc.b	$FA,$2,$FD,$19,'START',$FA,$1,$FD
-	dc.b	$1A,'=Use name',$0
+	String	'{}=Select',$FA,$01,$FD,$1B,'name',$FA,$02,$FD,$19,'B=Enter/edit',$FA,$01,$FD,$1B,'name',$FA,$02,$FD,$19,'START',$FA,$01,$FD,$1A,'=Use name'
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 

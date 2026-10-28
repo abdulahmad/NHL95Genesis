@@ -48,15 +48,7 @@ TeamRosterScreen					;"Team Roster" screen for team a2: DrawTeamScreen, then the
 .1
 	jsr	(PutTeamBlock).l
 	jsr	(printsmallz).l
-	dc.w	$5A
-	dc.b	$F8,$4,$2,$1,$B,$F9,$2,$5E,$23,$5E,$5E,$50
-	dc.b	$6C,$61,$79,$65,$72,$FD,$19,$4C,$69,$6E,$65,$73
-	dc.b	$FD,$17,$FC,$C,$52,$65,$67,$5E,$50,$50,$5E,$50
-	dc.b	$4B,$FD,$21,$FC,$B,$52,$61,$74,$69,$6E,$67,$FD
-	dc.b	$3,$FC,$1A,$41,$2D,$54,$65,$61,$6D,$73,$20,$20
-	dc.b	$20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$20
-	dc.b	$20,$20,$43,$2D,$50,$6F,$73,$69,$74,$69,$6F,$6E
-	dc.b	$73,$F9,$0,$0
+	String	$F8,$04,$02,$01,$0B,$F9,$02,'^#^^Player',$FD,$19,'Lines',$FD,$17,$FC,$0C,'Reg^PP^PK',$FD,'!',$FC,$0B,'Rating',$FD,$03,$FC,$1A,'A-Teams                C-Positions',$F9,$00
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP3),1,8,0
 	bsr.w	DisplayPlayerList

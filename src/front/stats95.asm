@@ -3636,11 +3636,7 @@ ClearLineArea						;Erase the line area and print the position header (LD RD LW 
 	move.w	(LineIconPosTable-6).l,(printx).l
 .0
 	jsr	(printsmallz).l
-	dc.w	$22						;String length
-	dc.b	$FE,$4,$FB,$FD,$FA,$2,'LD',$FB
-	dc.b	$FE,$FA,$2,'RD',$FB,$FE,$FA,$2
-	dc.b	'LW',$FB,$FE,$FA,$2,'C ',$FB,$FE
-	dc.b	$FA,$2,'RW'
+	String	$FE,$04,$FB,$FD,$FA,$02,'LD',$FB,$FE,$FA,$02,'RD',$FB,$FE,$FA,$02,'LW',$FB,$FE,$FA,$02,'C ',$FB,$FE,$FA,$02,'RW'
 	rts
 
 DrawLineEditorScreen				;Clear, print the "Line Editor" title and the team logo
@@ -3720,11 +3716,7 @@ LineEditorExit						;Exit box (rewritten in 95): Start leaves, A original lines,
 	move.w	#9,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	dc.w	$5E						;String length
-	dc.b	$F8,$4,$2,$9,$B,$F9,$2,'Start = Exit'
-	dc.b	$FD,$9,$FC,$D,'A = Set Original Lines',$FD,$9,$FC
-	dc.b	$F,'B = Load Team Line',$FD,$9,$FC,$11,'C = Save Team Line',$F9
-	dc.b	$0,$0
+	String	$F8,$04,$02,$09,$0B,$F9,$02,'Start = Exit',$FD,$09,$FC,$0D,'A = Set Original Lines',$FD,$09,$FC,$0F,'B = Load Team Line',$FD,$09,$FC,$11,'C = Save Team Line',$F9,$00
 	bra.w	.loop
 .1
 	bclr	#1,(sflags10).w
