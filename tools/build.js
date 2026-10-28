@@ -13,6 +13,8 @@ const { spawn } = require('child_process');
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'output');
 const { romPath } = require('./roms');
+const { formatAssemblerFailureDetail, hasBranchOutOfRange, DEFAULT_DOC } = require('./assembleHints');
+const EXPANDING_ROM_FILL_HINT = 'the 2 MB fill in src/nhl95.asm';
 const WIN = process.platform === 'win32';
 
 const args = process.argv.slice(2);
@@ -208,8 +210,11 @@ const logPath = path.join(OUT, 'Build95.log');
     if (!sum) fail('assemble', `no assembler summary in ${rel(logPath)} (exit ${r.status})`, lines.slice(-20).join('\n'));
     const errors = Number(sum[1]);
     if (errors > 0 || !fs.existsSync(bin)) {
-        const bad = lines.filter((l) => /\.(asm|inc|mac)\(\d+|error|fatal|not recognised|undefined/i.test(l) && !/error\(s\) from/.test(l)).slice(0, 40);
-        fail('assemble', `${errors} error(s), see ${rel(logPath)}`, bad.join('\n'));
+        const detail = formatAssemblerFailureDetail(lines, { fillHint: EXPANDING_ROM_FILL_HINT });
+        const headline = hasBranchOutOfRange(lines)
+            ? `branch out of range — see ${DEFAULT_DOC}`
+            : `${errors} error(s), see ${rel(logPath)}`;
+        fail('assemble', headline, detail);
     }
     step('assemble', `${errors} errors, ${warnings} warnings, ${sum[2]} lines in ${sum[3]}s (CHECKSUM=${checksum}) -> ${rel(bin)}`);
     detail(r.out);
