@@ -2679,10 +2679,7 @@ MenuPlayUntil						;Play Until A Day: pick the day with A (month) / B (day), C c
 	jsr	(printsmallz).l
 	String	CC_SetFont,$2,'Please complete human',CC_SetX,$7,CC_SetY,$D,'controlled games before'
 	jsr	(printsmallz).l
-	dc.w	$3C						;String length
-	dc.b	$FD,$7,$FA,$1,$F9,$2,'selecting autoplay.',$FD
-	dc.b	$7,$FA,$2,$F9,$2,'Press START to continue.',$F9,$0
-	dc.b	$0
+	String	$FD,$07,$FA,$01,$F9,$02,'selecting autoplay.',$FD,$07,$FA,$02,$F9,$02,'Press START to continue.',$F9,$00
 .loop
 	move.w	(Vcount).w,d0
 .loop2
@@ -2816,10 +2813,7 @@ AutoplayMessage						;AUTOPLAYING GAMES. DO NOT PRESS RESET !!, d0 = 0
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$7,$C,$0
 	jsr	(printsmallz).l
-	dc.w	$46						;String length
-	dc.b	$F9,$2,$FA,$3,'AUTOPLAYING GAMES.',$FA,$2,$FD
-	dc.b	$7,'DO NOT PRESS RESET !!',$FA,$2,$FD,$7,'Please wait...',$F9
-	dc.b	$0,$0
+	String	$F9,$02,$FA,$03,'AUTOPLAYING GAMES.',$FA,$02,$FD,$07,'DO NOT PRESS RESET !!',$FA,$02,$FD,$07,'Please wait...',$F9,$00
 	clr.w	d0
 	rts
 

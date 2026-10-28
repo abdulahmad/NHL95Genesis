@@ -776,13 +776,9 @@ TradePlayers						;Trade Player screen: the two rosters with position / rating; 
 	jsr	(printsmallz).l
 	String	CC_SetFont,$2,CC_SetX,$15,CC_SetY,$11,'POSITION',CC_SetX,$1F,'RATING'
 	jsr	(printsmallz).l
-	dc.w	$16						;String length
-	dc.b	$F9,$1,$FD,$4,$FC,$19,'A',$FD
-	dc.b	$C,'B',$FD,$16,'C',$FD,$1F,'Start'
+	String	$F9,$01,$FD,$04,$FC,$19,'A',$FD,$0C,'B',$FD,$16,'C',$FD,$1F,'Start'
 	jsr	(printsmallz).l
-	dc.w	$26						;String length
-	dc.b	$FD,$2,$FC,$1A,'Team',$FD,$A,'Cancel'
-	dc.b	$FD,$14,'Player',$FD,$1E,'Evaluate',$F9,$0
+	String	$FD,$02,$FC,$1A,'Team',$FD,$0A,'Cancel',$FD,$14,'Player',$FD,$1E,'Evaluate',$F9
 .input
 	cmpi.w	#$FFFF,(setupdir).w
 	beq.w	.read

@@ -303,10 +303,7 @@ NameLetterGrid						;Name entry: letter grid and its key help (NameLetterGrid); 
 	jsr	(printz).l
 	String	-(TXPRI+TXMAP1),$18,$11,$0
 	jsr	(printsmallz).l
-	dc.w	$44						;String length
-	dc.b	'{}[]',$FA,$1,$FD,$18,'=Select letter',$FA,$2
-	dc.b	$FD,$18,'C=Enter letter',$FA,$2,$FD,$18,'A=Go back'
-	dc.b	$FA,$2,$FD,$18,'B=Cancel',$0
+	String	'{}[]',$FA,$01,$FD,$18,'=Select letter',$FA,$02,$FD,$18,'C=Enter letter',$FA,$02,$FD,$18,'A=Go back',$FA,$02,$FD,$18,'B=Cancel'
 .x
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -973,20 +970,11 @@ PrintRecordTitles					;Record Holders: the titles of page TempWord1 (WinRecTitle
 	jsr	(printsmall).l
 	rts
 WinRecTitles						;PrintRecordTitles String, page 0
-	dc.w	$52						;String length
-	dc.b	$F8,$4,$3,$10,$8,$F9,$1,'   Win %   Win-Loss-Tie'
-	dc.b	$FD,$4,$FC,$19,'Use A+C to clear ALL win records',$FD,$10,$FC
-	dc.b	$1A,'  More ]',$F9,$0
+	String	$F8,$04,$03,$10,$08,$F9,$01,'   Win %   Win-Loss-Tie',$FD,$04,$FC,$19,'Use A+C to clear ALL win records',$FD,$10,$FC,$1A,'  More ]',$F9
 GoalRecTitles						;PrintRecordTitles String, page 1
-	dc.w	$50						;String length
-	dc.b	$F8,$4,$3,$12,$8,$F9,$1,'Goals       Teams    '
-	dc.b	$FD,$4,$FC,$19,'    TEAM MUST WIN TO QUALIFY    ',$FD,$10,$FC
-	dc.b	$1A,'[ More ]',$F9,$0
+	String	$F8,$04,$03,$12,$08,$F9,$01,'Goals       Teams    ',$FD,$04,$FC,$19,'    TEAM MUST WIN TO QUALIFY    ',$FD,$10,$FC,$1A,'[ More ]',$F9
 SaveRecTitles						;PrintRecordTitles String, page 2
-	dc.w	$50						;String length
-	dc.b	$F8,$4,$3,$12,$8,$F9,$1,'Saves       Teams    '
-	dc.b	$FD,$4,$FC,$19,'    TEAM MUST WIN TO QUALIFY    ',$FD,$10,$FC
-	dc.b	$1A,'[ More  ',$F9,$0
+	String	$F8,$04,$03,$12,$08,$F9,$01,'Saves       Teams    ',$FD,$04,$FC,$19,'    TEAM MUST WIN TO QUALIFY    ',$FD,$10,$FC,$1A,'[ More  ',$F9
 PrintWinRecords						;Record Holders page 0: name (PrintRecordName), win %, wins, losses, ties
 									;of the 7 rows in winsort order
 	movem.l	d0-d7/a0-a6,-(sp)

@@ -835,10 +835,7 @@ InvalidName							;SaveCreateName: "Invalid Name. Make sure player has both a fi
 	move.w	#$F,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	dc.w	$4C						;String length
-	dc.b	$F9,$3,$FD,$6,$FC,$6,'Invalid Name.',$FD
-	dc.b	$6,$FA,$1,'Make sure player has',$FD,$6,$FA,$1
-	dc.b	'both a first and last name.'
+	String	$F9,$03,$FD,$06,$FC,$06,'Invalid Name.',$FD,$06,$FA,$01,'Make sure player has',$FD,$06,$FA,$01,'both a first and last name.'
 	move.w	(Vcount).w,d0
 .loop
 	cmp.w	(Vcount).w,d0
@@ -1355,10 +1352,7 @@ ModifyRatings						;Create Player "Modify Ratings" screen: load graphics/text, t
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),$7,$2,'Modify Ratings',$0
 	jsr	(printsmallz).l
-	dc.w	$44						;String length
-	dc.b	$F9,$1,$FD,$9,$FC,$19,'{}[] = Select Rating',$FA
-	dc.b	$1,$FD,$4,'A,B=Decrease/Increase',$FD,$1C,'START=Done',$F9
-	dc.b	$0,$0
+	String	$F9,$01,$FD,$09,$FC,$19,'{}[] = Select Rating',$FA,$01,$FD,$04,'A',$2C,'B=Decrease/Increase',$FD,$1C,'START=Done',$F9,$00
 	move.w	#$18,(palcount).w
 	bclr	#dfng,(disflags).w
 	bsr.w	ClearAttribDeltas
@@ -2455,9 +2449,7 @@ SignFreeAgents						;Sign Free Agents screen: draw, input loop
 	jsr	(printbigz).l
 	String	-(TXPRI+TXMAP1),$7,$2,'Sign Free Agent'
 	jsr	(printsmallz).l
-	dc.w	$18						;String length
-	dc.b	$F9,$1,$FD,$7,$FC,$19,'A,B',$FD
-	dc.b	$17,'C',$FD,$1F,'Start',$FA,$1,$0
+	String	$F9,$01,$FD,$07,$FC,$19,'A',$2C,'B',$FD,$17,'C',$FD,$1F,'Start',$FA,$01
 	jsr	(printsmallz).l
 	String	CC_SetX,$3,'Switch Team',CC_SetX,$12,'Sign Player',CC_SetX,' Exit',CC_SetFont,$0
 	move.w	#3,d0
