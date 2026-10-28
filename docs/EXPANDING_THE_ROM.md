@@ -7,6 +7,7 @@
 - `tools/fixrom.js` runs after `fixopcodes`. It pads the image with $FF to the next size of 1, 1.5, 2 or 4 MB, writes the header ROM end ($1A4), then writes the boot checksum through `tools/patchchecksum.js` (the `cmpi.l` immediate in `ValidationRoutine`). The stock image stays 2 MB and byte-identical.
 - `src/nhl95.asm` fills to 2 MB. Includes placed after that fill start at $200000.
 - `src/shortcalls.inc` (included last, emits nothing) stops the build if `Begin` moves out of reach of the startup `bra.w`; `build95.bat` then prints the fix.
+- If SNASM reports **Branch (… bytes) is out of range**, `tools/build.js` points here (PC-relative `bsr.w` / `bra.w` / `bxx.w`).
 - `NumTeams` / `NumPlayoffTeams` drive the team tables, the save RAM blocks and their length checks (below).
 - `CHECKSUM=0` skips the boot check (`build:dev`). There is a single revision.
 
@@ -15,6 +16,17 @@
 95 has no absolute short `jsr`/`jmp (x).w` calls into ROM. The one short-range reference is `bra.w Begin` at the end of the startup code in `main95.asm`. `Begin` sits before the team data, so growing `TeamList` does not move it. If something before `Begin` grows past its reach, put the new data elsewhere or change that branch to `jmp (Begin).l` on your mod branch.
 
 The engine (`engine95.asm`) is one assembly whose PC-relative branches cross files; data inserted inside it can push a `bra.w`/`bsr.w` out of range. Put new data after the 2 MB fill.
+
+### PC-relative branches (branch out of range)
+
+SNASM's **Branch (n bytes) is out of range** is the ~±32 KB limit on **PC-relative** branches: **`bsr.w`**, **`bra.w`** and **`bxx.w`**. `tools/build.js` stops at the assemble step with `branch out of range` and points here.
+
+Two patterns that break mod builds:
+
+1. **New ROM inserted between existing modules.** Later files move forward in the image. Retail code may already branch with `.w` into a module far enough away that a few hundred bytes of insert pushes the branch past the limit (for example inside `engine95.asm`). Put new code and data after the 2 MB fill in `src/nhl95.asm` instead.
+2. **Hooks into post-fill code.** Includes after the 2 MB fill in `src/nhl95.asm` start at $200000. Any call from retail code into that region needs **`jsr (label).l`** / **`jmp (label).l`**. Code in the new region should not **`bsr.w`** distant retail helpers (for example shared `rts` labels); use **`.l`** calls or a **local `rts`**.
+
+When the build prints branch out of range, fix placement and call mode using this section before changing unrelated branches.
 
 ## Past 2 MB: backup RAM and bank switching
 
