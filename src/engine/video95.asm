@@ -46,7 +46,7 @@ setVram_0							;Second half of setVram without the fade: clear vram and set the
 									;EASportsScreen
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
-	move.w	#VDPR_AUTOINC+$02,(Vctrl).l
+	VmInc	2
 	clr.w	d0
 	bsr.w	Vmaddr
 	move.w	#$3FFF,d0

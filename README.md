@@ -40,7 +40,7 @@ The source follows [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis): i
 | `src/sega/` | Sega's cartridge header (`SegaIDTable95.asm`, $100-$1FF) and power-on code (`SegaInit.asm`, $200-$2F9), included by `main95.asm`. |
 | `src/ram95.asm` | The RAM map, Z80 RAM and the save RAM offsets (`SR...`). Equates only. |
 | `src/stubinc/` | `ports.inc` (IO and VDP ports) and `equals.inc` (VDP status bits). Equates only. |
-| `src/macros/genesis.mac` | The `VmInc`, `String`, `HEX2`, `Player` and `PIX` macros. |
+| `src/macros/genesis.mac` | The `VmInc`, `String`, `Player` and `PIX` macros. |
 | `<file>_stub.asm` | One per code file, all in `src/stubinc/` (`src/stubinc/logic95_stub.asm`): the segment org, the equates, equates for the outside addresses the segment uses, then `include <path>.asm`. A stub builds and verifies one segment by itself. |
 | `docs/name_map.csv` | Every label: address, current name, the IDA name, the old name if it was renamed, and the file. |
 | `docs/WHY_95_MOVED.md` | Why 95 reordered 94's routines (SNES banking, locality and re-filing weighed against the code), and the subsystem files the 95 source probably had. |
