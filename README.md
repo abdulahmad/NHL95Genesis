@@ -13,7 +13,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how changes are made (names, comments
 - The file split is more mature, and very different from 93 and 94.
 - Remaining: label cleanup, a pass over the team data and frame lists, and another check of the split.
 
-Bitwise rebuild of NHL 95 for the Sega Genesis. Every segment is matched: the full build is byte for byte the retail ROM (SHA-1 `09e87b076aa4cd6f057a1d65bb50fd889b509b44`), and each segment also builds and verifies on its own.
+Reverse engineered source of NHL 95 for the Sega Genesis. Every segment is matched: the full build is byte for byte the retail ROM (SHA-1 `09e87b076aa4cd6f057a1d65bb50fd889b509b44`), and each segment also builds and verifies on its own.
 
 The reference ROM goes in the repo folder (2 MB; it is not in the repo, `/*.bin` is gitignored). Any file name works: the build finds it by its SHA-1 and size (`tools/roms.js`; `nhl95retail.bin` is the usual name). It is what every build is compared with. Do not use a different ROM. The listing the source was transcribed from, `lst/nhl95.bin.lst` (an IDA LST in ASM68K / MRI mode with no address column: `loc_` / `sub_` names are the address), is no longer in the repo either; keep a local copy there if you have one.
 ## Supported ROMs
