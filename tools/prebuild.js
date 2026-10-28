@@ -26,8 +26,9 @@ function z80() {
     console.log('prebuild: ' + r.msg);
 }
 
-// The generated file gets each player's id (the number of his placeholder, P001) as a comment at the end of his row.
-const idNote = (rest, ph) => rest + (rest.includes(';') ? ' ' : '\t;') + ph.slice(0, 4);
+// The generated file gets each player's id (the number of his placeholder, P001) as a comment at the end of his row, followed by the
+// name of his player card picture (Card001, see tools/playerCards.js) when he has one.
+const idNote = (rest, ph, card) => rest + (rest.includes(';') ? ' ' : '\t;') + ph.slice(0, 4) + (card ? ' ' + card : '');
 const sizeText = (n) => `${n} bytes (0x${n.toString(16).toUpperCase()}, ${n / 0x100000 >= 1 ? n / 0x100000 + ' MB' : n / 1024 + ' KB'})`;
 
 // Check one ROM: a file in the repo folder with this SHA-1 and size, whatever its name (tools/roms.js).
@@ -100,6 +101,7 @@ function extractedState() {
 function writeNames() {
     const read = (f) => { const l = fs.readFileSync(path.join(EXTRACTED, f), 'latin1').split('\n'); if (l[l.length - 1] === '') l.pop(); return l; };
     const players = read('PlayerNames.txt'), nicks = read('TeamNicknames.txt');
+    const cards = require('./playerCards').playerCards();
     const fail = (msg) => { console.error('names: ' + msg); console.error('*** BUILD STOPPED: the player names could not be put back ***'); process.exit(1); };
     let p = 0;
     const outDir = path.join(ROOT, 'output', 'names');
@@ -111,7 +113,7 @@ function writeNames() {
                 if (real === undefined) fail(`src/${f} has more Player rows than PlayerNames.txt has names (${players.length})`);
                 const want = ph.replace(/''/g, "'").length;
                 if (real.length !== want) fail(`Player row ${p}: the name '${real}' has ${real.length} characters, its placeholder '${ph}' has ${want}`);
-                return a + real.replace(/'/g, "''") + z + idNote(rest, ph);
+                return a + real.replace(/'/g, "''") + z + idNote(rest, ph, cards[p - 1] && cards[p - 1].card);
             })
             .replace(/'(N(\d\d)_*)'/g, (m, ph, id) => {
                 const real = nicks[Number(id) - 1];
@@ -121,8 +123,10 @@ function writeNames() {
             });
         fs.writeFileSync(path.join(outDir, path.basename(f)), out, 'latin1');
     }
+    // every player with his team, roster index and card (- when none)
+    fs.writeFileSync(path.join(outDir, 'PlayerCards.txt'), cards.map((r, i) => `P${String(i + 1).padStart(3, '0')}\t${r.team}\t${r.slot}\t${r.card || '-'}`).join('\n') + '\n');
     if (p !== players.length) fail(`PlayerNames.txt has ${players.length} names, src/teamdata95.asm has ${p} Player rows`);
-    console.log(`prebuild: ${p} player names, ${nicks.length} team nicknames -> output/names/`);
+    console.log(`prebuild: ${p} player names, ${nicks.length} team nicknames, ${cards.filter((r) => r.card).length} player cards -> output/names/`);
 }
 
 const target = process.argv[2] || 'retail';
