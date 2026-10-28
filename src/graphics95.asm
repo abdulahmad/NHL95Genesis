@@ -431,7 +431,7 @@ ClockDigitsBitmap					;The ClockDigitsBitmap map
 	incbin	..\Extracted\NHL95\Graphics\ClockDigitsBitmap.map.jim
 RosterBitmap						;The RosterBitmap map
 	incbin	..\Extracted\NHL95\Graphics\RosterBitmap.map.jim
-	include	..\output\teamcounts.inc
+	include	..\output\obj\teamcounts.inc
 	IF TeamblocksWide<>11
 	inform 3,"Teamblocksmap is not 11 tiles wide"
 	ENDIF

@@ -71,7 +71,7 @@ Provisional until the listing confirms it. NHL 95 is the 1994-95 season, still 2
 
 A MATCH of 0 bytes is a failure. The byte count must be the confirmed range.
 
-After every matched segment, delete `output/nhl95.bin` and `output/modified_nhl95.bin`, run `npm run build:retail`, and compare `output/modified_nhl95.bin` to `lst/nhl95.bin`. The full build assembles `src/nhl95.asm`, so the listing stays `output/nhl95 .lst`. An old output can look like a pass. Only a compare made this session counts.
+After every matched segment, delete `output/obj/nhl95.bin` and `output/modified_nhl95.bin`, run `npm run build:retail`, and compare `output/modified_nhl95.bin` to `lst/nhl95.bin`. The full build assembles `src/nhl95.asm`, so the listing stays `output/obj/nhl95 .lst`. An old output can look like a pass. Only a compare made this session counts.
 
 ## Rules
 

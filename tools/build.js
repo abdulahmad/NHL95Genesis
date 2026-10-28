@@ -12,6 +12,7 @@ const { spawn } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'output');
+const OBJ = path.join(OUT, 'obj');   // generated intermediates (z80 driver, names, raw image, listing, log), emptied before each build
 const { romPath } = require('./roms');
 const { formatAssemblerFailureDetail, hasBranchOutOfRange, DEFAULT_DOC } = require('./assembleHints');
 const EXPANDING_ROM_FILL_HINT = 'the 2 MB fill in src/nhl95.asm';
@@ -170,10 +171,16 @@ const rel = (p) => path.relative(ROOT, p).split(path.sep).join('/');
     }
 
 const name = 'nhl95';
-const bin = path.join(OUT, `${name}.bin`);
-const lst = path.join(OUT, `${name} .lst`);
+// Intermediates go in output/obj/; the one result is output/modified_nhl95.bin.
+const bin = path.join(OBJ, `${name}.bin`);
+const lst = path.join(OBJ, `${name} .lst`);
+const fixed = path.join(OBJ, `modified_${name}.bin`);   // fixopcodes writes it next to its input
 const mod = path.join(OUT, `modified_${name}.bin`);
-const logPath = path.join(OUT, 'Build95.log');
+const logPath = path.join(OBJ, 'Build95.log');
+
+// output/obj/ is shared by all builds: empty it so this build cannot pick up another build's intermediates.
+fs.rmSync(OBJ, { recursive: true, force: true });
+fs.mkdirSync(OBJ, { recursive: true });
 
 // 1. prebuild: ROM check, Extracted/ assets, the names, team counts, the Z80 driver.
 {
@@ -190,8 +197,8 @@ const logPath = path.join(OUT, 'Build95.log');
 {
     begin('assemble');
     fs.mkdirSync(OUT, { recursive: true });
-    for (const f of [bin, mod]) fs.rmSync(f, { force: true });
-    const o = `..\\output\\${name}`;
+    for (const f of [bin, fixed, mod]) fs.rmSync(f, { force: true });
+    const o = `..\\output\\obj\\${name}`;
     const asmArgs = ['/p', '/m', '/g', '/o', 'd-', '/o', 's-', '/o', 'r+', '/o', 'l+', '/o', 'l.', '/o', 'ow+', '/o', 'op-',
         '/o', 'os+', '/o', 'oz+', '/o', 'omq-', '/o', 'oaq+', '/o', 'osq+',
         '/e', `CHECKSUM=${checksum}`, `${name}.asm,${o}.bin,${o},${o}`];
@@ -220,12 +227,13 @@ const logPath = path.join(OUT, 'Build95.log');
     detail(r.out);
 }
 
-// 3. fixopcodes: rewrite the EA cmp / exg encodings SNASM picks differently; writes output/modified_nhl95.bin.
+// 3. fixopcodes: rewrite the EA cmp / exg encodings SNASM picks differently; writes output/obj/modified_nhl95.bin, moved to output/.
 {
     begin('fixopcodes');
     const r = await node('fixopcodes.js', [lst, bin]);
     const m = r.out.match(/Modified (\d+) instructions/);
-    if (r.status !== 0 || !m || !fs.existsSync(mod)) fail('fixopcodes', 'did not write the fixed binary', r.out);
+    if (r.status !== 0 || !m || !fs.existsSync(fixed)) fail('fixopcodes', 'did not write the fixed binary', r.out);
+    fs.renameSync(fixed, mod);
     const skipped = (r.out.match(/Skipping/g) || []).length;
     step('fixopcodes', `${m[1]} opcodes fixed${skipped ? `, ${skipped} skipped` : ''} -> ${rel(mod)}`);
     detail(r.out);

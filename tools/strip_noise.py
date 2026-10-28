@@ -8,7 +8,7 @@ Code and data are never touched: only the text after the first ';' that is
 outside a quoted string changes, and a comment left empty is removed.
 
 The IDA name each label had is written to docs/name_map.csv first, with the
-address from the full build listing (output/nhl95 .lst), so nothing is lost.
+address from the full build listing (output/obj/nhl95 .lst), so nothing is lost.
 
 Usage: python3 tools/strip_noise.py [--dry-run]
 """
@@ -20,7 +20,7 @@ from collections import Counter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, 'src')
-LISTING = os.path.join(ROOT, 'output', 'nhl95 .lst')
+LISTING = os.path.join(ROOT, 'output', 'obj', 'nhl95 .lst')
 IDA_LST = os.path.join(ROOT, 'lst', 'nhl95.bin.lst')
 NAME_MAP = os.path.join(ROOT, 'docs', 'name_map.csv')
 SUBSYSTEMS = ('sound', 'engine', 'front')

@@ -6,7 +6,7 @@
     "assets": "node tools/prebuild.js retail",
     "extractassets": "node tools/extractAssets95.js retail",
     "asm": "build95.bat",
-    "fixopcodes": "node tools/fixopcodes.js \"output\\\\nhl95 .lst\" output\\\\nhl95.bin",
+    "fixopcodes": "node tools/fixopcodes.js \"output\\\\obj\\\\nhl95 .lst\" output\\\\obj\\\\nhl95.bin && move /y output\\\\obj\\\\modified_nhl95.bin output\\\\",
     "build:retail": "node tools/build.js retail",
     "build:dev": "node tools/build.js dev",
     "verify:retail": "node tools/verifyRom.js output/modified_nhl95.bin retail",

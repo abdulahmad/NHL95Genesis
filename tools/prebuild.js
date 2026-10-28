@@ -102,7 +102,7 @@ function mapGeometry(relPath) {
 }
 
 // The licensed names: src/teamdata95.asm holds placeholders instead of the NHLPA player names and the NHL team nicknames. The extractor writes the real ones to Extracted/PlayerNames.txt and Extracted/TeamNicknames.txt (one per
-// line, in source order); this copies the file to output/names/ with each placeholder replaced, and nhl95.asm and the
+// line, in source order); this copies the file to output/obj/names/ with each placeholder replaced, and nhl95.asm and the
 // teamdata95 segment stub include the copy. A name must have the length of its placeholder (the Player macro
 // writes the row length). Player rows are replaced in order; a nickname placeholder is 'N' + its two-digit number in
 // TeamNicknames.txt, padded with '_'.
@@ -112,7 +112,7 @@ function writeNames() {
     const cards = require('./playerCards').playerCards();
     const fail = (msg) => { console.error('names: ' + msg); console.error('*** BUILD STOPPED: the player names could not be put back ***'); process.exit(1); };
     let p = 0;
-    const outDir = path.join(ROOT, 'output', 'names');
+    const outDir = path.join(ROOT, 'output', 'obj', 'names');
     fs.mkdirSync(outDir, { recursive: true });
     for (const f of ['teamdata95.asm']) {
         const out = fs.readFileSync(path.join(ROOT, 'src', f), 'latin1')
@@ -134,7 +134,7 @@ function writeNames() {
     // every player with his team, roster index and card (- when none)
     fs.writeFileSync(path.join(outDir, 'PlayerCards.txt'), cards.map((r, i) => `P${String(i + 1).padStart(3, '0')}\t${r.team}\t${r.slot}\t${r.card || '-'}`).join('\n') + '\n');
     if (p !== players.length) fail(`PlayerNames.txt has ${players.length} names, src/teamdata95.asm has ${p} Player rows`);
-    console.log(`prebuild: ${p} player names, ${nicks.length} team nicknames, ${cards.filter((r) => r.card).length} player cards -> output/names/`);
+    console.log(`prebuild: ${p} player names, ${nicks.length} team nicknames, ${cards.filter((r) => r.card).length} player cards -> output/obj/names/`);
 }
 
 function writeTeamCounts() {
@@ -150,7 +150,7 @@ function writeTeamCounts() {
         lines.push(`${name}Rows equ ${height}`);
     }
     lines.push('');
-    const outDir = path.join(ROOT, 'output');
+    const outDir = path.join(ROOT, 'output', 'obj');
     fs.mkdirSync(outDir, { recursive: true });
     fs.writeFileSync(path.join(outDir, 'teamcounts.inc'), lines.join('\n'));
 }

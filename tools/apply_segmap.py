@@ -130,7 +130,7 @@ def main():
     tail = [ln for ln in lines if ln.strip().startswith("dcb")]
     head = [
         ";",
-        ";\tTop level of the full NHL 95 ROM build (build95.bat, npm run build:retail). The listing is output\\nhl95 .lst.",
+        ";\tTop level of the full NHL 95 ROM build (build95.bat, npm run build:retail). The listing is output\\obj\\nhl95 .lst.",
         ";\tThe includes are in 95 ROM order, from the fingerprint map tools/segmap95.json (tools/fingerprint_map.py).",
         ";\tThe address on each include line is the mapped lst/nhl95.bin start. It is provisional until the segment matches.",
         ";\tThe org for a segment build goes in its _stub.asm. Do not put an org in a file this list includes.",
