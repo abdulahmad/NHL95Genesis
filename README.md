@@ -33,7 +33,7 @@ The source follows [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis): i
 | `src/nhl95.asm` | Top level of the full build: the equates, `org 0`, then in ROM order the trunk files and the two include lists, each with its start address. |
 | `src/engine95.asm`, `front95.asm` | Include lists: the files of `engine\` and `front\` in ROM order, each with its start address. No code and no `org`. `engine95.asm` is one assembly (PC-relative branches cross every file in it). `sound\z80old95.asm` sits between `fourway95` and `pause95` in the ROM, so `engine95.asm` includes it. |
 | `src/<file>95.asm` | The trunk, in `src/` itself: `main95` (vectors, header, region lock), `teamdata95` (team data), `frames95` (sprite frame tables), `schedule95` (the season schedule), `sram95`, `hockey95` (game flow), `display95`, `control95`, `graphics95` (the player pictures, rink, sprites, fonts, screen maps, team logo palettes and arena graphics, $0A1A5A-$1A6C27), `credits95` and `checksum95`. |
-| `src/sound/` | `sound95` (the 95 sound driver, its Z80 program and banks, the sound calls; in the trunk's include order, as in NHL 92), `z80old95` (the unused 94 Z80 program) and `z80_snd_drv93.asm`, its Z80 source (the 93 / 94 driver, names as in NHL 92's driver). `tools/prebuild.js` assembles it with asm80 (`npm i`) into `output/z80_snd_drv93.bin` and checks it against the ROM (`tools/buildZ80.js`). The new 95 driver (`Z80Program`, `z80_snd_drv95.bin`) is still an incbin. |
+| `src/sound/` | `sound95` (the 95 sound driver, its Z80 program and banks, the sound calls; in the trunk's include order, as in NHL 92), `z80old95` (the unused 94 Z80 program) and `z80_snd_drv93.asm`, its Z80 source (the 93 / 94 driver, names as in NHL 92's driver). `tools/prebuild.js` assembles it with asm80 (`npm i`) into `output/obj/z80_snd_drv93.bin` and checks it against the ROM (`tools/buildZ80.js`). The new 95 driver (`Z80Program`, `z80_snd_drv95.bin`) is still an incbin. |
 | `src/engine/` | The game engine, $079902-$08DF59, one file per subsystem: `video95`, `collide95`, `middle95`, `fourway95`, `pause95`, `logic95` (the player AI), `players95`, `input95`, `setup95`, `playoff95`, `faceoff95`, `penalty95`, `lines95`, `skate95`, `goal95`, `replay95`. |
 | `src/front/` | The menus and screens around the game: `season95`, `stats95`, `trade95`, `create95`, `records95`, `awards95`, `shootout95`, `injury95`, `scout95`, `crowd95`, `summary95`, `title95`. |
 | (each code file) | One file per 95 subsystem, named for what it does. Each file is one contiguous range of the ROM. The header says which 94 files it was adapted from; where it takes code from more than one 94 file, a banner before each run names the 94 file. `docs/FILE_ORIGINS.md` gives the 94 file of every routine. |
@@ -55,7 +55,7 @@ The graphics and sound are not in the repo. Extract them from the reference ROM 
 
 That writes `Extracted/` from the ROM in the repo folder with `tools/extractAssets95.js`.
 
-Full ROM builds (`node tools/build.js`, one line per step; `--verbose` shows the tools' output, `--clean` deletes `output/` and `Extracted/`) assemble `src/nhl95.asm` with SNASM68k (directly on Windows, under wine elsewhere). The listing is `output/nhl95 .lst`. The opcode-corrected output is `output/modified_nhl95.bin`.
+Full ROM builds (`node tools/build.js`, one line per step; `--verbose` shows the tools' output, `--clean` deletes `output/` and `Extracted/`) assemble `src/nhl95.asm` with SNASM68k (directly on Windows, under wine elsewhere). The listing is `output/obj/nhl95 .lst`. The opcode-corrected output is `output/modified_nhl95.bin`.
 
 | Script | Flags | Result |
 | --- | --- | --- |
@@ -72,7 +72,7 @@ Every build entry point (`npm run build:*`, `npm run seg:*`, and the batch files
 1. checks that the ROM the build needs is in place and is exactly the right version (SHA-1 and size);
 2. checks that `Extracted/` is complete: the extractor writes `Extracted/.extract-complete.json` last, listing every file it wrote (with its size), the ROM it read and the extractor's own SHA-1;
 3. runs the extractor if `Extracted/` is missing, incomplete (no marker, a missing or resized file) or was written by an older extractor;
-4. writes `output/names/teamdata95.asm`: a copy of `src/teamdata95.asm` with the real NHLPA player names and NHL team nicknames put back from `Extracted/PlayerNames.txt` and `Extracted/TeamNicknames.txt`. The file in `src/` has same-length placeholders (the licensed names are not in the repo), and `src/nhl95.asm` and the segment stub include the copy. The two New York full names in `src/engine/setup95.asm` are `include`s of asm the extractor generates in `Extracted/NHL95/Text/`. A name must keep the length of its placeholder.
+4. writes `output/obj/names/teamdata95.asm`: a copy of `src/teamdata95.asm` with the real NHLPA player names and NHL team nicknames put back from `Extracted/PlayerNames.txt` and `Extracted/TeamNicknames.txt`. The file in `src/` has same-length placeholders (the licensed names are not in the repo), and `src/nhl95.asm` and the segment stub include the copy. The two New York full names in `src/engine/setup95.asm` are `include`s of asm the extractor generates in `Extracted/NHL95/Text/`. A name must keep the length of its placeholder.
 
 If the ROM is missing (or is a different dump), the build stops with the full path and file name to put it at, its SHA-1 and size, and a reminder that ROMs are not included in the repo:
 
@@ -90,7 +90,7 @@ The batch files run `assembler\Assembler.exe` (SNASM68K) on Windows. Under Linux
 
 - `tools/scan_cleanup.py` counts what is left: disassembler noise in comments, raw RAM / hardware / save RAM / ROM addresses in code, raw struct displacements, and IDA names. `--list` prints each hit.
 - `tools/strip_noise.py` removes disassembler noise from comments (never code) and records each removed IDA name in `docs/name_map.csv`.
-- `tools/file_origins.py --ref94 <NHL94Genesis> --ref93 <NHLPA93Genesis>` writes `docs/FILE_ORIGINS.md` and `docs/function_origins.csv`: for every 95 file and every label in it, the 94 file it came from (or new in 95). Run a full build first; it reads `output/nhl95 .lst`.
+- `tools/file_origins.py --ref94 <NHL94Genesis> --ref93 <NHLPA93Genesis>` writes `docs/FILE_ORIGINS.md` and `docs/function_origins.csv`: for every 95 file and every label in it, the 94 file it came from (or new in 95). Run a full build first; it reads `output/obj/nhl95 .lst`.
 - `tools/fingerprint_map.py`, `verify_segmap.py`, `apply_segmap.py`, `segmap95.json` and `SEGMAP95.md` made the first split of the ROM into 94 files, before any segment was transcribed. They are kept for history. Their output (placeholder files, provisional orgs, the flat `_01` / `_02` file names) is out of date: the include lists in `src/` and `SEGMENT_AGENT.md` are current. `docs/name_map.csv` keeps those old names only in `old_name` where a label was renamed; its `module` column is the current path (`engine/logic95`).
 
 ## Segment notes

@@ -2,7 +2,7 @@
 
 NHL95 keeps most of NHL94's code but puts it in a completely different order. 94's files are cut into pieces and mixed together, so the 95 source (named after the 94 files) looks scrambled. This note looks at why that happened and what Mark Lesser's 95 source probably looked like.
 
-It is analysis only: nothing in `src/` changes. The numbers come from the full build listing (`output/nhl95 .lst`), the NHL94Genesis listing, the NHLPA93 SNES disassembly (its `docs/file_map.md` bank blocks) and the NHL95 PC map (`name_map_94.csv`).
+It is analysis only: nothing in `src/` changes. The numbers come from the full build listing (`output/obj/nhl95 .lst`), the NHL94Genesis listing, the NHLPA93 SNES disassembly (its `docs/file_map.md` bank blocks) and the NHL95 PC map (`name_map_94.csv`).
 
 ## Short answer
 

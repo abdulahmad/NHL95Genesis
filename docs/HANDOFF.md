@@ -12,7 +12,7 @@ segments: `npm run seg:<name>` (all keys in package.json `seg:*`).
 Linux (wine): `apt install wine wine32` (dpkg --add-architecture i386), `export WINEDEBUG=-all`, then
 1. `node tools/prebuild.js retail` (checks the ROM, extracts into Extracted/ if missing or incomplete; same as `node tools/extractAssets95.js lst/nhl95.bin`), then `export NHL_PREBUILD_DONE=1` so the .bat files skip their own pre-step (no node under wine). Accepts the one retail ROM (SHA-1 09e87b07...); other ROMs are refused.
 2. `wine cmd /c "set checksum=1&& build95.bat"`
-3. `node tools/fixopcodes.js "output/nhl95 .lst" output/nhl95.bin`
+3. `node tools/fixopcodes.js "output/obj/nhl95 .lst" output/obj/nhl95.bin`
 4. `node tools/fixrom.js output/modified_nhl95.bin` (retail line: `size 00200000 (header end 001fffff), checksum 366a73f5 -> 366a73f5`)
 5. `node tools/verifyRom.js output/modified_nhl95.bin <reference ROM>` must print MATCH
 6. Segments: run each package.json `seg:*` chain the same way (`wine cmd /c "buildseg.bat <seg>"`, then its node steps); tools/verifySegment.js must MATCH. Do not patch the checksum on a segment.

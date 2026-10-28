@@ -61,7 +61,7 @@ Do not change speeds, coordinates, sprite heights, or the 26 roster slots. `src/
 
 ## Banner maps
 
-`Teamblocksmap` and `TeamBitmaps` are two rows, 11 tiles wide. `PauseTeamBlocksMap` is two rows, 12 tiles wide. `tools/prebuild.js` measures all three and writes `output/teamcounts.inc`. The assemble checks the width and that the row count is two per team.
+`Teamblocksmap` and `TeamBitmaps` are two rows, 11 tiles wide. `PauseTeamBlocksMap` is two rows, 12 tiles wide. `tools/prebuild.js` measures all three and writes `output/obj/teamcounts.inc`. The assemble checks the width and that the row count is two per team.
 
 Insert the new team's two rows at that team's index. Appending them leaves the new index showing the old art. Copy the rows from the team whose art you are reusing, and raise the map height by two.
 
@@ -82,7 +82,7 @@ export WINEDEBUG=-all
 node tools/prebuild.js retail
 export NHL_PREBUILD_DONE=1
 wine cmd /c "set checksum=1&& build95.bat"
-node tools/fixopcodes.js "output/nhl95 .lst" output/nhl95.bin
+node tools/fixopcodes.js "output/obj/nhl95 .lst" output/obj/nhl95.bin
 node tools/fixrom.js output/modified_nhl95.bin
 ```
 

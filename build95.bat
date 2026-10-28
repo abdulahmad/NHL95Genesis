@@ -19,7 +19,7 @@ if not defined NHL_PREBUILD_DONE (
 @REM echo Using checksum=%checksum%
 
 REM Create the output directory
-if not exist "%workspaceFolder%output" mkdir "%workspaceFolder%output"
+if not exist "%workspaceFolder%output\obj" mkdir "%workspaceFolder%output\obj"
 
 REM Change to the workspace src directory
 cd /d "%workspaceFolder%src"
@@ -36,18 +36,18 @@ REM Run the assembler with all flags
   /p /m /g ^
   /o d- /o s- /o r+ /o l+ /o l. /o ow+ /o op- /o os+ /o oz+ /o omq- /o oaq+ /o osq+ ^
   %checksumFlag% ^
-  "%workspaceFolder%src\nhl95.asm,%workspaceFolder%output\nhl95.bin,%workspaceFolder%output\nhl95,%workspaceFolder%output\nhl95" ^
-  > "%workspaceFolder%output\Build95.log"
+  "%workspaceFolder%src\nhl95.asm,%workspaceFolder%output\obj\nhl95.bin,%workspaceFolder%output\obj\nhl95,%workspaceFolder%output\obj\nhl95" ^
+  > "%workspaceFolder%output\obj\Build95.log"
 set asmerr=%errorlevel%
-findstr /C:"SHORTCALL" "%workspaceFolder%output\Build95.log" >nul
+findstr /C:"SHORTCALL" "%workspaceFolder%output\obj\Build95.log" >nul
 if errorlevel 1 goto noshort
 echo.
 echo A short-range target moved past $7FFF:
-findstr /C:"SHORTCALL" "%workspaceFolder%output\Build95.log"
+findstr /C:"SHORTCALL" "%workspaceFolder%output\obj\Build95.log"
 echo Put the added data after the 2MB fill, or use the long form. See docs\EXPANDING_THE_ROM.md.
 :noshort
 if not "%asmerr%"=="0" (
-    echo ASSEMBLY FAILED. See output\Build95.log
+    echo ASSEMBLY FAILED. See output\obj\Build95.log
     exit /b 1
 )
 

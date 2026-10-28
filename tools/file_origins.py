@@ -4,7 +4,7 @@
   python3 tools/file_origins.py --ref94 ../NHL94Genesis --ref93 ../NHLPA93Genesis
 
 Needs a full build first (npm run build:retail): the label addresses come from its listing,
-output/nhl95 .lst. Writes docs/function_origins.csv (one row per label) and docs/FILE_ORIGINS.md
+output/obj/nhl95 .lst. Writes docs/function_origins.csv (one row per label) and docs/FILE_ORIGINS.md
 (per 95 file, per 94 file, and the routines of each 95 file grouped by origin).
 
 A label is assigned by the first rule that applies:
@@ -134,7 +134,7 @@ def source_order(path='nhl95.asm'):
 def classify(ref94, ref93):
     l94 = ref_labels(os.path.join(ref94, 'src'), False)
     l93 = ref_labels(os.path.join(ref93, 'src'), True)
-    addr = rom_labels(os.path.join(ROOT, 'output', 'nhl95 .lst'))
+    addr = rom_labels(os.path.join(ROOT, 'output', 'obj', 'nhl95 .lst'))
     units = []
     for s in json.load(open(os.path.join(ROOT, 'tools', 'segmap95.json')))['segments']:
         for u in s.get('units', []):

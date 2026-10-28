@@ -6,7 +6,7 @@
 ; p_initialZ80 in 95, which runs the new driver (Z80Program) instead. In the
 ; retail ROM these bytes sit at $7E0E0-$7E36A (Z80_Program_Code). Built with
 ; asm80 (npm package, see README) by tools/prebuild.js into
-; output/z80_snd_drv93.bin, which src/sound/z80old95.asm includes.
+; output/obj/z80_snd_drv93.bin, which src/sound/z80old95.asm includes.
 ; The source is NHLPA93Genesis src/z80_snd_drv93.asm; only this header and the
 ; FM patch address defaults differ. This is a different driver from NHL 92's
 ; (src/sound/z80_snd_drv.asm in NHL92Genesis); names are shared where the
