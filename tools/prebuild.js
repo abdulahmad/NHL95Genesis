@@ -93,6 +93,14 @@ function extractedState() {
     return null;
 }
 
+// Width and height of a banner map. The long at +4 is the offset of the map header
+// (word width, word height). Two rows of tiles are one team.
+function mapGeometry(relPath) {
+    const buf = fs.readFileSync(path.join(EXTRACTED, relPath));
+    const hdr = buf.readUInt32BE(4);
+    return { width: buf.readUInt16BE(hdr), height: buf.readUInt16BE(hdr + 2) };
+}
+
 // The licensed names: src/teamdata95.asm holds placeholders instead of the NHLPA player names and the NHL team nicknames. The extractor writes the real ones to Extracted/PlayerNames.txt and Extracted/TeamNicknames.txt (one per
 // line, in source order); this copies the file to output/names/ with each placeholder replaced, and nhl95.asm and the
 // teamdata95 segment stub include the copy. A name must have the length of its placeholder (the Player macro
@@ -129,6 +137,24 @@ function writeNames() {
     console.log(`prebuild: ${p} player names, ${nicks.length} team nicknames, ${cards.filter((r) => r.card).length} player cards -> output/names/`);
 }
 
+function writeTeamCounts() {
+    const maps = [
+        ['Teamblocks', 'NHL95/Graphics/Teamblocksmap.map.jim'],
+        ['PauseTeamBlocks', 'NHL95/Graphics/PauseTeamBlocksMap.map.jim'],
+        ['TeamBitmaps', 'NHL95/Graphics/TeamBitmaps.map.jim'],
+    ];
+    const lines = ['; Two rows per team, measured from the banner maps.', ''];
+    for (const [name, rel] of maps) {
+        const { width, height } = mapGeometry(rel);
+        lines.push(`${name}Wide equ ${width}`);
+        lines.push(`${name}Rows equ ${height}`);
+    }
+    lines.push('');
+    const outDir = path.join(ROOT, 'output');
+    fs.mkdirSync(outDir, { recursive: true });
+    fs.writeFileSync(path.join(outDir, 'teamcounts.inc'), lines.join('\n'));
+}
+
 const target = process.argv[2] || 'retail';
 if (!TARGETS[target]) {
     console.error(`prebuild: unknown target '${target}'. Use one of: ${Object.keys(TARGETS).join(', ')}`);
@@ -154,6 +180,7 @@ if (!romPath) {
 // 2. Extracted/ assets: extract again if missing or incomplete.
 const why = extractedState();
 if (!why) {
+    writeTeamCounts();
     writeNames();
     console.log('prebuild: ROM OK, Extracted/ assets complete.');
     z80();
@@ -170,6 +197,7 @@ if (after) {
 }
 const summary = out.split(/\r?\n/).filter((l) => /^ROM:|^Extracted \d+ (assets|slices)/.test(l));
 for (const l of summary) console.log('prebuild: ' + l);
+writeTeamCounts();
 writeNames();
 console.log('prebuild: Extracted/ assets complete.');
 z80();

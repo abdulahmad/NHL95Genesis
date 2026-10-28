@@ -1429,11 +1429,11 @@ PrintOptionValue					;Print the value of setup line d0 at printx (OptionValueOff
 
 NewYorkITxt							;Full names for the two New York teams (TeamList has only the
 									;city). The nicknames are licensed names, so each String (length word, 'New York ',
-									;the nickname) is extracted from the ROM
-	incbin	..\Extracted\NHL95\Text\NewYorkIFull.bin
+									;the nickname) is generated from the ROM
+	include	..\Extracted\NHL95\Text\NewYorkIName.asm
 
 NewYorkRTxt
-	incbin	..\Extracted\NHL95\Text\NewYorkRFull.bin	;the nickname is followed by two spaces
+	include	..\Extracted\NHL95\Text\NewYorkRName.asm	;the nickname is followed by two spaces
 
 BlankValueTxt						;A blank value
 	String	'                    '

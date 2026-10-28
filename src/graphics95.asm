@@ -431,12 +431,7 @@ ClockDigitsBitmap					;The ClockDigitsBitmap map
 	incbin	..\Extracted\NHL95\Graphics\ClockDigitsBitmap.map.jim
 RosterBitmap						;The RosterBitmap map
 	incbin	..\Extracted\NHL95\Graphics\RosterBitmap.map.jim
-TeamblocksWide equ 11				;banner map sizes: two rows per team
-TeamblocksRows equ 56
-PauseTeamBlocksWide equ 12
-PauseTeamBlocksRows equ 56
-TeamBitmapsWide equ 11
-TeamBitmapsRows equ 56
+	include	..\output\teamcounts.inc
 	IF TeamblocksWide<>11
 	inform 3,"Teamblocksmap is not 11 tiles wide"
 	ENDIF
