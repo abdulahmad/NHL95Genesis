@@ -303,7 +303,7 @@ NameLetterGrid						;Name entry: letter grid and its key help (NameLetterGrid); 
 	jsr	(printz).l
 	String	CC_Font1Pri,$18,$11,$0
 	jsr	(printsmallz).l
-	String	'{}[]',$FA,$01,$FD,$18,'=Select letter',$FA,$02,$FD,$18,'C=Enter letter',$FA,$02,$FD,$18,'A=Go back',$FA,$02,$FD,$18,'B=Cancel'
+	String	'{}[]',CC_AddY,$01,CC_SetX,$18,'=Select letter',CC_AddY,$02,CC_SetX,$18,'C=Enter letter',CC_AddY,$02,CC_SetX,$18,'A=Go back',CC_AddY,$02,CC_SetX,$18,'B=Cancel'
 .x
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -330,7 +330,7 @@ NameEntryHelp						;Name entry: name log key help text (NameEntryHelp)
 	jsr	(printz).l
 	String	CC_Font1Pri,$18,$11,$0
 	jsr	(printsmallz).l
-	String	'{}=Select',$FA,$01,$FD,$1B,'name',$FA,$02,$FD,$19,'B=Enter/edit',$FA,$01,$FD,$1B,'name',$FA,$02,$FD,$19,'START',$FA,$01,$FD,$1A,'=Use name'
+	String	'{}=Select',CC_AddY,$01,CC_SetX,$1B,'name',CC_AddY,$02,CC_SetX,$19,'B=Enter/edit',CC_AddY,$01,CC_SetX,$1B,'name',CC_AddY,$02,CC_SetX,$19,'START',CC_AddY,$01,CC_SetX,$1A,'=Use name'
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
@@ -966,11 +966,11 @@ PrintRecordTitles					;Record Holders: the titles of page TempWord1 (WinRecTitle
 	jsr	(printsmall).l
 	rts
 WinRecTitles						;PrintRecordTitles String, page 0
-	String	$F8,$04,$03,$10,$08,$F9,$01,'   Win %   Win-Loss-Tie',$FD,$04,$FC,$19,'Use A+C to clear ALL win records',$FD,$10,$FC,$1A,'  More ]',$F9
+	String	CC_SetMapAndPosition,$04,$03,$10,$08,CC_SetFont,$01,'   Win %   Win-Loss-Tie',CC_SetX,$04,CC_SetY,$19,'Use A+C to clear ALL win records',CC_SetX,$10,CC_SetY,$1A,'  More ]',CC_SetFont
 GoalRecTitles						;PrintRecordTitles String, page 1
-	String	$F8,$04,$03,$12,$08,$F9,$01,'Goals       Teams    ',$FD,$04,$FC,$19,'    TEAM MUST WIN TO QUALIFY    ',$FD,$10,$FC,$1A,'[ More ]',$F9
+	String	CC_SetMapAndPosition,$04,$03,$12,$08,CC_SetFont,$01,'Goals       Teams    ',CC_SetX,$04,CC_SetY,$19,'    TEAM MUST WIN TO QUALIFY    ',CC_SetX,$10,CC_SetY,$1A,'[ More ]',CC_SetFont
 SaveRecTitles						;PrintRecordTitles String, page 2
-	String	$F8,$04,$03,$12,$08,$F9,$01,'Saves       Teams    ',$FD,$04,$FC,$19,'    TEAM MUST WIN TO QUALIFY    ',$FD,$10,$FC,$1A,'[ More  ',$F9
+	String	CC_SetMapAndPosition,$04,$03,$12,$08,CC_SetFont,$01,'Saves       Teams    ',CC_SetX,$04,CC_SetY,$19,'    TEAM MUST WIN TO QUALIFY    ',CC_SetX,$10,CC_SetY,$1A,'[ More  ',CC_SetFont
 PrintWinRecords						;Record Holders page 0: name (PrintRecordName), win %, wins, losses, ties
 									;of the 7 rows in winsort order
 	movem.l	d0-d7/a0-a6,-(sp)

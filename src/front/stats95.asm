@@ -730,10 +730,10 @@ DrawStatsListArrows					;Up / down arrows (ScrollArrowTbl2). Saves d0-d1/a1
 	rts
 
 ScrollArrowTbl2						;None, up, down, both
-	String	' ',$FB,$FF,$FA,$E,' ',$F9,0
-	String	'{',$FB,$FF,$FA,$E,' ',$F9,0
-	String	' ',$FB,$FF,$FA,$E,'}',$F9,0
-	String	'{',$FB,$FF,$FA,$E,'}',$F9,0
+	String	' ',CC_AddX,$FF,CC_AddY,$E,' ',CC_SetFont,0
+	String	'{',CC_AddX,$FF,CC_AddY,$E,' ',CC_SetFont,0
+	String	' ',CC_AddX,$FF,CC_AddY,$E,'}',CC_SetFont,0
+	String	'{',CC_AddX,$FF,CC_AddY,$E,'}',CC_SetFont,0
 
 InitSeasonStats						;New season: clear the player stat blocks (SRGoals on, $1B6C bytes),
 									;SRTeamBlock2, SRTeamStats and SRInjuries in save RAM then
@@ -1884,10 +1884,10 @@ SeasonScrollArrows					;Up / down arrows (SeasonScrollArrowTbl). Saves d0-d1/a1
 	rts
 
 SeasonScrollArrowTbl				;None, up, down, both
-	String	' ',$FB,$FF,$FA,$E,' ',$F9,$0
-	String	'{',$FB,$FF,$FA,$E,' ',$F9,$0
-	String	' ',$FB,$FF,$FA,$E,'}',$F9,$0
-	String	'{',$FB,$FF,$FA,$E,'}',$F9,$0
+	String	' ',CC_AddX,$FF,CC_AddY,$E,' ',CC_SetFont,$0
+	String	'{',CC_AddX,$FF,CC_AddY,$E,' ',CC_SetFont,$0
+	String	' ',CC_AddX,$FF,CC_AddY,$E,'}',CC_SetFont,$0
+	String	'{',CC_AddX,$FF,CC_AddY,$E,'}',CC_SetFont,$0
 
 DrawSeasonStatsLogo					;Draw bitmap Teamblocksmap via dobitmap with tile base $69A, d1 = 2*d0
 									;(team d0). Saves all regs
@@ -3636,7 +3636,7 @@ ClearLineArea						;Erase the line area and print the position header (LD RD LW 
 	move.w	(LineIconPosTable-6).l,(printx).l
 .0
 	jsr	(printsmallz).l
-	String	$FE,$04,$FB,$FD,$FA,$02,'LD',$FB,$FE,$FA,$02,'RD',$FB,$FE,$FA,$02,'LW',$FB,$FE,$FA,$02,'C ',$FB,$FE,$FA,$02,'RW'
+	String	CC_SetAttribute,$04,CC_AddX,$FD,CC_AddY,$02,'LD',CC_AddX,$FE,CC_AddY,$02,'RD',CC_AddX,$FE,CC_AddY,$02,'LW',CC_AddX,$FE,CC_AddY,$02,'C ',CC_AddX,$FE,CC_AddY,$02,'RW'
 	rts
 
 DrawLineEditorScreen				;Clear, print the "Line Editor" title and the team logo
@@ -3700,7 +3700,7 @@ LineEditorExit						;Exit box (rewritten in 95): Start leaves, A original lines,
 	move.w	#9,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	String	$F8,$04,$02,$09,$0B,$F9,$02,'Start = Exit',$FD,$09,$FC,$0D,'A = Set Original Lines',$F9,$00
+	String	CC_SetMapAndPosition,$04,$02,$09,$0B,CC_SetFont,$02,'Start = Exit',CC_SetX,$09,CC_SetY,$0D,'A = Set Original Lines',CC_SetFont,$00
 	bra.w	.loop
 .0
 	bsr.w	TeamLinesOffset
@@ -3716,7 +3716,7 @@ LineEditorExit						;Exit box (rewritten in 95): Start leaves, A original lines,
 	move.w	#9,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	String	$F8,$04,$02,$09,$0B,$F9,$02,'Start = Exit',$FD,$09,$FC,$0D,'A = Set Original Lines',$FD,$09,$FC,$0F,'B = Load Team Line',$FD,$09,$FC,$11,'C = Save Team Line',$F9,$00
+	String	CC_SetMapAndPosition,$04,$02,$09,$0B,CC_SetFont,$02,'Start = Exit',CC_SetX,$09,CC_SetY,$0D,'A = Set Original Lines',CC_SetX,$09,CC_SetY,$0F,'B = Load Team Line',CC_SetX,$09,CC_SetY,$11,'C = Save Team Line',CC_SetFont,$00
 	bra.w	.loop
 .1
 	bclr	#1,(sflags10).w
@@ -3726,7 +3726,7 @@ LineEditorExit						;Exit box (rewritten in 95): Start leaves, A original lines,
 	move.w	#7,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	String	$F8,$04,$02,$09,$0B,$F9,$02,'Start = Exit',$FD,$09,$FC,$0D,'A = Set Original Lines',$FD,$09,$FC,$0F,'C = Save Team Line',$F9,$00
+	String	CC_SetMapAndPosition,$04,$02,$09,$0B,CC_SetFont,$02,'Start = Exit',CC_SetX,$09,CC_SetY,$0D,'A = Set Original Lines',CC_SetX,$09,CC_SetY,$0F,'C = Save Team Line',CC_SetFont,$00
 	bra.w	.loop
 .loop
 	jsr	(vcountwait).l

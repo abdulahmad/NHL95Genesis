@@ -776,9 +776,9 @@ TradePlayers						;Trade Player screen: the two rosters with position / rating; 
 	jsr	(printsmallz).l
 	String	CC_SetFont,$2,CC_SetX,$15,CC_SetY,$11,'POSITION',CC_SetX,$1F,'RATING'
 	jsr	(printsmallz).l
-	String	$F9,$01,$FD,$04,$FC,$19,'A',$FD,$0C,'B',$FD,$16,'C',$FD,$1F,'Start'
+	String	CC_SetFont,$01,CC_SetX,$04,CC_SetY,$19,'A',CC_SetX,$0C,'B',CC_SetX,$16,'C',CC_SetX,$1F,'Start'
 	jsr	(printsmallz).l
-	String	$FD,$02,$FC,$1A,'Team',$FD,$0A,'Cancel',$FD,$14,'Player',$FD,$1E,'Evaluate',$F9
+	String	CC_SetX,$02,CC_SetY,$1A,'Team',CC_SetX,$0A,'Cancel',CC_SetX,$14,'Player',CC_SetX,$1E,'Evaluate',CC_SetFont
 .input
 	cmpi.w	#$FFFF,(setupdir).w
 	beq.w	.read
@@ -1166,12 +1166,12 @@ CountChosen							;Count the chosen players of a trade list by position into the
 	rts
 
 InvalidTradeText					;INVALID TRADE reasons (PrintSmallListItem)
-	String	$FD,$6,$FC,$D,'* No players chosen.'
+	String	CC_SetX,$6,CC_SetY,$D,'* No players chosen.'
 
 TradeRulesText						;The roster rules text
-	String	$FD,$06,$FC,$0D,'All teams must have:',$FA,$01,$FD,$06,'* 17 to 25 players.',$FA,$01,$FD,$06,'*  2 to  3 goalies.',$FA,$01,$FD,$06,'*  9 to 15 forwards.',$FA,$01,$FD,$06,'*  6 to 15 defensemen.'
-	String	$FD,$6,$FC,$D,'* No players chosen on one',$FA,$1,$FD,$8,'team.',$0
-	String	$FD,$6,$FC,$D,'* More than three players',$FA,$1,$FD,$8,'chosen on a team.'
+	String	CC_SetX,$06,CC_SetY,$0D,'All teams must have:',CC_AddY,$01,CC_SetX,$06,'* 17 to 25 players.',CC_AddY,$01,CC_SetX,$06,'*  2 to  3 goalies.',CC_AddY,$01,CC_SetX,$06,'*  9 to 15 forwards.',CC_AddY,$01,CC_SetX,$06,'*  6 to 15 defensemen.'
+	String	CC_SetX,$6,CC_SetY,$D,'* No players chosen on one',CC_AddY,$1,CC_SetX,$8,'team.',$0
+	String	CC_SetX,$6,CC_SetY,$D,'* More than three players',CC_AddY,$1,CC_SetX,$8,'chosen on a team.'
 
 BuildTradeList						;Trade list of team d7: the chosen players ($FFFF = none)
 	move.w	d7,(a1)+
