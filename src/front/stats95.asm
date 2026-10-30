@@ -17,7 +17,7 @@ StatsReport							;Pause menu GAME STATS: both teams' totals
 	move.l	#ControllerBgMap,(screenarg).l
 	jsr	(DrawTeamScreen2).l
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP3),7,2,'Game',-(TXPRI+TXMAP3),$10,2,'Statistics',-(TXPRI+TXMAP3),7,1,0
+	String	CC_Font3Pri,7,2,'Game',CC_Font3Pri,$10,2,'Statistics',CC_Font3Pri,7,1,0
 	clr.w	(DispAttribCtr).w
 	clr.w	(VertLineScrolling).w
 	clr.w	(PlayerScrollCtr).w
@@ -127,16 +127,16 @@ DisplayStats						;Team blocks (PutTeamBlock), then each
 									;centred, with the home value at x $22 and the visitors' at x 9
 									;(PrintStatValue); SetStatScroll first
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),3,6,0
+	String	CC_Font3Pri,3,6,0
 	move.w	#$2C,d0
 	jsr	(PutTeamBlock).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),$1A,6,0
+	String	CC_Font3Pri,$1A,6,0
 	moveq	#0,d0
 	jsr	(PutTeamBlock).l
 	bsr.w	SetStatScroll
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),0,0,0
+	String	CC_Font2Pri,0,0,0
 	moveq	#$E,d6
 	lea	TeamStatTextTbl(pc),a1
 	tst.w	(OptPen).w
@@ -308,7 +308,7 @@ PlayerStatsList						;Stats screen for team a2, d7 = 0 game / 1 playoff
 	jsr	(DrawTeamScreen3).l
 	movem.l	d0-d3/d5-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),0,6,0
+	String	CC_Font3Pri,0,6,0
 	movea.l	#PlayerStatsTitleMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -326,17 +326,17 @@ PlayerStatsList						;Stats screen for team a2, d7 = 0 game / 1 playoff
 .redraw
 	clr.w	(PlayerScrollCtr).w
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),5,1,0
+	String	CC_Font3Pri,5,1,0
 	tst.w	d7
 	beq.w	.title
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP3),7,4,'Playoff',-(TXPRI+TXMAP3),$17,4,'Stats',-(TXPRI+TXMAP3),$E,1,0
+	String	CC_Font3Pri,7,4,'Playoff',CC_Font3Pri,$17,4,'Stats',CC_Font3Pri,$E,1,0
 	bra.w	.team
 .title
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,4,3,$C,$1A,CC_SetFont,3,'A^-^Switch^Teams',CC_SetFont,0,0
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP3),8,4,'Player',-(TXPRI+TXMAP3),$15,4,'Stats',-(TXPRI+TXMAP3),$E,1
+	String	CC_Font3Pri,8,4,'Player',CC_Font3Pri,$15,4,'Stats',CC_Font3Pri,$E,1
 .team
 	clr.w	d0
 	cmpa.w	#(tmstruct-M68K_RAM),a2
@@ -468,7 +468,7 @@ DrawStatsList						;Draw the stats screen column headers (the selected column hi
 	jsr	(printsmallz).l
 	String	CC_SetFont,1
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),$A,7,0
+	String	CC_Font3Pri,$A,7,0
 	lea	StatSortTitles(pc),a1
 	moveq	#1,d0
 	add.w	(DispAttribCtr).w,d0
@@ -545,7 +545,7 @@ DrawStatsRow						;Stats screen row d3 of Satt: rank, name, then the 5 columns, 
 	movea.w	#(Satt-M68K_RAM),a4
 	adda.w	d3,a4
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),0,0,0
+	String	CC_Font2Pri,0,0,0
 	add.w	d3,d3
 	andi.w	#$1F,d3
 	move.w	d3,(printy).w
@@ -1481,7 +1481,7 @@ SeasonStatsList						;d7 = team 0-$19 (A/B cycles teams); sflags11 bit 3 = playo
 SeasonStatsListDraw					;Draw the season player stats screen for team d7 (SeasonStatsList
 									;continues here)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),$0,$6,$0
+	String	CC_Font3Pri,$0,$6,$0
 	movea.l	#PlayerStatsTitleMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1499,17 +1499,17 @@ SeasonStatsListDraw					;Draw the season player stats screen for team d7 (Season
 	jsr	(ReadTeamPlayerStats).l
 	clr.w	(PlayerScrollCtr).w
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),$5,$1,$0
+	String	CC_Font3Pri,$5,$1,$0
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$4,$3,$B,$1A,CC_SetFont,$3,'A,B^-^Switch^Teams',CC_SetFont,$0,$0
 	btst	#3,(sflags11).w
 	bne.w	.1
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP3),$02,$04,'Season',-(TXPRI+TXMAP3),$0F,$04,'Player',-(TXPRI+TXMAP3),$1C,$04,'Stats',-(TXPRI+TXMAP3),$0E,$01
+	String	CC_Font3Pri,$02,$04,'Season',CC_Font3Pri,$0F,$04,'Player',CC_Font3Pri,$1C,$04,'Stats',CC_Font3Pri,$0E,$01
 	bra.w	.2
 .1
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP3),$6,$4,'Playoff',-(TXPRI+TXMAP3),$15,$4,'Players',-(TXPRI+TXMAP3),$E,$1,$0
+	String	CC_Font3Pri,$6,$4,'Playoff',CC_Font3Pri,$15,$4,'Players',CC_Font3Pri,$E,$1,$0
 .2
 	clr.w	d0
 	move.w	d7,d0
@@ -1642,7 +1642,7 @@ DrawSeasonStatsList					;Headers, sort title, sorted player list at Satt, draws 
 	jsr	(printsmallz).l
 	String	CC_SetFont,$1
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),$A,$7,$0
+	String	CC_Font3Pri,$A,$7,$0
 	lea	SeasonStatSortTitles(pc),a1
 	moveq	#1,d0
 	add.w	(DispAttribCtr).w,d0
@@ -1716,7 +1716,7 @@ DrawSeasonStatsRow					;Draws list row d3 (rank, name, 3 stat columns or goalie 
 	movea.w	#(Satt-M68K_RAM),a4
 	adda.w	d3,a4
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$0,$0,$0
+	String	CC_Font2Pri,$0,$0,$0
 	add.w	d3,d3
 	andi.w	#$1F,d3
 	move.w	d3,(printy).w
@@ -1943,18 +1943,18 @@ SeasonTeamStatsRun					;Season (or playoff, sflags11 bit 3) team stats screen: t
 	btst	#3,(sflags11).w
 	bne.w	.1
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP2),$4,$2,'Season',-(TXPRI+TXMAP2),$11,$2,'Team',-(TXPRI+TXMAP2),$1A,$2,'Stats'
+	String	CC_Font2Pri,$4,$2,'Season',CC_Font2Pri,$11,$2,'Team',CC_Font2Pri,$1A,$2,'Stats'
 	bra.w	.team
 .1
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP2),$8,$2,'Playoff',-(TXPRI+TXMAP2),$17,$2,'Teams'
+	String	CC_Font2Pri,$8,$2,'Playoff',CC_Font2Pri,$17,$2,'Teams'
 .team
 	movea.l	#StatBuf,a0
 	jsr	(ReadSeasonTeamRecord).l
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$4,$2,$B,$1A,CC_SetFont,$1,'A,B^-^Switch^Teams',CC_SetFont,$0,$0
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),$E,$6,$0
+	String	CC_Font3Pri,$E,$6,$0
 	move.w	d7,d0
 	jsr	(DrawTeamStatsLogo).l
 	bsr.w	PrintSeasonTeamStats
@@ -2209,7 +2209,7 @@ LeagueLeadersScreen					;League Leaders screen (season menu): team / individual 
 	move.w	#$18,(palcount).w
 	bclr	#dfng,(disflags).w
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP1),$6,$2,'League Leaders',$0
+	String	CC_Font1Pri,$6,$2,'League Leaders',$0
 	clr.w	(StatWork).w
 	clr.w	(SeasonGameCount).w
 	move.w	#8,(StatWork+$8).w
@@ -2310,21 +2310,21 @@ LeadersScrollArrows					;League Leaders: draw up/down scroll arrows depending on
 	tst.w	(SeasonGameCount).w
 	beq.w	.0
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$1,$9,'{'
+	String	CC_Font1Pri,$1,$9,'{'
 	bra.w	.1
 .0
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$1,$9,' '
+	String	CC_Font1Pri,$1,$9,' '
 .1
 	move.w	(StatWork+$6).w,d1
 	cmp.w	(StatWork+$A).w,d1
 	bge.w	.2
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$1,$18,'}'
+	String	CC_Font1Pri,$1,$18,'}'
 	bra.w	.3
 .2
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$1,$18,' '
+	String	CC_Font1Pri,$1,$18,' '
 .3
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -2335,7 +2335,7 @@ PrintTeamCategory					;League Leaders: print category name, team mode (7 categor
 	bne.w	PrintPlayerCategory
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$10,$7,$0
+	String	CC_Font1Pri,$10,$7,$0
 	move.w	(StatWork+2).w,d0
 	movea.l	#TeamCategoryText,a1
 	jsr	(PrintListItem).l
@@ -2354,7 +2354,7 @@ TeamCategoryText
 PrintPlayerCategory					;League Leaders: print category name, individual mode (4 categories)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$19,$7,$0
+	String	CC_Font1Pri,$19,$7,$0
 	move.w	(StatWork+2).w,d0
 	movea.l	#PlayerCategoryText,a1
 	jsr	(PrintListItem).l
@@ -2370,7 +2370,7 @@ PlayerCategoryText
 PrintLeadersHeader					;League Leaders: print TEAM / INDIVIDUAL column headers
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$0,$5,$0
+	String	CC_Font1Pri,$0,$5,$0
 	movea.l	#BlankLine40,a1
 	jsr	(print).l
 	move.w	(StatWork).w,d0
@@ -2380,8 +2380,8 @@ PrintLeadersHeader					;League Leaders: print TEAM / INDIVIDUAL column headers
 	rts
 
 LeaderModeText
-	String	-(TXPRI+TXMAP1),$11,$5,'TEAM',-(TXPRI+TXMAP1),$5,$7,'   Team    ',$0
-	String	-(TXPRI+TXMAP1),$F,$5,'INDIVIDUAL',-(TXPRI+TXMAP1),$6,$7,'No. Player   Team  ',$0
+	String	CC_Font1Pri,$11,$5,'TEAM',CC_Font1Pri,$5,$7,'   Team    ',$0
+	String	CC_Font1Pri,$F,$5,'INDIVIDUAL',CC_Font1Pri,$6,$7,'No. Player   Team  ',$0
 
 ReadLeadersPad						;League Leaders: wait (frame-synced) until a joypad reports input; d1 =
 									;buttons
@@ -2430,7 +2430,7 @@ ClearLeadersArea					;League Leaders: clear a $28x$14 text area with tile $7FF (
 	move.w	#$14,d1
 	move.w	#$7FF,d2
 	jsr	(printz).l
-	String	-TXMAP1,$0,$7,$0
+	String	CC_Font1,$0,$7,$0
 	jsr	(eraser).l
 	movem.l	(sp)+,d0-d7/a0-a6
 .exit
@@ -3113,13 +3113,13 @@ LeadersHelp							;League Leaders footer: "[]=Change Stats B=Individual Leaders"
 	tst.w	(StatWork).w
 	beq.w	.0
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),2,$1A,0
+	String	CC_Font1Pri,2,$1A,0
 	jsr	(printsmallz).l
 	String	CC_SetFont,1,'[]=Change Stats       B=Team Leaders ',CC_SetFont,0,0
 	bra.w	.1
 .0
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),2,$1A,0
+	String	CC_Font1Pri,2,$1A,0
 	jsr	(printsmallz).l
 	String	CC_SetFont,1,'[]=Change Stats  B=Individual Leaders',CC_SetFont,0,0
 .1
@@ -3135,7 +3135,7 @@ PeriodStatsScreen					;Both team logos, goals/shots by period and total; left/ri
 	move.l	#ControllerBgMap,(screenarg).l
 	jsr	(DrawTeamScreen2).l
 	jsr	(printz).l
-	String	-TXMAP3,2,6,0
+	String	CC_Font3,2,6,0
 	movea.l	#PeriodStatsMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -3148,15 +3148,15 @@ PeriodStatsScreen					;Both team logos, goals/shots by period and total; left/ri
 	moveq	#0,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),1,8,0
+	String	CC_Font2Pri,1,8,0
 	move.w	#8,d0
 	move.w	#8,d1
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),1,$F,0
+	String	CC_Font2Pri,1,$F,0
 	move.w	#8,d0
 	move.w	#8,d1
 	jsr	(printz).l
-	String	-(TXPRI+TXPAL2+TXMAP2),2,9,0
+	String	CC_Font2Pal2Pri,2,9,0
 	movea.l	#TeamLogoBitmaps,a0
 	move.w	(VisTeam).w,d0
 	asl.w	#2,d0
@@ -3182,7 +3182,7 @@ PeriodStatsScreen					;Both team logos, goals/shots by period and total; left/ri
 	move.l	(a0)+,(a1)+
 	dbf	d0,.loop
 	jsr	(printz).l
-	String	-(TXPRI+TXPAL3+TXMAP2),2,$10,0
+	String	CC_Font2Pal3Pri,2,$10,0
 	movea.l	#TeamLogoBitmaps,a0
 	move.w	(HomeTeam).w,d0
 	asl.w	#2,d0
@@ -3202,19 +3202,19 @@ PeriodStatsScreen					;Both team logos, goals/shots by period and total; left/ri
 	moveq	#4,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),4,1,0
+	String	CC_Font3Pri,4,1,0
 	moveq	#$20,d0
 	moveq	#6,d1
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP3),9,2,'Period',-(TXPRI+TXMAP3),$15,2,'Stats',-(TXPRI+TXMAP2),6,1
+	String	CC_Font3Pri,9,2,'Period',CC_Font3Pri,$15,2,'Stats',CC_Font2Pri,6,1
 	btst	#1,(sflags7).w
 	beq.w	.0
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$0C,$07,'1',-(TXPRI+TXMAP2),$11,$07,'2',-(TXPRI+TXMAP2),$16,$07,'3',-(TXPRI+TXMAP2),$1A,$07,'OT',-(TXPRI+TXMAP2),' ',$07,'Total'
+	String	CC_Font2Pri,$0C,$07,'1',CC_Font2Pri,$11,$07,'2',CC_Font2Pri,$16,$07,'3',CC_Font2Pri,$1A,$07,'OT',CC_Font2Pri,' ',$07,'Total'
 	bra.w	.1
 .0
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$0C,$07,'1',-(TXPRI+TXMAP2),$11,$07,'2',-(TXPRI+TXMAP2),$16,$07,'3',-(TXPRI+TXMAP2),' ',$07,'Total'
+	String	CC_Font2Pri,$0C,$07,'1',CC_Font2Pri,$11,$07,'2',CC_Font2Pri,$16,$07,'3',CC_Font2Pri,' ',$07,'Total'
 .1
 	bsr.w	PeriodStatsCaption
 	bsr.w	PeriodStatsColumns
@@ -3250,13 +3250,13 @@ PeriodStatsCaption					;Caption "Shots" + "[ For Goals" or "Goals" + "For Shots 
 	tst.w	(matchup).w
 	beq.w	.0
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$11,5,'Shots',-(TXPRI+TXMAP2),$F,$1A,0
+	String	CC_Font2Pri,$11,5,'Shots',CC_Font2Pri,$F,$1A,0
 	jsr	(printsmallz).l
 	String	CC_SetFont,1,'[ For Goals',CC_SetFont,0,0
 	rts
 .0
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$11,5,'Goals',-(TXPRI+TXMAP2),$F,$1A,0
+	String	CC_Font2Pri,$11,5,'Goals',CC_Font2Pri,$F,$1A,0
 	jsr	(printsmallz).l
 	String	CC_SetFont,1,'For Shots ]',CC_SetFont,0,0
 	rts
@@ -3265,7 +3265,7 @@ PeriodStatsColumns					;Print both teams' period columns (away row $B,
 									;home row $12) and the total
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$0,$0,$0
+	String	CC_Font2Pri,$0,$0,$0
 	movea.l	#AwShots,a2
 	move.w	#$B,(printy).w
 	bsr.w	PeriodStatsTeam
@@ -3492,7 +3492,7 @@ SelectLinePlayer					;Build the list of players for the slot and let the user pi
 PrintAttribHeader					;Player list column header (PAttribColumns page DispAttribCtr), then 6
 									;rows of names, selected row highlighted
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$16,$1,$0
+	String	CC_Font2Pri,$16,$1,$0
 .top
 	movea.l	#PAttribColumns,a1
 	move.w	(DispAttribCtr).w,d0
@@ -3642,11 +3642,11 @@ ClearLineArea						;Erase the line area and print the position header (LD RD LW 
 DrawLineEditorScreen				;Clear, print the "Line Editor" title and the team logo
 	jsr	(ClearLineEditorTop).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$7,$1,$0
+	String	CC_Font2Pri,$7,$1,$0
 	moveq	#$1A,d0
 	moveq	#6,d1
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP2),$A,$4,'Line  Editor',-(TXPRI+TXMAP2),$E,$1
+	String	CC_Font2Pri,$A,$4,'Line  Editor',CC_Font2Pri,$E,$1
 	clr.w	d0
 	cmpa.w	#(tmstruct-M68K_RAM),a2
 	beq.w	.0
@@ -3656,7 +3656,7 @@ DrawLineEditorScreen				;Clear, print the "Line Editor" title and the team logo
 
 ClearLineEditorTop					;Erase 40 x 10 at the top of map 2
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$0,$0,$0
+	String	CC_Font2Pri,$0,$0,$0
 	moveq	#$28,d0
 	moveq	#$A,d1
 	move.w	#$7FF,d2
@@ -3695,7 +3695,7 @@ LineEditorExit						;Exit box (rewritten in 95): Start leaves, A original lines,
 	btst	#6,(sflags11).w
 	beq.w	.0
 	jsr	(printz).l
-	String	-(TXPAL3+TXMAP2),$8,$A,$0
+	String	CC_Font2Pal3,$8,$A,$0
 	move.w	#$18,d0
 	move.w	#9,d1
 	jsr	(Framer).l
@@ -3711,7 +3711,7 @@ LineEditorExit						;Exit box (rewritten in 95): Start leaves, A original lines,
 	bne.w	.1
 	bset	#1,(sflags10).w
 	jsr	(printz).l
-	String	-(TXPAL3+TXMAP2),$8,$A,$0
+	String	CC_Font2Pal3,$8,$A,$0
 	move.w	#$18,d0
 	move.w	#9,d1
 	jsr	(Framer).l
@@ -3721,7 +3721,7 @@ LineEditorExit						;Exit box (rewritten in 95): Start leaves, A original lines,
 .1
 	bclr	#1,(sflags10).w
 	jsr	(printz).l
-	String	-(TXPAL3+TXMAP2),$8,$A,$0
+	String	CC_Font2Pal3,$8,$A,$0
 	move.w	#$18,d0
 	move.w	#7,d1
 	jsr	(Framer).l
@@ -3767,7 +3767,7 @@ LineEditorBg						;Draw the line editor background bitmap (LineEditorBgMap) on m
 	bclr	#1,(BA_PS_flags).w
 	move.w	(screen6chars2).w,d4
 	jsr	(printz).l
-	String	-TXMAP3,$0,$0,$0
+	String	CC_Font3,$0,$0,$0
 	movea.l	#LineEditorBgMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -3790,7 +3790,7 @@ PlayerSelectBg						;Draw the player select list background bitmaps (PlayerSelec
 	bset	#1,(BA_PS_flags).w
 	move.w	(screen6chars1).w,d4
 	jsr	(printz).l
-	String	-TXMAP3,$0,$0,$0
+	String	CC_Font3,$0,$0,$0
 	movea.l	#PlayerSelectMap1,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -3805,7 +3805,7 @@ PlayerSelectBg						;Draw the player select list background bitmaps (PlayerSelec
 	jsr	(dobitmap).l
 	move.w	(screen6chars3).w,d4
 	jsr	(printz).l
-	String	-TXMAP3,$0,$0,$0
+	String	CC_Font3,$0,$0,$0
 	movea.l	#PlayerSelectMap2,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -3907,12 +3907,12 @@ ShowThreeStars						;End of game Stars of the Game box. Called from UpdatePA whi
 	movem.l	(sp)+,d0/a1
 	movem.l	d0-d5/a0-a4,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$2,$E,$0
+	String	CC_Font1Pri,$2,$E,$0
 	moveq	#$1C,d0					;framer size
 	moveq	#9,d1
 	jsr	(Framer).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$9,$10,'Stars of the Game',-(TXPRI+TXMAP1),$3,$F,$0
+	String	CC_Font1Pri,$9,$10,'Stars of the Game',CC_Font1Pri,$3,$F,$0
 	bsr.w	CalcStarScores
 	move.w	#$12,(printy).w
 	moveq	#2,d2					;3 stars
@@ -4076,7 +4076,7 @@ HighlightsScreen					;Season NHL HIGHLIGHTS screen: draw bg/title, joypad loop: 
 	move.l	#ControllerBgMap,(screenarg).l
 	bsr.w	GamesTodayGfx
 	jsr	(printz).l
-	String	-TXMAP2,$2,$6,$0
+	String	CC_Font2,$2,$6,$0
 	movea.l	#HighlightsBgMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -4225,7 +4225,7 @@ ReadHighlightsPad					;Highlights joypad wait: each frame poll joypads (ReadJoy1
 
 PrintHighlightsTitle				;print big title NHL HIGHLIGHTS
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP1),$8,$2,'NHL HIGHLIGHTS',$0
+	String	CC_Font1Pri,$8,$2,'NHL HIGHLIGHTS',$0
 	rts
 
 DrawHighlightPage					;Draw the current highlight page: date, logos and score of game
@@ -4237,14 +4237,14 @@ DrawHighlightPage					;Draw the current highlight page: date, logos and score of
 	move.w	#$13,d1
 	move.w	#$7FF,d2
 	jsr	(printz).l
-	String	-TXMAP1,$0,$6,$0
+	String	CC_Font1,$0,$6,$0
 	jsr	(eraser).l
 	movea.l	#SeasonTeams,a0
 	clr.w	d1
 	move.b	1(a0),d3
 	beq.w	.0
 	jsr	(printz).l
-	String	-TXMAP1,$14,$7,$0
+	String	CC_Font1,$14,$7,$0
 	movem.l	d0/a0-a1,-(sp)
 	jsr	(MakeDateString).l
 	movea.l	#StatWork,a1
@@ -4258,7 +4258,7 @@ DrawHighlightPage					;Draw the current highlight page: date, logos and score of
 	mulu.w	#5,d0
 	addq.w	#2,d0
 	jsr	(printz).l
-	String	-TXMAP1,$7,$A,$0
+	String	CC_Font1,$7,$A,$0
 	clr.w	d1
 	move.b	0(a0,d0.w),d1
 	move.w	d1,(HomeTeam).w
@@ -4285,7 +4285,7 @@ DrawHighlightEntry					;Read the highlight record of the game (GetHighlightSlot)
 	movea.l	#StatBuf,a0
 	jsr	(ReadSRAM).l
 	jsr	(printz).l
-	String	-TXMAP1,$14,$13,$0
+	String	CC_Font1,$14,$13,$0
 	bsr.w	PrintHighlight
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -4294,7 +4294,7 @@ PrintRecordHighlight				;Print a type 4 highlight record: team name and its W-L-
 									;SRStandings, centered
 	move.l	a0,-(sp)
 	jsr	(printz).l
-	String	-TXMAP1,$14,$13,$0
+	String	CC_Font1,$14,$13,$0
 	move.w	(a0),d0
 	andi.w	#$FFF,d0
 	move.w	d0,-(sp)
@@ -4432,7 +4432,7 @@ PrintGameScore2						;print the game's score (bytes 2/3 of game record a0+d0) or
 	btst	#1,4(a0,d0.w)
 	bne.w	.0
 	jsr	(printz).l
-	String	-TXMAP1,$13,$E,'.......LATER',$0
+	String	CC_Font1,$13,$E,'.......LATER',$0
 	bra.w	.1
 .0
 	clr.w	d5
@@ -4522,7 +4522,7 @@ HighlightsHelp						;HighlightsScreen help line: {} More games, [] Change day (c
 	move.w	(smallfontchars).w,-(sp)
 	move.w	(smallfont2chars).w,(smallfontchars).w
 	jsr	(printz).l
-	String	-TXMAP1,2,$19,'{} More games',-TXMAP1,$19,$19,'[] Change day'
+	String	CC_Font1,2,$19,'{} More games',CC_Font1,$19,$19,'[] Change day'
 	move.w	(sp)+,(smallfontchars).w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts

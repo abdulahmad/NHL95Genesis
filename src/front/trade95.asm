@@ -729,7 +729,7 @@ TradePlayers						;Trade Player screen: the two rosters with position / rating; 
 	jsr	(forceblack).l
 	bsr.w	TradeGfx
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP1),$9,$2,'Trade Player',$0
+	String	CC_Font1Pri,$9,$2,'Trade Player',$0
 	clr.w	(TradeData+$4).l
 	clr.w	(TradeData+$8).l
 	move.w	#5,(TradeData+$6).l
@@ -758,18 +758,18 @@ TradePlayers						;Trade Player screen: the two rosters with position / rating; 
 	move.w	#$18,(palcount).w
 	bclr	#dfng,(disflags).w
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$0,$0,$0
+	String	CC_Font1Pri,$0,$0,$0
 	bsr.w	DrawHomeTradeRoster
 	bsr.w	DrawVisTradeRoster
 	move.w	#$FFFF,(setupdir).w
 .redraw
 	move.w	(HomeTeam).w,d1
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$8,$6,$0
+	String	CC_Font1Pri,$8,$6,$0
 	bsr.w	DrawTradeLogo
 	move.w	(VisTeam).w,d1
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$8,$10,$0
+	String	CC_Font1Pri,$8,$10,$0
 	bsr.w	DrawTradeLogo
 	jsr	(printsmallz).l
 	String	CC_SetFont,$2,CC_SetX,$15,CC_SetY,$7,'POSITION',CC_SetX,$1F,'RATING'
@@ -906,7 +906,7 @@ DrawTradeRosterRows					;Draw the roster rows of team d7 (name, position, rating
 									;chosen players
 	move.w	(printy).w,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$0,$0,$0
+	String	CC_Font1Pri,$0,$0,$0
 	move.w	(sp)+,(printy).w
 	clr.w	d6
 	move.w	(a5),d0
@@ -1114,7 +1114,7 @@ CheckTrade							;Check the trade: players chosen on both teams, at most three a
 	bra.w	.valid
 .invalid
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$5,$A,$0
+	String	CC_Font1Pri,$5,$A,$0
 	move.w	#$1E,d0
 	move.w	#$E,d1
 	jsr	(Framer).l
@@ -1126,7 +1126,7 @@ CheckTrade							;Check the trade: players chosen on both teams, at most three a
 	bsr.w	ReadTradePads
 	move.w	#$7FF,d2
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$5,$A,$0
+	String	CC_Font1Pri,$5,$A,$0
 	move.w	#$1E,d0
 	move.w	#$E,d1
 	jsr	(eraser).l
@@ -1238,7 +1238,7 @@ TradeGfx							;Trade screen video set up and graphics
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF
 	jsr	(printz).l
-	String	-TXMAP2,$0,$0,$0
+	String	CC_Font2,$0,$0,$0
 	movea.l	#TradeBgMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1341,11 +1341,11 @@ EvaluateTrade						;Evaluate Trade screen (GMDecisionGfx): the chosen players of
 	String	CC_SetFont,$1,CC_SetX,$1,CC_SetY,$1A,'   Cancel   Modify   Execute   Propose'
 .0
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP1),$6,$2,'Evaluate Trade',$0
+	String	CC_Font1Pri,$6,$2,'Evaluate Trade',$0
 	move.w	#$18,(palcount).w
 	bclr	#dfng,(disflags).w
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$0,$0,$0
+	String	CC_Font1Pri,$0,$0,$0
 	jsr	(printsmallz).l
 	String	CC_SetFont,$0,CC_SetX,$F,CC_SetY,$9
 	movea.l	#TradeRoster1,a0
@@ -1453,7 +1453,7 @@ GMDecisionGfx						;The trade graphics (TradeGfx), the GM decision bitmap, both 
 									;with their palettes and team blocks
 	jsr	(TradeGfx).l
 	jsr	(printz).l
-	String	-TXMAP2,$E,$10,$0
+	String	CC_Font2,$E,$10,$0
 	movea.l	#GMDecisionMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1467,7 +1467,7 @@ GMDecisionGfx						;The trade graphics (TradeGfx), the GM decision bitmap, both 
 	jsr	(dobitmap).l
 	move.w	d4,(TradeToTeam).w
 	jsr	(printz).l
-	String	-(TXPRI+TXPAL2+TXMAP2),$8,$8,$0
+	String	CC_Font2Pal2Pri,$8,$8,$0
 	movea.l	#TeamLogoBitmaps,a0
 	move.w	(HomeTeam).w,d0
 	asl.w	#2,d0
@@ -1493,7 +1493,7 @@ GMDecisionGfx						;The trade graphics (TradeGfx), the GM decision bitmap, both 
 	move.l	(a0)+,(a1)+
 	dbf	d0,.pal
 	jsr	(printz).l
-	String	-(TXPRI+TXPAL3+TXMAP2),$8,$12,$0
+	String	CC_Font2Pal3Pri,$8,$12,$0
 	movea.l	#TeamLogoBitmaps,a0
 	move.w	(VisTeam).w,d0
 	asl.w	#2,d0
@@ -1514,11 +1514,11 @@ GMDecisionGfx						;The trade graphics (TradeGfx), the GM decision bitmap, both 
 	jsr	(dobitmap).l
 	move.w	(HomeTeam).w,d1
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$8,$6,$0
+	String	CC_Font1Pri,$8,$6,$0
 	bsr.w	DrawTradeLogo
 	move.w	(VisTeam).w,d1
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$8,$10,$0
+	String	CC_Font1Pri,$8,$10,$0
 	bsr.w	DrawTradeLogo
 	rts
 
@@ -1527,18 +1527,18 @@ GMDecisionScreen					;GM DECISION: rate both sides (TradeValue); a difference of
 									;executes the trade, else start just leaves; B back to TradePlayers
 	bsr.w	CreateScreenGfx
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP1),$B,$2,'GM DECISION'
+	String	CC_Font1Pri,$B,$2,'GM DECISION'
 	jsr	(printsmallz).l
 	String	CC_SetFont,$1,CC_SetX,$8,CC_SetY,$1A,'B=Modify',CC_SetX,$12,'Start=Continue'
 	jsr	(printsmallz).l
 	String	CC_SetFont,$2,CC_SetX,$12,CC_SetY,$8,'FOR',$0
 	move.w	(HomeTeam).w,d1
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$4,$5,$0
+	String	CC_Font1Pri,$4,$5,$0
 	bsr.w	DrawTradeLogo
 	move.w	(VisTeam).w,d1
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$17,$5,$0
+	String	CC_Font1Pri,$17,$5,$0
 	bsr.w	DrawTradeLogo
 	movea.l	#TradeRoster1,a0
 	move.w	(TradeWork+$4).l,d3
@@ -1563,7 +1563,7 @@ GMDecisionScreen					;GM DECISION: rate both sides (TradeValue); a difference of
 	st	(rosterteam).w
 	move.w	(StatWork+$3C).w,d4
 	jsr	(printz).l
-	String	-TXMAP1,$0,$B,$0
+	String	CC_Font1,$0,$B,$0
 	movea.l	#TradeAdvantageMap1,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1592,7 +1592,7 @@ GMDecisionScreen					;GM DECISION: rate both sides (TradeValue); a difference of
 .even
 	move.w	(StatWork+$3C).w,d4
 	jsr	(printz).l
-	String	-TXMAP1,$0,$B,$0
+	String	CC_Font1,$0,$B,$0
 	movea.l	#TradeAdvantageMap2,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1616,7 +1616,7 @@ GMDecisionScreen					;GM DECISION: rate both sides (TradeValue); a difference of
 	move.w	#$18,(palcount).w
 	bclr	#dfng,(disflags).w
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$0,$0,$0
+	String	CC_Font1Pri,$0,$0,$0
 .input
 	bsr.w	ReadGMDecisionPads
 	tst.w	d1

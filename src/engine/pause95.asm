@@ -379,7 +379,7 @@ PauseScreenDraw						;Draw the pause screen (Pausemode_pall): wait out the dma, 
 	move.w	#$7FF,d2
 	jsr	(DoFill).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),0,0,0
+	String	CC_Font2Pri,0,0,0
 	movea.l	#PauseBgBitmap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -394,7 +394,7 @@ PauseScreenDraw						;Draw the pause screen (Pausemode_pall): wait out the dma, 
 	jsr	(dobitmap).l
 	move.w	d4,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),0,3,0
+	String	CC_Font2Pri,0,3,0
 	movea.l	#PauseBgBitmap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -409,7 +409,7 @@ PauseScreenDraw						;Draw the pause screen (Pausemode_pall): wait out the dma, 
 	movea.l	#ZeroLong,a2			;a zero long: no palettes
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),0,$19,0
+	String	CC_Font2Pri,0,$19,0
 	movea.l	#PauseBgBitmap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -425,7 +425,7 @@ PauseScreenDraw						;Draw the pause screen (Pausemode_pall): wait out the dma, 
 	jsr	(dobitmap).l
 	move.w	(sp)+,d4
 	jsr	(printz).l
-	String	-(TXPRI+TXPAL2+TXMAP2),$10,7,0
+	String	CC_Font2Pal2Pri,$10,7,0
 	btst	#0,(gmode2).w			;shootout: no period number
 	bne.w	.fonts
 	cmpi.w	#3,(gsp).w
@@ -504,7 +504,7 @@ PauseScreenDraw						;Draw the pause screen (Pausemode_pall): wait out the dma, 
 	jsr	(PauseScores).l
 	bsr.w	ShowPenaltyBoxes
 	jsr	(printz).l
-	String	-TXMAP2,0,0,0
+	String	CC_Font2,0,0,0
 	move.w	#$18,(palcount).w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -513,11 +513,11 @@ ShowPenaltyBoxes					;The pause screen penalty boxes: home at $1F, $E, away at 2
 									;(ShowPenaltyBox)
 	movem.l	d0-d7/a0-a3,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$1F,$E,0
+	String	CC_Font2Pri,$1F,$E,0
 	movea.l	#tmstruct,a2
 	bsr.w	ShowPenaltyBox
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),2,$E,0
+	String	CC_Font2Pri,2,$E,0
 	movea.l	#AwShots,a2
 	bsr.w	ShowPenaltyBox
 	movem.l	(sp)+,d0-d7/a0-a3
@@ -920,7 +920,7 @@ PauseInfo							;The info page: a bitmap at $11, $B (a0 is whatever printz left:
 									;data port) and
 									;PauseInfoText
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$11,$B,0
+	String	CC_Font2Pri,$11,$B,0
 	movea.l	a0,a1
 	movea.l	a0,a2
 	adda.l	(a2)+,a0
@@ -936,9 +936,9 @@ PauseInfo							;The info page: a bitmap at $11, $B (a0 is whatever printz left:
 	jsr	(PrintLines).l
 	rts
 PauseInfoText						;The info page text (a placeholder in retail)
-	String	-(TXPRI+TXMAP2),$B,$12,'Lots of good text:'
-	String	-(TXPRI+TXMAP2),$B,$14,'stats and other'
-	String	-(TXPRI+TXMAP2),$B,$16,'stuff.'
+	String	CC_Font2Pri,$B,$12,'Lots of good text:'
+	String	CC_Font2Pri,$B,$14,'stats and other'
+	String	CC_Font2Pri,$B,$16,'stuff.'
 	String	$FF,0
 PrintLines							;print the Strings at a1 up to a $FF String
 	cmpi.b	#$FF,2(a1)
@@ -961,9 +961,9 @@ ShowPenaltyMessages					;Every $78 frames show the last queued penalty (penaltym
 	beq.w	.empty
 	move.l	a0,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$A,$F,'                    '	;clear the two message lines
+	String	CC_Font1Pri,$A,$F,'                    '	;clear the two message lines
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$A,$11,'                    '
+	String	CC_Font1Pri,$A,$11,'                    '
 	movea.l	(sp)+,a0
 .end
 	tst.w	(a0)+
@@ -983,7 +983,7 @@ ShowPenaltyMessages					;Every $78 frames show the last queued penalty (penaltym
 	move.w	d0,-(sp)
 	addq.l	#2,a1
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$14,$F,0
+	String	CC_Font1Pri,$14,$F,0
 	move.w	(a1),d0
 	subq.w	#2,d0
 	lsr.w	#1,d0
@@ -998,7 +998,7 @@ ShowPenaltyMessages					;Every $78 frames show the last queued penalty (penaltym
 	move.l	a2,-(sp)
 	jsr	(FormatPlayerNumInitial).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$14,$11,0
+	String	CC_Font1Pri,$14,$11,0
 	move.w	(a1),d0
 	subq.w	#2,d0
 	lsr.w	#1,d0
@@ -1040,7 +1040,7 @@ SelectInfoTab						;Draw the INFO tab selected (x 1), the others plain
 	bsr.w	ClearStatsTab
 	bsr.w	ClearPauseTab
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),1,1,0
+	String	CC_Font2Pri,1,1,0
 	move.w	#1,d0
 	bsr.w	DrawTabSelected
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1049,7 +1049,7 @@ SelectInfoTab						;Draw the INFO tab selected (x 1), the others plain
 ClearInfoTab						;Draw the INFO tab plain
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),1,1,0
+	String	CC_Font2Pri,1,1,0
 	move.w	#1,d0
 	bsr.w	DrawTab
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1060,7 +1060,7 @@ SelectStatsTab						;Draw the STATS tab selected (x $E), the others plain
 	bsr.s	ClearInfoTab
 	bsr.w	ClearPauseTab
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$E,1,0
+	String	CC_Font2Pri,$E,1,0
 	move.w	#$E,d0
 	bsr.w	DrawTabSelected
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1069,7 +1069,7 @@ SelectStatsTab						;Draw the STATS tab selected (x $E), the others plain
 ClearStatsTab						;Draw the STATS tab plain
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$E,1,0
+	String	CC_Font2Pri,$E,1,0
 	move.w	#$E,d0
 	bsr.w	DrawTab
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1080,7 +1080,7 @@ SelectPauseTab						;Draw the PAUSE tab selected (x $1B), the others plain
 	bsr.s	ClearStatsTab
 	bsr.s	ClearInfoTab
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$1B,1,0
+	String	CC_Font2Pri,$1B,1,0
 	move.w	#$1B,d0
 	bsr.w	DrawTabSelected
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1089,7 +1089,7 @@ SelectPauseTab						;Draw the PAUSE tab selected (x $1B), the others plain
 ClearPauseTab						;Draw the PAUSE tab plain
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$1B,1,0
+	String	CC_Font2Pri,$1B,1,0
 	move.w	#$1B,d0
 	bsr.w	DrawTab
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -1513,7 +1513,7 @@ PauseScores							;The two scores in big digits on the pause screen (PutScoreDig
 									;PauseScreenDraw
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$1E,6,0
+	String	CC_Font2Pri,$1E,6,0
 	movea.l	#tmstruct,a2
 	move.w	tmscore(a2),d0
 	ext.l	d0
@@ -1530,7 +1530,7 @@ PauseScores							;The two scores in big digits on the pause screen (PutScoreDig
 	swap	d0
 	bsr.w	PutScoreDigit
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),6,6,0
+	String	CC_Font2Pri,6,6,0
 	movea.l	#AwShots,a2
 	move.w	tmscore(a2),d0
 	ext.l	d0

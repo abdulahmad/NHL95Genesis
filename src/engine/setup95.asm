@@ -28,7 +28,7 @@ TeamRosterScreen					;"Team Roster" screen for team a2: DrawTeamScreen, then the
 	move.w	Xvel(a2),d3
 	jsr	(GetTeamLogo).l
 	jsr	(printz).l
-	String	-(TXPRI+TXPAL3+TXMAP3),2,1,0
+	String	CC_Font3Pal3Pri,2,1,0
 	move.w	(homepicchars).w,d4
 	move.w	#4,d5
 	movem.l	d0-d7/a0-a6,-(sp)
@@ -40,7 +40,7 @@ TeamRosterScreen					;"Team Roster" screen for team a2: DrawTeamScreen, then the
 	movem.l	(sp)+,a0-a6
 	clr.w	(rosterscroll).w
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),$E,1,0
+	String	CC_Font3Pri,$E,1,0
 	clr.w	d0
 	cmpa.w	#(tmstruct-M68K_RAM),a2
 	beq.w	.1
@@ -50,7 +50,7 @@ TeamRosterScreen					;"Team Roster" screen for team a2: DrawTeamScreen, then the
 	jsr	(printsmallz).l
 	String	$F8,$04,$02,$01,$0B,$F9,$02,'^#^^Player',$FD,$19,'Lines',$FD,$17,$FC,$0C,'Reg^PP^PK',$FD,'!',$FC,$0B,'Rating',$FD,$03,$FC,$1A,'A-Teams                C-Positions',$F9,$00
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),1,8,0
+	String	CC_Font3Pri,1,8,0
 	bsr.w	DisplayPlayerList
 	clr.w	(VertLineScrolling).w
 	clr.w	(PlayerScrollCtr).w
@@ -484,7 +484,7 @@ DrawTeamScreen						;Roster screen background: wait for the dma (disflags bit 0)
 	move.w	(sp)+,(disflags).w
 	bclr	#df32c,(disflags).w
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),0,0,0
+	String	CC_Font3Pri,0,0,0
 	movea.l	#RosterBitmap,a1
 	adda.l	4(a1),a1
 	movea.w	#ZeroLong,a2
@@ -496,7 +496,7 @@ DrawTeamScreen						;Roster screen background: wait for the dma (disflags bit 0)
 	moveq	#0,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	-TXMAP3,0,0,0
+	String	CC_Font3,0,0,0
 	movem.l	(sp),d0-d1/a2
 	add.w	d0,(printy).w
 	movea.l	#RosterBitmap,a0
@@ -523,7 +523,7 @@ DrawTeamScreen						;Roster screen background: wait for the dma (disflags bit 0)
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$0C,$83,$45,$67,$89,$AB,$CD,$EF
 	jsr	(printz).l
-	String	-TXMAP2,0,0,0
+	String	CC_Font2,0,0,0
 	moveq	#$40,d0
 	moveq	#$20,d1
 	move.w	#$7FF,d2
@@ -1269,13 +1269,13 @@ EraseCardText						;Erase the card text areas: 5 rows at $FF,8,3 and 1 row at $F
 	move.w	#$18,d0
 	move.w	#5,d1
 	jsr	(printz).l
-	String	-TXMAP1,$8,$3,$0
+	String	CC_Font1,$8,$3,$0
 	bsr.w	GetBlankChar
 	jsr	(eraser).l
 	move.w	#$16,d0
 	move.w	#1,d1
 	jsr	(printz).l
-	String	-TXMAP1,$9,$9,$0
+	String	CC_Font1,$9,$9,$0
 	bsr.w	GetBlankChar
 	jsr	(eraser).l
 	movem.l	(sp)+,d0-d2/a0
@@ -1486,7 +1486,7 @@ PrintSetupText						;Print String a1 at printx / printy with the
 	move.w	(printx).w,-(sp)
 	move.w	(printy).w,-(sp)
 	jsr	(printz).l
-	String	-TXMAP1,$0,$0,$0
+	String	CC_Font1,$0,$0,$0
 	move.w	(sp)+,(printy).w
 	move.w	(sp)+,(printx).w
 	movem.l	(sp)+,a1
@@ -1502,7 +1502,7 @@ PrintSetupTextHi					;The same with the highlight chars (smallfont3chars)
 	move.w	(printx).w,-(sp)
 	move.w	(printy).w,-(sp)
 	jsr	(printz).l
-	String	-TXMAP1,$0,$0,$0
+	String	CC_Font1,$0,$0,$0
 	move.w	(sp)+,(printy).w
 	move.w	(sp)+,(printx).w
 	movem.l	(sp)+,a1
@@ -1702,7 +1702,7 @@ setoptions							;Build the game setup screen: VBint VBlank_SetOptions, the vram
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EA	;remap table
 	move.w	d4,(recwins).w
 	jsr	(printz).l
-	String	-TXMAP1,0,0,0
+	String	CC_Font1,0,0,0
 	movea.l	#SetupBgMap1,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1715,7 +1715,7 @@ setoptions							;Build the game setup screen: VBint VBlank_SetOptions, the vram
 	moveq	#$F,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	-TXMAP2,0,0,0
+	String	CC_Font2,0,0,0
 	movea.l	#SetupBgMap2,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1896,7 +1896,7 @@ DrawMatchupBitmaps					;For the modes after Practice draw the VisTeam bitmap at 
 	move.b	(setupvalues+2).w,(VisTeam+1).w
 .1
 	jsr	(printz).l
-	String	-(TXPAL2+TXMAP1),$8,$1,$0
+	String	CC_Font1Pal2,$8,$1,$0
 	move.w	(VisTeam).w,d1
 	move.w	d1,d0
 	asl.w	#5,d0
@@ -1906,7 +1906,7 @@ DrawMatchupBitmaps					;For the modes after Practice draw the VisTeam bitmap at 
 	move.w	#2,d4
 	bsr.w	DrawTeamBitmap
 	jsr	(printz).l
-	String	-(TXPAL3+TXMAP1),$15,$1,$0
+	String	CC_Font1Pal3,$15,$1,$0
 	move.w	(HomeTeam).w,d1
 	move.w	d1,d0
 	asl.w	#5,d0
@@ -1998,7 +1998,7 @@ DrawHomeBlock						;Erase the right logo (setupcardflags bit 3 was set) and draw
 	bclr	#3,(setupcardflags).w
 	beq.w	.0
 	jsr	(printz).l
-	String	-(TXPAL1+TXMAP1),$0,$0,$0
+	String	CC_Font1Pal1,$0,$0,$0
 	move.w	#0,(printx).w
 	move.w	#0,(printy).w
 	moveq	#8,d0
@@ -2006,7 +2006,7 @@ DrawHomeBlock						;Erase the right logo (setupcardflags bit 3 was set) and draw
 	move.w	#$7FF,d2
 .0
 	jsr	(printz).l
-	String	-TXMAP1,$0,$0,$0
+	String	CC_Font1,$0,$0,$0
 	move.w	#$21,(printx).w
 	bra.w	DrawSetupLogo
 
@@ -2017,7 +2017,7 @@ DrawVisBlock						;Erase the left logo (setupcardflags bit 2 was set) and draw l
 	bclr	#2,(setupcardflags).w
 	beq.w	.0
 	jsr	(printz).l
-	String	-(TXPAL1+TXMAP1),$0,$0,$0
+	String	CC_Font1Pal1,$0,$0,$0
 	move.w	#$20,(printx).w
 	move.w	#0,(printy).w
 	moveq	#8,d0
@@ -2025,7 +2025,7 @@ DrawVisBlock						;Erase the left logo (setupcardflags bit 2 was set) and draw l
 	move.w	#$7FF,d2
 .0
 	jsr	(printz).l
-	String	-(TXPAL3+TXMAP1),$0,$0,$0
+	String	CC_Font1Pal3,$0,$0,$0
 	move.w	#1,(printx).w
 
 DrawSetupLogo						;Draw the logo of team logoteam at printx, 6 x 6, palette TeamLogoPalettes
@@ -2096,7 +2096,7 @@ PlayerCardTimer						;Player cards, called each frame from ReadSetupPads while c
 	movem.l	d0-d7/a0-a6,-(sp)
 	bchg	#1,(setupcardflags).w
 	jsr	(printz).l
-	String	-TXMAP1,$0,$0,$0
+	String	CC_Font1,$0,$0,$0
 	move.w	#$21,(printx).w
 	btst	#1,(setupcardflags).w
 	bne.w	.3
@@ -2115,7 +2115,7 @@ PlayerCardTimer						;Player cards, called each frame from ReadSetupPads while c
 	addq.w	#1,(featuredplayer).w
 .5
 	jsr	(printz).l
-	String	-TXMAP1,$0,$0,$0
+	String	CC_Font1,$0,$0,$0
 	cmpi.w	#6,(featuredplayer).l
 	blt.w	.6
 	clr.w	(featuredplayer).w
@@ -2229,7 +2229,7 @@ GetBlankChar						;d2 = the blank char of the setup font (recwins + $C)
 EraseCard							;Erase both card areas (6 x 6 at x $21 and x 1), then the card text
 									;(EraseCardText)
 	jsr	(printz).l
-	String	-TXMAP1,$0,$0,$0
+	String	CC_Font1,$0,$0,$0
 	move.w	#$21,(printx).w
 	move.w	#1,(printy).w
 	move.w	#6,d0

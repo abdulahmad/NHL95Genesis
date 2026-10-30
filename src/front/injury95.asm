@@ -215,7 +215,7 @@ CheckInjury							;The injury message when its timer runs out: "Injury to:" the 
 .1
 	movem.l	d0-d2/a0-a4,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$B,$3,$0
+	String	CC_Font1Pri,$B,$3,$0
 	moveq	#$12,d0
 	moveq	#5,d1
 	jsr	(Framer).l
@@ -224,15 +224,15 @@ CheckInjury							;The injury message when its timer runs out: "Injury to:" the 
 	btst	#5,(sflags7).w
 	bne.w	.2
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$C,$4,'Injury to:',-(TXPRI+TXMAP1),$C,$6,'Out for period',-(TXPRI+TXMAP1),$C,$5,$0
+	String	CC_Font1Pri,$C,$4,'Injury to:',CC_Font1Pri,$C,$6,'Out for period',CC_Font1Pri,$C,$5,$0
 	bra.w	.6
 .2
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$C,$4,'Injury to:',-(TXPRI+TXMAP1),$C,$6,'Out for game',-(TXPRI+TXMAP1),$C,$5,$0
+	String	CC_Font1Pri,$C,$4,'Injury to:',CC_Font1Pri,$C,$6,'Out for game',CC_Font1Pri,$C,$5,$0
 	bra.w	.6
 .3
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$C,$4,'Injury to:',-(TXPRI+TXMAP1),$C,$6,'Out for '
+	String	CC_Font1Pri,$C,$4,'Injury to:',CC_Font1Pri,$C,$6,'Out for '
 	move.w	(injurygames).w,d0
 	move.w	#1,d1
 	jsr	(PushNumberWidth).l
@@ -241,18 +241,18 @@ CheckInjury							;The injury message when its timer runs out: "Injury to:" the 
 	cmpi.w	#1,(injurygames).w
 	bgt.w	.5
 	jsr	(printz).l
-	String	' game',-(TXPRI+TXMAP1),$C,$5
+	String	' game',CC_Font1Pri,$C,$5
 	bra.w	.6
 .5
 	jsr	(printz).l
-	String	' games',-(TXPRI+TXMAP1),$C,$5,$0
+	String	' games',CC_Font1Pri,$C,$5,$0
 .6
 	jsr	(GetPlayerNumInitial).l
 	jsr	(print).l
 	btst	#0,(puck_pflags2).w
 	beq.w	.done
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$14,$6,'the game',$0
+	String	CC_Font1Pri,$14,$6,'the game',$0
 .done
 	movem.l	(sp)+,d0-d2/a0-a4
 	rts
@@ -355,7 +355,7 @@ updatepwrplay						;The power play box: the team and the time left (GetLowestPen
 	bra.s	.home
 .4
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$1,$19,'   ',$16,$17,$18,$19,-(TXPRI+TXMAP1),$1,$1A,'  ',$0
+	String	CC_Font1Pri,$1,$19,'   ',$16,$17,$18,$19,CC_Font1Pri,$1,$1A,'  ',$0
 	bsr.w	GetLowestPen
 	jsr	(PushTime).l
 	jsr	(print).l
@@ -363,7 +363,7 @@ updatepwrplay						;The power play box: the team and the time left (GetLowestPen
 	movea.w	#(mesarea-M68K_RAM),a3
 	move.w	#2,(a3)
 	jsr	(appendz).l
-	String	-(TXPRI+TXMAP1),$1,$19,$0
+	String	CC_Font1Pri,$1,$19,$0
 	adda.w	4(a0),a0				;team name
 	adda.w	(a0),a0
 	movea.l	a0,a1
@@ -375,7 +375,7 @@ ClearPowerPlay						;Clear the power play box (sflags2 bit 5)
 	bclr	#sf2pwrplay,(sflags2).w
 	beq.w	rtsPowerPlay
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$1,$19,' '
+	String	CC_Font1Pri,$1,$19,' '
 	jmp	(EASNLogo).l
 
 rtsPowerPlay						;Shared rts of updatepwrplay / ClearPowerPlay

@@ -95,7 +95,7 @@ AwardDescs2							;PrintAwardTitle Strings: the second description lines
 
 DrawAwardPicture					;Draw the picture of award AwardIndex at AwardPictureX / AwardPictureY
 	jsr	(printz).l
-	String	-TXMAP1,$0,$0,$0
+	String	CC_Font1,$0,$0,$0
 	move.w	(AwardIndex).w,d0
 	add.w	d0,d0
 	movea.l	#AwardPictureX,a0
@@ -139,13 +139,13 @@ AwardPictureY						;DrawAwardPicture y of each award picture
 
 DrawFinalistsPanel					;Draw the finalists panel (FinalistsPanelMap) at 31,9
 	jsr	(printz).l
-	String	-TXMAP1,$1F,$9,$0
+	String	CC_Font1,$1F,$9,$0
 	movea.l	#FinalistsPanelMap,a0
 	bra.w	DrawAwardPanel
 
 DrawWinnerPanel						;Draw the winner panel (WinnerPanelMap) at 29,9
 	jsr	(printz).l
-	String	-TXMAP1,$1D,$9,$0
+	String	CC_Font1,$1D,$9,$0
 	movea.l	#WinnerPanelMap,a0
 	bra.w	DrawAwardPanel
 
@@ -192,7 +192,7 @@ PrintFinalists						;"FINALISTS:" and the 3 finalists (player names, or teams fo
 	clr.w	(AwardHilite).w
 .print
 	jsr	(printz).l
-	String	-(TXPAL1+TXMAP1),$11,$8,$0
+	String	CC_Font1Pal1,$11,$8,$0
 	clr.w	d1
 	movea.l	#AwardIds,a0
 .item
@@ -327,7 +327,7 @@ AwardsLoop							;Awards frames: finalists for $12C frames, then the winner to $
 	rts
 .nextaward
 	jsr	(printz).l
-	String	-TXMAP1,$0,$0,$0
+	String	CC_Font1,$0,$0,$0
 	move.w	#$7FF,d2
 	move.w	#$28,d0
 	move.w	#$1C,d1
@@ -401,7 +401,7 @@ AwardsScreenSetup					;Awards screen setup: vram layout, the small font (two rem
 	dc.b	$01,$23,$44,$67,$89,$AB,$CD,$EF
 	move.l	#SmallFontMap,(smallfontptr).l
 	jsr	(printz).l
-	String	-TXMAP2,$0,$0,$0
+	String	CC_Font2,$0,$0,$0
 	movea.l	#AwardsBgMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2

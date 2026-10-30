@@ -68,7 +68,7 @@ ScoutingReport						;Pregame scouting report: the Ron Barr picture, the text box
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$0B,$83,$4C,$67,$89,$AB,$CD,$EF
 	jsr	(printz).l
-	String	-TXMAP2,0,0,0
+	String	CC_Font2,0,0,0
 	movea.l	#ScoutReportMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -82,21 +82,21 @@ ScoutingReport						;Pregame scouting report: the Ron Barr picture, the text box
 	jsr	(dobitmap).l
 	move.w	#0,(printfontset).w		;char set 0
 	jsr	(printz).l
-	String	-TXMAP1,$10,$11,'ADVANTAGE:',0
+	String	CC_Font1,$10,$11,'ADVANTAGE:',0
 	jsr	(printz).l
-	String	-(TXPAL2+TXMAP2),6,3,0
+	String	CC_Font2Pal2,6,3,0
 	moveq	#$21,d0					;33 x 9 text box frame
 	moveq	#9,d1
 	jsr	(printz).l
-	String	-(TXPAL2+TXMAP2),3,$10,0
+	String	CC_Font2Pal2,3,$10,0
 	move.w	#8,d0					;8 x 8 frame: visitors picture
 	move.w	#8,d1
 	jsr	(printz).l
-	String	-(TXPAL2+TXMAP2),$1E,$10,0
+	String	CC_Font2Pal2,$1E,$10,0
 	move.w	#8,d0					;8 x 8 frame: home picture
 	move.w	#8,d1
 	jsr	(printz).l
-	String	-TXMAP1,0,0,0
+	String	CC_Font1,0,0,0
 	movea.l	#RonBarrMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -115,7 +115,7 @@ ScoutingReport						;Pregame scouting report: the Ron Barr picture, the text box
 	move.w	d4,(coldiconchars).w	;tiles: 1st vram char
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP1),9,2,'Scouting Report'
+	String	CC_Font1Pri,9,2,'Scouting Report'
 	clr.w	(matchup).w				;matchup 0: the teams
 	clr.w	(scoutunused).w
 	move.w	#$10D,(matchuptimer).l	;frames to the next matchup
@@ -436,16 +436,16 @@ PrintMatchupRatings					;Matchup 0: the rating names (ScoutRatingText) and both 
 	bpl.s	.loop
 	move.w	#2,(printfontset).w
 	jsr	(printz).l
-	String	-TXMAP1,$0,$19,'                                        ',$0
+	String	CC_Font1,$0,$19,'                                        ',$0
 	jsr	(printz).l
-	String	-TXMAP1,'!',$18,$0
+	String	CC_Font1,'!',$18,$0
 	movea.l	#tmstruct,a0
 	movea.l	#AwShots,a2
 	bsr.w	PrintMatchupRating		;home
 	move.w	d0,(homerating).w
 	move.w	#2,(printfontset).w
 	jsr	(printz).l
-	String	-TXMAP1,$6,$18,$0
+	String	CC_Font1,$6,$18,$0
 	exg	a0,a2
 	bsr.w	PrintMatchupRating		;visitors
 	move.w	d0,(visrating).w
@@ -472,9 +472,9 @@ PrintMatchupRatings					;Matchup 0: the rating names (ScoutRatingText) and both 
 .6
 	move.w	(matchuphome).w,d0		;home player
 	jsr	(printz).l
-	String	-TXMAP1,$0,$19,'                                        ',$0
+	String	CC_Font1,$0,$19,'                                        ',$0
 	jsr	(printz).l
-	String	-TXMAP1,'"',$19,$0
+	String	CC_Font1,'"',$19,$0
 	bsr.w	PrintPlayerNameRight	;print the name, moved left to fit the line
 	jsr	(CalcAttrib).l
 	mulu.w	#$64,d0					;* 100
@@ -484,7 +484,7 @@ PrintMatchupRatings					;Matchup 0: the rating names (ScoutRatingText) and both 
 	move.w	d0,(homerating).w
 	jsr	(PushNumberWidth).l
 	jsr	(printz).l
-	String	-TXMAP1,'!',$18,$0
+	String	CC_Font1,'!',$18,$0
 	bsr.w	PrintTwoSpaces
 	jsr	(printsmall).l
 	movea.l	#AwShots,a2
@@ -495,7 +495,7 @@ PrintMatchupRatings					;Matchup 0: the rating names (ScoutRatingText) and both 
 .7
 	move.w	(matchupvis).w,d0		;visitors player
 	jsr	(printz).l
-	String	-TXMAP1,$2,$19,$0
+	String	CC_Font1,$2,$19,$0
 	bsr.w	PrintPlayerNameRight
 	jsr	(CalcAttrib).l
 	mulu.w	#$64,d0					;* 100
@@ -505,7 +505,7 @@ PrintMatchupRatings					;Matchup 0: the rating names (ScoutRatingText) and both 
 	move.w	#2,d1
 	jsr	(PushNumberWidth).l
 	jsr	(printz).l
-	String	-TXMAP1,$6,$18,$0
+	String	CC_Font1,$6,$18,$0
 	bsr.w	PrintTwoSpaces
 	jsr	(printsmall).l
 .x
@@ -606,7 +606,7 @@ PrintAdvantageMarks					;Every frame: the advantage marks at x $13, y $16 grow t
 .3
 	move.w	#2,(printfontset).w
 	jsr	(printz).l
-	String	-TXMAP1,$13,$18,$0
+	String	CC_Font1,$13,$18,$0
 	jsr	(printsmall).l
 	move.w	#0,(printfontset).w
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -846,7 +846,7 @@ UpdateScoutingDisplay				;Text player of ScoutingReport: types the ScoutTextScri
 	bsr.w	ScrollDisplayUp
 .12
 	jsr	(printz).l
-	String	-TXMAP1,$B,$6,$0
+	String	CC_Font1,$B,$6,$0
 	move.w	(DispAttribCtr).w,d0
 	add.w	d0,(printx).w
 	move.w	(VertLineScrolling).w,d0

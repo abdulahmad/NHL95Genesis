@@ -333,7 +333,7 @@ ShootoutModeBox						;Shootout round box: "SHOOTOUT MODE" (ShootoutModeBigTxt), 
 	move.w	#$FFFF,d0
 	jsr	(prefmes).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$3,$2,$0
+	String	CC_Font1Pri,$3,$2,$0
 	moveq	#$1B,d0
 	moveq	#$C,d1
 	jsr	(Framer).l
@@ -352,7 +352,7 @@ ShootoutModeBox						;Shootout round box: "SHOOTOUT MODE" (ShootoutModeBigTxt), 
 	addq.w	#1,(printy).w
 	addq.w	#6,(printx).w
 	jsr	(printz).l
-	String	' vs.',-(TXPRI+TXMAP1),$4,$7,$0
+	String	' vs.',CC_Font1Pri,$4,$7,$0
 	move.w	(BA_Goalie_SCnum).w,d0
 	asl.w	#7,d0
 	movea.l	#SortCords,a2
@@ -367,7 +367,7 @@ ShootoutModeBox						;Shootout round box: "SHOOTOUT MODE" (ShootoutModeBigTxt), 
 	jsr	(FormatPlayerNumInitial).l
 	jsr	(print).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$4,$9,$0
+	String	CC_Font1Pri,$4,$9,$0
 	movea.l	#tmstruct,a1
 	movea.l	tmdata(a1),a1
 	adda.w	4(a1),a1
@@ -378,7 +378,7 @@ ShootoutModeBox						;Shootout round box: "SHOOTOUT MODE" (ShootoutModeBigTxt), 
 	jsr	(PushNumberWidth).l
 	jsr	(print).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$4,$A,$0
+	String	CC_Font1Pri,$4,$A,$0
 	movea.l	#AwShots,a1
 	movea.l	tmdata(a1),a1
 	adda.w	4(a1),a1
@@ -389,7 +389,7 @@ ShootoutModeBox						;Shootout round box: "SHOOTOUT MODE" (ShootoutModeBigTxt), 
 	jsr	(PushNumberWidth).l
 	jsr	(print).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$4,$C,'Round ',$0
+	String	CC_Font1Pri,$4,$C,'Round ',$0
 	move.w	(shootoutround).w,d0
 	move.w	#2,d1
 	jsr	(PushNumberWidth).l
@@ -397,16 +397,16 @@ ShootoutModeBox						;Shootout round box: "SHOOTOUT MODE" (ShootoutModeBigTxt), 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 ShootoutModeBigTxt					;ShootoutModeBox big text
-	String	-(TXPRI+TXMAP1),$4,$3,'SHOOTOUT MODE',-(TXPRI+TXMAP1),$4,$5,$0
+	String	CC_Font1Pri,$4,$3,'SHOOTOUT MODE',CC_Font1Pri,$4,$5,$0
 ShootoutWonBy						;Shootout: "SHOOTOUT WON BY" and the winning team (printbig1)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$1,$D,$0
+	String	CC_Font1Pri,$1,$D,$0
 	move.w	#6,d1
 	move.w	#$1E,d0
 	jsr	(Framer).l
 	jsr	(printbigz1).l
-	String	-(TXPRI+TXMAP1),$2,$E,'SHOOTOUT WON BY'
+	String	CC_Font1Pri,$2,$E,'SHOOTOUT WON BY'
 	addq.w	#2,(printy).w
 	move.w	(HomeTeam).w,d1
 	move.w	(homeshootgoals).w,d0
@@ -581,7 +581,7 @@ ShooterSelectList					;Shootout shooters: the "{Select Player}" list for slot Te
 PrintShooterList					;Shootout shooters: the player list rows (getNameandAttrib); the selected
 									;row in printa d7 ($E000 with BA_PS_flags bit 1)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$16,$1,$0
+	String	CC_Font2Pri,$16,$1,$0
 .loop
 	movea.l	#PAttribOverall,a1
 	cmpi.w	#5,(TestList).w
@@ -669,11 +669,11 @@ ShootersSelect						;Shootout shooters: TestList = d0, redraw the names and the 
 ShootersBackground					;Shootout shooters: "Shootout" title and the team block (PutTeamBlock)
 	bsr.w	ClearShooterScreen
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$7,$1,$0
+	String	CC_Font2Pri,$7,$1,$0
 	moveq	#$1A,d0
 	moveq	#6,d1
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP2),$A,$4,'  Shootout  ',-(TXPRI+TXMAP2),$F,$1
+	String	CC_Font2Pri,$A,$4,'  Shootout  ',CC_Font2Pri,$F,$1
 	clr.w	d0
 	cmpa.w	#tmstruct&$FFFF,a2
 	beq.w	.0
@@ -682,7 +682,7 @@ ShootersBackground					;Shootout shooters: "Shootout" title and the team block (
 	jmp	(PutTeamBlock).l
 ClearShooterScreen					;Shootout shooters: erase the top of the screen
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$0,$0,$0
+	String	CC_Font2Pri,$0,$0,$0
 	moveq	#$28,d0
 	moveq	#$A,d1
 	move.w	#$7FF,d2
@@ -1330,7 +1330,7 @@ PenaltyShotBox						;In a shootout ShootoutModeBox; else the "PENALTY SHOT!" box
 	move.w	#$FFFF,d0
 	jsr	(prefmes).l					;d0 = -1
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$3,$2,$0
+	String	CC_Font1Pri,$3,$2,$0
 	moveq	#$1B,d0
 	moveq	#8,d1
 	jsr	(Framer).l
@@ -1350,7 +1350,7 @@ PenaltyShotBox						;In a shootout ShootoutModeBox; else the "PENALTY SHOT!" box
 	jsr	(FormatPlayerNumInitial).l
 	jsr	(print).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$4,$7,$0
+	String	CC_Font1Pri,$4,$7,$0
 	movem.l	a1/a3,-(sp)
 	move.w	(pspenalty).w,d0
 	movea.l	#Penaltylist,a1
@@ -1359,7 +1359,7 @@ PenaltyShotBox						;In a shootout ShootoutModeBox; else the "PENALTY SHOT!" box
 	jsr	(print).l
 	movem.l	(sp)+,a1/a3
 	jsr	(printz).l
-	String	' by',-(TXPRI+TXMAP1),$4,$8
+	String	' by',CC_Font1Pri,$4,$8
 	move.w	(BA_Checker_Offset).w,d0
 	movea.l	#AwShots,a2
 	tst.w	(BA_Team).w
@@ -1372,7 +1372,7 @@ PenaltyShotBox						;In a shootout ShootoutModeBox; else the "PENALTY SHOT!" box
 	rts
 
 PenShotBigTxt						;PenaltyShotBox big text
-	String	-(TXPRI+TXMAP1),$4,$3,'PENALTY SHOT!',-(TXPRI+TXMAP1),$4,$5,$0
+	String	CC_Font1Pri,$4,$3,'PENALTY SHOT!',CC_Font1Pri,$4,$5,$0
 
 PenShotChk							;A breakaway shooter hit: a penalty shot when penalty d0 allows one
 									;(PenShotPenalties); d0 = the penalty

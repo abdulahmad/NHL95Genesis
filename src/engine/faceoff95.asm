@@ -665,7 +665,7 @@ updatefaceoff						;Faceoff count down: fofdata frame from temp1; at 0 erase the
 .2
 	bclr	#dffaceoff,(disflags).w
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),0,0,0
+	String	CC_Font1Pri,0,0,0
 	move.w	(fodropx).w,d0
 	subi.w	#$2E,d0
 	asr.w	#3,d0
@@ -848,7 +848,7 @@ checkfo								;Check for faceoff sprites: the 3 fofdata2 entries (frame, flags)
 DrawFaceoffWindow					;Draw the faceoff window (FaceOffMap) at x $36 or $BE y $5C, and with line
 									;changes on the two line names (linelist)
 	jsr	(printz).l
-	String	-TXMAP1,0,0,0
+	String	CC_Font1,0,0,0
 	moveq	#$36,d0
 	tst.w	(fox).w
 	bpl.w	.setx

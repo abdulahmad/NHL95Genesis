@@ -11,7 +11,7 @@ ScoringSummaryScreen				;"Scoring Summary": one 4 row entry per goal (6 bytes ea
 	move.l	#ControllerBgMap,(screenarg).l
 	jsr	(DrawTeamScreen2).l
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP3),6,1,'Scoring',-(TXPRI+TXMAP3),$14,1,'Summary',-(TXPRI+TXMAP3),7,4,0
+	String	CC_Font3Pri,6,1,'Scoring',CC_Font3Pri,$14,1,'Summary',CC_Font3Pri,7,4,0
 	move.w	#$2C,d0
 	jsr	(PutTeamBlock).l
 	addq.w	#3,(printx).w
@@ -106,7 +106,7 @@ DrawScoringRowUp					;The goal entry in the high word of d0 at the top of the wi
 	moveq	#6,d3
 	mulu.w	d0,d3
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),0,0
+	String	CC_Font2Pri,0,0
 	move.w	(VertLineScrolling).w,d0
 	lsr.w	#3,d0
 	subq.w	#3,d0
@@ -123,7 +123,7 @@ DrawScoringRowDown					;Goal entry + 4 at the bottom of the window
 	moveq	#6,d3
 	mulu.w	d0,d3
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),0,0
+	String	CC_Font2Pri,0,0
 	move.w	(VertLineScrolling).w,d0
 	lsr.w	#3,d0
 	addi.w	#$10,d0
@@ -223,7 +223,7 @@ PenaltySummaryScreen				;"Penalties": one 3 row entry per penalty (4 bytes each 
 	move.l	#ControllerBgMap,(screenarg).l
 	jsr	(DrawTeamScreen2).l
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP3),$B,$1,'Penalties',-(TXPRI+TXMAP3),$7,$4,$0
+	String	CC_Font3Pri,$B,$1,'Penalties',CC_Font3Pri,$7,$4,$0
 	move.w	#$2C,d0
 	jsr	(PutTeamBlock).l
 	addq.w	#3,(printx).w
@@ -323,7 +323,7 @@ DisplayPenaltyLineUp				;The penalty entry in the high word of d0 at the top of 
 	move.w	d0,d3
 	asl.w	#2,d3
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$0,$0,$0
+	String	CC_Font2Pri,$0,$0,$0
 	move.w	(VertLineScrolling).w,d0
 	lsr.w	#3,d0
 	subq.w	#2,d0
@@ -340,7 +340,7 @@ DisplayPenaltyLineDown				;Penalty entry + 5 at the bottom of the window
 	move.w	d0,d3
 	asl.w	#2,d3
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$0,$0,$0
+	String	CC_Font2Pri,$0,$0,$0
 	move.w	(VertLineScrolling).w,d0
 	lsr.w	#3,d0
 	addi.w	#$F,d0
