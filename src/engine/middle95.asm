@@ -1735,7 +1735,7 @@ GetPeriodTimeRemaining				;Return d0 = (gsp << 14 | PerTimeTotal) - gameclock
 printscores1						;Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; period name gsp
 									;of PerLabels, or name 4 of PerLabels2 with gmode2 bit 1) and EASNLogo,
 									;then unless sflags3 bit 0 the score box (Framer 8 x 5 at $17, $17) with
-									;both team names and scores (PrintTeamNameAndScore). sflags5 bit 7 sets
+									;both team names and scores (printscores1_ps). sflags5 bit 7 sets
 									;crowdnoisedelay = $78. 95 has no horizontal rink scoreboard
 	movem.l	d0-d2/a0-a3,-(sp)
 	bclr	#7,(sflags5).w
@@ -1771,16 +1771,16 @@ printscores1						;Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; peri
 	bsr.w	printz
 	String	-(TXPRI+TXMAP1),$18,$1A,0
 	movea.w	#(tmstruct-M68K_RAM),a2
-	bsr.w	PrintTeamNameAndScore
+	bsr.w	printscores1_ps
 	bsr.w	printz
 	String	-(TXPRI+TXMAP1),$18,$18,0
 	adda.w	#tmsize,a2
-	bsr.w	PrintTeamNameAndScore
+	bsr.w	printscores1_ps
 .x
 	movem.l	(sp)+,d0-d2/a0-a3
 	rts
 
-PrintTeamNameAndScore				;Print the team name of team a2 at printx/printy, then its score as 2
+printscores1_ps				;Print the team name of team a2 at printx/printy, then its score as 2
 									;digits at x $1C. Called twice from printscores1
 	movea.l	$1E(a2),a1
 	adda.w	4(a1),a1

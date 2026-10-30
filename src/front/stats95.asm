@@ -3220,7 +3220,7 @@ PeriodStatsScreen					;Both team logos, goals/shots by period and total; left/ri
 	bsr.w	PeriodStatsColumns
 	move.w	#$18,(palcount).w
 .loop2
-	jsr	(WaitVSyncAndReadInput).l	;left (bit 2) goals, right (bit 3) shots, start exits
+	jsr	(Pausemode_rjoy).l	;left (bit 2) goals, right (bit 3) shots, start exits
 	btst	#7,d1
 	bne.w	.exit
 	btst	#2,d1

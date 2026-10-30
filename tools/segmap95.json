@@ -784,7 +784,7 @@
     ],
     [
      "display94",
-     "RenderSmallFontChar",
+     "uppads_pd",
      "$01674A",
      "$00A4FE",
      "$00A52E",
@@ -854,7 +854,7 @@
     ],
     [
      "setup94",
-     "defaultsprites2",
+     "defaultsprites_0",
      "$016E82",
      "$00A72A",
      "$00A7A6",
@@ -2200,7 +2200,7 @@
    "out_of_order": 5,
    "moved_in": [
     "video94:ProcessInputWithRepeat",
-    "stats94:WaitVSyncAndReadInput",
+    "stats94:Pausemode_rjoy",
     "cards94:wallcollduringcheck"
    ],
    "note": "",
@@ -2217,7 +2217,7 @@
     ],
     [
      "stats94",
-     "WaitVSyncAndReadInput",
+     "Pausemode_rjoy",
      "$009FB8",
      "$07A79C",
      "$07A7B4",
@@ -2500,7 +2500,7 @@
     "penalty94:PrintScores1+$7A",
     "penalty94:PrintScores1+$8C",
     "penalty94:PrintScores1+$9E",
-    "penalty94:PrintTeamNameAndScore",
+    "penalty94:printscores1_ps",
     "checks94:chkpk",
     "checks94:chkpk2",
     "data94:bfasciicon",
@@ -3084,7 +3084,7 @@
     ],
     [
      "penalty94",
-     "PrintTeamNameAndScore",
+     "printscores1_ps",
      "$012D0E",
      "$07D822",
      "$07D844",
@@ -3454,7 +3454,7 @@
     ],
     [
      "menu94",
-     "InitMenuState",
+     "Pausemode_top",
      "$007E36",
      "$07E526",
      "$07E536",
@@ -3526,7 +3526,7 @@
     ],
     [
      "menu94",
-     "UpdateMenuSelection",
+     "Pausemode_Pmenu",
      "$007EF2",
      "$07EDD0",
      "$07EE3A",
@@ -3535,7 +3535,7 @@
     ],
     [
      "menu94",
-     "UpdateMenuSelection+$64",
+     "Pausemode_Pmenu+$64",
      "$007F56",
      "$07EE3C",
      "$07EE62",
@@ -3544,7 +3544,7 @@
     ],
     [
      "menu94",
-     "UpdateMenuSelection+$8A",
+     "Pausemode_Pmenu+$8A",
      "$007F7C",
      "$07EE62",
      "$07EE8E",
@@ -3553,7 +3553,7 @@
     ],
     [
      "menu94",
-     "UpdateMenuSelection+$C2",
+     "Pausemode_Pmenu+$C2",
      "$007FB4",
      "$07EE9C",
      "$07EEA6",
@@ -3562,7 +3562,7 @@
     ],
     [
      "menu94",
-     "UpdateMenuSelection+$D2",
+     "Pausemode_Pmenu+$D2",
      "$007FC4",
      "$07EEAC",
      "$07EEF2",
@@ -3571,7 +3571,7 @@
     ],
     [
      "menu94",
-     "UpdateMenuSelection+$114",
+     "Pausemode_Pmenu+$114",
      "$008006",
      "$07EF18",
      "$07EF1A",
@@ -3619,7 +3619,7 @@
    "out_of_order": 0,
    "moved_in": [
     "goalie94:ManualGoalieMenu",
-    "stats94:SelectGoalieMenu+$1A",
+    "stats94:Pausemode_go+$1A",
     "stats94:DisplayPlayerSelectMenu",
     "stats94:TimeoutMenu+$3E"
    ],
@@ -3637,7 +3637,7 @@
     ],
     [
      "stats94",
-     "SelectGoalieMenu+$1A",
+     "Pausemode_go+$1A",
      "$009E00",
      "$07FA72",
      "$07FB04",
@@ -4463,7 +4463,7 @@
     ],
     [
      "collide94",
-     "TryAddPlayerToList",
+     "SetPlList_s1",
      "$0158F2",
      "$083846",
      "$083880",
@@ -5426,7 +5426,7 @@
     ],
     [
      "setup94",
-     "HandlePlayoffInput",
+     "PlayoffScreen_jin",
      "$017542",
      "$087E34",
      "$087E78",
@@ -5435,7 +5435,7 @@
     ],
     [
      "setup94",
-     "UpdatePlayoffScroll",
+     "PlayoffScreen_scrup",
      "$017572",
      "$087E78",
      "$087EDA",
@@ -5444,7 +5444,7 @@
     ],
     [
      "setup94",
-     "PlayoffScreenExit",
+     "PlayoffScreen_exit",
      "$0175D4",
      "$087EDA",
      "$087EDE",
@@ -5480,7 +5480,7 @@
     ],
     [
      "setup94",
-     "DrawTeamBlocks",
+     "PlayoffScreen_doteam",
      "$017652",
      "$087F5C",
      "$087FAA",
@@ -5529,7 +5529,7 @@
    },
    "out_of_order": 1,
    "moved_in": [
-    "data94:PlayoffTreeSetup",
+    "data94:PlayoffScreen_setup",
     "title94:DrawPlayoffSprite",
     "display94:SetSframe",
     "penalty94:UpdateScores",
@@ -5542,7 +5542,7 @@
    "units": [
     [
      "data94",
-     "PlayoffTreeSetup",
+     "PlayoffScreen_setup",
      "$01928E",
      "$088046",
      "$0881B0",
@@ -5866,7 +5866,7 @@
     ],
     [
      "penalty94",
-     "ProcessPenaltyList",
+     "updatepentime_ut",
      "$0128EC",
      "$08958A",
      "$08962C",
@@ -6222,7 +6222,7 @@
     ],
     [
      "input94",
-     "lcfound2",
+     "lcfound_close",
      "$00BB36",
      "$08A2FC",
      "$08A332",
@@ -12353,7 +12353,7 @@
    "UpdateLineChange $0079F8 60 code",
    "updatecrowdf $007A9E 146 code",
    "Pausemode $007CF8 214 code",
-   "SetupPauseScreen $007DCE 42 code"
+   "Pausemode_pall $007DCE 42 code"
   ],
   "menu94": [
    "PrintMenuItem+$48 $008050 40 data",
@@ -12365,7 +12365,7 @@
    "ShowScores+$60 $008134 100 code",
    "UpdatePlayerScroll $008198 90 code",
    "DisplayGameInfo $0081F2 94 code",
-   "PrintGameInfo $008250 48 code",
+   "NewTicker3_tn $008250 48 code",
    "DrawScrollArrows+$14 $008294 40 code",
    "ScrollArrowTable $0082BC 30 data",
    "SelectAttributeItem+$74 $008402 16 code",
@@ -12435,7 +12435,7 @@
    "ReloadRinkGraphics+$76 $009D52 40 code",
    "TimeoutMenu $009D7A 28 code",
    "TimeoutMenu+$2E $009DA8 16 data",
-   "SelectGoalieMenu $009DE6 20 code",
+   "Pausemode_go $009DE6 20 code",
    "DisplayPlayerSelectMenu+$2A $009EB0 24 data",
    "DisplayPlayerSelectMenu+$42 $009EC8 16 code",
    "DisplayPlayerSelectMenu+$5E $009EE4 92 code"
@@ -12542,8 +12542,8 @@
    "setupice_highlight $016BAC 234 code",
    "setupIceRinkMap $016C96 22 code",
    "defaultsprites+$64 $016E06 124 data",
-   "defaultsprites2+$6C $016EEE 320 data",
-   "IntermissionStart $017278 80 code",
+   "defaultsprites_0+$6C $016EEE 320 data",
+   "PeriodOver_sp $017278 80 code",
    "Opening2 $0172FA 60 code",
    "PlayoffScreen+$5A $017390 20 code",
    "PlayoffScreen+$74 $0173AA 38 code",
@@ -12575,11 +12575,11 @@
    "Illinst+$8 $018C2A 24 data",
    "ZeroDiv+$8 $018C54 22 data",
    "crash $018C70 140 code",
-   "cd0 $018CFC 128 data",
+   "updatecrowdf_cd0 $018CFC 128 data",
    "asstab $018D7C 144 data",
    "PlayerPositionText $0191D0 20 data",
    "PauseMenuItems $019664 156 data",
-   "PauseText $019700 396 data",
+   "Pausemode_mlist $019700 396 data",
    "PauseText2 $01988C 372 data",
    "ShootoutIntermissionMenu $019A00 132 data",
    "StartGameText $019A84 180 data",

@@ -145,15 +145,15 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 - **setup94** (284 bytes): Opening, Opening2
 - **hockey94** (308 bytes): StartGame
-- **setup94** (186 bytes): IntermissionStart
+- **setup94** (186 bytes): PeriodOver_sp
 - **hockey94** (512 bytes): StartPer, Gameloop, DoGameFrame
 - **new in 95** (562 bytes): Intermission
 
 ### display95
 
-- **display94** (818 bytes): setvideo, setsortcords, checksso, setffo, uppads, QueuePadLabel, RenderSmallFontChar
+- **display94** (818 bytes): setvideo, setsortcords, checksso, setffo, uppads, QueuePadLabel, uppads_pd
 - **replay94** (288 bytes): updateanim
-- **setup94** (774 bytes): defaultsprites, defaultsprites2, SprSort
+- **setup94** (774 bytes): defaultsprites, defaultsprites_0, SprSort
 
 ### control95
 
@@ -212,7 +212,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **sound94** (336 bytes): ReadJoyData, ReadPad4Way1, ReadPad4Way2, ReadPad4Way3, ReadPad4Way4, ReadPad4WayPort1, ReadPad2, ReadPad1, ReadPadA0, ReadPad3Button, ResetZ80Bus
 - **new in 95** (184 bytes): ReadMenuJoy
 - **video94** (58 bytes): ProcessInputWithRepeat
-- **stats94** (24 bytes): WaitVSyncAndReadInput
+- **stats94** (24 bytes): Pausemode_rjoy
 
 ### engine/collide95
 
@@ -275,7 +275,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **new in 95** (454 bytes): AssignPads, SetRinkPalette
 - **video94** (92 bytes): waitx
 - **collide94** (20 bytes): GetPeriodTimeRemaining
-- **penalty94** (206 bytes): PrintScores1, PrintTeamNameAndScore
+- **penalty94** (206 bytes): PrintScores1, printscores1_ps
 - **new in 95** (64 bytes): ReAddFramer, ReAddSmallFont, AddFonts
 - **checks94** (46 bytes): chkpk, chkpk2
 - **new in 95** (32 bytes): CheckNewCarrier
@@ -311,17 +311,17 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 ### engine/pause95
 
-- **hockey94** (442 bytes): Pausemode, SetupPauseScreen, seta2
-- **menu94** (26 bytes): InitMenuState, DrawMenuScreen
+- **hockey94** (442 bytes): Pausemode, Pausemode_pall, seta2
+- **menu94** (26 bytes): Pausemode_top, DrawMenuScreen
 - **new in 95** (32 bytes): RedrawMenu
 - **menu94** (362 bytes): HandleMenuInput
 - **new in 95** (294 bytes): SetPauseMenuItems, SetStatsMenuItems, SetInfoMenuItems
 - **hockey94** (38 bytes): startpause, startpause1, startpause2, startpause3, startpause4
 - **new in 95** (1430 bytes): PauseScreenDraw, ShowPenaltyBoxes, ShowPenaltyBox, ListPenaltyBox, ShowPenaltyBoxPlayer, RestoreGameScreen, ClearOldFrames
-- **menu94** (628 bytes): SetMenuPrintX, UpdateMenuSelection, PrintMenuItem
+- **menu94** (628 bytes): SetMenuPrintX, Pausemode_Pmenu, PrintMenuItem
 - **new in 95** (2398 bytes): ClearMenuBox, DrawMenuInfo, PauseInfo, PrintLines, ShowPenaltyMessages, SelectInfoTab, ClearInfoTab, SelectStatsTab, ClearStatsTab, SelectPauseTab, ClearPauseTab, DrawTabSelected, DrawTab, AbortGame, PlayGame
 - **goalie94** (232 bytes): ManualGoalieMenu
-- **stats94** (414 bytes): SelectGoalieMenu, DrawGoalieSelectList, TimeoutMenu
+- **stats94** (414 bytes): Pausemode_go, Pausemode_gnum, TimeoutMenu
 - **new in 95** (248 bytes): PauseScores, PutScoreDigit, SetMenuPadSide
 
 ### engine/logic95
@@ -354,7 +354,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 ### engine/players95
 
 - **new in 95** (32 bytes): PuckcIsGoalie
-- **collide94** (550 bytes): SetPersonel, SetPlList, TryAddPlayerToList, forcepldata
+- **collide94** (550 bytes): SetPersonel, SetPlList, SetPlList_s1, forcepldata
 - **stats94** (18 bytes): GetPlayerCount
 - **new in 95** (92 bytes): GetPlayerCountD7
 - **collide94** (830 bytes): setplayer, ClampNibble
@@ -405,7 +405,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 ### engine/playoff95
 
-- **setup94** (1188 bytes): PlayoffScreen, HandlePlayoffInput, UpdatePlayoffScroll, PlayoffScreenExit, PlayoffScreen_waitvsync, PrintSeriesScore, DrawTreeArrow, DrawTeamBlocks, VBlank_Playoff
+- **setup94** (1188 bytes): PlayoffScreen, PlayoffScreen_jin, PlayoffScreen_scrup, PlayoffScreen_exit, PlayoffScreen_waitvsync, PlayoffScreen_doscores, PlayoffScreen_doarrow, PlayoffScreen_doteam, VBlank_Playoff
 - **data94** (362 bytes): (tables only)
 - **title94** (106 bytes): DrawPlayoffSprite
 - **display94** (98 bytes): SetSframe
@@ -428,7 +428,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **title94** (172 bytes): LeadSong, ClearLeadSong, LeadSongExit
 - **penalty94** (290 bytes): Stop4Pen
 - **collide94** (2 bytes): (tables only)
-- **penalty94** (2094 bytes): AddPenalty, AddPenalty2, PenaltyManager, chkprogress, InProgress, coinsearch, updatepentime, ProcessPenaltyList, RemovePlayerFromList, releasepl, checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, ClearPenaltyMessage
+- **penalty94** (2094 bytes): AddPenalty, AddPenalty2, PenaltyManager, chkprogress, InProgress, coinsearch, updatepentime, updatepentime_ut, RemovePlayerFromList, releasepl, checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, ClearPenaltyMessage
 - **collide94** (192 bytes): checkagr
 - **display94** (78 bytes): showref
 - **penalty94** (14 bytes): ClearPenaltyBuffer
@@ -440,7 +440,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 ### engine/lines95
 
-- **input94** (730 bytes): SetLCmode, SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound2
+- **input94** (730 bytes): SetLCmode, SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound_close
 - **collide94** (2 bytes): (tables only)
 - **penalty94** (204 bytes): linebar, getlinee, AvgCline
 - **checks94** (372 bytes): CompLine, AutoLineChange

@@ -10,7 +10,7 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 									;nonzero or sflags11 bit 2).
 									;Called from Opening2 and PlayoffTreeScreen. Runs its own vblank and
 									;scrolls the tree a page ($70 pixels) at a time. Returns when start is
-									;pressed (PlayoffScreenExit)
+									;pressed (PlayoffScreen_exit)
 	btst	#0,(gmode2).w
 	bne.s	rtsLineData
 	btst	#2,(sflags11).w
@@ -90,7 +90,7 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 	movea.l	#Vctrl,a0
 	move.w	#VDPR_WINY+$02,(a0)
 	movea.w	#(potree-M68K_RAM),a1
-	movea.l	#PlayoffTreeSetup,a0	;playoff tree layout by gamelevel
+	movea.l	#PlayoffScreen_setup,a0	;playoff tree layout by gamelevel
 	move.w	(gamelevel).w,d0
 	asl.w	#1,d0
 	adda.w	(a0,d0.w),a0
@@ -104,7 +104,7 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 	clr.w	d1
 	move.b	(a1)+,d1
 	add.w	d1,d1
-	jsr	(DrawTeamBlocks).l
+	jsr	(PlayoffScreen_doteam).l
 	dbf	d4,.2
 	clr.w	d4
 	move.b	(a0)+,d4
@@ -114,7 +114,7 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 	move.b	(a0)+,(printx+1).w
 	clr.w	d0
 	move.b	(a0)+,d0
-	jsr	(DrawTreeArrow).l
+	jsr	(PlayoffScreen_doarrow).l
 	dbf	d4,.3
 	jsr	(printz).l
 	String	-(TXPAL1+TXMAP1),0,0,0
@@ -129,7 +129,7 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 	move.b	(a0)+,(printy+1).w
 	jsr	(printsmallz).l
 	String	CC_SetAttribute,3
-	jsr	(PrintSeriesScore).l
+	jsr	(PlayoffScreen_doscores).l
 	adda.w	#$10,a2
 	dbf	d4,.top3
 .5
@@ -151,16 +151,16 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 	clr.w	d4
 	move.w	#$FFFF,(PlayerScrollCtr).w
 	move.w	#1,(DispAttribCtr).w
-	jsr	(UpdatePlayoffScroll).l
+	jsr	(PlayoffScreen_scrup).l
 .wait
 	jsr	(waitxc1).l
 	movea.l	#rtss2,a0
 	jsr	(DrawPlayoffSprite).l
-	jsr	(HandlePlayoffInput).l
+	jsr	(PlayoffScreen_jin).l
 	bra.s	.wait
 
-HandlePlayoffInput					;Read the four pads: start leaves PlayoffScreen, right / left set the
-									;scroll step, then falls into UpdatePlayoffScroll
+PlayoffScreen_jin					;Read the four pads: start leaves PlayoffScreen, right / left set the
+									;scroll step, then falls into PlayoffScreen_scrup
 	jsr	(ReadJoy1).l
 	move.w	d3,-(sp)
 	jsr	(ReadJoy2).l
@@ -170,16 +170,16 @@ HandlePlayoffInput					;Read the four pads: start leaves PlayoffScreen, right / 
 	jsr	(ReadJoy4).l
 	or.w	(sp)+,d3
 	btst	#7,d3
-	bne.w	PlayoffScreenExit
+	bne.w	PlayoffScreen_exit
 	btst	#3,d3
 	beq.w	.nr
 	move.w	#$FFFE,(PlayerScrollCtr).w
 .nr
 	btst	#2,d3
-	beq.w	UpdatePlayoffScroll
+	beq.w	PlayoffScreen_scrup
 	move.w	#2,(PlayerScrollCtr).w
 
-UpdatePlayoffScroll					;Move the tree one step (PlayerScrollCtr) and stop on a page boundary
+PlayoffScreen_scrup					;Move the tree one step (PlayerScrollCtr) and stop on a page boundary
 									;($70). The position is DispAttribCtr; playoffspritex is the sprite x
 									;offset while it is on screen
 	move.w	(PlayerScrollCtr).w,d0
@@ -214,7 +214,7 @@ UpdatePlayoffScroll					;Move the tree one step (PlayerScrollCtr) and stop on a 
 	clr.w	(PlayerScrollCtr).w
 	rts
 
-PlayoffScreenExit					;Drop HandlePlayoffInput's return address and return from PlayoffScreen
+PlayoffScreen_exit					;Drop PlayoffScreen_jin's return address and return from PlayoffScreen
 	addq.w	#4,sp
 	rts
 
@@ -232,7 +232,7 @@ waitxc1								;Each time palcount runs out, eor the color
 	move.w	d0,(OldVcount).w
 	rts
 
-PrintSeriesScore					;Print best of 7 wins "t-b" for game struct a2 at printx / printy
+PlayoffScreen_doscores					;Print best of 7 wins "t-b" for game struct a2 at printx / printy
 	movea.w	#(mesarea-M68K_RAM),a1
 	move.w	#6,(a1)+
 	move.w	4(a2),d0
@@ -246,7 +246,7 @@ PrintSeriesScore					;Print best of 7 wins "t-b" for game struct a2 at printx / 
 	movea.w	#(mesarea-M68K_RAM),a1
 	jmp	print
 
-DrawTreeArrow						;Draw tree arrow d0 from the arrows map (Arrowsmap) at printx / printy
+PlayoffScreen_doarrow						;Draw tree arrow d0 from the arrows map (Arrowsmap) at printx / printy
 	movem.l	d0-d7/a0-a3,-(sp)
 	movea.l	#Arrowsmap,a0
 	movea.l	a0,a1
@@ -262,7 +262,7 @@ DrawTreeArrow						;Draw tree arrow d0 from the arrows map (Arrowsmap) at printx
 	movem.l	(sp)+,d0-d7/a0-a3
 	rts
 
-DrawTeamBlocks						;Draw team block d1 (team * 2) from Teamblocksmap at printx / printy; the
+PlayoffScreen_doteam						;Draw team block d1 (team * 2) from Teamblocksmap at printx / printy; the
 									;user's team (potreeteam entry of potree) is highlighted (printa $6000)
 									;unless sflags11 bit 2 is set
 	movem.l	d0-d7/a0-a3,-(sp)
@@ -325,18 +325,18 @@ PlayoffScreenText					;Round titles by gamelevel, printbig Strings with their po
 
 
 
-PlayoffTreeSetup					;Playoff tree layout by gamelevel, the same bytes as 94. Used by
+PlayoffScreen_setup					;Playoff tree layout by gamelevel, the same bytes as 94. Used by
 									;PlayoffScreen
-									;Per level: teams-1 then x,y per team (DrawTeamBlocks), arrows-1 then x,d0
-									;per arrow (DrawTreeArrow), scores-1 then x,y per score (PrintSeriesScore,
+									;Per level: teams-1 then x,y per team (PlayoffScreen_doteam), arrows-1 then x,d0
+									;per arrow (PlayoffScreen_doarrow), scores-1 then x,y per score (PlayoffScreen_doscores,
 									;negative: none)
-	dc.w	.l0-PlayoffTreeSetup
-	dc.w	.l1-PlayoffTreeSetup
-	dc.w	.l2-PlayoffTreeSetup
-	dc.w	.l3-PlayoffTreeSetup
-	dc.w	.l4-PlayoffTreeSetup
-;tree graphics for level 0: teams-1 then x,y per team (DrawTeamBlocks), arrows-1 then x,d0 per arrow
-;(DrawTreeArrow), scores-1 then x,y per score (PrintSeriesScore, negative: none)
+	dc.w	.l0-PlayoffScreen_setup
+	dc.w	.l1-PlayoffScreen_setup
+	dc.w	.l2-PlayoffScreen_setup
+	dc.w	.l3-PlayoffScreen_setup
+	dc.w	.l4-PlayoffScreen_setup
+;tree graphics for level 0: teams-1 then x,y per team (PlayoffScreen_doteam), arrows-1 then x,d0 per arrow
+;(PlayoffScreen_doarrow), scores-1 then x,y per score (PlayoffScreen_doscores, negative: none)
 .l0	dc.b	16-1
 	dc.b	46,2,46,5,46,8,46,11,46,14,46,17,46,20,46,23
 	dc.b	71,2,71,5,71,8,71,11,71,14,71,17,71,20,71,23

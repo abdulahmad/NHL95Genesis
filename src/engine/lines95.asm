@@ -154,7 +154,7 @@ lineinput							;Process input for line changes: d1 = new button presses (passmo
 .1
 	bclr	#tmflcc,tmflags(a2)
 	beq.w	.2
-	bsr.w	lcfound2
+	bsr.w	lcfound_close
 	bsr.w	SetLCmode2
 .2
 	movem.l	(sp)+,d1-d3/a0
@@ -195,7 +195,7 @@ lineinput							;Process input for line changes: d1 = new button presses (passmo
 	rts
 
 lcfound								;Line d2 was picked: store it ($2E), set tmline and the players
-									;(SetPersonel); falls into lcfound2
+									;(SetPersonel); falls into lcfound_close
 	move.w	d2,d0
 	move.w	d2,$2E(a2)
 	bsr.w	getlchoice				;translate choice 0-2 into line number 0-6
@@ -208,7 +208,7 @@ lcfound								;Line d2 was picked: store it ($2E), set tmline and the players
 	move.w	d0,tmline(a2)
 	jsr	(setpersonel).l
 
-lcfound2							;Erase the line change box and redraw the scores (printscores1)
+lcfound_close							;Erase the line change box and redraw the scores (printscores1)
 	btst	#sfhor,(sflags).w
 	bne.w	rtslc
 	bsr.w	setlccords

@@ -169,7 +169,7 @@ sram95.asm,$009A04,196,BuildLeaderListPct,code,new in 95,header
 hockey95.asm,$009AC8,18,Opening,code,setup94,name
 hockey95.asm,$009ADA,266,Opening2,code,setup94,name
 hockey95.asm,$009BE4,308,StartGame,code,hockey94,name
-hockey95.asm,$009D18,186,IntermissionStart,code,setup94,name
+hockey95.asm,$009D18,186,PeriodOver_sp,code,setup94,name
 hockey95.asm,$009DD2,286,StartPer,code,hockey94,name
 hockey95.asm,$009EF0,50,Gameloop,code,hockey94,name
 hockey95.asm,$009F22,176,DoGameFrame,code,hockey94,name
@@ -181,11 +181,11 @@ display95.asm,$00A29C,360,checksso,code,display94,name
 display95.asm,$00A404,48,setffo,code,display94,name
 display95.asm,$00A434,102,uppads,code,display94,name
 display95.asm,$00A49A,100,QueuePadLabel,code,display94,name
-display95.asm,$00A4FE,48,RenderSmallFontChar,code,display94,name
+display95.asm,$00A4FE,48,uppads_pd,code,display94,name
 display95.asm,$00A52E,8,ButtonLabelCharTable,data,display94,name
 display95.asm,$00A536,288,updateanim,code,replay94,name
 display95.asm,$00A656,212,defaultsprites,code,setup94,name
-display95.asm,$00A72A,444,defaultsprites2,code,setup94,name
+display95.asm,$00A72A,444,defaultsprites_0,code,setup94,name
 display95.asm,$00A8E6,118,SprSort,code,setup94,name
 control95.asm,$00A95C,188,updatepadinput,code,new in 95,header
 control95.asm,$00AA18,46,holdplayer,code,input94,name
@@ -356,7 +356,7 @@ engine/video95.asm,$07A67E,16,PadDirTable,data,sound94,name
 engine/video95.asm,$07A68E,28,ResetZ80Bus,code,sound94,name
 engine/video95.asm,$07A6AA,184,ReadMenuJoy,code,new in 95,header
 engine/video95.asm,$07A762,58,ProcessInputWithRepeat,code,video94,name
-engine/video95.asm,$07A79C,24,WaitVSyncAndReadInput,code,stats94,name
+engine/video95.asm,$07A79C,24,Pausemode_rjoy,code,stats94,name
 engine/collide95.asm,$07A7B4,238,checkcoll,code,collide94,name
 engine/collide95.asm,$07A8A2,214,checkwallcoll,code,collide94,name
 engine/collide95.asm,$07A978,190,wallcollb,code,collide94,name
@@ -480,7 +480,7 @@ engine/middle95.asm,$07D6F0,22,SetRinkPalette,code,new in 95,header
 engine/middle95.asm,$07D706,92,waitx,code,video94,name
 engine/middle95.asm,$07D762,20,GetPeriodTimeRemaining,code,collide94,name
 engine/middle95.asm,$07D776,172,PrintScores1,code,penalty94,name
-engine/middle95.asm,$07D822,34,PrintTeamNameAndScore,code,penalty94,name
+engine/middle95.asm,$07D822,34,printscores1_ps,code,penalty94,name
 engine/middle95.asm,$07D844,10,ReAddFramer,code,new in 95,header
 engine/middle95.asm,$07D84E,10,ReAddSmallFont,code,new in 95,header
 engine/middle95.asm,$07D858,44,AddFonts,code,new in 95,header
@@ -527,9 +527,9 @@ engine/fourway95.asm,$07E0BC,30,Read4WayPort2,code,new in 95,header
 engine/fourway95.asm,$07E0DA,6,ReadJoyJmp,code,new in 95,header
 sound/z80old95.asm,$07E0E0,652,Z80_Program_Code,data,sound94,name
 engine/pause95.asm,$07E36C,348,Pausemode,code,hockey94,name
-engine/pause95.asm,$07E4C8,14,SetupPauseScreen,code,hockey94,name
+engine/pause95.asm,$07E4C8,14,Pausemode_pall,code,hockey94,name
 engine/pause95.asm,$07E4D6,80,seta2,code,hockey94,name
-engine/pause95.asm,$07E526,16,InitMenuState,code,menu94,name
+engine/pause95.asm,$07E526,16,Pausemode_top,code,menu94,name
 engine/pause95.asm,$07E536,10,DrawMenuScreen,code,menu94,name
 engine/pause95.asm,$07E540,32,RedrawMenu,code,new in 95,header
 engine/pause95.asm,$07E560,362,HandleMenuInput,code,menu94,name
@@ -550,7 +550,7 @@ engine/pause95.asm,$07EBBC,2,rtsmenu,code,new in 95,follows ShowPenaltyBoxPlayer
 engine/pause95.asm,$07EBBE,412,RestoreGameScreen,code,new in 95,header
 engine/pause95.asm,$07ED5A,82,ClearOldFrames,code,new in 95,header
 engine/pause95.asm,$07EDAC,8,SetMenuPrintX,code,menu94,name
-engine/pause95.asm,$07EDB4,388,UpdateMenuSelection,code,menu94,name
+engine/pause95.asm,$07EDB4,388,Pausemode_Pmenu,code,menu94,name
 engine/pause95.asm,$07EF38,232,PrintMenuItem,code,menu94,name
 engine/pause95.asm,$07F020,28,ClearMenuBox,code,new in 95,header
 engine/pause95.asm,$07F03C,74,DrawMenuInfo,code,new in 95,header
@@ -573,8 +573,8 @@ engine/pause95.asm,$07F60C,844,PauseMenus,data,new in 95,follows StatsMenus
 engine/pause95.asm,$07F958,30,AbortGame,code,new in 95,header
 engine/pause95.asm,$07F976,8,PlayGame,code,new in 95,header
 engine/pause95.asm,$07F97E,232,ManualGoalieMenu,code,goalie94,name
-engine/pause95.asm,$07FA66,158,SelectGoalieMenu,code,stats94,name
-engine/pause95.asm,$07FB04,144,DrawGoalieSelectList,code,stats94,name
+engine/pause95.asm,$07FA66,158,Pausemode_go,code,stats94,name
+engine/pause95.asm,$07FB04,144,Pausemode_gnum,code,stats94,name
 engine/pause95.asm,$07FB94,112,TimeoutMenu,code,stats94,name
 engine/pause95.asm,$07FC04,122,PauseScores,code,new in 95,header
 engine/pause95.asm,$07FC7E,60,PutScoreDigit,code,new in 95,header
@@ -654,7 +654,7 @@ engine/logic95.asm,$083662,74,CPgoalie,code,checks94,name
 engine/logic95.asm,$0836AC,32,PuckcIsGoalie,code,new in 95,header
 engine/players95.asm,$0836CC,186,SetPersonel,code,collide94,name
 engine/players95.asm,$083786,192,SetPlList,code,collide94,name
-engine/players95.asm,$083846,58,TryAddPlayerToList,code,collide94,name
+engine/players95.asm,$083846,58,SetPlList_s1,code,collide94,name
 engine/players95.asm,$083880,114,forcepldata,code,collide94,name
 engine/players95.asm,$0838F2,18,GetPlayerCount,code,stats94,name
 engine/players95.asm,$083904,92,GetPlayerCountD7,code,new in 95,header
@@ -791,16 +791,16 @@ engine/setup95.asm,$087B30,54,ReadLineData,code,title94,name
 engine/setup95.asm,$087B66,58,WriteLineData,code,title94,name
 engine/setup95.asm,$087BA0,2,rtsLineData,code,title94,fingerprint WriteLineData
 engine/playoff95.asm,$087BA2,658,PlayoffScreen,code,setup94,name
-engine/playoff95.asm,$087E34,68,HandlePlayoffInput,code,setup94,name
-engine/playoff95.asm,$087E78,98,UpdatePlayoffScroll,code,setup94,name
-engine/playoff95.asm,$087EDA,4,PlayoffScreenExit,code,setup94,name
+engine/playoff95.asm,$087E34,68,PlayoffScreen_jin,code,setup94,name
+engine/playoff95.asm,$087E78,98,PlayoffScreen_scrup,code,setup94,name
+engine/playoff95.asm,$087EDA,4,PlayoffScreen_exit,code,setup94,name
 engine/playoff95.asm,$087EDE,36,PlayoffScreen_waitvsync,code,setup94,name
-engine/playoff95.asm,$087F02,44,PrintSeriesScore,code,setup94,name
-engine/playoff95.asm,$087F2E,46,DrawTreeArrow,code,setup94,name
-engine/playoff95.asm,$087F5C,78,DrawTeamBlocks,code,setup94,name
+engine/playoff95.asm,$087F02,44,PlayoffScreen_doscores,code,setup94,name
+engine/playoff95.asm,$087F2E,46,PlayoffScreen_doarrow,code,setup94,name
+engine/playoff95.asm,$087F5C,78,PlayoffScreen_doteam,code,setup94,name
 engine/playoff95.asm,$087FAA,82,VBlank_Playoff,code,setup94,name
 engine/playoff95.asm,$087FFC,74,PlayoffScreenText,data,setup94,name
-engine/playoff95.asm,$088046,362,PlayoffTreeSetup,data,data94,name
+engine/playoff95.asm,$088046,362,PlayoffScreen_setup,data,data94,name
 engine/playoff95.asm,$0881B0,106,DrawPlayoffSprite,code,title94,name
 engine/playoff95.asm,$08821A,98,SetSframe,code,display94,name
 engine/faceoff95.asm,$08827C,56,UpdateScores,code,penalty94,name
@@ -833,7 +833,7 @@ engine/penalty95.asm,$08920E,292,chkprogress,code,penalty94,name
 engine/penalty95.asm,$089332,482,InProgress,code,penalty94,name
 engine/penalty95.asm,$089514,58,coinsearch,code,penalty94,name
 engine/penalty95.asm,$08954E,60,updatepentime,code,penalty94,name
-engine/penalty95.asm,$08958A,162,ProcessPenaltyList,code,penalty94,name
+engine/penalty95.asm,$08958A,162,updatepentime_ut,code,penalty94,name
 engine/penalty95.asm,$08962C,16,RemovePlayerFromList,code,penalty94,name
 engine/penalty95.asm,$08963C,94,releasepl,code,penalty94,name
 engine/penalty95.asm,$08969A,142,checkfornewpen,code,penalty94,name
@@ -861,7 +861,7 @@ engine/lines95.asm,$08A17E,20,getlchoice,code,input94,name
 engine/lines95.asm,$08A192,112,getlchoice2,code,input94,name
 engine/lines95.asm,$08A202,200,lineinput,code,input94,name
 engine/lines95.asm,$08A2CA,50,lcfound,code,input94,name
-engine/lines95.asm,$08A2FC,52,lcfound2,code,input94,name
+engine/lines95.asm,$08A2FC,52,lcfound_close,code,input94,name
 engine/lines95.asm,$08A330,2,rtslc,code,collide94,header names 94 rtss2
 engine/lines95.asm,$08A332,80,linebar,code,penalty94,name
 engine/lines95.asm,$08A382,66,getlinee,code,penalty94,name

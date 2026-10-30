@@ -7,7 +7,7 @@
 
 Pausemode							;(PauseMode). Game is in pause mode now: fade out, stop the sound (unless
 									;sflags9 bit 5), run the pause menu
-									;(SetPauseMenuItems, InitMenuState, HandleMenuInput) until it ends or,
+									;(SetPauseMenuItems, Pausemode_top, HandleMenuInput) until it ends or,
 									;with no pad on a team, $708 frames pass without a button; then reload the
 									;sound driver (SoundCmd 9, 0 Z80Program, 6 SoundBanks, 7) and restore the
 									;screen (RestoreGameScreen, setvideo) and fade in. Called from DoGameFrame
@@ -34,8 +34,8 @@ Pausemode							;(PauseMode). Game is in pause mode now: fade out, stop the soun
 	move.w	#2,(menucursor).w
 	bsr.w	SetPauseMenuItems
 	movea.l	(menulist).w,a0
-	lea	SetupPauseScreen(pc),a1		;screen draw routine
-	jsr	(InitMenuState).l
+	lea	Pausemode_pall(pc),a1		;screen draw routine
+	jsr	(Pausemode_top).l
 	move.l	#$708,(pausetimeout).w
 .loop
 	jsr	(vcountwait).l
@@ -93,7 +93,7 @@ Pausemode							;(PauseMode). Game is in pause mode now: fade out, stop the soun
 	move.w	(sp)+,(smallfontchars).w
 	rts
 
-SetupPauseScreen					;Draw routine for the pause menu: PauseScreenDraw, then KillCrowd
+Pausemode_pall					;Draw routine for the pause menu: PauseScreenDraw, then KillCrowd
 	jsr	(PauseScreenDraw).l
 	jsr	(KillCrowd).l
 	rts
@@ -126,7 +126,7 @@ seta2								;Set a2 to the team struct of the pause pad (menupadnum: cont1team 
 .x
 	rts
 
-InitMenuState						;Start a menu: a0 = item list, a1 = screen draw routine; selection and
+Pausemode_top						;Start a menu: a0 = item list, a1 = screen draw routine; selection and
 									;first shown item 0. Falls into
 									;DrawMenuScreen. Called from Pausemode
 	move.l	a0,(menulist).w			;item list
@@ -135,17 +135,17 @@ InitMenuState						;Start a menu: a0 = item list, a1 = screen draw routine; sele
 	clr.w	(menuitem+2).w			;first item shown
 
 DrawMenuScreen						;Call the draw routine, clear the menu box, print the items
-									;(UpdateMenuSelection) and fade in
+									;(Pausemode_Pmenu) and fade in
 	movea.l	(menudraw).w,a0
 	jsr	(a0)
 	bsr.w	ClearMenuBox
 RedrawMenu							;Print the menu items and fade in. Called from the menu items below
-									;(ManualGoalieMenu, SelectGoalieMenu, TimeoutMenu) after they clear the
+									;(ManualGoalieMenu, Pausemode_go, TimeoutMenu) after they clear the
 									;box
 	jsr	(printsmallz).l
 	String	CC_SetAttribute,4,CC_SetY,$C
 	jsr	(SetMenuPrintX).l
-	jsr	(UpdateMenuSelection).l
+	jsr	(Pausemode_Pmenu).l
 	move.w	#$18,(palcount).w
 	rts
 
@@ -181,12 +181,12 @@ HandleMenuInput						;Pause menu pad d1: right / left move between the three tab
 	btst	#dbut,d1				;dbut
 	beq.w	.up
 	addq.w	#1,(menuitem).w			;next lower item
-	bra.w	UpdateMenuSelection
+	bra.w	Pausemode_Pmenu
 .up
 	btst	#ubut,d1				;ubut
 	beq.w	.sel
 	subq.w	#1,(menuitem).w			;next higher item
-	bra.w	UpdateMenuSelection
+	bra.w	Pausemode_Pmenu
 .sel
 	btst	#cbut,d1				;cbut
 	bne.w	.7
@@ -233,7 +233,7 @@ HandleMenuInput						;Pause menu pad d1: right / left move between the three tab
 	clr.w	(menuitem).w
 	clr.w	(menuitem+2).w
 	jsr	(ClearMenuBox).l
-	bra.w	UpdateMenuSelection
+	bra.w	Pausemode_Pmenu
 .13
 	cmpi.l	#StatsMenus,(menulist).l
 	beq.w	.15
@@ -242,7 +242,7 @@ HandleMenuInput						;Pause menu pad d1: right / left move between the three tab
 	clr.w	(menuitem).w
 	clr.w	(menuitem+2).w
 	jsr	(ClearMenuBox).l
-	bra.w	UpdateMenuSelection
+	bra.w	Pausemode_Pmenu
 .14
 	cmpi.l	#InfoMenus,(menulist).l
 	beq.w	.15
@@ -251,7 +251,7 @@ HandleMenuInput						;Pause menu pad d1: right / left move between the three tab
 	clr.w	(menuitem).w
 	clr.w	(menuitem+2).w
 	jsr	(ClearMenuBox).l
-	bra.w	UpdateMenuSelection
+	bra.w	Pausemode_Pmenu
 .15
 	rts
 
@@ -344,7 +344,7 @@ startpause4							;Pause initiated by cont 4 (4 way play)
 	move.w	#3,(menupadnum).w
 	bra.s	startpause
 
-PauseScreenDraw						;Draw the pause screen (SetupPauseScreen): wait out the dma, plane B off,
+PauseScreenDraw						;Draw the pause screen (Pausemode_pall): wait out the dma, plane B off,
 									;window 3 rows, clear the rink map
 									;the pause background (PauseBgBitmap at 0, 0 / 0, 3 / 0, $19), the period
 									;number (not in a shootout or overtime), load the pause fonts, clock
@@ -721,7 +721,7 @@ SetMenuPrintX						;printx = $A (95; 94 4)
 	move.w	#$A,(printx).w
 	rts
 
-UpdateMenuSelection					;Clamp menuitem to the list, scroll menuitem+2 to show it, and print 4
+Pausemode_Pmenu					;Clamp menuitem to the list, scroll menuitem+2 to show it, and print 4
 									;items from printy $C (the selected one in the highlight attribute) with
 									;the up / down arrows; no menu (menulist $69A): DrawMenuInfo
 	btst	#5,(sflags9).w
@@ -1219,7 +1219,7 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	String	'   EDIT LINES   '
 	dc.l	LineEditor
 	String	' CHANGE GOALIE  '
-	dc.l	SelectGoalieMenu
+	dc.l	Pausemode_go
 	String	'x MANUAL GOALIE  '
 	dc.l	ManualGoalieMenu
 	String	'    TIMEOUT     '
@@ -1237,7 +1237,7 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	String	'   EDIT LINES   '
 	dc.l	LineEditor
 	String	' CHANGE GOALIE  '
-	dc.l	SelectGoalieMenu
+	dc.l	Pausemode_go
 	String	'x MANUAL GOALIE  '
 	dc.l	ManualGoalieMenu
 	String	'    TIMEOUT     '
@@ -1253,7 +1253,7 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	String	'   EDIT LINES   '
 	dc.l	LineEditor
 	String	' CHANGE GOALIE  '
-	dc.l	SelectGoalieMenu
+	dc.l	Pausemode_go
 	String	'x MANUAL GOALIE  '
 	dc.l	ManualGoalieMenu
 	String	'   ABORT GAME   '
@@ -1281,7 +1281,7 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	String	'   EDIT LINES   '
 	dc.l	LineEditor
 	String	' CHANGE GOALIE  '
-	dc.l	SelectGoalieMenu
+	dc.l	Pausemode_go
 	String	'x MANUAL GOALIE  '
 	dc.l	ManualGoalieMenu
 	String	'   ABORT GAME   '
@@ -1387,8 +1387,8 @@ ManualGoalieMenu					;Pause menu MANUAL GOALIE / AUTO GOALIE: with OptNOP set, t
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SelectGoalieMenu					;Pause menu CHANGE GOALIE: pick team a2's goalie (or no goalie) from a
-									;list (DrawGoalieSelectList) with up / down, C or start; sets tmgoalie and
+Pausemode_go					;Pause menu CHANGE GOALIE: pick team a2's goalie (or no goalie) from a
+									;list (Pausemode_gnum) with up / down, C or start; sets tmgoalie and
 									;SetPersonel. 95 clears the menu box first (ClearMenuBox) and redraws the
 									;menu after (RedrawMenu), where 94 drew a frame
 	move.w	(menuitem).w,-(sp)
@@ -1404,9 +1404,9 @@ SelectGoalieMenu					;Pause menu CHANGE GOALIE: pick team a2's goalie (or no goa
 	addq.w	#1,d0
 	move.w	d0,(menuitem).w
 .loop
-	bsr.w	DrawGoalieSelectList
+	bsr.w	Pausemode_gnum
 .pad
-	bsr.w	WaitVSyncAndReadInput
+	bsr.w	Pausemode_rjoy
 	btst	#7,d1
 	bne.w	.done
 	btst	#5,d1
@@ -1441,7 +1441,7 @@ SelectGoalieMenu					;Pause menu CHANGE GOALIE: pick team a2's goalie (or no goa
 	jsr	(RedrawMenu).l
 	rts
 
-DrawGoalieSelectList				;Draw the goalie list at row $E, x $C, row menuitem in font set 2: "no
+Pausemode_gnum				;Draw the goalie list at row $E, x $C, row menuitem in font set 2: "no
 									;goalie", then each goalie by name (GetTempPlayerNameAttrib for
 									;TempPlOffset, -1 for the away team; 94 printed the roster name and the
 									;two digit number)
