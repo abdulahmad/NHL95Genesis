@@ -371,7 +371,7 @@ InProgress							;Ref in progress: update the graphics, stats and penalty inform
 	bset	#$C,d2					;keep byte bit 4 (word bit 12) of an old penalty time
 .st
 	move.w	d2,tmpdst(a2,d0.w)
-	andi.w	#$EFFF,d2
+.coinsearch	andi.w	#$EFFF,d2
 	moveq	#(maxros-1)*2+2,d1		;(MaxRos-1)*2+2
 .ctop
 	subq.w	#2,d1					;same time on the other team
@@ -409,9 +409,9 @@ InProgress							;Ref in progress: update the graphics, stats and penalty inform
 	bra.w	.ex
 .exit
 	movea.w	#(tmstruct-M68K_RAM),a2
-	bsr.w	coinsearch
+	bsr.w	InProgress_ap
 	adda.w	#tmsize,a2
-	bsr.w	coinsearch
+	bsr.w	InProgress_ap
 	bclr	#gmpen,(gmode).w
 	movea.w	#(puckx-M68K_RAM),a3
 	bclr	#6,(BA_PS_flags).w
@@ -429,7 +429,7 @@ InProgress							;Ref in progress: update the graphics, stats and penalty inform
 	movem.l	(sp)+,d0/a0-a3
 	rts
 
-coinsearch							;93 a2 = team. Count the players kept off the ice by penalties
+InProgress_ap							;93 a2 = team. Count the players kept off the ice by penalties
 									;(coincidental penalties)
 	moveq	#6,d1
 	moveq	#(maxros-1)*2,d0		;(MaxRos-1)*2
