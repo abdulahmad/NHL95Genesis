@@ -1002,7 +1002,7 @@ DrawPadCursor						;Draw the pad cursor (PadCursorMap, padcursorchars) beside pr
 	rts
 
 BlankLineTxt						;A blank line
-	String	$FD,$0,'                                        '
+	String	CC_SetX,$0,'                                        '
 
 PrintPracticeTitle					;Practice Mode: print PracticePlayersTxt, highlighted (PrintSetupStrHi)
 									;when setupvalues is not 0
@@ -1019,7 +1019,7 @@ PrintPracticeTitle					;Practice Mode: print PracticePlayersTxt, highlighted (Pr
 	rts
 
 PracticePlayersTxt
-	String	$FD,$C,$FC,$16,'PRACTICE PLAYERS',$FD,$19,$FC,$17,'No. of Players',$FD,$2,'No. of Players'
+	String	CC_SetX,$C,CC_SetY,$16,'PRACTICE PLAYERS',CC_SetX,$19,CC_SetY,$17,'No. of Players',CC_SetX,$2,'No. of Players'
 
 ControllerSetupScreen				;Build the controller setup screen: vram, fonts, the team blocks and pad
 									;tiles, the backgrounds and "Controller SetUp" (printbigz); the team

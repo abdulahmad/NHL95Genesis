@@ -835,7 +835,7 @@ InvalidName							;SaveCreateName: "Invalid Name. Make sure player has both a fi
 	move.w	#$F,d1
 	jsr	(Framer).l
 	jsr	(printsmallz).l
-	String	$F9,$03,$FD,$06,$FC,$06,'Invalid Name.',$FD,$06,$FA,$01,'Make sure player has',$FD,$06,$FA,$01,'both a first and last name.'
+	String	CC_SetFont,$03,CC_SetX,$06,CC_SetY,$06,'Invalid Name.',CC_SetX,$06,CC_AddY,$01,'Make sure player has',CC_SetX,$06,CC_AddY,$01,'both a first and last name.'
 	move.w	(Vcount).w,d0
 .loop
 	cmp.w	(Vcount).w,d0
@@ -1352,7 +1352,7 @@ ModifyRatings						;Create Player "Modify Ratings" screen: load graphics/text, t
 	jsr	(printbigz).l
 	String	CC_Font1Pri,$7,$2,'Modify Ratings',$0
 	jsr	(printsmallz).l
-	String	$F9,$01,$FD,$09,$FC,$19,'{}[] = Select Rating',$FA,$01,$FD,$04,'A',$2C,'B=Decrease/Increase',$FD,$1C,'START=Done',$F9,$00
+	String	CC_SetFont,$01,CC_SetX,$09,CC_SetY,$19,'{}[] = Select Rating',CC_AddY,$01,CC_SetX,$04,'A',$2C,'B=Decrease/Increase',CC_SetX,$1C,'START=Done',CC_SetFont,$00
 	move.w	#$18,(palcount).w
 	bclr	#dfng,(disflags).w
 	bsr.w	ClearAttribDeltas
@@ -1924,40 +1924,40 @@ GoalieLabelLists					;Goalie attribute-label lists by column
 	dc.l	GoalieSkillLabels,GoalieSaveLabels,PosWeightLabels,HandUniformLabels
 
 SkaterSkillLabels					;Create Player labels, skater column 1: skating and awareness ratings
-	String	$FD,$4,$FC,$A,'Speed',$FD,$13,$0
-	String	$FD,$4,$FC,$C,'Agility',$FD,$13,$0
-	String	$FD,$4,$FC,$E,'Endurance',$FD,$13,$0
-	String	$FD,$4,$FC,$10,'Off.Awareness',$FD,$13,$0
-	String	$FD,$4,$FC,$12,'Def.Awareness',$FD,$13,$0
-	String	$FD,$4,$FC,$14,'Stickhandling',$FD,$13,$0
+	String	CC_SetX,$4,CC_SetY,$A,'Speed',CC_SetX,$13,$0
+	String	CC_SetX,$4,CC_SetY,$C,'Agility',CC_SetX,$13,$0
+	String	CC_SetX,$4,CC_SetY,$E,'Endurance',CC_SetX,$13,$0
+	String	CC_SetX,$4,CC_SetY,$10,'Off.Awareness',CC_SetX,$13,$0
+	String	CC_SetX,$4,CC_SetY,$12,'Def.Awareness',CC_SetX,$13,$0
+	String	CC_SetX,$4,CC_SetY,$14,'Stickhandling',CC_SetX,$13,$0
 
 SkaterShotLabels					;Create Player labels, skater column 2: shooting, passing and checking
 									;ratings
-	String	$FD,$16,$FC,$A,'Shot Power',$FD,'$'
-	String	$FD,$16,$FC,$C,'Shot Accuracy',$FD,'$',$0
-	String	$FD,$16,$FC,$E,'Pass Accuracy',$FD,'$',$0
-	String	$FD,$16,$FC,$10,'Aggression',$FD,'$'
-	String	$FD,$16,$FC,$12,'Checking',$FD,'$'
+	String	CC_SetX,$16,CC_SetY,$A,'Shot Power',CC_SetX,'$'
+	String	CC_SetX,$16,CC_SetY,$C,'Shot Accuracy',CC_SetX,'$',$0
+	String	CC_SetX,$16,CC_SetY,$E,'Pass Accuracy',CC_SetX,'$',$0
+	String	CC_SetX,$16,CC_SetY,$10,'Aggression',CC_SetX,'$'
+	String	CC_SetX,$16,CC_SetY,$12,'Checking',CC_SetX,'$'
 
 PosWeightLabels						;Create Player labels, column 3 (both): position and weight
-	String	$FD,$16,$FC,$7,'Pos. ',$0
-	String	$FD,$16,$FC,$8,'Wt. '
+	String	CC_SetX,$16,CC_SetY,$7,'Pos. ',$0
+	String	CC_SetX,$16,CC_SetY,$8,'Wt. '
 
 HandUniformLabels					;Create Player labels, column 4 (both): handedness and uniform number
-	String	$FD,$1E,$FC,$7,'Hand',$FD,'$'
-	String	$FD,$1E,$FC,$8,'Unif.',$FD,'$',$0
+	String	CC_SetX,$1E,CC_SetY,$7,'Hand',CC_SetX,'$'
+	String	CC_SetX,$1E,CC_SetY,$8,'Unif.',CC_SetX,'$',$0
 
 GoalieSkillLabels					;Create Player labels, goalie column 1: agility, awareness and puck
 									;control
-	String	$FD,$4,$FC,$B,'Agility',$FD,$13,$0
-	String	$FD,$4,$FC,$D,'Def.Awareness',$FD,$13,$0
-	String	$FD,$4,$FC,$F,'Puck Control',$FD,$13
+	String	CC_SetX,$4,CC_SetY,$B,'Agility',CC_SetX,$13,$0
+	String	CC_SetX,$4,CC_SetY,$D,'Def.Awareness',CC_SetX,$13,$0
+	String	CC_SetX,$4,CC_SetY,$F,'Puck Control',CC_SetX,$13
 
 GoalieSaveLabels					;Create Player labels, goalie column 2: stick and glove side ratings
-	String	$FD,$16,$FC,$B,'Stick Right',$FD,'"',$0
-	String	$FD,$16,$FC,$D,'Stick Left',$FD,'"'
-	String	$FD,$16,$FC,$F,'Glove Right',$FD,'"',$0
-	String	$FD,$16,$FC,$11,'Glove Left',$FD,'"'
+	String	CC_SetX,$16,CC_SetY,$B,'Stick Right',CC_SetX,'"',$0
+	String	CC_SetX,$16,CC_SetY,$D,'Stick Left',CC_SetX,'"'
+	String	CC_SetX,$16,CC_SetY,$F,'Glove Right',CC_SetX,'"',$0
+	String	CC_SetX,$16,CC_SetY,$11,'Glove Left',CC_SetX,'"'
 
 LastFieldRow						;d4 = last row index for column d6 (skater or goalie table)
 	movem.l	d6/a0,-(sp)
@@ -2449,7 +2449,7 @@ SignFreeAgents						;Sign Free Agents screen: draw, input loop
 	jsr	(printbigz).l
 	String	CC_Font1Pri,$7,$2,'Sign Free Agent'
 	jsr	(printsmallz).l
-	String	$F9,$01,$FD,$07,$FC,$19,'A',$2C,'B',$FD,$17,'C',$FD,$1F,'Start',$FA,$01
+	String	CC_SetFont,$01,CC_SetX,$07,CC_SetY,$19,'A',$2C,'B',CC_SetX,$17,'C',CC_SetX,$1F,'Start',CC_AddY,$01
 	jsr	(printsmallz).l
 	String	CC_SetX,$3,'Switch Team',CC_SetX,$12,'Sign Player',CC_SetX,' Exit',CC_SetFont,$0
 	move.w	#3,d0
@@ -2841,7 +2841,7 @@ FreeAgentsEmpty						;"Free agent list is now empty." message box, wait for a ke
 	bra.s	FreeAgentExit
 
 FreeAgentMsgText					;Message string list for PrintSmallListItem
-	String	$F9,3,$FD,6,$FC,$D,'Free agent list is now empty.',0
+	String	CC_SetFont,3,CC_SetX,6,CC_SetY,$D,'Free agent list is now empty.',0
 	rts
 
 BuildFreeAgentList					;Copy the free agent list (SRFreeAgentList, count in SRFreeAgentCount) to
@@ -3300,7 +3300,7 @@ FreeAgentsFull						;"Free agent list is full." message box, wait for key, then 
 	bra.s	ReleaseExit
 
 ReleaseMsgText						;Message string list for PrintSmallListItem
-	String	$F9,3,$FD,6,$FC,$D,'Free agent list is full.'
+	String	CC_SetFont,3,CC_SetX,6,CC_SetY,$D,'Free agent list is full.'
 
 rtsCreate5							;Empty routine
 	rts

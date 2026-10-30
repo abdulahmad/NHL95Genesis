@@ -1128,8 +1128,8 @@ InfoMenus							;The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0, $
 									;a String header, then items of a
 									;String and a routine (y = the play / resume item, x = the manual goalie
 									;toggle; PrintMenuItem), ended by a $FF String
-	String	$FE,0,$F9,0
-	String	$FE,0,$F9,1
+	String	CC_SetAttribute,0,CC_SetFont,0
+	String	CC_SetAttribute,0,CC_SetFont,1
 	String	'y  PLAY GAME    '
 	dc.l	PlayGame
 	String	'  TEAM ROSTER   '
@@ -1142,8 +1142,8 @@ InfoMenus							;The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0, $
 	dc.l	RecordHoldersScreen
 	String	CC_ListEnd,0
 	;InfoMenus+$7E
-	String	$FE,0,$F9,0
-	String	$FE,0,$F9,1
+	String	CC_SetAttribute,0,CC_SetFont,0
+	String	CC_SetAttribute,0,CC_SetFont,1
 	String	'y  PLAY GAME    '
 	dc.l	PlayGame
 	String	'  TEAM ROSTER   '
@@ -1152,8 +1152,8 @@ InfoMenus							;The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0, $
 	dc.l	RecordHoldersScreen
 	String	CC_ListEnd,0
 	;InfoMenus+$D0
-	String	$FE,0,$F9,0
-	String	$FE,0,$F9,1
+	String	CC_SetAttribute,0,CC_SetFont,0
+	String	CC_SetAttribute,0,CC_SetFont,1
 	String	'y  PLAY GAME    '
 	dc.l	PlayGame
 	String	'  TEAM ROSTER   '
@@ -1163,8 +1163,8 @@ InfoMenus							;The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0, $
 	String	CC_ListEnd,0
 StatsMenus							;The pause STATS tab lists (SetStatsMenuItems:
 									;menuitemoffset 0, $66, $74, $F0)
-	String	$FE,0
-	String	$FE,0,$F9,1
+	String	CC_SetAttribute,0
+	String	CC_SetAttribute,0,CC_SetFont,1
 	String	'y  PLAY GAME    '
 	dc.l	PlayGame
 	String	'   GAME STATS   '
@@ -1175,12 +1175,12 @@ StatsMenus							;The pause STATS tab lists (SetStatsMenuItems:
 	dc.l	PlayerStatsScreen
 	String	CC_ListEnd,0
 	;StatsMenus+$66
-	String	$FE,0
-	String	$FE,0,$F9,1
+	String	CC_SetAttribute,0
+	String	CC_SetAttribute,0,CC_SetFont,1
 	String	CC_ListEnd,0
 	;StatsMenus+$74
-	String	$FE,0
-	String	$FE,0,$F9,1
+	String	CC_SetAttribute,0
+	String	CC_SetAttribute,0,CC_SetFont,1
 	String	'y  PLAY GAME    '
 	dc.l	PlayGame
 	String	'   GAME STATS   '
@@ -1193,8 +1193,8 @@ StatsMenus							;The pause STATS tab lists (SetStatsMenuItems:
 	dc.l	PlayoffStatsScreen
 	String	CC_ListEnd,0
 	;StatsMenus+$F0
-	String	$FE,0
-	String	$FE,0,$F9,1
+	String	CC_SetAttribute,0
+	String	CC_SetAttribute,0,CC_SetFont,1
 	String	'y  PLAY GAME    '
 	dc.l	PlayGame
 	String	'   GAME STATS   '
@@ -1210,8 +1210,8 @@ StatsMenus							;The pause STATS tab lists (SetStatsMenuItems:
 	String	CC_ListEnd,0
 PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0, $AA,
 									;$13E, $1D2, $23A, $2CE)
-	String	$FE,0
-	String	$FE,0,$F9,1
+	String	CC_SetAttribute,0
+	String	CC_SetAttribute,0,CC_SetFont,1
 	String	'y   PLAY GAME   '
 	dc.l	PlayGame
 	String	' INSTANT REPLAY '
@@ -1228,8 +1228,8 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	dc.l	AbortGame
 	String	CC_ListEnd,0
 	;PauseMenus+$AA
-	String	$FE,0
-	String	$FE,0,$F9,1
+	String	CC_SetAttribute,0
+	String	CC_SetAttribute,0,CC_SetFont,1
 	String	'y   PLAY GAME   '
 	dc.l	PlayGame
 	String	' INSTANT REPLAY '
@@ -1244,8 +1244,8 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	dc.l	TimeoutMenu
 	String	CC_ListEnd,0
 	;PauseMenus+$13E
-	String	$FE,0
-	String	$FE,0,$F9,1
+	String	CC_SetAttribute,0
+	String	CC_SetAttribute,0,CC_SetFont,1
 	String	'y   PLAY GAME   '
 	dc.l	PlayGame
 	String	' INSTANT REPLAY '
@@ -1260,8 +1260,8 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	dc.l	AbortGame
 	String	CC_ListEnd,0
 	;PauseMenus+$1D2
-	String	$FE,0
-	String	$FE,0,$F9,1
+	String	CC_SetAttribute,0
+	String	CC_SetAttribute,0,CC_SetFont,1
 	String	'y   PLAY GAME   '
 	dc.l	PlayGame
 	String	' INSTANT REPLAY '
@@ -1272,8 +1272,8 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	dc.l	AbortGame
 	String	CC_ListEnd,0
 	;PauseMenus+$23A
-	String	$FE,0
-	String	$FE,0,$F9,1
+	String	CC_SetAttribute,0
+	String	CC_SetAttribute,0,CC_SetFont,1
 	String	'y   PLAY GAME   '
 	dc.l	PlayGame
 	String	' INSTANT REPLAY '
@@ -1288,8 +1288,8 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	dc.l	AbortGame
 	String	CC_ListEnd,0
 	;PauseMenus+$2CE
-	String	$FE,0
-	String	$FE,0,$F9,1
+	String	CC_SetAttribute,0
+	String	CC_SetAttribute,0,CC_SetFont,1
 	String	'   PLAY GAME    '
 	dc.l	PlayGame
 	String	' INSTANT REPLAY '

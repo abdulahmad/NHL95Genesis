@@ -2679,7 +2679,7 @@ MenuPlayUntil						;Play Until A Day: pick the day with A (month) / B (day), C c
 	jsr	(printsmallz).l
 	String	CC_SetFont,$2,'Please complete human',CC_SetX,$7,CC_SetY,$D,'controlled games before'
 	jsr	(printsmallz).l
-	String	$FD,$07,$FA,$01,$F9,$02,'selecting autoplay.',$FD,$07,$FA,$02,$F9,$02,'Press START to continue.',$F9,$00
+	String	CC_SetX,$07,CC_AddY,$01,CC_SetFont,$02,'selecting autoplay.',CC_SetX,$07,CC_AddY,$02,CC_SetFont,$02,'Press START to continue.',CC_SetFont,$00
 .loop
 	move.w	(Vcount).w,d0
 .loop2
@@ -2813,7 +2813,7 @@ AutoplayMessage						;AUTOPLAYING GAMES. DO NOT PRESS RESET !!, d0 = 0
 	jsr	(printz).l
 	String	CC_Font1Pri,$7,$C,$0
 	jsr	(printsmallz).l
-	String	$F9,$02,$FA,$03,'AUTOPLAYING GAMES.',$FA,$02,$FD,$07,'DO NOT PRESS RESET !!',$FA,$02,$FD,$07,'Please wait...',$F9,$00
+	String	CC_SetFont,$02,CC_AddY,$03,'AUTOPLAYING GAMES.',CC_AddY,$02,CC_SetX,$07,'DO NOT PRESS RESET !!',CC_AddY,$02,CC_SetX,$07,'Please wait...',CC_SetFont,$00
 	clr.w	d0
 	rts
 
@@ -3051,7 +3051,7 @@ CalendarScreen						;CALENDAR (team schedule): {} change team, [] change month, 
 	jsr	(printz).l
 	String	CC_Font1Pri,$1,$7,$0
 	jsr	(printsmallz).l
-	String	$F9,$01,'[ ]',$FD,$01,$FA,$01,'= Change',$FD,$01,$FA,$01,'Month',$FD,$01,$FA,$02,'{ }',$FD,$01,$FA,$01,'= Change',$FD,$01,$FA,$01,'Team'
+	String	CC_SetFont,$01,'[ ]',CC_SetX,$01,CC_AddY,$01,'= Change',CC_SetX,$01,CC_AddY,$01,'Month',CC_SetX,$01,CC_AddY,$02,'{ }',CC_SetX,$01,CC_AddY,$01,'= Change',CC_SetX,$01,CC_AddY,$01,'Team'
 	jsr	(printsmallz).l
 	String	CC_SetX,$1,CC_SetY,$15,'START',CC_SetX,$1,CC_AddY,$1,'= Exit',CC_SetFont,$0,$0
 	move.w	#$18,(palcount).w

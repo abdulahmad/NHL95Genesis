@@ -211,10 +211,10 @@ DrawScrollArrowsPenalty				;Summary screen up / down arrows (ScrollArrowTbl). Sa
 	rts
 
 ScrollArrowTbl						;None, up, down, both
-	String	' ',$FB,$FF,$FA,$10,' ',$F9,$0
-	String	'{',$FB,$FF,$FA,$10,' ',$F9,$0
-	String	' ',$FB,$FF,$FA,$10,'}',$F9,$0
-	String	'{',$FB,$FF,$FA,$10,'}',$F9,$0
+	String	' ',CC_AddX,$FF,CC_AddY,$10,' ',CC_SetFont,$0
+	String	'{',CC_AddX,$FF,CC_AddY,$10,' ',CC_SetFont,$0
+	String	' ',CC_AddX,$FF,CC_AddY,$10,'}',CC_SetFont,$0
+	String	'{',CC_AddX,$FF,CC_AddY,$10,'}',CC_SetFont,$0
 
 PenaltySummaryScreen				;"Penalties": one 3 row entry per penalty (4 bytes each from PenSum,
 									;PenSumLength), scrolled with up / down, start exits

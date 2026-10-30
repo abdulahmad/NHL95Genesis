@@ -48,7 +48,7 @@ TeamRosterScreen					;"Team Roster" screen for team a2: DrawTeamScreen, then the
 .1
 	jsr	(PutTeamBlock).l
 	jsr	(printsmallz).l
-	String	$F8,$04,$02,$01,$0B,$F9,$02,'^#^^Player',$FD,$19,'Lines',$FD,$17,$FC,$0C,'Reg^PP^PK',$FD,'!',$FC,$0B,'Rating',$FD,$03,$FC,$1A,'A-Teams                C-Positions',$F9,$00
+	String	CC_SetMapAndPosition,$04,$02,$01,$0B,CC_SetFont,$02,'^#^^Player',CC_SetX,$19,'Lines',CC_SetX,$17,CC_SetY,$0C,'Reg^PP^PK',CC_SetX,'!',CC_SetY,$0B,'Rating',CC_SetX,$03,CC_SetY,$1A,'A-Teams                C-Positions',CC_SetFont,$00
 	jsr	(printz).l
 	String	CC_Font3Pri,1,8,0
 	bsr.w	DisplayPlayerList
