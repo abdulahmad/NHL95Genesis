@@ -226,7 +226,7 @@ chkprogress							;Control the progress of the ref and the game through penalty 
 	bclr	#sf2drec,(sflags2).w	;sf2drec
 	bclr	#7,(gmode2).w
 	jsr	(printz).l
-	String	-TXMAP1,3,2,0
+	String	CC_Font1,3,2,0
 	moveq	#$1B,d0
 	moveq	#8,d1
 	btst	#0,(gmode2).w
@@ -735,7 +735,7 @@ prefmes								;Print the message for penalty d0 (negative clears it) under the 
 	tst.w	d0
 	bpl.w	.0
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),0,$A,0
+	String	CC_Font1Pri,0,$A,0
 	moveq	#$D,d0
 	moveq	#3,d1
 	move.w	#$7FF,d2				;blank tile
@@ -743,7 +743,7 @@ prefmes								;Print the message for penalty d0 (negative clears it) under the 
 	bra.w	.ex
 .0
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),5,$A,0
+	String	CC_Font1Pri,5,$A,0
 	movea.l	#Penaltylist,a1
 	adda.w	(a1,d0.w),a1
 	addq.w	#2,a1
@@ -770,7 +770,7 @@ prefmes								;Print the message for penalty d0 (negative clears it) under the 
 	tst.w	d0
 	bmi.w	.ex
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$11,$B,$0
+	String	CC_Font1Pri,$11,$B,$0
 	movea.l	#Penaltylist,a1
 	adda.w	(a1,d0.w),a1
 	addq.w	#2,a1
@@ -784,7 +784,7 @@ prefmes								;Print the message for penalty d0 (negative clears it) under the 
 ClearPenaltyMessage					;Blank the horizontal mode penalty message line (22 spaces at x 5, y $B).
 									;Unreferenced
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),5,$B,'                      '
+	String	CC_Font1Pri,5,$B,'                      '
 	rts
 
 ;-------------------------------------------------------------------------------------------------------------

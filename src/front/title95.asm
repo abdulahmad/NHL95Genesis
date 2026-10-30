@@ -30,13 +30,13 @@ newTitleScreen						;The title screen (TitleScreenImg, TitleImg) with the vblank
 	move.w	#VDPR_MODE3+$03,Vctrl-Vdata(a0)
 	clr.w	(Vscroll).w
 	jsr	(printz).l
-	String	-TXMAP1,0,0,0
+	String	CC_Font1,0,0,0
 	move.l	#$80,d0
 	moveq	#$20,d1
 	move.l	#$7FF,d2
 	jsr	(eraser).l
 	jsr	(printz).l
-	String	-TXMAP2,0,0,0
+	String	CC_Font2,0,0,0
 	move.l	#$80,d0
 	moveq	#$20,d1
 	move.l	#$7FF,d2
@@ -44,7 +44,7 @@ newTitleScreen						;The title screen (TitleScreenImg, TitleImg) with the vblank
 	clr.w	d4
 	move.w	d4,-(sp)
 	jsr	(printz).l
-	String	-TXMAP3,0,0,0
+	String	CC_Font3,0,0,0
 	movea.l	#TitleScreenImg,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -59,7 +59,7 @@ newTitleScreen						;The title screen (TitleScreenImg, TitleImg) with the vblank
 	move.w	d4,(TempWord1).w
 	move.w	(sp)+,d4
 	jsr	(printz).l
-	String	-TXMAP2,0,$17,0
+	String	CC_Font2,0,$17,0
 	movea.l	#TitleScreenImg,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -75,7 +75,7 @@ newTitleScreen						;The title screen (TitleScreenImg, TitleImg) with the vblank
 	bclr	#0,(sflags6).w
 	move.w	(TempWord1).w,d4
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),1,$A,0
+	String	CC_Font2Pri,1,$A,0
 	movea.l	#TitleImg,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -97,7 +97,7 @@ newTitleScreen						;The title screen (TitleScreenImg, TitleImg) with the vblank
 	dc.b	$0D,$10,$45,$67,$89,$AB,$CD,$EF	;remap bytes
 	clr.w	(TempWord1).w
 	jsr	(printz).l
-	String	-(TXPAL1+TXMAP1),0,0,0
+	String	CC_Font1Pal1,0,0,0
 	movea.l	#Credits,a1				;start of credits for scrolling
 	jsr	(CreditsPrintRow).l
 	addi.w	#$20,(Vscroll).w
@@ -135,7 +135,7 @@ newTitleScreen						;The title screen (TitleScreenImg, TitleImg) with the vblank
 	jsr	(CreditsWait).l
 	dbf	d3,.loop2
 	jsr	(printz).l
-	String	-(TXPAL1+TXMAP1),0,0,0
+	String	CC_Font1Pal1,0,0,0
 	movea.l	#CreditsList,a1
 .loop3
 	jsr	(CreditsPrintRow).l
@@ -310,7 +310,7 @@ HiScoreScreen						;vb2, the HiScoreBgMap and HiScoreImg bitmaps, then wait up t
 	dbf	d1,.loop
 	jsr	(setVram_0).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$E,$3,$0
+	String	CC_Font2Pri,$E,$3,$0
 	movea.l	#HiScoreBgMap,a2
 	movea.l	a2,a0
 	movea.l	a2,a1
@@ -324,7 +324,7 @@ HiScoreScreen						;vb2, the HiScoreBgMap and HiScoreImg bitmaps, then wait up t
 	moveq	#$F,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$10,$10,$0
+	String	CC_Font2Pri,$10,$10,$0
 	movea.l	#HiScoreImg,a2
 	movea.l	a2,a0
 	movea.l	a2,a1
@@ -377,7 +377,7 @@ StanleyCupScreen					;The Stanley Cup screen: the vblank CupVBlank, the cup (Sta
 	move.w	d4,(energybarchars).w
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l
-	String	-TXMAP2,$0,$0,$0
+	String	CC_Font2,$0,$0,$0
 	movea.l	#StanleyCupImg,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -465,7 +465,7 @@ CupVBlank							;StanleyCupScreen vblank: the sprites, cramfade, Vcount, the mus
 CupDrawTeam							;StanleyCupScreen: the team block of the winner (cupwinner, Teamblocksmap)
 	movem.l	d0-d7/a0-a3,-(sp)
 	jsr	(printz).l
-	String	-TXMAP2,$17,$16,$0
+	String	CC_Font2,$17,$16,$0
 	move.w	(cupwinner).w,d1
 	add.w	d1,d1
 	movea.l	#Teamblocksmap,a1

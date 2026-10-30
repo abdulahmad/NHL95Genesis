@@ -531,7 +531,7 @@ ShowReplayIcon						;Show the replay icon and start the $F0 frame replayicontime
 									;the icon is $A x 5 at 0,0 from ReplayIconChars
 	move.w	#$F0,(replayicontimer).w
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),2,2,0
+	String	CC_Font3Pri,2,2,0
 	moveq	#0,d0
 	moveq	#0,d1
 	moveq	#$A,d2
@@ -545,7 +545,7 @@ ShowReplayIcon						;Show the replay icon and start the $F0 frame replayicontime
 
 EraseReplayIcon						;Erase the $A x 5 replay icon (replayicontimer ran out)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),2,2,0
+	String	CC_Font3Pri,2,2,0
 	move.w	#$A,d0
 	move.w	#5,d1
 	move.w	#$7FF,d2
@@ -555,7 +555,7 @@ ShowReplayBanner					;Show the replay banner at 0,0 and stop the replayicontimer
 									;95: $A x 6 from ExtraChars
 	st	(replayicontimer).w
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),2,2,0
+	String	CC_Font3Pri,2,2,0
 	moveq	#0,d0
 	moveq	#0,d1
 	moveq	#$A,d2
@@ -569,7 +569,7 @@ ShowReplayBanner					;Show the replay banner at 0,0 and stop the replayicontimer
 
 EraseReplayBanner					;Erase the $A x 6 area ShowReplayBanner drew
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),2,2,0
+	String	CC_Font3Pri,2,2,0
 	move.w	#$A,d0
 	move.w	#6,d1
 	move.w	#$7FF,d2

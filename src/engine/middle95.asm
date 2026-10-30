@@ -413,7 +413,7 @@ showclock							;Put the game clock on screen. Called from setvideo and PauseMod
 	beq.w	showclockdma
 	move.l	a1,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$10,4,0
+	String	CC_Font2Pri,$10,4,0
 	move.w	(gameclock).w,d0
 	ext.l	d0
 	divu.w	#$258,d0				;tens of minutes
@@ -448,7 +448,7 @@ showclock							;Put the game clock on screen. Called from setvideo and PauseMod
 	jsr	(PutClockDigit).l			;seconds
 	movea.l	(sp)+,a1
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP3),$D,5,0
+	String	CC_Font3Pri,$D,5,0
 	rts
 
 PutClockDigit						;Draw big clock digit d0 (0-9, $A the colon) at printx / printy from
@@ -1548,7 +1548,7 @@ ClrHor								;Unreferenced. Revert the graphics back to vertical ice rink mode:
 	btst	#sfpz,(sflags).w
 	bne.w	.ex
 	bsr.w	printz
-	String	-TXMAP1,0,0,0
+	String	CC_Font1,0,0,0
 	moveq	#$20,d0					;32
 	moveq	#$1C,d1					;28
 	move.w	#$7FF,d2				;blank tile
@@ -1745,13 +1745,13 @@ printscores1						;Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; peri
 	btst	#sf2replay,(sflags2).w
 	bne.w	.x
 	bsr.w	printz
-	String	-(TXPRI+TXMAP1),0,$17,0
+	String	CC_Font1Pri,0,$17,0
 	moveq	#9,d0
 	moveq	#5,d1
 	bsr.w	Framer
 	bset	#dfclock,(disflags).w
 	bsr.w	printz
-	String	-(TXPRI+TXMAP1),1,$18,0
+	String	CC_Font1Pri,1,$18,0
 	move.w	(gsp).w,d0				;period name
 	movea.l	#PerLabels,a1
 	btst	#1,(gmode2).w
@@ -1764,16 +1764,16 @@ printscores1						;Draw scoreboard: the period box (Framer 9 x 5 at 0, $17; peri
 	btst	#sf3llcs,(sflags3).w
 	bne.w	.x
 	bsr.w	printz
-	String	-(TXPRI+TXMAP1),$17,$17,0
+	String	CC_Font1Pri,$17,$17,0
 	moveq	#8,d0
 	moveq	#5,d1
 	bsr.w	Framer
 	bsr.w	printz
-	String	-(TXPRI+TXMAP1),$18,$1A,0
+	String	CC_Font1Pri,$18,$1A,0
 	movea.w	#(tmstruct-M68K_RAM),a2
 	bsr.w	printscores1_ps
 	bsr.w	printz
-	String	-(TXPRI+TXMAP1),$18,$18,0
+	String	CC_Font1Pri,$18,$18,0
 	adda.w	#tmsize,a2
 	bsr.w	printscores1_ps
 .x
@@ -2354,7 +2354,7 @@ EASNLogo							;Draw the EASN logo map at x 2, y $19 (94: x 1) on the vertical i
 	btst	#sf2pwrplay,(sflags2).w	;sf2pwrplay
 	bne.w	.x
 	bsr.w	printz
-	String	-(TXPRI+TXMAP1),2,$19	;/ move.b d0,-(a4)
+	String	CC_Font1Pri,2,$19	;/ move.b d0,-(a4)
 	movea.l	#EASNmap,a1
 	adda.l	4(a1),a1
 	movea.w	#ZeroLong,a2			;a zero long: no palettes

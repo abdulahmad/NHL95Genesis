@@ -31,13 +31,13 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 	move.w	#0,d0
 	jsr	(setVram).l
 	jsr	(printz).l
-	String	-TXMAP1,0,0,0
+	String	CC_Font1,0,0,0
 	move.l	#$80,d0
 	moveq	#$1C,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
 	jsr	(printz).l
-	String	-TXMAP3,0,0,0
+	String	CC_Font3,0,0,0
 	moveq	#$28,d0
 	moveq	#2,d1
 	move.w	#$7FF,d2
@@ -59,7 +59,7 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 	move.w	d4,(ExtraChars).w
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l
-	String	-(TXPAL3+TXMAP2),0,0,0
+	String	CC_Font2Pal3,0,0,0
 	movea.l	#ScoutMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -98,7 +98,7 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 	move.b	(a0)+,d4
 .2
 	jsr	(printz).l
-	String	-TXMAP1,0,0,0
+	String	CC_Font1,0,0,0
 	move.b	(a0)+,(printx+1).w
 	move.b	(a0)+,(printy+1).w
 	clr.w	d1
@@ -110,14 +110,14 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 	move.b	(a0)+,d4
 .3
 	jsr	(printz).l
-	String	-TXMAP1,0,2,0
+	String	CC_Font1,0,2,0
 	move.b	(a0)+,(printx+1).w
 	clr.w	d0
 	move.b	(a0)+,d0
 	jsr	(PlayoffScreen_doarrow).l
 	dbf	d4,.3
 	jsr	(printz).l
-	String	-(TXPAL1+TXMAP1),0,0,0
+	String	CC_Font1Pal1,0,0,0
 	cmpi.w	#7,(bosgames).w			;best of 7
 	beq.w	.5
 	clr.w	d4
@@ -142,7 +142,7 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 	tst.w	(gamelevel).w
 	beq.w	.6
 	jsr	(printz).l
-	String	-(TXPAL3+TXMAP3),$A,1,'Press [ or ] to page'
+	String	CC_Font3Pal3,$A,1,'Press [ or ] to page'
 .6
 	move.w	#$18,(palcount).w
 	move.w	#3,-(sp)
@@ -314,11 +314,11 @@ VBlank_Playoff						;The PlayoffScreen vblank handler (VBint): dma the sprite ta
 	rte
 
 PlayoffScreenText					;Round titles by gamelevel, printbig Strings with their position
-	String	-(TXPAL3+TXMAP1),$39,$19,'Playoffs'
-	String	-(TXPAL3+TXMAP1),$33,$19,'Quarterfinals'
-	String	-(TXPAL3+TXMAP1),$37,$19,'Semifinals'
-	String	-(TXPAL3+TXMAP1),$3B,$19,'Finals'
-	String	-(TXPAL3+TXMAP1),$37,$19,'Champions'
+	String	CC_Font1Pal3,$39,$19,'Playoffs'
+	String	CC_Font1Pal3,$33,$19,'Quarterfinals'
+	String	CC_Font1Pal3,$37,$19,'Semifinals'
+	String	CC_Font1Pal3,$3B,$19,'Finals'
+	String	CC_Font1Pal3,$37,$19,'Champions'
 
 ;-------------------------------------------------------------------------------------------------------------
 ;	The playoff tree setup and its sprite.

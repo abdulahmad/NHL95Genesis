@@ -271,7 +271,7 @@ PenGoalStuff						;Do this stuff after a goal: a1 = scored on team, a2 = scoring
 box									;Fill a $13 x 8 rectangle at printz position
 									;$FF,$B,2 with char $7FF (eraser)
 	jsr	(printz).l
-	String	-TXMAP1,$B,2,0
+	String	CC_Font1,$B,2,0
 	moveq	#$13,d0
 	moveq	#8,d1
 	move.l	#$7FF,d2
@@ -293,7 +293,7 @@ ShowGoalBox							;Goal box: close both line change boxes (lcfound_close), then 
 	movea.w	#(ChkCnt-M68K_RAM),a4	;+ ScoreSumbytes = last goal entry
 	adda.w	(ScoreSumbytes).w,a4
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$B,2,0
+	String	CC_Font1Pri,$B,2,0
 	moveq	#$13,d0
 	move.w	#5,d1					;5 rows: no assist
 	tst.b	4(a4)
@@ -359,7 +359,7 @@ ShowGoalBox							;Goal box: close both line change boxes (lcfound_close), then 
 	bclr	#5,(sflags4).w
 	bne.w	.6
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$E,6,'Assist by:',-(TXPRI+TXMAP1),$C,7
+	String	CC_Font1Pri,$E,6,'Assist by:',CC_Font1Pri,$C,7
 	move.w	d0,-(sp)
 	jsr	(FormatPlayerName).l
 	jsr	(print).l
@@ -369,7 +369,7 @@ ShowGoalBox							;Goal box: close both line change boxes (lcfound_close), then 
 	move.b	5(a4),d0				;second assist
 	bmi.w	.6
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$C,8,0
+	String	CC_Font1Pri,$C,8,0
 	move.w	d0,-(sp)
 	jsr	(FormatPlayerName).l
 	jsr	(print).l
@@ -381,12 +381,12 @@ ShowGoalBox							;Goal box: close both line change boxes (lcfound_close), then 
 	rts
 
 GoalBigTxt							;printbig Strings for ShowGoalBox: GOAL!, then HAT TRICK!
-	String	-(TXPRI+TXMAP1),$F,3,'GOAL!',-(TXPRI+TXMAP1),$C,5
-	String	-(TXPRI+TXMAP1),$C,3,'HAT TRICK!',-(TXPRI+TXMAP1),$C,5
+	String	CC_Font1Pri,$F,3,'GOAL!',CC_Font1Pri,$C,5
+	String	CC_Font1Pri,$C,3,'HAT TRICK!',CC_Font1Pri,$C,5
 
 PPGoalBigTxt						;The same after a power play: PP GOAL!, then HAT TRICK!
-	String	-(TXPRI+TXMAP1),$D,3,'PP GOAL!',-(TXPRI+TXMAP1),$C,5
-	String	-(TXPRI+TXMAP1),$C,3,'HAT TRICK!',-(TXPRI+TXMAP1),$C,5
+	String	CC_Font1Pri,$D,3,'PP GOAL!',CC_Font1Pri,$C,5
+	String	CC_Font1Pri,$C,3,'HAT TRICK!',CC_Font1Pri,$C,5
 
 PrintPlayerAssists					;Print " (" and the assists of player d0 of team a2 (PrintParenNumber)
 	movem.l	d0/a2,-(sp)
@@ -932,7 +932,7 @@ DrawPadSetup						;Draw the pads, their icons (DrawPadIcon) and the cursor (Draw
 	addq.w	#1,(printy).w
 	bsr.w	PrintSetupStr
 	jsr	(printz).l
-	String	-TXMAP1,0,0,0
+	String	CC_Font1,0,0,0
 	move.w	(sp)+,(printy).w
 	move.w	#$F,(printx).w
 	tst.w	(a0)
@@ -1076,14 +1076,14 @@ ControllerSetupScreen				;Build the controller setup screen: vram, fonts, the te
 	jsr	(DecompressGraphicsPlain).l
 	move.w	(VisTeam).w,d1
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),2,6,0
+	String	CC_Font1Pri,2,6,0
 	bsr.w	DrawSetupTeamBlock
 	move.w	(HomeTeam).w,d1
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$1B,6,0
+	String	CC_Font1Pri,$1B,6,0
 	bsr.w	DrawSetupTeamBlock
 	jsr	(printz).l
-	String	-TXMAP2,0,0,0
+	String	CC_Font2,0,0,0
 	movea.l	#ControllerBgMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1096,7 +1096,7 @@ ControllerSetupScreen				;Build the controller setup screen: vram, fonts, the te
 	moveq	#3,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	-TXMAP2,$E,6,0
+	String	CC_Font2,$E,6,0
 	movea.l	#ControllerTitleMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1109,7 +1109,7 @@ ControllerSetupScreen				;Build the controller setup screen: vram, fonts, the te
 	moveq	#0,d5
 	jsr	(dobitmap).l
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP1),5,2,'Controller SetUp'
+	String	CC_Font1Pri,5,2,'Controller SetUp'
 	rts
 
 DrawSetupTeamBlock					;Draw team block d1 (Teamblocksmap) at printx / printy

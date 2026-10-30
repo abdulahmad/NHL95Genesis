@@ -25,7 +25,7 @@ NameEntryScreen						;Name Entry screen: draw team logo, NAME ENTRY title and Na
 	move.w	#$18,(palcount).w
 	bclr	#dfng,(disflags).w
 	jsr	(printz).l
-	String	-(TXPRI+TXPAL3+TXMAP1),$1B,$8,$0
+	String	CC_Font1Pal3Pri,$1B,$8,$0
 	move.w	(HomeTeam).w,d3
 	tst.w	(nameentryvis).w
 	beq.w	.0
@@ -50,7 +50,7 @@ NameEntryScreen						;Name Entry screen: draw team logo, NAME ENTRY title and Na
 	move.w	(homepicchars).w,d4
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$1E,$6,$0
+	String	CC_Font1Pri,$1E,$6,$0
 	move.w	(HomeTeam).w,d0
 	tst.w	(nameentryvis).w
 	beq.w	.1
@@ -66,7 +66,7 @@ NameEntryScreen						;Name Entry screen: draw team logo, NAME ENTRY title and Na
 	sub.w	d0,(printx).w
 	jsr	(printsmall).l
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP1),$A,$2,'NAME   ENTRY',$0
+	String	CC_Font1Pri,$A,$2,'NAME   ENTRY',$0
 	movea.l	(sp)+,a5
 	bsr.w	ReadNameLog
 	clr.w	(namelogarrows).w
@@ -77,7 +77,7 @@ NameEntryScreen						;Name Entry screen: draw team logo, NAME ENTRY title and Na
 	bsr.w	GetLogName
 	bsr.w	PrintNameLog
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$C,$6,'Name Log',$0
+	String	CC_Font1Pri,$C,$6,'Name Log',$0
 	clr.w	d4
 	bsr.w	SyncLetterCursor
 	bsr.w	PrintNameCursor
@@ -98,7 +98,7 @@ NameEntryScreen						;Name Entry screen: draw team logo, NAME ENTRY title and Na
 .loop
 	bsr.w	GetNameLength
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$A,$7,$0
+	String	CC_Font1Pri,$A,$7,$0
 	move.w	(namelogsel).w,d0
 	add.w	d0,(printy).w
 	tst.w	(NameEntryMode).w
@@ -200,7 +200,7 @@ NameEntryScreen						;Name Entry screen: draw team logo, NAME ENTRY title and Na
 	bra.w	.loop
 .17
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$4,$13,$0
+	String	CC_Font1Pri,$4,$13,$0
 	add.w	d4,(printx).w
 	jsr	(printz).l
 	String	'   ',$0
@@ -275,7 +275,7 @@ NameLetterGrid						;Name entry: letter grid and its key help (NameLetterGrid); 
 									;call the name log help (NameEntryHelp)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$18,$12,$0
+	String	CC_Font1Pri,$18,$12,$0
 	move.w	#$16,d0
 	move.w	#7,d1
 	move.w	#$7FF,d2
@@ -283,7 +283,7 @@ NameLetterGrid						;Name entry: letter grid and its key help (NameLetterGrid); 
 	bchg	#0,(NameEntryMode+1).w
 	bne.w	.3
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$A,$11,$0
+	String	CC_Font1Pri,$A,$11,$0
 	movea.l	#LetterGrid,a0
 	moveq	#4,d0
 .loop
@@ -301,7 +301,7 @@ NameLetterGrid						;Name entry: letter grid and its key help (NameLetterGrid); 
 	dbf	d0,.loop
 	jsr	(ClearNameHelp).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$18,$11,$0
+	String	CC_Font1Pri,$18,$11,$0
 	jsr	(printsmallz).l
 	String	'{}[]',$FA,$01,$FD,$18,'=Select letter',$FA,$02,$FD,$18,'C=Enter letter',$FA,$02,$FD,$18,'A=Go back',$FA,$02,$FD,$18,'B=Cancel'
 .x
@@ -318,7 +318,7 @@ NameLetterGrid						;Name entry: letter grid and its key help (NameLetterGrid); 
 	jsr	(eraser).l
 .4
 	jsr	(printz).l
-	String	-TXMAP2,$18,$12,$0
+	String	CC_Font2,$18,$12,$0
 	moveq	#$16,d0
 	moveq	#7,d1
 	bsr.w	NameEntryHelp
@@ -328,7 +328,7 @@ NameEntryHelp						;Name entry: name log key help text (NameEntryHelp)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(ClearNameHelp).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$18,$11,$0
+	String	CC_Font1Pri,$18,$11,$0
 	jsr	(printsmallz).l
 	String	'{}=Select',$FA,$01,$FD,$1B,'name',$FA,$02,$FD,$19,'B=Enter/edit',$FA,$01,$FD,$1B,'name',$FA,$02,$FD,$19,'START',$FA,$01,$FD,$1A,'=Use name'
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -388,7 +388,7 @@ FindLetter							;d0 = index of letter d0 in the letter grid, $1E when not found
 PrintNameCursor						;Name entry: position the name cursor (95 prints no " < ";
 									;PrintNameCursor)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),5,$12,$0
+	String	CC_Font1Pri,5,$12,$0
 	add.w	d4,(printx).w
 	tst.w	(NameEntryMode).w
 	beq.w	rtsNameCursor
@@ -410,7 +410,7 @@ PrintCurLetter						;Name entry: print grid letter d5 when the cursor is on (Pri
 LetterGridPos						;Name entry: printx/printy of grid letter d5 (6 a row, 2 cells apart),
 									;d0/d1 = 3x3 box
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),9,$10,$0
+	String	CC_Font1Pri,9,$10,$0
 	move.w	d5,d0
 	ext.l	d0
 	divu.w	#6,d0
@@ -424,17 +424,17 @@ LetterGridPos						;Name entry: printx/printy of grid letter d5 (6 a row, 2 cell
 	rts
 
 EnterNameTxt						;Name entry prompt for an empty name log slot (EnterNameTxt)
-	String	-(TXPRI+TXMAP1),6,$F,'  Enter new name. ',$0
+	String	CC_Font1Pri,6,$F,'  Enter new name. ',$0
 
 SelectNameTxt						;Name entry prompt for a used name log slot (SelectNameTxt)
-	String	-(TXPRI+TXMAP1),6,$F,'Select or replace.',$0
+	String	CC_Font1Pri,6,$F,'Select or replace.',$0
 
 PrintNameLog						;Name entry: print the 7-row name log list (PrintNameLog)
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(NameEntryLen).w,-(sp)
 	move.w	(namelogsel).w,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$A,8,$0
+	String	CC_Font1Pri,$A,8,$0
 	move.w	#6,d7
 	move.w	#1,(namelogsel).w
 	movea.l	#linemarkbuf,a1
@@ -470,7 +470,7 @@ PrintLogArrows						;Name entry: print the two arrow Strings at a1 on name log r
 	tst.w	(namelogarrows).w
 	beq.w	.0
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),8,8,$0
+	String	CC_Font1Pri,8,8,$0
 	move.w	(namelogarrows).w,d0
 	subq.w	#1,d0
 	add.w	d0,(printy).w
@@ -861,7 +861,7 @@ NameLogIO							;Read or write (sflags6 bit 6) the name log
 ClearNameHelp						;Name entry: erase the help text area ($16 x 8 at 24,17)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$18,$11,$0
+	String	CC_Font1Pri,$18,$11,$0
 	moveq	#$16,d0
 	moveq	#8,d1
 	move.w	#$7FF,d2
@@ -898,13 +898,13 @@ RecordHoldersScreen					;Pause menu RECORD HOLDERS: the save RAM records (PrintR
 	move.w	#$1A,d1
 	jsr	(SetupScreen).l
 	jsr	(printz).l
-	String	-TXMAP3,$0,$0,$0
+	String	CC_Font3,$0,$0,$0
 	move.w	#$7FF,d2
 	move.w	#$28,d0
 	move.w	#$1C,d1
 	jsr	(eraser).l
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP3),$7,$2,'Record Holders',-(TXPRI+TXMAP3),$1,$9
+	String	CC_Font3Pri,$7,$2,'Record Holders',CC_Font3Pri,$1,$9
 	jsr	(printsmallz).l
 	String	CC_SetMapAndPosition,$4,$3,$5,$8,CC_SetFont,$1,'Name',CC_SetFont,$0,$0
 	bsr.w	PrintRecordTitles
@@ -1777,7 +1777,7 @@ SetupScreen							;Common start of the stats screens: blank, scroll 0, 40 cell m
 	bclr	#df32c,(disflags).w
 	move.w	#1,d4
 	jsr	(printz).l
-	String	-TXMAP2,$0,$0,$0
+	String	CC_Font2,$0,$0,$0
 	movem.l	(sp),d0-d1/a2
 	movea.l	#ControllerBgMap,a0
 	movea.l	a0,a1
@@ -1807,7 +1807,7 @@ SetupScreen							;Common start of the stats screens: blank, scroll 0, 40 cell m
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l
-	String	-TXMAP1,$0,$0,$0
+	String	CC_Font1,$0,$0,$0
 	moveq	#$40,d0
 	moveq	#$20,d1
 	move.w	#$7FF,d2

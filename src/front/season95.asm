@@ -1521,7 +1521,7 @@ SeasonSetup							;SEASON SETUP screen: period length, penalties, line changes, 
 	clr.b	(SeasonFlags).w
 	bsr.w	SeasonSetupGfx
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP1),$8,$2,'SEASON SETUP',$0
+	String	CC_Font1Pri,$8,$2,'SEASON SETUP',$0
 	movea.l	#SeasonSetupHelp,a1
 	bsr.w	PrintOptionHi
 	clr.w	(SelectedPlayerIdx).w
@@ -1717,7 +1717,7 @@ SeasonSetupGfx						;Season setup screen video set up and graphics
 	movea.l	#BigFontMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l
-	String	-TXMAP2,$0,$0,$0
+	String	CC_Font2,$0,$0,$0
 	movea.l	#ControllerBgMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -1797,7 +1797,7 @@ PrintOption							;Print String a1 at printx / printy in the second small font
 	move.w	(printx).w,-(sp)
 	move.w	(printy).w,-(sp)
 	jsr	(printz).l
-	String	-TXMAP1,$0,$0,$0
+	String	CC_Font1,$0,$0,$0
 	move.w	(sp)+,(printy).w
 	move.w	(sp)+,(printx).w
 	movem.l	(sp)+,a1
@@ -1813,7 +1813,7 @@ PrintOptionHi						;Print String a1 at printx / printy in the highlight font
 	move.w	(printx).w,-(sp)
 	move.w	(printy).w,-(sp)
 	jsr	(printz).l
-	String	-TXMAP1,$0,$0,$0
+	String	CC_Font1,$0,$0,$0
 	move.w	(sp)+,(printy).w
 	move.w	(sp)+,(printx).w
 	movem.l	(sp)+,a1
@@ -1855,7 +1855,7 @@ SetupNameText						;Setup line names
 	String	'Season Schedule     '
 
 SeasonSetupHelp						;Season setup help line
-	String	-(TXPRI+TXMAP1),$2,$19,'{} Select option    [] Change option',-(TXPRI+TXMAP1),$9,$1A,'Start = Store Setup',$0
+	String	CC_Font1Pri,$2,$19,'{} Select option    [] Change option',CC_Font1Pri,$9,$1A,'Start = Store Setup',$0
 
 GamesToday							;GAMES TODAY screen: list the day's games, A toggles human / computer for
 									;a game, left / right change the
@@ -2099,12 +2099,12 @@ ReadGamesTodayPad					;As ReadAnyPad, but times out after $5460 frames with d1 =
 
 PrintGamesToday						;GAMES TODAY title
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP1),$9,$2,'GAMES TODAY'
+	String	CC_Font1Pri,$9,$2,'GAMES TODAY'
 	rts
 
 PrintPreviousDay					;PREVIOUS DAY title
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP1),$8,$2,'PREVIOUS DAY',$0
+	String	CC_Font1Pri,$8,$2,'PREVIOUS DAY',$0
 	rts
 
 DrawGamesToday						;Draw the date, the day's games and the arrows
@@ -2119,7 +2119,7 @@ DrawGamesToday						;Draw the date, the day's games and the arrows
 	bne.w	.3
 .0
 	jsr	(printz).l
-	String	-TXMAP1,$19,$7,$0
+	String	CC_Font1,$19,$7,$0
 	move.w	#7,d0
 	move.w	#$11,d1
 	move.w	#$7FF,d2
@@ -2130,7 +2130,7 @@ DrawGamesToday						;Draw the date, the day's games and the arrows
 	move.w	#$17,d1
 	move.w	#$7FF,d2
 	jsr	(printz).l
-	String	-TXMAP1,$0,$2,$0
+	String	CC_Font1,$0,$2,$0
 	jsr	(eraser).l
 	move.b	(GamesTodayDay).w,d0
 	cmp.b	(SeasonDay).w,d0
@@ -2145,20 +2145,20 @@ DrawGamesToday						;Draw the date, the day's games and the arrows
 	cmp.w	(VertLineScrolling).w,d0
 	ble.w	.4
 	jsr	(printz).l
-	String	-TXMAP1,$3,$17,'}'
+	String	CC_Font1,$3,$17,'}'
 	bra.w	.5
 .4
 	jsr	(printz).l
-	String	-TXMAP1,$3,$17,' '
+	String	CC_Font1,$3,$17,' '
 .5
 	tst.w	(DispAttribCtr).w
 	beq.w	.6
 	jsr	(printz).l
-	String	-TXMAP1,$3,$8,'{'
+	String	CC_Font1,$3,$8,'{'
 	bra.w	.7
 .6
 	jsr	(printz).l
-	String	-TXMAP1,$3,$8,' '
+	String	CC_Font1,$3,$8,' '
 .7
 	movea.l	#SeasonTeams,a0
 	clr.w	d1
@@ -2175,12 +2175,12 @@ DrawGamesToday						;Draw the date, the day's games and the arrows
 	cmp.w	d3,d0
 	bgt.w	.13
 	jsr	(printz).l
-	String	-TXMAP1,$14,$5,$0
+	String	CC_Font1,$14,$5,$0
 	btst	#5,(SeasonFlags).w
 	beq.w	.9
 	movem.l	d0-d1/a1,-(sp)
 	jsr	(printz).l
-	String	-TXMAP1,$C,$5,'PLAYOFFS DAY '
+	String	CC_Font1,$C,$5,'PLAYOFFS DAY '
 	move.w	#2,d1
 	clr.w	d0
 	move.b	(SeasonDay).w,d0
@@ -2202,7 +2202,7 @@ DrawGamesToday						;Draw the date, the day's games and the arrows
 .10
 	bsr.w	DrawGameCursor
 	jsr	(printz).l
-	String	-TXMAP1,$0,$0,$0
+	String	CC_Font1,$0,$0,$0
 	move.w	#$E,(printx).w
 	movea.l	#GameRowsTbl2,a1
 	move.b	(a1,d2.w),(printy+1).w
@@ -2255,7 +2255,7 @@ PrintGameScores						;Print both scores of a played game line
 PrintGameScore						;Print a game score
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	-TXMAP1,$1C,$0,$0
+	String	CC_Font1,$1C,$0,$0
 	move.b	(a1,d2.w),(printy+1).w
 	move.w	d5,d0
 	moveq	#2,d1
@@ -2268,7 +2268,7 @@ DrawGameCursor						;Erase the game cursor at line setupprevline and draw it (Ga
 									;at line SelectedPlayerIdx
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
-	String	-TXMAP1,$8,$0,$0
+	String	CC_Font1,$8,$0,$0
 	movea.l	#(GameRowsTbl4+3),a0
 	move.w	(setupprevline).w,d1
 	move.b	(a0,d1.w),(printy+1).w
@@ -2277,7 +2277,7 @@ DrawGameCursor						;Erase the game cursor at line setupprevline and draw it (Ga
 	move.w	#$7FF,d2
 	jsr	(eraser).l
 	jsr	(printz).l
-	String	-TXMAP1,$8,$0,$0
+	String	CC_Font1,$8,$0,$0
 	movea.l	#(GameRowsTbl4+3),a0
 	move.w	(SelectedPlayerIdx).w,d1
 	move.b	(a0,d1.w),(printy+1).w
@@ -2302,7 +2302,7 @@ DrawHumanMark						;Human game (flags bit 0 clear): the pad icon (GamesTodayMap2
 	btst	#1,4(a0,d0.w)
 	bne.w	.0
 	jsr	(printz).l
-	String	-TXMAP1,$B,$0,$0
+	String	CC_Font1,$B,$0,$0
 	movea.l	#GameRowsTbl3,a1
 	move.b	(a1,d2.w),(printy+1).w
 	clr.w	d0
@@ -2320,7 +2320,7 @@ DrawHumanMark						;Human game (flags bit 0 clear): the pad icon (GamesTodayMap2
 	bra.w	.1
 .0
 	jsr	(printz).l
-	String	-TXMAP1,$1A,$0,$0
+	String	CC_Font1,$1A,$0,$0
 	movea.l	#GameRowsTbl4,a1
 	move.b	(a1,d2.w),(printy+1).w
 	movea.l	#HumanText,a1
@@ -2347,7 +2347,7 @@ DrawCompMark						;Computer game (flags bit 0 set): the computer icon (GamesToda
 	btst	#1,4(a0,d0.w)
 	bne.w	.0
 	jsr	(printz).l
-	String	-TXMAP1,$0,$0,$0
+	String	CC_Font1,$0,$0,$0
 	move.w	#$B,(printx).w
 	movea.l	#GameRowsTbl3,a1
 	move.b	(a1,d2.w),(printy+1).w
@@ -2366,7 +2366,7 @@ DrawCompMark						;Computer game (flags bit 0 set): the computer icon (GamesToda
 	bra.w	.1
 .0
 	jsr	(printz).l
-	String	-TXMAP1,$1A,$0,$0
+	String	CC_Font1,$1A,$0,$0
 	movea.l	#GameRowsTbl4,a1
 	move.b	(a1,d2.w),(printy+1).w
 	movea.l	#CompText,a1
@@ -2462,7 +2462,7 @@ GamesTodayGfx						;Games today screen video set up and graphics
 	movea.l	#Teamblocksmap+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l
-	String	-TXMAP2,$0,$0,$0
+	String	CC_Font2,$0,$0,$0
 	movea.l	(screenarg).w,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -2481,7 +2481,7 @@ GamesTodayHelp						;Games today help line
 	move.w	(smallfontchars).w,-(sp)
 	move.w	(smallfont2chars).w,(smallfontchars).w
 	jsr	(printz).l
-	String	-TXMAP1,$2,$19,'A=Human/Computer',-TXMAP1,$19,$19,'[] Change day',$0
+	String	CC_Font1,$2,$19,'A=Human/Computer',CC_Font1,$19,$19,'[] Change day',$0
 	move.w	(sp)+,(smallfontchars).w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
@@ -2496,7 +2496,7 @@ SeasonOptions						;SEASON OPTIONS menu: the regular season, end of season or pl
 .screen
 	bsr.w	SeasonOptionsGfx
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP1),$7,$2,'SEASON OPTIONS',$0
+	String	CC_Font1Pri,$7,$2,'SEASON OPTIONS',$0
 	move.w	#$18,(palcount).w
 	bclr	#dfng,(disflags).w
 .draw
@@ -2670,12 +2670,12 @@ MenuPlayUntil						;Play Until A Day: pick the day with A (month) / B (day), C c
 	tst.w	(seasonteamsel).w
 	bmi.w	.ask
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$5,$A,$0
+	String	CC_Font1Pri,$5,$A,$0
 	move.w	#$1E,d0
 	move.w	#$E,d1
 	jsr	(Framer).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$7,$C,$0
+	String	CC_Font1Pri,$7,$C,$0
 	jsr	(printsmallz).l
 	String	CC_SetFont,$2,'Please complete human',CC_SetX,$7,CC_SetY,$D,'controlled games before'
 	jsr	(printsmallz).l
@@ -2691,12 +2691,12 @@ MenuPlayUntil						;Play Until A Day: pick the day with A (month) / B (day), C c
 	jmp	(AutoplayCancel).l
 .ask
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$5,$A,$0
+	String	CC_Font1Pri,$5,$A,$0
 	move.w	#$1E,d0
 	move.w	#$E,d1
 	jsr	(Framer).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$7,$C,$0
+	String	CC_Font1Pri,$7,$C,$0
 	jsr	(printsmallz).l
 	String	CC_SetFont,$2,'Autoplay games until this',CC_SetX,$7,CC_SetY,$D,'day...',CC_SetFont,$0,$0
 	jsr	(printsmallz).l
@@ -2796,7 +2796,7 @@ MenuPlayUntil						;Play Until A Day: pick the day with A (month) / B (day), C c
 AutoplayCancel						;Cancel: AutoplayDay = SeasonDay, erase the window, d0 = -1
 	move.b	(SeasonDay).w,(AutoplayDay).w
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$5,$A,$0
+	String	CC_Font1Pri,$5,$A,$0
 	move.w	#$7FF,d2
 	move.w	#$1E,d0
 	move.w	#$E,d1
@@ -2806,12 +2806,12 @@ AutoplayCancel						;Cancel: AutoplayDay = SeasonDay, erase the window, d0 = -1
 
 AutoplayMessage						;AUTOPLAYING GAMES. DO NOT PRESS RESET !!, d0 = 0
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$5,$A,$0
+	String	CC_Font1Pri,$5,$A,$0
 	move.w	#$1E,d0
 	move.w	#$E,d1
 	jsr	(Framer).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$7,$C,$0
+	String	CC_Font1Pri,$7,$C,$0
 	jsr	(printsmallz).l
 	String	$F9,$02,$FA,$03,'AUTOPLAYING GAMES.',$FA,$02,$FD,$07,'DO NOT PRESS RESET !!',$FA,$02,$FD,$07,'Please wait...',$F9,$00
 	clr.w	d0
@@ -2819,7 +2819,7 @@ AutoplayMessage						;AUTOPLAYING GAMES. DO NOT PRESS RESET !!, d0 = 0
 
 PrintAutoplayDay					;Print the AutoplayDay date
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$A,$F,$0
+	String	CC_Font1Pri,$A,$F,$0
 	move.w	(printx).w,-(sp)
 	jsr	(printsmallz).l
 	String	CC_SetFont,$2,'               ',$0
@@ -2875,7 +2875,7 @@ DrawSeasonMenu						;Draw the season menu items
 	movem.l	d0-d7/a0-a6,-(sp)
 	clr.w	d1
 	jsr	(printz).l
-	String	-TXMAP1,$0,$7,$0
+	String	CC_Font1,$0,$7,$0
 .loop
 	move.w	d1,d0
 	add.w	(DispAttribCtr).w,d0
@@ -3001,7 +3001,7 @@ SeasonOptionsGfx					;Season options screen video set up and graphics
 	jsr	(DecompressGraphicsWithCallback).l
 	dc.b	$01,$23,$45,$67,$89,$AB,$CD,$EF	;remap table
 	jsr	(printz).l
-	String	-TXMAP2,$0,$0,$0
+	String	CC_Font2,$0,$0,$0
 	movea.l	#ControllerBgMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -3020,7 +3020,7 @@ PrintWait							;Show the wait box
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(optbgchars).w,d4
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$F,$F,$0
+	String	CC_Font2Pri,$F,$F,$0
 	movea.l	#WaitBoxMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -3033,7 +3033,7 @@ PrintWait							;Show the wait box
 	move.w	#0,d5
 	jsr	(dobitmap).l
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP2),$F,$10,$0
+	String	CC_Font2Pri,$F,$10,$0
 	jsr	(printz).l
 	String	'  Wait...',$0
 	movem.l	(sp)+,d0-d7/a0-a6
@@ -3047,9 +3047,9 @@ CalendarScreen						;CALENDAR (team schedule): {} change team, [] change month, 
 	bsr.w	CountSeasonMonths
 	bsr.w	CalendarGfx
 	jsr	(printbigz).l
-	String	-TXMAP1,$C,$2,'CALENDAR',$0
+	String	CC_Font1,$C,$2,'CALENDAR',$0
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$1,$7,$0
+	String	CC_Font1Pri,$1,$7,$0
 	jsr	(printsmallz).l
 	String	$F9,$01,'[ ]',$FD,$01,$FA,$01,'= Change',$FD,$01,$FA,$01,'Month',$FD,$01,$FA,$02,'{ }',$FD,$01,$FA,$01,'= Change',$FD,$01,$FA,$01,'Team'
 	jsr	(printsmallz).l
@@ -3194,7 +3194,7 @@ CalendarGfx							;Calendar screen video set up and graphics
 	dc.b	$01,$21,$23,$45,$67,$89,$AB,$CD	;remap table
 	move.w	d4,(calbgchars).w
 	jsr	(printz).l
-	String	-TXMAP2,$0,$0,$0
+	String	CC_Font2,$0,$0,$0
 	movea.l	#CalendarBgMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -3232,7 +3232,7 @@ DrawCalendar						;Draw the month of CalTeam: day numbers, opponents, results
 	move.w	#$16,d1
 	move.w	#$7FF,d2
 	jsr	(printz).l
-	String	-TXMAP1,$9,$5,$0
+	String	CC_Font1,$9,$5,$0
 	jsr	(eraser).l
 	bsr.w	DrawCalendarTeam
 	bsr.w	DrawCalendarMonth
@@ -3309,7 +3309,7 @@ DrawCalendar						;Draw the month of CalTeam: day numbers, opponents, results
 	cmp.b	(a0),d0
 	bne.w	.11
 	jsr	(printz).l
-	String	-TXMAP2,$0,$0,$0
+	String	CC_Font2,$0,$0,$0
 	move.w	(CalX).w,(printx).w
 	move.w	(CalY).w,(printy).w
 	move.w	#$3A,d2
@@ -3395,7 +3395,7 @@ DrawCalendarTeam					;Draw the CalTeam name
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(CalTeam).w,d1
 	jsr	(printz).l
-	String	-TXMAP1,$F,$5,$0
+	String	CC_Font1,$F,$5,$0
 	clr.w	d0
 	asl.w	#1,d1
 	move.w	(teamblocksmapptr).w,d4
@@ -3415,7 +3415,7 @@ DrawCalendarMonth					;Draw the CalMonth name
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(CalMonth).w,d1
 	jsr	(printz).l
-	String	-TXMAP1,$10,$7,$0
+	String	CC_Font1,$10,$7,$0
 	clr.w	d0
 	asl.w	#1,d1
 	move.w	(padiconchars3).w,d4
@@ -3435,7 +3435,7 @@ DrawCalendarDay						;Draw day number d6 at CalX / CalY
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	d6,d1
 	jsr	(printz).l
-	String	-TXMAP1,$0,$0,$0
+	String	CC_Font1,$0,$0,$0
 	move.w	(CalX).w,(printx).w
 	move.w	(CalY).w,(printy).w
 	clr.w	d0
@@ -3504,7 +3504,7 @@ CalendarFirstDayTbl					;Schedule day of the 1st of each month
 CalendarBg							;Draw the calendar background
 	move.w	(calbgchars).w,d4
 	jsr	(printz).l
-	String	-TXMAP2,$0,$0,$0
+	String	CC_Font2,$0,$0,$0
 	movea.l	#CalendarBgMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -3527,9 +3527,9 @@ StandingsScreen						;NHL STANDINGS: {} conference / division, [] the other grou
 	bclr	#dfng,(disflags).w
 	jsr	(PrintStandingsHelp).l
 	jsr	(printbigz).l
-	String	-(TXPRI+TXMAP1),$8,$2,'NHL STANDINGS'
+	String	CC_Font1Pri,$8,$2,'NHL STANDINGS'
 	jsr	(printz).l
-	String	-(TXPRI+TXMAP1),$10,$9,'W  L  T  Pts  GP  GR',$0
+	String	CC_Font1Pri,$10,$9,'W  L  T  Pts  GP  GR',$0
 	clr.w	(StandingsMode).w
 .draw
 	bsr.w	StandingsGroups
@@ -3737,7 +3737,7 @@ StandingsGfx						;Standings screen video set up and graphics
 	movea.l	#Teamblocksmap+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(printz).l
-	String	-TXMAP2,$0,$0,$0
+	String	CC_Font2,$0,$0,$0
 	movea.l	(screenarg).w,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
@@ -3756,7 +3756,7 @@ DrawStandings						;Draw the group title and the standings lines
 	move.w	#2,d1
 	move.w	#$7FF,d2
 	jsr	(printz).l
-	String	-TXMAP1,$0,$16,$0
+	String	CC_Font1,$0,$16,$0
 	jsr	(eraser).l
 	movea.l	#StandingsTitles,a1
 	move.w	(StandingsMode).w,d0
@@ -3765,7 +3765,7 @@ DrawStandings						;Draw the group title and the standings lines
 	clr.w	d6
 	movea.l	#StandingsList,a4
 	jsr	(printz).l
-	String	-TXMAP1,$2,$A,$0
+	String	CC_Font1,$2,$A,$0
 	bra.w	.1
 .loop
 	clr.w	d1
@@ -3784,7 +3784,7 @@ PrintStandingsLine					;Print W, L, T, Pts, GP and games remaining of team d1 on
 	move.w	(printy).w,-(sp)
 	move.w	d1,d2
 	jsr	(printz).l
-	String	-TXMAP1,$0,$B,$0
+	String	CC_Font1,$0,$B,$0
 	move.w	d6,d1
 	add.w	d1,d1
 	add.w	d1,(printy).w
@@ -3851,17 +3851,17 @@ DrawStandingsLogo					;Draw team d1's block
 	rts
 
 StandingsTitles						;Conference / division titles
-	String	-TXMAP1,$3,$7,'WESTERN CONFERENCE',-TXMAP1,$17,$7,'PACIFIC DIV.  '
-	String	-TXMAP1,$3,$7,'WESTERN CONFERENCE',-TXMAP1,$17,$7,'CENTRAL DIV.  '
-	String	-TXMAP1,$3,$7,'EASTERN CONFERENCE',-TXMAP1,$17,$7,'NORTHEAST DIV.'
-	String	-TXMAP1,$3,$7,'EASTERN CONFERENCE',-TXMAP1,$17,$7,'ATLANTIC DIV. '
+	String	CC_Font1,$3,$7,'WESTERN CONFERENCE',CC_Font1,$17,$7,'PACIFIC DIV.  '
+	String	CC_Font1,$3,$7,'WESTERN CONFERENCE',CC_Font1,$17,$7,'CENTRAL DIV.  '
+	String	CC_Font1,$3,$7,'EASTERN CONFERENCE',CC_Font1,$17,$7,'NORTHEAST DIV.'
+	String	CC_Font1,$3,$7,'EASTERN CONFERENCE',CC_Font1,$17,$7,'ATLANTIC DIV. '
 
 PrintStandingsHelp					;Standings help line
 	movem.l	d0-d7/a0-a6,-(sp)
 	move.w	(smallfontchars).w,-(sp)
 	move.w	(smallfont2chars).w,(smallfontchars).w
 	jsr	(printz).l
-	String	-TXMAP1,$2,$19,'{} For Conference',-TXMAP1,$18,$19,'[] For Division'
+	String	CC_Font1,$2,$19,'{} For Conference',CC_Font1,$18,$19,'[] For Division'
 	move.w	(sp)+,(smallfontchars).w
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
