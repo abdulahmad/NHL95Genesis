@@ -654,7 +654,7 @@ engine/logic95.asm,$083662,74,CPgoalie,code,checks94,name
 engine/logic95.asm,$0836AC,32,PuckcIsGoalie,code,new in 95,header
 engine/players95.asm,$0836CC,186,SetPersonel,code,collide94,name
 engine/players95.asm,$083786,192,SetPlList,code,collide94,name
-engine/players95.asm,$083846,58,SetPlList_s1,code,collide94,name
+engine/players95.asm,$083846,58,TryAddPlayerToList,code,collide94,name
 engine/players95.asm,$083880,114,forcepldata,code,collide94,name
 engine/players95.asm,$0838F2,18,GetPlayerCount,code,stats94,name
 engine/players95.asm,$083904,92,GetPlayerCountD7,code,new in 95,header

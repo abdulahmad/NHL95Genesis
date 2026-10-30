@@ -4463,7 +4463,7 @@
     ],
     [
      "collide94",
-     "SetPlList_s1",
+     "TryAddPlayerToList",
      "$0158F2",
      "$083846",
      "$083880",
@@ -12365,7 +12365,7 @@
    "ShowScores+$60 $008134 100 code",
    "UpdatePlayerScroll $008198 90 code",
    "DisplayGameInfo $0081F2 94 code",
-   "NewTicker3_tn $008250 48 code",
+   "PrintGameInfo $008250 48 code",
    "DrawScrollArrows+$14 $008294 40 code",
    "ScrollArrowTable $0082BC 30 data",
    "SelectAttributeItem+$74 $008402 16 code",

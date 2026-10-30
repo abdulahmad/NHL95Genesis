@@ -354,7 +354,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 ### engine/players95
 
 - **new in 95** (32 bytes): PuckcIsGoalie
-- **collide94** (550 bytes): SetPersonel, SetPlList, SetPlList_s1, forcepldata
+- **collide94** (550 bytes): SetPersonel, SetPlList, TryAddPlayerToList, forcepldata
 - **stats94** (18 bytes): GetPlayerCount
 - **new in 95** (92 bytes): GetPlayerCountD7
 - **collide94** (830 bytes): setplayer, ClampNibble
