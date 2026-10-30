@@ -1382,7 +1382,7 @@ ProcessInputWithRepeat				;nodiag, then key repeat on d1-d3. 95: first repeat af
 .2
 	rts
 
-WaitVSyncAndReadInput				;Wait for the next vblank, read the menu pad (ReadMenuJoy, nodiag) until a
+Pausemode_rjoy				;Wait for the next vblank, read the menu pad (ReadMenuJoy, nodiag) until a
 									;new button press
 	move.w	(Vcount).w,d1
 .wait
@@ -1391,5 +1391,5 @@ WaitVSyncAndReadInput				;Wait for the next vblank, read the menu pad (ReadMenuJ
 	bsr.w	ReadMenuJoy
 	bsr.w	nodiag
 	tst.b	d1
-	beq.s	WaitVSyncAndReadInput
+	beq.s	Pausemode_rjoy
 	rts

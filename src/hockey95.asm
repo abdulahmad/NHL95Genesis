@@ -144,7 +144,7 @@ StartGame							;Reset game state for a new game, then start the first period. 9
 	move.b	#1,(Asound).l
 	jsr	(setupice).l
 
-IntermissionStart					;The PeriodOver tail. PeriodOver jumps here after forceblack: reset the
+PeriodOver_sp					;The PeriodOver tail. PeriodOver jumps here after forceblack: reset the
 									;clock, restart the sound driver, UpdateScores, Intermission, then
 									;GameOver or StartPer
 	jsr	(ResetClock).l

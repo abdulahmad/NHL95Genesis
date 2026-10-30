@@ -452,7 +452,7 @@ coinsearch							;93 a2 = team. Count the players kept off the ice by penalties
 
 updatepentime						;Update the time remaining on all penalized players, once a second
 									;(Penaltytimer); sets sflags3 bit 6 on that
-									;tick. chkatop, updatePPTeamTime, then ProcessPenaltyList for both teams
+									;tick. chkatop, updatePPTeamTime, then updatepentime_ut for both teams
 	bclr	#sf3icetime,(sflags3).w
 	btst	#gmclock,(gmode).w
 	bne.w	rtspen
@@ -463,10 +463,10 @@ updatepentime						;Update the time remaining on all penalized players, once a s
 	jsr	(chkatop).l
 	jsr	(updatePPTeamTime).l
 	movea.w	#(tmstruct-M68K_RAM),a2
-	bsr.w	ProcessPenaltyList
+	bsr.w	updatepentime_ut
 	adda.w	#tmsize,a2
 
-ProcessPenaltyList					;a2 = team. Walk the penalty box list ($9C, 94 $9A): the first two players
+updatepentime_ut					;a2 = team. Walk the penalty box list ($9C, 94 $9A): the first two players
 									;without a coincidental penalty count down one second and the rest wait.
 									;Beeps when the first served time gets to 5 or less and releases the
 									;player at 0

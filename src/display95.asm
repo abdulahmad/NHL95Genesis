@@ -222,7 +222,7 @@ uppads								;Update the 6 pad objects and queue new pad labels (QueuePadLabel)
 QueuePadLabel						;Queue the 3 character label of a pad object. d1 = label code: bits 7-4
 									;and 3-0 are digits ($F = blank), bits 10-8 index ButtonLabelCharTable
 									;(none while sflags7 bit 7 is set).
-									;a0 = pad object, a5 = dma list. Falls into RenderSmallFontChar for the
+									;a0 = pad object, a5 = dma list. Falls into uppads_pd for the
 									;last char
 	lea	ButtonLabelCharTable(pc),a4
 	clr.w	2(a0)					;x offset (setffo adds it to the sprites)
@@ -235,7 +235,7 @@ QueuePadLabel						;Queue the 3 character label of a pad object. d1 = label code
 .hi
 	addi.w	#$30,d2
 	clr.w	d0
-	bsr.w	RenderSmallFontChar
+	bsr.w	uppads_pd
 	move.w	d1,d2
 	andi.w	#$F,d2
 	cmp.w	#$F,d2
@@ -244,7 +244,7 @@ QueuePadLabel						;Queue the 3 character label of a pad object. d1 = label code
 .lo
 	addi.w	#$30,d2
 	moveq	#1,d0
-	bsr.w	RenderSmallFontChar
+	bsr.w	uppads_pd
 	move.w	d1,d2
 	btst	#7,(sflags7).w
 	beq.w	.0
@@ -258,7 +258,7 @@ QueuePadLabel						;Queue the 3 character label of a pad object. d1 = label code
 	move.b	(a4,d2.w),d2
 	moveq	#2,d0
 
-RenderSmallFontChar					;Dma one small font tile (SmallFontMap) to the object's chars. d2 = ascii
+uppads_pd					;Dma one small font tile (SmallFontMap) to the object's chars. d2 = ascii
 									;char, d0 = char slot a0 = object (VRchar), a5 = dma list
 	movea.l	#SmallFontMap,a3
 	adda.l	4(a3),a3
@@ -370,7 +370,7 @@ updateanim							;Frame switch control on struct a3. Called from updateplayers. 
 defaultsprites						;Allocate vram and assign char area for graphic structures. d4 = char area
 									;for data. Sets up the sso (4) and
 									;ffo (6; 94: 7 with the gloves) objects from .listsso / .listffo, then
-									;defaultsprites2. Called from setupice
+									;defaultsprites_0. Called from setupice
 	movea.l	#.listsso,a2
 	movea.w	#(sso-M68K_RAM),a3
 	moveq	#ssonum-1,d0			;#ssonum-1 into d0
@@ -398,7 +398,7 @@ defaultsprites						;Allocate vram and assign char area for graphic structures. 
 	add.w	(a2)+,d4
 	adda.w	#$1C,a3					;#ffosize
 	dbf	d0,.ffotop
-	bra.w	defaultsprites2
+	bra.w	defaultsprites_0
 .listsso							;Xcord,ycord,frame,attribute,vram char size
 	dc.w	0,0,0,0,9
 	dc.w	0,0,0,0,9
@@ -412,7 +412,7 @@ defaultsprites						;Allocate vram and assign char area for graphic structures. 
 	dc.w	0,0,$FFFF,SPFpad34+1,0,7	;joypad 4 star
 	dc.w	0,0,$FFFF,SPFreplay,$8000,7	;replay cursor
 
-defaultsprites2						;Objects which are tied to screen scrolling and have velocity: the 16
+defaultsprites_0						;Objects which are tied to screen scrolling and have velocity: the 16
 									;SortCords objects from .list (players,
 									;puck, puck shadow, goal nets ...), the OOlist and OOlistpos; then
 									;SprSort. 95 clears $78 bytes of each (94: $80) and faces the away team

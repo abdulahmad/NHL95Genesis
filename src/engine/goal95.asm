@@ -277,7 +277,7 @@ box									;Fill a $13 x 8 rectangle at printz position
 	move.l	#$7FF,d2
 	jmp	eraser
 
-ShowGoalBox							;Goal box: close both line change boxes (lcfound2), then the scorer and
+ShowGoalBox							;Goal box: close both line change boxes (lcfound_close), then the scorer and
 									;the assists from
 									;ScoreSum (PrintPlayerGoals / PrintPlayerAssists), the goalie counts
 									;(CountGoalies)
@@ -287,9 +287,9 @@ ShowGoalBox							;Goal box: close both line change boxes (lcfound2), then the s
 	bset	#sf2drec,(sflags2).w
 .0
 	movea.w	#(tmstruct-M68K_RAM),a2
-	jsr	(lcfound2).l				;close lc box
+	jsr	(lcfound_close).l				;close lc box
 	adda.w	#tmsize,a2
-	jsr	(lcfound2).l
+	jsr	(lcfound_close).l
 	movea.w	#(ChkCnt-M68K_RAM),a4	;+ ScoreSumbytes = last goal entry
 	adda.w	(ScoreSumbytes).w,a4
 	jsr	(printz).l
@@ -613,7 +613,7 @@ PracticeGoalies						;Practice Mode: goaliemode1 / goaliemode2 = 0 for a team wi
 PeriodOver							;What to do if the period is over: next period, overtime or game over (gsp
 									;4); Practice Mode (sflags9 bit 7) ends the game; a season game with
 									;season flag bit 5 plays on in overtime. Then forceblack and
-									;IntermissionStart
+									;PeriodOver_sp
 	btst	#7,(sflags9).w
 	bne.w	.2
 	addq.w	#1,(gsp).w
@@ -638,7 +638,7 @@ PeriodOver							;What to do if the period is over: next period, overtime or gam
 	move.w	#4,(gsp).w
 .3
 	jsr	(forceblack).l
-	jmp	IntermissionStart
+	jmp	PeriodOver_sp
 
 clockcont_0							;The clock ran out in overtime / the game: game over handling, the Stanley
 									;Cup (sflags13 bit 2, cupwinner)

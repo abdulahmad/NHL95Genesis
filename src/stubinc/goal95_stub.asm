@@ -14,7 +14,7 @@
 SPAsiren = $1F1E
 ZeroLong = $69A
 Opening2 = $9ADA
-IntermissionStart = $9D18
+PeriodOver_sp = $9D18
 sfx = $677AC
 stop_current_song = $67938
 ChooseSong = $679C4
@@ -51,7 +51,7 @@ AddPenalty2 = $8916E
 RemovePlayerFromList = $8962C
 ClearPenaltyBuffer = $89A7C
 ClearPenalties = $89A8A
-lcfound2 = $8A2FC
+lcfound_close = $8A2FC
 ChkShotStat = $8ABDA
 SetSPA = $8BC9A
 SeasonGameOver = $8EF2A

@@ -523,7 +523,7 @@ ReplayMode							;Instant replay play-back control and display code.
 	move.w	(sp)+,(disflags).w
 	movea.l	(menulist).w,a0
 	movea.l	(menudraw).w,a1
-	jsr	(InitMenuState).l
+	jsr	(Pausemode_top).l
 	move.w	#$18,(palcount).w
 	rts
 

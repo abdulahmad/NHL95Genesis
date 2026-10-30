@@ -97,7 +97,7 @@ SumCwdExciteLvl		equ	$FFFFB4C0	;94 $FFFFB8A8
 crowdtblidx			equ	$FFFFB4C4	;updatecrowdf: the CrowdFrameTbl index
 Zamx				equ	$FFFFB4C6	;94 $FFFFB8AC
 playoffspritex		equ	$FFFFB4C8	;94 $FFFFB8AE. Playoff sprite x offset while the tree is scrolled
-									;(UpdatePlayoffScroll)
+									;(PlayoffScreen_scrup)
 playoffspritey		equ	$FFFFB4CA	;94 $FFFFB8B0
 clampcounter		equ	$FFFFB4CC	;94 $FFFFB8B2
 DMAList				equ	$FFFFB4CE	;94 $FFFFB8B4. Dma transfer list
@@ -356,7 +356,7 @@ potree				equ	$FFFFCAB2	;94 $FFFFCEF4
 PlList				equ	$FFFFCAD2	;94 $FFFFCF14. SetPlList: the players wanted on the ice (6 bytes), then
 									;their positions (6 bytes)
 menuitem			equ	$FFFFCADE	;94 $FFFFCF20. Menu state: selected item, then (+2) first item shown
-menulist			equ	$FFFFCAE2	;94 $FFFFCF24. Menu item list (InitMenuState)
+menulist			equ	$FFFFCAE2	;94 $FFFFCF24. Menu item list (Pausemode_top)
 menudraw			equ	$FFFFCAE6	;94 $FFFFCF28. Menu screen draw routine
 menuitemoffset		equ	$FFFFCAEA	;Long: offset of the shown items in menulist
 TickerNum			equ	$FFFFCAEE	;94 $FFFFCF2C
