@@ -314,11 +314,11 @@ VBlank_Playoff						;The PlayoffScreen vblank handler (VBint): dma the sprite ta
 	rte
 
 PlayoffScreenText					;Round titles by gamelevel, printbig Strings with their position
-	String	$CF,$39,$19,'Playoffs'
-	String	$CF,$33,$19,'Quarterfinals'
-	String	$CF,$37,$19,'Semifinals'
-	String	$CF,$3B,$19,'Finals'
-	String	$CF,$37,$19,'Champions'
+	String	-(TXPAL3+TXMAP1),$39,$19,'Playoffs'
+	String	-(TXPAL3+TXMAP1),$33,$19,'Quarterfinals'
+	String	-(TXPAL3+TXMAP1),$37,$19,'Semifinals'
+	String	-(TXPAL3+TXMAP1),$3B,$19,'Finals'
+	String	-(TXPAL3+TXMAP1),$37,$19,'Champions'
 
 ;-------------------------------------------------------------------------------------------------------------
 ;	The playoff tree setup and its sprite.

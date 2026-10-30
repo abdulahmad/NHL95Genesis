@@ -936,9 +936,9 @@ PauseInfo							;The info page: a bitmap at $11, $B (a0 is whatever printz left:
 	jsr	(PrintLines).l
 	rts
 PauseInfoText						;The info page text (a placeholder in retail)
-	String	$BE,$B,$12,'Lots of good text:'
-	String	$BE,$B,$14,'stats and other'
-	String	$BE,$B,$16,'stuff.'
+	String	-(TXPRI+TXMAP2),$B,$12,'Lots of good text:'
+	String	-(TXPRI+TXMAP2),$B,$14,'stats and other'
+	String	-(TXPRI+TXMAP2),$B,$16,'stuff.'
 	String	$FF,0
 PrintLines							;print the Strings at a1 up to a $FF String
 	cmpi.b	#$FF,2(a1)

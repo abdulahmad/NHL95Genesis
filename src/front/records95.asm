@@ -424,10 +424,10 @@ LetterGridPos						;Name entry: printx/printy of grid letter d5 (6 a row, 2 cell
 	rts
 
 EnterNameTxt						;Name entry prompt for an empty name log slot (EnterNameTxt)
-	String	$BF,6,$F,'  Enter new name. ',$0
+	String	-(TXPRI+TXMAP1),6,$F,'  Enter new name. ',$0
 
 SelectNameTxt						;Name entry prompt for a used name log slot (SelectNameTxt)
-	String	$BF,6,$F,'Select or replace.',$0
+	String	-(TXPRI+TXMAP1),6,$F,'Select or replace.',$0
 
 PrintNameLog						;Name entry: print the 7-row name log list (PrintNameLog)
 	movem.l	d0-d7/a0-a6,-(sp)

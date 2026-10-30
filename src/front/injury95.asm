@@ -363,7 +363,7 @@ updatepwrplay						;The power play box: the team and the time left (GetLowestPen
 	movea.w	#(mesarea-M68K_RAM),a3
 	move.w	#2,(a3)
 	jsr	(appendz).l
-	String	$BF,$1,$19,$0
+	String	-(TXPRI+TXMAP1),$1,$19,$0
 	adda.w	4(a0),a0				;team name
 	adda.w	(a0),a0
 	movea.l	a0,a1

@@ -1505,7 +1505,7 @@ SeasonStatsListDraw					;Draw the season player stats screen for team d7 (Season
 	btst	#3,(sflags11).w
 	bne.w	.1
 	jsr	(printbigz).l
-	String	$BD,$02,$04,'Season',$BD,$0F,$04,'Player',$BD,$1C,$04,'Stats',$BD,$0E,$01
+	String	-(TXPRI+TXMAP3),$02,$04,'Season',-(TXPRI+TXMAP3),$0F,$04,'Player',-(TXPRI+TXMAP3),$1C,$04,'Stats',-(TXPRI+TXMAP3),$0E,$01
 	bra.w	.2
 .1
 	jsr	(printbigz).l
@@ -2380,8 +2380,8 @@ PrintLeadersHeader					;League Leaders: print TEAM / INDIVIDUAL column headers
 	rts
 
 LeaderModeText
-	String	$BF,$11,$5,'TEAM',$BF,$5,$7,'   Team    ',$0
-	String	$BF,$F,$5,'INDIVIDUAL',$BF,$6,$7,'No. Player   Team  ',$0
+	String	-(TXPRI+TXMAP1),$11,$5,'TEAM',-(TXPRI+TXMAP1),$5,$7,'   Team    ',$0
+	String	-(TXPRI+TXMAP1),$F,$5,'INDIVIDUAL',-(TXPRI+TXMAP1),$6,$7,'No. Player   Team  ',$0
 
 ReadLeadersPad						;League Leaders: wait (frame-synced) until a joypad reports input; d1 =
 									;buttons
@@ -3210,11 +3210,11 @@ PeriodStatsScreen					;Both team logos, goals/shots by period and total; left/ri
 	btst	#1,(sflags7).w
 	beq.w	.0
 	jsr	(printz).l
-	String	$BE,$0C,$07,'1',$BE,$11,$07,'2',$BE,$16,$07,'3',$BE,$1A,$07,'OT',$BE,' ',$07,'Total'
+	String	-(TXPRI+TXMAP2),$0C,$07,'1',-(TXPRI+TXMAP2),$11,$07,'2',-(TXPRI+TXMAP2),$16,$07,'3',-(TXPRI+TXMAP2),$1A,$07,'OT',-(TXPRI+TXMAP2),' ',$07,'Total'
 	bra.w	.1
 .0
 	jsr	(printz).l
-	String	$BE,$0C,$07,'1',$BE,$11,$07,'2',$BE,$16,$07,'3',$BE,' ',$07,'Total'
+	String	-(TXPRI+TXMAP2),$0C,$07,'1',-(TXPRI+TXMAP2),$11,$07,'2',-(TXPRI+TXMAP2),$16,$07,'3',-(TXPRI+TXMAP2),' ',$07,'Total'
 .1
 	bsr.w	PeriodStatsCaption
 	bsr.w	PeriodStatsColumns
