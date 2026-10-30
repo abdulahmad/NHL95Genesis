@@ -831,7 +831,7 @@ engine/penalty95.asm,$08916E,144,AddPenalty2,code,penalty94,name
 engine/penalty95.asm,$0891FE,16,PenaltyManager,code,penalty94,name
 engine/penalty95.asm,$08920E,292,chkprogress,code,penalty94,name
 engine/penalty95.asm,$089332,482,InProgress,code,penalty94,name
-engine/penalty95.asm,$089514,58,coinsearch,code,penalty94,name
+engine/penalty95.asm,$089514,58,InProgress_ap,code,penalty94,name
 engine/penalty95.asm,$08954E,60,updatepentime,code,penalty94,name
 engine/penalty95.asm,$08958A,162,updatepentime_ut,code,penalty94,name
 engine/penalty95.asm,$08962C,16,RemovePlayerFromList,code,penalty94,name

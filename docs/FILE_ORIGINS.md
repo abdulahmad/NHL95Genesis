@@ -428,7 +428,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **title94** (172 bytes): LeadSong, ClearLeadSong, LeadSongExit
 - **penalty94** (290 bytes): Stop4Pen
 - **collide94** (2 bytes): (tables only)
-- **penalty94** (2094 bytes): AddPenalty, AddPenalty2, PenaltyManager, chkprogress, InProgress, coinsearch, updatepentime, updatepentime_ut, RemovePlayerFromList, releasepl, checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, ClearPenaltyMessage
+- **penalty94** (2094 bytes): AddPenalty, AddPenalty2, PenaltyManager, chkprogress, InProgress, InProgress_ap, updatepentime, updatepentime_ut, RemovePlayerFromList, releasepl, checkfornewpen, UpdatePA, SetPA, SetPA2, PushRef, prefmes, ClearPenaltyMessage
 - **collide94** (192 bytes): checkagr
 - **display94** (78 bytes): showref
 - **penalty94** (14 bytes): ClearPenaltyBuffer

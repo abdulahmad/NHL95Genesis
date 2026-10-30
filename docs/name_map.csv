@@ -839,7 +839,7 @@ $08916E,AddPenalty2,sub_8916E,,engine/penalty95
 $0891FE,PenaltyManager,sub_891FE,,engine/penalty95
 $08920E,chkprogress,sub_8920E,,engine/penalty95
 $089332,InProgress,loc_89332,,engine/penalty95
-$089514,coinsearch,sub_89514,,engine/penalty95
+$089514,InProgress_ap,sub_89514,,engine/penalty95
 $08954E,updatepentime,sub_8954E,,engine/penalty95
 $08958A,updatepentime_ut,sub_8958A,ProcessPenaltyList,engine/penalty95
 $08962C,RemovePlayerFromList,sub_8962C,,engine/penalty95
