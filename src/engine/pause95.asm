@@ -939,7 +939,7 @@ PauseInfoText						;The info page text (a placeholder in retail)
 	String	CC_Font2Pri,$B,$12,'Lots of good text:'
 	String	CC_Font2Pri,$B,$14,'stats and other'
 	String	CC_Font2Pri,$B,$16,'stuff.'
-	String	$FF,0
+	String	CC_ListEnd,0
 PrintLines							;print the Strings at a1 up to a $FF String
 	cmpi.b	#$FF,2(a1)
 	beq.w	.x
@@ -1140,7 +1140,7 @@ InfoMenus							;The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0, $
 	dc.l	PenaltySummaryScreen
 	String	' RECORD HOLDERS '
 	dc.l	RecordHoldersScreen
-	String	$FF,0
+	String	CC_ListEnd,0
 	;InfoMenus+$7E
 	String	$FE,0,$F9,0
 	String	$FE,0,$F9,1
@@ -1150,7 +1150,7 @@ InfoMenus							;The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0, $
 	dc.l	TeamRosterScreen
 	String	' RECORD HOLDERS '
 	dc.l	RecordHoldersScreen
-	String	$FF,0
+	String	CC_ListEnd,0
 	;InfoMenus+$D0
 	String	$FE,0,$F9,0
 	String	$FE,0,$F9,1
@@ -1160,7 +1160,7 @@ InfoMenus							;The pause INFO tab lists (SetInfoMenuItems: menuitemoffset 0, $
 	dc.l	TeamRosterScreen
 	String	' RECORD HOLDERS '
 	dc.l	RecordHoldersScreen
-	String	$FF,0
+	String	CC_ListEnd,0
 StatsMenus							;The pause STATS tab lists (SetStatsMenuItems:
 									;menuitemoffset 0, $66, $74, $F0)
 	String	$FE,0
@@ -1173,11 +1173,11 @@ StatsMenus							;The pause STATS tab lists (SetStatsMenuItems:
 	dc.l	PeriodStatsScreen
 	String	'  PLAYER STATS  '
 	dc.l	PlayerStatsScreen
-	String	$FF,0
+	String	CC_ListEnd,0
 	;StatsMenus+$66
 	String	$FE,0
 	String	$FE,0,$F9,1
-	String	$FF,0
+	String	CC_ListEnd,0
 	;StatsMenus+$74
 	String	$FE,0
 	String	$FE,0,$F9,1
@@ -1191,7 +1191,7 @@ StatsMenus							;The pause STATS tab lists (SetStatsMenuItems:
 	dc.l	PlayerStatsScreen
 	String	' PLAYOFF STATS  '
 	dc.l	PlayoffStatsScreen
-	String	$FF,0
+	String	CC_ListEnd,0
 	;StatsMenus+$F0
 	String	$FE,0
 	String	$FE,0,$F9,1
@@ -1207,7 +1207,7 @@ StatsMenus							;The pause STATS tab lists (SetStatsMenuItems:
 	dc.l	SeasonPlayersScreen
 	String	'  SEASON TEAMS  '
 	dc.l	SeasonTeamsScreen
-	String	$FF,0
+	String	CC_ListEnd,0
 PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0, $AA,
 									;$13E, $1D2, $23A, $2CE)
 	String	$FE,0
@@ -1226,7 +1226,7 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	dc.l	TimeoutMenu
 	String	'   ABORT GAME   '
 	dc.l	AbortGame
-	String	$FF,0
+	String	CC_ListEnd,0
 	;PauseMenus+$AA
 	String	$FE,0
 	String	$FE,0,$F9,1
@@ -1242,7 +1242,7 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	dc.l	ManualGoalieMenu
 	String	'    TIMEOUT     '
 	dc.l	TimeoutMenu
-	String	$FF,0
+	String	CC_ListEnd,0
 	;PauseMenus+$13E
 	String	$FE,0
 	String	$FE,0,$F9,1
@@ -1258,7 +1258,7 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	dc.l	ManualGoalieMenu
 	String	'   ABORT GAME   '
 	dc.l	AbortGame
-	String	$FF,0
+	String	CC_ListEnd,0
 	;PauseMenus+$1D2
 	String	$FE,0
 	String	$FE,0,$F9,1
@@ -1270,7 +1270,7 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	dc.l	ManualGoalieMenu
 	String	'   ABORT GAME   '
 	dc.l	AbortGame
-	String	$FF,0
+	String	CC_ListEnd,0
 	;PauseMenus+$23A
 	String	$FE,0
 	String	$FE,0,$F9,1
@@ -1286,7 +1286,7 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	dc.l	ManualGoalieMenu
 	String	'   ABORT GAME   '
 	dc.l	AbortGame
-	String	$FF,0
+	String	CC_ListEnd,0
 	;PauseMenus+$2CE
 	String	$FE,0
 	String	$FE,0,$F9,1
@@ -1300,7 +1300,7 @@ PauseMenus							;The pause PAUSE tab lists (SetPauseMenuItems: menuitemoffset 0
 	dc.l	ShootoutShooters
 	String	'   ABORT GAME   '
 	dc.l	AbortGame
-	String	$FF,0
+	String	CC_ListEnd,0
 
 AbortGame							;Pause menu ABORT GAME: stop the replay (recbpr), demoflag on, back to
 									;Opening2

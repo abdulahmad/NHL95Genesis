@@ -202,7 +202,7 @@ printsmallz							;printsmall with the String after the call
 	rts
 
 printsmall							;print String a1 with the small font at printx / printy (control codes < 0
-									;through ControlCodeJumpTable, $40 a blank, $5E a new line). 95 takes the
+									;through ControlCodeJumpTable, $40 a blank, $5E skips one column). 95 takes the
 									;map from smallfontptr
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
@@ -324,7 +324,7 @@ printz								;See print. String macro should follow jsr to this routine
 
 print								;print String a1 at printx / printy with the small font (smallfontptr): a
 									;negative byte sets printa / printm / printx / printy from the next bytes,
-									;$40 a blank, $5E a new line
+									;$40 a blank, $5E skips one column
 	move.w	(disflags).w,-(sp)
 	bset	#dfng,(disflags).w
 	movem.l	d0-d3/a0/a2,-(sp)
