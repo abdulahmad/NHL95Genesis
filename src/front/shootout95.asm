@@ -397,7 +397,7 @@ ShootoutModeBox						;Shootout round box: "SHOOTOUT MODE" (ShootoutModeBigTxt), 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 ShootoutModeBigTxt					;ShootoutModeBox big text
-	String	$BF,$4,$3,'SHOOTOUT MODE',$BF,$4,$5,$0
+	String	-(TXPRI+TXMAP1),$4,$3,'SHOOTOUT MODE',-(TXPRI+TXMAP1),$4,$5,$0
 ShootoutWonBy						;Shootout: "SHOOTOUT WON BY" and the winning team (printbig1)
 	movem.l	d0-d7/a0-a6,-(sp)
 	jsr	(printz).l
@@ -1372,7 +1372,7 @@ PenaltyShotBox						;In a shootout ShootoutModeBox; else the "PENALTY SHOT!" box
 	rts
 
 PenShotBigTxt						;PenaltyShotBox big text
-	String	$BF,$4,$3,'PENALTY SHOT!',$BF,$4,$5,$0
+	String	-(TXPRI+TXMAP1),$4,$3,'PENALTY SHOT!',-(TXPRI+TXMAP1),$4,$5,$0
 
 PenShotChk							;A breakaway shooter hit: a penalty shot when penalty d0 allows one
 									;(PenShotPenalties); d0 = the penalty

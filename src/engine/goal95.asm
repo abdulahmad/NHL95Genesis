@@ -381,12 +381,12 @@ ShowGoalBox							;Goal box: close both line change boxes (lcfound_close), then 
 	rts
 
 GoalBigTxt							;printbig Strings for ShowGoalBox: GOAL!, then HAT TRICK!
-	String	$BF,$F,3,'GOAL!',$BF,$C,5
-	String	$BF,$C,3,'HAT TRICK!',$BF,$C,5
+	String	-(TXPRI+TXMAP1),$F,3,'GOAL!',-(TXPRI+TXMAP1),$C,5
+	String	-(TXPRI+TXMAP1),$C,3,'HAT TRICK!',-(TXPRI+TXMAP1),$C,5
 
 PPGoalBigTxt						;The same after a power play: PP GOAL!, then HAT TRICK!
-	String	$BF,$D,3,'PP GOAL!',$BF,$C,5
-	String	$BF,$C,3,'HAT TRICK!',$BF,$C,5
+	String	-(TXPRI+TXMAP1),$D,3,'PP GOAL!',-(TXPRI+TXMAP1),$C,5
+	String	-(TXPRI+TXMAP1),$C,3,'HAT TRICK!',-(TXPRI+TXMAP1),$C,5
 
 PrintPlayerAssists					;Print " (" and the assists of player d0 of team a2 (PrintParenNumber)
 	movem.l	d0/a2,-(sp)

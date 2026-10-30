@@ -1855,7 +1855,7 @@ SetupNameText						;Setup line names
 	String	'Season Schedule     '
 
 SeasonSetupHelp						;Season setup help line
-	String	$BF,$2,$19,'{} Select option    [] Change option',$BF,$9,$1A,'Start = Store Setup',$0
+	String	-(TXPRI+TXMAP1),$2,$19,'{} Select option    [] Change option',-(TXPRI+TXMAP1),$9,$1A,'Start = Store Setup',$0
 
 GamesToday							;GAMES TODAY screen: list the day's games, A toggles human / computer for
 									;a game, left / right change the
@@ -3851,10 +3851,10 @@ DrawStandingsLogo					;Draw team d1's block
 	rts
 
 StandingsTitles						;Conference / division titles
-	String	$FF,$3,$7,'WESTERN CONFERENCE',$FF,$17,$7,'PACIFIC DIV.  '
-	String	$FF,$3,$7,'WESTERN CONFERENCE',$FF,$17,$7,'CENTRAL DIV.  '
-	String	$FF,$3,$7,'EASTERN CONFERENCE',$FF,$17,$7,'NORTHEAST DIV.'
-	String	$FF,$3,$7,'EASTERN CONFERENCE',$FF,$17,$7,'ATLANTIC DIV. '
+	String	-TXMAP1,$3,$7,'WESTERN CONFERENCE',-TXMAP1,$17,$7,'PACIFIC DIV.  '
+	String	-TXMAP1,$3,$7,'WESTERN CONFERENCE',-TXMAP1,$17,$7,'CENTRAL DIV.  '
+	String	-TXMAP1,$3,$7,'EASTERN CONFERENCE',-TXMAP1,$17,$7,'NORTHEAST DIV.'
+	String	-TXMAP1,$3,$7,'EASTERN CONFERENCE',-TXMAP1,$17,$7,'ATLANTIC DIV. '
 
 PrintStandingsHelp					;Standings help line
 	movem.l	d0-d7/a0-a6,-(sp)
