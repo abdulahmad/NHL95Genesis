@@ -662,7 +662,7 @@ $083662,CPgoalie,loc_83662,,engine/logic95
 $0836AC,PuckcIsGoalie,,,engine/logic95
 $0836CC,SetPersonel,sub_836CC,,engine/players95
 $083786,SetPlList,sub_83786,,engine/players95
-$083846,SetPlList_s1,sub_83846,TryAddPlayerToList,engine/players95
+$083846,TryAddPlayerToList,sub_83846,TryAddPlayerToList,engine/players95
 $083880,forcepldata,,,engine/players95
 $0838F2,GetPlayerCount,sub_838F2,,engine/players95
 $083904,GetPlayerCountD7,sub_83904,,engine/players95
