@@ -1,8 +1,11 @@
-;	RAM map. This file names the work RAM variables in address order. It holds equates only and
-;	adds nothing to the ROM.
+;	RAM map. This file names the work RAM variables, mostly in address order: variables shared
+;	with the other games follow their order in 92G/93G/94G, and the others sit with related ones.
+;	It holds equates only and adds nothing to the ROM.
 
 AwardIds			equ	$FFFF0000	;SeasonAwards: the candidate ids (players, or teams), sorted with
 									;AwardScores. Shares M68K_RAM
+Stack				equ	$FFFFFDFA	;94 $FFFFFFFE. Begin's stack pointer; the sound driver RAM (SndDrvRAM) is
+									;above it
 M68K_RAM			equ	$FFFF0000
 AwardScores			equ	$FFFF0548	;SeasonAwards: the candidate scores (ScanAllPlayers, SortAwardScores)
 TradeBuf			equ	$FFFF1388	;Trade: work buffer
@@ -73,14 +76,13 @@ Vcount				equ	$FFFFAC56	;94 $FFFFB03E. Vertical blank counter
 OldVcount			equ	$FFFFAC58	;94 $FFFFB040
 repeatdelayframes	equ	$FFFFAC5A	;94 $FFFFB042. Key repeat count down (ProcessInputWithRepeat)
 asv					equ	$FFFFAC5C	;94 $FFFFB044. Crowd noise volume (updatesound)
-lldisp				equ	$FFFFAC5E	;94 $FFFFB046. Count down to the once a second updates
 periodendtime		equ	$FFFFAC60	;94 $FFFFB048. 3rd-period song trigger time (CheckLateGameSong)
 SortCords			equ	$FFFFAC62	;94 $FFFFB04A. 16 sort objects of SCstruct bytes
 puckx				equ	$FFFFB362	;94 $FFFFB74A. SortCords+(puckscnum*SCstruct)
-pucky				equ	$FFFFB376	;94 $FFFFB75E
-puckz				equ	$FFFFB37A	;94 $FFFFB762
 puckvx				equ	$FFFFB38A	;94 $FFFFB772
+pucky				equ	$FFFFB376	;94 $FFFFB75E
 puckvy				equ	$FFFFB38C	;94 $FFFFB774
+puckz				equ	$FFFFB37A	;94 $FFFFB762
 puckvz				equ	$FFFFB38E	;94 $FFFFB776
 puckc				equ	$FFFFB3C2	;94 $FFFFB7AA. Puck carrier SCnum, -1 = none
 puck_pflags2		equ	$FFFFB3C5	;94 $FFFFB7AD. puckx+pflags2 (the puck struct)
@@ -101,7 +103,6 @@ playoffspritex		equ	$FFFFB4C8	;94 $FFFFB8AE. Playoff sprite x offset while the t
 playoffspritey		equ	$FFFFB4CA	;94 $FFFFB8B0
 clampcounter		equ	$FFFFB4CC	;94 $FFFFB8B2
 DMAList				equ	$FFFFB4CE	;94 $FFFFB8B4. Dma transfer list
-DMAlistend			equ	$FFFFB92E	;94 $FFFFBD14
 Vpos				equ	$FFFFB932	;94 $FFFFBD18
 Oldrow				equ	$FFFFB934	;94 $FFFFBD1A. Rink map row of the last updatescroll
 Hpos				equ	$FFFFB936	;94 $FFFFBD1C
@@ -113,16 +114,19 @@ palcount			equ	$FFFFB940	;94 $FFFFBD26
 palfadenew			equ	$FFFFB942	;94 $FFFFBD28
 fofdata2			equ	$FFFFB9C2	;94 $FFFFBDA8. Faceoff sprite entries: word frame, word flags (checkfo)
 fofdata				equ	$FFFFB9CA	;94 $FFFFBDB0
+ffonum				equ	6			;objects tied to the rink scroll (94: 7)
 pads				equ	$FFFFB9CE	;94 $FFFFBDB4. 6 pad objects of $1C bytes (95 has no glove object; 94: 7
 									;with glovestruct)
 Joy1Struct			equ	$FFFFB9EA	;94 $FFFFBDD0. pads+$1C
-Joy3Struct			equ	$FFFFBA22	;94 $FFFFBE24. pads+$54
-Joy4Struct			equ	$FFFFBA3E	;94 $FFFFBE40. pads+$70
 ReplayStarStruct	equ	$FFFFBA5A	;94 $FFFFBE08
 replayactive		equ	$FFFFBA70	;94 $FFFFBE1E
+Joy3Struct			equ	$FFFFBA22	;94 $FFFFBE24. pads+$54
+Joy4Struct			equ	$FFFFBA3E	;94 $FFFFBE40. pads+$70
 PadControlBits		equ	$FFFFBA76	;94 $FFFFBE78 (a word; PadControlBits34 $FFFFBE86). 95 keeps the 4 pads'
 									;nibbles in one long
 padcont				equ	$FFFFBA7A	;94 $FFFFBE7A. Label code of each pad object
+ssonum				equ	4			;screen objects not tied to the rink scroll
+ssosize				equ	$14			;bytes per sso object
 sso					equ	$FFFFBA86	;94 $FFFFBE88. Off screen arrow objects, $14 bytes each
 shotplayer			equ	$FFFFBAD6	;94 $FFFFBED8. The last shooter (SCnum)
 lastplayer			equ	$FFFFBAD8	;94 $FFFFBEDA
@@ -179,11 +183,11 @@ TempBuffer			equ	$FFFFBB1E	;94 $FFFFBF20. 40 byte scratch buffer (hot / cold sum
 recuser2			equ	$FFFFBB20	;UpdatePlayerRecords: the other team's user word (GetPadUser)
 SeasonGameCount		equ	$FFFFBB22	;Human season games counted in SeasonGoalSum
 SRAMbyte			equ	$FFFFBB46	;Save RAM byte read by GetGoalieCountD7 / GetForwardCountSeason
-recwins				equ	$FFFFBB4C	;94 $FFFFBF4E. A scratch word (record page wins; assdefo clears it)
 rosterteam			equ	$FFFFBB4E	;setplayer: the team number ($28 of the team struct) for GetRosterName /
 									;GetJerseyNumber
 recties				equ	$FFFFBB50	;94 $FFFFBF4A. Record Holders: the row ties (PrintWinRecords)
 reclosses			equ	$FFFFBB52	;94 $FFFFBF4C. Record Holders: the row losses (PrintWinRecords)
+recwins				equ	$FFFFBB4C	;94 $FFFFBF4E. A scratch word (record page wins; assdefo clears it)
 recwincount			equ	$FFFFBB54	;Record Holders: the row wins (PrintWinRecords)
 awayhotter			equ	$FFFFBB56	;94 $FFFFBF50. CompareHotColdTotals: the away team is hotter
 awayhotidx			equ	$FFFFBB5A	;94 $FFFFBF54. Hot / cold list index, away (BuildHotColdLists)
@@ -197,6 +201,12 @@ homecoldplayer		equ	$FFFFBB68	;94 $FFFFBF62. The home team's coldest starter
 ChkBodyG			equ	$FFFFBB6A	;94 $FFFFBF64. Goalie body reach (checkpuckcoll)
 ChkBodySqG			equ	$FFFFBB6C	;94 $FFFFBF66. Long: reach squared
 NegChkBodyG			equ	$FFFFBB70	;94 $FFFFBF6A
+ChkBodyP			equ	$FFFFDC6C	;Skater body reach for the puck (checkpuckcoll)
+ChkStickP			equ	$FFFFDC6E	;Skater stick reach
+NegChkBodyP			equ	$FFFFDC70
+NegChkStickP		equ	$FFFFDC72
+ChkBodySqP			equ	$FFFFDC74	;Body reach squared
+ChkStickSqP			equ	$FFFFDC76	;Stick reach squared
 onetimerplayer		equ	$FFFFBB72	;94 $FFFFBF6C
 onetimerclock		equ	$FFFFBB74	;94 $FFFFBF6E
 onetimerflags		equ	$FFFFBB7C	;94 $FFFFBF76
@@ -217,6 +227,7 @@ fodir2				equ	$FFFFBBA0	;94 $FFFFBF9A. Of the top goal team
 deltax				equ	$FFFFBBA2	;94 $FFFFBF9C. avdgoal x correction
 deltay				equ	$FFFFBBA4	;94 $FFFFBF9E. avdgoal y correction
 collflag			equ	$FFFFBBA6	;94 $FFFFBFA0. Set by a player collision (checkcx)
+lldisp				equ	$FFFFAC5E	;94 $FFFFB046. Count down to the once a second updates
 mesarea				equ	$FFFFBBAA	;94 $FFFFBFA4. Message String: length word, then TextBuffer
 TextBuffer			equ	$FFFFBBAC	;94 $FFFFBFA6
 PushWidthBuf		equ	$FFFFBC0E	;94 $FFFFC008. PushNumberWidth String
@@ -226,6 +237,7 @@ ltack				equ	$FFFFBC1A	;94 $FFFFC014. Last tackle sound
 lastsfx				equ	$FFFFBC1C	;94 $FFFFC016
 Satt				equ	$FFFFBC1E	;94 $FFFFC018. Sprite attribute table
 Sattsize			equ	$FFFFBEEE	;94 $FFFFC2E8
+DMAlistend			equ	$FFFFB92E	;94 $FFFFBD14
 gmode				equ	$FFFFBEF0	;94 $FFFFC2EA
 sflags				equ	$FFFFBEF2	;94 $FFFFC2EC
 sflags2				equ	$FFFFBEF4	;94 $FFFFC2EE
@@ -314,9 +326,6 @@ PenCrossChkPS		equ	$3A
 PenSlashingPS		equ	$3C
 ; Sprite object counts and sizes (92 names)
 collrad				equ	8			;collision radius of an object (objects collide within collrad*2)
-ssosize				equ	$14			;bytes per sso object
-ssonum				equ	4			;screen objects not tied to the rink scroll
-ffonum				equ	6			;objects tied to the rink scroll (94: 7)
 PenCntDwn			equ	$FFFFC010	;94 $FFFFC3E6
 Penaltytimer		equ	$FFFFC012	;94 $FFFFC3E8
 PBnum				equ	$FFFFC014	;94 $FFFFC3EA. Players in the penalty boxes: home in the high nibble, away
@@ -326,6 +335,7 @@ penmsgtimer			equ	$FFFFC018	;94 $FFFFC3EE
 RefCnt				equ	$FFFFC01A	;94 $FFFFC3F0
 RefStep				equ	$FFFFC01C	;94 $FFFFC3F2
 RefPen				equ	$FFFFC01E	;94 $FFFFC3F4
+RefRamMap			equ	$FFFFDBBE	;94 $FFFFC3F6. The ref window map in RAM ($38 words, PushRef)
 gsp					equ	$FFFFC020	;94 $FFFFC466. Period: 0-2, 3 overtime, 4 game over
 gameclock			equ	$FFFFC022	;94 $FFFFC468
 PerTimeTotal		equ	$FFFFC026	;94 $FFFFC46C. Period length in seconds (ResetClock)
@@ -389,6 +399,14 @@ SeedGames			equ	$FFFFCB16	;InitPlayoffs: the games of each team (CalcSeedPoints)
 StandingsOrder		equ	$FFFFCB16	;StandingsScreen games of the 26 teams
 StandingsBuf		equ	$FFFFCB30	;StandingsScreen records (ReadStandings, 3 bytes a team)
 StandingsList		equ	$FFFFCB7E	;StandingsScreen teams of the group, sorted
+DispAttribCtr		equ	$FFFFD276	;94 $FFFFD5AC. Roster attribute page; game setup: first line shown
+VertLineScrolling	equ	$FFFFD278	;94 $FFFFD5AE. Game setup: last line shown
+PlayerScrollCtr		equ	$FFFFD27A	;94 $FFFFD5B0. Scroll step (playoff screen); TeamRosterScreen:
+									;nonzero stops the page keys
+SelectedPlayerIdx	equ	$FFFFD27C	;94 $FFFFD5B2. Roster page 0-2; game setup: cursor line
+screentimer			equ	$FFFFD280	;94 $FFFFD5B6. Line editor: the selected list row
+TestList			equ	$FFFFD282	;94 $FFFFD5B8. Shootout shooters: the selected slot (0-4 shooters, 5
+									;goalie). Shares setupvalues
 nibblebuffer		equ	$FFFFCC24	;94 $FFFFD036. Word weights for WeightedRandomSelect
 gamevarend			equ	$FFFFCC2C	;End of the RAM StartGame clears from VSCRLPM (94 $FFFFD03E)
 SimFlags			equ	$FFFFCC30	;Bit 0 save the cup winner, bit 1 a game was simulated (SaveSimGame)
@@ -400,6 +418,8 @@ pad2user			equ	$FFFFCC44	;$FFFFD044. Name log entry picked by pad 2
 pad3user			equ	$FFFFCC46	;Name log entry picked by pad 3
 pad4user			equ	$FFFFCC48	;Name log entry picked by pad 4
 FourWayPlay			equ	$FFFFCC4A	;94 $FFFFD046. Four way adaptor in use
+varend				equ	$FFFFDC80	;end of variables, for clearing purposes only. Begin clears from VSCRLPM
+									;to here (94 $FFFFDEF4)
 OptPlayMode			equ	$FFFFCC4C	;94 $FFFFD048. Start of the menu options
 OptNOP				equ	$FFFFCC4E	;94 $FFFFD04A. Options menu: number of players
 Opt1team			equ	$FFFFCC50	;94 $FFFFD04C
@@ -449,6 +469,7 @@ LineHoldTimer		equ	$FFFFD022	;Per pad (a word each): frames A must stay held bef
 screen6chars1		equ	$FFFFD02A	;DrawTeamScreen6: the team block chars
 screen6chars2		equ	$FFFFD02C	;DrawTeamScreen6: the Screen6Tiles1 chars
 screen6chars3		equ	$FFFFD02E	;DrawTeamScreen6: the Screen6Tiles2 chars
+setupprevline		equ	$FFFFD2E8	;94 $FFFFD424
 logoteam			equ	$FFFFD030	;94 $FFFFD428
 setuphome			equ	$FFFFD032	;94 $FFFFD42A
 setupvis			equ	$FFFFD034	;94 $FFFFD42C
@@ -468,6 +489,7 @@ homeplayers			equ	$FFFFD054	;94 $FFFFD44C. Players of the home team (CountPlayer
 awayplayers			equ	$FFFFD056	;94 $FFFFD44E. Players of the away team (CountPlayers)
 shootoutclock		equ	$FFFFD05C	;94 $FFFFD454
 shootoutjiffy		equ	$FFFFD05E	;94 $FFFFD456
+ValidSRAM			equ	$FFFFDC3A	;94 $FFFFD458. 0 = save RAM checksum good, -1 = bad
 namelog				equ	$FFFFD060	;94 $FFFFD45A. The user name log, 12 bytes per name
 NameEntryBuf		equ	$FFFFD0E0	;Name entry: the name (18 characters)
 NameEntryLen		equ	$FFFFD0F4	;Name entry: name length
@@ -503,6 +525,8 @@ SeasonFlags			equ	$FFFFD1A7	;The byte after SeasonDay: bit 1 best of seven, bit 
 									;bit 3 regular season over, bit 4 playoffs over, bit 5 playoffs
 SeasonPerlen		equ	$FFFFD1A8	;Season period length (ReadSeasonHeader)
 SeasonPen			equ	$FFFFD1A9	;Season penalties
+seasonsetupreq		equ	$FFFFDC32	;Nonzero: GameSetUp opens on Continue Season
+injurygames			equ	$FFFFDC6A	;Season: the games of the last injury (SetInjuryGames, CheckInjury)
 SeasonLine			equ	$FFFFD1AA	;Season line changes
 seasonteamsel		equ	$FFFFD1AC	;Offset of the season matchup in SeasonTeams, -1 none
 gamestoday3chars	equ	$FFFFD1AE	;Games today screen chars (GamesTodayMap3)
@@ -537,17 +561,8 @@ advframe			equ	$FFFFD26E	;94 $FFFFD5A4. Advantage marks step (PrintAdvantageMark
 advcount			equ	$FFFFD270	;94 $FFFFD5A6. Advantage marks frame count
 matchuptimer		equ	$FFFFD272	;94 $FFFFD5A8. PeriodStatsScreen: the running total
 matchupslot			equ	$FFFFD274	;94 $FFFFD5AA. The line slot of the matchup
-DispAttribCtr		equ	$FFFFD276	;94 $FFFFD5AC. Roster attribute page; game setup: first line shown
-VertLineScrolling	equ	$FFFFD278	;94 $FFFFD5AE. Game setup: last line shown
-PlayerScrollCtr		equ	$FFFFD27A	;94 $FFFFD5B0. Scroll step (playoff screen); TeamRosterScreen:
-									;nonzero stops the page keys
-SelectedPlayerIdx	equ	$FFFFD27C	;94 $FFFFD5B2. Roster page 0-2; game setup: cursor line
 typedelay			equ	$FFFFD27E	;94 $FFFFD5B4. ScoutTextPlayer: frames to the next word
-screentimer			equ	$FFFFD280	;94 $FFFFD5B6. Line editor: the selected list row
 setupvalues			equ	$FFFFD282	;8 setup line values (mode, teams, ...)
-TestList			equ	$FFFFD282	;94 $FFFFD5B8. Shootout shooters: the selected slot (0-4 shooters, 5
-									;goalie). Shares setupvalues
-setupprevline		equ	$FFFFD2E8	;94 $FFFFD424
 setupdir			equ	$FFFFD2EA	;Last setup key: 0 up, 1 down, 2 left, 3 right, -1 none
 setuplines			equ	$FFFFD2EC	;Number of setup lines for the mode
 setupshown			equ	$FFFFD2EE	;Setup lines shown
@@ -596,15 +611,13 @@ replaydelay			equ	$FFFFDBB8	;94 $FFFFDEF0
 penboxattr			equ	$FFFFDBBA	;Attribute byte (4(a3)) of the player going into the penalty box:
 									;asspenalty saves it, assdopen puts it back
 PALflag				equ	$FFFFDBBC	;94 $FFFFDEF2. Bit 0 set on a PAL (50 Hz) machine
-RefRamMap			equ	$FFFFDBBE	;94 $FFFFC3F6. The ref window map in RAM ($38 words, PushRef)
 menutimer			equ	$FFFFDC2E	;Set to $3C by Pausemode
+menucursor			equ	$FFFFDC68	;Pause menu column (Pausemode sets 2)
 framerchars			equ	$FFFFDC30	;Char start of the framer tiles (setupice, before AddFramer2)
-seasonsetupreq		equ	$FFFFDC32	;Nonzero: GameSetUp opens on Continue Season
 screenarg			equ	$FFFFDC34	;getNameandAttrib: the team number; DrawTeamScreen2 ... 6: the background
 									;bitmap address (long)
 attribplayer		equ	$FFFFDC36	;getNameandAttrib player
 optbgchars			equ	$FFFFDC38	;SeasonOptionsGfx: the wait box chars
-ValidSRAM			equ	$FFFFDC3A	;94 $FFFFD458. 0 = save RAM checksum good, -1 = bad
 CreatedPlayerBuf	equ	$FFFFDC3C	;Created player record read from save RAM (GetCreatedName reads it at +2)
 jerseynum			equ	$FFFFDC3D	;Jersey number byte from GetJerseyNumber
 SRAMChecksum		equ	$FFFFDC5E	;The complement and sum bytes MakeSRAMChecksum
@@ -613,23 +626,11 @@ HmDefMode			equ	$FFFFDC62	;Home team defense mode: at 1 (Opening2 sets it) assde
 									;carrier (assdefdchase) and asswingd covers
 AwDefMode			equ	$FFFFDC64	;Away team defense mode, as HmDefMode
 turnstep			equ	$FFFFDC66	;doplayeracc: the turn step for the facing change
-menucursor			equ	$FFFFDC68	;Pause menu column (Pausemode sets 2)
-injurygames			equ	$FFFFDC6A	;Season: the games of the last injury (SetInjuryGames, CheckInjury)
-ChkBodyP			equ	$FFFFDC6C	;Skater body reach for the puck (checkpuckcoll)
-ChkStickP			equ	$FFFFDC6E	;Skater stick reach
-NegChkBodyP			equ	$FFFFDC70
-NegChkStickP		equ	$FFFFDC72
-ChkBodySqP			equ	$FFFFDC74	;Body reach squared
-ChkStickSqP			equ	$FFFFDC76	;Stick reach squared
 AutoplayDay			equ	$FFFFDC79	;Play Until A Day: the last day to autoplay, 0 none
 ShotTimer			equ	$FFFFDC7A	;Set to $1E by doshot, counted down by DoGameFrame
 shotpflags			equ	$FFFFDC7C	;pflags of the last shooter (doshot)
-varend				equ	$FFFFDC80	;end of variables, for clearing purposes only. Begin clears from VSCRLPM
-									;to here (94 $FFFFDEF4)
 penaltymsgs			equ	$FFFFDC82	;Queue of penalty messages, a word each (penalty, player), 0 ends
 									;(ShowPenaltyMessages)
-Stack				equ	$FFFFFDFA	;94 $FFFFFFFE. Begin's stack pointer; the sound driver RAM (SndDrvRAM) is
-									;above it
 SndDrvRAM			equ	$FFFFFDFC	;Sound driver RAM base: word $1234 = driver ready, 0 = busy (SndUpdate
 									;does nothing)
 SndSeqPtr			equ	$FFFFFDFE	;8 song slots: song data (-1 = free)
