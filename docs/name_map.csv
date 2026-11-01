@@ -1858,7 +1858,7 @@ $0A0692,CopyColdestPlayer,sub_A0692,,front/scout95
 $0A06B0,GetTeamRating,sub_A06B0,,front/scout95
 $0A06DC,TeamRatingsLine,unk_A06DC,,front/scout95
 $0A06FA,TeamRatings,unk_A06FA,,front/scout95
-$0A0718,ScoutTextScript,unk_A0718,,front/scout95
+$0A0718,ScoutingReportText,unk_A0718,ScoutTextScript,front/scout95
 $0A08DC,GetHomeUsers,sub_A08DC,,front/scout95
 $0A0954,GetAwayUsers,sub_A0954,,front/scout95
 $0A09CC,NextAwayUser,sub_A09CC,,front/scout95
