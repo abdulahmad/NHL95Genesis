@@ -6,7 +6,7 @@
 
 	include	macros\genesis.mac		;String
 
-newTitleScreen						;The title screen (TitleScreenImg, TitleImg) with the vblank TitleVBlank
+TitleScreen							;The title screen (TitleScreenImg, TitleImg) with the vblank TitleVBlank
 									;and the song, then the scrolling credits (Credits, CreditsList,
 									;CreditsPrintRow) until start
 	move	#$2700,sr
@@ -206,7 +206,7 @@ CreditsWait							;Credits: wait one frame, run the clampcounter count down; fro
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-VBlank_TitleScreen					;newTitleScreen vblank: the line scroll table and Vscroll, the sprites,
+VBlank_TitleScreen					;TitleScreen vblank: the line scroll table and Vscroll, the sprites,
 									;cramfade, CreditsScrollStep, the music; rte
 	movem.l	d0-d7/a0-a6,-(sp)
 	btst	#dfng,(disflags).w

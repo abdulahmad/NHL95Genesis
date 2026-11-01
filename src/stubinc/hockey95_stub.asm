@@ -14,7 +14,7 @@
 ; External addresses outside, read from lst/nhl95.bin: jsr / jmp (x).l and movea.l / move.l #x carry the
 ; address bsr.w is the displacement word address + displacement.
 KillCrowd = $67988
-newTitleScreen = $A12AA
+TitleScreen = $A12AA
 stop_current_song = $67938			;Stop the song in progress.
 SoundCmd = $676D8
 song = $678C2

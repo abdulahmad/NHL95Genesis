@@ -925,7 +925,7 @@ $08C61C,rtsgoal,locret_8C61C,,engine/goal95
 $08C61E,PenGoalStuff,sub_8C61E,,engine/goal95
 $08C694,box,sub_8C694,,engine/goal95
 $08C6B0,ShowGoalBox,loc_8C6B0,DisplayPlayerAttributeMenu,engine/goal95
-$08C83A,GoalBigTxt,unk_8C83A,,engine/goal95
+$08C83A,GoalBoxText,unk_8C83A,GoalBigTxt,engine/goal95
 $08C85A,PPGoalBigTxt,unk_8C85A,,engine/goal95
 $08C87C,PrintPlayerAssists,sub_8C87C,,engine/goal95
 $08C892,PrintPlayerGoals,sub_8C892,,engine/goal95
@@ -1891,7 +1891,7 @@ $0A1198,rtsPenaltyScroll,,,front/summary95
 $0A119A,DisplayPenaltyLineUp,,,front/summary95
 $0A11C6,DisplayPenaltyLineDown,,,front/summary95
 $0A11F6,DisplayPenaltyEntry,,,front/summary95
-$0A12AA,newTitleScreen,sub_A12AA,,front/title95
+$0A12AA,TitleScreen,sub_A12AA,newTitleScreen,front/title95
 $0A1534,CreditsPrintRow,sub_A1534,,front/title95
 $0A1584,CreditsWait,sub_A1584,,front/title95
 $0A15C4,TitleVBlank,unk_A15C4,,front/title95
