@@ -739,7 +739,7 @@ InitScoutingDisplay					;Start the text player ScoutTextPlayer: VertLineScrollin
 	movea.l	#setupvalues,a0
 	rts
 
-UpdateScoutingDisplay				;Text player of ScoutingReport: types the ScoutTextScript lines of
+UpdateScoutingDisplay				;Text player of ScoutingReport: types the ScoutingReportText lines of
 									;TestList word by word with a typing delay (typedelay, longer after , and
 									;.); $D ends a line; the special characters insert Strings (team names,
 									;arena, hot / cold players, user names); line breaks scroll the text box
@@ -750,7 +750,7 @@ UpdateScoutingDisplay				;Text player of ScoutingReport: types the ScoutTextScri
 	subq.w	#1,(typedelay).w
 	bpl.w	.13
 .0
-	movea.l	#ScoutTextScript,a1
+	movea.l	#ScoutingReportText,a1
 	move.w	(PlayerScrollCtr).w,d0
 	bpl.w	.4
 	clr.w	(DispAttribCtr).w
@@ -1244,12 +1244,12 @@ TeamRatings							;GetTeamRating values, one byte per team (TeamList order)
 	inform 3,"TeamRatings does not match the team count"
 	ENDIF
 
-ScoutTextScript						;The scouting text lines, each ended by $D, $FF after the last;
+ScoutingReportText					;The scouting text lines, each ended by $D, $FF after the last;
 									;ScoutTextPlayer skips n $D for line n
 									;substitution chars: ^ arena  = home team  * away team  } away (alt intro)
 									;< > | \ hot/cold players  #  home user name (NextHomeUser)
 									;% away user name (NextAwayUser)
-	incbin	..\Extracted\NHL95\Text\ScoutTextScript.bin
+	incbin	..\Extracted\NHL95\Text\ScoutingReportText.bin
 
 GetHomeUsers						;homeusers = the count, then the name log entries of the pads on the home
 									;team (pad1user ... pad4user)
