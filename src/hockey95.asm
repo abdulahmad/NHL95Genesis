@@ -2,9 +2,9 @@
 ;	its exits to the season, trades and Create Player, the start of each game and period, the
 ;	intermission and every frame of play.
 
-Opening								;Title screen (newTitleScreen), then into Opening2. Jumped to from Begin
+Opening								;Title screen (TitleScreen), then into Opening2. Jumped to from Begin
 	jsr	(KillCrowd).l
-	jsr	(newTitleScreen).l
+	jsr	(TitleScreen).l
 	bset	#7,(sflags12).w			;Opening2 skips the sound restart
 
 Opening2							;Restart the sound (unless coming from Opening), reset the stack and clear

@@ -312,7 +312,7 @@ ShowGoalBox							;Goal box: close both line change boxes (lcfound_close), then 
 	adda.w	#tmsize,a2
 	move.w	(awaygoalies).w,(recwins).w
 .1
-	lea	GoalBigTxt(pc),a1
+	lea	GoalBoxText(pc),a1
 	bclr	#0,(sflags9).w
 	beq.w	.2
 	lea	PPGoalBigTxt(pc),a1
@@ -380,7 +380,7 @@ ShowGoalBox							;Goal box: close both line change boxes (lcfound_close), then 
 	movem.l	(sp)+,d0-d2/a0-a4
 	rts
 
-GoalBigTxt							;printbig Strings for ShowGoalBox: GOAL!, then HAT TRICK!
+GoalBoxText							;printbig Strings for ShowGoalBox: GOAL!, then HAT TRICK!
 	String	CC_Font1Pri,$F,3,'GOAL!',CC_Font1Pri,$C,5
 	String	CC_Font1Pri,$C,3,'HAT TRICK!',CC_Font1Pri,$C,5
 
