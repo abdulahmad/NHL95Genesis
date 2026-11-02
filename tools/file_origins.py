@@ -108,9 +108,13 @@ def include_lines(path):
     """The files an include list names with their start address ('; $ADDR'), in order."""
     out = []
     for line in open(os.path.join(ROOT, 'src', path)):
-        m = re.match(r'^\s+include\s+(\S+\.asm)\s*;\s+\$[0-9A-F]+', line)
+        m = re.match(r'^\s+include\s+(\S+\.asm)\b', line)
         if m:
-            out.append(m.group(1).replace('\\', '/'))
+            f = m.group(1).replace('\\', '/')
+            if f.startswith('../output/obj/names/'):   # generated copy of a src file with the real names
+                f = os.path.basename(f)
+            if f != 'ram95.asm':
+                out.append(f)
     return out
 
 

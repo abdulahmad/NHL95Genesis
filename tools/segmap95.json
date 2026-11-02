@@ -31,12 +31,12 @@
     "main94": 774,
     "hockey94": 182,
     "teamdata94": 4,
-    "data94": 4
+    "setup94": 4
    },
    "out_of_order": 0,
    "moved_in": [
     "teamdata94:teamdata94+$0",
-    "data94:Illinst",
+    "setup94:Illinst",
     "hockey94:Begin"
    ],
    "note": "Vectors, header, SegaInit, then 95 code: region lock and its message (loc_2FA-$68F), jsr checksum, dc.l 0 ($69A, 94 kept it at the start of teamdata94), four rts exception stubs, and 94 Begin (hockey94) at loc_6A6 ending jmp $9AC8. TeamList is $772",
@@ -304,7 +304,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "Illinst",
      "$018C22",
      "$0006A2",
@@ -711,7 +711,7 @@
    "name": "display95_01",
    "start": "$00A204",
    "end": "$00A656",
-   "ref": "display94",
+   "ref": "video94",
    "kind": "match",
    "start_label": "sub_A204",
    "ref_range": [
@@ -721,7 +721,7 @@
    "matched_pct": 70.0,
    "located_pct": 71.1,
    "ref_mix": {
-    "display94": 786
+    "video94": 786
    },
    "out_of_order": 0,
    "moved_in": [],
@@ -729,7 +729,7 @@
    "desc": "",
    "units": [
     [
-     "display94",
+     "video94",
      "setvideo",
      "$015EC0",
      "$00A204",
@@ -738,7 +738,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "checksso",
      "$016480",
      "$00A29C",
@@ -747,7 +747,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "checksso+$13C",
      "$0165BC",
      "$00A3C4",
@@ -756,7 +756,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "setsortcords",
      "$0165FC",
      "$00A404",
@@ -765,7 +765,7 @@
      "x"
     ],
     [
-     "display94",
+     "video94",
      "uppads",
      "$016648",
      "$00A410",
@@ -774,7 +774,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "FormatControllerDisplay",
      "$0166E6",
      "$00A49A",
@@ -783,7 +783,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "uppads_pd",
      "$01674A",
      "$00A4FE",
@@ -792,7 +792,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "ButtonLabelCharTable",
      "$01677A",
      "$00A52E",
@@ -827,18 +827,18 @@
    "located_pct": 56.1,
    "ref_mix": {
     "setup94": 594,
-    "input94": 352,
+    "logic94": 352,
     "title94": 336
    },
    "out_of_order": 0,
    "moved_in": [
-    "input94:holdplayer",
-    "input94:Acheck",
-    "input94:burst",
+    "logic94:holdplayer",
+    "logic94:Acheck",
+    "logic94:burst",
     "title94:chgplayer",
     "title94:exit",
     "title94:swpchk",
-    "input94:restorepl"
+    "logic94:restorepl"
    ],
    "note": "",
    "desc": "",
@@ -871,7 +871,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "holdplayer",
      "$00BBB6",
      "$00AA18",
@@ -880,7 +880,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "Acheck",
      "$00BBD4",
      "$00AA46",
@@ -889,7 +889,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "burst",
      "$00BB62",
      "$00AA86",
@@ -925,7 +925,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "restorepl",
      "$00C0F8",
      "$00ADB2",
@@ -987,17 +987,17 @@
     "sound94": 73398,
     "title94": 268,
     "hockey94": 106,
-    "video94": 96,
-    "display94": 90,
+    "middle94": 96,
+    "video94": 90,
     "collide94": 38
    },
    "out_of_order": 1,
    "moved_in": [
     "hockey94:UpdateCwdExcite",
-    "display94:updatesound",
+    "video94:updatesound",
     "hockey94:CheckPeriodEnd",
-    "video94:sfx",
-    "video94:song",
+    "middle94:sfx",
+    "middle94:song",
     "title94:ChooseSong",
     "title94:TeamSongs",
     "title94:RandomSongs",
@@ -1016,7 +1016,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "updatesound",
      "$016976",
      "$067710",
@@ -1034,7 +1034,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "sfx",
      "$011132",
      "$0677AC",
@@ -1043,7 +1043,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "song",
      "$011156",
      "$0678C2",
@@ -1441,7 +1441,7 @@
    "name": "video95_01",
    "start": "$079902",
    "end": "$079D80",
-   "ref": "video94",
+   "ref": "middle94",
    "kind": "match",
    "start_label": "sub_79902",
    "ref_range": [
@@ -1451,21 +1451,21 @@
    "matched_pct": 100.0,
    "located_pct": 100.0,
    "ref_mix": {
-    "video94": 1068,
-    "display94": 82
+    "middle94": 1068,
+    "video94": 82
    },
    "out_of_order": 3,
    "moved_in": [
-    "display94:DumpSprites",
-    "display94:DumpSprites2",
-    "display94:DoDMAlist",
-    "display94:SetScroll2"
+    "video94:DumpSprites",
+    "video94:DumpSprites2",
+    "video94:DoDMAlist",
+    "video94:SetScroll2"
    ],
    "note": "",
    "desc": "",
    "units": [
     [
-     "video94",
+     "middle94",
      "DoFill",
      "$011544",
      "$079902",
@@ -1474,7 +1474,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "setvram",
      "$011594",
      "$079936",
@@ -1483,7 +1483,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "setVram_0",
      "$0115AA",
      "$07994C",
@@ -1492,7 +1492,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "Vmaddr",
      "$011680",
      "$079A22",
@@ -1501,7 +1501,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "dobitmap",
      "$01169A",
      "$079A3C",
@@ -1510,7 +1510,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "DoDMA_clearCallbackPointer",
      "$011738",
      "$079AC0",
@@ -1519,7 +1519,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "DecompressGraphics",
      "$01173C",
      "$079AC4",
@@ -1528,7 +1528,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "DoDMApro",
      "$0113D0",
      "$079AFE",
@@ -1537,7 +1537,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "WaitDMA",
      "$011582",
      "$079B12",
@@ -1546,7 +1546,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "forcefade",
      "$010F86",
      "$079B24",
@@ -1555,7 +1555,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "cramfade",
      "$010FB6",
      "$079B54",
@@ -1564,7 +1564,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "CopyPaletteToCRAM",
      "$011044",
      "$079BE2",
@@ -1573,7 +1573,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "xyVmMap",
      "$011952",
      "$079C18",
@@ -1582,7 +1582,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "remap",
      "$010EE0",
      "$079C42",
@@ -1591,7 +1591,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "DumpSprites",
      "$015E6E",
      "$079C94",
@@ -1600,7 +1600,7 @@
      "x"
     ],
     [
-     "display94",
+     "video94",
      "DumpSprites2",
      "$015E72",
      "$079C98",
@@ -1609,7 +1609,7 @@
      "x"
     ],
     [
-     "display94",
+     "video94",
      "DoDMAlist",
      "$015E82",
      "$079CA8",
@@ -1618,7 +1618,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "SetScroll2",
      "$015EA4",
      "$079CCA",
@@ -1627,7 +1627,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "DoDMA",
      "$0113E4",
      "$079CE6",
@@ -1647,7 +1647,7 @@
    "name": "display95_02",
    "start": "$079D80",
    "end": "$07A02A",
-   "ref": "display94",
+   "ref": "video94",
    "kind": "match",
    "start_label": "sub_79D80",
    "ref_range": [
@@ -1657,18 +1657,18 @@
    "matched_pct": 100.0,
    "located_pct": 100.0,
    "ref_mix": {
-    "display94": 672,
-    "data94": 10
+    "video94": 672,
+    "setup94": 10
    },
    "out_of_order": 1,
    "moved_in": [
-    "data94:sizetab"
+    "setup94:sizetab"
    ],
    "note": "",
    "desc": "",
    "units": [
     [
-     "display94",
+     "video94",
      "addframe",
      "$016782",
      "$079D80",
@@ -1677,7 +1677,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "addframe2",
      "$0167AA",
      "$079DA8",
@@ -1686,7 +1686,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "sizetab",
      "$01920C",
      "$079F54",
@@ -1695,7 +1695,7 @@
      "x"
     ],
     [
-     "display94",
+     "video94",
      "updatescroll",
      "$015F34",
      "$079F5E",
@@ -1715,7 +1715,7 @@
    "name": "video95_02",
    "start": "$07A02A",
    "end": "$07A762",
-   "ref": "video94",
+   "ref": "middle94",
    "kind": "match",
    "start_label": "sub_7A02A",
    "ref_range": [
@@ -1725,21 +1725,21 @@
    "matched_pct": 74.0,
    "located_pct": 83.3,
    "ref_mix": {
-    "video94": 906,
+    "middle94": 906,
     "sound94": 324,
-    "display94": 214,
-    "attract94": 48,
+    "video94": 214,
+    "setup94": 48,
     "replay94": 42,
     "hockey94": 6
    },
    "out_of_order": 4,
    "moved_in": [
     "hockey94:VBjsr",
-    "display94:VBlank",
+    "video94:VBlank",
     "sound94:p_music_vblank",
-    "display94:vb2",
-    "display94:IRQ7",
-    "attract94:VBlank_SetOptions",
+    "video94:vb2",
+    "video94:IRQ7",
+    "setup94:VBlank_SetOptions",
     "sound94:ReadJoyData",
     "sound94:ReadPad4Way1",
     "sound94:ReadPad4Way2",
@@ -1757,7 +1757,7 @@
    "desc": "",
    "units": [
     [
-     "video94",
+     "middle94",
      "forceblack",
      "$010F32",
      "$07A02A",
@@ -1766,7 +1766,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "forceblack2",
      "$010F5C",
      "$07A054",
@@ -1775,7 +1775,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "DecompressBytecode",
      "$01177A",
      "$07A07E",
@@ -1784,7 +1784,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "jump_table",
      "$0117B2",
      "$07A0B6",
@@ -1793,7 +1793,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "Opcode_CopyLiteral",
      "$0117D2",
      "$07A0D6",
@@ -1802,7 +1802,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "Opcode_ClearBytes",
      "$0117EE",
      "$07A0F2",
@@ -1811,7 +1811,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "Opcode_Fillbytes",
      "$01180A",
      "$07A10E",
@@ -1820,7 +1820,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "Opcode_CopyBackwardShort",
      "$01182A",
      "$07A12E",
@@ -1829,7 +1829,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "CopyBackwardRun",
      "$011840",
      "$07A144",
@@ -1838,7 +1838,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "Opcode_CopyBackwardMedium",
      "$01185C",
      "$07A160",
@@ -1847,7 +1847,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "Opcode_CopyBackwardLong",
      "$01186A",
      "$07A16E",
@@ -1856,7 +1856,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "Opcode_CopyBackwardExtended1",
      "$011884",
      "$07A188",
@@ -1865,7 +1865,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "Opcode_CopyBackwardExtended2",
      "$01189E",
      "$07A1A2",
@@ -1874,7 +1874,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "Opcode_CopyBackwardReverseShort",
      "$0118B8",
      "$07A1BC",
@@ -1883,7 +1883,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "CopyBackwardReverseRun",
      "$0118CE",
      "$07A1D2",
@@ -1892,7 +1892,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "Opcode_CopyBackwardReverseMedium",
      "$0118EA",
      "$07A1EE",
@@ -1901,7 +1901,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "Opcode_CopyBackwardReverseLong",
      "$01190A",
      "$07A20E",
@@ -1910,7 +1910,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "FlushOutputBuffer",
      "$011924",
      "$07A228",
@@ -1919,7 +1919,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "DecompressGraphicsWithCallback",
      "$01172C",
      "$07A264",
@@ -1928,7 +1928,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "Framer",
      "$0119B8",
      "$07A270",
@@ -1946,7 +1946,7 @@
      "x"
     ],
     [
-     "display94",
+     "video94",
      "VBlank",
      "$015D9A",
      "$07A332",
@@ -1964,7 +1964,7 @@
      "x"
     ],
     [
-     "display94",
+     "video94",
      "vb2",
      "$015E4C",
      "$07A3F6",
@@ -1973,7 +1973,7 @@
      "x"
     ],
     [
-     "display94",
+     "video94",
      "IRQ7",
      "$015E6C",
      "$07A416",
@@ -1982,7 +1982,7 @@
      "x"
     ],
     [
-     "attract94",
+     "setup94",
      "VBlank_SetOptions",
      "$017C42",
      "$07A418",
@@ -1991,7 +1991,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "orjoy",
      "$0112BC",
      "$07A448",
@@ -2000,7 +2000,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "nodiag",
      "$0112F0",
      "$07A488",
@@ -2009,7 +2009,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "ReadJoy3",
      "$011370",
      "$07A4E0",
@@ -2018,7 +2018,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "ReadJoy1",
      "$011340",
      "$07A4E8",
@@ -2027,7 +2027,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "ReadJoy4",
      "$011388",
      "$07A50C",
@@ -2036,7 +2036,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "ReadJoy2",
      "$011358",
      "$07A512",
@@ -2045,7 +2045,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "ReadJoy",
      "$0113A0",
      "$07A52A",
@@ -2054,7 +2054,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "jdtab",
      "$0113C0",
      "$07A54A",
@@ -2194,12 +2194,12 @@
    "ref_mix": {
     "collide94": 5942,
     "cards94": 70,
-    "video94": 58,
+    "middle94": 58,
     "stats94": 24
    },
    "out_of_order": 5,
    "moved_in": [
-    "video94:ProcessInputWithRepeat",
+    "middle94:ProcessInputWithRepeat",
     "stats94:Pausemode_rjoy",
     "cards94:wallcollduringcheck"
    ],
@@ -2207,7 +2207,7 @@
    "desc": "",
    "units": [
     [
-     "video94",
+     "middle94",
      "ProcessInputWithRepeat",
      "$011318",
      "$07A762",
@@ -2434,7 +2434,7 @@
    "name": "video95_03",
    "start": "$07C512",
    "end": "$07DEA0",
-   "ref": "video94",
+   "ref": "middle94",
    "kind": "match",
    "start_label": "sub_7C512",
    "ref_range": [
@@ -2444,11 +2444,11 @@
    "matched_pct": 64.4,
    "located_pct": 66.8,
    "ref_mix": {
-    "video94": 1590,
+    "middle94": 1590,
     "cards94": 630,
-    "data94": 488,
-    "display94": 404,
-    "checks94": 270,
+    "setup94": 488,
+    "video94": 404,
+    "logic94": 270,
     "title94": 236,
     "setup94": 170,
     "stats94": 168,
@@ -2461,33 +2461,33 @@
    },
    "out_of_order": 4,
    "moved_in": [
-    "checks94:vtoa",
-    "checks94:vtoa+$5A",
-    "display94:find3d",
-    "checks94:GetHot",
+    "logic94:vtoa",
+    "logic94:vtoa+$5A",
+    "video94:find3d",
+    "logic94:GetHot",
     "menu94:vcountwait",
     "period94:AddArenaAnimSprite",
-    "display94:showclock+$22",
-    "display94:showclock+$84",
-    "display94:showclock+$C0",
-    "data94:PerLabels",
-    "data94:PenShotPenalties2",
+    "video94:showclock+$22",
+    "video94:showclock+$84",
+    "video94:showclock+$C0",
+    "setup94:PerLabels",
+    "setup94:PenShotPenalties2",
     "collide94:makepde",
     "collide94:getpde",
     "title94:ReadGoaliePulled",
     "stats94:ReadAttributeNibble",
     "stats94:GetDefenseStart",
     "stats94:ProcessNibble",
-    "data94:GetTempPlayerName",
-    "data94:getname",
-    "data94:FormatPlayerNameWithAttrib",
-    "data94:FormatPlayerName",
-    "data94:FormatPlayerNameLast",
-    "data94:FormatPlayerNameShort",
-    "data94:FormatLastName",
-    "data94:FinalizeTextBuffer",
-    "data94:getplayername",
-    "data94:d0toascii",
+    "setup94:GetTempPlayerName",
+    "setup94:getname",
+    "setup94:FormatPlayerNameWithAttrib",
+    "setup94:FormatPlayerName",
+    "setup94:FormatPlayerNameLast",
+    "setup94:FormatPlayerNameShort",
+    "setup94:FormatLastName",
+    "setup94:FinalizeTextBuffer",
+    "setup94:getplayername",
+    "setup94:d0toascii",
     "cards94:CalcAttrib",
     "cards94:OvrPlayerWgtList",
     "cards94:OvrGoalWgtList",
@@ -2501,12 +2501,12 @@
     "penalty94:PrintScores1+$8C",
     "penalty94:PrintScores1+$9E",
     "penalty94:printscores1_ps",
-    "checks94:chkpk",
-    "checks94:chkpk2",
-    "data94:bfasciicon",
+    "logic94:chkpk",
+    "logic94:chkpk2",
+    "setup94:bfasciicon",
     "title94:UnpackPicture",
     "penalty94:RestoreTeamEnergy",
-    "checks94:WeightedRandomSelect",
+    "logic94:WeightedRandomSelect",
     "cards94:AppendTeamName",
     "cards94:StartText",
     "cards94:AppendUserName",
@@ -2516,7 +2516,7 @@
    "desc": "",
    "units": [
     [
-     "video94",
+     "middle94",
      "sroot",
      "$0110BE",
      "$07C512",
@@ -2525,7 +2525,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "vtoa",
      "$010676",
      "$07C586",
@@ -2534,7 +2534,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "vtoa+$5A",
      "$0106D0",
      "$07C5DE",
@@ -2543,7 +2543,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "find3d",
      "$016920",
      "$07C5EE",
@@ -2552,7 +2552,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "randomd0s",
      "$01107A",
      "$07C62E",
@@ -2561,7 +2561,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "randomd0",
      "$011086",
      "$07C63A",
@@ -2570,7 +2570,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "GetHot",
      "$0106E0",
      "$07C672",
@@ -2588,7 +2588,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "printz2",
      "$011A36",
      "$07C6D4",
@@ -2597,7 +2597,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "printsmall",
      "$011A48",
      "$07C6E6",
@@ -2606,7 +2606,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "ControlCodeJumpTable",
      "$011AF4",
      "$07C772",
@@ -2615,7 +2615,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "ControlCode_SetMapAndPosition",
      "$011B18",
      "$07C796",
@@ -2624,7 +2624,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "ControlCode_SetMap",
      "$011B28",
      "$07C7A6",
@@ -2633,7 +2633,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "ControlCode_SetAttribute",
      "$011B3C",
      "$07C7BA",
@@ -2642,7 +2642,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "ControlCode_SetX",
      "$011B4C",
      "$07C7CA",
@@ -2651,7 +2651,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "ControlCode_SetY",
      "$011B5A",
      "$07C7D8",
@@ -2660,7 +2660,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "ControlCode_AddX",
      "$011B68",
      "$07C7E6",
@@ -2669,7 +2669,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "ControlCode_AddY",
      "$011B76",
      "$07C7F4",
@@ -2678,7 +2678,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "ControlCode_SetFont",
      "$011B84",
      "$07C802",
@@ -2687,7 +2687,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "printz",
      "$011B92",
      "$07C810",
@@ -2696,7 +2696,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "print",
      "$011BA4",
      "$07C822",
@@ -2705,7 +2705,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "eraser",
      "$01197E",
      "$07C8CC",
@@ -2723,7 +2723,7 @@
      "x"
     ],
     [
-     "display94",
+     "video94",
      "showclock+$22",
      "$016320",
      "$07C924",
@@ -2732,7 +2732,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "showclock+$84",
      "$016382",
      "$07C992",
@@ -2741,7 +2741,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "showclock+$C0",
      "$0163BE",
      "$07C9D0",
@@ -2750,7 +2750,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "PerLabels",
      "$0191E4",
      "$07CA7E",
@@ -2759,7 +2759,7 @@
      "x"
     ],
     [
-     "data94",
+     "setup94",
      "PenShotPenalties2",
      "$0191F8",
      "$07CA92",
@@ -2822,7 +2822,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "GetTempPlayerName",
      "$018A6E",
      "$07CCD2",
@@ -2831,7 +2831,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "getname",
      "$018A90",
      "$07CCF8",
@@ -2840,7 +2840,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "FormatPlayerNameWithAttrib",
      "$018AE8",
      "$07CD3C",
@@ -2849,7 +2849,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "FormatPlayerName",
      "$018B26",
      "$07CD82",
@@ -2858,7 +2858,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "FormatPlayerNameLast",
      "$018B5E",
      "$07CE06",
@@ -2867,7 +2867,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "FormatPlayerNameShort",
      "$018B6E",
      "$07CE16",
@@ -2876,7 +2876,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "FormatLastName",
      "$018B7E",
      "$07CE26",
@@ -2885,7 +2885,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "FinalizeTextBuffer",
      "$018BAE",
      "$07CEBE",
@@ -2894,7 +2894,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "getplayername",
      "$018BC8",
      "$07CEE0",
@@ -2903,7 +2903,7 @@
      "x"
     ],
     [
-     "data94",
+     "setup94",
      "d0toascii",
      "$018BDC",
      "$07CEF6",
@@ -2948,7 +2948,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "PushTime",
      "$011CA2",
      "$07D0BC",
@@ -2957,7 +2957,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "PushNumber",
      "$011D06",
      "$07D120",
@@ -2966,7 +2966,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "PushNumberWidth",
      "$011D3A",
      "$07D154",
@@ -2975,7 +2975,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "appendz",
      "$011D96",
      "$07D20C",
@@ -2984,7 +2984,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "appstring",
      "$011D9E",
      "$07D214",
@@ -3011,7 +3011,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "DoDMA_nd2",
      "$0114B8",
      "$07D35E",
@@ -3038,7 +3038,7 @@
      "x"
     ],
     [
-     "video94",
+     "middle94",
      "waitx",
      "$011176",
      "$07D706",
@@ -3092,7 +3092,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "chkpk",
      "$00E264",
      "$07D884",
@@ -3101,7 +3101,7 @@
      "x"
     ],
     [
-     "checks94",
+     "logic94",
      "chkpk2",
      "$00E274",
      "$07D894",
@@ -3110,7 +3110,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "printbigz",
      "$011DE2",
      "$07D8D2",
@@ -3119,7 +3119,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "printbig",
      "$011DF4",
      "$07D92E",
@@ -3128,7 +3128,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "PrintBigChar",
      "$011E8E",
      "$07D9C8",
@@ -3137,7 +3137,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "PutBigTile",
      "$011EDA",
      "$07DA12",
@@ -3146,7 +3146,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "bfasciicon",
      "$01916A",
      "$07DA3C",
@@ -3173,7 +3173,7 @@
      "x"
     ],
     [
-     "checks94",
+     "logic94",
      "WeightedRandomSelect",
      "$010EB4",
      "$07DC0A",
@@ -3244,7 +3244,7 @@
     "fourway94": 216,
     "title94": 146,
     "penalty94": 48,
-    "video94": 48
+    "middle94": 48
    },
    "out_of_order": 0,
    "moved_in": [
@@ -3252,8 +3252,8 @@
     "title94:TeamGfxList",
     "penalty94:EASNLogo",
     "penalty94:EASNLogo+$14",
-    "video94:FormatAndPrintTime",
-    "video94:PeriodLabelTable"
+    "middle94:FormatAndPrintTime",
+    "middle94:PeriodLabelTable"
    ],
    "note": "",
    "desc": "",
@@ -3295,7 +3295,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "FormatAndPrintTime",
      "$011C72",
      "$07DF7C",
@@ -3304,7 +3304,7 @@
      ""
     ],
     [
-     "video94",
+     "middle94",
      "PeriodLabelTable",
      "$011C92",
      "$07DF9C",
@@ -3602,7 +3602,7 @@
    "name": "checks95_01",
    "start": "$07F97E",
    "end": "$0807EC",
-   "ref": "checks94",
+   "ref": "logic94",
    "kind": "match",
    "start_label": null,
    "ref_range": [
@@ -3612,7 +3612,7 @@
    "matched_pct": 76.1,
    "located_pct": 76.1,
    "ref_mix": {
-    "checks94": 2342,
+    "logic94": 2342,
     "stats94": 236,
     "goalie94": 232
    },
@@ -3663,7 +3663,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "assgoaliecpu",
      "$00D51C",
      "$07FDA4",
@@ -3672,7 +3672,7 @@
      "x"
     ],
     [
-     "checks94",
+     "logic94",
      "checkanim",
      "$00D526",
      "$07FDAE",
@@ -3681,7 +3681,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "ClampYPosition",
      "$00DB3E",
      "$0803FC",
@@ -3690,7 +3690,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "AdjustFacingDirection",
      "$00DB68",
      "$080426",
@@ -3699,7 +3699,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "goaliesave",
      "$00DBBA",
      "$0804D6",
@@ -3708,7 +3708,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "assgoalietopuck",
      "$00DD2E",
      "$080756",
@@ -3737,7 +3737,7 @@
    "name": "assign95_01",
    "start": "$0807EC",
    "end": "$080BEA",
-   "ref": "assign94",
+   "ref": "logic94",
    "kind": "match",
    "start_label": null,
    "ref_range": [
@@ -3747,7 +3747,7 @@
    "matched_pct": 80.0,
    "located_pct": 80.0,
    "ref_mix": {
-    "assign94": 818
+    "logic94": 818
    },
    "out_of_order": 0,
    "moved_in": [],
@@ -3755,7 +3755,7 @@
    "desc": "",
    "units": [
     [
-     "assign94",
+     "logic94",
      "assdefd",
      "$00CDE0",
      "$0807EC",
@@ -3764,7 +3764,7 @@
      ""
     ],
     [
-     "assign94",
+     "logic94",
      "rtss21",
      "$00CF98",
      "$0809FC",
@@ -3773,7 +3773,7 @@
      ""
     ],
     [
-     "assign94",
+     "logic94",
      "asswingd",
      "$00CF9A",
      "$0809FE",
@@ -3793,7 +3793,7 @@
    "name": "checks95_02",
    "start": "$080BEA",
    "end": "$08282E",
-   "ref": "checks94",
+   "ref": "logic94",
    "kind": "match",
    "start_label": null,
    "ref_range": [
@@ -3803,23 +3803,23 @@
    "matched_pct": 88.3,
    "located_pct": 88.3,
    "ref_mix": {
-    "checks94": 5906,
-    "assign94": 302,
-    "input94": 158,
+    "logic94": 5906,
+    "logic94": 302,
+    "logic94": 158,
     "collide94": 20
    },
    "out_of_order": 6,
    "moved_in": [
-    "assign94:assdefo",
-    "assign94:assnothing",
+    "logic94:assdefo",
+    "logic94:assnothing",
     "collide94:Setplass",
-    "input94:check4bench"
+    "logic94:check4bench"
    ],
    "note": "",
    "desc": "",
    "units": [
     [
-     "checks94",
+     "logic94",
      "asswingo",
      "$00D09C",
      "$080BEA",
@@ -3828,7 +3828,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "asswingo+$120",
      "$00D1BC",
      "$080D3A",
@@ -3837,7 +3837,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "rtss11",
      "$00D1E6",
      "$080D62",
@@ -3846,7 +3846,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "asscenterd",
      "$00D1E8",
      "$080D64",
@@ -3855,7 +3855,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "asscentero",
      "$00D294",
      "$080EF2",
@@ -3864,7 +3864,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "asscentero+$F6",
      "$00D38A",
      "$080FE8",
@@ -3873,7 +3873,7 @@
      ""
     ],
     [
-     "assign94",
+     "logic94",
      "assdefo",
      "$00CD00",
      "$08102A",
@@ -3882,7 +3882,7 @@
      ""
     ],
     [
-     "assign94",
+     "logic94",
      "assnothing",
      "$00CBE4",
      "$081202",
@@ -3891,7 +3891,7 @@
      "x"
     ],
     [
-     "checks94",
+     "logic94",
      "pucknorm",
      "$00FF0C",
      "$081220",
@@ -3900,7 +3900,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "puckunflip",
      "$0102A8",
      "$08130C",
@@ -3909,7 +3909,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "puckflip",
      "$0102D2",
      "$081336",
@@ -3918,7 +3918,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "puckshadow",
      "$0102EC",
      "$081352",
@@ -3927,7 +3927,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "findpc",
      "$010346",
      "$0813A0",
@@ -3936,7 +3936,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "a2touchpuck",
      "$01013E",
      "$08142C",
@@ -3954,7 +3954,7 @@
      "x"
     ],
     [
-     "checks94",
+     "logic94",
      "assexit",
      "$010646",
      "$08155E",
@@ -3963,7 +3963,7 @@
      "x"
     ],
     [
-     "checks94",
+     "logic94",
      "assinsert",
      "$010658",
      "$081570",
@@ -3972,7 +3972,7 @@
      "x"
     ],
     [
-     "checks94",
+     "logic94",
      "assreplace",
      "$010662",
      "$08157A",
@@ -3981,7 +3981,7 @@
      "x"
     ],
     [
-     "checks94",
+     "logic94",
      "EvadePC",
      "$00E594",
      "$08158E",
@@ -3990,7 +3990,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "skateto",
      "$0103C8",
      "$081634",
@@ -3999,7 +3999,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "check4check",
      "$00EACE",
      "$0816FA",
@@ -4008,7 +4008,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "asspassrec",
      "$00EB84",
      "$081958",
@@ -4017,7 +4017,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "assnearest",
      "$00E6F4",
      "$081A84",
@@ -4026,7 +4026,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "skatetopuckinit",
      "$010588",
      "$081E44",
@@ -4035,7 +4035,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "skatetopuck",
      "$0105A2",
      "$081E5E",
@@ -4044,7 +4044,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "avdgoal",
      "$010488",
      "$081F12",
@@ -4053,7 +4053,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "breakaway",
      "$00DDC4",
      "$082012",
@@ -4062,7 +4062,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "chkpuckc",
      "$00DEEE",
      "$08213C",
@@ -4071,7 +4071,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "asspuckc",
      "$00DF18",
      "$082166",
@@ -4080,7 +4080,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "asspuckc+$2B4",
      "$00E1CC",
      "$082438",
@@ -4089,7 +4089,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "chk4shot",
      "$00E292",
      "$082460",
@@ -4098,7 +4098,7 @@
      "x"
     ],
     [
-     "checks94",
+     "logic94",
      "chk4shot+$52",
      "$00E2E4",
      "$0824BC",
@@ -4107,7 +4107,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "chk4pass",
      "$00E444",
      "$082638",
@@ -4116,7 +4116,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "check4bench",
      "$00C67A",
      "$082790",
@@ -4136,7 +4136,7 @@
    "name": "assign95_02",
    "start": "$08282E",
    "end": "$082BD0",
-   "ref": "assign94",
+   "ref": "logic94",
    "kind": "match",
    "start_label": null,
    "ref_range": [
@@ -4146,7 +4146,7 @@
    "matched_pct": 97.2,
    "located_pct": 97.2,
    "ref_mix": {
-    "assign94": 904
+    "logic94": 904
    },
    "out_of_order": 0,
    "moved_in": [],
@@ -4154,7 +4154,7 @@
    "desc": "",
    "units": [
     [
-     "assign94",
+     "logic94",
      "assbench",
      "$00C710",
      "$08282E",
@@ -4163,7 +4163,7 @@
      ""
     ],
     [
-     "assign94",
+     "logic94",
      "rtss4",
      "$00C880",
      "$0829A4",
@@ -4172,7 +4172,7 @@
      ""
     ],
     [
-     "assign94",
+     "logic94",
      "asspenalty",
      "$00C8F0",
      "$0829A6",
@@ -4181,7 +4181,7 @@
      ""
     ],
     [
-     "assign94",
+     "logic94",
      "assdopen",
      "$00CA2A",
      "$082B0A",
@@ -4190,7 +4190,7 @@
      ""
     ],
     [
-     "assign94",
+     "logic94",
      "assepen",
      "$00CA50",
      "$082B3E",
@@ -4296,7 +4296,7 @@
    "name": "checks95_03",
    "start": "$082FFA",
    "end": "$08369E",
-   "ref": "checks94",
+   "ref": "logic94",
    "kind": "match",
    "start_label": null,
    "ref_range": [
@@ -4306,21 +4306,21 @@
    "matched_pct": 55.1,
    "located_pct": 55.1,
    "ref_mix": {
-    "checks94": 650,
-    "assign94": 202,
+    "logic94": 650,
+    "logic94": 202,
     "cards94": 84
    },
    "out_of_order": 1,
    "moved_in": [
-    "assign94:asseben",
+    "logic94:asseben",
     "cards94:setSlotBit",
-    "assign94:assgoaliebreakwait"
+    "logic94:assgoaliebreakwait"
    ],
    "note": "",
    "desc": "",
    "units": [
     [
-     "checks94",
+     "logic94",
      "assgoaliectrl",
      "$00D3C6",
      "$082FFA",
@@ -4329,7 +4329,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "a2offsides",
      "$0100E6",
      "$083152",
@@ -4338,7 +4338,7 @@
      ""
     ],
     [
-     "assign94",
+     "logic94",
      "asseben",
      "$00C882",
      "$0831AC",
@@ -4356,7 +4356,7 @@
      ""
     ],
     [
-     "assign94",
+     "logic94",
      "assgoaliebreakwait",
      "$00CAE0",
      "$08356E",
@@ -4365,7 +4365,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "ChkGoalies",
      "$00F6AA",
      "$0835C6",
@@ -4374,7 +4374,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "ReturnGoalies",
      "$00F712",
      "$08362E",
@@ -4383,7 +4383,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "CPgoalie",
      "$00F746",
      "$083662",
@@ -4415,19 +4415,19 @@
    "ref_mix": {
     "collide94": 1480,
     "crowd94": 138,
-    "data94": 114,
+    "setup94": 114,
     "stats94": 110,
     "setup94": 84,
-    "checks94": 14
+    "logic94": 14
    },
    "out_of_order": 1,
    "moved_in": [
-    "checks94:CPgoalie",
+    "logic94:CPgoalie",
     "stats94:GetPlayerCount",
     "crowd94:AttributeCalc",
     "setup94:resetplstuff",
-    "data94:priolist",
-    "data94:sublist",
+    "setup94:priolist",
+    "setup94:sublist",
     "crowd94:Create_HotCold_Table",
     "crowd94:HotColdLoop"
    ],
@@ -4435,7 +4435,7 @@
    "desc": "",
    "units": [
     [
-     "checks94",
+     "logic94",
      "CPgoalie",
      "$00F746",
      "$08369E",
@@ -4534,7 +4534,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "priolist",
      "$019286",
      "$083E16",
@@ -4543,7 +4543,7 @@
      "x"
     ],
     [
-     "data94",
+     "setup94",
      "sublist",
      "$01921C",
      "$083E1E",
@@ -4581,7 +4581,7 @@
    "name": "input95_01",
    "start": "$083EC0",
    "end": "$084FE6",
-   "ref": "input94",
+   "ref": "logic94",
    "kind": "match",
    "start_label": "loc_83EC0",
    "ref_range": [
@@ -4591,9 +4591,9 @@
    "matched_pct": 93.0,
    "located_pct": 93.1,
    "ref_mix": {
-    "input94": 3448,
+    "logic94": 3448,
     "onetimer94": 592,
-    "checks94": 48
+    "logic94": 48
    },
    "out_of_order": 2,
    "moved_in": [
@@ -4603,13 +4603,13 @@
     "onetimer94:OneTimerGoalieTbl",
     "onetimer94:OneTimerPass",
     "onetimer94:puckvzadj",
-    "checks94:compshoot"
+    "logic94:compshoot"
    ],
    "note": "",
    "desc": "",
    "units": [
     [
-     "input94",
+     "logic94",
      "doinput",
      "$00B0E8",
      "$083EC0",
@@ -4618,7 +4618,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "fightinput",
      "$00B8F0",
      "$0843F0",
@@ -4627,7 +4627,7 @@
      "x"
     ],
     [
-     "input94",
+     "logic94",
      "doinput_islocked",
      "$00B81A",
      "$0843F8",
@@ -4636,7 +4636,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "rtss15",
      "$00B46E",
      "$084468",
@@ -4645,7 +4645,7 @@
      "x"
     ],
     [
-     "input94",
+     "logic94",
      "faceoffinput",
      "$00B89E",
      "$08446A",
@@ -4654,7 +4654,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "rtss",
      "$00BC3E",
      "$0844D2",
@@ -4663,7 +4663,7 @@
      "x"
     ],
     [
-     "input94",
+     "logic94",
      "passmode",
      "$00BC40",
      "$0844D4",
@@ -4672,7 +4672,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "dopass",
      "$00BC64",
      "$0844F8",
@@ -4681,7 +4681,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "passtoa0",
      "$00BEAE",
      "$08471A",
@@ -4735,7 +4735,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "Findhittype",
      "$00C198",
      "$084A16",
@@ -4744,7 +4744,7 @@
      "x"
     ],
     [
-     "input94",
+     "logic94",
      "SetShotMode",
      "$00C1B8",
      "$084A36",
@@ -4753,7 +4753,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "ShotMode",
      "$00C224",
      "$084AD0",
@@ -4762,7 +4762,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "prepshot",
      "$00C274",
      "$084B20",
@@ -4771,7 +4771,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "doshot",
      "$00C2F2",
      "$084B6E",
@@ -4780,7 +4780,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "shotsets",
      "$00C542",
      "$084E16",
@@ -4789,7 +4789,7 @@
      "x"
     ],
     [
-     "input94",
+     "logic94",
      "shotdiradj",
      "$00C566",
      "$084E3A",
@@ -4798,7 +4798,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "shotdirmath",
      "$00C644",
      "$084F1A",
@@ -4816,7 +4816,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "compshoot",
      "$00E412",
      "$084FB6",
@@ -4838,7 +4838,7 @@
    "name": "data95_01",
    "start": "$084FE6",
    "end": "$087BA2",
-   "ref": "data94",
+   "ref": "setup94",
    "kind": "match",
    "start_label": null,
    "ref_range": [
@@ -4848,11 +4848,11 @@
    "matched_pct": 34.2,
    "located_pct": 34.2,
    "ref_mix": {
-    "data94": 2764,
+    "setup94": 2764,
     "optsetup94": 518,
     "stats94": 358,
     "title94": 114,
-    "attract94": 78
+    "setup94": 78
    },
    "out_of_order": 2,
    "moved_in": [
@@ -4871,11 +4871,11 @@
     "optsetup94:setoptions+$AC",
     "optsetup94:setoptions+$D2",
     "optsetup94:LoadSetupTiles+$26",
-    "attract94:DrawTeamBitmap",
+    "setup94:DrawTeamBitmap",
     "optsetup94:DrawTeamLogo",
     "optsetup94:PlayerCardScreen+$4A",
     "optsetup94:PlayerCardScreen+$9E",
-    "attract94:SetPojoyMode",
+    "setup94:SetPojoyMode",
     "title94:ReadLineData",
     "title94:WriteLineData"
    ],
@@ -4982,7 +4982,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "PAttribColumns",
      "$0193F8",
      "$08581E",
@@ -4991,7 +4991,7 @@
      "x"
     ],
     [
-     "data94",
+     "setup94",
      "PAttribOverall",
      "$01940E",
      "$085834",
@@ -5000,7 +5000,7 @@
      "x"
     ],
     [
-     "data94",
+     "setup94",
      "PAttribOverallMask",
      "$019420",
      "$085846",
@@ -5009,7 +5009,7 @@
      "x"
     ],
     [
-     "data94",
+     "setup94",
      "GAttribColumns",
      "$01955A",
      "$085980",
@@ -5018,7 +5018,7 @@
      "x"
     ],
     [
-     "data94",
+     "setup94",
      "GAttribOverall",
      "$019570",
      "$085996",
@@ -5027,7 +5027,7 @@
      "x"
     ],
     [
-     "data94",
+     "setup94",
      "GAttribOverallMask",
      "$019582",
      "$0859A8",
@@ -5036,7 +5036,7 @@
      "x"
     ],
     [
-     "data94",
+     "setup94",
      "DefaultMenus",
      "$017C72",
      "$0866DE",
@@ -5045,7 +5045,7 @@
      "x"
     ],
     [
-     "data94",
+     "setup94",
      "defmenuoptions",
      "$017C8E",
      "$086700",
@@ -5090,7 +5090,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "FigureJoy",
      "$017E42",
      "$086A58",
@@ -5099,7 +5099,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "FigureJoy+$110",
      "$017F52",
      "$086B68",
@@ -5108,7 +5108,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "FigureJoy+$1A4",
      "$017FE6",
      "$086BCC",
@@ -5117,7 +5117,7 @@
      ""
     ],
     [
-     "attract94",
+     "setup94",
      "DrawTeamBitmap",
      "$017B78",
      "$086F66",
@@ -5153,7 +5153,7 @@
      ""
     ],
     [
-     "attract94",
+     "setup94",
      "SetPojoyMode",
      "$017AC8",
      "$08743C",
@@ -5162,7 +5162,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "InitializeGameStructures",
      "$018002",
      "$087468",
@@ -5171,7 +5171,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "OptionRNG",
      "$018032",
      "$087498",
@@ -5180,7 +5180,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "ReadPassBits",
      "$01803E",
      "$0874A6",
@@ -5189,7 +5189,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "EncodePW",
      "$0180FC",
      "$08756E",
@@ -5198,7 +5198,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "WritePassBits",
      "$018192",
      "$087604",
@@ -5207,7 +5207,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "PushBits",
      "$0181F6",
      "$087668",
@@ -5216,7 +5216,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "ClrPassBits",
      "$01820E",
      "$087680",
@@ -5225,7 +5225,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "SuperAdd",
      "$01821A",
      "$08768C",
@@ -5234,7 +5234,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "SuperMult",
      "$018236",
      "$0876A8",
@@ -5243,7 +5243,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "SuperDiv",
      "$01826C",
      "$0876DE",
@@ -5252,7 +5252,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "GetShifter",
      "$01828A",
      "$0876FC",
@@ -5261,7 +5261,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "AddPOStats",
      "$0182A2",
      "$087714",
@@ -5270,7 +5270,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "BitWidthTable",
      "$018336",
      "$0877A8",
@@ -5279,7 +5279,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "ReadTeamStats",
      "$01833A",
      "$0877AC",
@@ -5288,7 +5288,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "ResolveGames",
      "$018380",
      "$0877F2",
@@ -5297,7 +5297,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "ContinuePlayoffs",
      "$017CA0",
      "$08797C",
@@ -5306,7 +5306,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "NewPO",
      "$017D16",
      "$0879F2",
@@ -5315,7 +5315,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "MakeTree",
      "$017D80",
      "$087A5E",
@@ -5510,7 +5510,7 @@
    "name": "checks95_04",
    "start": "$088046",
    "end": "$088F06",
-   "ref": "checks94",
+   "ref": "logic94",
    "kind": "match",
    "start_label": "unk_88046",
    "ref_range": [
@@ -5520,28 +5520,28 @@
    "matched_pct": 88.0,
    "located_pct": 88.0,
    "ref_mix": {
-    "checks94": 2268,
-    "data94": 362,
+    "logic94": 2268,
+    "setup94": 362,
     "penalty94": 316,
-    "assign94": 174,
+    "logic94": 174,
     "title94": 106,
-    "display94": 98
+    "video94": 98
    },
    "out_of_order": 1,
    "moved_in": [
-    "data94:PlayoffScreen_setup",
+    "setup94:PlayoffScreen_setup",
     "title94:DrawPlayoffSprite",
-    "display94:SetSframe",
+    "video94:SetSframe",
     "penalty94:UpdateScores",
     "penalty94:SetScore",
     "penalty94:sctab",
-    "assign94:assfaceoffp1"
+    "logic94:assfaceoffp1"
    ],
    "note": "",
    "desc": "",
    "units": [
     [
-     "data94",
+     "setup94",
      "PlayoffScreen_setup",
      "$01928E",
      "$088046",
@@ -5559,7 +5559,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "SetSframe",
      "$016178",
      "$08821A",
@@ -5595,7 +5595,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "puckfaceoff",
      "$00F3E4",
      "$0883C8",
@@ -5604,7 +5604,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "SetFaceoffComputerLine",
      "$00F590",
      "$088572",
@@ -5613,7 +5613,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "StartFaceoffLineChange",
      "$00F5C6",
      "$0885BE",
@@ -5622,7 +5622,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "WaitForFaceoffLineChanges",
      "$00F612",
      "$088622",
@@ -5631,7 +5631,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "UpdateFaceoffLineChangeTimer",
      "$00F64E",
      "$088654",
@@ -5640,7 +5640,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "puckfaceoff2",
      "$00F88E",
      "$0886AE",
@@ -5649,7 +5649,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "puckfaceoff2+$360",
      "$00FBEE",
      "$0889EE",
@@ -5658,7 +5658,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "puckfaceoff2+$460",
      "$00FCEE",
      "$088AC2",
@@ -5667,7 +5667,7 @@
      ""
     ],
     [
-     "assign94",
+     "logic94",
      "assfaceoffp1",
      "$00CB50",
      "$088B0C",
@@ -5676,7 +5676,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "updatefaceoff",
      "$00FDBE",
      "$088BCA",
@@ -5685,7 +5685,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "updatefaceoff+$30",
      "$00FDEE",
      "$088C00",
@@ -5694,7 +5694,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "Endfaceoff",
      "$00FE18",
      "$088C3C",
@@ -5703,7 +5703,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "puckfaceoff2+$2D0",
      "$00FB5E",
      "$088E4C",
@@ -5975,7 +5975,7 @@
    "name": "data95_02",
    "start": "$08996E",
    "end": "$08A056",
-   "ref": "data94",
+   "ref": "setup94",
    "kind": "match",
    "start_label": "sub_8996E",
    "ref_range": [
@@ -5985,23 +5985,23 @@
    "matched_pct": 100.0,
    "located_pct": 100.0,
    "ref_mix": {
-    "data94": 904,
-    "checks94": 500,
+    "setup94": 904,
+    "logic94": 500,
     "collide94": 192,
     "title94": 80,
-    "display94": 78,
+    "video94": 78,
     "penalty94": 14
    },
    "out_of_order": 0,
    "moved_in": [
     "collide94:checkagr",
-    "display94:showref",
+    "video94:showref",
     "penalty94:ClearPenaltyBuffer",
     "title94:ClearPenalties",
     "title94:clrTmPdst",
-    "checks94:puckIChk",
-    "checks94:ChkOffsides",
-    "checks94:checkob"
+    "logic94:puckIChk",
+    "logic94:ChkOffsides",
+    "logic94:checkob"
    ],
    "note": "",
    "desc": "",
@@ -6016,7 +6016,7 @@
      ""
     ],
     [
-     "display94",
+     "video94",
      "showref",
      "$015FF0",
      "$089A2E",
@@ -6052,7 +6052,7 @@
      "x"
     ],
     [
-     "checks94",
+     "logic94",
      "puckIChk",
      "$010246",
      "$089ADA",
@@ -6061,7 +6061,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "ChkOffsides",
      "$00FFEA",
      "$089B3A",
@@ -6070,7 +6070,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "PenaltyList",
      "$018E0C",
      "$089C2E",
@@ -6079,7 +6079,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "checkob",
      "$00E62E",
      "$089F5C",
@@ -6088,7 +6088,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "PenShotPenalties",
      "$01913A",
      "$089FFC",
@@ -6097,7 +6097,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "linelist",
      "$0191A6",
      "$08A02C",
@@ -6117,7 +6117,7 @@
    "name": "input95_02",
    "start": "$08A056",
    "end": "$08A3FE",
-   "ref": "input94",
+   "ref": "logic94",
    "kind": "match",
    "start_label": "loc_8A056",
    "ref_range": [
@@ -6127,7 +6127,7 @@
    "matched_pct": 97.4,
    "located_pct": 97.4,
    "ref_mix": {
-    "input94": 708,
+    "logic94": 708,
     "penalty94": 204
    },
    "out_of_order": 0,
@@ -6140,7 +6140,7 @@
    "desc": "",
    "units": [
     [
-     "input94",
+     "logic94",
      "SetLCmode",
      "$00B8F2",
      "$08A056",
@@ -6149,7 +6149,7 @@
      "x"
     ],
     [
-     "input94",
+     "logic94",
      "SetLCmode2",
      "$00B92E",
      "$08A098",
@@ -6158,7 +6158,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "setlccords",
      "$00B9C2",
      "$08A13A",
@@ -6167,7 +6167,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "setlccords+$26",
      "$00B9E8",
      "$08A164",
@@ -6176,7 +6176,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "getlchoice",
      "$00BA04",
      "$08A17E",
@@ -6185,7 +6185,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "getlchoice2",
      "$00BA18",
      "$08A192",
@@ -6194,7 +6194,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "getlchoice2+$30",
      "$00BA48",
      "$08A1C2",
@@ -6203,7 +6203,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "lineinput",
      "$00BA88",
      "$08A202",
@@ -6212,7 +6212,7 @@
      "x"
     ],
     [
-     "input94",
+     "logic94",
      "lcfound",
      "$00BB06",
      "$08A2CA",
@@ -6221,7 +6221,7 @@
      "x"
     ],
     [
-     "input94",
+     "logic94",
      "lcfound_close",
      "$00BB36",
      "$08A2FC",
@@ -6268,7 +6268,7 @@
    "name": "checks95_05",
    "start": "$08A3FE",
    "end": "$08B748",
-   "ref": "checks94",
+   "ref": "logic94",
    "kind": "match",
    "start_label": null,
    "ref_range": [
@@ -6278,15 +6278,15 @@
    "matched_pct": 27.3,
    "located_pct": 28.1,
    "ref_mix": {
-    "checks94": 946,
+    "logic94": 946,
     "penalty94": 312,
-    "attract94": 92,
+    "setup94": 92,
     "period94": 38
    },
    "out_of_order": 1,
    "moved_in": [
     "penalty94:PrintScores1",
-    "attract94:EASportsScreen",
+    "setup94:EASportsScreen",
     "period94:updatePPTeamTime",
     "penalty94:ChkShotStat"
    ],
@@ -6294,7 +6294,7 @@
    "desc": "",
    "units": [
     [
-     "checks94",
+     "logic94",
      "CompLine",
      "$00F790",
      "$08A3FE",
@@ -6303,7 +6303,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "CompLine+$B2",
      "$00F842",
      "$08A4AE",
@@ -6312,7 +6312,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "AutoLineChange",
      "$00E1F4",
      "$08A4FE",
@@ -6330,7 +6330,7 @@
      "x"
     ],
     [
-     "attract94",
+     "setup94",
      "EASportsScreen",
      "$017A18",
      "$08AAC8",
@@ -6357,7 +6357,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "goalieacc",
      "$01090A",
      "$08B4E0",
@@ -6377,7 +6377,7 @@
    "name": "input95_03",
    "start": "$08B748",
    "end": "$08B9A8",
-   "ref": "input94",
+   "ref": "logic94",
    "kind": "match",
    "start_label": "loc_8B748",
    "ref_range": [
@@ -6387,7 +6387,7 @@
    "matched_pct": 96.7,
    "located_pct": 96.7,
    "ref_mix": {
-    "input94": 588
+    "logic94": 588
    },
    "out_of_order": 0,
    "moved_in": [],
@@ -6395,7 +6395,7 @@
    "desc": "",
    "units": [
     [
-     "input94",
+     "logic94",
      "doinput_cbut",
      "$00B470",
      "$08B748",
@@ -6404,7 +6404,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "ClampTargetY",
      "$00B5D8",
      "$08B890",
@@ -6413,7 +6413,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "doinput_chkanim",
      "$00B616",
      "$08B8CE",
@@ -6422,7 +6422,7 @@
      ""
     ],
     [
-     "input94",
+     "logic94",
      "getGoalieSCnum",
      "$00B86A",
      "$08B974",
@@ -6442,7 +6442,7 @@
    "name": "checks95_06",
    "start": "$08B9A8",
    "end": "$08D39A",
-   "ref": "checks94",
+   "ref": "logic94",
    "kind": "match",
    "start_label": "sub_8B9A8",
    "ref_range": [
@@ -6452,9 +6452,9 @@
    "matched_pct": 48.2,
    "located_pct": 49.3,
    "ref_mix": {
-    "checks94": 1576,
+    "logic94": 1576,
     "hockey94": 574,
-    "data94": 418,
+    "setup94": 418,
     "replay94": 328,
     "penalty94": 118,
     "setup94": 116,
@@ -6465,13 +6465,13 @@
    "moved_in": [
     "crowd94:stopna2",
     "penalty94:PenGoalStuff",
-    "data94:box",
-    "data94:DisplayPlayerAttributeMenu",
-    "data94:DisplayPlayerAttributeMenu+$3A",
-    "data94:DisplayPlayerAttributeMenu+$136",
-    "data94:DisplayPlayerAttributeMenu+$15C",
-    "data94:GoalBigTxt",
-    "data94:PPGoalBigTxt",
+    "setup94:box",
+    "setup94:DisplayPlayerAttributeMenu",
+    "setup94:DisplayPlayerAttributeMenu+$3A",
+    "setup94:DisplayPlayerAttributeMenu+$136",
+    "setup94:DisplayPlayerAttributeMenu+$15C",
+    "setup94:GoalBigTxt",
+    "setup94:PPGoalBigTxt",
     "title94:PrintPlayerAssists",
     "title94:PrintPlayerGoals",
     "title94:PrintParenNumber",
@@ -6488,7 +6488,7 @@
    "desc": "",
    "units": [
     [
-     "checks94",
+     "logic94",
      "dirtab",
      "$010E64",
      "$08B9D6",
@@ -6497,7 +6497,7 @@
      "x"
     ],
     [
-     "checks94",
+     "logic94",
      "MaxSpeed",
      "$010D76",
      "$08BA1E",
@@ -6506,7 +6506,7 @@
      "x"
     ],
     [
-     "checks94",
+     "logic94",
      "dostop",
      "$010DB6",
      "$08BA5E",
@@ -6515,7 +6515,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "stopna",
      "$010E1A",
      "$08BB1A",
@@ -6533,7 +6533,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "doplayeracc",
      "$010750",
      "$08BCFA",
@@ -6542,7 +6542,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "doplayeracc+$1AA",
      "$0108FA",
      "$08BF80",
@@ -6551,7 +6551,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "noturn0",
      "$010B0A",
      "$08BF92",
@@ -6560,7 +6560,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "noturn",
      "$010BB4",
      "$08C078",
@@ -6569,7 +6569,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "playeracc",
      "$010BC2",
      "$08C086",
@@ -6587,7 +6587,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "box",
      "$018A56",
      "$08C694",
@@ -6596,7 +6596,7 @@
      "x"
     ],
     [
-     "data94",
+     "setup94",
      "DisplayPlayerAttributeMenu",
      "$01889A",
      "$08C6B0",
@@ -6605,7 +6605,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "DisplayPlayerAttributeMenu+$3A",
      "$0188D4",
      "$08C6EA",
@@ -6614,7 +6614,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "DisplayPlayerAttributeMenu+$136",
      "$0189D0",
      "$08C7FA",
@@ -6623,7 +6623,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "DisplayPlayerAttributeMenu+$15C",
      "$0189F6",
      "$08C818",
@@ -6632,7 +6632,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "GoalBigTxt",
      "$018A14",
      "$08C83A",
@@ -6641,7 +6641,7 @@
      "x"
     ],
     [
-     "data94",
+     "setup94",
      "PPGoalBigTxt",
      "$018A34",
      "$08C85A",
@@ -7223,7 +7223,7 @@
    "located_pct": 22.4,
    "ref_mix": {
     "stats94": 2512,
-    "data94": 500,
+    "setup94": 500,
     "period94": 498
    },
    "out_of_order": 2,
@@ -7235,12 +7235,12 @@
     "period94:PeriodStatsScreen+$1A2",
     "period94:PeriodStatsScreen+$25A",
     "period94:PeriodStatsScreen+$2F6",
-    "data94:DisplayPeriodOver",
-    "data94:DisplayPeriodOver+$3A",
-    "data94:DisplayPeriodOver+$60",
-    "data94:FindMaxAttributeTEam",
-    "data94:CalculateTeamAttributes",
-    "data94:CalculateTeamAttributeValues"
+    "setup94:DisplayPeriodOver",
+    "setup94:DisplayPeriodOver+$3A",
+    "setup94:DisplayPeriodOver+$60",
+    "setup94:FindMaxAttributeTEam",
+    "setup94:CalculateTeamAttributes",
+    "setup94:CalculateTeamAttributeValues"
    ],
    "note": "",
    "desc": "",
@@ -7705,7 +7705,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "DisplayPeriodOver",
      "$01850A",
      "$095B1E",
@@ -7714,7 +7714,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "DisplayPeriodOver+$3A",
      "$018544",
      "$095B64",
@@ -7723,7 +7723,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "DisplayPeriodOver+$60",
      "$01856A",
      "$095B78",
@@ -7732,7 +7732,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "FindMaxAttributeTEam",
      "$0185E0",
      "$095BEA",
@@ -7741,7 +7741,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "CalculateTeamAttributes",
      "$018620",
      "$095C2A",
@@ -7750,7 +7750,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "CalculateTeamAttributeValues",
      "$01867E",
      "$095C8A",
@@ -9262,7 +9262,7 @@
    "name": "checks95_07",
    "start": "$09E5F0",
    "end": "$09F590",
-   "ref": "checks94",
+   "ref": "logic94",
    "kind": "match",
    "start_label": null,
    "ref_range": [
@@ -9272,21 +9272,21 @@
    "matched_pct": 74.6,
    "located_pct": 74.6,
    "ref_mix": {
-    "checks94": 1886,
+    "logic94": 1886,
     "penalty94": 484,
     "collide94": 316,
-    "data94": 218,
+    "setup94": 218,
     "period94": 46,
     "title94": 34
    },
    "out_of_order": 0,
    "moved_in": [
     "collide94:SetupPenaltyShot",
-    "data94:PenaltyShotBox",
-    "data94:PenaltyShotBox+$2E",
-    "data94:PenaltyShotBox+$78",
-    "data94:PenaltyShotBox+$A2",
-    "data94:PenShotBigTxt",
+    "setup94:PenaltyShotBox",
+    "setup94:PenaltyShotBox+$2E",
+    "setup94:PenaltyShotBox+$78",
+    "setup94:PenaltyShotBox+$A2",
+    "setup94:PenShotBigTxt",
     "penalty94:PenShotChk",
     "penalty94:getBAplayerInfo",
     "period94:ShortenMsgTimer",
@@ -9300,7 +9300,7 @@
    "desc": "",
    "units": [
     [
-     "checks94",
+     "logic94",
      "puckshootout",
      "$00ECB6",
      "$09E5F0",
@@ -9309,7 +9309,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "SelectPenaltyShotSkater",
      "$00EE58",
      "$09E7A6",
@@ -9318,7 +9318,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "puckpenshot",
      "$00EF92",
      "$09E8E0",
@@ -9327,7 +9327,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "puckpenshot+$32E",
      "$00F2C0",
      "$09EC2A",
@@ -9336,7 +9336,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "UpdatePenaltyShotEnd",
      "$00F2F4",
      "$09EC5E",
@@ -9345,7 +9345,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "EndPenaltyShotPlay",
      "$00F37C",
      "$09ECE6",
@@ -9354,7 +9354,7 @@
      ""
     ],
     [
-     "checks94",
+     "logic94",
      "PenaltyShotEndReturn",
      "$00F3E2",
      "$09ED4C",
@@ -9372,7 +9372,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "PenaltyShotBox",
      "$0187B8",
      "$09EDD2",
@@ -9381,7 +9381,7 @@
      "x"
     ],
     [
-     "data94",
+     "setup94",
      "PenaltyShotBox+$2E",
      "$0187E6",
      "$09EE00",
@@ -9390,7 +9390,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "PenaltyShotBox+$78",
      "$018830",
      "$09EE56",
@@ -9399,7 +9399,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "PenaltyShotBox+$A2",
      "$01885A",
      "$09EE84",
@@ -9408,7 +9408,7 @@
      ""
     ],
     [
-     "data94",
+     "setup94",
      "PenShotBigTxt",
      "$018884",
      "$09EEAE",
@@ -12200,16 +12200,16 @@
   "menu94",
   "stats94",
   "replay94",
-  "input94",
-  "assign94",
-  "checks94",
-  "video94",
+  "logic94",
+  "logic94",
+  "logic94",
+  "middle94",
   "penalty94",
   "collide94",
-  "display94",
+  "video94",
   "setup94",
-  "attract94",
-  "data94",
+  "setup94",
+  "setup94",
   "sram94",
   "sound94",
   "graphics94",
@@ -12232,18 +12232,18 @@
   "frames94",
   "sram94",
   "hockey94",
-  "display94",
+  "video94",
   "setup94",
   "sound94",
-  "video94",
+  "middle94",
   "collide94",
   "fourway94",
   "menu94",
-  "checks94",
-  "assign94",
+  "logic94",
+  "logic94",
   "onetimer94",
-  "input94",
-  "data94",
+  "logic94",
+  "setup94",
   "penalty94",
   "replay94",
   "period94",
@@ -12446,7 +12446,7 @@
    "rtss8 $00A9D4 1296 code",
    "updateanim $00AEE4 210 code"
   ],
-  "input94": [
+  "logic94": [
    "ClampTargetY+$2A $00B602 20 data",
    "doinput_onetimer $00B6BA 116 code",
    "doinput_ispc $00B72E 236 code",
@@ -12457,12 +12457,12 @@
    "setc2player $00C0DA 30 code",
    "setpads $00C656 34 code"
   ],
-  "assign94": [
+  "logic94": [
    "assfaceoff $00CB3A 22 code",
    "assstanley $00CBFA 84 code",
    "assscore $00CC4E 176 code"
   ],
-  "checks94": [
+  "logic94": [
    "asswingo+$100 $00D19C 32 data",
    "asscentero+$116 $00D3AA 28 code",
    "goaliesave+$160 $00DD1A 20 data",
@@ -12476,7 +12476,7 @@
    "SetSPA $01073A 22 code",
    "UnpackNibbles $010E88 44 code"
   ],
-  "video94": [
+  "middle94": [
    "IntermissionLoop $0111D0 218 code",
    "waitjoy $0112AA 18 code"
   ],
@@ -12526,7 +12526,7 @@
    "checkpuckcoll+$19C $014F28 80 data",
    "deflect $015704 44 code"
   ],
-  "display94": [
+  "video94": [
    "checkfo $016044 176 code",
    "showzam $0160F4 106 code",
    "showzam+$6A $01615E 26 data",
@@ -12551,7 +12551,7 @@
    "PlayoffScreen+$1BA $0174F0 26 data",
    "PlayoffScreenText $0176DE 58 data"
   ],
-  "attract94": [
+  "setup94": [
    "EASportsScreen+$5C $017A74 84 code",
    "DrawMatchupBitmaps $017AF4 38 code",
    "DrawMatchupBitmaps+$2C $017B20 32 code",
@@ -12561,7 +12561,7 @@
    "SetTeamPrintPos+$A $017BD4 16 code",
    "SetGoalieMode $017BE4 94 code"
   ],
-  "data94": [
+  "setup94": [
    "FigureJoy+$158 $017F9A 76 code",
    "DisplayPeriodOver+$46 $018550 26 data",
    "ShowInjuryBox+$E $01872A 22 code",

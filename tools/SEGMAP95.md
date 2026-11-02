@@ -33,7 +33,7 @@ python3 tools/apply_segmap.py --ref /tmp/NHL94Genesis
 
 Of the 94 code bytes, 73% are found at a similarity of 0.5 or more (1067 of 2253 units). For data the figure is 25%, because rosters, SPA tables, music and graphics were rebuilt for 95.
 
-NHL 95 is re-linked routine by routine. The 94 files are interleaved, while each keeps its own internal order, so most 94 files map to several rows (`checks95_01` … `checks95_07`). 254 units sit in a row owned by another 94 file (`moved_in` in the JSON). `attract94`, `goalie94`, `crowd94` and `optsetup94` have no row: their routines are spread over other rows.
+NHL 95 is re-linked routine by routine. The 94 files are interleaved, while each keeps its own internal order, so most 94 files map to several rows (`checks95_01` … `checks95_07`). 254 units sit in a row owned by another 94 file (`moved_in` in the JSON). `setup94`, `goalie94`, `crowd94` and `optsetup94` have no row: their routines are spread over other rows.
 
 The main unplaced 94 material (`missing` in the JSON):
 
@@ -69,7 +69,7 @@ Further new 95 material sits inside existing rows:
 2. **frames95 `$8C76-$93FF`:** unmatched data. `byte_8DD8` is read by season code, so this may belong to season95.
 3. **sram95 `$9400-$9721`:** 94 `ScrollArrowTbl` (stats94) and unmatched tables before `InitSaveRAM` at `$9722`.
 4. **hockey95 `$9AC8-$A203`:** no byte match. It is identified by 95 `Begin`'s `jmp $9AC8` and by `StartGame` / `StartPer` at similarity 0.56 / 0.74.
-5. **setup95_01 `$A656-$AF43`:** mixes setup94, input94 and title94 routines.
+5. **setup95_01 `$A656-$AF43`:** mixes setup94, logic94 and title94 routines.
 6. **sound95_01 / sound95_02:** 94 music data is unplaced. sound95_02 (`$7E0E0`) is a copy of 94 `Z80_Program_Code` far from the driver.
 7. **menu95 tail `$7EFFC-$7F97D`:** goalie / pause menu text. menu95 is 12% matched.
 8. **season95 start (`$8DF5A`), trade95 (the schedule half could be its own row), create95 / cards95_01 at `sub_9ACE6`:** 94 `NameEntryScreen`; create95 also reuses 94 `NameEntryFramer` at `$986B6`.
