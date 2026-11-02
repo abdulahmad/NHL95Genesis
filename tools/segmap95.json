@@ -2446,11 +2446,10 @@
    "ref_mix": {
     "middle94": 1590,
     "cards94": 630,
-    "setup94": 488,
+    "setup94": 658,
     "video94": 404,
     "logic94": 270,
     "title94": 236,
-    "setup94": 170,
     "stats94": 168,
     "penalty94": 162,
     "optsetup94": 112,
@@ -3803,9 +3802,7 @@
    "matched_pct": 88.3,
    "located_pct": 88.3,
    "ref_mix": {
-    "logic94": 5906,
-    "logic94": 302,
-    "logic94": 158,
+    "logic94": 6366,
     "collide94": 20
    },
    "out_of_order": 6,
@@ -4306,8 +4303,7 @@
    "matched_pct": 55.1,
    "located_pct": 55.1,
    "ref_mix": {
-    "logic94": 650,
-    "logic94": 202,
+    "logic94": 852,
     "cards94": 84
    },
    "out_of_order": 1,
@@ -4415,9 +4411,8 @@
    "ref_mix": {
     "collide94": 1480,
     "crowd94": 138,
-    "setup94": 114,
+    "setup94": 198,
     "stats94": 110,
-    "setup94": 84,
     "logic94": 14
    },
    "out_of_order": 1,
@@ -4591,9 +4586,8 @@
    "matched_pct": 93.0,
    "located_pct": 93.1,
    "ref_mix": {
-    "logic94": 3448,
-    "onetimer94": 592,
-    "logic94": 48
+    "logic94": 3496,
+    "onetimer94": 592
    },
    "out_of_order": 2,
    "moved_in": [
@@ -4848,11 +4842,10 @@
    "matched_pct": 34.2,
    "located_pct": 34.2,
    "ref_mix": {
-    "setup94": 2764,
+    "setup94": 2842,
     "optsetup94": 518,
     "stats94": 358,
-    "title94": 114,
-    "setup94": 78
+    "title94": 114
    },
    "out_of_order": 2,
    "moved_in": [
@@ -5520,10 +5513,9 @@
    "matched_pct": 88.0,
    "located_pct": 88.0,
    "ref_mix": {
-    "logic94": 2268,
+    "logic94": 2442,
     "setup94": 362,
     "penalty94": 316,
-    "logic94": 174,
     "title94": 106,
     "video94": 98
    },
@@ -6454,10 +6446,9 @@
    "ref_mix": {
     "logic94": 1576,
     "hockey94": 574,
-    "setup94": 418,
+    "setup94": 534,
     "replay94": 328,
     "penalty94": 118,
-    "setup94": 116,
     "crowd94": 74,
     "title94": 72
    },
@@ -12455,14 +12446,10 @@
    "changeplayer $00BFBC 242 code",
    "setc1player $00C0BC 30 code",
    "setc2player $00C0DA 30 code",
-   "setpads $00C656 34 code"
-  ],
-  "logic94": [
+   "setpads $00C656 34 code",
    "assfaceoff $00CB3A 22 code",
    "assstanley $00CBFA 84 code",
-   "assscore $00CC4E 176 code"
-  ],
-  "logic94": [
+   "assscore $00CC4E 176 code",
    "asswingo+$100 $00D19C 32 data",
    "asscentero+$116 $00D3AA 28 code",
    "goaliesave+$160 $00DD1A 20 data",
@@ -12549,9 +12536,7 @@
    "PlayoffScreen+$74 $0173AA 38 code",
    "PlayoffScreen+$196 $0174CC 36 code",
    "PlayoffScreen+$1BA $0174F0 26 data",
-   "PlayoffScreenText $0176DE 58 data"
-  ],
-  "setup94": [
+   "PlayoffScreenText $0176DE 58 data",
    "EASportsScreen+$5C $017A74 84 code",
    "DrawMatchupBitmaps $017AF4 38 code",
    "DrawMatchupBitmaps+$2C $017B20 32 code",
@@ -12559,9 +12544,7 @@
    "DrawTeamBlockBitmap $017B98 34 code",
    "ClearTextBox $017BBA 16 code",
    "SetTeamPrintPos+$A $017BD4 16 code",
-   "SetGoalieMode $017BE4 94 code"
-  ],
-  "setup94": [
+   "SetGoalieMode $017BE4 94 code",
    "FigureJoy+$158 $017F9A 76 code",
    "DisplayPeriodOver+$46 $018550 26 data",
    "ShowInjuryBox+$E $01872A 22 code",
