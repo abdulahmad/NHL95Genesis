@@ -1,5 +1,13 @@
 # HANDOFF: comment and name cleanup (NHL95)
 
+## Now
+
+- Stage / unit: see the shared plan (https://github.com/abdulahmad/nhl-disasm-report/blob/main/docs/ALIGNMENT.md); alignment work for 95G is on `claude/project-thread-ggw7zu`.
+- Branch: `claude/project-thread-ggw7zu`
+- Last check: (update when you stop)
+- Next: (update when you stop)
+- Open PRs: none
+
 ## Purpose
 Make this bit-perfect 68000 SNASM disassembly read like clean original source: accurate names that follow the
 NHL92 Genesis (EA original) lineage, and comments without disassembler or porting artifacts. Code, data and
