@@ -930,7 +930,7 @@ $08C85A,PPGoalBigTxt,unk_8C85A,,engine/goal95
 $08C87C,PrintPlayerAssists,sub_8C87C,,engine/goal95
 $08C892,PrintPlayerGoals,sub_8C892,,engine/goal95
 $08C8A4,PrintParenNumber,loc_8C8A4,,engine/goal95
-$08C8EC,LockScroll,sub_8C8EC,,engine/goal95
+$08C8EC,freezewindow,sub_8C8EC,LockScroll,engine/goal95
 $08C900,checkwindow,sub_8C900,,engine/goal95
 $08CA38,PullPracticePlayers,,SetGoaliesCtl,engine/goal95
 $08CAB8,PracticePlayerLimits,unk_8CAB8,GoalieCtlLimits,engine/goal95

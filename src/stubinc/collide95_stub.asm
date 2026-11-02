@@ -72,7 +72,7 @@ SPAcatch = $2402
 SPAgglover = $1C86
 SPAghighr = $2AE4
 Goal = $8C304
-LockScroll = $8C8EC
+freezewindow = $8C8EC
 PenShotChk = $9EEC4
 setInjuryType = $9F012
 

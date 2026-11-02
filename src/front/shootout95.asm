@@ -285,12 +285,12 @@ CountShootoutGoals					;Shootout: count the goals and end it when one team canno
 .x
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
-EndShootout							;Shootout over: LockScroll, then the 5 skaters of player slots 1-5
+EndShootout							;Shootout over: freezewindow, then the 5 skaters of player slots 1-5
 									;(homeshootgoals > awayshootgoals) or 7-$B are set up (setplayer) above or
 									;below the view and get assscore (assinsert 7)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#sf2drec,(sflags2).w
-	jsr	(LockScroll).l
+	jsr	(freezewindow).l
 	move.w	#$60,(shootoutdelay).w
 	movea.l	#SortCords,a3
 	move.w	#0,d0
@@ -1254,9 +1254,9 @@ UpdatePenaltyShotEnd				;The shot ends (BA_PS_flags bit 4) when the goalie has t
 	move.w	#$A,d0
 	jsr	(AddPenalty2).l
 
-EndPenaltyShotPlay					;LockScroll, end the penalty shot play (the BA flags), the shooter newpnum
+EndPenaltyShotPlay					;freezewindow, end the penalty shot play (the BA flags), the shooter newpnum
 									;back, then CountShootoutGoals
-	jsr	(LockScroll).l
+	jsr	(freezewindow).l
 	btst	#0,(gmode2).w
 	bne.w	.stopplay
 	move.w	#$A,(replaydelay).w

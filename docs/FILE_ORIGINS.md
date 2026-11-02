@@ -366,7 +366,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **penalty94** (118 bytes): PenGoalStuff
 - **setup94** (488 bytes): box, ShowGoalBox
 - **title94** (112 bytes): PrintPlayerAssists, PrintPlayerGoals, PrintParenNumber
-- **replay94** (20 bytes): LockScroll
+- **replay94** (20 bytes): freezewindow
 - **logic94** (602 bytes): checkwindow, PracticeGoalies
 - **setup94** (104 bytes): PeriodOver
 - **hockey94** (292 bytes): clockcont_0

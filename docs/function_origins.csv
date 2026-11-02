@@ -854,7 +854,7 @@ engine/goal95.asm,$08C85A,34,PPGoalBigTxt,data,setup94,name
 engine/goal95.asm,$08C87C,22,PrintPlayerAssists,code,title94,name
 engine/goal95.asm,$08C892,18,PrintPlayerGoals,code,title94,name
 engine/goal95.asm,$08C8A4,72,PrintParenNumber,code,title94,name
-engine/goal95.asm,$08C8EC,20,LockScroll,code,replay94,fingerprint freezewindow
+engine/goal95.asm,$08C8EC,20,freezewindow,code,replay94,fingerprint freezewindow
 engine/goal95.asm,$08C900,440,checkwindow,code,logic94,name
 engine/goal95.asm,$08CAB8,38,PracticePlayerLimits,data,logic94,follows checkwindow
 engine/goal95.asm,$08CADE,124,PracticeGoalies,code,logic94,follows PracticePlayerLimits
