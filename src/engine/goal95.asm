@@ -57,7 +57,7 @@ Goal								;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshoo
 	move.w	(sp)+,d0
 	move.w	#SFXsiren,-(sp)
 	jsr	(sfx).l
-	jsr	(LockScroll).l
+	jsr	(freezewindow).l
 	addi.w	#$1F4,(Crowdlevel).w
 	movea.w	#(tmstruct-M68K_RAM),a2
 	lea	tmsize(a2),a1
@@ -421,7 +421,7 @@ PrintParenNumber					;Print the number at d0 of a2 (1 to 3 digits) and ")"
 	movem.l	(sp)+,d0/a2
 	rts
 
-LockScroll							;xc1 / yc1 = Hpos / Vpos, sfslock
+freezewindow						;xc1 / yc1 = Hpos / Vpos, sfslock
 	move.w	(Vpos).w,(yc1).w
 	move.w	(Hpos).w,(xc1).w
 	bset	#sfslock,(sflags).w
@@ -744,7 +744,7 @@ clockcont							;Clock continue: when the clock is at 0 stop the play (sfx 4) an
 	jsr	(stop_current_song).l
 	move.w	#SFXhorn,-(sp)			;horn
 	jsr	(sfx).l
-	bsr.w	LockScroll
+	bsr.w	freezewindow
 	jmp	clockcont_0
 .0
 	rts

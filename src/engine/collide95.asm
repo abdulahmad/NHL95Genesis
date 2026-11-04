@@ -165,7 +165,7 @@ checkwallcoll						;d2/d3 = x/y to test, a3 = object, wcradiusx/wcradiusy = radi
 
 wallcollb							;Check for puck over wall. a3 = object, d0/d1 = cos/sin of the wall. Not
 									;the puck: wallcoll. Zpos above $15
-									;locks the scroll (LockScroll) and goes out of play; above $12 only at x
+									;locks the scroll (freezewindow) and goes out of play; above $12 only at x
 									;$28-$2A behind the goal line ($110) with Yvel >= $FA0 (SPAbglass on the
 									;next struct, sfx $E, crowd). Out of play: sfslock, pfnc, and while the
 									;clock runs penalty 6 (PenOOP) for ltplayer
@@ -173,7 +173,7 @@ wallcollb							;Check for puck over wall. a3 = object, d0/d1 = cos/sin of the w
 	bne.w	wallcoll				;not puck so wall coll
 	cmpi.w	#$15,Zpos(a3)
 	ble.w	.0
-	jsr	(LockScroll).l
+	jsr	(freezewindow).l
 	bra.w	.1
 .0
 	cmpi.w	#$12,Zpos(a3)
