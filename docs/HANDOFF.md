@@ -2,11 +2,11 @@
 
 ## Now
 
-- Stage / unit: see the shared plan (https://github.com/abdulahmad/nhl-disasm-report/blob/main/docs/ALIGNMENT.md); alignment work for 95G is on `claude/project-thread-ggw7zu`.
+- Stage / unit: CONTRIBUTING.md rewrite (lineage in `docs/name_map.csv` only; stay on the cleanup branch).
 - Branch: `claude/project-thread-ggw7zu`
-- Last check: (update when you stop)
-- Next: (update when you stop)
-- Open PRs: none
+- Last check: docs-only
+- Next: do not merge to main
+- Open PRs: (this unit)
 
 ## Purpose
 Make this bit-perfect 68000 SNASM disassembly read like clean original source: accurate names that follow the
