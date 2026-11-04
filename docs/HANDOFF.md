@@ -2,11 +2,13 @@
 
 ## Now
 
-- Stage / unit: CONTRIBUTING.md rewrite (lineage in `docs/name_map.csv` only; stay on the cleanup branch).
+- Stage / unit: D2 done; D5 done. No further 95G naming in the leftovers.
 - Branch: `claude/project-thread-ggw7zu`
-- Last check: docs-only
-- Next: do not merge to main
-- Open PRs: (this unit)
+- Last check: D2 ALL MATCH 2026-11-02 (`LockScroll` → `freezewindow`). This unit docs-only.
+- D2: of the fingerprint-matched routines with a non-94 name, only `LockScroll` had the same body as 94G. The rest keep the 95 name (95 variants, or 2-byte rts stubs). `printbigtext` is 94G `printbig`'s body, but 95 split it behind a new `printbig` wrapper, so both 95 names stay.
+- D5: season / trade / create / awards names already stand in `docs/name_review_95.md` (full body read, verdict ok). Those are the 95-feature names 96G / 95S / 95PC copy when the body matches. No new 95G names this unit.
+- Next: D6 is 96G (Unsure parked). F3 is 95PC (DOS 95-feature screens keep PC names). Do not merge to main.
+- Open PRs: #59
 
 ## Purpose
 Make this bit-perfect 68000 SNASM disassembly read like clean original source: accurate names that follow the
