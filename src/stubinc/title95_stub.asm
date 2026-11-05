@@ -44,7 +44,7 @@ TitleImg = $1960D6
 StanleyCupImg = $196C4C
 CupSprites = $19A0FA
 Credits = $1A6C28
-CreditsList = $1A6C6A
+CreditsPages = $1A6C6A
 
 ; Main segment code
 	include	front\title95.asm
