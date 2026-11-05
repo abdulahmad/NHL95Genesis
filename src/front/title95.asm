@@ -7,7 +7,7 @@
 	include	macros\genesis.mac		;String
 
 TitleScreen							;The title screen (TitleScreenImg, TitleImg) with the vblank TitleVBlank
-									;and the song, then the scrolling credits (Credits, CreditsList,
+									;and the song, then the scrolling credits (Credits, CreditsPages,
 									;CreditsPrintRow) until start
 	move	#$2700,sr
 	move.w	(HVcount).l,(seed).w
@@ -136,7 +136,7 @@ TitleScreen							;The title screen (TitleScreenImg, TitleImg) with the vblank T
 	dbf	d3,.loop2
 	jsr	(printz).l
 	String	CC_Font1Pal1,0,0,0
-	movea.l	#CreditsList,a1
+	movea.l	#CreditsPages,a1
 .loop3
 	jsr	(CreditsPrintRow).l
 	adda.w	(a1),a1
