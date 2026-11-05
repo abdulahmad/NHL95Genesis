@@ -29,3 +29,4 @@ rule in the same commit as the fix that confirmed it, newest last: `- YYYY-MM-DD
 - 2026-11-04 D2: a fingerprint match is not a rename. Take the 94G name only when the 95G body is the same routine; 2-byte rts stubs and 95 variants keep the 95 name. (D2: only LockScroll→freezewindow)
 - 2026-11-04 D5: season / trade / create / awards names in docs/name_review_95.md are the 95-feature names later games copy; copy only when the body matches. (D5 close-out, no new 95G names)
 - 2026-11-05 names: CreditsList is 93G CreditsPages (String pages after Credits). (owner)
+- 2026-11-05 leftover recut: the 94-file origin column follows Abdul's leftover files (period94 / arena94 / shootoutpath94 / ui94 / helpers94 / title94 / logos94 / chgplayer94). Do not recut 95G leftover dumps to those files. (94G leftover recut)

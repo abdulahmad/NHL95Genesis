@@ -2,11 +2,11 @@
 
 ## Now
 
-- Stage / unit: rename CreditsList → CreditsPages (93G name; same String pages after Credits).
-- Branch: `cursor/creditspages-399a`
-- Last check: `tools/verify_all.sh` ALL MATCH (2026-11-05).
-- Next: PR. Same rename in 94G / 96G / 95S.
-- Open PRs: (this unit)
+- Stage / unit: leftover recut origin remap — 94-file column follows period94 / arena94 / shootoutpath94 / ui94 / helpers94 / title94 / logos94 / chgplayer94. 95G files stay job-cut.
+- Branch: `cursor/leftover-recut-f6fc`
+- Last check: docs only (function_origins.csv / FILE_ORIGINS.md)
+- Next: pairing after 94G leftover recut lands
+- Open PRs: this unit
 
 ## Purpose
 Make this bit-perfect 68000 SNASM disassembly read like clean original source: accurate names that follow the
