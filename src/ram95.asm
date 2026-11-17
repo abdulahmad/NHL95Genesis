@@ -6,7 +6,7 @@ AwardIds			equ	$FFFF0000	;SeasonAwards: the candidate ids (players, or teams), s
 									;AwardScores. Shares M68K_RAM
 Stack				equ	$FFFFFDFA	;94 $FFFFFFFE. Begin's stack pointer; the sound driver RAM (SndDrvRAM) is
 									;above it
-M68K_RAM			equ	$FFFF0000
+M68K_RAM			equ	$FFFF0000	; start of the 68000 work RAM, the same as replaystart
 AwardScores			equ	$FFFF0548	;SeasonAwards: the candidate scores (ScanAllPlayers, SortAwardScores)
 TradeBuf			equ	$FFFF1388	;Trade: work buffer
 RosterTable			equ	$FFFF1B4C	;Season rosters ($38 bytes a team, save RAM SRRosters): roster ids, then
@@ -203,8 +203,8 @@ ChkBodySqG			equ	$FFFFBB6C	;94 $FFFFBF66. Long: reach squared
 NegChkBodyG			equ	$FFFFBB70	;94 $FFFFBF6A
 ChkBodyP			equ	$FFFFDC6C	;Skater body reach for the puck (checkpuckcoll)
 ChkStickP			equ	$FFFFDC6E	;Skater stick reach
-NegChkBodyP			equ	$FFFFDC70
-NegChkStickP		equ	$FFFFDC72
+NegChkBodyP			equ	$FFFFDC70	; negated body check strength of the player
+NegChkStickP		equ	$FFFFDC72	; negated stick check strength of the player
 ChkBodySqP			equ	$FFFFDC74	;Body reach squared
 ChkStickSqP			equ	$FFFFDC76	;Stick reach squared
 onetimerplayer		equ	$FFFFBB72	;94 $FFFFBF6C
@@ -294,36 +294,36 @@ teamblocksmapptr	equ	$FFFFBFC8	;Address of the team blocks map
 teamblockwidth		equ	$FFFFBFCC	;Team block width in chars
 PenBuf				equ	$FFFFBFCE	;94 $FFFFC3A4. New penalties: player byte pairs, 0 ends
 ; Penalty numbers (word offsets into Penaltylist) for AddPenalty
-PenEOP				equ	$2
-PenEOG				equ	$4
-PenOOP				equ	$6
-PenGhold			equ	$8
-PenWhistle			equ	$A
-PenIcing			equ	$C
-PenGoal				equ	$E
-PenOffsides			equ	$10
-PenRoughing2		equ	$12
-PenNoText			equ	$14
-PenCharging			equ	$16
-PenSlashing			equ	$18
-PenRoughing			equ	$1A
-PenCrossChk			equ	$1C
-PenHooking			equ	$1E
-PenTripping			equ	$20
-PenInterference		equ	$22
-PenHolding			equ	$24
-PenFighting			equ	$26
-PenFighting2		equ	$28
-PenInst				equ	$2A
-PenDelay			equ	$2C
-PenHookingPS		equ	$2E
-PenTrippingPS		equ	$30
-PenGhold2			equ	$32
-PenInterferencePS	equ	$34
-PenRoughingPS		equ	$36
-PenChargingPS		equ	$38
-PenCrossChkPS		equ	$3A
-PenSlashingPS		equ	$3C
+PenEOP				equ	$2			; period over
+PenEOG				equ	$4			; game over
+PenOOP				equ	$6			; out of play: puck too long without a touch, over the glass
+PenGhold			equ	$8			; goalie held the puck
+PenWhistle			equ	$A			; whistle
+PenIcing			equ	$C			; icing
+PenGoal				equ	$E			; goal
+PenOffsides			equ	$10			; offside
+PenRoughing2		equ	$12			; roughing, with slow down time $A
+PenNoText			equ	$14			; penalty with no text
+PenCharging			equ	$16			; charging
+PenSlashing			equ	$18			; slashing
+PenRoughing			equ	$1A			; roughing
+PenCrossChk			equ	$1C			; cross checking
+PenHooking			equ	$1E			; hooking
+PenTripping			equ	$20			; tripping
+PenInterference		equ	$22			; interference
+PenHolding			equ	$24			; holding
+PenFighting			equ	$26			; fighting
+PenFighting2		equ	$28			; fighting, second variant
+PenInst				equ	$2A			; instigator
+PenDelay			equ	$2C			; delay of game
+PenHookingPS		equ	$2E			; hooking, penalty shot
+PenTrippingPS		equ	$30			; tripping, penalty shot
+PenGhold2			equ	$32			; goalie held the puck, second variant
+PenInterferencePS	equ	$34			; interference, penalty shot
+PenRoughingPS		equ	$36			; roughing, penalty shot
+PenChargingPS		equ	$38			; charging, penalty shot
+PenCrossChkPS		equ	$3A			; cross checking, penalty shot
+PenSlashingPS		equ	$3C			; slashing, penalty shot
 ; Sprite object counts and sizes (92 names)
 collrad				equ	8			;collision radius of an object (objects collide within collrad*2)
 PenCntDwn			equ	$FFFFC010	;94 $FFFFC3E6
@@ -534,9 +534,9 @@ padcursorchars		equ	$FFFFD1B0	;ControllerSetupScreen: PadCursorMap chars
 gamestoday1chars	equ	$FFFFD1B2	;Games today screen chars (GamesTodayMap1)
 GamesTodayDay		equ	$FFFFD1B4	;GamesToday: SeasonDay on entry
 padiconchars1		equ	$FFFFD1B6	;ControllerSetupScreen: PadIconMap1 ... 4 chars (PadIconChars)
-padiconchars2		equ	$FFFFD1B8
-padiconchars3		equ	$FFFFD1BA
-padiconchars4		equ	$FFFFD1BC
+padiconchars2		equ	$FFFFD1B8	; pad icon characters, controller 2
+padiconchars3		equ	$FFFFD1BA	; pad icon characters, controller 3
+padiconchars4		equ	$FFFFD1BC	; pad icon characters, controller 4
 calresultchars		equ	$FFFFD1BE	;CalendarScreen CalResultMap chars
 calbgchars			equ	$FFFFD1C0	;CalendarScreen CalendarBgMap chars
 AwardIndex			equ	$FFFFD1C2	;SeasonAwards: the award shown (0 Hart ... 8 Conn Smythe). Shares
