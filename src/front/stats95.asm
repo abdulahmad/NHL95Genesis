@@ -2342,7 +2342,7 @@ PrintTeamCategory					;League Leaders: print category name, team mode (7 categor
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-TeamCategoryText
+TeamCategoryText					;team stat category names
 	String	'       Points        ',$0
 	String	'      Goals Avg.     ',$0
 	String	'  Goals Allowed Avg. ',$0
@@ -2361,7 +2361,7 @@ PrintPlayerCategory					;League Leaders: print category name, individual mode (4
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-PlayerCategoryText
+PlayerCategoryText					;player stat category names
 	String	'   Goals       ',$0
 	String	'  Assists      ',$0
 	String	'  Points       ',$0
@@ -2379,7 +2379,7 @@ PrintLeadersHeader					;League Leaders: print TEAM / INDIVIDUAL column headers
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-LeaderModeText
+LeaderModeText						;stat leader mode names
 	String	CC_Font1Pri,$11,$5,'TEAM',CC_Font1Pri,$5,$7,'   Team    ',$0
 	String	CC_Font1Pri,$F,$5,'INDIVIDUAL',CC_Font1Pri,$6,$7,'No. Player   Team  ',$0
 
@@ -4408,19 +4408,19 @@ HighlightPlurals					;Plural suffix pointers by record type
 HighlightSingulars					;Singular suffix pointers by record type
 	dc.l	0,GoalText,AssistText,SaveText
 
-AssistsText
+AssistsText							;plural ASSISTS label
 	String	' ASSISTS'
 
-AssistText
+AssistText							;singular ASSIST label
 	String	' ASSIST',$0
 
-SavesText
+SavesText							;plural SAVES label
 	String	' SAVES'
 
-SaveText
+SaveText							;singular SAVE label
 	String	' SAVE',$0
 
-GoalsText
+GoalsText							;plural GOALS label
 	String	' GOALS'
 
 GoalText

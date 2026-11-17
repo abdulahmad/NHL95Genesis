@@ -616,7 +616,7 @@ GAttribColumns						;Goalie attribute columns, same format as PAttribColumns
 GAttribOverall						;The Overall entry; GAttribOverallMask is read
 	String	'[   Overall    ]'
 
-GAttribOverallMask
+GAttribOverallMask					;goalie attribute screen: overall rating label mask
 	dc.w	$130F,$A
 	String	'[   Agility    ]'
 	dc.w	$1000,$A
@@ -1330,7 +1330,7 @@ PrintOptions						;Print the option names (PrintOptionName) and values (PrintOpt
 ScrollDownTxt						;Scroll marks for PrintOptions
 	String	'}'
 
-ScrollClearTxt
+ScrollClearTxt						;blank space that erases a scroll arrow
 	String	' '
 
 ScrollUpTxt
