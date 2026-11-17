@@ -175,7 +175,7 @@ hockey95.asm,$009D18,186,PeriodOver_sp,code,setup94,name
 hockey95.asm,$009DD2,286,StartPer,code,hockey94,name
 hockey95.asm,$009EF0,50,Gameloop,code,hockey94,name
 hockey95.asm,$009F22,176,DoGameFrame,code,hockey94,name
-hockey95.asm,$009FD2,562,Intermission,code,penalty94,name
+hockey95.asm,$009FD2,562,Intermission,code,scoreboard94,name
 display95.asm,$00A204,120,setvideo,code,video94,name
 display95.asm,$00A27C,30,setsortcords,code,video94,name
 display95.asm,$00A29A,2,rtssdisp,code,video94,follows setsortcords
@@ -419,11 +419,11 @@ engine/middle95.asm,$07CA7E,20,PerLabels,data,tables94,name
 engine/middle95.asm,$07CA92,20,PerLabels2,data,tables94,name
 engine/middle95.asm,$07CAA6,42,makepde,code,collide94,name
 engine/middle95.asm,$07CAD0,32,getpde,code,collide94,name
-engine/middle95.asm,$07CAF0,26,loadTeamStruct,code,penalty94,name
+engine/middle95.asm,$07CAF0,26,loadTeamStruct,code,scoreboard94,name
 engine/middle95.asm,$07CB0A,36,ReadGoaliePulled,code,helpers94,name
 engine/middle95.asm,$07CB2E,10,PrintListItem,code,helpers94,follows ReadGoaliePulled
 engine/middle95.asm,$07CB38,10,PrintSmallListItem,code,helpers94,follows PrintListItem
-engine/middle95.asm,$07CB42,12,AdvanceStringPtr,code,penalty94,name
+engine/middle95.asm,$07CB42,12,AdvanceStringPtr,code,scoreboard94,name
 engine/middle95.asm,$07CB4E,18,GetGoalieCount,code,stats94,name
 engine/middle95.asm,$07CB60,86,GetGoalieCountD7,code,stats94,follows GetGoalieCount
 engine/middle95.asm,$07CBB6,18,GetDefenseStartD7,code,stats94,follows GetGoalieCountD7
@@ -476,16 +476,16 @@ engine/middle95.asm,$07D3F8,112,TeamLogoBitmaps,data,optsetup94,name
 engine/middle95.asm,$07D468,56,DrawTeamLogo,code,optsetup94,name
 engine/middle95.asm,$07D4A0,42,ResetClock,code,hockey94,name
 engine/middle95.asm,$07D4CA,24,GetPeriodTime,code,hockey94,name
-engine/middle95.asm,$07D4E2,94,ClrHor,code,penalty94,name
-engine/middle95.asm,$07D540,432,AssignPads,code,penalty94,follows ClrHor
+engine/middle95.asm,$07D4E2,94,ClrHor,code,scoreboard94,name
+engine/middle95.asm,$07D540,432,AssignPads,code,scoreboard94,follows ClrHor
 engine/middle95.asm,$07D6F0,22,setupIceRinkPal,code,setup94,name
 engine/middle95.asm,$07D706,92,waitx,code,middle94,name
 engine/middle95.asm,$07D762,20,GetPeriodTimeRemaining,code,collide94,name
-engine/middle95.asm,$07D776,172,printscores1,code,penalty94,name
-engine/middle95.asm,$07D822,34,printscores1_ps,code,penalty94,name
-engine/middle95.asm,$07D844,10,ReAddFramer,code,penalty94,follows printscores1_ps
-engine/middle95.asm,$07D84E,10,ReAddSmallFont,code,penalty94,follows ReAddFramer
-engine/middle95.asm,$07D858,44,AddFonts,code,penalty94,follows ReAddSmallFont
+engine/middle95.asm,$07D776,172,printscores1,code,scoreboard94,name
+engine/middle95.asm,$07D822,34,printscores1_ps,code,scoreboard94,name
+engine/middle95.asm,$07D844,10,ReAddFramer,code,scoreboard94,follows printscores1_ps
+engine/middle95.asm,$07D84E,10,ReAddSmallFont,code,scoreboard94,follows ReAddFramer
+engine/middle95.asm,$07D858,44,AddFonts,code,scoreboard94,follows ReAddSmallFont
 engine/middle95.asm,$07D884,16,chkpk,code,logic94,name
 engine/middle95.asm,$07D894,30,chkpk2,code,logic94,name
 engine/middle95.asm,$07D8B2,32,CheckNewCarrier,code,logic94,follows chkpk2
@@ -501,8 +501,8 @@ engine/middle95.asm,$07DA12,42,PutBigTile,code,print94,name
 engine/middle95.asm,$07DA3C,60,bfasciicon,data,tables94,name
 engine/middle95.asm,$07DA78,200,UnpackPicture,code,ui94,name
 engine/middle95.asm,$07DB40,60,RestoreBenchEnergy,code,hockey94,name
-engine/middle95.asm,$07DB7C,38,RestoreTeamEnergy,code,penalty94,name
-engine/middle95.asm,$07DBA2,40,reenergizeteam,code,penalty94,name
+engine/middle95.asm,$07DB7C,38,RestoreTeamEnergy,code,scoreboard94,name
+engine/middle95.asm,$07DBA2,40,reenergizeteam,code,scoreboard94,name
 engine/middle95.asm,$07DBCA,14,setpde,code,collide94,name
 engine/middle95.asm,$07DBD8,50,SeasonPlayerOut,code,collide94,follows setpde
 engine/middle95.asm,$07DC0A,44,WeightedRandomSelect,code,middle94,name
@@ -514,7 +514,7 @@ engine/middle95.asm,$07DCE0,38,TrimSpaces,code,cards94,name
 engine/middle95.asm,$07DD06,410,setupice,code,setup94,name
 engine/middle95.asm,$07DEA0,34,LoadHomeTeamGfx,code,ui94,name
 engine/middle95.asm,$07DEC2,112,TeamGfxList,data,ui94,name
-engine/middle95.asm,$07DF32,56,EASNLogo,code,penalty94,name
+engine/middle95.asm,$07DF32,56,EASNLogo,code,scoreboard94,name
 engine/middle95.asm,$07DF6A,18,setupEASNmap,code,hockey93 (93 only),name
 engine/middle95.asm,$07DF7C,32,FormatAndPrintTime,code,print94,name
 engine/middle95.asm,$07DF9C,16,PeriodLabelTable,data,print94,name
@@ -708,9 +708,9 @@ engine/playoff95.asm,$087FFC,74,PlayoffScreenText,data,setup94,name
 engine/playoff95.asm,$088046,362,PlayoffScreen_setup,data,tables94,name
 engine/playoff95.asm,$0881B0,106,DrawPlayoffSprite,code,ui94,name
 engine/playoff95.asm,$08821A,98,SetSframe,code,video94,name
-engine/faceoff95.asm,$08827C,56,UpdateScores,code,penalty94,name
-engine/faceoff95.asm,$0882B4,196,SetScore,code,penalty94,name
-engine/faceoff95.asm,$088378,64,sctab,data,penalty94,name
+engine/faceoff95.asm,$08827C,56,UpdateScores,code,scoreboard94,name
+engine/faceoff95.asm,$0882B4,196,SetScore,code,scoreboard94,name
+engine/faceoff95.asm,$088378,64,sctab,data,scoreboard94,name
 engine/faceoff95.asm,$0883B8,16,ClearShotData,code,hockey94,name
 engine/faceoff95.asm,$0883C8,426,puckfaceoff,code,logic94,name
 engine/faceoff95.asm,$088572,76,SetFaceoffComputerLine,code,logic94,name
@@ -797,31 +797,31 @@ engine/lines95.asm,$08A202,200,lineinput,code,logic94,name
 engine/lines95.asm,$08A2CA,50,lcfound,code,logic94,name
 engine/lines95.asm,$08A2FC,52,lcfound_close,code,logic94,name
 engine/lines95.asm,$08A330,2,rtslc,code,logic94,fingerprint lcfound_close
-engine/lines95.asm,$08A332,80,linebar,code,penalty94,name
-engine/lines95.asm,$08A382,66,getlinee,code,penalty94,name
-engine/lines95.asm,$08A3C4,58,AvgCline,code,penalty94,name
+engine/lines95.asm,$08A332,80,linebar,code,scoreboard94,name
+engine/lines95.asm,$08A382,66,getlinee,code,scoreboard94,name
+engine/lines95.asm,$08A3C4,58,AvgCline,code,scoreboard94,name
 engine/lines95.asm,$08A3FE,254,CompLine,code,logic94,name
 engine/lines95.asm,$08A4FC,118,chk4lc,code,logic94,name
-engine/lines95.asm,$08A572,18,SetupTeamForIntermission,code,penalty94,name
-engine/lines95.asm,$08A584,50,SetupTeamLine,code,penalty94,follows SetupTeamForIntermission
-engine/lines95.asm,$08A5B6,34,ReadTeamSRAM,code,penalty94,follows SetupTeamLine
-engine/lines95.asm,$08A5D8,74,DefaultLineData,code,penalty94,follows ReadTeamSRAM
-engine/lines95.asm,$08A622,172,SetOriginalLines,code,penalty94,follows DefaultLineData
-engine/lines95.asm,$08A6CE,204,FixSavedLines,code,penalty94,follows SetOriginalLines
-engine/lines95.asm,$08A79A,26,CheckSavedLines,code,penalty94,follows FixSavedLines
-engine/lines95.asm,$08A7B4,132,CheckTeamLines,code,penalty94,follows CheckSavedLines
-engine/lines95.asm,$08A838,656,LineSlotFixTbl,data,penalty94,follows CheckTeamLines
+engine/lines95.asm,$08A572,18,SetupTeamForIntermission,code,scoreboard94,name
+engine/lines95.asm,$08A584,50,SetupTeamLine,code,scoreboard94,follows SetupTeamForIntermission
+engine/lines95.asm,$08A5B6,34,ReadTeamSRAM,code,scoreboard94,follows SetupTeamLine
+engine/lines95.asm,$08A5D8,74,DefaultLineData,code,scoreboard94,follows ReadTeamSRAM
+engine/lines95.asm,$08A622,172,SetOriginalLines,code,scoreboard94,follows DefaultLineData
+engine/lines95.asm,$08A6CE,204,FixSavedLines,code,scoreboard94,follows SetOriginalLines
+engine/lines95.asm,$08A79A,26,CheckSavedLines,code,scoreboard94,follows FixSavedLines
+engine/lines95.asm,$08A7B4,132,CheckTeamLines,code,scoreboard94,follows CheckSavedLines
+engine/lines95.asm,$08A838,656,LineSlotFixTbl,data,scoreboard94,follows CheckTeamLines
 engine/lines95.asm,$08AAC8,182,EASportsScreen,code,setup94,name
 engine/lines95.asm,$08AB7E,54,chkatop,code,penalty94,name
 engine/lines95.asm,$08ABB4,38,updatePPTeamTime,code,period94,name
-engine/lines95.asm,$08ABDA,274,ChkShotStat,code,penalty94,name
-engine/lines95.asm,$08ACEC,404,DrawTeamScreen2,code,penalty94,follows ChkShotStat
-engine/lines95.asm,$08AE80,404,DrawTeamScreen3,code,penalty94,follows DrawTeamScreen2
-engine/lines95.asm,$08B014,8,DrawTeamScreen4NoSetup,code,penalty94,follows DrawTeamScreen3
-engine/lines95.asm,$08B01C,118,DrawTeamScreen4,code,penalty94,follows DrawTeamScreen4NoSetup
-engine/lines95.asm,$08B092,282,DrawTeamScreen4Body,code,penalty94,follows DrawTeamScreen4
-engine/lines95.asm,$08B1AC,382,DrawTeamScreen5,code,penalty94,follows DrawTeamScreen4Body
-engine/lines95.asm,$08B32A,438,DrawTeamScreen6,code,penalty94,follows DrawTeamScreen5
+engine/lines95.asm,$08ABDA,274,ChkShotStat,code,scoreboard94,name
+engine/lines95.asm,$08ACEC,404,DrawTeamScreen2,code,scoreboard94,follows ChkShotStat
+engine/lines95.asm,$08AE80,404,DrawTeamScreen3,code,scoreboard94,follows DrawTeamScreen2
+engine/lines95.asm,$08B014,8,DrawTeamScreen4NoSetup,code,scoreboard94,follows DrawTeamScreen3
+engine/lines95.asm,$08B01C,118,DrawTeamScreen4,code,scoreboard94,follows DrawTeamScreen4NoSetup
+engine/lines95.asm,$08B092,282,DrawTeamScreen4Body,code,scoreboard94,follows DrawTeamScreen4
+engine/lines95.asm,$08B1AC,382,DrawTeamScreen5,code,scoreboard94,follows DrawTeamScreen4Body
+engine/lines95.asm,$08B32A,438,DrawTeamScreen6,code,scoreboard94,follows DrawTeamScreen5
 engine/skate95.asm,$08B4E0,536,goalieacc,code,logic94,name
 engine/skate95.asm,$08B6F8,58,doinput_goaliedive,code,logic94,fingerprint goalieacc
 engine/skate95.asm,$08B732,2,rtss15,code,logic94,fingerprint goalieacc
@@ -854,7 +854,7 @@ engine/goal95.asm,$08C85A,34,PPGoalBigTxt,data,setup94,name
 engine/goal95.asm,$08C87C,22,PrintPlayerAssists,code,ui94,name
 engine/goal95.asm,$08C892,18,PrintPlayerGoals,code,ui94,name
 engine/goal95.asm,$08C8A4,72,PrintParenNumber,code,ui94,name
-engine/goal95.asm,$08C8EC,20,freezewindow,code,replay94,fingerprint freezewindow
+engine/goal95.asm,$08C8EC,20,freezewindow,code,logic94,name
 engine/goal95.asm,$08C900,440,checkwindow,code,logic94,name
 engine/goal95.asm,$08CAB8,38,PracticePlayerLimits,data,logic94,follows checkwindow
 engine/goal95.asm,$08CADE,124,PracticeGoalies,code,logic94,follows PracticePlayerLimits
@@ -1660,9 +1660,9 @@ front/injury95.asm,$09F26A,24,chkFgtBit1,code,ui94,name
 front/injury95.asm,$09F282,310,CheckInjury,code,hockey94,name
 front/injury95.asm,$09F3B8,86,InsertInjurySlot,code,hockey94,follows CheckInjury
 front/injury95.asm,$09F40E,80,DeleteInjurySlot,code,hockey94,follows InsertInjurySlot
-front/injury95.asm,$09F45E,194,updatepwrplay,code,penalty94,name
-front/injury95.asm,$09F520,28,ClearPowerPlay,code,penalty94,follows updatepwrplay
-front/injury95.asm,$09F53C,2,rtsPowerPlay,code,penalty94,follows ClearPowerPlay
+front/injury95.asm,$09F45E,194,updatepwrplay,code,scoreboard94,name
+front/injury95.asm,$09F520,28,ClearPowerPlay,code,scoreboard94,follows updatepwrplay
+front/injury95.asm,$09F53C,2,rtsPowerPlay,code,scoreboard94,follows ClearPowerPlay
 front/injury95.asm,$09F53E,82,GetLowestPen,code,penalty94,name
 front/scout95.asm,$09F590,960,ScoutingReport,code,scout94,name
 front/scout95.asm,$09F950,50,PageMatchup,code,scout94,name
@@ -2047,7 +2047,7 @@ graphics95.asm,$1A11E4,1206,logoASW,data,graphics94,name
 graphics95.asm,$1A169A,896,TeamLogoPalettes,data,logos94,name
 graphics95.asm,$1A1A1A,21006,ArenaGfxBank,data,logos94,follows TeamLogoPalettes
 credits95.asm,$1A6C28,66,Credits,data,teamdata94,name
-credits95.asm,$1A6C6A,1622,CreditsList,data,teamdata94,name
+credits95.asm,$1A6C6A,1622,CreditsPages,data,teamdata94,name
 checksum95.asm,$1A72C0,10,ValidationRoutine,code,checksum94,name
 checksum95.asm,$1A72CA,10,ValidationLoop,code,checksum94,name
 checksum95.asm,$1A72D4,2,SkipIncrement,code,checksum94,name
