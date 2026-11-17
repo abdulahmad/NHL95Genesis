@@ -17,20 +17,20 @@ Sizes run from a label to the next one, so the vectors ($0-$FF) and the header b
 
 | 95 file | Range | Bytes | Came from (by bytes) |
 | --- | --- | --- | --- |
-| `sega/SegaIDTable95` | $0001F0-$0001FF | 16 | sega/SegaIDTable94 100% |
 | `main95` | $000200-$000771 | 1144 | new in 95 81%, hockey94 18%, teamdata94 1%, setup94 <1%, main94 <1% |
+| `sega/SegaIDTable95` | $0001F0-$0001FF | 16 | sega/SegaIDTable94 100% |
 | `sega/SegaInit` | $000200-$0002F9 | 250 | sega/SegaInit 100% |
 | `teamdata95` | $000772-$005A33 | 21186 | teamdata94 100% |
 | `frames95` | $005A34-$008DD7 | 13220 | frames94 84%, graphics94 16% |
 | `schedule95` | $008DD8-$009721 | 2378 | new in 95 100% |
 | `sram95` | $009722-$009AC7 | 934 | sram94 100% |
-| `hockey95` | $009AC8-$00A203 | 1852 | hockey94 44%, penalty94 30%, setup94 25% |
+| `hockey95` | $009AC8-$00A203 | 1852 | hockey94 44%, scoreboard94 30%, setup94 25% |
 | `display95` | $00A204-$00A95B | 1880 | video94 44%, setup94 41%, logic94 15% |
 | `control95` | $00A95C-$00AF43 | 1512 | chgplayer94 37%, logic94 34%, setup94 17%, new in 95 12% |
 | `sound/sound95` | $00AF44-$079901 | 453054 | new in 95 84%, sound94 16%, middle94 <1%, arena94 <1%, video94 <1%, hockey94 <1%, collide94 <1% |
 | `engine/video95` | $079902-$07A7B3 | 3762 | middle94 38%, video94 26%, sound94 14%, decompress94 13%, print94 6%, setup94 1%, stats94 1%, tables94 <1%, hockey94 <1% |
 | `engine/collide95` | $07A7B4-$07C511 | 7518 | collide94 96%, crowd94 3%, cards94 1%, logic94 <1% |
-| `engine/middle95` | $07C512-$07DFAB | 6810 | setup94 19%, print94 18%, penalty94 14%, cards94 9%, middle94 9%, video94 6%, ui94 5%, stats94 4%, logic94 4%, optsetup94 2%, collide94 2%, hockey94 2%, tables94 1%, menu94 1%, helpers94 1%, hockey93 (93 only) <1%, scout94 <1% |
+| `engine/middle95` | $07C512-$07DFAB | 6810 | setup94 19%, print94 18%, scoreboard94 14%, cards94 9%, middle94 9%, video94 6%, ui94 5%, stats94 4%, logic94 4%, optsetup94 2%, collide94 2%, hockey94 2%, tables94 1%, menu94 1%, helpers94 1%, hockey93 (93 only) <1%, scout94 <1% |
 | `engine/fourway95` | $07DFAC-$07E0DF | 308 | fourway94 92%, new in 95 8% |
 | `sound/z80old95` | $07E0E0-$07E36B | 652 | sound94 100% |
 | `engine/pause95` | $07E36C-$07FCFB | 6544 | menu94 57%, hockey94 29%, stats94 10%, period94 4% |
@@ -38,11 +38,11 @@ Sizes run from a label to the next one, so the vectors ($0-$FF) and the header b
 | `engine/players95` | $0836CC-$083EB1 | 2022 | collide94 76%, crowd94 7%, tables94 6%, stats94 5%, setup94 4%, hockey94 2% |
 | `engine/input95` | $083EB2-$087BA1 | 15600 | logic94 96%, onetimer94 4% |
 | `engine/playoff95` | $087BA2-$08827B | 1754 | setup94 68%, tables94 21%, ui94 6%, video94 6% |
-| `engine/faceoff95` | $08827C-$088F6F | 3316 | logic94 80%, penalty94 13%, video94 7%, hockey94 <1% |
+| `engine/faceoff95` | $08827C-$088F6F | 3316 | logic94 80%, scoreboard94 10%, video94 7%, penalty94 3%, hockey94 <1% |
 | `engine/penalty95` | $088F70-$08A02B | 4284 | penalty94 56%, tables94 20%, logic94 12%, logos94 6%, collide94 4%, video94 2% |
-| `engine/lines95` | $08A02C-$08B4DF | 5300 | penalty94 74%, logic94 21%, setup94 3%, tables94 1%, period94 1% |
+| `engine/lines95` | $08A02C-$08B4DF | 5300 | scoreboard94 73%, logic94 21%, setup94 3%, penalty94 1%, tables94 1%, period94 1% |
 | `engine/skate95` | $08B4E0-$08C303 | 3620 | logic94 91%, ui94 7%, crowd94 2% |
-| `engine/goal95` | $08C304-$08D399 | 4246 | hockey94 46%, collide94 19%, setup94 15%, logic94 14%, penalty94 3%, ui94 3%, replay94 <1% |
+| `engine/goal95` | $08C304-$08D399 | 4246 | hockey94 46%, collide94 19%, setup94 15%, logic94 15%, penalty94 3%, ui94 3% |
 | `engine/replay95` | $08D39A-$08DF59 | 3008 | replay94 85%, new in 95 15% |
 | `front/season95` | $08DF5A-$0920DD | 16772 | hockey94 100% |
 | `front/stats95` | $0920DE-$096453 | 17270 | stats94 74%, period94 12%, setup94 10%, cards94 5% |
@@ -51,7 +51,7 @@ Sizes run from a label to the next one, so the vectors ($0-$FF) and the header b
 | `front/records95` | $09ACE6-$09C765 | 6784 | records94 69%, cards94 23%, stats94 7%, shootoutpath94 1% |
 | `front/awards95` | $09C766-$09DA4F | 4842 | cards94 97%, new in 95 3% |
 | `front/shootout95` | $09DA50-$09F011 | 5570 | shootout94 39%, logic94 34%, shootoutpath94 11%, penalty94 5%, setup94 4%, period94 4%, collide94 2% |
-| `front/injury95` | $09F012-$09F58F | 1406 | collide94 42%, hockey94 34%, penalty94 22%, ui94 2% |
+| `front/injury95` | $09F012-$09F58F | 1406 | collide94 42%, hockey94 34%, scoreboard94 16%, penalty94 6%, ui94 2% |
 | `front/scout95` | $09F590-$0A0B3D | 5550 | scout94 50%, graphics94 19%, setup94 13%, crowd94 11%, logos94 4%, period94 3% |
 | `front/crowd95` | $0A0B3E-$0A0D19 | 476 | video94 61%, hockey94 39% |
 | `front/summary95` | $0A0D1A-$0A12A9 | 1424 | stats94 100% |
@@ -73,10 +73,11 @@ Where the routines and tables of each 94 file ended up in 95: bytes, then the la
 | hockey94 | `front/season95` 16772 (181), `engine/goal95` 1974 (20), `engine/pause95` 1910 (16), `hockey95` 820 (4), `front/injury95` 476 (3), `main95` 204 (1), `front/crowd95` 186 (2), `engine/middle95` 126 (3), `sound/sound95` 106 (2), `engine/players95` 32 (1), `engine/faceoff95` 16 (1), `engine/video95` 6 (1) |
 | menu94 | `engine/pause95` 3740 (30), `engine/middle95` 92 (2) |
 | stats94 | `front/stats95` 12748 (119), `front/summary95` 1424 (18), `engine/pause95` 662 (7), `front/records95` 486 (3), `engine/middle95` 276 (8), `engine/players95` 110 (2), `engine/video95` 24 (1) |
-| replay94 | `engine/replay95` 2556 (16), `engine/goal95` 20 (1) |
-| logic94 | `engine/input95` 15008 (17), `engine/logic95` 13508 (62), `engine/skate95` 3280 (19), `engine/faceoff95` 2638 (12), `front/shootout95` 1886 (7), `engine/lines95` 1104 (11), `engine/goal95` 602 (3), `control95` 510 (10), `engine/penalty95` 500 (3), `display95` 288 (1), `engine/middle95` 258 (5), `engine/collide95` 16 (1) |
+| replay94 | `engine/replay95` 2556 (16) |
+| logic94 | `engine/input95` 15008 (17), `engine/logic95` 13508 (62), `engine/skate95` 3280 (19), `engine/faceoff95` 2638 (12), `front/shootout95` 1886 (7), `engine/lines95` 1104 (11), `engine/goal95` 622 (4), `control95` 510 (10), `engine/penalty95` 500 (3), `display95` 288 (1), `engine/middle95` 258 (5), `engine/collide95` 16 (1) |
 | middle94 | `engine/video95` 1424 (27), `engine/middle95` 616 (8), `sound/sound95` 476 (7) |
-| penalty94 | `engine/lines95` 3934 (21), `engine/penalty95` 2400 (20), `engine/middle95` 968 (12), `hockey95` 562 (1), `engine/faceoff95` 422 (4), `front/injury95` 306 (4), `front/shootout95` 288 (2), `engine/goal95` 118 (1) |
+| penalty94 | `engine/penalty95` 2400 (20), `front/shootout95` 288 (2), `engine/goal95` 118 (1), `engine/faceoff95` 106 (1), `front/injury95` 82 (1), `engine/lines95` 54 (1) |
+| scoreboard94 | `engine/lines95` 3880 (20), `engine/middle95` 968 (12), `hockey95` 562 (1), `engine/faceoff95` 316 (3), `front/injury95` 224 (3) |
 | collide94 | `engine/collide95` 7228 (26), `engine/players95` 1544 (9), `engine/goal95` 794 (3), `front/injury95` 590 (6), `engine/penalty95` 192 (1), `engine/middle95` 158 (5), `front/shootout95` 132 (1), `sound/sound95` 38 (1), `engine/logic95` 30 (1) |
 | video94 | `engine/video95` 978 (12), `display95` 818 (9), `engine/middle95` 436 (5), `front/crowd95` 290 (4), `engine/faceoff95` 240 (1), `sound/sound95` 150 (3), `engine/playoff95` 98 (1), `engine/penalty95` 78 (1) |
 | setup94 | `front/stats95` 1650 (10), `engine/middle95` 1300 (27), `engine/playoff95` 1188 (10), `display95` 774 (3), `front/scout95` 738 (3), `engine/goal95` 626 (7), `hockey95` 470 (3), `control95` 252 (3), `front/shootout95` 242 (2), `engine/lines95` 182 (1), `engine/players95` 84 (1), `engine/video95` 48 (1), `main95` 4 (2) |
@@ -112,10 +113,6 @@ Where the routines and tables of each 94 file ended up in 95: bytes, then the la
 
 Consecutive labels from the same 94 file are one line, in ROM order. Tables and shared `rts` labels are counted in the bytes but not listed; they are in the CSV.
 
-### sega/SegaIDTable95
-
-- **sega/SegaIDTable94** (16 bytes): (tables only)
-
 ### main95
 
 - **main94** (0 bytes): (tables only)
@@ -123,6 +120,10 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **teamdata94** (8 bytes): BusErr, AdrErr
 - **setup94** (4 bytes): InvOpCode, DivBy0
 - **hockey94** (204 bytes): Begin
+
+### sega/SegaIDTable95
+
+- **sega/SegaIDTable94** (16 bytes): (tables only)
 
 ### sega/SegaInit
 
@@ -151,7 +152,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **hockey94** (308 bytes): StartGame
 - **setup94** (186 bytes): PeriodOver_sp
 - **hockey94** (512 bytes): StartPer, Gameloop, DoGameFrame
-- **penalty94** (562 bytes): Intermission
+- **scoreboard94** (562 bytes): Intermission
 
 ### display95
 
@@ -230,9 +231,9 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **video94** (372 bytes): showclock, PutClockDigit, showclockdma, ClockDigitChar
 - **tables94** (40 bytes): (tables only)
 - **collide94** (74 bytes): makepde, getpde
-- **penalty94** (26 bytes): loadTeamStruct
+- **scoreboard94** (26 bytes): loadTeamStruct
 - **helpers94** (56 bytes): ReadGoaliePulled, PrintListItem, PrintSmallListItem
-- **penalty94** (12 bytes): AdvanceStringPtr
+- **scoreboard94** (12 bytes): AdvanceStringPtr
 - **stats94** (276 bytes): GetGoalieCount, GetGoalieCountD7, GetDefenseStartD7, GetDefenseStart, GetForwardCountD7, GetForwards, GetForwardCountSeason, GetForwardCount
 - **setup94** (692 bytes): GetPlayerName, getnameD7, getname, getnamebody, GetPlayerNumInitial, FormatPlayerInitialD7, FormatPlayerNumInitialD7, FormatPlayerNumInitial, NumInitialBody, FormatPlayerNameD7, FormatPlayerName, FormatPlayerNameLast, FormatPlayerNameShort, FormatLastName, FormatFirstNameD7, FormatLastNameAlt, FormatLastNameD7, formatlastbody, FinalizeTextBuffer, getplayernameD7, GetPlayerNamePointer, getnamea0, ConvertByteToDigits
 - **cards94** (422 bytes): CalcAttrib, CalcAttribRating
@@ -244,11 +245,11 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **scout94** (14 bytes): GetTeamLogo
 - **optsetup94** (168 bytes): DrawTeamLogo
 - **hockey94** (66 bytes): ResetClock, GetPeriodTime
-- **penalty94** (526 bytes): ClrHor, AssignPads
+- **scoreboard94** (526 bytes): ClrHor, AssignPads
 - **setup94** (22 bytes): setupIceRinkPal
 - **middle94** (92 bytes): waitx
 - **collide94** (20 bytes): GetPeriodTimeRemaining
-- **penalty94** (270 bytes): printscores1, printscores1_ps, ReAddFramer, ReAddSmallFont, AddFonts
+- **scoreboard94** (270 bytes): printscores1, printscores1_ps, ReAddFramer, ReAddSmallFont, AddFonts
 - **logic94** (78 bytes): chkpk, chkpk2, CheckNewCarrier
 - **print94** (92 bytes): printbigz, printbigz2, printbigz1, printbig1, printbig, printbig2
 - **middle94** (154 bytes): printbigtext
@@ -256,13 +257,13 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **tables94** (60 bytes): (tables only)
 - **ui94** (200 bytes): UnpackPicture
 - **hockey94** (60 bytes): RestoreBenchEnergy
-- **penalty94** (78 bytes): RestoreTeamEnergy, reenergizeteam
+- **scoreboard94** (78 bytes): RestoreTeamEnergy, reenergizeteam
 - **collide94** (64 bytes): setpde, SeasonPlayerOut
 - **middle94** (44 bytes): WeightedRandomSelect
 - **cards94** (208 bytes): AppendTeamName, CopyString, AppendUserName, TrimSpaces
 - **setup94** (410 bytes): setupice
 - **ui94** (146 bytes): LoadHomeTeamGfx
-- **penalty94** (56 bytes): EASNLogo
+- **scoreboard94** (56 bytes): EASNLogo
 - **hockey93 (93 only)** (18 bytes): setupEASNmap
 - **print94** (48 bytes): FormatAndPrintTime
 
@@ -326,7 +327,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 ### engine/faceoff95
 
-- **penalty94** (316 bytes): UpdateScores, SetScore
+- **scoreboard94** (316 bytes): UpdateScores, SetScore
 - **hockey94** (16 bytes): ClearShotData
 - **logic94** (2442 bytes): puckfaceoff, SetFaceoffComputerLine, StartFaceoffLineChange, WaitForFaceoffLineChanges, UpdateFaceoffLineChangeTimer, puckfaceoff2, assfaceoff, assfaceoffpl, updatefaceoff, Endfaceoff
 - **video94** (240 bytes): checkfo
@@ -350,13 +351,13 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 
 - **tables94** (42 bytes): (tables only)
 - **logic94** (732 bytes): SetLCmode, SetLCmode2, setlccords, getlchoice, getlchoice2, lineinput, lcfound, lcfound_close
-- **penalty94** (204 bytes): linebar, getlinee, AvgCline
+- **scoreboard94** (204 bytes): linebar, getlinee, AvgCline
 - **logic94** (372 bytes): CompLine, chk4lc
-- **penalty94** (1366 bytes): SetupTeamForIntermission, SetupTeamLine, ReadTeamSRAM, DefaultLineData, SetOriginalLines, FixSavedLines, CheckSavedLines, CheckTeamLines
+- **scoreboard94** (1366 bytes): SetupTeamForIntermission, SetupTeamLine, ReadTeamSRAM, DefaultLineData, SetOriginalLines, FixSavedLines, CheckSavedLines, CheckTeamLines
 - **setup94** (182 bytes): EASportsScreen
 - **penalty94** (54 bytes): chkatop
 - **period94** (38 bytes): updatePPTeamTime
-- **penalty94** (2310 bytes): ChkShotStat, DrawTeamScreen2, DrawTeamScreen3, DrawTeamScreen4NoSetup, DrawTeamScreen4, DrawTeamScreen4Body, DrawTeamScreen5, DrawTeamScreen6
+- **scoreboard94** (2310 bytes): ChkShotStat, DrawTeamScreen2, DrawTeamScreen3, DrawTeamScreen4NoSetup, DrawTeamScreen4, DrawTeamScreen4Body, DrawTeamScreen5, DrawTeamScreen6
 
 ### engine/skate95
 
@@ -371,8 +372,7 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **penalty94** (118 bytes): PenGoalStuff
 - **setup94** (488 bytes): box, ShowGoalBox
 - **ui94** (112 bytes): PrintPlayerAssists, PrintPlayerGoals, PrintParenNumber
-- **replay94** (20 bytes): freezewindow
-- **logic94** (602 bytes): checkwindow, PracticeGoalies
+- **logic94** (622 bytes): freezewindow, checkwindow, PracticeGoalies
 - **setup94** (104 bytes): PeriodOver
 - **hockey94** (292 bytes): clockcont_0
 - **setup94** (34 bytes): GameOver, ExitToOpening
@@ -441,7 +441,8 @@ Consecutive labels from the same 94 file are one line, in ROM order. Tables and 
 - **collide94** (590 bytes): setInjuryType, SetSeasonInjuries, TickTeamInjuries, TickInjuries, SetInjuryGames, GetInjuryGames
 - **ui94** (34 bytes): getFgtbyte, chkFgtBit1
 - **hockey94** (476 bytes): CheckInjury, InsertInjurySlot, DeleteInjurySlot
-- **penalty94** (306 bytes): updatepwrplay, ClearPowerPlay, GetLowestPen
+- **scoreboard94** (224 bytes): updatepwrplay, ClearPowerPlay
+- **penalty94** (82 bytes): GetLowestPen
 
 ### front/scout95
 
