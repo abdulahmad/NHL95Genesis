@@ -82,7 +82,7 @@ clr_col
 	move.l	(a5)+,(a4)				; vdp reg #1 = 4, #15 = 2
 	move.l	(a5)+,(a4)
 	moveq	#$1f,d3					; d3 = color ram size-1
-c_col1
+c_col1								;color RAM clear loop
 	move.l	d0,(a3)
 	dbra	d3,c_col1
 
@@ -90,7 +90,7 @@ c_col1
 clr_vsc
 	move.l	(a5)+,(a4)
 	moveq	#19,d4					; d4 = vscroll ram size-1
-c_vsc1
+c_vsc1								;vertical scroll RAM clear loop
 	move.l	d0,(a3)
 	dbra	d4,c_vsc1
 
@@ -106,7 +106,7 @@ c_psg1
 	move	d0,(a2)					; z80 reset
 	movem.l	(a6),d0-d7/a0-a6		; initialize all registers
 	move	#$2700,sr
-hot_start
+hot_start							;warm start: skip the cold start setup
 	bra.s	CHECK_VDP
 
 
@@ -117,7 +117,7 @@ reg_set								; registers set data table
 	dc.w	$008000,$003fff,$000100	; d5 / d6 / d7
 	dc.l	Z80_RAM,IO_Z80BUS,IO_Z80RES,Vdata	; a0 - a3
 	dc.l	Vctrl					; a4
-vreg_dt
+vreg_dt								;initial VDP register values
 	dc.b	$04,$14,$30,$3c,$07,$6c,$00,$00
 	dc.b	$00,$00,$ff,$00,$81,$37,$00,$01
 	dc.b	$01,$00,$00,$ff,$ff,$00,$00,$80
@@ -155,5 +155,5 @@ clr_col_data
 	dc.l	$c0000000				; color_ram address data
 clr_vsc_data
 	dc.l	$40000010				; v_scroll ram address data
-psg_dat
+psg_dat								;PSG silence commands (volume off for the four channels)
 	dc.b	$9f,$bf,$df,$ff

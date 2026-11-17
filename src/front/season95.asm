@@ -816,132 +816,132 @@ PickAssist							;d0 = a skater picked from the assist weights, not the scorer o
 	move.w	d3,d0
 	rts
 
-TeamScoring0
+TeamScoring0						;scoring table of team 0
 	dc.b	$14,$1E,3,5,$17,$1C,$F,$B,$B,$13,8,$19,$13,$12,$15,$1F
 	dc.b	$C,$16,9,9,8,3,$D,6,$12,$1B,1,5,$10,$1B,$C,$B
 	dc.b	5,$F,7,$14,9,$B,3,9,$E,$19,3,5,1,9
 
-TeamScoring1
+TeamScoring1						;scoring table of team 1
 	dc.b	$1E,$18,9,$B,$20,$50,8,$F,0,1,$1F,$14,7,3,$32,$18
 	dc.b	5,$A,$A,$B,$12,$D,2,1,$D,$B,$C,7,$16,$20,6,$11
 	dc.b	3,7,$14,$47,1,9,$F,$2B,6,$F,$E,$2C,1,6,1,8
 
-TeamScoring2
+TeamScoring2						;scoring table of team 2
 	dc.b	$D,$F,$1E,$1A,6,$F,5,$D,$23,$33,$B,$E,3,4,$16,$10
 	dc.b	$1B,$1F,$12,$1B,8,8,6,7,$15,$23,$20,$2F,$11,8,$1D,$1E
 	dc.b	2,4,2,$B,7,$20,4,$14,6,8,2,$C,2,$E,$E,$1B
 
-TeamScoring3
+TeamScoring3						;scoring table of team 3
 	dc.b	$1A,$16,$D,$D,$24,$27,$28,$35,$B,$C,$D,$2A,7,$17,$1B,$12
 	dc.b	$29,$2B,3,8,$B,$1B,$28,$2D,5,5,9,$14,1,6,$A,$25
 	dc.b	$A,$19,$1C,$36,1,$15,6,$F,1,8,2,$15,0,3,1,$B
 
-TeamScoring4
+TeamScoring4						;scoring table of team 4
 	dc.b	$25,$1E,2,$F,$2E,$3D,9,$14,9,$1D,3,$D,2,6,$E,$15
 	dc.b	$10,$E,$D,$B,$E,$E,4,2,$F,$12,$11,$19,$C,$E,$1F,$27
 	dc.b	4,$18,$10,$2C,5,$16,3,9,4,8,1,1,6,$C,1,7
 
-TeamScoring5
+TeamScoring5						;scoring table of team 5
 	dc.b	$18,$1B,$12,$F,$32,$2B,$20,$1D,$11,$23,2,5,$B,$21,$E,$18
 	dc.b	3,$11,$11,$E,$14,$F,5,7,6,7,$D,$18,1,0,$17,$39
 	dc.b	$C,$C,1,4,6,$12,$C,$13,1,$D,0,3,9,$25,$B,$21
 
-TeamScoring6
+TeamScoring6						;scoring table of team 6
 	dc.b	$17,$2D,$17,$D,$18,$3A,$38,$40,$1F,$2A,5,8,6,$B,$22,$27
 	dc.b	$A,$C,7,$A,4,4,8,$15,$1C,$1D,$34,$29,9,$11,6,7
 	dc.b	0,7,$E,$3F,$D,$21,1,6,$A,$2E,4,$14,$C,$15,1,4
 
-TeamScoring7
+TeamScoring7						;scoring table of team 7
 	dc.b	$16,$2D,3,$D,$18,$32,0,1,$21,$23,6,$15,4,7,$C,$D
 	dc.b	$D,5,$19,$1D,4,6,$13,$12,$16,$23,$11,$F,3,5,$B,8
 	dc.b	3,$12,8,$14,$C,$26,$B,$18,3,6,$B,$20,2,6,7,$18
 
-TeamScoring8
+TeamScoring8						;scoring table of team 8
 	dc.b	$15,$24,$C,$E,$F,$19,$17,$18,9,$11,$11,$21,$12,$E,6,$17
 	dc.b	$F,$16,$13,$1C,6,6,3,5,$D,$D,$1E,$1E,$28,$1E,4,5
 	dc.b	6,$18,1,8,4,7,$E,$1D,1,9,2,0,4,8,2,2
 
-TeamScoring9
+TeamScoring9						;scoring table of team 9
 	dc.b	$11,$1D,5,$C,5,$C,$10,$2A,2,$A,6,$C,4,$B,4,$F
 	dc.b	$29,$1A,$C,$11,3,2,6,$A,$12,9,$A,$11,$25,$26,6,2
 	dc.b	$18,$1A,4,$B,3,$13,1,$11,1,5,5,$10,5,$19,1,2
 
-TeamScoring10
+TeamScoring10						;scoring table of team 10
 	dc.b	$16,$26,4,$10,$26,$5C,9,$A,8,$E,1,3,$F,$D,$2C,$2A
 	dc.b	$A,9,$15,$15,$1F,$2E,7,$E,$C,3,3,4,$E,$11,$14,$30
 	dc.b	$C,$28,7,$18,8,$1B,5,$D,1,5,2,6,1,9
 
-TeamScoring11
+TeamScoring11						;scoring table of team 11
 	dc.b	$23,$1C,$C,$14,$17,$22,$13,$18,$E,$18,$D,$14,2,$A,$13,$1A
 	dc.b	$28,$33,$A,$14,1,2,4,5,$10,$1E,$21,$26,$C,$F,6,8
 	dc.b	$C,$17,$14,$20,2,$15,4,9,1,2,2,$C,$B,$1D,2,$C
 
-TeamScoring12
+TeamScoring12						;scoring table of team 12
 	dc.b	$14,$F,$1B,$13,$C,$11,$13,$1B,$14,$1E,$A,$17,5,$A,$1A,$1F
 	dc.b	$D,$14,$C,$F,$15,$14,4,$10,$12,$1A,$19,$13,$25,$21,$24,$24
 	dc.b	0,5,$12,$3C,1,$E,8,$18,$A,$24,1,9,2,$11,2,$F
 
-TeamScoring13
+TeamScoring13						;scoring table of team 13
 	dc.b	$1B,$20,8,$D,$26,$38,$15,$20,2,7,$12,$16,1,1,$24,$21
 	dc.b	$19,$1F,$1E,$28,0,6,5,9,$2A,$21,$B,$13,$C,$1E,3,1
 	dc.b	2,1,$A,$2F,1,$A,7,$E,9,$1F,3,$B,2,$B,1,4
 
-TeamScoring14
+TeamScoring14						;scoring table of team 14
 	dc.b	$2A,$12,$A,$E,$1A,$3A,$16,$1B,$14,$D,$17,$21,3,5,$34,$1B
 	dc.b	3,5,$16,$20,4,$B,4,7,$15,$14,$13,$13,$15,$27,2,1
 	dc.b	$12,$17,$17,$38,3,$F,$C,$4D,8,8,5,$E,0,2,2,7
 
-TeamScoring15
+TeamScoring15						;scoring table of team 15
 	dc.b	$B,$2D,0,2,$14,$1F,$1E,$31,2,4,$B,$F,$A,8,0,3
 	dc.b	7,$10,2,5,2,4,$11,$1A,$B,8,7,$D,8,$B,2,3
 	dc.b	2,5,0,2,3,$14,4,$13,6,9,4,$E,1,4,0,$15
 
-TeamScoring16
+TeamScoring16						;scoring table of team 16
 	dc.b	$1D,$19,6,$16,$2C,$35,$23,$3E,$C,$18,4,$B,$B,$C,$14,$12
 	dc.b	$26,$2C,$1C,$15,8,5,$28,$43,$13,$17,1,4,4,3,$A,$3C
 	dc.b	5,$19,1,5,9,$2B,0,7,1,8,1,3,0,2,1,3
 
-TeamScoring17
+TeamScoring17						;scoring table of team 17
 	dc.b	$16,$14,$15,$13,$11,$14,$1B,$42,$14,$16,4,$B,$29,$2F,$26,$20
 	dc.b	$1E,$22,3,5,$12,$25,$E,$1A,$20,$43,$17,$23,4,7,0,0
 	dc.b	5,8,5,$18,$11,$38,2,$C,2,2,3,8,6,$1C,2,4
 
-TeamScoring18
+TeamScoring18						;scoring table of team 18
 	dc.b	$14,$1D,8,$10,$1C,$40,$1E,$15,$20,$35,$F,$19,$B,$11,9,$17
 	dc.b	$1C,$25,4,4,0,4,$11,$14,6,8,$D,$F,2,2,$10,$11
 	dc.b	$1A,$19,4,$F,5,$11,5,$14,0,$B,5,$C,4,$D,1,$B
 
-TeamScoring19
+TeamScoring19						;scoring table of team 19
 	dc.b	$1E,$2C,3,7,$12,$26,$19,$29,$C,5,3,6,$C,$B,$C,$12
 	dc.b	$C,$12,$12,$23,$E,$1A,$D,8,$F,$14,$19,$2C,$16,$1F,$1E,$26
 	dc.b	7,$21,1,3,$1A,$26,6,$13,0,2,1,9,1,6
 
-TeamScoring20
+TeamScoring20						;scoring table of team 20
 	dc.b	$24,$22,4,$A,$10,$44,5,$B,6,$E,6,$E,1,2,$34,$32
 	dc.b	$F,$A,2,3,$39,$28,$17,$19,9,$10,9,$C,6,$A,2,5
 	dc.b	1,0,7,$F,2,7,5,9,2,8,$C,$13,1,7,4,$14
 
-TeamScoring21
+TeamScoring21						;scoring table of team 21
 	dc.b	2,4,$16,$27,$D,$1D,$18,$28,$12,$1C,8,7,4,9,$14,$17
 	dc.b	$A,$A,$D,$C,6,6,$D,$F,$11,$17,$1C,$1B,1,2,$B,$14
 	dc.b	3,$12,$B,$17,1,$F,3,6,1,2,0,0
 
-TeamScoring22
+TeamScoring22						;scoring table of team 22
 	dc.b	$22,$1F,9,$A,8,$A,$1B,$54,$D,$11,5,6,8,8,4,4
 	dc.b	$2E,$1E,$35,$2D,8,$B,7,9,9,$10,$E,$15,$22,$1E,$C,$12
 	dc.b	4,$17,7,$24,9,$1B,2,8,3,$1B,5,$B,2,9,0,1
 
-TeamScoring23
+TeamScoring23						;scoring table of team 23
 	dc.b	$17,$1D,$12,$E,$19,$2B,$B,$11,$F,$28,3,6,$1A,$2C,$10,$D
 	dc.b	$D,$18,1,2,$E,$D,3,4,$3C,$2F,$20,$1D,$E,$E,7,7
 	dc.b	0,$C,$D,$2A,$E,$34,1,9,5,$21,4,$1C,6,$E,1,$A
 
-TeamScoring25
+TeamScoring25						;scoring table of team 25
 	dc.b	$15,$13,0,$A,$1A,$2D,$13,$20,$D,$1B,4,8,7,7,$29,$28
 	dc.b	4,8,4,8,$15,$25,6,2,$19,$1D,5,$D,$21,$29,8,$B
 	dc.b	3,$D,0,4,5,$12,8,$12,0,7,0,$11,4,$11,2,8
 
-TeamScoring24
+TeamScoring24						;scoring table of team 24
 	dc.b	$18,$18,$D,$10,2,2,$1A,$2C,$13,$42,9,$1D,$E,$24,6,$13
 	dc.b	$E,$19,$1D,$1D,7,7,$19,$11,$18,$13,$C,$E,$C,$12,$10,$13
 	dc.b	$B,$12,$10,$18,1,$10,$10,$23,9,$21,0,7,0,9,7,9
@@ -2401,16 +2401,16 @@ DrawGameLogo						;Draw the logo of team d1 on a game line
 GameRowsTbl1						;Game line rows (printy by line), as the tables below
 	dc.b	7,$D,$13
 
-GameRowsTbl2
+GameRowsTbl2						;game line rows, layout 2
 	dc.b	$A,$10,$16
 
-GameRowsTbl3
+GameRowsTbl3						;game line rows, layout 3
 	dc.b	8,$E,$14
 
-GameRowsTbl4
+GameRowsTbl4						;game line rows, layout 4
 	dc.b	9,$F,$15,8,$E,$14
 
-GameRowsTbl5
+GameRowsTbl5						;game line rows, layout 5
 	dc.b	8,$E,$14
 
 GameRowsTbl6
@@ -3691,13 +3691,13 @@ StandingsGroups						;StandingsList = the teams of group StandingsMode
 StandingsGroupTbl					;Team lists of the 4 divisions (count, teams)
 	dc.l	StandingsGroup0,StandingsGroup1,StandingsGroup2,StandingsGroup3
 
-StandingsGroup0
+StandingsGroup0						;standings group 0: count, then team numbers
 	dc.b	6,0,3,7,$A,$13,$17
 
-StandingsGroup1
+StandingsGroup1						;standings group 1: count, then team numbers
 	dc.b	6,4,5,6,$14,$16,$19
 
-StandingsGroup2
+StandingsGroup2						;standings group 2: count, then team numbers
 	dc.b	7,1,2,9,$B,$F,$11,$12
 
 StandingsGroup3
