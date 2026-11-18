@@ -7,327 +7,328 @@
 
 PicturePalette						;The player picture palette, then the picture of a player with none
 									;(DrawMatchupPicture, PlayerCardScreen)
-	incbin	..\Extracted\NHL95\Graphics\NoPlayerPicture.map.jim
-NoPicSkater2						;Generic skater picture (GetPlayerPicture, hand bit 0 set)
-	incbin	..\Extracted\NHL95\Graphics\NoPicSkater2.bin
+	incbin	..\Extracted\NHL95\Graphics\PicturePalette.bin
+NoPicSkater2						;Generic skater picture (GetPlayerPicture, hand bit 0 set). The extracted file is named as 94's
+									;NoPicSkater1/2/NoPicGoalie1/2 files with the same bytes, so the 95 labels and the file numbers are swapped
+	incbin	..\Extracted\NHL95\Graphics\NoPicSkater1.map.jim
 NoPicSkater1						;Generic skater picture (GetPlayerPicture, hand bit 0 clear)
-	incbin	..\Extracted\NHL95\Graphics\NoPicSkater1.bin
+	incbin	..\Extracted\NHL95\Graphics\NoPicSkater2.map.jim
 NoPicGoalie2						;Generic goalie picture (GetPlayerPicture, hand bit 0 clear)
-	incbin	..\Extracted\NHL95\Graphics\NoPicGoalie2.bin
+	incbin	..\Extracted\NHL95\Graphics\NoPicGoalie1.map.jim
 NoPicGoalie1						;Generic goalie picture (GetPlayerPicture, hand bit 0 set)
-	incbin	..\Extracted\NHL95\Graphics\NoPicGoalie1.bin
+	incbin	..\Extracted\NHL95\Graphics\NoPicGoalie2.map.jim
 Card001								;Player picture 1 (FeaturedPictures ANH 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card001.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card001.map.jim
 Card002								;Player picture 2 (FeaturedPictures ANH 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card002.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card002.map.jim
 Card003								;Player picture 3 (FeaturedPictures ANH 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card003.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card003.map.jim
 Card004								;Player picture 4 (FeaturedPictures ANH 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card004.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card004.map.jim
 Card005								;Player picture 5 (FeaturedPictures ANH 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card005.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card005.map.jim
 Card006								;Player picture 6 (FeaturedPictures ANH 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card006.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card006.map.jim
 Card007								;Player picture 7 (FeaturedPictures BOS 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card007.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card007.map.jim
 Card008								;Player picture 8 (FeaturedPictures BOS 4, ASE 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card008.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card008.map.jim
 Card009								;Player picture 9 (FeaturedPictures BOS 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card009.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card009.map.jim
 Card010								;Player picture 10 (FeaturedPictures BOS 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card010.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card010.map.jim
 Card011								;Player picture 11 (FeaturedPictures BOS 1, ASE 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card011.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card011.map.jim
 Card012								;Player picture 12 (FeaturedPictures BOS 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card012.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card012.map.jim
 Card013								;Player picture 13 (FeaturedPictures BUF 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card013.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card013.map.jim
 Card014								;Player picture 14 (FeaturedPictures BUF 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card014.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card014.map.jim
 Card015								;Player picture 15 (FeaturedPictures BUF 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card015.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card015.map.jim
 Card016								;Player picture 16 (FeaturedPictures BUF 5, ASE 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card016.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card016.map.jim
 Card017								;Player picture 17 (FeaturedPictures BUF 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card017.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card017.map.jim
 Card018								;Player picture 18 (FeaturedPictures BUF 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card018.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card018.map.jim
 Card019								;Player picture 19 (FeaturedPictures CGY 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card019.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card019.map.jim
 Card020								;Player picture 20 (FeaturedPictures CGY 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card020.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card020.map.jim
 Card021								;Player picture 21 (FeaturedPictures CGY 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card021.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card021.map.jim
 Card022								;Player picture 22 (FeaturedPictures CGY 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card022.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card022.map.jim
 Card023								;Player picture 23 (FeaturedPictures CGY 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card023.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card023.map.jim
 Card024								;Player picture 24 (FeaturedPictures CGY 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card024.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card024.map.jim
 Card025								;Player picture 25 (FeaturedPictures CHI 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card025.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card025.map.jim
 Card026								;Player picture 26 (FeaturedPictures CHI 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card026.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card026.map.jim
 Card027								;Player picture 27 (FeaturedPictures CHI 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card027.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card027.map.jim
 Card028								;Player picture 28 (FeaturedPictures CHI 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card028.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card028.map.jim
 Card029								;Player picture 29 (FeaturedPictures CHI 2, ASW 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card029.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card029.map.jim
 Card030								;Player picture 30 (FeaturedPictures CHI 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card030.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card030.map.jim
 Card031								;Player picture 31 (FeaturedPictures DAL 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card031.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card031.map.jim
 Card032								;Player picture 32 (FeaturedPictures DAL 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card032.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card032.map.jim
 Card033								;Player picture 33 (FeaturedPictures DAL 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card033.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card033.map.jim
 Card034								;Player picture 34 (FeaturedPictures DAL 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card034.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card034.map.jim
 Card035								;Player picture 35 (FeaturedPictures DAL 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card035.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card035.map.jim
 Card036								;Player picture 36 (FeaturedPictures DAL 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card036.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card036.map.jim
 Card037								;Player picture 37 (FeaturedPictures DET 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card037.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card037.map.jim
 Card038								;Player picture 38 (FeaturedPictures DET 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card038.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card038.map.jim
 Card039								;Player picture 39 (FeaturedPictures DET 3, ASW 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card039.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card039.map.jim
 Card040								;Player picture 40 (FeaturedPictures DET 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card040.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card040.map.jim
 Card041								;Player picture 41 (FeaturedPictures DET 2, ASW 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card041.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card041.map.jim
 Card042								;Player picture 42 (FeaturedPictures DET 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card042.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card042.map.jim
 Card043								;Player picture 43 (FeaturedPictures EDM 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card043.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card043.map.jim
 Card044								;Player picture 44 (FeaturedPictures EDM 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card044.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card044.map.jim
 Card045								;Player picture 45 (FeaturedPictures EDM 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card045.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card045.map.jim
 Card046								;Player picture 46 (FeaturedPictures EDM 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card046.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card046.map.jim
 Card047								;Player picture 47 (FeaturedPictures EDM 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card047.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card047.map.jim
 Card048								;Player picture 48 (FeaturedPictures EDM 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card048.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card048.map.jim
 Card049								;Player picture 49 (FeaturedPictures FLA 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card049.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card049.map.jim
 Card050								;Player picture 50 (FeaturedPictures FLA 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card050.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card050.map.jim
 Card051								;Player picture 51 (FeaturedPictures FLA 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card051.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card051.map.jim
 Card052								;Player picture 52 (FeaturedPictures FLA 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card052.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card052.map.jim
 Card053								;Player picture 53 (FeaturedPictures FLA 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card053.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card053.map.jim
 Card054								;Player picture 54 (FeaturedPictures FLA 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card054.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card054.map.jim
 Card055								;Player picture 55 (FeaturedPictures HFD 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card055.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card055.map.jim
 Card056								;Player picture 56 (FeaturedPictures HFD 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card056.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card056.map.jim
 Card057								;Player picture 57 (FeaturedPictures HFD 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card057.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card057.map.jim
 Card058								;Player picture 58 (FeaturedPictures HFD 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card058.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card058.map.jim
 Card059								;Player picture 59 (FeaturedPictures HFD 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card059.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card059.map.jim
 Card060								;Player picture 60 (FeaturedPictures HFD 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card060.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card060.map.jim
 Card061								;Player picture 61 (FeaturedPictures LA 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card061.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card061.map.jim
 Card062								;Player picture 62 (FeaturedPictures LA 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card062.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card062.map.jim
 Card063								;Player picture 63 (FeaturedPictures LA 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card063.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card063.map.jim
 Card064								;Player picture 64 (FeaturedPictures LA 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card064.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card064.map.jim
 Card065								;Player picture 65 (FeaturedPictures LA 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card065.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card065.map.jim
 Card066								;Player picture 66 (FeaturedPictures LA 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card066.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card066.map.jim
 Card067								;Player picture 67 (FeaturedPictures MTL 0, ASE 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card067.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card067.map.jim
 Card068								;Player picture 68 (FeaturedPictures MTL 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card068.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card068.map.jim
 Card069								;Player picture 69 (FeaturedPictures MTL 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card069.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card069.map.jim
 Card070								;Player picture 70 (FeaturedPictures MTL 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card070.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card070.map.jim
 Card071								;Player picture 71 (FeaturedPictures MTL 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card071.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card071.map.jim
 Card072								;Player picture 72 (FeaturedPictures MTL 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card072.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card072.map.jim
 Card073								;Player picture 73 (FeaturedPictures NJ 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card073.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card073.map.jim
 Card074								;Player picture 74 (FeaturedPictures NJ 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card074.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card074.map.jim
 Card075								;Player picture 75 (FeaturedPictures NJ 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card075.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card075.map.jim
 Card076								;Player picture 76 (FeaturedPictures NJ 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card076.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card076.map.jim
 Card077								;Player picture 77 (FeaturedPictures NJ 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card077.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card077.map.jim
 Card078								;Player picture 78 (FeaturedPictures NJ 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card078.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card078.map.jim
 Card079								;Player picture 79 (FeaturedPictures NYI 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card079.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card079.map.jim
 Card080								;Player picture 80 (FeaturedPictures NYI 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card080.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card080.map.jim
 Card081								;Player picture 81 (FeaturedPictures NYI 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card081.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card081.map.jim
 Card082								;Player picture 82 (FeaturedPictures NYI 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card082.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card082.map.jim
 Card083								;Player picture 83 (FeaturedPictures NYI 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card083.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card083.map.jim
 Card084								;Player picture 84 (FeaturedPictures NYI 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card084.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card084.map.jim
 Card085								;Player picture 85 (FeaturedPictures NYR 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card085.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card085.map.jim
 Card086								;Player picture 86 (FeaturedPictures NYR 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card086.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card086.map.jim
 Card087								;Player picture 87 (FeaturedPictures NYR 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card087.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card087.map.jim
 Card088								;Player picture 88 (FeaturedPictures NYR 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card088.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card088.map.jim
 Card089								;Player picture 89 (FeaturedPictures NYR 1, ASE 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card089.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card089.map.jim
 Card090								;Player picture 90 (FeaturedPictures NYR 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card090.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card090.map.jim
 Card091								;Player picture 91 (FeaturedPictures OTW 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card091.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card091.map.jim
 Card092								;Player picture 92 (FeaturedPictures OTW 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card092.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card092.map.jim
 Card093								;Player picture 93 (FeaturedPictures OTW 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card093.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card093.map.jim
 Card094								;Player picture 94 (FeaturedPictures OTW 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card094.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card094.map.jim
 Card095								;Player picture 95 (FeaturedPictures OTW 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card095.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card095.map.jim
 Card096								;Player picture 96 (FeaturedPictures OTW 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card096.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card096.map.jim
 Card097								;Player picture 97 (FeaturedPictures PHI 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card097.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card097.map.jim
 Card098								;Player picture 98 (FeaturedPictures PHI 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card098.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card098.map.jim
 Card099								;Player picture 99 (FeaturedPictures PHI 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card099.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card099.map.jim
 Card100								;Player picture 100 (FeaturedPictures PHI 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card100.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card100.map.jim
 Card101								;Player picture 101 (FeaturedPictures PHI 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card101.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card101.map.jim
 Card102								;Player picture 102 (FeaturedPictures PHI 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card102.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card102.map.jim
 Card103								;Player picture 103 (FeaturedPictures PIT 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card103.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card103.map.jim
 Card104								;Player picture 104 (FeaturedPictures PIT 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card104.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card104.map.jim
 Card105								;Player picture 105 (FeaturedPictures PIT 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card105.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card105.map.jim
 Card106								;Player picture 106 (FeaturedPictures PIT 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card106.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card106.map.jim
 Card107								;Player picture 107 (FeaturedPictures PIT 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card107.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card107.map.jim
 Card108								;Player picture 108 (FeaturedPictures PIT 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card108.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card108.map.jim
 Card109								;Player picture 109 (FeaturedPictures QUE 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card109.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card109.map.jim
 Card110								;Player picture 110 (FeaturedPictures QUE 4, ASE 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card110.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card110.map.jim
 Card111								;Player picture 111 (FeaturedPictures QUE 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card111.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card111.map.jim
 Card112								;Player picture 112 (FeaturedPictures QUE 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card112.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card112.map.jim
 Card113								;Player picture 113 (FeaturedPictures QUE 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card113.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card113.map.jim
 Card114								;Player picture 114 (FeaturedPictures QUE 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card114.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card114.map.jim
 Card115								;Player picture 115 (FeaturedPictures SJ 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card115.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card115.map.jim
 Card116								;Player picture 116 (FeaturedPictures SJ 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card116.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card116.map.jim
 Card117								;Player picture 117 (FeaturedPictures SJ 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card117.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card117.map.jim
 Card118								;Player picture 118 (FeaturedPictures SJ 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card118.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card118.map.jim
 Card119								;Player picture 119 (FeaturedPictures SJ 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card119.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card119.map.jim
 Card120								;Player picture 120 (FeaturedPictures SJ 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card120.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card120.map.jim
 Card121								;Player picture 121 (FeaturedPictures STL 0, ASW 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card121.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card121.map.jim
 Card122								;Player picture 122 (FeaturedPictures STL 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card122.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card122.map.jim
 Card123								;Player picture 123 (FeaturedPictures STL 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card123.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card123.map.jim
 Card124								;Player picture 124 (FeaturedPictures STL 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card124.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card124.map.jim
 Card125								;Player picture 125 (FeaturedPictures STL 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card125.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card125.map.jim
 Card126								;Player picture 126 (FeaturedPictures STL 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card126.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card126.map.jim
 Card127								;Player picture 127 (FeaturedPictures TB 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card127.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card127.map.jim
 Card128								;Player picture 128 (FeaturedPictures TB 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card128.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card128.map.jim
 Card129								;Player picture 129 (FeaturedPictures TB 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card129.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card129.map.jim
 Card130								;Player picture 130 (FeaturedPictures TB 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card130.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card130.map.jim
 Card131								;Player picture 131 (FeaturedPictures TB 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card131.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card131.map.jim
 Card132								;Player picture 132 (FeaturedPictures TB 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card132.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card132.map.jim
 Card133								;Player picture 133 (FeaturedPictures TOR 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card133.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card133.map.jim
 Card134								;Player picture 134 (FeaturedPictures TOR 4, ASW 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card134.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card134.map.jim
 Card135								;Player picture 135 (FeaturedPictures TOR 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card135.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card135.map.jim
 Card136								;Player picture 136 (FeaturedPictures TOR 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card136.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card136.map.jim
 Card137								;Player picture 137 (FeaturedPictures TOR 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card137.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card137.map.jim
 Card138								;Player picture 138 (FeaturedPictures TOR 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card138.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card138.map.jim
 Card139								;Player picture 139 (FeaturedPictures VAN 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card139.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card139.map.jim
 Card140								;Player picture 140 (FeaturedPictures VAN 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card140.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card140.map.jim
 Card141								;Player picture 141 (FeaturedPictures VAN 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card141.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card141.map.jim
 Card142								;Player picture 142 (FeaturedPictures VAN 5, ASW 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card142.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card142.map.jim
 Card143								;Player picture 143 (FeaturedPictures VAN 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card143.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card143.map.jim
 Card144								;Player picture 144 (FeaturedPictures VAN 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card144.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card144.map.jim
 Card145								;Player picture 145 (FeaturedPictures WSH 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card145.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card145.map.jim
 Card146								;Player picture 146 (FeaturedPictures WSH 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card146.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card146.map.jim
 Card147								;Player picture 147 (FeaturedPictures WSH 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card147.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card147.map.jim
 Card148								;Player picture 148 (FeaturedPictures WSH 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card148.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card148.map.jim
 Card149								;Player picture 149 (FeaturedPictures WSH 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card149.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card149.map.jim
 Card150								;Player picture 150 (FeaturedPictures WSH 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card150.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card150.map.jim
 Card151								;Player picture 151 (FeaturedPictures WPG 0)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card151.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card151.map.jim
 Card152								;Player picture 152 (FeaturedPictures WPG 4)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card152.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card152.map.jim
 Card153								;Player picture 153 (FeaturedPictures WPG 3)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card153.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card153.map.jim
 Card154								;Player picture 154 (FeaturedPictures WPG 5)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card154.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card154.map.jim
 Card155								;Player picture 155 (FeaturedPictures WPG 2)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card155.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card155.map.jim
 Card156								;Player picture 156 (FeaturedPictures WPG 1)
-	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card156.bin
+	incbin	..\Extracted\NHL95\Graphics\PlayerCards\Card156.map.jim
 FeaturedPicIdx						;The FeaturedPictures index of the line 1 starters (G, LD, RD, LW, C, RW)
 									;of each team (GetPlayerPicture)
 	dc.b	0,5,4,3,1,2				;ANH
@@ -414,7 +415,7 @@ frameSprData
 HotList								;The hot spot byte pair of each frame
 	incbin	..\Extracted\NHL95\Graphics\HotSpotList.bin
 RosterFont							;Data
-	incbin	..\Extracted\NHL95\Graphics\RosterFont.bin
+	incbin	..\Extracted\NHL95\Graphics\SmallFont.map.jim
 SmallFontMap						;The SmallFontMap map
 	incbin	..\Extracted\NHL95\Graphics\SmallFontMap.map.jim
 SmallFontMap2						;The SmallFontMap2 map
@@ -479,7 +480,7 @@ SetupBgMap2							;The SetupBgMap2 map
 SetupBgMap1							;The SetupBgMap1 map
 	incbin	..\Extracted\NHL95\Graphics\SetupBgMap1.map.jim
 TeamBitmaps							;The TeamBitmaps map
-	incbin	..\Extracted\NHL95\Graphics\TeamBitmaps.map.jim
+	incbin	..\Extracted\NHL95\Graphics\TeamBlocks94.map.jim
 BigFontMap3							;The BigFontMap3 map
 	incbin	..\Extracted\NHL95\Graphics\BigFontMap3.map.jim
 BigFontMap							;The BigFontMap map
@@ -614,62 +615,62 @@ StanleyCupImg						;The StanleyCupImg map
 	incbin	..\Extracted\NHL95\Graphics\StanleyCupImg.map.jim
 CupSprites							;The CupSprites map
 	incbin	..\Extracted\NHL95\Graphics\CupSprites.map.jim
-logoANH								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoANA.map.jim
-logoBOS								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoBOS.map.jim
-logoBUF								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoBUF.map.jim
-logoCGY								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoCGY.map.jim
-logoCHI								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoCHI.map.jim
-logoDET								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoDET.map.jim
-logoEDM								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoEDM.map.jim
-logoFLA								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoFLA.map.jim
-logoHFD								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoHFD.map.jim
-logoNYI								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoNYI.map.jim
-logoLA								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoLA.map.jim
-logoDAL								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoDAL.map.jim
-logoMTL								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoMTL.map.jim
-logoNJ								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoNJ.map.jim
-logoNYR								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoNYR.map.jim
-logoOTW								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoOTW.map.jim
-logoPHI								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoPHI.map.jim
-logoPIT								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoPIT.map.jim
-logoQUE								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoQUE.map.jim
-logoSJ								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoSJ.map.jim
-logoSTL								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoSTL.map.jim
-logoTB								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoTB.map.jim
-logoTOR								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoTOR.map.jim
-logoVAN								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoVAN.map.jim
-logoWSH								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoWSH.map.jim
-logoWPG								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoWPG.map.jim
-logoASE								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoASE.map.jim
-logoASW								;Team logo (TeamLogoBitmaps)
-	incbin	..\Extracted\NHL95\Graphics\logoASW.map.jim
+TeamLogoANH								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoANH.map.jim
+TeamLogoBOS								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoBOS.map.jim
+TeamLogoBUF								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoBUF.map.jim
+TeamLogoCGY								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoCGY.map.jim
+TeamLogoCHI								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoCHI.map.jim
+TeamLogoDET								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoDET.map.jim
+TeamLogoEDM								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoEDM.map.jim
+TeamLogoFLA								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoFLA.map.jim
+TeamLogoHFD								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoHFD.map.jim
+TeamLogoNYI								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoNYI.map.jim
+TeamLogoLA								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoLA.map.jim
+TeamLogoDAL								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoDAL.map.jim
+TeamLogoMTL								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoMTL.map.jim
+TeamLogoNJ								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoNJ.map.jim
+TeamLogoNYR								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoNYR.map.jim
+TeamLogoOTW								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoOTW.map.jim
+TeamLogoPHI								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoPHI.map.jim
+TeamLogoPIT								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoPIT.map.jim
+TeamLogoQUE								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoQUE.map.jim
+TeamLogoSJ								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoSJ.map.jim
+TeamLogoSTL								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoSTL.map.jim
+TeamLogoTB								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoTB.map.jim
+TeamLogoTOR								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoTOR.map.jim
+TeamLogoVAN								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoVAN.map.jim
+TeamLogoWSH								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoWSH.map.jim
+TeamLogoWPG								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoWPG.map.jim
+TeamLogoASE								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoASE.map.jim
+TeamLogoASW								;Team logo (TeamLogoBitmaps)
+	incbin	..\Extracted\NHL95\Graphics\TeamLogoASW.map.jim
 
 ;-------------------------------------------------------------------------------------------------------------
 ;	Team logo palettes, one per team in TeamList order.
