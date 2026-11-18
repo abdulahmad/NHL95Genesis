@@ -155,8 +155,8 @@ frames95.asm,$008518,42,SPAghighr_table,data,frames94,name
 frames95.asm,$008542,42,SPAgglovel2_table,data,frames94,name
 frames95.asm,$00856C,42,SPAgslambot_table,data,frames94,name
 frames95.asm,$008596,2114,revframetbl,data,graphics94,name
-schedule95.asm,$008DD8,2377,SeasonSchedule,data,new in 95,file
-schedule95.asm,$009721,1,SeasonScheduleEnd,data,new in 95,follows SeasonSchedule
+front/schedule95.asm,$008DD8,2377,SeasonSchedule,data,new in 95,file
+front/schedule95.asm,$009721,1,SeasonScheduleEnd,data,new in 95,follows SeasonSchedule
 sram95.asm,$009722,244,InitSaveRAM,code,sram94,name
 sram95.asm,$009816,8,SRAMWaitVblank,code,sram94,name
 sram95.asm,$00981E,10,VBcount,data,sram94,name
@@ -168,43 +168,43 @@ sram95.asm,$009952,32,ReadSRAM,code,sram94,name
 sram95.asm,$009972,60,BuildLeaderList,code,sram94,follows ReadSRAM
 sram95.asm,$0099AE,86,BuildLeaderListSum,code,sram94,follows BuildLeaderList
 sram95.asm,$009A04,196,BuildLeaderListPct,code,sram94,follows BuildLeaderListSum
-hockey95.asm,$009AC8,18,Opening,code,setup94,name
-hockey95.asm,$009ADA,266,Opening2,code,setup94,name
-hockey95.asm,$009BE4,308,StartGame,code,hockey94,name
-hockey95.asm,$009D18,186,PeriodOver_sp,code,setup94,name
-hockey95.asm,$009DD2,286,StartPer,code,hockey94,name
-hockey95.asm,$009EF0,50,Gameloop,code,hockey94,name
-hockey95.asm,$009F22,176,DoGameFrame,code,hockey94,name
-hockey95.asm,$009FD2,562,Intermission,code,scoreboard94,name
-display95.asm,$00A204,120,setvideo,code,video94,name
-display95.asm,$00A27C,30,setsortcords,code,video94,name
-display95.asm,$00A29A,2,rtssdisp,code,video94,follows setsortcords
-display95.asm,$00A29C,360,checksso,code,video94,name
-display95.asm,$00A404,48,setffo,code,video94,name
-display95.asm,$00A434,102,uppads,code,video94,name
-display95.asm,$00A49A,100,QueuePadLabel,code,video94,name
-display95.asm,$00A4FE,48,uppads_pd,code,video94,name
-display95.asm,$00A52E,8,ButtonLabelCharTable,data,video94,name
-display95.asm,$00A536,288,updateanim,code,logic94,name
-display95.asm,$00A656,212,defaultsprites,code,setup94,name
-display95.asm,$00A72A,444,defaultsprites_0,code,setup94,name
-display95.asm,$00A8E6,118,SprSort,code,setup94,name
-control95.asm,$00A95C,188,updatepadinput,code,new in 95,no 94 match
-control95.asm,$00AA18,46,Holdplayer,code,logic94,name
-control95.asm,$00AA46,52,Acheck,code,logic94,name
-control95.asm,$00AA7A,12,burstchk,code,logic94,follows Acheck
-control95.asm,$00AA86,164,burst,code,logic94,name
-control95.asm,$00AB2A,36,setpads,code,logic94,name
-control95.asm,$00AB4E,524,chgplayer,code,chgplayer94,name
-control95.asm,$00AD5A,38,setcplayer,code,chgplayer94,follows chgplayer
-control95.asm,$00AD80,10,setc1player,code,logic94,name
-control95.asm,$00AD8A,12,setc2player,code,logic94,name
-control95.asm,$00AD96,12,setc3player,code,logic94,follows setc2player
-control95.asm,$00ADA2,12,setc4player,code,logic94,follows setc3player
-control95.asm,$00ADAE,154,restorepl,code,logic94,name
-control95.asm,$00AE48,142,clearTeamStats,code,setup94,name
-control95.asm,$00AED6,46,setteams,code,setup94,name
-control95.asm,$00AF04,64,InitTeamStructure,code,setup94,name
+engine/hockey95.asm,$009AC8,18,Opening,code,setup94,name
+engine/hockey95.asm,$009ADA,266,Opening2,code,setup94,name
+engine/hockey95.asm,$009BE4,308,StartGame,code,hockey94,name
+engine/hockey95.asm,$009D18,186,PeriodOver_sp,code,setup94,name
+engine/hockey95.asm,$009DD2,286,StartPer,code,hockey94,name
+engine/hockey95.asm,$009EF0,50,Gameloop,code,hockey94,name
+engine/hockey95.asm,$009F22,176,DoGameFrame,code,hockey94,name
+engine/hockey95.asm,$009FD2,562,Intermission,code,scoreboard94,name
+engine/display95.asm,$00A204,120,setvideo,code,video94,name
+engine/display95.asm,$00A27C,30,setsortcords,code,video94,name
+engine/display95.asm,$00A29A,2,rtssdisp,code,video94,follows setsortcords
+engine/display95.asm,$00A29C,360,checksso,code,video94,name
+engine/display95.asm,$00A404,48,setffo,code,video94,name
+engine/display95.asm,$00A434,102,uppads,code,video94,name
+engine/display95.asm,$00A49A,100,QueuePadLabel,code,video94,name
+engine/display95.asm,$00A4FE,48,uppads_pd,code,video94,name
+engine/display95.asm,$00A52E,8,ButtonLabelCharTable,data,video94,name
+engine/display95.asm,$00A536,288,updateanim,code,logic94,name
+engine/display95.asm,$00A656,212,defaultsprites,code,setup94,name
+engine/display95.asm,$00A72A,444,defaultsprites_0,code,setup94,name
+engine/display95.asm,$00A8E6,118,SprSort,code,setup94,name
+engine/control95.asm,$00A95C,188,updatepadinput,code,new in 95,no 94 match
+engine/control95.asm,$00AA18,46,Holdplayer,code,logic94,name
+engine/control95.asm,$00AA46,52,Acheck,code,logic94,name
+engine/control95.asm,$00AA7A,12,burstchk,code,logic94,follows Acheck
+engine/control95.asm,$00AA86,164,burst,code,logic94,name
+engine/control95.asm,$00AB2A,36,setpads,code,logic94,name
+engine/control95.asm,$00AB4E,524,chgplayer,code,chgplayer94,name
+engine/control95.asm,$00AD5A,38,setcplayer,code,chgplayer94,follows chgplayer
+engine/control95.asm,$00AD80,10,setc1player,code,logic94,name
+engine/control95.asm,$00AD8A,12,setc2player,code,logic94,name
+engine/control95.asm,$00AD96,12,setc3player,code,logic94,follows setc2player
+engine/control95.asm,$00ADA2,12,setc4player,code,logic94,follows setc3player
+engine/control95.asm,$00ADAE,154,restorepl,code,logic94,name
+engine/control95.asm,$00AE48,142,clearTeamStats,code,setup94,name
+engine/control95.asm,$00AED6,46,setteams,code,setup94,name
+engine/control95.asm,$00AF04,64,InitTeamStructure,code,setup94,name
 sound/sound95.asm,$00AF44,194,SndDriver,code,new in 95,no 94 match
 sound/sound95.asm,$00B006,262,SndLoadZ80,code,new in 95,no 94 match
 sound/sound95.asm,$00B10C,684,SndUpdate,code,new in 95,no 94 match
@@ -1957,7 +1957,7 @@ graphics95.asm,$16060E,8164,RevRinkTilelist,data,graphics94,name
 graphics95.asm,$1625F2,1830,ReplayMap,data,graphics94,name
 graphics95.asm,$162D18,1586,ReplayIconMap,data,graphics94,follows ReplayMap
 graphics95.asm,$16334A,4032,HiScoreBgMap,data,graphics94,follows ReplayIconMap
-graphics95.asm,$16430A,1982,HiScoreImg,data,graphics94,fingerprint HiScoreImg
+graphics95.asm,$16430A,1982,HiScoreImg,data,graphics94,name
 graphics95.asm,$164AC8,3950,ControllerBgMap,data,graphics94,follows HiScoreImg
 graphics95.asm,$165A36,6894,GamesTodayLogoMap,data,graphics94,follows ControllerBgMap
 graphics95.asm,$167524,346,GamesTodayMap1,data,graphics94,follows GamesTodayLogoMap
@@ -2046,8 +2046,8 @@ graphics95.asm,$1A0D2E,1206,TeamLogoASE,data,graphics94,name
 graphics95.asm,$1A11E4,1206,TeamLogoASW,data,graphics94,name
 graphics95.asm,$1A169A,896,TeamLogoPalettes,data,logos94,name
 graphics95.asm,$1A1A1A,21006,ArenaGfxBank,data,logos94,follows TeamLogoPalettes
-credits95.asm,$1A6C28,66,Credits,data,teamdata94,name
-credits95.asm,$1A6C6A,1622,CreditsPages,data,teamdata94,name
+front/credits95.asm,$1A6C28,66,Credits,data,teamdata94,name
+front/credits95.asm,$1A6C6A,1622,CreditsPages,data,teamdata94,name
 checksum95.asm,$1A72C0,10,ValidationRoutine,code,checksum94,name
 checksum95.asm,$1A72CA,10,ValidationLoop,code,checksum94,name
 checksum95.asm,$1A72D4,2,SkipIncrement,code,checksum94,name

@@ -15,7 +15,7 @@
 
 95 has no absolute short `jsr`/`jmp (x).w` calls into ROM. The one short-range reference is `bra.w Begin` at the end of the startup code in `main95.asm`. `Begin` sits before the team data, so growing `TeamList` does not move it. If something before `Begin` grows past its reach, put the new data elsewhere or change that branch to `jmp (Begin).l` on your mod branch.
 
-The engine (`engine95.asm`) is one assembly whose PC-relative branches cross files; data inserted inside it can push a `bra.w`/`bsr.w` out of range. Put new data after the 2 MB fill.
+The engine (`engine/engine.asm`) is one assembly whose PC-relative branches cross files; data inserted inside it can push a `bra.w`/`bsr.w` out of range. Put new data after the 2 MB fill.
 
 ### PC-relative branches (branch out of range)
 
