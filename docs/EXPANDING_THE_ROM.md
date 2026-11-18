@@ -37,7 +37,7 @@ The retail image is already 2 MB, so any growth means a 4 MB image whose second 
 
 The retail image is 28 teams: ANH 0 through WPG 25, then ASE 26 and ASW 27. `NumTeams` is `ASW+1`. `NumPlayoffTeams` is `ASE` (26). One extra team that leaves `NumPlayoffTeams` at 26 still fits in save RAM. Raising `NumPlayoffTeams` to 27 moves the save checksum and the assemble stops. More than 32 playoff teams stops the assemble. 
 
-Give the new team a number in `src/stubinc/equals.inc`, in `TeamList` order. `NumTeams` and `NumPlayoffTeams` follow from `ASW` and `ASE`. Put the team record in `src/teamdata95.asm`, which is included before the engine, so the engine's PC-relative branches move together.
+Give the new team a number in `src/inc/equals.inc`, in `TeamList` order. `NumTeams` and `NumPlayoffTeams` follow from `ASW` and `ASE`. Put the team record in `src/teamdata95.asm`, which is included before the engine, so the engine's PC-relative branches move together.
 
 ## Tables the assemble checks
 

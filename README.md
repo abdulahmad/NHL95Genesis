@@ -39,9 +39,8 @@ The source follows [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis): i
 | (each code file) | One file per 95 subsystem, named for what it does. Each file is one contiguous range of the ROM. The header says which 94 files it was adapted from; where it takes code from more than one 94 file, a banner before each run names the 94 file. `docs/FILE_ORIGINS.md` gives the 94 file of every routine. |
 | `src/sega/` | Sega's cartridge header (`SegaIDTable95.asm`, $100-$1FF) and power-on code (`SegaInit.asm`, $200-$2F9), included by `main95.asm`. |
 | `src/ram95.asm` | The RAM map, Z80 RAM and the save RAM offsets (`SR...`). Equates only. |
-| `src/stubinc/` | `ports.inc` (IO and VDP ports) and `equals.inc` (VDP status bits). Equates only. |
+| `src/inc/` | `ports.inc` (IO and VDP ports) and `equals.inc` (VDP status bits). Equates only. |
 | `src/macros/genesis.mac` | The `VmInc`, `String`, `Player` and `PIX` macros. |
-| `<file>_stub.asm` | One per code file, all in `src/stubinc/` (`src/stubinc/logic95_stub.asm`): the segment org, the equates, equates for the outside addresses the segment uses, then `include <path>.asm`. A stub builds and verifies one segment by itself. |
 | `docs/name_map.csv` | Every label: address, current name, the IDA name, the old name if it was renamed, and the file. |
 | `docs/WHY_95_MOVED.md` | Why 95 reordered 94's routines (SNES banking, locality and re-filing weighed against the code), and the subsystem files the 95 source probably had. |
 
@@ -64,10 +63,9 @@ Full ROM builds (`node tools/build.js`, one line per step; `--verbose` shows the
 
 `build:dev` (`checksum=0`): `RegionOK` skips `jsr ValidationRoutine` (3 `nop`s instead) and the header checksum is 0, so changed code still boots. With `checksum=1` the validation routine sums the ROM, and any change turns the screen red.
 
-Segment builds: `npm run seg:<file>` (`seg:logic95`) runs `buildseg.bat <name>` (`buildseg.bat logic95` assembles `src/stubinc/logic95_stub.asm` to `output/logic95.bin`), `tools/fixopcodes.js`, then `tools/verifySegment.js <file> <org> lst/nhl95.bin`, which overlays the segment on the reference ROM and compares. A MATCH of 0 bytes is a failure.
 
 ## Build pre-step: ROM check and automatic asset extraction
-Every build entry point (`npm run build:*`, `npm run seg:*`, and the batch files run directly) first runs `node tools/prebuild.js`. It:
+Every build entry point (`npm run build:*` and the batch files run directly) first runs `node tools/prebuild.js`. It:
 
 1. checks that the ROM the build needs is in place and is exactly the right version (SHA-1 and size);
 2. checks that `Extracted/` is complete: the extractor writes `Extracted/.extract-complete.json` last, listing every file it wrote (with its size), the ROM it read and the extractor's own SHA-1;
@@ -91,11 +89,10 @@ The batch files run `assembler\Assembler.exe` (SNASM68K) on Windows. Under Linux
 - `tools/scan_cleanup.py` counts what is left: disassembler noise in comments, raw RAM / hardware / save RAM / ROM addresses in code, raw struct displacements, and IDA names. `--list` prints each hit.
 - `tools/strip_noise.py` removes disassembler noise from comments (never code) and records each removed IDA name in `docs/name_map.csv`.
 - `tools/file_origins.py --ref94 <NHL94Genesis> --ref93 <NHLPA93Genesis>` writes `docs/FILE_ORIGINS.md` and `docs/function_origins.csv`: for every 95 file and every label in it, the 94 file it came from (or new in 95). Run a full build first; it reads `output/obj/nhl95 .lst`.
-- `tools/fingerprint_map.py`, `verify_segmap.py`, `apply_segmap.py`, `segmap95.json` and `SEGMAP95.md` made the first split of the ROM into 94 files, before any segment was transcribed. They are kept for history. Their output (placeholder files, provisional orgs, the flat `_01` / `_02` file names) is out of date: the include lists in `src/` and `SEGMENT_AGENT.md` are current. `docs/name_map.csv` keeps those old names only in `old_name` where a label was renamed; its `module` column is the current path (`engine/logic95`).
+- `tools/fingerprint_map.py`, `verify_segmap.py`, `segmap95.json` and `SEGMAP95.md` made the first split of the ROM into 94 files, before any segment was transcribed. They are kept for history. Their output (placeholder files, provisional orgs, the flat `_01` / `_02` file names) is out of date: the include lists in `src/` and `SEGMENT_AGENT.md` are current. `docs/name_map.csv` keeps those old names only in `old_name` where a label was renamed; its `module` column is the current path (`engine/logic95`).
 
 ## Segment notes
 
-`SEGMENT_AGENT.md` has the rules the segments were transcribed by and the ROM map: one row per segment with its range, its 94 file and what is in it. `PROMPT.md` is the prompt that was used for each segment session.
 
 ## AI assistance
 

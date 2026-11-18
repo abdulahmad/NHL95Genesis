@@ -2,14 +2,13 @@
 ;	file assembles right after the one before it.
 ;
 ;	The engine and the front end each have a list file of their own. Only this file sets the start
-;	address; a segment build sets its own in its stub.
+;	address.
 
-	include	stubinc\ports.inc		;IO_* / VDP_* ports. Equates only
-	include	stubinc\equals.inc		;VDP status bits. Equates only
+	include	inc\ports.inc		;IO_* / VDP_* ports. Equates only
+	include	inc\equals.inc		;VDP status bits. Equates only
 	include	ram95.asm				;RAM map. Equates only
 
 	org	0							;the ROM starts at 0. Without an org SNASM writes a short, misaligned bin
-									;(the stubs carry their own org)
 	include	main95.asm				; vectors, cartridge header, SegaInit, the 95 region lock, Begin
 	include	..\output\obj\names\teamdata95.asm	; team data: TeamList and one block per team
 	include	frames95.asm			; sprite animation tables and revframetbl

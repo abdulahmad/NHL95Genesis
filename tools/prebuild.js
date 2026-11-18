@@ -1,4 +1,4 @@
-// prebuild.js: run before every build (npm run build:*, seg:*, build95.bat, buildseg.bat).
+// prebuild.js: run before every build (npm run build:*, build95.bat).
 // Usage: node tools/prebuild.js [retail]
 // The ROM must be present (and the right version); then makes sure Extracted/ is complete, and runs
 // the extractor if it is not. If the ROM is missing or wrong, stops with the path, file name, SHA-1
@@ -103,7 +103,7 @@ function mapGeometry(relPath) {
 
 // The licensed names: src/teamdata95.asm holds placeholders instead of the NHLPA player names and the NHL team nicknames. The extractor writes the real ones to Extracted/PlayerNames.txt and Extracted/TeamNicknames.txt (one per
 // line, in source order); this copies the file to output/obj/names/ with each placeholder replaced, and nhl95.asm and the
-// teamdata95 segment stub include the copy. A name must have the length of its placeholder (the Player macro
+// teamdata95 build include the copy. A name must have the length of its placeholder (the Player macro
 // writes the row length). Player rows are replaced in order; a nickname placeholder is 'N' + its two-digit number in
 // TeamNicknames.txt, padded with '_'.
 function writeNames() {

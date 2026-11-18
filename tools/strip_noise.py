@@ -156,16 +156,8 @@ def src_files(subs=SUBSYSTEMS):
 
 
 def module_ranges():
-    """(org, module) from each stub, so a build address maps to its file (engine/logic95 ...)."""
-    ranges = []
-    mods = {os.path.basename(f)[:-4]: f[:-4] for f in src_files() if f.endswith('.asm')}
-    for fn in src_files(('stubinc',)):
-        if fn.endswith('_stub.asm'):
-            text = open(os.path.join(SRC, fn), encoding='latin-1').read()
-            m = re.search(r'^\s+org\s+\$?([0-9A-Fa-f]+)', text, re.M)
-            name = os.path.basename(fn)[:-len('_stub.asm')]
-            ranges.append((int(m.group(1), 16), mods.get(name, name)))
-    return sorted(ranges)
+    """No segment stubs any more: a build address cannot be mapped to a file this way."""
+    return []
 
 
 def main():
@@ -173,7 +165,7 @@ def main():
     recorded = {}
     changes = Counter()
     examples = {}
-    for fn in src_files(SUBSYSTEMS + ('sega', 'stubinc', 'macros')):
+    for fn in src_files(SUBSYSTEMS + ('sega', 'inc', 'macros')):
         path = os.path.join(SRC, fn)
         stub = fn.endswith('_stub.asm')
         with open(path, encoding='latin-1', newline='') as f:
