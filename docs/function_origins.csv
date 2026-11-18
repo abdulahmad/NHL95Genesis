@@ -1943,10 +1943,10 @@ graphics95.asm,$14A490,7352,FaceOffSprites,data,graphics94,name
 graphics95.asm,$14C148,448,FramerMap,data,graphics94,name
 graphics95.asm,$14C308,448,Framermap2,data,graphics94,follows FramerMap
 graphics95.asm,$14C4C8,718,EnergyBarMap,data,graphics94,name
-graphics95.asm,$14C796,9070,EASportsMap,data,graphics94,name
-graphics95.asm,$14EB04,4254,RefTiles,data,graphics94,follows EASportsMap
-graphics95.asm,$14FBA2,7102,RefTilesHor,data,graphics94,follows RefTiles
-graphics95.asm,$151760,3438,SetupFont,data,graphics94,follows RefTilesHor
+graphics95.asm,$14C796,9070,EASportsSplashMap,data,graphics94,name
+graphics95.asm,$14EB04,4254,RefsMap,data,graphics94,follows EASportsSplashMap
+graphics95.asm,$14FBA2,7102,RefMap2,data,graphics94,follows RefsMap
+graphics95.asm,$151760,3438,SetupFont,data,graphics94,follows RefMap2
 graphics95.asm,$1524CE,25646,SetupBgMap2,data,graphics94,follows SetupFont
 graphics95.asm,$1588FC,3662,SetupBgMap1,data,graphics94,follows SetupBgMap2
 graphics95.asm,$15974A,14110,TeamBitmaps,data,graphics94,name
@@ -2008,10 +2008,10 @@ graphics95.asm,$1835D6,886,Arrowsmap,data,graphics94,name
 graphics95.asm,$18394C,2446,ScoutMap,data,graphics94,follows Arrowsmap
 graphics95.asm,$1842DA,20254,PlayoffSprite,data,graphics94,follows ScoutMap
 graphics95.asm,$1891F8,5070,ScoutReportMap,data,graphics94,follows PlayoffSprite
-graphics95.asm,$18A5C6,454,HotIconMap,data,graphics94,follows ScoutReportMap
-graphics95.asm,$18A78C,550,ColdIconMap,data,graphics94,follows HotIconMap
+graphics95.asm,$18A5C6,454,HotMap,data,graphics94,follows ScoutReportMap
+graphics95.asm,$18A78C,550,ColdMap,data,graphics94,follows HotMap
 graphics95.asm,$18A9B2,3190,RonBarrMap,data,graphics94,name
-graphics95.asm,$18B628,9344,Crowdframelist,data,graphics94,follows RonBarrMap
+graphics95.asm,$18B628,9344,CrowdSprites,data,graphics94,follows RonBarrMap
 graphics95.asm,$18DAA8,34350,TitleScreenImg,data,graphics94,name
 graphics95.asm,$1960D6,2934,TitleImg,data,graphics94,name
 graphics95.asm,$196C4C,13486,StanleyCupImg,data,graphics94,follows TitleImg

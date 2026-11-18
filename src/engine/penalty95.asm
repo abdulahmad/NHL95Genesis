@@ -270,7 +270,7 @@ chkprogress							;Control the progress of the ref and the game through penalty 
 	bset	#sfslock,(sflags).w
 .5
 	move.w	(ExtraChars).w,d4		;load horizontal ref tiles
-	movea.l	#RefTilesHor+8,a2
+	movea.l	#RefMap2+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	st	(puckc).w
 	movea.w	#(puckx-M68K_RAM),a3
@@ -687,17 +687,17 @@ SetPA2								;Update the ref animation: next frame / delay pair from the Penalt
 	movem.l	(sp)+,d0-d2/a0-a1
 	rts
 
-PushRef								;Tell vblank what to display: ref frame d0 (RefTiles, RefTilesHor in the
+PushRef								;Tell vblank what to display: ref frame d0 (RefsMap, RefMap2 in the
 									;horizontal rink) into RefRamMap; $40
 									;clears the window
 	movem.l	d0-d2/a0-a1,-(sp)
 	cmp.w	#$40,d0
 	beq.w	.clearit
 	mulu.w	#$70,d0					;refwidth*refheight*2
-	movea.l	#RefTiles,a0
+	movea.l	#RefsMap,a0
 	btst	#sfhor,(sflags).w
 	beq.w	.m1
-	movea.l	#RefTilesHor,a0
+	movea.l	#RefMap2,a0
 .m1
 	adda.l	4(a0),a0
 	addq.w	#4,a0

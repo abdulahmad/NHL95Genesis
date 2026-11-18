@@ -600,8 +600,8 @@ waitxpad			equ	$FFFFDB9E	;94 $FFFFDED4. waitx: buttons held
 inputjoy			equ	$FFFFDBA2	;94 $FFFFDED8
 PlayerChked			equ	$FFFFDBA4	;94 $FFFFDEDC. Last player FallDown made fall
 PlayerChking		equ	$FFFFDBA8	;94 $FFFFDEE0. The player who hit him
-hoticonchars		equ	$FFFFDBAC	;First vram char of the hot icon (ScoutingReport, HotIconMap)
-coldiconchars		equ	$FFFFDBAE	;First vram char of the cold icon (ColdIconMap)
+hoticonchars		equ	$FFFFDBAC	;First vram char of the hot icon (ScoutingReport, HotMap)
+coldiconchars		equ	$FFFFDBAE	;First vram char of the cold icon (ColdMap)
 iconplayer			equ	$FFFFDBB0	;94 $FFFFDEE8. HotColdIcon: the player
 cupticks			equ	$FFFFDBB4	;StanleyCupScreen: frame count of the animation step. Shares pausetimeout
 pausetimeout		equ	$FFFFDBB4	;Long: Pausemode frames left without a button while no pad is on a team

@@ -897,7 +897,7 @@ LineSlotFixTbl						;CheckTeamLines slot handlers by slot & 7: goalie (the best 
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-EASportsScreen						;Called from Begin. Show the EA Sports screen (EASportsMap) until a
+EASportsScreen						;Called from Begin. Show the EA Sports screen (EASportsSplashMap) until a
 									;button, or $50 x 4 frames
 	move.l	#vb2,(VBint).w			;vblank handler
 	bclr	#df32c,(disflags).w
@@ -918,7 +918,7 @@ EASportsScreen						;Called from Begin. Show the EA Sports screen (EASportsMap) 
 	jsr	(setVram_0).l
 	jsr	(printz).l
 	String	CC_Font2,0,0,0
-	movea.l	#EASportsMap,a2
+	movea.l	#EASportsSplashMap,a2
 	movea.l	a2,a0
 	movea.l	a2,a1
 	adda.l	(a2)+,a0

@@ -1220,8 +1220,8 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | PlayerStatsBgMap | ok |
 | PlayerStatsTitleMap | ok |
 | PresidentsPic | ok |
-| RefTiles | ok |
-| RefTilesHor | ok |
+| RefsMap | ok |
+| RefMap2 | ok |
 | ReplayIconMap | ok |
 | RosterBitmap | ok |
 | RosterFont | ok |

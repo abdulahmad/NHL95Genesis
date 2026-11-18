@@ -636,7 +636,7 @@ RestoreGameScreen					;Rebuild the game screen after the pause screen: the vdp m
 	movea.l	#EnergyBarMap+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.w	(animchars).w,d4
-	movea.l	#Crowdframelist+8,a2
+	movea.l	#CrowdSprites+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(setupEASNmap).l
 	btst	#4,(disflags).w
@@ -655,10 +655,10 @@ RestoreGameScreen					;Rebuild the game screen after the pause screen: the vdp m
 	move.w	(ExtraChars).w,d4
 	btst	#sfhor,(sflags).w
 	beq.w	.2
-	movea.l	#RefTilesHor+8,a2
+	movea.l	#RefMap2+8,a2
 	bra.w	.load
 .2
-	movea.l	#RefTiles+8,a2
+	movea.l	#RefsMap+8,a2
 .load
 	jsr	(DecompressGraphicsPlain).l
 .rink

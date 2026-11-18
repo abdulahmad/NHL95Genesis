@@ -684,7 +684,7 @@ updatefaceoff						;Faceoff count down: fofdata frame from temp1; at 0 erase the
 	bset	#dfclock,(disflags).w
 	jmp	printscores1
 
-Endfaceoff							;Drop the puck: sfx $2C, reload the ref tiles (RefTiles), clear the
+Endfaceoff							;Drop the puck: sfx $2C, reload the ref tiles (RefsMap), clear the
 									;faceoff flags, pick the winner (.ftab from the two fofdata2 frames and
 									;randomd0) and the puck direction (fodir1 / fodir2 or random, dirtab);
 									;assignment 1 (pucknorm). Practice drops it dead
@@ -693,7 +693,7 @@ Endfaceoff							;Drop the puck: sfx $2C, reload the ref tiles (RefTiles), clear
 	bclr	#sf2faceoff,(sflags2).w
 	move.w	#$3C,(holdreset).w
 	move.w	(ExtraChars).w,d4
-	movea.l	#RefTiles+8,a2
+	movea.l	#RefsMap+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	bclr	#sf2drec,(sflags2).w
 	bclr	#gmclock,(gmode).w

@@ -11752,7 +11752,7 @@
     ],
     [
      "graphics94",
-     "HotIconMap",
+     "HotMap",
      "$0F5AF6",
      "$18A5C6",
      "$18A7EC",
@@ -12708,13 +12708,13 @@
    "framermap $055B7E 120 data",
    "Spritetiles $05DE84 264352 data",
    "frameSprData $09E724 23972 data",
-   "CrowdFrameList $0A4B54 11610 data",
+   "CrowdSprites $0A4B54 11610 data",
    "FaceOffSprites $0A78AE 4212 data",
    "ZamFrameList $0A8922 4334 data",
    "BigFontMap $0A9A10 4674 data",
    "RonBarrMap $0B389C 1496 data",
    "ScoresMap $0B3E74 998 data",
-   "EASportsMap $0B425A 3878 data",
+   "EASportsSplashMap $0B425A 3878 data",
    "ReplayMap $0BB4EE 2926 data",
    "HorRinkMap $0BC05C 8718 data",
    "PrintFont2Map $0BE26A 3406 data",
@@ -12760,7 +12760,7 @@
    "PlayerCardsScreenPic $0E6632 13390 data",
    "CornerLogoMap $0E9A80 1110 data",
    "ArenaGfxBank $0E9ED6 37314 data",
-   "ColdIconMap $0F5D1C 754 data"
+   "ColdMap $0F5D1C 754 data"
   ],
   "fourway94": [
    "Set4WayPlayer $0F6E3A 80 code"
