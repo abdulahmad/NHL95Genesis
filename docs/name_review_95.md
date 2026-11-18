@@ -1229,8 +1229,8 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | Screen6Tiles1 | ok |
 | Screen6Tiles2 | ok |
 | SelkePic | ok |
-| SetupBgMap1 | ok |
-| SetupBgMap2 | ok |
+| GameSetUpMap2 | ok |
+| GameSetUpMap | ok |
 | SetupFont | ok |
 | SmallFontMap2 | ok |
 | StanleyCupImg | ok |

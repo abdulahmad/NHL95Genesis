@@ -475,10 +475,10 @@ RefMap2							;The RefMap2 map
 	incbin	..\Extracted\NHL95\Graphics\Refs2.map.jim
 SetupFont							;The SetupFont map
 	incbin	..\Extracted\NHL95\Graphics\SetupFont.map.jim
-SetupBgMap2							;The SetupBgMap2 map
-	incbin	..\Extracted\NHL95\Graphics\SetupBgMap2.map.jim
-SetupBgMap1							;The SetupBgMap1 map
-	incbin	..\Extracted\NHL95\Graphics\SetupBgMap1.map.jim
+GameSetUpMap							;The GameSetUpMap map
+	incbin	..\Extracted\NHL95\Graphics\GameSetUp95-1.map.jim
+GameSetUpMap2							;The GameSetUpMap2 map
+	incbin	..\Extracted\NHL95\Graphics\GameSetUp95-2.map.jim
 TeamBitmaps							;The TeamBitmaps map
 	incbin	..\Extracted\NHL95\Graphics\TeamBlocks94.map.jim
 BigFontMap3							;The BigFontMap3 map
@@ -595,8 +595,8 @@ Arrowsmap							;The Arrowsmap map
 	incbin	..\Extracted\NHL95\Graphics\Arrows.map.jim
 ScoutMap							;The ScoutMap map
 	incbin	..\Extracted\NHL95\Graphics\ScoutMap.map.jim
-PlayoffSprite						;The PlayoffSprite map
-	incbin	..\Extracted\NHL95\Graphics\PlayoffSprite.map.jim
+StanleyCupSprite						;The StanleyCupSprite map
+	incbin	..\Extracted\NHL95\Graphics\StanleyCup.anim
 ScoutReportMap						;The ScoutReportMap map
 	incbin	..\Extracted\NHL95\Graphics\ScoutReportMap.map.jim
 HotMap							;The HotMap map

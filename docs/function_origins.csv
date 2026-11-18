@@ -1947,8 +1947,8 @@ graphics95.asm,$14C796,9070,EASportsSplashMap,data,graphics94,name
 graphics95.asm,$14EB04,4254,RefsMap,data,graphics94,follows EASportsSplashMap
 graphics95.asm,$14FBA2,7102,RefMap2,data,graphics94,follows RefsMap
 graphics95.asm,$151760,3438,SetupFont,data,graphics94,follows RefMap2
-graphics95.asm,$1524CE,25646,SetupBgMap2,data,graphics94,follows SetupFont
-graphics95.asm,$1588FC,3662,SetupBgMap1,data,graphics94,follows SetupBgMap2
+graphics95.asm,$1524CE,25646,GameSetUpMap,data,graphics94,follows SetupFont
+graphics95.asm,$1588FC,3662,GameSetUpMap2,data,graphics94,follows GameSetUpMap
 graphics95.asm,$15974A,14110,TeamBitmaps,data,graphics94,name
 graphics95.asm,$15CE68,4898,BigFontMap3,data,graphics94,follows TeamBitmaps
 graphics95.asm,$15E18A,4834,BigFontMap,data,graphics94,name
@@ -2006,8 +2006,8 @@ graphics95.asm,$18277C,3448,TradeAdvantageMap1,data,graphics93 (93 only),follows
 graphics95.asm,$1834F4,226,NameEntryBgMap,data,graphics93 (93 only),follows TradeAdvantageMap1
 graphics95.asm,$1835D6,886,Arrowsmap,data,graphics94,name
 graphics95.asm,$18394C,2446,ScoutMap,data,graphics94,follows Arrowsmap
-graphics95.asm,$1842DA,20254,PlayoffSprite,data,graphics94,follows ScoutMap
-graphics95.asm,$1891F8,5070,ScoutReportMap,data,graphics94,follows PlayoffSprite
+graphics95.asm,$1842DA,20254,StanleyCupSprite,data,graphics94,follows ScoutMap
+graphics95.asm,$1891F8,5070,ScoutReportMap,data,graphics94,follows StanleyCupSprite
 graphics95.asm,$18A5C6,454,HotMap,data,graphics94,follows ScoutReportMap
 graphics95.asm,$18A78C,550,ColdMap,data,graphics94,follows HotMap
 graphics95.asm,$18A9B2,3190,RonBarrMap,data,graphics94,name

@@ -449,8 +449,8 @@ const assets = [
     { name: 'Refs.map.jim', folder: 'NHL95/Graphics', start: 0x0014EB04, end: 0x0014FBA2 }, // RefsMap
     { name: 'Refs2.map.jim', folder: 'NHL95/Graphics', start: 0x0014FBA2, end: 0x00151760 }, // RefMap2
     { name: 'SetupFont.map.jim', folder: 'NHL95/Graphics', start: 0x00151760, end: 0x001524CE }, // SetupFont
-    { name: 'SetupBgMap2.map.jim', folder: 'NHL95/Graphics', start: 0x001524CE, end: 0x001588FC }, // SetupBgMap2
-    { name: 'SetupBgMap1.map.jim', folder: 'NHL95/Graphics', start: 0x001588FC, end: 0x0015974A }, // SetupBgMap1
+    { name: 'GameSetUp95-1.map.jim', folder: 'NHL95/Graphics', start: 0x001524CE, end: 0x001588FC }, // GameSetUpMap
+    { name: 'GameSetUp95-2.map.jim', folder: 'NHL95/Graphics', start: 0x001588FC, end: 0x0015974A }, // GameSetUpMap2
     { name: 'TeamBlocks94.map.jim', folder: 'NHL95/Graphics', start: 0x0015974A, end: 0x0015CE68 }, // TeamBitmaps
     { name: 'BigFont95-3.map.jim', folder: 'NHL95/Graphics', start: 0x0015CE68, end: 0x0015E18A }, // BigFontMap3
     { name: 'BigFont95.map.jim', folder: 'NHL95/Graphics', start: 0x0015E18A, end: 0x0015F46C }, // BigFontMap
@@ -508,7 +508,7 @@ const assets = [
     { name: 'NameEntryBgMap.map.jim', folder: 'NHL95/Graphics', start: 0x001834F4, end: 0x001835D6 }, // NameEntryBgMap
     { name: 'Arrows.map.jim', folder: 'NHL95/Graphics', start: 0x001835D6, end: 0x0018394C }, // Arrowsmap
     { name: 'ScoutMap.map.jim', folder: 'NHL95/Graphics', start: 0x0018394C, end: 0x001842DA }, // ScoutMap
-    { name: 'PlayoffSprite.map.jim', folder: 'NHL95/Graphics', start: 0x001842DA, end: 0x001891F8 }, // PlayoffSprite
+    { name: 'StanleyCup.anim', folder: 'NHL95/Graphics', start: 0x001842DA, end: 0x001891F8 }, // StanleyCupSprite
     { name: 'ScoutReportMap.map.jim', folder: 'NHL95/Graphics', start: 0x001891F8, end: 0x0018A5C6 }, // ScoutReportMap
     { name: 'Hot.map.jim', folder: 'NHL95/Graphics', start: 0x0018A5C6, end: 0x0018A78C }, // HotMap
     { name: 'Cold.map.jim', folder: 'NHL95/Graphics', start: 0x0018A78C, end: 0x0018A9B2 }, // ColdMap
