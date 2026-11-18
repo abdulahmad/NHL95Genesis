@@ -11770,7 +11770,7 @@
     ],
     [
      "graphics94",
-     "logoANH",
+     "TeamLogoANH",
      "$0BF8D0",
      "$19A992",
      "$19AE28",
@@ -11779,7 +11779,7 @@
     ],
     [
      "graphics94",
-     "logoBOS",
+     "TeamLogoBOS",
      "$0BFD66",
      "$19AE28",
      "$19B17E",
@@ -11788,7 +11788,7 @@
     ],
     [
      "graphics94",
-     "logoBUF",
+     "TeamLogoBUF",
      "$0C00BC",
      "$19B17E",
      "$19B4D4",
@@ -11797,7 +11797,7 @@
     ],
     [
      "graphics94",
-     "logoCGY",
+     "TeamLogoCGY",
      "$0C0412",
      "$19B4D4",
      "$19B96A",
@@ -11806,7 +11806,7 @@
     ],
     [
      "graphics94",
-     "logoCHI",
+     "TeamLogoCHI",
      "$0C08A8",
      "$19B96A",
      "$19BDA0",
@@ -11815,7 +11815,7 @@
     ],
     [
      "graphics94",
-     "logoDET",
+     "TeamLogoDET",
      "$0C0CDE",
      "$19BDA0",
      "$19C0F6",
@@ -11824,7 +11824,7 @@
     ],
     [
      "graphics94",
-     "logoEDM",
+     "TeamLogoEDM",
      "$0C1034",
      "$19C0F6",
      "$19C4EC",
@@ -11833,7 +11833,7 @@
     ],
     [
      "graphics94",
-     "logoFLA",
+     "TeamLogoFLA",
      "$0C142A",
      "$19C4EC",
      "$19C8A2",
@@ -11842,7 +11842,7 @@
     ],
     [
      "graphics94",
-     "logoHFD",
+     "TeamLogoHFD",
      "$0C1900",
      "$19C8A2",
      "$19CB38",
@@ -11851,7 +11851,7 @@
     ],
     [
      "graphics94",
-     "logoNYI",
+     "TeamLogoNYI",
      "$0C1B96",
      "$19CB38",
      "$19CF8E",
@@ -11860,7 +11860,7 @@
     ],
     [
      "graphics94",
-     "logoLA",
+     "TeamLogoLA",
      "$0C1FEC",
      "$19CF8E",
      "$19D304",
@@ -11869,7 +11869,7 @@
     ],
     [
      "graphics94",
-     "logoDAL",
+     "TeamLogoDAL",
      "$0C2362",
      "$19D304",
      "$19D5DA",
@@ -11878,7 +11878,7 @@
     ],
     [
      "graphics94",
-     "logoMTL",
+     "TeamLogoMTL",
      "$0C2638",
      "$19D71A",
      "$19DA90",
@@ -11887,7 +11887,7 @@
     ],
     [
      "graphics94",
-     "logoNJ",
+     "TeamLogoNJ",
      "$0C29AE",
      "$19DA90",
      "$19DF46",
@@ -11896,7 +11896,7 @@
     ],
     [
      "graphics94",
-     "logoNYR",
+     "TeamLogoNYR",
      "$0C2E64",
      "$19DF46",
      "$19E41C",
@@ -11905,7 +11905,7 @@
     ],
     [
      "graphics94",
-     "logoOTW",
+     "TeamLogoOTW",
      "$0C333A",
      "$19E41C",
      "$19E832",
@@ -11914,7 +11914,7 @@
     ],
     [
      "graphics94",
-     "logoPHI",
+     "TeamLogoPHI",
      "$0C3750",
      "$19E832",
      "$19EBE8",
@@ -11923,7 +11923,7 @@
     ],
     [
      "graphics94",
-     "logoPIT",
+     "TeamLogoPIT",
      "$0C3B06",
      "$19EBE8",
      "$19EF5E",
@@ -11932,7 +11932,7 @@
     ],
     [
      "graphics94",
-     "logoQUE",
+     "TeamLogoQUE",
      "$0C3E7C",
      "$19EF5E",
      "$19F2B4",
@@ -11941,7 +11941,7 @@
     ],
     [
      "graphics94",
-     "logoSJ",
+     "TeamLogoSJ",
      "$0C41D2",
      "$19F2B4",
      "$19F6EA",
@@ -11950,7 +11950,7 @@
     ],
     [
      "graphics94",
-     "logoSTL",
+     "TeamLogoSTL",
      "$0C4608",
      "$19F6EA",
      "$19FAC0",
@@ -11959,7 +11959,7 @@
     ],
     [
      "graphics94",
-     "logoTB",
+     "TeamLogoTB",
      "$0C49DE",
      "$19FAC0",
      "$19FED6",
@@ -11968,7 +11968,7 @@
     ],
     [
      "graphics94",
-     "logoTOR",
+     "TeamLogoTOR",
      "$0C4DF4",
      "$19FED6",
      "$1A022C",
@@ -11977,7 +11977,7 @@
     ],
     [
      "graphics94",
-     "logoVAN",
+     "TeamLogoVAN",
      "$0C514A",
      "$1A022C",
      "$1A0642",
@@ -11986,7 +11986,7 @@
     ],
     [
      "graphics94",
-     "logoWSH",
+     "TeamLogoWSH",
      "$0C5560",
      "$1A0642",
      "$1A08B8",
@@ -11995,7 +11995,7 @@
     ],
     [
      "graphics94",
-     "logoWPG",
+     "TeamLogoWPG",
      "$0C57D6",
      "$1A08B8",
      "$1A0D2E",
@@ -12004,7 +12004,7 @@
     ],
     [
      "graphics94",
-     "logoASE",
+     "TeamLogoASE",
      "$0C5C4C",
      "$1A0D2E",
      "$1A1104",
@@ -12013,7 +12013,7 @@
     ],
     [
      "graphics94",
-     "logoASW",
+     "TeamLogoASW",
      "$0C6022",
      "$1A11E4",
      "$1A15BA",

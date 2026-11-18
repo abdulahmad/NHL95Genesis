@@ -1476,10 +1476,10 @@ GetTeamLogo							;a0 = logo bitmap of team d3 (TeamLogoBitmaps); returns d3 = t
 	rts
 
 TeamLogoBitmaps						;Team logo bitmaps by team number (TeamList order)
-	dc.l	logoANH,logoBOS,logoBUF,logoCGY,logoCHI,logoDAL,logoDET,logoEDM
-	dc.l	logoFLA,logoHFD,logoLA,logoMTL,logoNJ,logoNYI,logoNYR,logoOTW
-	dc.l	logoPHI,logoPIT,logoQUE,logoSJ,logoSTL,logoTB,logoTOR,logoVAN
-	dc.l	logoWSH,logoWPG,logoASE,logoASW
+	dc.l	TeamLogoANH,TeamLogoBOS,TeamLogoBUF,TeamLogoCGY,TeamLogoCHI,TeamLogoDAL,TeamLogoDET,TeamLogoEDM
+	dc.l	TeamLogoFLA,TeamLogoHFD,TeamLogoLA,TeamLogoMTL,TeamLogoNJ,TeamLogoNYI,TeamLogoNYR,TeamLogoOTW
+	dc.l	TeamLogoPHI,TeamLogoPIT,TeamLogoQUE,TeamLogoSJ,TeamLogoSTL,TeamLogoTB,TeamLogoTOR,TeamLogoVAN
+	dc.l	TeamLogoWSH,TeamLogoWPG,TeamLogoASE,TeamLogoASW
 	IF (*-TeamLogoBitmaps)/4<>NumTeams
 	inform 3,"TeamLogoBitmaps does not match the team count"
 	ENDIF
