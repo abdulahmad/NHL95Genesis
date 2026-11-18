@@ -71,7 +71,7 @@ class Unit:
 def load_reference(ref_dir, game):
     top = os.path.join(ref_dir, "src", game + ".asm")
     files = re.findall(r"^\s*include\s+(\w+\.asm)", open(top, encoding="latin-1").read(), re.M | re.I)
-    files = [f for f in files if not f.lower().startswith("stubinc")]
+    files = [f for f in files if not f.lower().startswith("inc")]
     rom = open(os.path.join(ref_dir, "lst", game + ".bin"), "rb").read()
     labels, kinds, seg_starts = L.parse_built_listing(os.path.join(ref_dir, "output", game + " .lst"), files)
 

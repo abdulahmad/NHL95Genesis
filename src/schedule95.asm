@@ -11,7 +11,7 @@
 ;	FindDayGames reads record (SeasonStartDay + SeasonDay) mod the day count; with the random
 ;	schedule option off SeasonStartDay is 0, so "day n" below is SeasonDay n-1.
 
-;	Team numbers ANH ... WPG: stubinc/equals.inc
+;	Team numbers ANH ... WPG: inc/equals.inc
 
 SeasonSchedule						;The season schedule (read by PickSeasonStartDay, BuildSeasonTeamList,
 									;WriteDayGames, ...)

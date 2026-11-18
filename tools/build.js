@@ -5,7 +5,6 @@
 // --no-color (or NO_COLOR) turns the colors off; they are also off when the output is not a terminal.
 // retail: CHECKSUM=1 and verified against the retail ROM (found in the repo folder by its SHA-1 and size, any file name: tools/roms.js).
 // dev: CHECKSUM=0, not verified. The checksum environment variable (set checksum=0 on Windows, checksum=0 node ... on Linux) overrides the default.
-// The segment builds (npm run seg:<name>, buildseg.bat) are separate.
 const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');

@@ -240,7 +240,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 |---|---|
 | CountryCode | ok |
 
-## stubinc/equals.inc
+## inc/equals.inc
 
 | name | verdict |
 |---|---|
