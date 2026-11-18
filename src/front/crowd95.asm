@@ -49,7 +49,7 @@ showcrowd							;Crowd sprites: up to 3 frames per PBnum nibble (ShowCrowdPb), t
 									;sprite table, d6 = link counter
 	btst	#4,(sflags4).w			;check if reverse angle replay
 	bne.w	rtsShowCrowd
-	movea.l	#Crowdframelist,a1
+	movea.l	#CrowdSprites,a1
 	adda.l	4(a1),a1
 	move.w	(Hpos).w,d4
 	move.w	(Vpos).w,d5

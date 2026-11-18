@@ -2264,7 +2264,7 @@ setupice							;Set all variables, send non purgeable graphics, build sprite fra
 	movea.l	#EnergyBarMap+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(animchars).w		;crowd chars
-	movea.l	#Crowdframelist+8,a2
+	movea.l	#CrowdSprites+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	move.w	d4,(spritechars).w
 	jsr	(defaultsprites).l

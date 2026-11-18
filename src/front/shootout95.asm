@@ -1010,7 +1010,7 @@ puckpenshot							;Penalty shot / shootout face-off: rink, puck and nets reset, 
 	addi.w	#$14,(CwdExciteLvl).w
 .1
 	move.w	(ExtraChars).w,d4
-	movea.l	#RefTiles+8,a2
+	movea.l	#RefsMap+8,a2
 	jsr	(DecompressGraphicsPlain).l
 	bset	#dfclock,(disflags).w
 	bclr	#sfpz,(sflags).w

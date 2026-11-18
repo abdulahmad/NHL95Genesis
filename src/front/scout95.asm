@@ -108,10 +108,10 @@ ScoutingReport						;Pregame scouting report: the Ron Barr picture, the text box
 	move.w	2(a1),d3
 	moveq	#8,d5
 	jsr	(dobitmap).l
-	movea.l	#HotIconMap+8,a2
+	movea.l	#HotMap+8,a2
 	move.w	d4,(hoticonchars).w		;tiles: 1st vram char
 	jsr	(DecompressGraphicsPlain).l
-	movea.l	#ColdIconMap+8,a2
+	movea.l	#ColdMap+8,a2
 	move.w	d4,(coldiconchars).w	;tiles: 1st vram char
 	jsr	(DecompressGraphicsPlain).l
 	jsr	(printbigz).l
@@ -1076,11 +1076,11 @@ HotColdIcon							;The hot or cold icon by player iconplayer of team a2, or eras
 	bra.w	.x
 .hot
 	move.w	(hoticonchars).w,d4
-	movea.l	#HotIconMap,a0
+	movea.l	#HotMap,a0
 	bra.w	.draw
 .cold
 	move.w	(coldiconchars).w,d4
-	movea.l	#ColdIconMap,a0
+	movea.l	#ColdMap,a0
 .draw
 	move.w	(iconplayer+$2).w,(printx).w
 	move.w	#$11,(printy).w

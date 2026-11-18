@@ -2092,9 +2092,9 @@ $14A490,FaceOffSprites,unk_14A490,,graphics95
 $14C148,Framermap,unk_14C148,,graphics95
 $14C308,Framermap2,unk_14C308,,graphics95
 $14C4C8,EnergyBarMap,unk_14C4C8,,graphics95
-$14C796,EASportsMap,,,graphics95
-$14EB04,RefTiles,unk_14EB04,,graphics95
-$14FBA2,RefTilesHor,unk_14FBA2,,graphics95
+$14C796,EASportsSplashMap,,EASportsMap,graphics95
+$14EB04,RefsMap,unk_14EB04,RefTiles,graphics95
+$14FBA2,RefMap2,unk_14FBA2,RefTilesHor,graphics95
 $151760,SetupFont,unk_151760,,graphics95
 $1524CE,SetupBgMap2,,,graphics95
 $1588FC,SetupBgMap1,,,graphics95
@@ -2157,10 +2157,10 @@ $1835D6,Arrowsmap,unk_1835D6,,graphics95
 $18394C,ScoutMap,,,graphics95
 $1842DA,PlayoffSprite,unk_1842DA,,graphics95
 $1891F8,ScoutReportMap,,,graphics95
-$18A5C6,HotIconMap,unk_18A5C6,,graphics95
-$18A78C,ColdIconMap,unk_18A78C,,graphics95
+$18A5C6,HotMap,unk_18A5C6,HotIconMap,graphics95
+$18A78C,ColdMap,unk_18A78C,ColdIconMap,graphics95
 $18A9B2,RonBarrMap,,,graphics95
-$18B628,CrowdFrameList,unk_18B628,,graphics95
+$18B628,CrowdSprites,unk_18B628,Crowdframelist,graphics95
 $18DAA8,TitleScreenImg,unk_18DAA8,,graphics95
 $1960D6,TitleImg,,,graphics95
 $196C4C,StanleyCupImg,,,graphics95

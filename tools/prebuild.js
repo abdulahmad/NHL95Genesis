@@ -139,7 +139,7 @@ function writeNames() {
 
 function writeTeamCounts() {
     const maps = [
-        ['Teamblocks', 'NHL95/Graphics/Teamblocksmap.map.jim'],
+        ['Teamblocks', 'NHL95/Graphics/TeamBlocks.map.jim'],
         ['PauseTeamBlocks', 'NHL95/Graphics/PauseTeamBlocksMap.map.jim'],
         ['TeamBitmaps', 'NHL95/Graphics/TeamBlocks94.map.jim'],
     ];
