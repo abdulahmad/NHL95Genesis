@@ -1668,7 +1668,7 @@ SetupModeToMode						;Setup mode 0-$C to OptPlayMode ($FF ends)
 
 setoptions							;Build the game setup screen: VBint VBlank_SetOptions, the vram map, the
 									;team bitmap tiles (LoadSetupTiles), the SetupFont tiles at
-									;smallfont2chars / smallfont3chars, then the SetupBgMap1 / SetupBgMap2
+									;smallfont2chars / smallfont3chars, then the GameSetUpMap2 / GameSetUpMap
 									;bitmaps on maps 1 and 2
 	move.l	#VBlank_SetOptions,(VBint).w
 	move	#$2500,sr
@@ -1703,7 +1703,7 @@ setoptions							;Build the game setup screen: VBint VBlank_SetOptions, the vram
 	move.w	d4,(recwins).w
 	jsr	(printz).l
 	String	CC_Font1,0,0,0
-	movea.l	#SetupBgMap1,a0
+	movea.l	#GameSetUpMap2,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
 	adda.l	(a2)+,a0
@@ -1716,7 +1716,7 @@ setoptions							;Build the game setup screen: VBint VBlank_SetOptions, the vram
 	jsr	(dobitmap).l
 	jsr	(printz).l
 	String	CC_Font2,0,0,0
-	movea.l	#SetupBgMap2,a0
+	movea.l	#GameSetUpMap,a0
 	movea.l	a0,a1
 	movea.l	a0,a2
 	adda.l	(a2)+,a0

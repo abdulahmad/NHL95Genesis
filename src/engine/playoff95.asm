@@ -71,7 +71,7 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 	move.w	2(a1),d3
 	moveq	#3,d5
 	jsr	(dobitmap).l
-	movea.l	#PlayoffSprite,a1
+	movea.l	#StanleyCupSprite,a1
 	lea	8(a1),a2
 	adda.l	(a1),a1
 	moveq	#7,d0
@@ -387,13 +387,13 @@ PlayoffScreen_setup					;Playoff tree layout by gamelevel, the same bytes as 94.
 	dc.b	-1						;no scores
 	dc.b	$FF						;pad (93 $47)
 
-DrawPlayoffSprite					;The PlayoffSprite sprite at playoffspritex / playoffspritey in Satt, then
+DrawPlayoffSprite					;The StanleyCupSprite sprite at playoffspritex / playoffspritey in Satt, then
 									;end the list and set Sattsize. 95 animates it: frame picturebits 0-4, the
 									;next one every $A calls (pausetimeout).
 									;Called from PlayoffScreen
 	movea.w	#(Satt-M68K_RAM),a6
 	moveq	#1,d6
-	movea.l	#PlayoffSprite,a0
+	movea.l	#StanleyCupSprite,a0
 	move.w	(energybarchars).w,d3
 	ori.w	#$8000,d3
 	move.w	(playoffspritex).w,d0
