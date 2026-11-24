@@ -174,7 +174,7 @@ setffo								;Draw the 6 objects tied to icerink scrolling (the pads; 94: 7 wit
 	jsr	(addframe).l
 	cmpa.w	a6,a0
 	beq.w	.next
-	move.w	2(a3),d1
+	move.w	padxoff(a3),d1
 	add.w	d1,6(a0)
 	add.w	d1,$E(a0)
 .next
@@ -225,13 +225,13 @@ QueuePadLabel						;Queue the 3 character label of a pad object. d1 = label code
 									;a0 = pad object, a5 = dma list. Falls into uppads_pd for the
 									;last char
 	lea	ButtonLabelCharTable(pc),a4
-	clr.w	2(a0)					;x offset (setffo adds it to the sprites)
+	clr.w	padxoff(a0)				;x offset (setffo adds it to the sprites)
 	move.w	d1,d2
 	lsr.w	#4,d2
 	andi.w	#$F,d2
 	bne.w	.hi
 	move.w	#$FFF0,d2				;' '-'0': blank leading zero
-	subq.w	#4,2(a0)
+	subq.w	#4,padxoff(a0)
 .hi
 	addi.w	#$30,d2
 	clr.w	d0
@@ -253,7 +253,7 @@ QueuePadLabel						;Queue the 3 character label of a pad object. d1 = label code
 	lsr.w	#8,d2
 	andi.w	#7,d2
 	bne.w	.btn
-	addq.w	#4,2(a0)
+	addq.w	#4,padxoff(a0)
 .btn
 	move.b	(a4,d2.w),d2
 	moveq	#2,d0
