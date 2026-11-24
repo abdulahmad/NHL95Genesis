@@ -181,7 +181,8 @@ StatWork			equ	$FFFFBB1E	;Scratch of the season stat screens (League Leaders: +0
 TempBuffer			equ	$FFFFBB1E	;94 $FFFFBF20. 40 byte scratch buffer (hot / cold sum byte pairs,
 									;Strings). Shares linemarkbuf
 recuser2			equ	$FFFFBB20	;UpdatePlayerRecords: the other team's user word (GetPadUser)
-SeasonGameCount		equ	$FFFFBB22	;Human season games counted in SeasonGoalSum
+SeasonGameCount		equ	$FFFFBB22	;Human season games counted in SeasonGoalSum (season95.asm only). The
+									;trade and stat screens use the same word as StatWork+4
 SRAMbyte			equ	$FFFFBB46	;Save RAM byte read by GetGoalieCountD7 / GetForwardCountSeason
 rosterteam			equ	$FFFFBB4E	;setplayer: the team number ($28 of the team struct) for GetRosterName /
 									;GetJerseyNumber
