@@ -2,11 +2,10 @@
 
 ## Now
 
-- Stage / unit: leftover recut origin remap — 94-file column follows period94 / arena94 / shootoutpath94 / ui94 / helpers94 / title94 / logos94 / chgplayer94. 95G files stay job-cut.
-- Branch: `cursor/leftover-recut-f6fc`
+- Stage / unit: none open. The leftover recut origin remap (94-file column follows the 94G recut) is on `main` (edc9f7e).
+- Branch: none. New work is a short branch off the current `main` and one PR into `main`.
 - Last check: docs only (function_origins.csv / FILE_ORIGINS.md)
-- Next: pairing after 94G leftover recut lands
-- Open PRs: this unit
+- Next: not set; see `TODO.md`.
 
 ## Purpose
 Make this bit-perfect 68000 SNASM disassembly read like clean original source: accurate names that follow the
