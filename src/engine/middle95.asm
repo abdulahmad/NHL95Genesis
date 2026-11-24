@@ -2238,7 +2238,7 @@ setupice							;Set all variables, send non purgeable graphics, build sprite fra
 	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col).w
 	move.w	#$F000,(VmMAP3).w
-	move.w	#5,(Map3col1).w
+	move.w	#5,(Map3col).w
 	move.w	#$FC00,(VSCRLPM).w
 	moveq	#0,d0
 	jsr	(setVram).l

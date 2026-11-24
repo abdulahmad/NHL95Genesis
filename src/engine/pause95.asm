@@ -614,7 +614,7 @@ RestoreGameScreen					;Rebuild the game screen after the pause screen: the vdp m
 	move.w	#$E000,(VmMAP1).w
 	move.w	#6,(Map1col).w
 	move.w	#$F000,(VmMAP3).w
-	move.w	#5,(Map3col1).w
+	move.w	#5,(Map3col).w
 	move.w	#$FC00,(VSCRLPM).w
 	movea.w	#(palfadenew-M68K_RAM),a0
 	moveq	#$1F,d1

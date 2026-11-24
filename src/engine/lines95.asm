@@ -901,7 +901,7 @@ EASportsScreen						;Called from Begin. Show the EA Sports screen (EASportsSplas
 									;button, or $50 x 4 frames
 	move.l	#vb2,(VBint).w			;vblank handler
 	bclr	#df32c,(disflags).w
-	move.w	#5,(Map3col1).w
+	move.w	#5,(Map3col).w
 	move.w	#$A000,(VmMAP2).w
 	move.w	#7,(Map2col).w
 	move.w	#$C000,(VmMAP1).w
@@ -1080,7 +1080,7 @@ DrawTeamScreen2						;A DrawTeamScreen for the season / stats screens: screenarg
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	#VDPR_MODE4+$81,Vctrl-Vdata(a0)
-	move.w	#6,(Map3col1).w
+	move.w	#6,(Map3col).w
 	move.w	#VDPR_HSCROLL,Vctrl-Vdata(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
@@ -1169,7 +1169,7 @@ DrawTeamScreen3						;The same with SmallFontMap
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	#VDPR_MODE4+$81,Vctrl-Vdata(a0)
-	move.w	#6,(Map3col1).w
+	move.w	#6,(Map3col).w
 	move.w	#VDPR_HSCROLL,Vctrl-Vdata(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
@@ -1263,7 +1263,7 @@ DrawTeamScreen4						;The same as DrawTeamScreen3 with the team block tiles deco
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	#VDPR_MODE4+$81,Vctrl-Vdata(a0)
-	move.w	#6,(Map3col1).w
+	move.w	#6,(Map3col).w
 	move.w	#VDPR_HSCROLL,Vctrl-Vdata(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
@@ -1354,7 +1354,7 @@ DrawTeamScreen5						;DrawTeamScreen4 with three small fonts and palette word $A
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	#VDPR_MODE4+$81,Vctrl-Vdata(a0)
-	move.w	#6,(Map3col1).w
+	move.w	#6,(Map3col).w
 	move.w	#VDPR_HSCROLL,Vctrl-Vdata(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
@@ -1441,7 +1441,7 @@ DrawTeamScreen6						;The team blocks (screen6chars1), the bitmap, Screen6Tiles1
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	#VDPR_MODE4+$81,Vctrl-Vdata(a0)
-	move.w	#6,(Map3col1).w
+	move.w	#6,(Map3col).w
 	move.w	#VDPR_HSCROLL,Vctrl-Vdata(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
