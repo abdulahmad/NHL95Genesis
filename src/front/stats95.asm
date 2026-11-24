@@ -858,11 +858,11 @@ AddTeamSeasonStats					;Add the game totals of team a1 (a2 = other team) to team
 	movem.l	d0-d1/a0,-(sp)
 	jsr	(ReadSRAM).l
 	movea.l	#StatBuf,a0
-	move.w	$C(a1),d5
+	move.w	tmscore(a1),d5
 	add.w	d5,(a0)
-	move.w	$C(a2),d5
+	move.w	tmscore(a2),d5
 	add.w	d5,2(a0)
-	move.w	8(a1),d5
+	move.w	tmPenmin(a1),d5
 	add.w	d5,4(a0)
 	move.w	(a1),d5
 	add.w	d5,6(a0)
@@ -1044,7 +1044,7 @@ SaveGameHighlights					;Pick today's highlight of HomeTeam's game (most goals, b
 	bsr.w	MostGoals
 	cmp.w	#2,d2
 	blt.w	.2
-	move.w	Xvel(a2),d0
+	move.w	tmteam(a2),d0
 	mulu.w	#$1A,d0
 	add.w	d3,d0
 	ori.w	#$2000,d0
@@ -1055,7 +1055,7 @@ SaveGameHighlights					;Pick today's highlight of HomeTeam's game (most goals, b
 	bsr.w	MostGoals
 	cmp.w	#3,d2
 	blt.w	.3
-	move.w	Xvel(a2),d0
+	move.w	tmteam(a2),d0
 	mulu.w	#$1A,d0
 	add.w	d3,d0
 	ori.w	#$2000,d0
@@ -1066,7 +1066,7 @@ SaveGameHighlights					;Pick today's highlight of HomeTeam's game (most goals, b
 	tst.w	tmscore(a3)
 	bne.w	.saves
 .shutout
-	move.w	Xvel(a2),d0
+	move.w	tmteam(a2),d0
 	mulu.w	#$1A,d0
 	add.w	d3,d0
 	ori.w	#$6000,d0

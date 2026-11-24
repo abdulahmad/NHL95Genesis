@@ -182,7 +182,7 @@ AddPenalty2							;Forced penalties like faceoff and game over. d0 = penalty num
 	tst.w	(a1)+
 	dbeq	d1,.2
 	bne.w	.noplayer
-	move.b	$53(a3),-(a1)
+	move.b	SCnum+1(a3),-(a1)
 	move.b	d0,-(a1)
 	movea.l	#Penaltylist,a0
 	adda.w	(a0,d0.w),a0
@@ -470,7 +470,7 @@ updatepentime_ut					;a2 = team. Walk the penalty box list ($9C, 94 $9A): the fi
 									;without a coincidental penalty count down one second and the rest wait.
 									;Beeps when the first served time gets to 5 or less and releases the
 									;player at 0
-	lea	$9C(a2),a0
+	lea	tmboxlist(a2),a0
 	movea.w	#(mesarea-M68K_RAM),a1	;serving players
 	moveq	#2,d1					;two can serve at once
 	moveq	#2,d3

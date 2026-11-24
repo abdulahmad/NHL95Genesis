@@ -305,9 +305,9 @@ ReplayMode							;Instant replay play-back control and display code.
 .0
 	movem.l	d0/a3,-(sp)
 	movea.l	#SortCords+(12*SCstruct),a3
-	move.w	#1,8(a3)
+	move.w	#1,oldframe(a3)
 	movea.l	#SortCords+(13*SCstruct),a3
-	move.w	#1,8(a3)
+	move.w	#1,oldframe(a3)
 	movem.l	(sp)+,d0/a3
 	moveq	#1,d7
 	jsr	(ReadMenuJoy).l
@@ -621,9 +621,9 @@ adda4								;Step forward 1 frame. 94 first handles a reverse angle switch (sfl
 	dbf	d0,.loop2
 	movem.l	a0,-(sp)
 	movea.l	#SortCords+(12*SCstruct),a0
-	move.w	#1,8(a0)
+	move.w	#1,oldframe(a0)
 	adda.w	#SCstruct,a0
-	move.w	#1,8(a0)
+	move.w	#1,oldframe(a0)
 	movem.l	(sp)+,a0
 	bsr.w	RevReplayAdj
 	btst	#sfscrl,(sflags).w

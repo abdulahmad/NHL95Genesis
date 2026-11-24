@@ -593,8 +593,8 @@ SimGameStats						;Fill the team structs for a simulated game a0 (teams, scores,
 	move.w	d0,(VisTeam).w
 	movea.l	#tmstruct,a1
 	movea.l	#AwShots,a2
-	move.w	(HomeTeam).w,$28(a1)
-	move.w	(VisTeam).w,Xvel(a2)
+	move.w	(HomeTeam).w,tmteam(a1)
+	move.w	(VisTeam).w,tmteam(a2)
 	clr.w	d0
 	move.b	2(a0),d0
 	move.w	d0,tmscore(a1)
@@ -684,7 +684,7 @@ SimGoalie							;Credit the goalie (1/16 the backup): $E10 more time, the shots 
 	move.w	d0,d3
 	addi.w	#$EA,d3
 	move.b	d4,(a1,d3.w)
-	move.w	$C(a2),d4
+	move.w	tmscore(a2),d4
 	move.w	d0,d3
 	addi.w	#$B6,d3
 	move.b	d4,(a1,d3.w)

@@ -358,7 +358,7 @@ ShootoutModeBox						;Shootout round box: "SHOOTOUT MODE" (ShootoutModeBigTxt), 
 	movea.l	#SortCords,a2
 	adda.w	d0,a2
 	clr.w	d0
-	move.b	$66(a2),d0
+	move.b	pnum(a2),d0
 	movea.l	#AwShots,a2
 	tst.w	(BA_Team).w
 	beq.w	.1
@@ -857,7 +857,7 @@ puckshootout						;Start a penalty shot or shootout attempt: the pads cleared, t
 	movea.l	#SortCords,a2
 	asl.w	#7,d0
 	adda.w	d0,a2
-	tst.w	$34(a2)
+	tst.w	position(a2)
 	bne.w	.findgoalie
 	btst	#2,pflags2(a2)
 	beq.w	.startpenshot
@@ -880,7 +880,7 @@ puckshootout						;Start a penalty shot or shootout attempt: the pads cleared, t
 	move.w	d0,d1
 	asl.w	#7,d1
 	adda.w	d1,a2
-	tst.w	$34(a2)
+	tst.w	position(a2)
 	bne.s	.goalieloop
 	btst	#2,pflags2(a2)
 	bne.s	.goalieloop
@@ -1043,7 +1043,7 @@ puckpenshot							;Penalty shot / shootout face-off: rink, puck and nets reset, 
 	movea.w	#(SortCords+((puckscnum+1)*SCstruct)-M68K_RAM),a0	;puck shadow SCstruct
 	move.w	#SPFpuck,frame(a0)
 	clr.w	SPA(a0)
-	clr.w	4(a0)
+	clr.w	attribute(a0)
 	clr.w	(SortCords+(puckscnum*SCstruct)+attribute).w
 	bclr	#sfslock,(sflags).w
 	moveq	#$64,d4
@@ -1341,7 +1341,7 @@ PenaltyShotBox						;In a shootout ShootoutModeBox; else the "PENALTY SHOT!" box
 	movea.l	#SortCords,a2
 	adda.w	d0,a2
 	clr.w	d0
-	move.b	$66(a2),d0				;roster slot
+	move.b	pnum(a2),d0				;roster slot
 	movea.l	#tmstruct,a2
 	tst.w	(BA_Team).w
 	beq.w	.1

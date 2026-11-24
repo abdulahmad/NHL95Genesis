@@ -526,7 +526,7 @@ ShowPenaltyBoxes					;The pause screen penalty boxes: home at $1F, $E, away at 2
 ShowPenaltyBox						;The players in the penalty box list of team a2 ($9C, -1 ends; with
 									;sflags9 bit 5 less the impact count)
 									;ShowPenaltyBoxPlayer each
-	lea	$9C(a2),a0
+	lea	tmboxlist(a2),a0
 	clr.w	d7
 .count
 	tst.b	(a0)+
@@ -538,7 +538,7 @@ ShowPenaltyBox						;The players in the penalty box list of team a2 ($9C, -1 end
 	beq.w	.list
 	sub.w	impact(a2),d7
 .list
-	lea	$9C(a2),a0
+	lea	tmboxlist(a2),a0
 .next
 	clr.w	d0
 	subq.w	#1,d7

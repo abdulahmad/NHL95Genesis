@@ -74,15 +74,15 @@ SetPlList							;Create PlList of players who we want on the ice now. a2 = team 
 	clr.l	(a4)					;clear 6 bytes (PlList)
 	clr.w	4(a4)
 	movea.l	#priolist,a0			;priority of positions
-	tst.w	$26(a2)
+	tst.w	tmgoalie(a2)
 	bpl.w	.0
 	addq.w	#1,a0					;add 1 to a0
 .0
-	lea	$16C(a2),a1
-	move.w	$16(a2),d0
+	lea	tmlines(a2),a1
+	move.w	tmline(a2),d0
 	asl.w	#3,d0					;mult by 8
 	adda.w	d0,a1					;add to a1 to set a1 to currently selected line
-	move.w	$24(a2),d4
+	move.w	tmap(a2),d4
 	bra.w	.next
 .1
 	clr.w	d5
@@ -91,7 +91,7 @@ SetPlList							;Create PlList of players who we want on the ice now. a2 = team 
 	move.b	d5,6(a4,d4.w)
 	bne.w	.next
 	moveq	#1,d3
-	add.w	$26(a2),d3
+	add.w	tmgoalie(a2),d3
 	move.b	d3,(a4,d4.w)
 .next
 	dbf	d4,.1
@@ -109,7 +109,7 @@ SetPlList							;Create PlList of players who we want on the ice now. a2 = team 
 	tst.w	$68(a2,d3.w)
 	ble.w	.next1
 .4
-	lea	$16C(a2),a1
+	lea	tmlines(a2),a1
 	move.b	6(a4,d4.w),d0			;move 6+a4+d4 into d0 (previous d5)
 	ext.w	d0						;extend d0
 	asl.w	#1,d0					;mult by 2
@@ -386,11 +386,11 @@ setplayer							;Bring player onto the ice and set his attributes. d3 = offset o
 	bsr.w	ClampNibble
 	bsr.w	BoostAttribute
 	move.b	d3,checking(a3)			;move Chk into player struct
-	bclr	#3,4(a3)
+	bclr	#3,attribute(a3)
 	move.b	4(a0),handed(a3)		;move Chk/Hnd byte to Hnd in player struct
 	andi.b	#1,handed(a3)
 	beq.w	.attribloadcont
-	bset	#3,4(a3)
+	bset	#3,attribute(a3)
 .attribloadcont
 	move.b	4(a0),fighting(a3)		;moves Chk/Hnd byte into Fgt byte in player struct
 	andi.b	#$E,fighting(a3)		;mask the byte with E, ignoring the Hnd bit - will always be even

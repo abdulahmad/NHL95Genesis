@@ -56,7 +56,7 @@ SetLCmode2							;a2 = team struct. Draw the line change box (box, Framer) with 
 	bmi.w	.next
 	btst	#tmflcm,tmflags(a2)
 	bne.w	.pr
-	cmp.w	$2E(a2),d4
+	cmp.w	tmlcchoice(a2),d4
 	bne.w	.up
 	move.w	tmline(a2),d0
 .pr
@@ -197,7 +197,7 @@ lineinput							;Process input for line changes: d1 = new button presses (passmo
 lcfound								;Line d2 was picked: store it ($2E), set tmline and the players
 									;(SetPersonel); falls into lcfound_close
 	move.w	d2,d0
-	move.w	d2,$2E(a2)
+	move.w	d2,tmlcchoice(a2)
 	bsr.w	getlchoice				;translate choice 0-2 into line number 0-6
 	tst.w	d0
 	bmi.w	rtslc
@@ -254,7 +254,7 @@ linebar								;Draw the energy bar of line d0 for team a2 at printx / printy
 
 getlinee							;d0 = line number, a2 = team struct. Return d0 = energy level of this line
 	movem.l	d1-d5/a0-a3,-(sp)
-	lea	$16C(a2),a1
+	lea	tmlines(a2),a1
 	asl.w	#3,d0
 	adda.w	d0,a1
 	clr.l	d0
@@ -493,7 +493,7 @@ SetOriginalLines					;The line sets of team struct a2 ($16C) from save RAM (SRLi
 	bmi.w	.teamdata
 	movem.l	d0-d2,-(sp)
 	move.l	#SRLines,d0
-	move.w	Xvel(a2),d2
+	move.w	tmteam(a2),d2
 	mulu.w	#$41,d2
 	add.l	d2,d0
 	moveq	#$41,d1
@@ -504,10 +504,10 @@ SetOriginalLines					;The line sets of team struct a2 ($16C) from save RAM (SRLi
 	bne.w	.teamdata
 	bra.w	.copy
 .teamdata
-	movea.l	$1E(a2),a0
+	movea.l	tmdata(a2),a0
 	adda.w	6(a0),a0
 .copy
-	lea	$16C(a2),a1
+	lea	tmlines(a2),a1
 	move.l	(a0)+,(a1)+
 	move.l	(a0)+,(a1)+
 	addq.w	#8,a0
@@ -521,7 +521,7 @@ SetOriginalLines					;The line sets of team struct a2 ($16C) from save RAM (SRLi
 	bmi.w	.teamdata2
 	movem.l	d0-d2,-(sp)
 	move.l	#SRLines,d0
-	move.w	Xvel(a2),d2
+	move.w	tmteam(a2),d2
 	mulu.w	#$41,d2
 	add.l	d2,d0
 	moveq	#$41,d1
@@ -530,12 +530,12 @@ SetOriginalLines					;The line sets of team struct a2 ($16C) from save RAM (SRLi
 	movem.l	(sp)+,d0-d2
 	bra.w	.copy2
 .teamdata2
-	movea.l	$1E(a2),a0
+	movea.l	tmdata(a2),a0
 	adda.w	6(a0),a0
 .copy2
 	moveq	#$D,d0
 	addq.w	#8,a0
-	lea	$16C(a2),a1
+	lea	tmlines(a2),a1
 .loop2
 	move.l	(a0)+,(a1)+
 	dbf	d0,.loop2

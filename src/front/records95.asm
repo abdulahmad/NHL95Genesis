@@ -876,7 +876,7 @@ PlayoffStatsScreen					;Pause menu PLAYOFF STATS: the playoff stats (PlayerStats
 	move.w	(potreeteam).w,d0
 	move.b	(a0,d0.w),d0
 	movea.l	#tmstruct,a2
-	cmp.w	Xvel(a2),d0
+	cmp.w	tmteam(a2),d0
 	beq.w	.0
 	adda.w	#tmsize,a2
 .0
@@ -1417,7 +1417,7 @@ UpdateTeamRecord					;Add the game of team a1 (against a2) to team record block 
 	lsr.w	#8,d0
 	move.b	d0,$A(a0)
 	move.w	$C(a1),d0
-	cmp.w	$C(a2),d0
+	cmp.w	tmscore(a2),d0
 	bgt.w	.0
 	blt.w	.1
 	clr.w	d0
@@ -1444,7 +1444,7 @@ UpdateTeamRecord					;Add the game of team a1 (against a2) to team record block 
 	beq.w	.write
 	movem.w	d0,-(sp)
 	move.w	$C(a1),d0
-	cmp.w	$C(a2),d0
+	cmp.w	tmscore(a2),d0
 	movem.w	(sp)+,d0
 	ble.w	.write
 	move.w	$C(a1),d5
@@ -1456,7 +1456,7 @@ UpdateTeamRecord					;Add the game of team a1 (against a2) to team record block 
 	move.b	d4,2(a0)
 	move.b	d2,3(a0)
 .2
-	move.w	$C(a2),d5
+	move.w	tmscore(a2),d5
 	move.w	(a2),d6
 	sub.w	d5,d6
 	cmp.b	4(a0),d6
@@ -1475,7 +1475,7 @@ UpdateCrowdRecord					;Crowd record block d1 of team a1: the most goals, the big
 									;opponent d2 (ReadCrowdRecord, WriteCrowdRecord)
 	movem.l	d0-d7/a0-a6,-(sp)
 	bsr.w	ReadCrowdRecord
-	move.w	$C(a1),d3
+	move.w	tmscore(a1),d3
 	cmp.b	(a0),d3
 	ble.w	.0
 	move.b	d3,(a0)

@@ -203,7 +203,7 @@ wallcollb							;Check for puck over wall. a3 = object, d0/d1 = cos/sin of the w
 	bpl.w	.2
 	ori.w	#$8000,attribute(a3)
 .2
-	clr.w	$86(a3)					;frame+SCstruct(a3)
+	clr.w	SCstruct+frame(a3)		;frame+SCstruct(a3)
 	btst	#gmclock,(gmode).w
 	bne.w	.3
 	move.l	a3,-(sp)
@@ -1454,7 +1454,7 @@ puckglue							;Player a2 takes the puck (92 puckstick.glue): faceoff and pass s
 	bset	#tmflast,tmflags(a0)	;set a flag (not sure what)
 	bclr	#sf3fo,(sflags3).w		;clear flag (not sure what, might have to do with faceoff)
 	beq.w	.snd					;branch if it was cleared already
-	addq.w	#1,$E(a1)				;add 1 to faceoff won
+	addq.w	#1,tmfowon(a1)			;add 1 to faceoff won
 	addi.w	#$C8,(Crowdlevel).w		;add to Crowdlevel
 	move.w	#$C,(sp)				;move C to stack
 	cmpa.w	#(tmstruct-M68K_RAM),a1	;compare if a1 is home
@@ -1466,7 +1466,7 @@ puckglue							;Player a2 takes the puck (92 puckstick.glue): faceoff and pass s
 	move.w	SCnum(a2),d0			;move SCnum into d0
 	cmp.w	(passplayer).w,d0		;compare to d0
 	bne.w	.nrec					;branch if not equal
-	addq.w	#1,$14(a1)				;add 1 to pass completed
+	addq.w	#1,tmpasscomp(a1)		;add 1 to pass completed
 .nrec
 	st	(passplayer).w				;set to FFFF
 	bclr	#sfspdir,(sflags).w		;clear pass dir mode

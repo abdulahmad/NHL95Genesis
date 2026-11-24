@@ -131,28 +131,28 @@ Goal								;(checkgoal.goal) A goal: the shootout count (shootoutteam, homeshoo
 	subi.w	#$14,(CwdExciteLvl).w
 	bset	#7,-1(a0)
 .home
-	move.w	$18(a2),d0
+	move.w	tmtouch1(a2),d0
 	move.b	d0,(a0)+
 	move.w	#$FFFF,(a0)
 	addi.w	#$B6,d0
 	movem.l	d0-d2,-(sp)
-	move.w	$18(a2),d1
+	move.w	tmtouch1(a2),d1
 	jsr	(GetGoalieCount).l
 	cmp.w	d0,d1
 	movem.l	(sp)+,d0-d2
 	blt.w	.20
 	addq.b	#1,(a2,d0.w)
 .20
-	move.w	$1A(a2),d0
+	move.w	tmtouch2(a2),d0
 	bmi.w	.21
-	cmp.w	$18(a2),d0
+	cmp.w	tmtouch1(a2),d0
 	beq.w	.21
 	move.b	d0,(a0)+
 	addi.w	#$D0,d0
 	addq.b	#1,(a2,d0.w)
-	move.w	$1C(a2),d0
+	move.w	tmtouch3(a2),d0
 	bmi.w	.21
-	cmp.w	$18(a2),d0
+	cmp.w	tmtouch1(a2),d0
 	beq.w	.21
 	move.b	d0,(a0)
 	addi.w	#$D0,d0
@@ -247,7 +247,7 @@ PenGoalStuff						;Do this stuff after a goal: a1 = scored on team, a2 = scoring
 	bne.w	.1
 	jsr	(ClearPenaltyBuffer).l
 .1
-	move.w	$24(a2),d2
+	move.w	tmap(a2),d2
 	cmp.w	$24(a1),d2
 	ble.w	.ex
 	lea	$9C(a1),a0
@@ -261,7 +261,7 @@ PenGoalStuff						;Do this stuff after a goal: a1 = scored on team, a2 = scoring
 	bsr.w	RemovePlayerFromList
 	bset	#0,(sflags9).w
 	addq.w	#1,$24(a1)
-	addq.w	#1,2(a2)
+	addq.w	#1,tmPwrGoals(a2)
 	bset	#tmflcc,(tmstruct+tmflags).w	;home tmflags: tmflcc
 	bset	#tmflcc,(AwShots+tmflags).w	;visitors tmflags: tmflcc
 .ex

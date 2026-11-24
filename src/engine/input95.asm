@@ -634,7 +634,7 @@ passtoa0							;Pass to player a0
 .0
 	jsr	(loadTeamStruct).l
 	addq.w	#1,$12(a2)				;add 1 to total pass attempts
-	move.w	$52(a0),(passplayer).w
+	move.w	SCnum(a0),(passplayer).w
 	move.w	(passspeed).w,d5		;passspeed = pix/sec
 	asr.w	#2,d5					;divides pass speed by 4
 	exg	a0,a3						;tell pass recipient to get puck - swaps a3 and a0 for assinsert
@@ -646,16 +646,16 @@ passtoa0							;Pass to player a0
 	jsr	(GetHot).l
 	add.w	(a0),d0					;Xpos
 	sub.w	(puckx).w,d0
-	add.w	$14(a0),d1
+	add.w	Ypos(a0),d1
 	sub.w	(pucky).w,d1
 	movem.w	d0-d1,-(sp)
 	movem.w	(sp),d2-d3				;pop d0-d1 off into d2-d3
 	asr.w	#2,d2					;d2 divide by 4
 	asr.w	#2,d3					;d3 divide by 4
-	move.w	$28(a0),d0
+	move.w	Xvel(a0),d0
 	muls.w	#$F0,d0					;#(16 * 60)/4 = $F0 xpix / (1/4) sec
 	swap	d0						;swap upper and lower bytes
-	move.w	$2A(a0),d1
+	move.w	Yvel(a0),d1
 	muls.w	#$F0,d1
 	swap	d1						;swap upper and lower bytes
 	movem.w	d0-d1,-(sp)				;push on stack
@@ -720,13 +720,13 @@ passtoa0							;Pass to player a0
 	muls.w	d2,d0
 	asr.l	#1,d0
 	add.w	(sp)+,d0				;x distance
-	move.w	(puckx).w,$44(a0)
-	add.w	d0,$44(a0)
+	move.w	(puckx).w,temp3(a0)
+	add.w	d0,temp3(a0)
 	muls.w	d2,d1
 	asr.l	#1,d1
 	add.w	(sp)+,d1				;y distance
-	move.w	(pucky).w,$46(a0)
-	add.w	d1,$46(a0)
+	move.w	(pucky).w,temp4(a0)
+	add.w	d1,temp4(a0)
 	mulu.w	#$78,d2					;'x'   ; $78 = 60*2
 	swap	d0
 	divs.w	d2,d0

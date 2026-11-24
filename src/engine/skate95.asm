@@ -810,7 +810,7 @@ doplayeracc							;Player acceleration toward direction d0 by his speed rating (
 	bpl.w	.19
 	eori.w	#SPAturnl-SPAturnr,d1
 .19
-	btst	#3,4(a3)
+	btst	#3,attribute(a3)
 	beq.w	.20
 	eori.w	#SPAturnl-SPAturnr,d1
 .20
@@ -854,7 +854,7 @@ noturn0								;doplayeracc: no turn
 	blt.w	dostop
 .1
 	addq.w	#1,facedir(a3)
-	btst	#3,4(a3)
+	btst	#3,attribute(a3)
 	beq.w	.2
 	subq.w	#2,facedir(a3)
 .2
@@ -1068,7 +1068,7 @@ PlaceBoardFall						;Board fall animations: place player a3 against the boards
 	bra.w	.x
 .6
 	move.w	#$92,d0
-	btst	#3,4(a3)
+	btst	#3,attribute(a3)
 	beq.w	.7
 	move.w	#$FF6E,d0
 .7
@@ -1078,7 +1078,7 @@ PlaceBoardFall						;Board fall animations: place player a3 against the boards
 	bra.w	.x
 .8
 	move.w	#$98,d0
-	btst	#3,4(a3)
+	btst	#3,attribute(a3)
 	beq.w	.9
 	move.w	#$FF68,d0
 .9
@@ -1088,7 +1088,7 @@ PlaceBoardFall						;Board fall animations: place player a3 against the boards
 	bra.w	.x
 .10
 	move.w	#$FF6E,d0
-	btst	#3,4(a3)
+	btst	#3,attribute(a3)
 	beq.w	.11
 	move.w	#$92,d0
 .11
@@ -1098,7 +1098,7 @@ PlaceBoardFall						;Board fall animations: place player a3 against the boards
 	bra.w	.x
 .12
 	move.w	#$FF68,d0
-	btst	#3,4(a3)
+	btst	#3,attribute(a3)
 	beq.w	.13
 	move.w	#$98,d0
 .13

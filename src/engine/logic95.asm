@@ -484,7 +484,7 @@ checkanim							;Goalie animation check; assgoaliectrl branches here too
 .23
 	cmpi.l	#$1324,$2A(a1)
 	blt.w	.de5
-	cmpi.l	#$9C4,Yvel(a2)
+	cmpi.l	#$9C4,tmnear(a2)
 	blt.w	.de5
 	cmpi.w	#$E3,(pucky).w
 	bgt.w	.24
@@ -604,7 +604,7 @@ goaliesave							;95 first aims the goalie: Xvel from where the puck crosses his
 .4
 	movem.l	(sp)+,d1-d4
 	lsr.w	#2,d0					;divide d0 by 4
-	btst	#3,4(a3)
+	btst	#3,attribute(a3)
 	beq.w	.5
 	eori.w	#1,d0
 .5
@@ -822,7 +822,7 @@ assgoalietopuck						;asstab entry $14. Goalie skates to the loose puck
 .t0
 	cmpi.l	#$E10,$2A(a1)
 	blt.w	assexit
-	cmpi.l	#$640,Yvel(a2)
+	cmpi.l	#$640,tmnear(a2)
 	blt.w	assexit
 .go
 	bra.w	skatetopuck
