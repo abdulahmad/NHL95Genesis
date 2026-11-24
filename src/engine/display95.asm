@@ -175,8 +175,8 @@ setffo								;Draw the 6 objects tied to icerink scrolling (the pads; 94: 7 wit
 	cmpa.w	a6,a0
 	beq.w	.next
 	move.w	padxoff(a3),d1
-	add.w	d1,6(a0)
-	add.w	d1,$E(a0)
+	add.w	d1,satX(a0)
+	add.w	d1,satLen+satX(a0)
 .next
 	adda.w	#$1C,a3					;move to next struct
 	dbf	d0,.top

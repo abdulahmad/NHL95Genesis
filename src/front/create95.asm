@@ -515,10 +515,10 @@ PrintGridLetter						;If grid mode, print letter d5 of the grid table (cursor le
 	beq.s	rtsCreate2
 	movea.l	#StatBuf,a1
 	move.w	#4,(a1)
-	move.b	#0,3(a1)
+	move.b	#0,strtext+1(a1)
 	movea.l	#CreateLetterGrid,a0
 	move.b	(a0,d5.w),d0
-	move.b	d0,2(a1)
+	move.b	d0,strtext(a1)
 	jmp	(print).l
 
 GridLetterPos						;Set print position for letter grid cell d5 (6

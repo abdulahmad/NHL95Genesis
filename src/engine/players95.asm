@@ -72,7 +72,7 @@ SetPlList							;Create PlList of players who we want on the ice now. a2 = team 
 									;order (GetPlayerCount)
 	movea.w	#(PlList-M68K_RAM),a4
 	clr.l	(a4)					;clear 6 bytes (PlList)
-	clr.w	4(a4)
+	clr.w	plpos-2(a4)				;and the last 2 of the 6 player slots
 	movea.l	#priolist,a0			;priority of positions
 	tst.w	tmgoalie(a2)
 	bpl.w	.0

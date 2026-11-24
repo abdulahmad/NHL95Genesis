@@ -406,13 +406,13 @@ checkanim							;Goalie animation check; assgoaliectrl branches here too
 	beq.w	.18
 	bra.w	.save
 .18
-	cmpi.w	#$22,2(a0)
+	cmpi.w	#$22,pcframes(a0)
 	bhi.w	.de5
 	cmpi.w	#$18,(a0)
 	bgt.w	.22
 	cmpi.w	#$FFE8,(a0)
 	blt.w	.22
-	cmpi.w	#$D,2(a0)
+	cmpi.w	#$D,pcframes(a0)
 	bhi.w	.20
 .save
 	cmpi.w	#$10B,(pucky).w
@@ -629,7 +629,7 @@ goaliesave							;95 first aims the goalie: Xvel from where the puck crosses his
 	bra.w	.done
 .low
 	addq.w	#4,d0
-	cmpi.w	#8,2(a0)				;puckcross frames
+	cmpi.w	#8,pcframes(a0)			;puckcross frames
 	bls.w	.15
 	cmpi.w	#2,facedir(a3)
 	beq.w	.done
