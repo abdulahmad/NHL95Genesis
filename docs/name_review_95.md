@@ -1355,7 +1355,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | SaveRAM | ok |
 | SeasonDay | ok |
 | SeasonFlags | ok |
-| SeasonGameCount | ok (season95.asm only; CheckTrade and the stat screens read the word as StatWork+4) |
+| SeasonGameCount | ok (season95.asm only; the same word is ChosenDefense1 in CheckTrade, pstatstop in League Leaders and BestAssists in SaveGameHighlights) |
 | SeasonGoalSum | ok |
 | SeasonLength | ok |
 | SeasonLine | ok |
@@ -1392,7 +1392,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | StandingsOrder | ok |
 | StandingsRecs | ok |
 | StatBuf | ok |
-| StatWork | kept: multi-use scratch |
+| StatWork | kept: multi-use scratch. CheckTrade's counts are ChosenGoalies1-ChosenDefense2 and InvalidTradeReason; SaveGameHighlights' are BestAssistTeam / BestAssists / BestAssistSlot; League Leaders' top row is pstatstop (96G's name) |
 | TeamBlockMaps | ok |
 | TeamLeaderValues | ok |
 | TradeBuf | kept: multi-use scratch |
