@@ -1746,6 +1746,7 @@ Washington							;WSH, $5556 (94 $4DFC)
 .ar
 	String	'US Air Arena'
 
+PlayoffRowTeams equ 16				;teams per playoffseats row
 playoffseats						;Playoff seeding: 32 rows of 16 team numbers (NewPO, MakeTree)
 	dc.b	SJ,TOR,LA,DET, VAN,DAL,CGY,CHI, BOS,NYR,MTL,NJ, PIT,PHI,BUF,FLA
 	dc.b	EDM,WPG,SJ,DET, LA,TOR,VAN,CHI, QUE,NYI,HFD,TB, OTW,NYR,BOS,NJ

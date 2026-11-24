@@ -401,10 +401,10 @@ PrintCurLetter						;Name entry: print grid letter d5 when the cursor is on (Pri
 	beq.s	rtsNameCursor
 	movea.l	#ThreeStars,a1
 	move.w	#4,(a1)
-	move.b	#0,3(a1)
+	move.b	#0,strtext+1(a1)
 	movea.l	#LetterGrid,a0
 	move.b	(a0,d5.w),d0
-	move.b	d0,2(a1)
+	move.b	d0,strtext(a1)
 	jmp	(printsmall).l
 
 LetterGridPos						;Name entry: printx/printy of grid letter d5 (6 a row, 2 cells apart),
@@ -537,8 +537,8 @@ PrintNameField						;Name entry: print the 12-char name field at a1 ("-" pads) a
 	movea.l	#NameEntryBuf,a0
 	movea.l	#M68K_RAM,a1
 	move.w	#4,(a1)
-	move.b	(a0,d4.w),2(a1)
-	move.b	#0,3(a1)
+	move.b	(a0,d4.w),strtext(a1)
+	move.b	#0,strtext+1(a1)
 	jsr	(printsmallz).l
 	String	CC_SetFont,1
 	cmpi.b	#$20,2(a1)
@@ -1144,10 +1144,10 @@ PrintRecordName						;Record Holders: print the row number ("1. ") at d7 and the
 	addi.w	#$30,d7
 	movea.l	#mesarea,a1
 	move.w	#6,(a1)
-	move.b	d7,2(a1)
-	move.b	#$2E,3(a1)
-	move.b	#$20,4(a1)
-	move.b	#0,5(a1)
+	move.b	d7,strtext(a1)
+	move.b	#$2E,strtext+1(a1)
+	move.b	#$20,strtext+2(a1)
+	move.b	#0,strtext+3(a1)
 	jsr	(printsmall).l
 	move.w	(sp)+,d7
 	move.b	-1(a0),d2

@@ -658,7 +658,7 @@ ReadStatColumn						;d2 = stat column d1 for player d0. d7 = 0: the team struct 
 	add.w	d0,d1
 	clr.w	d2
 	move.b	0(a2,d1.w),d2
-	move.w	2(a1),d1
+	move.w	scoloff2(a1),d1
 	bmi.w	rtsStatsList
 	add.w	d0,d1
 	clr.w	d3
@@ -1830,7 +1830,7 @@ SeasonReadStatColumn				;d2 = sum of the season stat words (low 15 bits) at Stat
 	add.w	d0,d1
 	move.w	0(a2,d1.w),d2
 	andi.w	#$7FFF,d2
-	move.w	2(a1),d1
+	move.w	scoloff2(a1),d1
 	bmi.w	.0
 	add.w	d0,d1
 	move.w	0(a2,d1.w),d3

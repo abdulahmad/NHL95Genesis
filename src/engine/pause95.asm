@@ -829,9 +829,9 @@ Pausemode_Pmenu					;Clamp menuitem to the list, scroll menuitem+2 to show it, a
 PrintMenuItem						;printsmall item String a1 (advanced past it). y: START GAME, RESUME GAME
 									;or EXIT GAME by gsp and sfpz x: MANUAL GOALIE or AUTO GOALIE by the pad
 									;team's goaliemode1 / goaliemode2
-	cmpi.b	#$79,2(a1)
+	cmpi.b	#$79,strtext(a1)
 	beq.w	.0
-	cmpi.b	#$78,2(a1)				;first char 'x'
+	cmpi.b	#$78,strtext(a1)		;first char 'x'
 	bne.w	.plain
 	move.l	a1,-(sp)
 	movea.l	#.11,a1

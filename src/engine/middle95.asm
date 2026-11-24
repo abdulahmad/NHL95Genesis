@@ -483,7 +483,7 @@ showclockdma						;When dfclock is set queue the clock chars in the dma list (a5
 	movea.w	#(clockram+6-M68K_RAM),a0
 	movea.l	(smallfontptr).w,a1
 	adda.l	4(a1),a1
-	move.w	$78(a1),d0
+	move.w	mapwords+':'*2(a1),d0	;the map word of ':'
 	add.w	(smallfontchars).w,d0
 	ori.w	#$8000,d0
 	move.w	d0,(clockram).w
@@ -742,7 +742,7 @@ getnamebody							;getnameD7 joins here
 	move.l	a0,-(sp)
 	movea.w	#(mesarea-M68K_RAM),a3
 	move.w	#4,(a3)
-	lea	2(a3),a1
+	lea	strtext(a3),a1
 	adda.w	(a0),a0
 	jsr	(GetJerseyNumber).l
 	move.b	(jerseynum).w,d0
@@ -2188,7 +2188,7 @@ AppendUserName						;Append user name d2 (12 bytes of the name log at namelog, s
 	bne.w	.0
 	move.b	#$20,d1
 .0
-	move.b	d1,2(a1)
+	move.b	d1,strtext(a1)
 	tst.b	(a1)+
 	addq.w	#1,d3
 	dbf	d0,.loop
