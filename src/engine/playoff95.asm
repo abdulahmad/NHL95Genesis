@@ -25,9 +25,9 @@ PlayoffScreen						;Bring up the playoff screen if in playoff mode (not Shootout
 	move.w	#$B000,(VmMAP3).w
 	move.w	#6,(Map3col1).w
 	move.w	#$C000,(VmMAP2).w
-	move.w	#7,(Map2col1).w
+	move.w	#7,(Map2col).w
 	move.w	#$E000,(VmMAP1).w
-	move.w	#7,(Map1col1).w
+	move.w	#7,(Map1col).w
 	move.w	#0,d0
 	jsr	(setVram).l
 	jsr	(printz).l
