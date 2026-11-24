@@ -288,6 +288,16 @@ WSH equ 24
 WPG equ 25
 ASE equ 26
 ASW equ 27
+; Record offsets (93G/94G names; dmalen and dmavram are the 93S names)
+penmins equ 1						;Penaltylist record (word $ttmm: tt slow down time, mm minutes): minutes
+penname equ 2						;Penaltylist record: the penalty name String
+padxoff equ 2						;pad objects: label x offset (QueuePadLabel sets it, setffo adds it)
+dmalen equ 4						;DMAList entry (source long, then these): length in words
+dmavram equ 6						;DMAList entry: vram address
+lipy equ 2							;LineIconPosTable entry (x, y, slot count - 1): y
+lipslots equ 4						;LineIconPosTable entry: slot count - 1
+tsoff2 equ 2						;TeamStatTextTbl entry, after its label: second offset ($FFFF none)
+tssize equ 4						;TeamStatTextTbl entry: size of its two offset words
 NumTeams equ ASW+1					;TeamList length, All-Star teams included
 NumPlayoffTeams equ ASE				;teams in the standings, schedule and sim tables
 	IF 32<NumPlayoffTeams

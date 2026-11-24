@@ -37,9 +37,9 @@ VSCRLPM				equ	$FFFFAC00	;94 $FFFFB000. Hscroll table vram address (VDP reg $0D)
 VSPRITES			equ	$FFFFAC02	;94 $FFFFB002. Sprite table vram address (VDP reg $05)
 VmMAP1				equ	$FFFFAC04	;94 $FFFFB004. Plane A vram address, then the map size shift (xyVmMap
 									;reads printm(VmMAP1))
-Map1col1			equ	$FFFFAC06	;94 $FFFFB006
+Map1col				equ	$FFFFAC06	;94 $FFFFB006. 2 to this power = width in char of playfield 1 (92 name)
 VmMAP2				equ	$FFFFAC08	;94 $FFFFB008. Plane B vram address
-Map2col1			equ	$FFFFAC0A	;94 $FFFFB00A
+Map2col				equ	$FFFFAC0A	;94 $FFFFB00A. 2 to this power = width in char of playfield 2 (92 name)
 VmMAP3				equ	$FFFFAC0C	;94 $FFFFB00C. Window vram address
 Map3col1			equ	$FFFFAC0E	;94 $FFFFB00E
 bigfontptr			equ	$FFFFAC10	;Address of the big font map printbig uses
