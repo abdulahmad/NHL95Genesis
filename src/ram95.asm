@@ -41,7 +41,7 @@ Map1col				equ	$FFFFAC06	;94 $FFFFB006. 2 to this power = width in char of playf
 VmMAP2				equ	$FFFFAC08	;94 $FFFFB008. Plane B vram address
 Map2col				equ	$FFFFAC0A	;94 $FFFFB00A. 2 to this power = width in char of playfield 2 (92 name)
 VmMAP3				equ	$FFFFAC0C	;94 $FFFFB00C. Window vram address
-Map3col1			equ	$FFFFAC0E	;94 $FFFFB00E
+Map3col				equ	$FFFFAC0E	;94 $FFFFB00E. 2 to this power = width in char of playfield 3 (92 name)
 bigfontptr			equ	$FFFFAC10	;Address of the big font map printbig uses
 BigFontchars		equ	$FFFFAC14	;94 $FFFFB010. First vram char of the big font
 smallfontchars		equ	$FFFFAC16	;94 $FFFFB012. First vram char of the small font (AddSmallFont)
