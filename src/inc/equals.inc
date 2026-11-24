@@ -175,14 +175,24 @@ tmPenalties equ $6					;penalties stat
 tmPenmin equ $8						;penalty min. stat
 tmATOP equ $A						;attack time of possesion stat
 tmscore equ $C						;score
+tmfowon equ $E						;face-offs won stat (93G name)
+tmpasscomp equ $14					;completed passes stat (93G name)
 tmline equ $16						;current line
+tmtouch1 equ $18					;last touch (team/pnum word): the scorer (93G name)
+tmtouch2 equ $1A					;second last touch (first assist) (93G name)
+tmtouch3 equ $1C					;third last touch (second assist) (93G name)
 tmap equ $24						;active players on ice 4-6
 tmdata equ $1E						;team data address
 tmsort equ $22						;address of first sort obj (word)
 tmgoalie equ $26					;goalie 1/2/none
+tmteam equ $28						;team number (TeamList index) of this team struct (93G name)
+tmnear equ $2A						;long: nearest skater's distance^2 to the puck (93G name)
+tmlcchoice equ $2E					;line change box row chosen (0-2) (93G name)
 tmpde equ $34						;energy level of each roster player (94: $32)
 tmpdst equ $68						;-2=bench/-1=ice/0+=penalty box (94: $66)
 tmflags equ $30						;flags
+tmboxlist equ tmpdst+(2*maxros)		;penalty box list of roster players (93G name)
+tmlines equ $16C					;line sets copied from the team data (93G name; 93/94: $16A)
 tmsize equ $366						;$364
 
 ;text control codes in Strings

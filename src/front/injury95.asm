@@ -22,7 +22,7 @@ setInjuryType						;a2 injured: out for the period ($FFFD) or the game ($FFFC); 
 	move.w	#$8000,d1
 	adda.w	#tmsize,a0				;add $364 to a0 (Away Team Struct start)
 .0
-	move.b	$66(a2),d1
+	move.b	pnum(a2),d1
 	move.w	d1,(TempPlOffset).w
 	ext.w	d1						;sign extend - in this case just makes upper bye of word 00
 	add.w	d1,d1					;add d1 to itself
@@ -346,7 +346,7 @@ updatepwrplay						;The power play box: the team and the time left (GetLowestPen
 .1
 	bset	#sf2pwrplay,(sflags2).w
 	bne.w	.4
-	addq.w	#1,4(a3)
+	addq.w	#1,tmPwrPlays(a3)
 	cmpa.w	#(tmstruct-M68K_RAM),a3
 	bne.w	.3
 .home
@@ -385,7 +385,7 @@ GetLowestPen						;a2 = shorthanded team, a3 = team on the power play. d0 = powe
 									;left from the penalty box times
 	clr.w	d0
 	clr.w	d3
-	lea	$9C(a2),a0
+	lea	tmboxlist(a2),a0
 .getstatus
 	clr.w	d2
 	move.b	(a0)+,d2
@@ -398,10 +398,10 @@ GetLowestPen						;a2 = shorthanded team, a3 = team on the power play. d0 = powe
 	move.w	d2,d3
 	bra.s	.getstatus
 .1
-	cmpi.w	#6,OldZpos(a3)			;tmap: 6 on ice, done
+	cmpi.w	#6,tmap(a3)				;tmap: 6 on ice, done
 	beq.w	.3
 	sub.w	d3,d0
-	lea	$9C(a3),a0
+	lea	tmboxlist(a3),a0
 	clr.w	d2
 .2
 	move.b	(a0)+,d2

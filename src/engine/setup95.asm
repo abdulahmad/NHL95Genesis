@@ -355,7 +355,7 @@ AttribStatus						;Player d0's status word at $68(a2) (94 $66): Ice, Bench, Inj.
 	bne.w	.2
 	movem.l	d0-d1/d7,-(sp)
 	move.w	(attribplayer).w,d1
-	move.w	Xvel(a2),d7
+	move.w	tmteam(a2),d7
 	jsr	(GetInjuryGames).l
 	lea	InjuryGamesTbl(pc),a1
 	jsr	(PrintSmallListItem).l
@@ -2540,7 +2540,7 @@ AddPlayoffTeamStats					;Add the po team's game stats to its packed playoff tota
 	move.w	(potreeteam).w,d2
 	move.b	(a0,d2.w),d2
 	movea.w	#(tmstruct-M68K_RAM),a2
-	cmp.w	Xvel(a2),d2
+	cmp.w	tmteam(a2),d2
 	beq.w	.0
 	adda.w	#tmsize,a2
 .0
