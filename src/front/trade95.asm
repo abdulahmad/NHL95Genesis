@@ -1004,6 +1004,8 @@ CheckTrade							;Check the trade: players chosen on both teams, at most three a
 									;after it each team has 17-25 players,
 									;2-3 goalies, 9-15 forwards and 6-15 defensemen; else INVALID TRADE with
 									;the reason (InvalidTradeText). Z clear when valid
+									;StatWork +0 / +2 / +4: goalies, forwards and defensemen chosen
+									;on team 1 (CountChosen); +$A / +$C / +$E: team 2
 	movem.l	d0-d7/a0-a6,-(sp)
 	movea.l	#StatWork,a0
 	movea.l	#TradeRoster1,a1
@@ -1032,7 +1034,7 @@ CheckTrade							;Check the trade: players chosen on both teams, at most three a
 .chk
 	move.w	(StatWork).w,d0
 	add.w	(StatWork+2).w,d0
-	add.w	(SeasonGameCount).w,d0
+	add.w	(StatWork+4).w,d0
 	cmp.w	#3,d0
 	bgt.s	.toomany
 	move.w	(StatWork+$A).w,d0
@@ -1042,7 +1044,7 @@ CheckTrade							;Check the trade: players chosen on both teams, at most three a
 	bgt.s	.toomany
 	move.w	(StatWork).w,d0
 	add.w	(StatWork+2).w,d0
-	add.w	(SeasonGameCount).w,d0
+	add.w	(StatWork+4).w,d0
 	beq.s	.oneside
 	move.w	(StatWork+$A).w,d0
 	add.w	(StatWork+$C).w,d0
@@ -1051,7 +1053,7 @@ CheckTrade							;Check the trade: players chosen on both teams, at most three a
 	move.w	(TradeWork+$4).l,d0
 	sub.w	(StatWork).w,d0
 	sub.w	(StatWork+2).w,d0
-	sub.w	(SeasonGameCount).w,d0
+	sub.w	(StatWork+4).w,d0
 	add.w	(StatWork+$A).w,d0
 	add.w	(StatWork+$C).w,d0
 	add.w	(StatWork+$E).w,d0
@@ -1097,7 +1099,7 @@ CheckTrade							;Check the trade: players chosen on both teams, at most three a
 	bgt.w	.counts
 	move.w	(TradeWork+$4).l,d0
 	sub.w	(TradeWork+$2).l,d0
-	sub.w	(SeasonGameCount).w,d0
+	sub.w	(StatWork+4).w,d0
 	add.w	(StatWork+$E).w,d0
 	cmp.w	#6,d0
 	blt.w	.counts
@@ -1106,7 +1108,7 @@ CheckTrade							;Check the trade: players chosen on both teams, at most three a
 	move.w	(TradeWork+$A).l,d0
 	sub.w	(TradeWork+$8).l,d0
 	sub.w	(StatWork+$E).w,d0
-	add.w	(SeasonGameCount).w,d0
+	add.w	(StatWork+4).w,d0
 	cmp.w	#6,d0
 	blt.w	.counts
 	cmp.w	#$F,d0

@@ -1355,7 +1355,7 @@ Verdicts from reading each routine body / usage. "ok" = name matches behavior.
 | SaveRAM | ok |
 | SeasonDay | ok |
 | SeasonFlags | ok |
-| SeasonGameCount | ok |
+| SeasonGameCount | ok (season95.asm only; CheckTrade and the stat screens read the word as StatWork+4) |
 | SeasonGoalSum | ok |
 | SeasonLength | ok |
 | SeasonLine | ok |
