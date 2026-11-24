@@ -175,14 +175,29 @@ recuser1			equ	$FFFFBB1E	;UpdateRecords: a user (name log entry) word (GetTeamUs
 SeasonGoalSum		equ	$FFFFBB1E	;Season goal total of the human games (a long; save RAM SRGoalTotal with
 									;SeasonGameCount). Shares linemarkbuf
 StatWork			equ	$FFFFBB1E	;Scratch of the season stat screens (League Leaders: +0 mode, +2 category,
-									;+4 top row, +6 bottom row, +8 rows, +$A last row, +$C count;
+									;+4 top row (pstatstop), +6 bottom row, +8 rows, +$A last row, +$C count;
 									;SaveGameHighlights, PrintRecordHighlight).
+									;Shares linemarkbuf
+ChosenGoalies1		equ	$FFFFBB1E	;CheckTrade: goalies chosen on team 1 (CountChosen fills three words from
+									;here: goalies, forwards, defensemen). Shares linemarkbuf
+BestAssistTeam		equ	$FFFFBB1E	;SaveGameHighlights: the team (a2) with the most assists so far (a long).
 									;Shares linemarkbuf
 TempBuffer			equ	$FFFFBB1E	;94 $FFFFBF20. 40 byte scratch buffer (hot / cold sum byte pairs,
 									;Strings). Shares linemarkbuf
 recuser2			equ	$FFFFBB20	;UpdatePlayerRecords: the other team's user word (GetPadUser)
-SeasonGameCount		equ	$FFFFBB22	;Human season games counted in SeasonGoalSum (season95.asm only). The
-									;trade and stat screens use the same word as StatWork+4
+ChosenForwards1		equ	$FFFFBB20	;CheckTrade: forwards chosen on team 1 (CountChosen). Shares recuser2
+SeasonGameCount		equ	$FFFFBB22	;Human season games counted in SeasonGoalSum (season95.asm only)
+ChosenDefense1		equ	$FFFFBB22	;CheckTrade: defensemen chosen on team 1 (CountChosen). Shares
+									;SeasonGameCount
+pstatstop			equ	$FFFFBB22	;League Leaders: first row shown (DrawLeaderRows). Shares SeasonGameCount
+BestAssists			equ	$FFFFBB22	;SaveGameHighlights: the most assists so far (MostAssists d2). Shares
+									;SeasonGameCount
+BestAssistSlot		equ	$FFFFBB24	;SaveGameHighlights: the roster slot with BestAssists (MostAssists d3)
+ChosenGoalies2		equ	$FFFFBB28	;CheckTrade: goalies chosen on team 2 (CountChosen, three words as on
+									;team 1)
+ChosenForwards2		equ	$FFFFBB2A	;CheckTrade: forwards chosen on team 2
+ChosenDefense2		equ	$FFFFBB2C	;CheckTrade: defensemen chosen on team 2
+InvalidTradeReason	equ	$FFFFBB32	;CheckTrade: the INVALID TRADE reason, an InvalidTradeText item
 SRAMbyte			equ	$FFFFBB46	;Save RAM byte read by GetGoalieCountD7 / GetForwardCountSeason
 rosterteam			equ	$FFFFBB4E	;setplayer: the team number ($28 of the team struct) for GetRosterName /
 									;GetJerseyNumber

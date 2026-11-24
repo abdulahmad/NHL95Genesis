@@ -2246,3 +2246,14 @@ $FFFFD182,awayshootgoals,,soawaygoals,ram95
 $FFFFBF1E,homepracplayers,,homegoaliectl,ram95
 $FFFFBF20,awaypracplayers,,awaygoaliectl,ram95
 frame $73,SPFarrow34,,$73,frames95
+$FFFFBB1E,ChosenGoalies1,,StatWork,ram95
+$FFFFBB20,ChosenForwards1,,StatWork+2,ram95
+$FFFFBB22,ChosenDefense1,,StatWork+4 (earlier SeasonGameCount),ram95
+$FFFFBB28,ChosenGoalies2,,StatWork+$A,ram95
+$FFFFBB2A,ChosenForwards2,,StatWork+$C,ram95
+$FFFFBB2C,ChosenDefense2,,StatWork+$E,ram95
+$FFFFBB32,InvalidTradeReason,,StatWork+$14,ram95
+$FFFFBB22,pstatstop,,StatWork+4 (earlier SeasonGameCount),ram95
+$FFFFBB1E,BestAssistTeam,,StatWork,ram95
+$FFFFBB22,BestAssists,,StatWork+4 (earlier SeasonGameCount),ram95
+$FFFFBB24,BestAssistSlot,,StatWork+6,ram95
