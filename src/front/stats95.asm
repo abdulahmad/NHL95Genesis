@@ -1078,16 +1078,16 @@ SaveGameHighlights					;Pick today's highlight of HomeTeam's game (most goals, b
 .6
 	movem.l	(sp),a2-a3
 	bsr.w	MostAssists
-	move.l	a2,(StatWork).w
-	move.w	d2,(StatWork+4).w
-	move.w	d3,(StatWork+$6).w
+	move.l	a2,(BestAssistTeam).w
+	move.w	d2,(BestAssists).w
+	move.w	d3,(BestAssistSlot).w
 	exg	a2,a3
 	bsr.w	MostAssists
-	cmp.w	(StatWork+4).w,d2
+	cmp.w	(BestAssists).w,d2
 	bge.w	.7
-	movea.l	(StatWork).w,a2
-	move.w	(StatWork+4).w,d2
-	move.w	(StatWork+$6).w,d3
+	movea.l	(BestAssistTeam).w,a2
+	move.w	(BestAssists).w,d2
+	move.w	(BestAssistSlot).w,d3
 .7
 	cmp.w	#2,d2
 	blt.w	.8
@@ -2211,7 +2211,7 @@ LeagueLeadersScreen					;League Leaders screen (season menu): team / individual 
 	jsr	(printbigz).l
 	String	CC_Font1Pri,$6,$2,'League Leaders',$0
 	clr.w	(StatWork).w
-	clr.w	(StatWork+4).w
+	clr.w	(pstatstop).w
 	move.w	#8,(StatWork+$8).w
 	move.w	#7,(StatWork+$6).w
 	clr.w	(StatWork+2).w
@@ -2239,7 +2239,7 @@ LeagueLeadersScreen					;League Leaders screen (season menu): team / individual 
 	jsr	(forceblack).l
 	eori.w	#1,(StatWork).w
 	clr.w	(StatWork+2).w
-	clr.w	(StatWork+4).w
+	clr.w	(pstatstop).w
 	move.w	#7,(StatWork+$6).w
 	movea.l	#.lastrow,a0
 	move.w	(StatWork).w,d5
@@ -2262,7 +2262,7 @@ LeagueLeadersScreen					;League Leaders screen (season menu): team / individual 
 	move.w	(StatWork).w,d5
 	add.w	d5,d5
 	move.w	0(a0,d5.w),(StatWork+$A).w
-	clr.w	(StatWork+4).w
+	clr.w	(pstatstop).w
 	move.w	#7,(StatWork+$6).w
 	bra.w	.build
 .lastcat
@@ -2270,9 +2270,9 @@ LeagueLeadersScreen					;League Leaders screen (season menu): team / individual 
 .up
 	btst	#0,d1
 	beq.w	.down
-	tst.w	(StatWork+4).w
+	tst.w	(pstatstop).w
 	beq.w	.input
-	subq.w	#1,(StatWork+4).w
+	subq.w	#1,(pstatstop).w
 	subq.w	#1,(StatWork+$6).w
 	bra.w	.draw
 .down
@@ -2281,7 +2281,7 @@ LeagueLeadersScreen					;League Leaders screen (season menu): team / individual 
 	move.w	(StatWork+$6).w,d0
 	cmp.w	(StatWork+$A).w,d0
 	bge.w	.input
-	addq.w	#1,(StatWork+4).w
+	addq.w	#1,(pstatstop).w
 	addq.w	#1,(StatWork+$6).w
 	bra.w	.draw
 .lastrow
@@ -2307,7 +2307,7 @@ LeagueLeadersScreen					;League Leaders screen (season menu): team / individual 
 
 LeadersScrollArrows					;League Leaders: draw up/down scroll arrows depending on list position
 	movem.l	d0-d7/a0-a6,-(sp)
-	tst.w	(StatWork+4).w
+	tst.w	(pstatstop).w
 	beq.w	.0
 	jsr	(printz).l
 	String	CC_Font1Pri,$1,$9,'{'
@@ -2896,7 +2896,7 @@ GatherAndSort						;Call a5 to fill values at LeaderValues / players at LeaderPl
 	bne.s	.sortValuesUp
 	rts
 
-DrawLeaderRows						;Draw the leader rows (StatWork+8 rows from StatWork+4): when StatWork is
+DrawLeaderRows						;Draw the leader rows (StatWork+8 rows from pstatstop): when StatWork is
 									;set use the sorted list (DrawPlayerLeaderRows), else rank, team logo
 									;(DrawLeaderLogo), and the category value (LeaderPrintJumps) from the RAM
 									;tables in LeaderTables
@@ -2919,14 +2919,14 @@ DrawLeaderRows						;Draw the leader rows (StatWork+8 rows from StatWork+4): whe
 	jsr	(print).l
 	move.w	#2,(printx).w
 	move.w	d6,d0
-	add.w	(StatWork+4).w,d0
+	add.w	(pstatstop).w,d0
 	addq.w	#1,d0
 	move.w	#2,d1
 	jsr	(PushNumberWidth).l
 	jsr	(print).l
 	subq.w	#1,(printy).w
 	move.w	d6,d0
-	add.w	(StatWork+4).w,d0
+	add.w	(pstatstop).w,d0
 	clr.w	d1
 	move.b	(a5,d0.w),d1
 	move.w	#5,(printx).w
@@ -2934,8 +2934,8 @@ DrawLeaderRows						;Draw the leader rows (StatWork+8 rows from StatWork+4): whe
 	addq.w	#1,(printy).w
 	move.w	#$18,(printx).w
 	movea.l	#TeamLeaderValues,a0
-	adda.w	(StatWork+4).w,a0
-	adda.w	(StatWork+4).w,a0
+	adda.w	(pstatstop).w,a0
+	adda.w	(pstatstop).w,a0
 	move.w	d6,d0
 	asl.w	#1,d0
 	move.w	(a0,d0.w),d0
@@ -3001,14 +3001,14 @@ DrawPlayerLeaderRows				;Sorted list rows: rank, player name (TeamList, d7 = val
 	movea.l	#BlankLine40,a1
 	jsr	(print).l
 	move.w	d6,d0
-	add.w	(StatWork+4).w,d0
+	add.w	(pstatstop).w,d0
 	cmp.w	(StatWork+$C).w,d0
 	blt.w	.entry
 	movea.l	#BlankLine40,a1
 	move.w	#1,(printx).w
 	jsr	(print).l
 	move.w	d6,d0
-	add.w	(StatWork+4).w,d0
+	add.w	(pstatstop).w,d0
 	cmp.w	(StatWork+$A).w,d0
 	bge.w	.next
 	move.w	d0,(StatWork+$A).w
@@ -3016,7 +3016,7 @@ DrawPlayerLeaderRows				;Sorted list rows: rank, player name (TeamList, d7 = val
 .entry
 	move.w	#2,(printx).w
 	move.w	d6,d0
-	add.w	(StatWork+4).w,d0
+	add.w	(pstatstop).w,d0
 	addq.w	#1,d0
 	move.w	#2,d1
 	jsr	(PushNumberWidth).l
@@ -3024,7 +3024,7 @@ DrawPlayerLeaderRows				;Sorted list rows: rank, player name (TeamList, d7 = val
 	move.w	#6,(printx).w
 	movea.l	#LeaderPlayers,a0
 	move.w	d6,d0
-	add.w	(StatWork+4).w,d0
+	add.w	(pstatstop).w,d0
 	add.w	d0,d0
 	move.w	(a0,d0.w),d0
 	ext.l	d0
@@ -3044,7 +3044,7 @@ DrawPlayerLeaderRows				;Sorted list rows: rank, player name (TeamList, d7 = val
 	move.w	#$1D,(printx).w
 	movea.l	#LeaderValues,a0
 	move.w	d6,d0
-	add.w	(StatWork+4).w,d0
+	add.w	(pstatstop).w,d0
 	add.w	d0,d0
 	move.w	(a0,d0.w),d0
 	cmpi.w	#3,(StatWork+2).w

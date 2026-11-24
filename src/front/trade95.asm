@@ -1004,63 +1004,61 @@ CheckTrade							;Check the trade: players chosen on both teams, at most three a
 									;after it each team has 17-25 players,
 									;2-3 goalies, 9-15 forwards and 6-15 defensemen; else INVALID TRADE with
 									;the reason (InvalidTradeText). Z clear when valid
-									;StatWork +0 / +2 / +4: goalies, forwards and defensemen chosen
-									;on team 1 (CountChosen); +$A / +$C / +$E: team 2
 	movem.l	d0-d7/a0-a6,-(sp)
-	movea.l	#StatWork,a0
+	movea.l	#ChosenGoalies1,a0
 	movea.l	#TradeRoster1,a1
 	move.w	(TradeWork+$4).l,d0
 	bsr.w	CountChosen
-	movea.l	#StatWork+$A,a0
+	movea.l	#ChosenGoalies2,a0
 	movea.l	#TradeRoster2,a1
 	move.w	(TradeWork+$A).l,d0
 	bsr.w	CountChosen
 	clr.w	d0
 	move.w	#5,d1
-	movea.l	#StatWork,a0
+	movea.l	#ChosenGoalies1,a0
 .sum
 	add.w	(a0)+,d0
 	dbf	d1,.sum
 	tst.w	d0
 	bne.w	.chk
-	move.w	#0,(StatWork+$14).w
+	move.w	#0,(InvalidTradeReason).w
 	bra.w	.invalid
 .oneside
-	move.w	#2,(StatWork+$14).w
+	move.w	#2,(InvalidTradeReason).w
 	bra.w	.invalid
 .toomany
-	move.w	#3,(StatWork+$14).w
+	move.w	#3,(InvalidTradeReason).w
 	bra.w	.invalid
 .chk
-	move.w	(StatWork).w,d0
-	add.w	(StatWork+2).w,d0
-	add.w	(StatWork+4).w,d0
+	move.w	(ChosenGoalies1).w,d0
+	add.w	(ChosenForwards1).w,d0
+	add.w	(ChosenDefense1).w,d0
 	cmp.w	#3,d0
 	bgt.s	.toomany
-	move.w	(StatWork+$A).w,d0
-	add.w	(StatWork+$C).w,d0
-	add.w	(StatWork+$E).w,d0
+	move.w	(ChosenGoalies2).w,d0
+	add.w	(ChosenForwards2).w,d0
+	add.w	(ChosenDefense2).w,d0
 	cmp.w	#3,d0
 	bgt.s	.toomany
-	move.w	(StatWork).w,d0
-	add.w	(StatWork+2).w,d0
-	add.w	(StatWork+4).w,d0
+	move.w	(ChosenGoalies1).w,d0
+	add.w	(ChosenForwards1).w,d0
+	add.w	(ChosenDefense1).w,d0
 	beq.s	.oneside
-	move.w	(StatWork+$A).w,d0
-	add.w	(StatWork+$C).w,d0
-	add.w	(StatWork+$E).w,d0
+	move.w	(ChosenGoalies2).w,d0
+	add.w	(ChosenForwards2).w,d0
+	add.w	(ChosenDefense2).w,d0
 	beq.s	.oneside
 	move.w	(TradeWork+$4).l,d0
-	sub.w	(StatWork).w,d0
-	sub.w	(StatWork+2).w,d0
-	sub.w	(StatWork+4).w,d0
-	add.w	(StatWork+$A).w,d0
-	add.w	(StatWork+$C).w,d0
-	add.w	(StatWork+$E).w,d0
+	sub.w	(ChosenGoalies1).w,d0
+	sub.w	(ChosenForwards1).w,d0
+	sub.w	(ChosenDefense1).w,d0
+	add.w	(ChosenGoalies2).w,d0
+	add.w	(ChosenForwards2).w,d0
+	add.w	(ChosenDefense2).w,d0
 	cmp.w	#$19,d0
 	ble.w	.chkmin
 .counts
-	move.w	#1,(StatWork+$14).w
+	move.w	#1,(InvalidTradeReason).w
 	bra.w	.invalid
 .chkmin
 	cmp.w	#$11,d0
@@ -1068,47 +1066,47 @@ CheckTrade							;Check the trade: players chosen on both teams, at most three a
 	bra.s	.counts
 .chkpos
 	move.w	(TradeWork).l,d0
-	sub.w	(StatWork).w,d0
-	add.w	(StatWork+$A).w,d0
+	sub.w	(ChosenGoalies1).w,d0
+	add.w	(ChosenGoalies2).w,d0
 	cmp.w	#2,d0
 	blt.s	.counts
 	cmp.w	#3,d0
 	bgt.s	.counts
 	move.w	(TradeWork+$6).l,d0
-	sub.w	(StatWork+$A).w,d0
-	add.w	(StatWork).w,d0
+	sub.w	(ChosenGoalies2).w,d0
+	add.w	(ChosenGoalies1).w,d0
 	cmp.w	#2,d0
 	blt.s	.counts
 	cmp.w	#3,d0
 	bgt.s	.counts
 	move.w	(TradeWork+$2).l,d0
 	sub.w	(TradeWork).l,d0
-	sub.w	(StatWork+2).w,d0
-	add.w	(StatWork+$C).w,d0
+	sub.w	(ChosenForwards1).w,d0
+	add.w	(ChosenForwards2).w,d0
 	cmp.w	#9,d0
 	blt.s	.counts
 	cmp.w	#$F,d0
 	bgt.s	.counts
 	move.w	(TradeWork+$8).l,d0
 	sub.w	(TradeWork+$6).l,d0
-	sub.w	(StatWork+$C).w,d0
-	add.w	(StatWork+2).w,d0
+	sub.w	(ChosenForwards2).w,d0
+	add.w	(ChosenForwards1).w,d0
 	cmp.w	#9,d0
 	blt.w	.counts
 	cmp.w	#$F,d0
 	bgt.w	.counts
 	move.w	(TradeWork+$4).l,d0
 	sub.w	(TradeWork+$2).l,d0
-	sub.w	(StatWork+4).w,d0
-	add.w	(StatWork+$E).w,d0
+	sub.w	(ChosenDefense1).w,d0
+	add.w	(ChosenDefense2).w,d0
 	cmp.w	#6,d0
 	blt.w	.counts
 	cmp.w	#$F,d0
 	bgt.w	.counts
 	move.w	(TradeWork+$A).l,d0
 	sub.w	(TradeWork+$8).l,d0
-	sub.w	(StatWork+$E).w,d0
-	add.w	(StatWork+4).w,d0
+	sub.w	(ChosenDefense2).w,d0
+	add.w	(ChosenDefense1).w,d0
 	cmp.w	#6,d0
 	blt.w	.counts
 	cmp.w	#$F,d0
@@ -1122,7 +1120,7 @@ CheckTrade							;Check the trade: players chosen on both teams, at most three a
 	jsr	(Framer).l
 	jsr	(printsmallz).l
 	String	CC_SetFont,$3,CC_SetX,$D,CC_SetY,$B,'INVALID  TRADE'
-	move.w	(StatWork+$14).w,d0
+	move.w	(InvalidTradeReason).w,d0
 	movea.l	#InvalidTradeText,a1
 	jsr	(PrintSmallListItem).l
 	bsr.w	ReadTradePads
