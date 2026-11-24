@@ -14,7 +14,7 @@ TitleScreen							;The title screen (TitleScreenImg, TitleImg) with the vblank T
 	move.w	(HVcount).l,(seed+2).w
 	move.l	#VBlank_TitleScreen,(VBint).l
 	bset	#df32c,(disflags).w
-	move.w	#5,(Map3col1).w
+	move.w	#5,(Map3col).w
 	move.w	#$A000,(VmMAP2).w
 	move.w	#7,(Map2col).w
 	move.w	#$C000,(VmMAP1).w
@@ -294,7 +294,7 @@ HiScoreScreen						;vb2, the HiScoreBgMap and HiScoreImg bitmaps, then wait up t
 									;frames or a button (waitx)
 	move.l	#vb2,(VBint).w
 	bclr	#df32c,(disflags).w
-	move.w	#5,(Map3col1).w
+	move.w	#5,(Map3col).w
 	move.w	#$A000,(VmMAP2).w
 	move.w	#7,(Map2col).w
 	move.w	#$C000,(VmMAP1).w
@@ -359,7 +359,7 @@ StanleyCupScreen					;The Stanley Cup screen: the vblank CupVBlank, the cup (Sta
 	move.w	#0,(VSCRLPM).w
 	move.w	#$BC00,(VSPRITES).w
 	move.w	#$B000,(VmMAP3).w
-	move.w	#6,(Map3col1).w
+	move.w	#6,(Map3col).w
 	move.w	#$C000,(VmMAP2).w
 	move.w	#7,(Map2col).w
 	move.w	#$E000,(VmMAP1).w
