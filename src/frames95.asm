@@ -5,9 +5,9 @@
 ; Sprite Frame (SPF) base indices, in frame sheet order, with the and value where 95 has the group. 95 moves
 ; the plain skating frames first and gives the skating groups 8 frames per direction (94: 5); a "New in 95"
 ; group is new frames. Names for the new groups follow the tables that use them, or the PC animation names
-; (SPFblock). Sets the arrow, star, replay cursor, net and puck frames, which no table uses. SPFglovel2 is
-; inferred from 94 (the 4 frames after gdive). Frames 670-673, 886-889 and 970-999 are not used by a 95 table
-; or the code.
+; (SPFblock). Sets the arrow, star, replay cursor, net and puck frames, which no table uses. The 4 frames
+; after gdive are not named: 95 has its own glovel2 group at 876. Frames 670-673, 886-889 and 970-999
+; are not used by a 95 table or the code.
 SPFskate	=	1					; 1 (94: 41)
 SPFglide	=	SPFskate+64			; 65 glide, and the first frame of the falls
 SPFstop	=	SPFglide+8				; 73 (94: 145)
@@ -42,19 +42,18 @@ SPFflip	=	SPFswingb+24			; 600 (94: 633)
 
 SPFGoalie	=	SPFflip+6			; 606 (94: 407): gready, gglovel, gglover, gstickl, gstickr
 SPFgdive	=	SPFGoalie+40		; 646 (94: 519)
-SPFglovel2	=	SPFgdive+24			; 670 not used by a 95 table (94: 535), inferred; 95 has no gglovel2
-SPFblock	=	SPFglovel2+4		; 674 The shot block
+SPFblock	=	SPFgdive+28			; 674 The shot block (670-673 are not used by a 95 table)
 SPFSiren	=	SPFblock+24			; 698 (94: 563)
 SPFgstack	=	SPFSiren+14			; 712(94 gstackr, gstackl, gswing use SPFGoalie)
-SPFboard	=	SPFgstack+40		; 752 boardtop, boardright, boardbot, boardleft
-SPFboardchk	=	SPFboard+56			; 808
-SPFcatch	=	SPFboardchk+8		; 816 (94: 577)
-SPFshoulder2	=	SPFcatch+16		; 832 shoulderchkl2, shoulderchkr2
-SPFcelebrate	=	SPFshoulder2+4	; 836 (94: 185)
+SPFboard	=	SPFgstack+40		; 752 boardfront, boardright, boardback, boardleft
+SPFcrosscheck	=	SPFboard+56		; 808 crosscheck (94S SPFcrosscheck)
+SPFcatch	=	SPFcrosscheck+8		; 816 (94: 577)
+SPFhip	=	SPFcatch+16				; 832 hipchkl, hipchkr (94: SPFhipl, SPFhipr)
+SPFcelebrate	=	SPFhip+4		; 836 (94: 185)
 SPFgskate	=	SPFcelebrate+16		; 852(94 gskate uses SPFGoalie)
-SPFgextra2	=	SPFgskate+24		; 876
-SPFgstackalt	=	SPFgextra2+4	; 880 gstackalt1, gstackalt2
-SPFinjury1	=	SPFgstackalt+10		; 890 (94: 641)
+SPFglovel2	=	SPFgskate+24		; 876 gglovel2 (the 94 name)
+SPFgofall	=	SPFglovel2+4		; 880 gofallback, gofallglove
+SPFinjury1	=	SPFgofall+10		; 890 (94: 641)
 SPFgslamtop	=	SPFinjury1+8		; 898(94 gslamtop uses SPFGoalie)
 SPFgready	=	SPFgslamtop+6		; 904 (94: 539)
 SPFpump	=	SPFgready+18			; 922 (94: 201)
@@ -62,9 +61,9 @@ SPFcup	=	SPFpump+16				; 938 (94: 217)
 SPFpump2	=	SPFcup+16			; 954
 SPFbglass	=	SPFpump2+46			; 1000 (94: 653)
 SPFPen	=	SPFbglass+5				; 1005 (94: 377)
-SPFboardmid	=	SPFPen+7			; 1012 boardmidl, boardmidr
-SPFgextra1	=	SPFboardmid+28		; 1040
-SPFgslambot	=	SPFgextra1+4		; 1044
+SPFbenchcheck	=	SPFPen+7		; 1012 benchcheckl, benchcheckr (94S SPFbenchcheck)
+SPFghighr	=	SPFbenchcheck+28	; 1040 ghighr (the 94 name)
+SPFgslambot	=	SPFghighr+4			; 1044
 SPFfaceoff	=	SPFgslambot+6		; 1050 The last frame a 95 table uses is 1055
 
 SPAlist								;Movea.l #SPAlist (#$5A34) in the replay and input code
@@ -1381,14 +1380,14 @@ SPAcrosscheck_table:				;Frames 808-815
 	dc.w	.7-.t
 	dc.w	0
 
-.0	dc.w	SPFboardchk,-24
-.1	dc.w	SPFboardchk+1,-24
-.2	dc.w	SPFboardchk+2,-24
-.3	dc.w	SPFboardchk+3,-24
-.4	dc.w	SPFboardchk+4,-24
-.5	dc.w	SPFboardchk+5,-24
-.6	dc.w	SPFboardchk+6,-24
-.7	dc.w	SPFboardchk+7,-24
+.0	dc.w	SPFcrosscheck,-24
+.1	dc.w	SPFcrosscheck+1,-24
+.2	dc.w	SPFcrosscheck+2,-24
+.3	dc.w	SPFcrosscheck+3,-24
+.4	dc.w	SPFcrosscheck+4,-24
+.5	dc.w	SPFcrosscheck+5,-24
+.6	dc.w	SPFcrosscheck+6,-24
+.7	dc.w	SPFcrosscheck+7,-24
 
 SPAgskate	=	*-SPAlist			; goalieacc
 SPAgskate_table:					;Frames 852-875
@@ -1452,10 +1451,10 @@ SPAgofallback_table:				;Frames 880-883
 .1
 .2
 .6
-.7	dc.w	SPFgstackalt,20,SPFgstackalt+1,20,SPFgstackalt,-8
+.7	dc.w	SPFgofall,20,SPFgofall+1,20,SPFgofall,-8
 .3
 .4
-.5	dc.w	SPFgstackalt+2,20,SPFgstackalt+3,20,SPFgstackalt+2,-8
+.5	dc.w	SPFgofall+2,20,SPFgofall+3,20,SPFgofall+2,-8
 
 SPAgofallglove	=	*-SPAlist		; goaliesave: see SPAgofallback
 SPAgofallglove_table:				;Frames 884-885
@@ -1474,10 +1473,10 @@ SPAgofallglove_table:				;Frames 884-885
 .1
 .2
 .6
-.7	dc.w	SPFgstackalt+4,-40
+.7	dc.w	SPFgofall+4,-40
 .3
 .4
-.5	dc.w	SPFgstackalt+5,-40
+.5	dc.w	SPFgofall+5,-40
 
 SPAcatch	=	*-SPAlist			; puckbody
 SPAcatch_table:						;Frames 816-831
@@ -1606,10 +1605,10 @@ SPAhipchkl_table:					;Frames 832-834
 .1
 .2
 .6
-.7	dc.w	SPFshoulder2,-24
+.7	dc.w	SPFhip,-24
 .3
 .4
-.5	dc.w	SPFshoulder2+2,-24
+.5	dc.w	SPFhip+2,-24
 
 SPAhipchkr	=	*-SPAlist			; The second checking list right check; FallDown skips the flip after it
 SPAhipchkr_table:					;Frames 833-835
@@ -1628,10 +1627,10 @@ SPAhipchkr_table:					;Frames 833-835
 .1
 .2
 .6
-.7	dc.w	SPFshoulder2+1,-24
+.7	dc.w	SPFhip+1,-24
 .3
 .4
-.5	dc.w	SPFshoulder2+3,-24
+.5	dc.w	SPFhip+3,-24
 
 SPAglideback	=	*-SPAlist		; doplayeracc when skating backwards
 SPAglideback_table:					;Frames 496-538
@@ -1698,16 +1697,16 @@ SPAbenchcheckl_table:				;Frames 67-1025
 	dc.w	.7-.t
 	dc.w	0
 
-.0	dc.w	SPFboard+42,6,SPFboardmid,6,SPFboardmid+1,6,SPFboardmid+2,6,SPFboardmid+3,6,SPFboardmid+4,80,SPFboardmid+3,6,SPFboardmid+2,6
-	dc.w	SPFboardmid+1,6,SPFglide+7,-8
+.0	dc.w	SPFboard+42,6,SPFbenchcheck,6,SPFbenchcheck+1,6,SPFbenchcheck+2,6,SPFbenchcheck+3,6,SPFbenchcheck+4,80,SPFbenchcheck+3,6,SPFbenchcheck+2,6
+	dc.w	SPFbenchcheck+1,6,SPFglide+7,-8
 .1
 .2
-.3	dc.w	SPFboardmid+5,6,SPFboardmid+6,6,SPFboardmid+7,6,SPFboardmid+8,80,SPFboardmid+7,6,SPFboardmid+5,6,SPFglide+2,-8
-.4	dc.w	SPFboard+49,6,SPFboardmid+9,6,SPFboardmid+10,6,SPFboardmid+11,6,SPFboardmid+12,6,SPFboardmid+13,80,SPFboardmid+12,6,SPFboardmid+11,6
-	dc.w	SPFboardmid+10,6,SPFglide+6,-8
+.3	dc.w	SPFbenchcheck+5,6,SPFbenchcheck+6,6,SPFbenchcheck+7,6,SPFbenchcheck+8,80,SPFbenchcheck+7,6,SPFbenchcheck+5,6,SPFglide+2,-8
+.4	dc.w	SPFboard+49,6,SPFbenchcheck+9,6,SPFbenchcheck+10,6,SPFbenchcheck+11,6,SPFbenchcheck+12,6,SPFbenchcheck+13,80,SPFbenchcheck+12,6,SPFbenchcheck+11,6
+	dc.w	SPFbenchcheck+10,6,SPFglide+6,-8
 .5
 .6
-.7	dc.w	SPFboard+53,6,SPFboardmid+10,6,SPFboardmid+11,6,SPFboardmid+12,6,SPFboardmid+13,80,SPFboardmid+12,6,SPFboardmid+11,6,SPFboardmid+10,6
+.7	dc.w	SPFboard+53,6,SPFbenchcheck+10,6,SPFbenchcheck+11,6,SPFbenchcheck+12,6,SPFbenchcheck+13,80,SPFbenchcheck+12,6,SPFbenchcheck+11,6,SPFbenchcheck+10,6
 	dc.w	SPFglide+6,-8
 
 SPAbenchcheckr	=	*-SPAlist		; FallDown
@@ -1723,17 +1722,17 @@ SPAbenchcheckr_table:				;Frames 66-1039
 	dc.w	.7-.t
 	dc.w	0
 
-.0	dc.w	SPFboard+14,6,SPFboardmid+14,6,SPFboardmid+15,6,SPFboardmid+16,6,SPFboardmid+17,6,SPFboardmid+18,80,SPFboardmid+17,6,SPFboardmid+16,6
-	dc.w	SPFboardmid+15,6,SPFglide+1,-8
+.0	dc.w	SPFboard+14,6,SPFbenchcheck+14,6,SPFbenchcheck+15,6,SPFbenchcheck+16,6,SPFbenchcheck+17,6,SPFbenchcheck+18,80,SPFbenchcheck+17,6,SPFbenchcheck+16,6
+	dc.w	SPFbenchcheck+15,6,SPFglide+1,-8
 .1
 .2
-.3	dc.w	SPFboard+18,6,SPFboardmid+19,6,SPFboardmid+20,6,SPFboardmid+21,6,SPFboardmid+22,80,SPFboardmid+21,6,SPFboardmid+20,6,SPFboardmid+19,6
+.3	dc.w	SPFboard+18,6,SPFbenchcheck+19,6,SPFbenchcheck+20,6,SPFbenchcheck+21,6,SPFbenchcheck+22,80,SPFbenchcheck+21,6,SPFbenchcheck+20,6,SPFbenchcheck+19,6
 	dc.w	SPFglide+2,-8
-.4	dc.w	SPFboard+22,6,SPFboardmid+23,6,SPFboardmid+19,6,SPFboardmid+20,6,SPFboardmid+21,6,SPFboardmid+22,80,SPFboardmid+21,6,SPFboardmid+20,6
-	dc.w	SPFboardmid+19,6,SPFglide+2,-8
+.4	dc.w	SPFboard+22,6,SPFbenchcheck+23,6,SPFbenchcheck+19,6,SPFbenchcheck+20,6,SPFbenchcheck+21,6,SPFbenchcheck+22,80,SPFbenchcheck+21,6,SPFbenchcheck+20,6
+	dc.w	SPFbenchcheck+19,6,SPFglide+2,-8
 .5
 .6
-.7	dc.w	SPFboardmid+24,6,SPFboardmid+25,6,SPFboardmid+26,6,SPFboardmid+27,80,SPFboardmid+26,6,SPFboardmid+24,6,SPFglide+6,-8
+.7	dc.w	SPFbenchcheck+24,6,SPFbenchcheck+25,6,SPFbenchcheck+26,6,SPFbenchcheck+27,80,SPFbenchcheck+26,6,SPFbenchcheck+24,6,SPFglide+6,-8
 
 SPApump	=	*-SPAlist				; the word list after SPAcelebrate (label), with SPApump3
 SPApump_table:						;Frames 922-937
@@ -1843,10 +1842,10 @@ SPAghighr_table:					;Frames 1040-1043
 .1
 .2
 .6
-.7	dc.w	SPFgextra1,4,SPFgextra1+1,-24,SPFgextra1,-4
+.7	dc.w	SPFghighr,4,SPFghighr+1,-24,SPFghighr,-4
 .3
 .4
-.5	dc.w	SPFgextra1+2,4,SPFgextra1+3,-24,SPFgextra1+2,-4
+.5	dc.w	SPFghighr+2,4,SPFghighr+3,-24,SPFghighr+2,-4
 
 SPAgglovel2	=	*-SPAlist			; goaliesave: see SPAghighr. puckgoalie compares SPAghighr
 SPAgglovel2_table:					;Frames 876-879
@@ -1865,10 +1864,10 @@ SPAgglovel2_table:					;Frames 876-879
 .1
 .2
 .6
-.7	dc.w	SPFgextra2,4,SPFgextra2+1,-24,SPFgextra2,-4
+.7	dc.w	SPFglovel2,4,SPFglovel2+1,-24,SPFglovel2,-4
 .3
 .4
-.5	dc.w	SPFgextra2+2,4,SPFgextra2+3,-24,SPFgextra2+2,-4
+.5	dc.w	SPFglovel2+2,4,SPFglovel2+3,-24,SPFglovel2+2,-4
 
 SPAgslambot	=	*-SPAlist			; checkanim
 SPAgslambot_table:					;Frames 1044-1049
