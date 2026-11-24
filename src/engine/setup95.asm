@@ -476,7 +476,7 @@ DrawTeamScreen						;Roster screen background: wait for the dma (disflags bit 0)
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	#VDPR_MODE4+$81,Vctrl-Vdata(a0)
-	move.w	#6,(Map3col1).w
+	move.w	#6,(Map3col).w
 	move.w	#VDPR_HSCROLL,Vctrl-Vdata(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
@@ -1678,11 +1678,11 @@ setoptions							;Build the game setup screen: VBint VBlank_SetOptions, the vram
 	move.w	#0,(VSCRLPM).w
 	move.w	#$B400,(VSPRITES).w
 	move.w	#$B800,(VmMAP3).w
-	move.w	#5,(Map3col1).w
+	move.w	#5,(Map3col).w
 	move.w	#$C000,(VmMAP2).w
-	move.w	#6,(Map2col1).w
+	move.w	#6,(Map2col).w
 	move.w	#$E000,(VmMAP1).w
-	move.w	#6,(Map1col1).w
+	move.w	#6,(Map1col).w
 	move.w	#0,d0					;fade to color
 	jsr	(setVram).l
 	jsr	(orjoy).l

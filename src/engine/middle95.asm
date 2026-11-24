@@ -512,7 +512,7 @@ showclockdma						;When dfclock is set queue the clock chars in the dma list (a5
 	movea.w	#(VmMAP1-M68K_RAM),a1
 	moveq	#$18,d0
 	moveq	#3,d2
-	move.w	2(a1),d1
+	move.w	Map1col-VmMAP1(a1),d1
 	asl.w	d1,d0
 	add.w	d2,d0
 	asl.w	#1,d0
@@ -1964,7 +1964,7 @@ PutBigTile							;Write tile d3 + d6 at column d4, row d5 of the map at VmMAP1 +
 	move.w	d5,d0
 	movea.l	#VmMAP1,a0
 	adda.w	(printm).w,a0
-	move.w	2(a0),d1
+	move.w	Map1col-VmMAP1(a0),d1
 	asl.w	d1,d0
 	add.w	d4,d0
 	asl.w	#1,d0
@@ -2233,12 +2233,12 @@ setupice							;Set all variables, send non purgeable graphics, build sprite fra
 	movem.l	d0-d7/a0-a6,-(sp)
 	bset	#df32c,(disflags).w
 	move.w	#$C000,(VmMAP2).w
-	move.w	#6,(Map2col1).w
+	move.w	#6,(Map2col).w
 	move.w	#$DC00,(VSPRITES).w
 	move.w	#$E000,(VmMAP1).w
-	move.w	#6,(Map1col1).w
+	move.w	#6,(Map1col).w
 	move.w	#$F000,(VmMAP3).w
-	move.w	#5,(Map3col1).w
+	move.w	#5,(Map3col).w
 	move.w	#$FC00,(VSCRLPM).w
 	moveq	#0,d0
 	jsr	(setVram).l

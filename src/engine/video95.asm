@@ -63,7 +63,7 @@ setVram_0							;Second half of setVram without the fade: clear vram and set the
 	move.w	#VDPR_MODE1+$04,Vctrl-Vdata(a0)	;512 color palette enable
 	move.w	#VDPR_MODE2+$64,Vctrl-Vdata(a0)
 	move.w	#$9001,d0				;playfield is 64x32
-	cmpi.w	#6,(Map1col1).w
+	cmpi.w	#6,(Map1col).w
 	beq.w	.i64
 	move.w	#$9003,d0
 .i64
@@ -298,7 +298,7 @@ xyVmMap								;Set the vdp write address to printx, printy in the map at VmMAP1
 	move.w	(printy).w,d1
 	movea.w	#(VmMAP1-M68K_RAM),a0
 	adda.w	(printm).w,a0
-	move.w	2(a0),d2
+	move.w	Map1col-VmMAP1(a0),d2
 	asl.w	d2,d1
 	add.w	d1,d0
 	asl.w	#1,d0
@@ -633,10 +633,10 @@ updatescroll						;Using hpos and vpos set scroll cords; queue rink map rows on 
 	andi.w	#$1F,d0
 	asl.w	#7,d0
 	add.w	(VmMAP2).w,d0
-	move.w	d0,6(a5)
+	move.w	d0,dmavram(a5)
 	move.w	#$1E,d0
 	sub.w	d1,d0
-	move.w	(a0),4(a5)
+	move.w	(a0),dmalen(a5)
 	mulu.w	(a0),d0
 	add.w	d0,d0
 	lea	4(a0,d0.w),a1
@@ -657,10 +657,10 @@ updatescroll						;Using hpos and vpos set scroll cords; queue rink map rows on 
 	andi.w	#$1F,d0
 	asl.w	#7,d0
 	add.w	(VmMAP2).w,d0
-	move.w	d0,6(a5)
+	move.w	d0,dmavram(a5)
 	move.w	#$3D,d0
 	sub.w	d1,d0
-	move.w	(a0),4(a5)
+	move.w	(a0),dmalen(a5)
 	mulu.w	(a0),d0
 	add.w	d0,d0
 	lea	4(a0,d0.w),a1

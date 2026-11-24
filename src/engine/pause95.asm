@@ -367,7 +367,7 @@ PauseScreenDraw						;Draw the pause screen (Pausemode_pall): wait out the dma, 
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)					;first sprite off
 	move.w	#VDPR_MODE4+$81,Vctrl-Vdata(a0)	;40 col mode
-	move.w	#6,(Map2col1).w
+	move.w	#6,(Map2col).w
 	move.w	#VDPR_HSCROLL,Vctrl-Vdata(a0)	;hscroll table at 0
 	clr.w	d0
 	jsr	(Vmaddr).l
@@ -609,12 +609,12 @@ RestoreGameScreen					;Rebuild the game screen after the pause screen: the vdp m
 	move.l	#VBlank,(VBint).w
 	bset	#df32c,(disflags).w
 	move.w	#$C000,(VmMAP2).w
-	move.w	#6,(Map2col1).w
+	move.w	#6,(Map2col).w
 	move.w	#$DC00,(VSPRITES).w
 	move.w	#$E000,(VmMAP1).w
-	move.w	#6,(Map1col1).w
+	move.w	#6,(Map1col).w
 	move.w	#$F000,(VmMAP3).w
-	move.w	#5,(Map3col1).w
+	move.w	#5,(Map3col).w
 	move.w	#$FC00,(VSCRLPM).w
 	movea.w	#(palfadenew-M68K_RAM),a0
 	moveq	#$1F,d1
@@ -974,7 +974,7 @@ ShowPenaltyMessages					;Every $78 frames show the last queued penalty (penaltym
 	movea.l	#Penaltylist,a1
 	adda.w	(a1,d0.w),a1
 	clr.w	d2
-	move.b	1(a1),d2
+	move.b	penmins(a1),d2
 	beq.w	.skip
 	bmi.w	.skip
 	move.w	#$78,(menutimer).w

@@ -377,7 +377,7 @@ DisplayPenaltyEntry					;PenSum entry d3: time, team (bit 7 of byte 2 = away), m
 	movea.l	#Penaltylist,a3
 	adda.w	(a3,d0.w),a3
 	clr.w	d0
-	move.b	1(a3),d0
+	move.b	penmins(a3),d0
 	jsr	(PushNumber).l
 	move.w	#$23,(printx).w
 	jsr	(print).l
@@ -389,7 +389,7 @@ DisplayPenaltyEntry					;PenSum entry d3: time, team (bit 7 of byte 2 = away), m
 	addq.w	#1,(printy).w
 	move.w	#$14,(printx).w
 	move.w	#4,(printfontset).w
-	lea	2(a3),a1
+	lea	penname(a3),a1
 	jsr	(printsmall).l
 	clr.w	(printfontset).w
 	rts

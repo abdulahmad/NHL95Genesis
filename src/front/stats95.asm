@@ -157,7 +157,7 @@ DisplayStats						;Team blocks (PutTeamBlock), then each
 	move.w	#9,(printx).w
 	lea	tmsize(a2),a2
 	bsr.w	PrintStatValue
-	lea	4(a0),a1
+	lea	tssize(a0),a1
 	addq.w	#2,(printy).w
 	dbf	d6,.row
 	rts
@@ -199,7 +199,7 @@ PrintStatValue						;Print TeamStatTextTbl entry a0 for team a2 centred at print
 	bsr.w	.8
 .4
 	jsr	(appstring).l
-	move.w	2(a0),d0
+	move.w	tsoff2(a0),d0
 	bmi.w	.x
 	jsr	(appendz).l
 	String	'/'
@@ -213,7 +213,7 @@ PrintStatValue						;Print TeamStatTextTbl entry a0 for team a2 centred at print
 	move.w	(a0),d0
 	move.w	(a2,d0.w),d0
 	mulu.w	#$64,d0
-	move.w	2(a0),d1
+	move.w	tsoff2(a0),d1
 	move.w	(a2,d1.w),d1
 	beq.w	.5
 	divu.w	d1,d0
@@ -1413,16 +1413,16 @@ MarkSeasonRosters					;Set bit 15 of every player's goals and shots words in sav
 	movem.l	(sp)+,d0-d7/a0-a6
 	rts
 
-SeasonPlayerStats					;Season Player Stats screen: set the VRAM layout (VSCRLPM ... Map3col1),
+SeasonPlayerStats					;Season Player Stats screen: set the VRAM layout (VSCRLPM ... Map3col),
 									;clear VRAM (setVram), then run the stats screen and return
 	bclr	#df32c,(disflags).w
 	move.w	#$C000,(VmMAP2).w
-	move.w	#6,(Map2col1).w
+	move.w	#6,(Map2col).w
 	move.w	#$DC00,(VSPRITES).w
 	move.w	#$E000,(VmMAP1).w
-	move.w	#6,(Map1col1).w
+	move.w	#6,(Map1col).w
 	move.w	#$F000,(VmMAP3).w
-	move.w	#5,(Map3col1).w
+	move.w	#5,(Map3col).w
 	move.w	#$FC00,(VSCRLPM).w
 	moveq	#0,d0
 	jsr	(setVram).l
@@ -1448,7 +1448,7 @@ SeasonPlayersScreen					;Run the season stats screen, then jump to ExitStatsScre
 	jsr	(Vmaddr).l
 	move.l	#0,(a0)
 	move.w	#VDPR_MODE4+$81,Vctrl-Vdata(a0)
-	move.w	#6,(Map2col1).w
+	move.w	#6,(Map2col).w
 	move.w	#VDPR_HSCROLL,Vctrl-Vdata(a0)
 	clr.w	d0
 	jsr	(Vmaddr).l
@@ -1912,12 +1912,12 @@ SeasonTeamStats						;Season TEAM STATS screen (sflags11 bit 3 = playoff "Playof
 									;team 0-$19, left/right (bits 6/4 of d1) change team, start exits
 	bclr	#df32c,(disflags).w
 	move.w	#$C000,(VmMAP2).w
-	move.w	#6,(Map2col1).w
+	move.w	#6,(Map2col).w
 	move.w	#$DC00,(VSPRITES).w
 	move.w	#$E000,(VmMAP1).w
-	move.w	#6,(Map1col1).w
+	move.w	#6,(Map1col).w
 	move.w	#$F000,(VmMAP3).w
-	move.w	#5,(Map3col1).w
+	move.w	#5,(Map3col).w
 	move.w	#$FC00,(VSCRLPM).w
 	moveq	#0,d0
 	jsr	(setVram).l
@@ -3588,7 +3588,7 @@ DrawLineIcon						;Draw line d5 (name, then its player slots) at LineIconPosTabl
 	subq.w	#6,a0
 .0
 	move.w	(a0),(printx).w
-	move.w	2(a0),(printy).w
+	move.w	lipy(a0),(printy).w
 	move.w	d5,d0
 	movea.l	#linelist,a1
 	move.w	#$8000,(printa).w
@@ -3599,8 +3599,8 @@ DrawLineIcon						;Draw line d5 (name, then its player slots) at LineIconPosTabl
 	move.w	d5,d4
 	asl.w	#3,d4
 	addq.w	#1,d4
-	move.w	2(a0),(printy).w
-	move.w	4(a0),d3
+	move.w	lipy(a0),(printy).w
+	move.w	lipslots(a0),d3
 	lea	$16C(a2),a3
 .slot
 	move.w	(a0),(printx).w
@@ -3629,7 +3629,7 @@ ClearLineArea						;Erase the line area and print the position header (LD RD LW 
 	moveq	#$12,d1
 	move.w	#$7FF,d2
 	jsr	(eraser).l
-	move.w	(LineIconPosTable+2).l,(printy).l
+	move.w	(LineIconPosTable+lipy).l,(printy).l
 	move.w	(LineIconPosTable).l,(printx).l
 	tst.w	(OptLine).w
 	beq.w	.0

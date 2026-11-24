@@ -44,8 +44,8 @@ ScoutingReport						;Pregame scouting report: the Ron Barr picture, the text box
 	movea.l	(sp)+,a0
 	jsr	(BuildHotColdLists).l		;again with the new tables
 	bclr	#df32c,(disflags).w
-	move.w	#6,(Map1col1).w
-	move.w	#6,(Map2col1).w
+	move.w	#6,(Map1col).w
+	move.w	#6,(Map2col).w
 	move.w	#0,d0					;fade to color
 	jsr	(setVram).l
 	move.w	#2,d4					;vram chars from 2
